@@ -7,6 +7,16 @@ return {
     keys = {
       { "<leader>fR", Util.telescope("resume"), desc = "Resume" },
     },
+    opts = {
+      pickers = {
+        find_files = {
+          follow = true,
+        },
+      },
+    },
+    -- opts = function(_, opts)
+    --   table.insert(opts.pickers, find_files = { follow = true})
+    -- end,
   },
   {
     "nvim-telescope/telescope-file-browser.nvim",
