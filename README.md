@@ -5,7 +5,6 @@ Structure configs as dotfiles/home/.config etc
 to link use this command
 
 ```sh
-
-
-cp -rsf "$DOTFILES"/. ~
+sh install.sh
 ```
+
