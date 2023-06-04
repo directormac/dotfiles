@@ -1,0 +1,17 @@
+[helpers]
+
+
+[vim.files]
+nvim = "~/.config/nvim"
+
+[helix.files]
+helix = "~/.config/helix"
+
+[starship.files]
+starship = "~/.config/starship.toml"
+
+[wezterm.files]
+wezterm = "~/.wezterm.lua"
+
+[tmux.files]
+tmux = "~/.tmux.config"

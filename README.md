@@ -1,10 +1,20 @@
 # dotfiles
 
-Structure configs as dotfiles/home/.config etc
+Structure configs as dotfiles
 
-to link use this command
-
+Please install dotter
 ```sh
-sh install.sh
+# On windows
+scoop install dotter
+
+# On other platforms
+cargo install dotter
 ```
 
+# On windows uncomment the include package for nvim custom location and powershell install
+```toml 
+
+```
+
+## dotter
+## dotter --force

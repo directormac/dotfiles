@@ -1,0 +1,9 @@
+Set-Alias -Name ls -Value lsd
+# Set-Alias -Name cd -Value zoxide -Option AllScope
+# New-Alias -Name z -Value zoxide
+New-Alias -Name c -Value clear
+New-Alias -Name vim -Value nvim
+New-Alias -Name v -Value nvim
+
+Invoke-Expression (&starship init powershell)
+$ENV:STARSHIP_CONFIG = "%USERPROFILE%\.config\starship.toml"

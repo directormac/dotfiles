@@ -1,0 +1,7 @@
+# If windows uncomment lines below
+# includes = [".dotter/windows.toml"]
+# packages = ["wezterm","vim","helix", "starship", "tmux", "powershell"]
+
+# If linux uncomment line below
+# packages = ["wezterm","vim","helix", "starship", "tmux"]
+
