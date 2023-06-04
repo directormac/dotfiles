@@ -27,5 +27,6 @@
 starship = "/home/artifex/.config/starship.toml"
 tmux = "/home/artifex/.tmux.config"
 wezterm = "/home/artifex/.wezterm.lua"
+zshrc = "/home/artifex/.zshrc"
 
 [templates]
