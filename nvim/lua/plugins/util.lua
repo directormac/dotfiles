@@ -5,6 +5,12 @@
 
 return {
   {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
+  {
     "m4xshen/hardtime.nvim",
     opts = {
       max_time = 1000,
