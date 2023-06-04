@@ -4,7 +4,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR=nvim
-export DOTFILES="$HOME/dotfiles"
+export DOTFILES="~/dotfiles/home"
 path+=$HOME/.cargo/bin
 path+=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 # Set name of the theme to load --- if set to "random", it will
