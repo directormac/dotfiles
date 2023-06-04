@@ -1,5 +1,7 @@
 [helpers]
 
+[zsh.files]
+zshrc = "~/.zshrc"
 
 [vim.files]
 nvim = "~/.config/nvim"
