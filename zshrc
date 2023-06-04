@@ -104,6 +104,21 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
+# Git
+alias ga="git add"
+alias gb="git branch"
+alias gca="git commit -a"
+alias gcam="git commit -am"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias glg="git log --all --oneline --graph --decorate"
+alias gpl="git pull --prune"
+alias gps="git push"
+alias gs="git status -sb"
+alias gm="git merge"
+
 #Aliases
 alias hx="helix"
 alias ls="lsd"
