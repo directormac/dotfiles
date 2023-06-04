@@ -1,5 +1,7 @@
 [vim.files]
 nvim = "~/AppData/Local/nvim"
 
-[powershell.files]
-powershell = "~/Documents/Powershell/Microsoft.Powershell_profile.ps1"
+# [files]
+# pwsh = "~/Documents/Powershell/Microsoft.Powershell_profile.ps1"
+
+
