@@ -1,6 +1,4 @@
 [symlinks]
-
-[templates]
 "helix\\config.toml" = "C:\\Users\\Administrator/.config/helix\\config.toml"
 "helix\\themes\\artifex.toml" = "C:\\Users\\Administrator/.config/helix\\themes\\artifex.toml"
 "nvim\\.gitignore" = "C:\\Users\\Administrator/AppData/Local/nvim\\.gitignore"
@@ -28,3 +26,5 @@
 "nvim\\stylua.toml" = "C:\\Users\\Administrator/AppData/Local/nvim\\stylua.toml"
 starship = "C:\\Users\\Administrator/.config/starship.toml"
 wezterm = "C:\\Users\\Administrator/.wezterm.lua"
+
+[templates]
