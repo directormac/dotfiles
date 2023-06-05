@@ -4,41 +4,39 @@ local mux = wezterm.mux
 local act = wezterm.action
 local wsl_domains = wezterm.default_wsl_domains()
 local config = {}
-
+config.ssh_domains = wezterm.default_ssh_domains()
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	-- We are running on Windows; maybe we emit different
 	-- key assignments here?
+	config.ssh_domains = {
+		{
+			name = "ArchX",
+			remote_address = "192.168.110.182",
+			username = "artifex",
+		},
+		{
+			name = "xUbuntu",
+			remote_address = "192.168.110.174",
+			username = "artifex",
+		},
+	}
+	config.wsl_domains = wsl_domains
+	for _, domain in ipairs(wsl_domains) do
+		domain.default_cwd = "~"
+	end
 	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
 end
 
--- if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
---   -- We are running on Windows; maybe we emit different
---   -- key assignments here?
--- end
+if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
+	--   -- We are running on Windows; maybe we emit different
+	--   -- key assignments here?
+end
 
 --REMOTE CONFIGURATIONS
-config.ssh_domains = wezterm.default_ssh_domains()
-config.ssh_domains = {
-	{
-		name = "ArchX",
-		remote_address = "192.168.110.182",
-		username = "artifex",
-	},
-	{
-		name = "xUbuntu",
-		remote_address = "192.168.110.174",
-		username = "artifex",
-	},
-}
-config.wsl_domains = wsl_domains
 
 for _, domain in ipairs(config.ssh_domains) do
 	domain.assume_shell = "Posix"
 	-- domain.default_cwd = "~"
-end
-
-for _, domain in ipairs(wsl_domains) do
-	domain.default_cwd = "~"
 end
 
 wezterm.on("mux-startup", function()
@@ -158,6 +156,8 @@ function get_process(tab)
 		["btm"] = { { Text = " " } },
 		["zsh"] = { { Foreground = { Color = "#f5e0dc" } }, { Text = " " } },
 		["docker"] = { { Foreground = { Color = "#8caaee" } }, { Text = " " } },
+		["pwsh.exe"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
+		["cmd.exe"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
 		["~"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
 	}
 	local process_name = string.gsub(tab.active_pane.title, "(.*[/\\])(.*)", "%2")
@@ -178,6 +178,8 @@ function get_current_working_folder_name(tab)
 	local HOME_DIR = os.getenv("HOME")
 	if cwd == HOME_DIR then
 		return "   ~"
+	elseif not cwd then
+		return " "
 	end
 	return string.format("  %s ", string.match(cwd, "[^/]+$"))
 end
