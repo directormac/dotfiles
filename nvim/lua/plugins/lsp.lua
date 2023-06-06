@@ -89,7 +89,7 @@ return {
     'simrat39/rust-tools.nvim',
     event = "VeryLazy",
     dependencies = { 'neovim/nvim-lspconfig', 'mfussenegger/nvim-dap', 'nvim-lua/plenary.nvim' },
-    config = true,
+    ft = "rust",
     opts = {
       tools = {
         -- how to execute terminal commands
@@ -165,7 +165,17 @@ return {
           auto_focus = false,
         },
       },
+      -- all the opts to send to nvim-lspconfig
+      -- these override the defaults set by rust-tools.nvim
+      -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+      server = {
+        -- standalone file support
+        -- setting it to false may improve startup time
+        standalone = true,
+        -- on_attach = require('lspconfig').on_attach,
+        -- capabilities = require('lspconfig').capabilities
 
+      }, -- rust-analyzer options
       -- debugging stuff
       dap = {
         adapter = {
@@ -175,5 +185,9 @@ return {
         },
       },
     },
+
+    config = function(opts)
+      require('rust-tools').setup(opts)
+    end
   }
 }
