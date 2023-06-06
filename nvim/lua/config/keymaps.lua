@@ -7,8 +7,6 @@ local keymap = vim.keymap
 keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
 keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
 
-
-
 -- Better escape
 keymap.set("i", "jj", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
 keymap.set("i", "jk", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
@@ -21,7 +19,6 @@ keymap.set("n", "<S-cr>", "ciw", { desc = "Shift+ Enter Change and delete on cur
 
 keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
-
 -- NeoTree Toggle
 -- keymap.set("n", "<leader>o", function()
 --   if vim.bo.filetype == "neo-tree" then
@@ -31,7 +28,6 @@ keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 --     keymap.set("i", "jj", "<esc>", { desc = "Escape Insert Mode" })
 --   end
 -- end, { desc = "Toggle Explorer Focus" })
-
 
 -- save file
 -- keymap.set({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<esc>", { desc = "Save file" })

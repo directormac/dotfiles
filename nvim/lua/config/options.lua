@@ -13,7 +13,9 @@ vim.opt.listchars = {
   conceal = "※",
 }
 vim.opt.list = true
-vim.opt.wrap = true
+-- vim.opt.wrap = true
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 local function copy(lines, _)
   require("osc52").copy(table.concat(lines, "\n"))

@@ -6,7 +6,7 @@ return {
     "stevearc/oil.nvim",
     opts = {
       columns = {
-        -- "icon",
+        "icon",
         -- "permissions",
         -- "size",
         -- "mtime",
@@ -16,7 +16,11 @@ return {
       keymaps = {
         ["g?"] = "actions.show_help",
         ["<CR>"] = "actions.select",
-        ["<C-s>"] = "none",
+        ["<C-s>"] = {
+          callback = function()
+            require("oil").save()
+          end,
+        },
         ["<C-h>"] = "actions.select_split",
         ["<C-t>"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
@@ -38,8 +42,8 @@ return {
       float = {
         -- Padding around the floating window
         padding = 2,
-        max_width = 0,
-        max_height = 0,
+        max_width = 0.5,
+        max_height = 0.5,
         border = "rounded",
         win_options = {
           winblend = 10,
@@ -83,7 +87,5 @@ return {
         },
       },
     },
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 }
