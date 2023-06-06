@@ -7,7 +7,7 @@ return {
     },
     opts = function(_, opts)
       -- local cmp = require("cmp")
-      table.insert(opts.sources, { { name = "emoji" } })
+      table.insert(opts.sources, { { name = "emoji" }, { name = "crates " } })
       local has_words_before = function()
         unpack = unpack or table.unpack
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -50,6 +50,13 @@ return {
       end
     end,
   },
+  {
+    'saecki/crates.nvim',
+    events = 'VeryLazy',
+    config = function()
+      require('crates').setup();
+    end
+  }
   -- {
   --   "rafamadriz/friendly-snippets",
   --   config = function()
