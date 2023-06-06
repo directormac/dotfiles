@@ -74,13 +74,17 @@ return {
         ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
         desc = "Browse Files",
       },
+      {
+        "<leader>fv",
+        ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
+        desc = "Browse Files",
+      },
     },
     config = function(_, opts)
       print(vim.inspect(opts))
       require("telescope").load_extension("file_browser")
     end,
   },
-
 
   --- NEO TREE SECTION DISABLED BY DEFAULT CHECK OIL
   {
@@ -123,7 +127,7 @@ return {
           if node.type == "directory" or node:has_children() then
             if not node:is_expanded() then -- if unexpanded, expand
               state.commands.toggle_node(state)
-            else                           -- if expanded and has children, seleect the next child
+            else -- if expanded and has children, seleect the next child
               require("neo-tree.ui.renderer").focus_node(state, node:get_child_ids()[1])
             end
           else -- if not a directory just open it
