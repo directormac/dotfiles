@@ -109,4 +109,35 @@ return {
       table.insert(opts.sections.lualine_x, "😄")
     end,
   },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    opts = {
+      bottom = {
+        -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
+        { ft = "toggleterm", size = { height = 0.3 } },
+        {
+          ft = "lazyterm",
+          title = "Terminal",
+          size = { height = 0.3 },
+          filter = function(buf)
+            return not vim.b[buf].lazyterm_cmd
+          end,
+        },
+        "Trouble",
+        { ft = "qf",         title = "QuickFix" },
+        {
+          ft = "help",
+          size = { height = 20 },
+          -- only show help buffers
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
+        },
+        { ft = "spectre_panel", size = { height = 0.4 } },
+      },
+      left = {}
+    },
+  }
+
 }
