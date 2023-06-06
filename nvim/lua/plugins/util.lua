@@ -5,6 +5,12 @@ return {
   {
     "stevearc/oil.nvim",
     opts = {
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
       use_default_keymaps = false,
       skip_confirm_for_simple_edits = true,
       keymaps = {
