@@ -20,6 +20,6 @@ function Pwsh-Config(){
 }
 
 function Nvim-Config(){
-    nvim ~/AppData/Local/nvim
-  }
+    cd ~/AppData/Local/nvim && nvim .
+}
 
