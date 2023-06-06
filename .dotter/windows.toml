@@ -1,9 +1,13 @@
 [vim.files]
 nvim = "~/AppData/Local/nvim"
-pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
-# [files]
-# pwsh = "~/Documents/Powershell/Microsoft.Powershell_profile.ps1"
-
-
-# [shell.files]
 # pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+
+[helix.files]
+helix = "~/Appdata/Roaming/helix"
+
+[shell.files]
+pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+lazygit = "~/AppData/Roaming/lazygit/config.yml"
+wezterm = "~/.wezterm.lua"
+starship = "~/.config/starship.toml"
+
