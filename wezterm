@@ -238,8 +238,8 @@ end)
 -- config.webgpu_preferred_adapter = gpus[1]
 -- config.front_end = 'WebGpu'
 config.status_update_interval = 1
--- config.color_scheme = "Catppuccin Mocha"
-config.color_scheme = "Hardhacker"
+config.color_scheme = "Catppuccin Mocha"
+-- config.color_scheme = "Hardhacker"
 config.colors = {
 	tab_bar = {
 		-- font_size = 20,
