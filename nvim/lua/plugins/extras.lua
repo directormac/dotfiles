@@ -7,4 +7,5 @@ return {
       { "<leader>tc", "<cmd>TSC<cr>", desc = "Type-check" },
     },
   },
+
 }
