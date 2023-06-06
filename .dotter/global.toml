@@ -1,19 +1,15 @@
 [helpers]
 
-[zsh.files]
-zshrc = "~/.zshrc"
-
 [vim.files]
 nvim = "~/.config/nvim"
 
 [helix.files]
 helix = "~/.config/helix"
 
-[starship.files]
+[shell.files]
+lazygit = "~/.config/lazygit/config.yml"
+zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
-
-[wezterm.files]
+tmux = "~/.tmux.config"
 wezterm = "~/.wezterm.lua"
 
-[tmux.files]
-tmux = "~/.tmux.config"

@@ -1,0 +1,4 @@
+disableStartupPopups: true
+gui:
+  showIcons: true
+
