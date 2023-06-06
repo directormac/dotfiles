@@ -7,3 +7,15 @@ New-Alias -Name v -Value nvim
 
 Invoke-Expression (&starship init powershell)
 $ENV:STARSHIP_CONFIG = "%USERPROFILE%\.config\starship.toml"
+
+# Shows navigable menu of all options when hitting Tab
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+
+# Autocompletion for arrow keys
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+function Nvim-Config(){
+    nvim $PROFILE
+}
+

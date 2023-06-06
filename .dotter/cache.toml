@@ -24,6 +24,7 @@
 "nvim\\lua\\plugins\\typescript.lua" = "C:\\Users\\Administrator/AppData/Local/nvim\\lua\\plugins\\typescript.lua"
 "nvim\\lua\\plugins\\util.lua" = "C:\\Users\\Administrator/AppData/Local/nvim\\lua\\plugins\\util.lua"
 "nvim\\stylua.toml" = "C:\\Users\\Administrator/AppData/Local/nvim\\stylua.toml"
+pwsh = "C:\\Users\\Administrator/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 starship = "C:\\Users\\Administrator/.config/starship.toml"
 wezterm = "C:\\Users\\Administrator/.wezterm.lua"
 
