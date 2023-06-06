@@ -41,14 +41,15 @@ end
 
 wezterm.on("mux-startup", function()
 	local tab, pane, window = mux.spawn_window({})
-	-- pane:split { direction = 'Bottom' }
+	pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 wezterm.on("gui-startup", function()
 	local tab, pane, window = mux.spawn_window({})
 	-- window:gui_window():maximize()
-	-- window:spawn_tab {}
+	window:spawn_tab({ domain = { DomainName = "ArchX" } })
 	-- pane:split { direction = 'Bottom' }
+	-- pane:split({ direction = "Bottom", size = 0.25 })
 	-- window.gui_window():toggle_fullscreen()
 end)
 
@@ -142,13 +143,14 @@ wezterm.on("update-right-status", function(window, pane)
 
 	window:set_right_status(wezterm.format(elements))
 end)
-
+-- 
 function get_process(tab)
 	local process_icons = {
 		["node"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = "" } },
 		["yarn"] = { { Foreground = { Color = "#8caaee" } }, { Text = "" } },
 		["nvim"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
 		["v"] = { { Foreground = { Color = "#94e2d5" } }, { Text = " " } },
+		["vim"] = { { Foreground = { Color = "#94e2d5" } }, { Text = " " } },
 		["vi"] = { { Foreground = { Color = "#f38ba8" } }, { Text = " " } },
 		["cargo"] = { { Foreground = { Color = "#f38ba8" } }, { Text = " " } },
 		["pnpm"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
@@ -157,22 +159,48 @@ function get_process(tab)
 		["zsh"] = { { Foreground = { Color = "#f5e0dc" } }, { Text = " " } },
 		["docker"] = { { Foreground = { Color = "#8caaee" } }, { Text = " " } },
 		["pwsh.exe"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
-		["windows"] = { { Foreground = { Color = "#74c7ec" } }, { Text = "" } },
+		["windows"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
 		["~"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
 	}
 	local process_name = string.gsub(tab.active_pane.title, "(.*[/\\])(.*)", "%2")
 	-- local process_name = string.gsub(tab.active_pane.title, "(.*[/\\])(/\\..*)", "%2")
+	--
 
 	if not process_name then
 		process_name = "zsh"
-		-- elseif wezterm.target_triple == "x86_64-pc-windows-msvc" then
-		-- 	process_name = "windows"
 	end
 
 	return wezterm.format(
 		process_icons[process_name]
-		or { { Foreground = { Color = "#f5c2e7" } }, { Text = string.format("%s", process_name) } }
+			or { { Foreground = { Color = "#f5c2e7" } }, { Text = string.format("%s", process_name) } }
 	)
+end
+
+function get_host(tab)
+	local hostname = ""
+	local cwd_uri = tab.active_pane.current_working_dir
+	if cwd_uri then
+		cwd_uri = cwd_uri:sub(8)
+		local slash = cwd_uri:find("/")
+		local cwd = ""
+		if slash then
+			hostname = cwd_uri:sub(1, slash - 1)
+			-- Remove the domain name portion of the hostname
+			local dot = hostname:find("[.]")
+			if dot then
+				hostname = hostname:sub(1, dot - 1)
+			end
+			-- and extract the cwd from the uri
+			cwd = cwd_uri:sub(slash)
+		end
+	end
+
+	if hostname == "" then
+		return "  Windows"
+	else
+		return string.format(" %s  ", hostname)
+	end
+	-- return string.format(" %s", string.match(hostname, pattern, init?))
 end
 
 function get_current_working_folder_name(tab)
@@ -199,7 +227,8 @@ wezterm.on("format-tab-title", function(tab)
 		{ Text = " " },
 		{ Text = get_process(tab) },
 		-- { Foreground = { Color = "#cdd6f4" } },
-		{ Text = get_current_working_folder_name(tab) },
+		-- { Text = get_current_working_folder_name(tab) },
+		{ Text = get_host(tab) },
 		{ Foreground = { Color = "#1e1e2e" } },
 		-- { Text = "    ▕" },
 		{ Text = "▕" },
@@ -251,7 +280,7 @@ config.font = wezterm.font({
 -- }
 config.font_size = 14
 config.window_decorations = "RESIZE"
-config.window_background_opacity = 0.73
+config.window_background_opacity = 0.90
 -- config.window_background_image = 'C://tools/bg.jpg'
 -- config.tab_bar_at_bottom = true
 config.scrollback_lines = 50000
@@ -278,13 +307,13 @@ config.disable_default_key_bindings = true
 -- LEADER Key is CTRL+a will be addressed below as <Leader>
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
-	{ key = "p", mods = "LEADER",       action = act.ActivateCommandPalette },
+	{ key = "p", mods = "LEADER", action = act.ActivateCommandPalette },
 	{
 		key = "s",
 		mods = "LEADER",
 		action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES|DOMAINS" }),
 	},
-	{ key = "n", mods = "LEADER",       action = act.SwitchToWorkspace },
+	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
 	{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
 	{
@@ -293,7 +322,7 @@ config.keys = {
 		action = act({
 			SplitVertical = {
 				domain = "CurrentPaneDomain",
-			}
+			},
 		}),
 	},
 	{
@@ -302,78 +331,78 @@ config.keys = {
 		action = act({
 			SplitHorizontal = {
 				domain = "CurrentPaneDomain",
-			}
+			},
 		}),
 	},
-	{ key = "z", mods = "LEADER",      action = "TogglePaneZoomState" },
-	{ key = "c", mods = "LEADER",      action = act({ SpawnTab = "CurrentPaneDomain" }) },
-	{ key = "x", mods = "LEADER",      action = act.CloseCurrentPane({ confirm = false }) },
-	{ key = "w", mods = "LEADER",      action = act.CloseCurrentTab({ confirm = false }) },
+	{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
+	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
+	{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
 	{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
 	{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
-	{ key = "0", mods = "LEADER",      action = act.ResetFontAndWindowSize },
-	{ key = "r", mods = "LEADER",      action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
+	{ key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
 	{
 		key = "f",
 		mods = "LEADER",
 		action = act.ActivateKeyTable({ name = "super", one_shot = false }),
 	},
-	{ key = "q",   mods = "LEADER",              action = act.PaneSelect },
-	{ key = "h",   mods = "LEADER",              action = act({ ActivatePaneDirection = "Left" }) },
-	{ key = "j",   mods = "LEADER",              action = act({ ActivatePaneDirection = "Down" }) },
-	{ key = "k",   mods = "LEADER",              action = act({ ActivatePaneDirection = "Up" }) },
-	{ key = "l",   mods = "LEADER",              action = act({ ActivatePaneDirection = "Right" }) },
-	{ key = "H",   mods = "LEADER|SHIFT",        action = act({ AdjustPaneSize = { "Left", 5 } }) },
-	{ key = "J",   mods = "LEADER|SHIFT",        action = act({ AdjustPaneSize = { "Down", 5 } }) },
-	{ key = "K",   mods = "LEADER|SHIFT",        action = act({ AdjustPaneSize = { "Up", 5 } }) },
-	{ key = "L",   mods = "LEADER|SHIFT",        action = act({ AdjustPaneSize = { "Right", 5 } }) },
-	{ key = "Tab", mods = "CTRL",                action = act({ ActivateTabRelative = 1 }) },
-	{ key = "1",   mods = "ALT",                 action = act({ ActivateTab = 0 }) },
-	{ key = "2",   mods = "ALT",                 action = act({ ActivateTab = 1 }) },
-	{ key = "3",   mods = "ALT",                 action = act({ ActivateTab = 2 }) },
-	{ key = "4",   mods = "ALT",                 action = act({ ActivateTab = 3 }) },
-	{ key = "5",   mods = "ALT",                 action = act({ ActivateTab = 4 }) },
-	{ key = "6",   mods = "ALT",                 action = act({ ActivateTab = 5 }) },
-	{ key = "7",   mods = "ALT",                 action = act({ ActivateTab = 6 }) },
-	{ key = "8",   mods = "ALT",                 action = act({ ActivateTab = 7 }) },
-	{ key = "9",   mods = "ALT",                 action = act({ ActivateTab = 8 }) },
-	{ key = "c",   mods = "CTRL|SHIFT",          action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
-	{ key = "v",   mods = "CTRL|SHIFT",          action = act({ PasteFrom = "Clipboard" }) },
+	{ key = "q", mods = "LEADER", action = act.PaneSelect },
+	{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
+	{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
+	{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
+	{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
+	{ key = "H", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
+	{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
+	{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
+	{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
+	{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
+	{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
+	{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
+	{ key = "3", mods = "ALT", action = act({ ActivateTab = 2 }) },
+	{ key = "4", mods = "ALT", action = act({ ActivateTab = 3 }) },
+	{ key = "5", mods = "ALT", action = act({ ActivateTab = 4 }) },
+	{ key = "6", mods = "ALT", action = act({ ActivateTab = 5 }) },
+	{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
+	{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
+	{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
+	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
+	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
 	{ key = "F11", action = act.ToggleFullScreen },
 }
 
 config.key_tables = {
 	resize_pane = {
-		{ key = "LeftArrow",  action = act.AdjustPaneSize({ "Left", 1 }) },
-		{ key = "h",          action = act.AdjustPaneSize({ "Left", 1 }) },
+		{ key = "LeftArrow", action = act.AdjustPaneSize({ "Left", 1 }) },
+		{ key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },
 		{ key = "RightArrow", action = act.AdjustPaneSize({ "Right", 1 }) },
-		{ key = "l",          action = act.AdjustPaneSize({ "Right", 1 }) },
-		{ key = "UpArrow",    action = act.AdjustPaneSize({ "Up", 1 }) },
-		{ key = "k",          action = act.AdjustPaneSize({ "Up", 1 }) },
-		{ key = "DownArrow",  action = act.AdjustPaneSize({ "Down", 1 }) },
-		{ key = "j",          action = act.AdjustPaneSize({ "Down", 1 }) },
+		{ key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },
+		{ key = "UpArrow", action = act.AdjustPaneSize({ "Up", 1 }) },
+		{ key = "k", action = act.AdjustPaneSize({ "Up", 1 }) },
+		{ key = "DownArrow", action = act.AdjustPaneSize({ "Down", 1 }) },
+		{ key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
 		-- Cancel the mode by pressing escape
-		{ key = "Escape",     action = "PopKeyTable" },
+		{ key = "Escape", action = "PopKeyTable" },
 	},
 	super = {
-		{ key = "`",          mods = "CTRL",       action = "PopKeyTable" },
-		{ key = "Space",      mods = "NONE",       action = act.Search({ CaseInSensitiveString = "" }) },
-		{ key = "n",          mods = "CTRL",       action = act.CopyMode("NextMatch") },
-		{ key = "p",          mods = "CTRL",       action = act.CopyMode("PriorMatch") },
-		{ key = "r",          mods = "CTRL",       action = act.CopyMode("CycleMatchType") },
-		{ key = "PageUp",     mods = "NONE",       action = act.CopyMode("PriorMatchPage") },
-		{ key = "PageDown",   mods = "NONE",       action = act.CopyMode("NextMatchPage") },
-		{ key = "s",          mods = "CTRL",       action = act.CopyMode("ClearPattern") },
-		{ key = "Escape",     mods = "NONE",       action = act.Multiple({ act.CopyMode("Close"), "PopKeyTable" }) },
-		{ key = "RightArrow", mods = "NONE",       action = act.CopyMode("MoveRight") },
-		{ key = "LeftArrow",  mods = "NONE",       action = act.CopyMode("MoveLeft") },
-		{ key = "UpArrow",    mods = "NONE",       action = act.CopyMode("MoveUp") },
-		{ key = "DownArrow",  mods = "NONE",       action = act.CopyMode("MoveDown") },
-		{ key = "K",          mods = "CTRL",       action = act.ScrollByPage(-0.5) },
-		{ key = "J",          mods = "CTRL",       action = act.ScrollByPage(1) },
-		{ key = "k",          mods = "CTRL",       action = act.ScrollByLine(-1) },
-		{ key = "j",          mods = "CTRL",       action = act.ScrollByLine(1) },
-		{ key = "c",          mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
+		{ key = "`", mods = "CTRL", action = "PopKeyTable" },
+		{ key = "Space", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) },
+		{ key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
+		{ key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
+		{ key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
+		{ key = "PageUp", mods = "NONE", action = act.CopyMode("PriorMatchPage") },
+		{ key = "PageDown", mods = "NONE", action = act.CopyMode("NextMatchPage") },
+		{ key = "s", mods = "CTRL", action = act.CopyMode("ClearPattern") },
+		{ key = "Escape", mods = "NONE", action = act.Multiple({ act.CopyMode("Close"), "PopKeyTable" }) },
+		{ key = "RightArrow", mods = "NONE", action = act.CopyMode("MoveRight") },
+		{ key = "LeftArrow", mods = "NONE", action = act.CopyMode("MoveLeft") },
+		{ key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
+		{ key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
+		{ key = "K", mods = "CTRL", action = act.ScrollByPage(-0.5) },
+		{ key = "J", mods = "CTRL", action = act.ScrollByPage(1) },
+		{ key = "k", mods = "CTRL", action = act.ScrollByLine(-1) },
+		{ key = "j", mods = "CTRL", action = act.ScrollByLine(1) },
+		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
 	},
 }
 for i = 1, 8 do
