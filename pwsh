@@ -15,7 +15,11 @@ Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 
-function Nvim-Config(){
+function Pwsh-Config(){
     nvim $PROFILE
 }
+
+function Nvim-Config(){
+    nvim ~/AppData/Local/nvim
+  }
 
