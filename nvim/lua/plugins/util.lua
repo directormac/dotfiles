@@ -8,6 +8,7 @@ return {
     "stevearc/oil.nvim",
     opts = {
       use_default_keymaps = false,
+      skip_confirm_for_simple_edits = true,
       keymaps = {
         ["g?"] = "actions.show_help",
         ["<CR>"] = "actions.select",
@@ -22,6 +23,11 @@ return {
         ["`"] = "actions.cd",
         ["~"] = "actions.tcd",
         ["g."] = "actions.toggle_hidden",
+        ["q"] = {
+          callback = function()
+            require("oil").close()
+          end,
+        },
       },
     },
     -- Optional dependencies

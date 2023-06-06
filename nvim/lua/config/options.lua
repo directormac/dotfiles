@@ -13,3 +13,4 @@ vim.opt.listchars = {
   conceal = "※",
 }
 vim.opt.list = true
+vim.opt.wrap = true
