@@ -31,7 +31,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "hardhacker",
+      colorscheme = "catppuccin",
     },
   },
 }
