@@ -25,7 +25,7 @@ return {
         ["<C-t>"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",
-        ["<C-l>"] = "actions.refresh",
+        ["<C-r>"] = "actions.refresh",
         ["-"] = "actions.parent",
         ["_"] = "actions.open_cwd",
         ["`"] = "actions.cd",
@@ -33,6 +33,7 @@ return {
         ["g."] = "actions.toggle_hidden",
         ["q"] = {
           callback = function()
+            -- require("edgy").close("left")
             require("oil").close()
           end,
         },
@@ -42,11 +43,11 @@ return {
       float = {
         -- Padding around the floating window
         padding = 2,
-        max_width = 0.5,
-        max_height = 0.5,
+        max_width = 0,
+        max_height = 0,
         border = "rounded",
         win_options = {
-          winblend = 10,
+          winblend = 100,
         },
       },
       -- Configuration for the actions floating preview window
@@ -69,7 +70,7 @@ return {
         height = nil,
         border = "rounded",
         win_options = {
-          winblend = 0,
+          winblend = 100,
         },
       },
       -- Configuration for the floating progress window
