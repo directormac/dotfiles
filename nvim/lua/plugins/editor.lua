@@ -66,6 +66,7 @@ return {
       end,
     },
   },
+
   {
     "nvim-telescope/telescope-file-browser.nvim",
     keys = {
