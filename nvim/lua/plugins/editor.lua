@@ -79,6 +79,11 @@ return {
         ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
         desc = "Browse Files",
       },
+      {
+        "<leader>-",
+        ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
+        desc = "Browse Files",
+      },
     },
     config = function(_, opts)
       print(vim.inspect(opts))

@@ -131,7 +131,9 @@ return {
               icon_only = true,
               separator = "",
               padding = {
-                left = 1, right = 0 }
+                left = 1,
+                right = 0,
+              },
             },
             { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
             -- stylua: ignore
@@ -170,11 +172,11 @@ return {
             },
           },
           lualine_y = {
-            { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
+            { "progress", separator = " ", padding = { left = 1, right = 0 } },
             { "location", padding = { left = 0, right = 1 } },
           },
           lualine_z = {
-            "hostname"
+            "hostname",
             -- function()
             -- return " " .. os.date("%R")
             -- return vim.g.hostname()
@@ -188,9 +190,13 @@ return {
   {
     "folke/edgy.nvim",
     event = "VeryLazy",
+    keys = {
+      -- stylua: ignore
+      { "<leader>ue", function() require("edgy").select() end, desc = "Edgy Select Window" },
+    },
     opts = {
       animate = {
-        enabled = false
+        enabled = false,
       },
       bottom = {
         -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
@@ -204,7 +210,7 @@ return {
           end,
         },
         "Trouble",
-        { ft = "qf",         title = "QuickFix" },
+        { ft = "qf", title = "QuickFix" },
         {
           ft = "help",
           size = { height = 20 },
@@ -215,8 +221,7 @@ return {
         },
         { ft = "spectre_panel", size = { height = 0.4 } },
       },
-      left = {}
+      left = {},
     },
-  }
-
+  },
 }
