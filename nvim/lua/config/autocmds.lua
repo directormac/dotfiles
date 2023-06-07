@@ -29,13 +29,7 @@ autocmd({ "VimEnter", "BufEnter", "InsertLeave" }, {
 
 local ts_fold = augroup("ts_fold", { clear = true })
 
--- autocmd({ "BufReadPost", "FileReadPost" }, {
---   group = ts_fold,
---   pattern = "*",
---   command = "normal zR",
--- })
-
-autocmd({ "BufReadPre", "FileReadPre" }, {
+autocmd({ "BufReadPost", "FileReadPost" }, {
   group = ts_fold,
   pattern = "*",
   command = "normal zR",
