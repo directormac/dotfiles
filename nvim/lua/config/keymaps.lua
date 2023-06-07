@@ -17,12 +17,14 @@ vim.g.clipboard = {
   paste = { ["+"] = paste, ["*"] = paste },
 }
 -- Clipboard <Leader>y
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
-vim.keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
+keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
+keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
 
 -- Better escape
 keymap.set("i", "jj", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
-keymap.set("i", "jk", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
+keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true, desc = "Escape Terminal Mode" })
+keymap.set("i", "<C-c>", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
+keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Escape Insert Mode" })
 
 keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center cursor" })
 keymap.set("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
