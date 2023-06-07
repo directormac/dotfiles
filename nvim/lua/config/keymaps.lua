@@ -2,10 +2,23 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 local keymap = vim.keymap
--- local utils = require("utils")
+
+local function copy(lines, _)
+  require("osc52").copy(table.concat(lines, "\n"))
+end
+
+local function paste()
+  return { vim.fn.split(vim.fn.getreg(""), "\n", vim.fn.getregtype("")) }
+end
+
+vim.g.clipboard = {
+  name = "osc52",
+  copy = { ["+"] = copy, ["*"] = copy },
+  paste = { ["+"] = paste, ["*"] = paste },
+}
 -- Clipboard <Leader>y
-keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
-keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
 
 -- Better escape
 keymap.set("i", "jj", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
