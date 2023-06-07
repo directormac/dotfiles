@@ -41,13 +41,13 @@ end
 
 wezterm.on("mux-startup", function()
 	local tab, pane, window = mux.spawn_window({})
-	pane:split({ direction = "Bottom", size = 0.25 })
+	-- pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 wezterm.on("gui-startup", function()
 	local tab, pane, window = mux.spawn_window({})
 	-- window:gui_window():maximize()
-	window:spawn_tab({ domain = { DomainName = "ArchX" } })
+	-- window:spawn_tab({ domain = { DomainName = "ArchX" } })
 	-- pane:split { direction = 'Bottom' }
 	-- pane:split({ direction = "Bottom", size = 0.25 })
 	-- window.gui_window():toggle_fullscreen()
@@ -267,7 +267,7 @@ config.colors = {
 	},
 }
 config.initial_cols = 120
-config.initial_rows = 35
+config.initial_rows = 30
 config.font = wezterm.font({
 	family = "FiraCode Nerd Font",
 	weight = "Regular",
