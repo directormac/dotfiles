@@ -18,14 +18,12 @@ return {
         -- ["<CR>"] = "actions.select",
         ["<CR>"] = {
           callback = function()
-            -- vim.cmd("wincmd l")
             -- require("edgy").close("left")
             require("oil").select()
           end,
         },
         ["<C-s>"] = {
           callback = function()
-            -- vim.cmd("wincmd l")
             require("oil").save()
           end,
         },
