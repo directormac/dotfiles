@@ -19,6 +19,15 @@ keymap.set("n", "<S-cr>", "ciw", { desc = "Shift+ Enter Change and delete on cur
 
 keymap.set("n", "-", require("oil").open, { desc = "Open Oil File Explorer" })
 
+-- keymap.set("n", "-", function()
+--   local left = require("edgy").get_win
+--   if left then
+--     require("oil").open()
+--     -- require("edgy").select("left")
+--   else
+--     require("edgy").close("left")
+--   end
+-- end, { desc = "Open Oil File Explorer" })
 -- keymap.set("n", "<leader>o", function()
 --   local cwd = require("oil").get_current_dir()
 --   require("oil").open_float(cwd)
