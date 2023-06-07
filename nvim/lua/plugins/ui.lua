@@ -99,6 +99,38 @@ return {
       colorscheme = "catppuccin",
     },
   },
+  {
+    "akinsho/bufferline.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+    },
+    opts = {
+      options = {
+      -- stylua: ignore
+      close_command = function(n) require("mini.bufremove").delete(n, false) end,
+      -- stylua: ignore
+      right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+        diagnostics = "nvim_lsp",
+        always_show_bufferline = false,
+        diagnostics_indicator = function(_, _, diag)
+          local icons = require("lazyvim.config").icons.diagnostics
+          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+            .. (diag.warning and icons.Warn .. diag.warning or "")
+          return vim.trim(ret)
+        end,
+        offsets = {
+          {
+            filetype = "oil",
+            -- text = "Neo-tree",
+            -- highlight = "Directory",
+            text_align = "left",
+          },
+        },
+      },
+    },
+  },
   --bufferline and lualine customization
   {
     "nvim-lualine/lualine.nvim",
@@ -194,6 +226,7 @@ return {
       -- stylua: ignore
       { "<leader>ue", function() require("edgy").select() end, desc = "Edgy Select Window" },
     },
+    left = {},
     opts = {
       animate = {
         enabled = false,
@@ -221,7 +254,10 @@ return {
         },
         { ft = "spectre_panel", size = { height = 0.4 } },
       },
-      left = {},
+      left = {
+        -- size = 30,
+        -- { ft = "oil", title = "Oil Explorer" },
+      },
     },
   },
 }

@@ -17,7 +17,12 @@ keymap.set("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
 keymap.set("i", "<M-BS>", "<Esc>ciw", { desc = "Alt + Backspace to delete prev word" })
 keymap.set("n", "<S-cr>", "ciw", { desc = "Shift+ Enter Change and delete on current word" })
 
-keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+keymap.set("n", "-", require("oil").open, { desc = "Open Oil File Explorer" })
+
+-- keymap.set("n", "<leader>o", function()
+--   local cwd = require("oil").get_current_dir()
+--   require("oil").open_float(cwd)
+-- end, { desc = "Toggle File Browser" })
 
 -- NeoTree Toggle
 -- keymap.set("n", "<leader>o", function()
