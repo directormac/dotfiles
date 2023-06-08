@@ -4,6 +4,7 @@ Set-Alias -Name ls -Value lsd
 New-Alias -Name c -Value clear
 New-Alias -Name vim -Value nvim
 New-Alias -Name v -Value nvim
+New-Alias -Name lg -Value lazygit
 
 Invoke-Expression (&starship init powershell)
 $ENV:STARSHIP_CONFIG = "%USERPROFILE%\.config\starship.toml"
