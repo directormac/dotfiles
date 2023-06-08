@@ -2,12 +2,33 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      { "hrsh7th/cmp-emoji" },
-      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true }
+      "hrsh7th/cmp-emoji",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "hrsh7th/cmp-nvim-lua",
+
+      "hrsh7th/cmp-calc",
+      "f3fora/cmp-spell",
+      -- command line
+      "hrsh7th/cmp-cmdline",
+      "dmitmel/cmp-cmdline-history",
+
+      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
     },
     opts = function(_, opts)
       -- local cmp = require("cmp")
-      table.insert(opts.sources, { { name = "emoji" }, { name = "crates " } })
+      table.insert(opts.sources, {
+        { name = "emoji" },
+        { name = "nvim_lsp_signature_help" },
+        { name = "nvim-lua" },
+
+        { name = "calc" },
+        { name = "spell", keyword_length = 4 },
+
+        { name = "cmdline" },
+        { name = "cmdline-history" },
+
+        { name = "crates " },
+      })
       local has_words_before = function()
         unpack = unpack or table.unpack
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -46,17 +67,18 @@ return {
       local format_kinds = opts.formatting.format
       opts.formatting.format = function(entry, item)
         format_kinds(entry, item) -- add icons
+
         return require("tailwindcss-colorizer-cmp").formatter(entry, item)
       end
     end,
   },
   {
-    'saecki/crates.nvim',
-    events = 'VeryLazy',
+    "saecki/crates.nvim",
+    events = "VeryLazy",
     config = function()
-      require('crates').setup();
-    end
-  }
+      require("crates").setup()
+    end,
+  },
   -- {
   --   "rafamadriz/friendly-snippets",
   --   config = function()

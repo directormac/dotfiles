@@ -34,42 +34,16 @@ keymap.set("n", "<S-cr>", "ciw", { desc = "Shift+ Enter Change and delete on cur
 
 keymap.set("n", "-", require("oil").open, { desc = "Open Oil File Explorer" })
 
--- keymap.set("n", "-", function()
---   local left = require("edgy").get_win
---   if left then
---     require("oil").open()
---     -- require("edgy").select("left")
---   else
---     require("edgy").close("left")
---   end
--- end, { desc = "Open Oil File Explorer" })
--- keymap.set("n", "<leader>o", function()
---   local cwd = require("oil").get_current_dir()
---   require("oil").open_float(cwd)
--- end, { desc = "Toggle File Browser" })
+keymap.set("n", "<Leader>e", function()
+  local cwd = require("oil").get_current_dir()
+  require("oil").open_float(cwd)
+end, { desc = "Opel Oil Floating" })
 
--- NeoTree Toggle
--- keymap.set("n", "<leader>o", function()
---   if vim.bo.filetype == "neo-tree" then
---     vim.cmd.wincmd("p")
---   else
---     vim.cmd.Neotree("focus")
---     keymap.set("i", "jj", "<esc>", { desc = "Escape Insert Mode" })
---   end
--- end, { desc = "Toggle Explorer Focus" })
+keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
 
--- save file
--- keymap.set({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<esc>", { desc = "Save file" })
-
--- keymap.set("x", "<leader>p", [["_dP]], { desc = "No copying on pasted selection" })
-
--- vim.keymap.set("n", "<leader>bc", function()
---   require("utils").close_all(true)
--- end, { desc = "Close all buffers except current" })
-
--- vim.api.nvim_set_keymap(
---   "n",
---   "<leader>bo",
---   [[<CMD> lua require('close_buffers').wipe({type = 'other'})]],
---   { noremap = true, silent = true, desc = "Delete Buffers except this." }
--- )
+keymap.set(
+  "n",
+  "<leader>fb",
+  ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
+  { desc = "Browse Files", noremap = true }
+)

@@ -14,12 +14,17 @@ opt.listchars = {
   conceal = "※",
 }
 opt.list = true
-
 -- To disable netrw defaulting to Oil
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-opt.foldlevel = 20
+-- opt.foldlevel = 20
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.foldenable = false
+opt.winblend = 0
+opt.pumblend = 0
+
+-- opt.winbar = "%f -- %{%v:lua.require'nvim-navic'.get_location()%}"
+-- vim.o.showcmdloc = "statusline"
+-- vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"

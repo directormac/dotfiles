@@ -58,6 +58,36 @@ return {
         treesitter = true,
         which_key = true,
       },
+      -- custom_highlights = function(C)
+      --   return {
+      --     CmpItemKindSnippet = { fg = C.base, bg = C.mauve },
+      --     CmpItemKindKeyword = { fg = C.base, bg = C.red },
+      --     CmpItemKindText = { fg = C.base, bg = C.teal },
+      --     CmpItemKindMethod = { fg = C.base, bg = C.blue },
+      --     CmpItemKindConstructor = { fg = C.base, bg = C.blue },
+      --     CmpItemKindFunction = { fg = C.base, bg = C.blue },
+      --     CmpItemKindFolder = { fg = C.base, bg = C.blue },
+      --     CmpItemKindModule = { fg = C.base, bg = C.blue },
+      --     CmpItemKindConstant = { fg = C.base, bg = C.peach },
+      --     CmpItemKindField = { fg = C.base, bg = C.green },
+      --     CmpItemKindProperty = { fg = C.base, bg = C.green },
+      --     CmpItemKindEnum = { fg = C.base, bg = C.green },
+      --     CmpItemKindUnit = { fg = C.base, bg = C.green },
+      --     CmpItemKindClass = { fg = C.base, bg = C.yellow },
+      --     CmpItemKindVariable = { fg = C.base, bg = C.flamingo },
+      --     CmpItemKindFile = { fg = C.base, bg = C.blue },
+      --     CmpItemKindInterface = { fg = C.base, bg = C.yellow },
+      --     CmpItemKindColor = { fg = C.base, bg = C.red },
+      --     CmpItemKindReference = { fg = C.base, bg = C.red },
+      --     CmpItemKindEnumMember = { fg = C.base, bg = C.red },
+      --     CmpItemKindStruct = { fg = C.base, bg = C.blue },
+      --     CmpItemKindValue = { fg = C.base, bg = C.peach },
+      --     CmpItemKindEvent = { fg = C.base, bg = C.blue },
+      --     CmpItemKindOperator = { fg = C.base, bg = C.blue },
+      --     CmpItemKindTypeParameter = { fg = C.base, bg = C.blue },
+      --     CmpItemKindCopilot = { fg = C.base, bg = C.teal },
+      --   }
+      -- end,
     },
   },
   {
@@ -89,9 +119,15 @@ return {
         end,
         offsets = {
           {
+            filetype = "neo-tree",
+            text = "Neo-tree",
+            highlight = "Directory",
+            text_align = "left",
+          },
+          {
             filetype = "oil",
-            -- text = "Neo-tree",
-            -- highlight = "Directory",
+            text = "file explorer",
+            highlight = "Directory",
             text_align = "left",
           },
         },
@@ -221,10 +257,22 @@ return {
           end,
         },
         { ft = "spectre_panel", size = { height = 0.4 } },
+        {
+          ft = "noice",
+          -- size = { height = 0.4 },
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
       },
       left = {
-        -- size = 30,
-        -- { ft = "oil", title = "Oil Explorer" },
+        {
+          ft = "oil",
+          title = "File System",
+        },
+      },
+      right = {
+        { ft = "aerial", title = "Symbols", size = { width = 0.3 } },
       },
     },
   },
@@ -244,11 +292,15 @@ return {
 
       opts.section.header.val = vim.split(logo, "\n", { triempty = true })
       opts.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files hidden=true<CR>"),
+        dashboard.button(
+          "f",
+          " " .. " Find file",
+          ":Telescope find_files find_command=rg,--ignore,--hidden,--files path_display=smart<CR>"
+        ),
         dashboard.button("b", " " .. " Browse files", ":Telescope file_browser file_browser path=%:p:h=%:p:h<CR>"),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
+        dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
+        dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
         dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
