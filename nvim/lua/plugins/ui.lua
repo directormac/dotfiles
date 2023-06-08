@@ -24,7 +24,13 @@ return {
     name = "catppuccin",
     opts = {
       flavour = "mocha",
-      transparent_background = true,
+      color_overrides = {
+        mocha = {
+          base = "#11111B",
+          mantle = "#11111B",
+        },
+      },
+      -- transparent_background = true,
       integrations = {
         alpha = true,
         cmp = true,
