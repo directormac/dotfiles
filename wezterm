@@ -32,9 +32,9 @@ end
 --Startup settings
 term.on("gui-startup", function(cmd)
 	local tab, pane, window = term.mux.spawn_window(cmd or {})
-	-- window:gui_window():set_inner_size(1300, 800)
-	-- window:gui_window():set_position(400, 100)
-	-- pane:split({ direction = "Bottom", size = 0.25 })
+	window:gui_window():set_inner_size(1300, 800)
+	window:gui_window():set_position(400, 100)
+	pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 term.on("mux-startup", function()
@@ -51,8 +51,8 @@ config.color_scheme = "Catppuccin Mocha"
 config.animation_fps = 240
 config.max_fps = 240
 
-config.initial_cols = 120
-config.initial_rows = 30
+-- config.initial_cols = 120
+-- config.initial_rows = 30
 config.font = term.font({
 	family = "FiraCode Nerd Font",
 	weight = "Regular",
