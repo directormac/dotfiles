@@ -1,15 +1,24 @@
--- vim.o.showcmdloc = "statusline"
--- vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-
 return {
+  {
+    "stevearc/aerial.nvim",
+    events = "VeryLazy",
+    opts = {
+      backends = { "treesitter", "lsp", "markdown", "man" },
+    },
+    -- Optional dependencies
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
   {
     "stevearc/oil.nvim",
     opts = {
       columns = {
         "icon",
-        -- "permissions",
-        -- "size",
-        -- "mtime",
+        "permissions",
+        "size",
+        "mtime",
       },
       use_default_keymaps = false,
       skip_confirm_for_simple_edits = true,
@@ -18,13 +27,14 @@ return {
         -- ["<CR>"] = "actions.select",
         ["<CR>"] = {
           callback = function()
-            -- require("edgy").close("left")
             require("oil").select()
+            require("oil").close()
           end,
         },
         ["<C-s>"] = {
           callback = function()
             require("oil").save()
+            require("oil").close()
           end,
         },
         ["<C-h>"] = "actions.select_split",
@@ -39,7 +49,6 @@ return {
         ["g."] = "actions.toggle_hidden",
         ["q"] = {
           callback = function()
-            -- require("edgy").close("left")
             require("oil").close()
           end,
         },
@@ -53,7 +62,7 @@ return {
         max_height = 0,
         border = "rounded",
         win_options = {
-          winblend = 100,
+          winblend = 10,
         },
       },
       -- Configuration for the actions floating preview window
@@ -65,7 +74,7 @@ return {
         -- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
         min_width = { 40, 0.4 },
         -- optionally define an integer/float for the exact width of the preview window
-        width = nil,
+        width = 0,
         -- Height dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
         -- min_height and max_height can be a single value or a list of mixed integer/float types.
         -- max_height = {80, 0.9} means "the lesser of 80 columns or 90% of total"
@@ -73,24 +82,24 @@ return {
         -- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
         min_height = { 5, 0.1 },
         -- optionally define an integer/float for the exact height of the preview window
-        height = nil,
+        height = 0,
         border = "rounded",
         win_options = {
-          winblend = 100,
+          winblend = 10,
         },
       },
       -- Configuration for the floating progress window
       progress = {
         max_width = 0.9,
         min_width = { 40, 0.4 },
-        width = nil,
+        width = 0,
         max_height = { 10, 0.9 },
         min_height = { 5, 0.1 },
-        height = nil,
+        height = 0,
         border = "rounded",
         minimized_border = "none",
         win_options = {
-          winblend = 0,
+          winblend = 10,
         },
       },
     },
