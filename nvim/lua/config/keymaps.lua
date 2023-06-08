@@ -36,14 +36,20 @@ keymap.set("n", "-", require("oil").open, { desc = "Open Oil File Explorer" })
 
 keymap.set("n", "<Leader>e", function()
   local cwd = require("oil").get_current_dir()
-  require("oil").open_float(cwd)
+  require("oil").toggle_float(cwd)
 end, { desc = "Opel Oil Floating" })
 
 keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
-
+keymap.set("n", "<F1>", "<cmd>Telescope keymaps<cr>", { desc = "Key Maps" })
+keymap.set("n", "<F2>", "<cmd>Telescope help_tags<cr>", { desc = "Help Pages" })
+keymap.set("n", "<F3>", "<cmd>Telescope man_pages<cr>", { desc = "Manual Pages" })
+keymap.set("n", "<F4>", "<cmd>Telescope diagnostics<cr>", { desc = "Workspace Diagnostics" })
 keymap.set(
   "n",
   "<leader>fb",
   ":Telescope file_browser file_browser path=%:p:h=%:p:h<cr>",
   { desc = "Browse Files", noremap = true }
 )
+
+keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
+keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })

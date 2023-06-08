@@ -28,7 +28,7 @@ return {
         ["<CR>"] = {
           callback = function()
             require("oil").select()
-            require("oil").close()
+            -- require("oil").close()
           end,
         },
         ["<C-s>"] = {
