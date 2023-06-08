@@ -125,6 +125,7 @@ alias ls="lsd"
 alias l="ls -a"
 alias lla="ls -la"
 alias lt="ls --tree"
+alias lg="lazygit"
 alias cat="bat"
 alias cd="z"
 alias grep="rg",
