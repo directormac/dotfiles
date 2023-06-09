@@ -91,7 +91,7 @@ return {
       table.insert(opts.ensure_installed, "svelte-language-server")
       table.insert(opts.ensure_installed, "typescript-language-server")
       table.insert(opts.ensure_installed, "vue-language-server")
-      table.insert(opts.ensure_installed, "zls")
+      -- table.insert(opts.ensure_installed, "zls")
     end,
   },
   {
