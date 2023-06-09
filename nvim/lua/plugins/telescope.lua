@@ -3,11 +3,13 @@ local Util = require("lazyvim.util")
 return {
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
     keys = {
       { "<leader>fR", Util.telescope("resume"), desc = "Resume" },
     },
     opts = {
+      previewer = false,
       pickers = {
         find_files = {
           follow = true,

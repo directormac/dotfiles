@@ -37,7 +37,7 @@ vg.neoterm_autoscroll = 1 -- Autoscroll the terminal
 -- Fold options using nvim-ufo
 vo.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vo.foldlevelstart = 99
-vo.foldcolumn = "1" -- Show the fold column
+-- vo.foldcolumn = "1" -- Show the fold column
 vo.foldenable = true
 
 -- Color Fix for better themes
@@ -53,6 +53,8 @@ vo.shortmess = {
   W = true, -- Do not show "written" in command line when writing
 }
 
+vo.number = true
+vo.numberwidth = 1
 vo.showmatch = true -- Show matching brackets by flickering
 vo.splitkeep = "screen" -- Default splitting will cause your main splits to jump when opening an edgebar.
 vo.splitbelow = true -- Put new windows below current
@@ -68,7 +70,7 @@ vo.wildignore = { "*/.git/*", "*/node_modules/*" } -- Ignore these files/folders
 
 vw.colorcolumn = "80,120" -- Make a ruler at 80px and 120px
 vw.list = true -- Show some invisible characters like tabs etc
-vw.numberwidth = 2 -- Make the line number column thinner
+vw.numberwidth = 1 -- Make the line number column thinner
 ---Note: Setting number and relative number gives you hybrid mode
 ---https://jeffkreeftmeijer.com/vim-number/
 vw.number = true -- Set the absolute number

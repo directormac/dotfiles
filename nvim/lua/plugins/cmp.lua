@@ -74,7 +74,7 @@ return {
   },
   {
     "saecki/crates.nvim",
-    events = "VeryLazy",
+    event = "VeryLazy",
     config = function()
       require("crates").setup()
     end,

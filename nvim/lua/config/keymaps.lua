@@ -51,5 +51,8 @@ keymap.set(
   { desc = "Browse Files", noremap = true }
 )
 
+-- Folding Keymaps refer to nvim-ufo for setup
 keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open All Folds" })
 keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close All Folds" })
+keymap.set("n", "zm", require("ufo").openFoldsExceptKinds, { desc = "Close All Folds" })
+keymap.set("n", "zr", require("ufo").closeFoldsWith, { desc = "Close All Folds" })
