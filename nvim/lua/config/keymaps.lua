@@ -7,7 +7,8 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 map("v", "p", "P", { noremap = true, silent = true })
--- Clipboard <Leader>y
+
+-- -- Clipboard <Leader>y
 keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true, desc = "Copy to OSC52 Clipboard" })
 keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { noremap = true, desc = "Copy to OSC52 Clipboard" })
 

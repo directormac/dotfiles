@@ -9,6 +9,10 @@ New-Alias -Name lg -Value lazygit
 Invoke-Expression (&starship init powershell)
 $ENV:STARSHIP_CONFIG = "%USERPROFILE%\.config\starship.toml"
 
+$ENV:NEOVIM_CONFIG = "%USERPROFILE\AppData\Local\nvim"
+
+# Add-Content -Path -Value '$NvimConf' = "%USERPROFILE\AppData\Local\nvim"; $env:Path += ";" + $NvimConf'
+
 # Shows navigable menu of all options when hitting Tab
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
@@ -21,6 +25,6 @@ function Pwsh-Config(){
 }
 
 function Nvim-Config(){
-    cd ~/AppData/Local/nvim && nvim .
-}
+  nvim $NEOVIM_CONFIG 
+   }
 

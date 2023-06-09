@@ -13,41 +13,65 @@ local config = {}
 
 -- For windows host custom configuration
 if term.target_triple == "x86_64-pc-windows-msvc" then
+	-- Load SSH Domains from ~/.ssh/config
+	for _, domain in ipairs(ssh_domains) do
+		domain.assume_shell = "Posix"
+	end
+	config.ssh_domains = {
+		{
+			name = "ArchX",
+			remote_address = "192.168.110.182",
+			username = "artifex",
+		},
+		{
+			name = "UbuntuX",
+			remote_address = "192.168.110.174",
+			username = "artifex",
+		},
+	}
 	-- config.win32_system_backdrop = "Acrylic"
 	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
-
-	table.insert(ssh_domains, {
-		name = "archx",
-		remote_address = "192.168.110.182",
-		username = "artifex",
-	})
+	-- config.default_gui_startup_args = { "connect", "SSHMUX:192.168.110.182" }
 
 	for _, domain in ipairs(wsl_domains) do
 		domain.default_cwd = "~"
 	end
+
+	-- Using latest features
 	config.prefer_egl = true
+
+	config.launch_menu = {
+		{
+			label = " WSL cwd",
+			args = { "wsl" },
+		},
+		{ label = " PowerShell", args = { "pwsh" } },
+		{ label = " Nushell", args = { "nu" } },
+		{ label = " Cmd", args = { "cmd" } },
+		{
+			label = " NeoVim Config",
+			args = { "cd", "C:/Users/Administrator/AppData/Local/nvim", "&&", "nvim" },
+			-- args = { "nvim", "C:/Users/Administrator/AppData/Local/nvim" },
+		},
+	}
 end
 
 -- For linux host custom configuration
 if term.target_triple == "x86_64-unknown-linux-gnu" then
 end
 
--- Load SSH Domains from ~/.ssh/config
-for _, domain in ipairs(ssh_domains) do
-	domain.assume_shell = "Posix"
-end
-
 --Startup settings
 term.on("gui-startup", function(cmd)
 	local tab, pane, window = term.mux.spawn_window(cmd or {})
-	window:gui_window():set_inner_size(1440, 900)
-	window:gui_window():set_position(350, 80)
+	-- window:gui_window():set_inner_size(1440, 900)
+	-- window:gui_window():set_position("main:50%:50%")
 	-- window:maximize()
 	-- pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 term.on("mux-startup", function()
 	local tab, pane, window = mux.spawn_window({})
+	-- window:gui_window():set_position(980, 59)
 	-- pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
@@ -60,8 +84,8 @@ config.color_scheme = "Catppuccin Mocha"
 config.animation_fps = 240
 config.max_fps = 240
 
-config.initial_cols = 120
-config.initial_rows = 30
+config.initial_cols = 128
+config.initial_rows = 27
 config.font = term.font({
 	family = "FiraCode Nerd Font",
 	weight = "Regular",
@@ -123,8 +147,8 @@ config.disable_default_key_bindings = true
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
 local fuzzy_commands = act.ShowLauncherArgs({ title = "  Fuzzy Commands", flags = "FUZZY|KEY_ASSIGNMENTS|COMMANDS" })
-local fuzzy_domains = act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|DOMAINS" })
-local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|TABS|WORKSPACES" })
+local fuzzy_domains = act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
+local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS" })
 config.keys = {
 	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
 	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
@@ -133,9 +157,12 @@ config.keys = {
 	{ key = "F12", action = fuzzy_commands },
 	{ key = "F9", action = fuzzy_tabs },
 	{ key = "F7", action = act.Hide },
-	{ key = "F8", action = term.action_callback(function(window)
-		window:maximize()
-	end) },
+	{
+		key = "F8",
+		action = term.action_callback(function(window)
+			window:maximize()
+		end),
+	},
 	{ key = "Escape", mods = "LEADER", action = act.QuitApplication },
 	{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
 	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
