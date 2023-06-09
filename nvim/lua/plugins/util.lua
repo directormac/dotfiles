@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/aerial.nvim",
-    events = "VeryLazy",
+    event = "VeryLazy",
     opts = {
       backends = { "treesitter", "lsp", "markdown", "man" },
     },

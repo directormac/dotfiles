@@ -2,8 +2,10 @@ return {
   -- OSC52 Copy to system clipboard
   { "ojroques/nvim-osc52" },
   --hardtime practice
+  lazy = false,
   {
     "m4xshen/hardtime.nvim",
+    lazy = false,
     opts = {
       max_time = 1000,
       max_count = 2,
