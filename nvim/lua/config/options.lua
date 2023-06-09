@@ -6,6 +6,28 @@ local vg = vim.g
 local vo = vim.opt
 local vw = vim.w
 
+-- local is_wsl = (function()
+--   local output = vim.fn.systemlist "uname -r"
+--   return not not string.find(output[1] or "", "WSL")
+-- end)()
+--
+-- local is_mac = vim.fn.has("macunix") == 1
+--
+-- local is_linux = not is_wsl and not is_mac
+
+local function copy(lines, _)
+  require("osc52").copy(table.concat(lines, "\n"))
+end
+
+local function paste()
+  return { vim.fn.split(vim.fn.getreg(""), "\n", vim.fn.getregtype("")) }
+end
+vim.g.clipboard = {
+  name = "osc52",
+  copy = { ["+"] = copy, ["*"] = copy },
+  paste = { ["+"] = paste, ["*"] = paste },
+}
+
 vo.listchars = {
   space = ".",
   eol = "↲",
@@ -52,25 +74,26 @@ vo.shortmess = {
   I = true, -- Do not show the intro message
   W = true, -- Do not show "written" in command line when writing
 }
-
-vo.number = true
-vo.numberwidth = 1
+vo.clipboard = "unnamedplus"
+vo.cmdheight = 0
+vo.showcmd = false
 vo.showmatch = true -- Show matching brackets by flickering
-vo.splitkeep = "screen" -- Default splitting will cause your main splits to jump when opening an edgebar.
+vo.showmode = false
 vo.splitbelow = true -- Put new windows below current
+vo.splitkeep = "screen" -- Default splitting will cause your main splits to jump when opening an edgebar.
 vo.splitright = true -- Put new windows right of current
 vo.termguicolors = true -- True color support
 vo.textwidth = 120 -- Total allowed width on the screen
 vo.timeout = true -- This option and 'timeoutlen' determine the behavior when part of a mapped key sequence has been received. This is on by default but being explicit!
-vo.timeoutlen = 500 -- Time in milliseconds to wait for a mapped sequence to complete.
-vo.ttimeoutlen = 10 -- Time in milliseconds to wait for a key code sequence to complete
+vo.timeoutlen = 300 -- Time in milliseconds to wait for a mapped sequence to complete.
 vo.updatetime = 100 -- If in this many milliseconds nothing is typed, the swap file will be written to disk. Also used for CursorHold autocommand and set to 100 as per https://github.com/antoinemadec/FixCursorHold.nvim
-vo.wildmode = "list:longest" -- Command-line completion mode
 vo.wildignore = { "*/.git/*", "*/node_modules/*" } -- Ignore these files/folders
-vo.cmdheight = 0
-vo.showcmd = false
-vo.showmode = false
+vo.wildmode = "list:longest" -- Command-line completion mode
+vo.scrolloff = 8
+vo.spelllang = { "en" }
 vw.colorcolumn = "80,120" -- Make a ruler at 80px and 120px
+
+-- Window optiosn
 vw.list = true -- Show some invisible characters like tabs etc
 vw.numberwidth = 1 -- Make the line number column thinner
 ---Note: Setting number and relative number gives you hybrid mode

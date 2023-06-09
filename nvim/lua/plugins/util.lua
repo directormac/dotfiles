@@ -49,6 +49,7 @@ return {
         ["g."] = "actions.toggle_hidden",
         ["q"] = {
           callback = function()
+            -- require("edgy").close("left")
             require("oil").close()
           end,
         },

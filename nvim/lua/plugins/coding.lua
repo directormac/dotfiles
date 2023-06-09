@@ -1,11 +1,14 @@
 return {
-  -- OSC52 Copy to system clipboard
-  { "ojroques/nvim-osc52" },
-  --hardtime practice
-  lazy = false,
   {
-    "m4xshen/hardtime.nvim",
-    lazy = false,
+    "ojroques/nvim-osc52", -- OSC52 Copy to system clipboard
+    opts = {
+      max_length = -1, -- Maximum length of selection (0 for no limit)
+      silent = false, -- Disable message on successful copy
+      trim = false, -- Trim surrounding whitespaces before copy
+    },
+  },
+  {
+    "m4xshen/hardtime.nvim", --hardtime practice
     opts = {
       max_time = 1000,
       max_count = 2,
