@@ -32,9 +32,10 @@ end
 --Startup settings
 term.on("gui-startup", function(cmd)
 	local tab, pane, window = term.mux.spawn_window(cmd or {})
-	window:gui_window():set_inner_size(1300, 800)
-	window:gui_window():set_position(400, 100)
-	pane:split({ direction = "Bottom", size = 0.25 })
+	window:gui_window():set_inner_size(1440, 900)
+	window:gui_window():set_position(350, 80)
+	-- window:maximize()
+	-- pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 term.on("mux-startup", function()
@@ -43,7 +44,7 @@ term.on("mux-startup", function()
 end)
 
 ---- Appearance
-config.front_end = "OpenGL"
+-- config.front_end = "OpenGL"
 
 config.status_update_interval = 1000
 config.color_scheme = "Catppuccin Mocha"
@@ -74,9 +75,9 @@ config.window_frame = {
 	border_right_color = "#11111b",
 	border_bottom_color = "#11111b",
 	border_top_color = "#11111b",
-	-- font_size = 15
+	font_size = 16,
 }
-
+config.enable_scroll_bar = false
 -- config.default_cursor_style = "BlinkingBlock"
 -- config.cursor_blink_rate = 333
 config.inactive_pane_hsb = { saturation = 1.0, brightness = 0.5 }
@@ -86,38 +87,16 @@ config.colors = {
 	tab_bar = {
 		background = "#11111b",
 		active_tab = {
-			bg_color = "#313244",
-			fg_color = "#cdd6f4",
+			bg_color = "#11111b",
+			fg_color = "#181825",
 			intensity = "Bold",
+		},
+		inactive_tab = {
+			bg_color = "#11111b",
+			fg_color = "#181825",
 		},
 	},
 }
--- 		rosewater = "#f5e0dc",
--- 		flamingo = "#f2cdcd",
--- 		pink = "#f5c2e7",
--- 		mauve = "#cba6f7",
--- 		red = "#f38ba8",
--- 		maroon = "#eba0ac",
--- 		peach = "#fab387",
--- 		yellow = "#f9e2af",
--- 		green = "#a6e3a1",
--- 		teal = "#94e2d5",
--- 		sky = "#89dceb",
--- 		sapphire = "#74c7ec",
--- 		blue = "#89b4fa",
--- 		lavender = "#b4befe",
--- 		text = "#cdd6f4",
--- 		subtext1 = "#bac2de",
--- 		subtext0 = "#a6adc8",
--- 		overlay2 = "#9399b2",
--- 		overlay1 = "#7f849c",
--- 		overlay0 = "#6c7086",
--- 		surface2 = "#585b70",
--- 		surface1 = "#45475a",
--- 		surface0 = "#313244",
--- 		base = "#1e1e2e",
--- 		mantle = "#181825",
--- 		crust = "#11111b",
 
 ----- Misc
 config.adjust_window_size_when_changing_font_size = false
@@ -143,7 +122,7 @@ config.keys = {
 	{ key = "F12", action = fuzzy_commands },
 	{ key = "F9", action = fuzzy_tabs },
 
-	{ key = "r", mods = "LEADER", action = "ReloadConfiguration" },
+	-- { key = "r", mods = "LEADER", action = "ReloadConfiguration" },
 	{ key = "i", mods = "LEADER", action = fuzzy_tabs },
 	{ key = "o", mods = "LEADER", action = fuzzy_domains },
 	{ key = "p", mods = "LEADER", action = fuzzy_commands },
@@ -249,191 +228,26 @@ config.mouse_bindings = {
 	},
 }
 
--- local get_host = function(tab)
--- 	local hostname = ""
--- 	local cwd_uri = tab.active_pane.current_working_dir
--- 	if cwd_uri then
--- 		cwd_uri = cwd_uri:sub(8)
--- 		local slash = cwd_uri:find("/")
--- 		local cwd = ""
--- 		if slash then
--- 			hostname = cwd_uri:sub(1, slash - 1)
--- 			local dot = hostname:find("[.]")
--- 			if dot then
--- 				hostname = hostname:sub(1, dot - 1)
--- 			end
--- 			cwd = cwd_uri:sub(slash)
--- 		end
--- 	end
-
--- 	if hostname == "" then
--- 		return "  "
--- 	else
--- 		return " "
--- 	end
--- end
-
--- term.on("update-right-status", function(window, pane)
--- 	local cells = {}
--- 	local workspace = window:active_workspace()
--- 	local cwd_uri = pane:get_current_working_dir()
--- 	-- table.insert(cells, "")
--- 	local name = window:active_key_table()
--- 	if name then
--- 		name = "MODE - " .. name
--- 	end
--- 	name = string.format("%s", name or "")
--- 	table.insert(cells, name)
--- 	if workspace then
--- 		if workspace == "default" then
--- 			-- table.insert(cells, " ")
--- 			table.insert(cells, "")
--- 		else
--- 			table.insert(cells, workspace)
--- 		end
--- 	end
---
--- 	if cwd_uri then
--- 		cwd_uri = cwd_uri:sub(8)
--- 		local slash = cwd_uri:find("/")
--- 		local cwd = ""
--- 		local hostname = ""
--- 		if slash then
--- 			hostname = cwd_uri:sub(1, slash - 1)
--- 			-- Remove the domain name portion of the hostname
--- 			local dot = hostname:find("[.]")
--- 			if dot then
--- 				hostname = hostname:sub(1, dot - 1)
--- 			end
--- 			-- and extract the cwd from the uri
--- 			cwd = cwd_uri:sub(slash)
---
--- 			table.insert(cells, cwd)
--- 			table.insert(cells, hostname)
--- 		end
--- 	end
--- 	-- I like my date/time in this style: "Wed Mar 3 08:14"
--- 	local date = wezterm.strftime("%a %b %-d %H:%M")
--- 	table.insert(cells, date)
--- 	-- The filled in variant of the < symbol
--- 	local ARROW = utf8.char(0xe0b2)
--- 	local FIRE = utf8.char(0xe0c2)
--- 	local SLASH = utf8.char(0xe0ba)
--- 	local colors = {
--- 		"#11111b",
--- 		"#11111b",
--- 		"#1e1e2e",
--- 		"#313244",
--- 		"#45475a",
--- 		"#6c7086",
--- 	}
--- 	local text_colors = {
--- 		"#f5c2e7",
--- 		"#cba6f7",
--- 		"#f38ba8",
--- 		"#eba0ac",
--- 		"#a6e3a1",
--- 		"#fab387",
--- 	}
--- 	-- The elements to be formatted
--- 	local elements = {}
--- 	-- How many cells have been formatted
--- 	local num_cells = 0
---
--- 	-- Translate a cell into elements
--- 	function push(text, is_last)
--- 		local cell_no = num_cells + 1
--- 		table.insert(elements, { Foreground = { Color = text_colors[cell_no] } })
--- 		table.insert(elements, { Background = { Color = colors[cell_no] } })
--- 		table.insert(elements, { Text = " " .. text .. " " })
--- 		if not is_last then
--- 			table.insert(elements, { Foreground = { Color = colors[cell_no + 1] } })
--- 			table.insert(elements, { Text = ARROW })
--- 		end
--- 		num_cells = num_cells + 1
--- 	end
---
--- 	while #cells > 0 do
--- 		local cell = table.remove(cells, 1)
--- 		push(cell, #cells == 0)
--- 	end
---
--- 	window:set_right_status(term.format(elements))
--- end)
-
--- term.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
--- 	-- Not sure if it will slow down the performance, at least so far it's good
--- 	-- Is there a better way to get the tab or window cols ?
--- 	local mux_window = term.mux.get_window(tab.window_id)
--- 	local mux_tab = mux_window:active_tab()
--- 	local mux_tab_cols = mux_tab:get_size().cols
---
--- 	-- Calculate active/inactive tab cols
--- 	-- In general, active tab cols > inactive tab cols
--- 	local tab_count = #tabs
--- 	local inactive_tab_cols = math.floor(mux_tab_cols / tab_count)
--- 	local active_tab_cols = mux_tab_cols - (tab_count - 1) * inactive_tab_cols
---
--- 	local title = tab_title(tab)
--- 	title = " " .. title .. " "
--- 	local title_cols = term.column_width(title)
--- 	-- Divide into 3 areas and center the title
--- 	if tab.is_active then
--- 		local icon = " " .. " "
---
--- 		local rest_cols = math.max(active_tab_cols - title_cols, 0)
--- 		local right_cols = math.ceil(rest_cols / 2)
--- 		local left_cols = rest_cols - right_cols
--- 		return {
--- 			-- left
--- 			{ Foreground = { Color = "#a6e3a1" } },
--- 			{ Text = term.pad_right(icon, left_cols) },
--- 			-- center
--- 			{ Foreground = { Color = "#94e2d5" } },
--- 			{ Attribute = { Intensity = "Bold" } },
--- 			{ Text = title },
--- 			-- "ResetAttributes",
--- 			-- { Text = hostname },
--- 			-- right
--- 			{ Text = term.pad_right("", right_cols) },
--- 		}
--- 	else
--- 		local icon = " "
---
--- 		local rest_cols = math.max(inactive_tab_cols - title_cols, 0)
--- 		local right_cols = math.ceil(rest_cols / 2)
--- 		local left_cols = rest_cols - right_cols
--- 		return {
--- 			-- left
--- 			{ Text = term.pad_right(icon, left_cols) },
--- 			-- center
--- 			{ Text = title },
--- 			-- right
--- 			{ Text = term.pad_right("", right_cols) },
--- 		}
--- 	end
--- end)
---
 --------------------------------------
 -- Local Functions
 --------------------------------------
 local tab_title = function(tab_info)
 	local process_icons = {
-		["btm"] = { { Text = " " } },
-		["cargo"] = { { Foreground = { Color = "#f38ba8" } }, { Text = " " } },
-		["cmd.exe"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " " } },
-		["docker"] = { { Foreground = { Color = "#8caaee" } }, { Text = " " } },
-		["hx"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
-		["node"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = "" } },
-		["nvim"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
-		["nvim.exe"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
-		["pnpm"] = { { Foreground = { Color = "#a6e3a1" } }, { Text = " " } },
-		["pwsh.exe"] = { { Foreground = { Color = "#74c7ec" } }, { Text = " Powershell" } },
-		["v"] = { { Foreground = { Color = "#94e2d5" } }, { Text = " " } },
-		["vi"] = { { Foreground = { Color = "#f38ba8" } }, { Text = " " } },
-		["vim"] = { { Foreground = { Color = "#94e2d5" } }, { Text = " " } },
-		["yarn"] = { { Foreground = { Color = "#8caaee" } }, { Text = "" } },
-		["zsh"] = { { Foreground = { Color = "#f5e0dc" } }, { Text = " zsh" } },
+		["btm"] = { { Text = "" } },
+		["cargo"] = { { Text = "" } },
+		["cmd.exe"] = { { Text = "" } },
+		["docker"] = { { Text = "" } },
+		["hx"] = { { Text = "" } },
+		["node"] = { { Text = "" } },
+		["nvim"] = { { Text = "" } },
+		["nvim.exe"] = { { Text = "" } },
+		["pnpm"] = { { Text = " " } },
+		["pwsh.exe"] = { { Text = " " } },
+		["v"] = { { Text = " " } },
+		["vi"] = { { Text = " " } },
+		["vim"] = { { Text = " " } },
+		["yarn"] = { { Text = "" } },
+		["zsh"] = { { Text = "" } },
 	}
 	local process_name = string.gsub(tab_info.active_pane.title, "(.*[/\\])(.*)", "%2")
 
@@ -441,10 +255,7 @@ local tab_title = function(tab_info)
 		process_name = "zsh"
 	end
 
-	return term.format(
-		process_icons[process_name]
-			or { { Foreground = { Color = "#f5c2e7" } }, { Text = string.format("%s", process_name) } }
-	)
+	return term.format(process_icons[process_name] or { { Text = string.format("%s", process_name) } })
 end
 
 term.on("format-tab-title", function(tab)
@@ -452,31 +263,118 @@ term.on("format-tab-title", function(tab)
 	title = " " .. title .. " "
 	local tab_active = tab.is_active
 	local icon = " " .. " "
-
-	if tab_active then
-		icon = " " .. " "
-	else
+	local icon_attr = { Intensity = "Bold" }
+	local italized = { Italic = false }
+	local active_fg = { Color = "#a6e3a1" }
+	local tab_icon = " "
+	if not tab_active then
 		icon = string.format(" %s", tab.tab_index + 1)
+		icon = ""
+		icon_attr = { Intensity = "Half" }
+		italized = { Italic = true }
+		active_fg = { Color = "#f39ba8" }
 	end
 
 	return term.format({
-		{ Attribute = { Intensity = "Half" } },
-		{ Foreground = { Color = "#a6e3a1" } },
+		{ Attribute = icon_attr },
+		{ Foreground = active_fg },
 		{ Text = icon },
 		"ResetAttributes",
-		-- { Text = " " },
+		{ Foreground = active_fg },
+		{ Attribute = italized },
 		{ Text = title },
-		{ Foreground = { Color = "#1e1e2e" } },
-		{ Text = "▕" },
+		"ResetAttributes",
+		{ Attribute = { Italic = false } },
+		{ Foreground = { Color = "#6c7086" } },
+		{ Text = "" },
 	})
 end)
 
 term.on("update-right-status", function(window, pane)
-	local date = term.strftime("%a %b %d %H:%M:%S")
+	local cells = {}
 
-	window:set_right_status(term.format({
-		{ Foreground = { Color = "#f38ba8" } },
-		{ Text = date .. " " },
-	}))
+	local cwd_uri = pane:get_current_working_dir()
+	if cwd_uri then
+		cwd_uri = cwd_uri:sub(8)
+		local slash = cwd_uri:find("/")
+		local cwd = ""
+		local hostname = ""
+		if slash then
+			hostname = cwd_uri:sub(1, slash - 1)
+			-- Remove the domain name portion of the hostname
+			local dot = hostname:find("[.]")
+			if dot then
+				hostname = hostname:sub(1, dot - 1)
+			end
+			-- and extract the cwd from the uri
+			cwd = cwd_uri:sub(slash)
+			-- table.insert(cells, cwd)
+			if hostname == "" then
+				table.insert(cells, "")
+			elseif string.find(hostname, "arch") then
+				table.insert(cells, "")
+			else
+				table.insert(cells, "")
+			end
+		end
+	end
+
+	local date = term.strftime("%a %b %d %H:%M:%S")
+	table.insert(cells, date)
+	local elements = {}
+	local num_cells = 0
+
+	-- Translate into elements
+	function push(text, is_last)
+		local cell_no = num_cells + 1
+		table.insert(elements, { Foreground = { Color = "#89b4fa" } })
+		table.insert(elements, { Text = " " .. text .. " " })
+		if not is_last then
+			table.insert(elements, { Foreground = { Color = "#6c7086" } })
+			table.insert(elements, { Text = "" .. "" .. "" })
+		end
+		if is_last then
+			table.insert(elements, { Foreground = { Color = "#6c7086" } })
+			table.insert(elements, { Text = "" .. "" .. " " })
+			table.insert(elements, { Foreground = { Color = "#89dceb" } })
+			table.insert(elements, { Text = "󰗲   " })
+			-- table.insert(elements, { Foreground = { Color = "#6c7086" } })
+			-- table.insert(elements, { Text = " " .. "" .. " " })
+		end
+		num_cells = num_cells + 1
+	end
+
+	while #cells > 0 do
+		local cell = table.remove(cells, 1)
+		push(cell, #cells == 0)
+	end
+	window:set_right_status(term.format(elements))
 end)
+
 return config
+-- 		rosewater = "#f5e0dc",
+-- 		flamingo = "#f2cdcd",
+-- 		pink = "#f5c2e7",
+-- 		mauve = "#cba6f7",
+-- 		red = "#f38ba8",
+-- 		maroon = "#eba0ac",
+-- 		peach = "#fab387",
+-- 		yellow = "#f9e2af",
+-- 		green = "#a6e3a1",
+-- 		teal = "#94e2d5",
+-- 		sky = "#89dceb",
+-- 		sapphire = "#74c7ec",
+-- 		blue = "#89b4fa",
+-- 		lavender = "#b4befe",
+-- 		text = "#cdd6f4",
+-- 		subtext1 = "#bac2de",
+-- 		subtext0 = "#a6adc8",
+-- 		overlay2 = "#9399b2",
+-- 		overlay1 = "#7f849c",
+-- 		overlay0 = "#6c7086",
+-- 		surface2 = "#585b70",
+-- 		surface1 = "#45475a",
+-- 		surface0 = "#313244",
+-- 		base = "#1e1e2e",
+-- 		mantle = "#181825",
+-- 		crust = "#11111b",

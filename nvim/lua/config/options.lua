@@ -67,7 +67,9 @@ vo.ttimeoutlen = 10 -- Time in milliseconds to wait for a key code sequence to c
 vo.updatetime = 100 -- If in this many milliseconds nothing is typed, the swap file will be written to disk. Also used for CursorHold autocommand and set to 100 as per https://github.com/antoinemadec/FixCursorHold.nvim
 vo.wildmode = "list:longest" -- Command-line completion mode
 vo.wildignore = { "*/.git/*", "*/node_modules/*" } -- Ignore these files/folders
-
+vo.cmdheight = 0
+vo.showcmd = false
+vo.showmode = false
 vw.colorcolumn = "80,120" -- Make a ruler at 80px and 120px
 vw.list = true -- Show some invisible characters like tabs etc
 vw.numberwidth = 1 -- Make the line number column thinner
