@@ -15,9 +15,17 @@ local config = {}
 if term.target_triple == "x86_64-pc-windows-msvc" then
 	-- config.win32_system_backdrop = "Acrylic"
 	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+
+	table.insert(ssh_domains, {
+		name = "archx",
+		remote_address = "192.168.110.182",
+		username = "artifex",
+	})
+
 	for _, domain in ipairs(wsl_domains) do
 		domain.default_cwd = "~"
 	end
+	config.prefer_egl = true
 end
 
 -- For linux host custom configuration
@@ -52,8 +60,8 @@ config.color_scheme = "Catppuccin Mocha"
 config.animation_fps = 240
 config.max_fps = 240
 
--- config.initial_cols = 120
--- config.initial_rows = 30
+config.initial_cols = 120
+config.initial_rows = 30
 config.font = term.font({
 	family = "FiraCode Nerd Font",
 	weight = "Regular",
@@ -78,7 +86,7 @@ config.window_frame = {
 	font_size = 16,
 }
 config.enable_scroll_bar = false
--- config.default_cursor_style = "BlinkingBlock"
+config.default_cursor_style = "SteadyBar"
 -- config.cursor_blink_rate = 333
 config.inactive_pane_hsb = { saturation = 1.0, brightness = 0.5 }
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
@@ -99,6 +107,7 @@ config.colors = {
 }
 
 ----- Misc
+config.adjust_window_size_when_changing_font_size = false ---- Misc
 config.adjust_window_size_when_changing_font_size = false
 config.audible_bell = "Disabled"
 config.exit_behavior = "Close"
@@ -106,10 +115,10 @@ config.window_close_confirmation = "NeverPrompt"
 config.scrollback_lines = 50000
 config.tab_max_width = 9999
 config.hide_tab_bar_if_only_one_tab = false
-config.tab_bar_at_bottom = false
+config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
-
+config.allow_win32_input_mode = true
 config.disable_default_key_bindings = true
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
@@ -117,39 +126,43 @@ local fuzzy_commands = act.ShowLauncherArgs({ title = "  Fuzzy Commands", fla
 local fuzzy_domains = act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|DOMAINS" })
 local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|TABS|WORKSPACES" })
 config.keys = {
+	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
+	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
 	{ key = "F10", action = fuzzy_domains },
 	{ key = "F11", action = act.ToggleFullScreen },
 	{ key = "F12", action = fuzzy_commands },
 	{ key = "F9", action = fuzzy_tabs },
-
-	-- { key = "r", mods = "LEADER", action = "ReloadConfiguration" },
-	{ key = "i", mods = "LEADER", action = fuzzy_tabs },
-	{ key = "o", mods = "LEADER", action = fuzzy_domains },
-	{ key = "p", mods = "LEADER", action = fuzzy_commands },
-	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
+	{ key = "F7", action = act.Hide },
+	{ key = "F8", action = term.action_callback(function(window)
+		window:maximize()
+	end) },
+	{ key = "Escape", mods = "LEADER", action = act.QuitApplication },
 	{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-	{ key = "\\", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
-	{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
-	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
-	{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
 	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
-	{ key = "y", mods = "LEADER", action = "ActivateCopyMode" },
-	{ key = "s", mods = "LEADER", action = act({ Search = { CaseInSensitiveString = "" } }) },
+	{ key = "Tab", mods = "LEADER", action = act.SwitchToWorkspace },
+	{ key = "\\", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
+	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
 	{ key = "f", mods = "LEADER", action = "QuickSelect" },
-	{ key = "q", mods = "LEADER", action = act.PaneSelect },
 	{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
 	{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
 	{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
 	{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
-
+	{ key = "n", mods = "LEADER", action = act.SpawnWindow },
+	{ key = "o", mods = "LEADER", action = fuzzy_domains },
+	{ key = "p", mods = "LEADER", action = fuzzy_commands },
+	{ key = "q", mods = "LEADER", action = act.PaneSelect },
+	{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
+	{ key = "s", mods = "LEADER", action = act({ Search = { CaseInSensitiveString = "" } }) },
+	{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
+	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
+	{ key = "y", mods = "LEADER", action = "ActivateCopyMode" },
+	{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
 	{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(0) },
 	{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-2) },
 	{ key = "H", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
 	{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
 	{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
 	{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
-
 	{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
 	{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
 	{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
@@ -162,8 +175,6 @@ config.keys = {
 	{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
 	{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
 	{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
-	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
-	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
 }
 
 -- copy_mode
@@ -226,11 +237,25 @@ config.mouse_bindings = {
 		mods = "CTRL",
 		action = act.DecreaseFontSize,
 	},
+	{
+		event = { Down = { streak = 1, button = "Right" } },
+		mods = "NONE",
+		action = term.action_callback(function(window, pane)
+			local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+			if has_selection then
+				window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
+				window:perform_action(act.ClearSelection, pane)
+			else
+				window:perform_action(act({ PasteFrom = "Clipboard" }), pane)
+			end
+		end),
+	},
 }
 
 --------------------------------------
 -- Local Functions
 --------------------------------------
+
 local tab_title = function(tab_info)
 	local process_icons = {
 		["btm"] = { { Text = "" } },
@@ -248,6 +273,7 @@ local tab_title = function(tab_info)
 		["vim"] = { { Text = " " } },
 		["yarn"] = { { Text = "" } },
 		["zsh"] = { { Text = "" } },
+		["~"] = { { Text = "" } },
 	}
 	local process_name = string.gsub(tab_info.active_pane.title, "(.*[/\\])(.*)", "%2")
 
@@ -293,6 +319,21 @@ end)
 term.on("update-right-status", function(window, pane)
 	local cells = {}
 
+	local key_mode = window:active_key_table()
+	local mode = {
+		["search_mode"] = "󰜏",
+		["copy_mode"] = "",
+	}
+
+	table.insert(cells, mode[key_mode] or " ")
+
+	local workspace = window:active_workspace()
+
+	if workspace == "default" then
+		workspace = ""
+	end
+
+	table.insert(cells, workspace)
 	local cwd_uri = pane:get_current_working_dir()
 	if cwd_uri then
 		cwd_uri = cwd_uri:sub(8)
@@ -321,26 +362,60 @@ term.on("update-right-status", function(window, pane)
 
 	local date = term.strftime("%a %b %d %H:%M:%S")
 	table.insert(cells, date)
+
+	local current_time = tonumber(term.strftime("%H"))
+	local time = {
+		[00] = "",
+		[01] = "",
+		[02] = "",
+		[03] = "",
+		[04] = "",
+		[05] = "",
+		[06] = "",
+		[07] = "",
+		[08] = "",
+		[09] = "",
+		[10] = "󰗲",
+		[11] = "",
+		[12] = "",
+		[13] = "",
+		[14] = "",
+		[15] = "",
+		[16] = "",
+		[17] = "",
+		[18] = "",
+		[19] = "󰗲",
+		[20] = "",
+		[21] = "",
+		[22] = "",
+		[23] = "",
+	}
+	table.insert(cells, time[current_time])
+
 	local elements = {}
 	local num_cells = 0
 
 	-- Translate into elements
 	function push(text, is_last)
 		local cell_no = num_cells + 1
+
 		table.insert(elements, { Foreground = { Color = "#89b4fa" } })
 		table.insert(elements, { Text = " " .. text .. " " })
 		if not is_last then
-			table.insert(elements, { Foreground = { Color = "#6c7086" } })
-			table.insert(elements, { Text = "" .. "" .. "" })
+			if cell_no == 1 then
+				table.insert(elements, { Foreground = { Color = "#a6e3a1" } })
+				table.insert(elements, { Text = "" })
+			else
+				table.insert(elements, { Foreground = { Color = "#6c7086" } })
+				table.insert(elements, { Text = "" .. "" .. "" })
+			end
 		end
-		if is_last then
-			table.insert(elements, { Foreground = { Color = "#6c7086" } })
-			table.insert(elements, { Text = "" .. "" .. " " })
-			table.insert(elements, { Foreground = { Color = "#89dceb" } })
-			table.insert(elements, { Text = "󰗲   " })
-			-- table.insert(elements, { Foreground = { Color = "#6c7086" } })
-			-- table.insert(elements, { Text = " " .. "" .. " " })
-		end
+		-- if is_last then
+		-- 	table.insert(elements, { Foreground = { Color = "#6c7086" } })
+		-- 	table.insert(elements, { Text = "" .. "" .. " " })
+		-- 	table.insert(elements, { Foreground = { Color = "#89dceb" } })
+		-- 	table.insert(elements, { Text = time })
+		-- end
 		num_cells = num_cells + 1
 	end
 

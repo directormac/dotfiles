@@ -3,22 +3,13 @@
 -- Add any additional keymaps here
 local keymap = vim.keymap
 
-local function copy(lines, _)
-  require("osc52").copy(table.concat(lines, "\n"))
+local function map(mode, lhs, rhs, opts)
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
-
-local function paste()
-  return { vim.fn.split(vim.fn.getreg(""), "\n", vim.fn.getregtype("")) }
-end
-
-vim.g.clipboard = {
-  name = "osc52",
-  copy = { ["+"] = copy, ["*"] = copy },
-  paste = { ["+"] = paste, ["*"] = paste },
-}
+map("v", "p", "P", { noremap = true, silent = true })
 -- Clipboard <Leader>y
-keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to OSC52 Clipboard" })
-keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { desc = "Copy to OSC52 Clipboard" })
+keymap.set({ "n", "v" }, "<leader>y", '"+y', { noremap = true, desc = "Copy to OSC52 Clipboard" })
+keymap.set({ "n", "v" }, "<leader>yy", '"+yy', { noremap = true, desc = "Copy to OSC52 Clipboard" })
 
 -- Better escape
 keymap.set("i", "jj", "<esc>", { noremap = true, desc = "Escape Insert Mode" })
@@ -38,6 +29,10 @@ keymap.set("n", "<Leader>e", function()
   local cwd = require("oil").get_current_dir()
   require("oil").toggle_float(cwd)
 end, { desc = "Opel Oil Floating" })
+
+-- keymap.set("n", "<Leader>e", function()
+--   require("edgy").toggle("left")
+-- end, { desc = "Open Oil Floating" })
 
 keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>")
 keymap.set("n", "<F1>", "<cmd>Telescope keymaps<cr>", { desc = "Key Maps" })

@@ -198,7 +198,9 @@ return {
     event = "VeryLazy",
     keys = {
       -- stylua: ignore
-      { "<leader>ue", function() require("edgy").select() end, desc = "Edgy Select Window" },
+      { "<leader>ue", function() require("edgy").toggle() end, desc = "Edgy Select Window" },
+       -- stylua: ignore
+      { "<leader>uE", function() require("edgy").select() end, desc = "Edgy Select Window" },
     },
     left = {},
     opts = {
@@ -238,7 +240,14 @@ return {
       left = {
         -- {
         --   ft = "oil",
-        --   title = "File System",
+        --   title = "Oil Explorer System",
+        --   pinned = true,
+        --   -- filter = function (buf)
+        --   --   return vim.bo[buf].oil
+        --   -- end
+        --   open = function()
+        --     require("oil").open(require("oil").get_current_dir())
+        --   end,
         -- },
       },
       right = {

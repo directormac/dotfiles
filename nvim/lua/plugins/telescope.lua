@@ -11,8 +11,12 @@ return {
     opts = {
       previewer = false,
       pickers = {
+        current_buffer_fuzzy_find = {
+          previewer = false,
+        },
         find_files = {
           follow = true,
+          previewer = false,
         },
       },
       mappings = {
