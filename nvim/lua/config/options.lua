@@ -75,7 +75,7 @@ vo.shortmess = {
   W = true, -- Do not show "written" in command line when writing
 }
 vo.clipboard = "unnamedplus"
-vo.cmdheight = 0
+-- vo.cmdheight = 0
 vo.showcmd = false
 vo.showmatch = true -- Show matching brackets by flickering
 vo.showmode = false
