@@ -46,15 +46,19 @@ if term.target_triple == "x86_64-pc-windows-msvc" then
 			args = { "wsl" },
 		},
 		{ label = " PowerShell", args = { "pwsh" } },
-		{ label = " Nushell", args = { "nu" } },
-		{ label = " Cmd", args = { "cmd" } },
+		{ label = " Nushell",    args = { "nu" } },
+		{ label = " Cmd",        args = { "cmd" } },
 		{
 			label = " NeoVim Config",
-			args = { "cd", "C:/Users/Administrator/AppData/Local/nvim", "&&", "nvim" },
-			-- args = { "nvim", "C:/Users/Administrator/AppData/Local/nvim" },
+			args = { "pwsh", "-NoExit", "-Command", "cd C:/Users/Administrator/AppData/Local/nvim && nvim" },
+		},
+		{
+			label = " Dotfiles",
+			args = { "pwsh", "-NoExit", "-Command", "cd C:/Users/Administrator/dotfiles && nvim" },
 		},
 	}
 end
+-- pwsh -NoExit -Command "nvim C:/Users/Administrator/dotfiles/"
 
 -- For linux host custom configuration
 if term.target_triple == "x86_64-unknown-linux-gnu" then
@@ -84,8 +88,8 @@ config.color_scheme = "Catppuccin Mocha"
 config.animation_fps = 240
 config.max_fps = 240
 
-config.initial_cols = 128
-config.initial_rows = 27
+config.initial_cols = 115
+config.initial_rows = 28
 config.font = term.font({
 	family = "FiraCode Nerd Font",
 	weight = "Regular",
@@ -120,7 +124,7 @@ config.colors = {
 		background = "#11111b",
 		active_tab = {
 			bg_color = "#11111b",
-			fg_color = "#181825",
+			fg_color = "#11111b",
 			intensity = "Bold",
 		},
 		inactive_tab = {
@@ -131,7 +135,7 @@ config.colors = {
 }
 
 ----- Misc
-config.adjust_window_size_when_changing_font_size = false ---- Misc
+config.adjust_window_size_when_changing_font_size = false
 config.adjust_window_size_when_changing_font_size = false
 config.audible_bell = "Disabled"
 config.exit_behavior = "Close"
@@ -150,58 +154,58 @@ local fuzzy_commands = act.ShowLauncherArgs({ title = "  Fuzzy Commands", fla
 local fuzzy_domains = act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
 local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS" })
 config.keys = {
-	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
-	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
+	{ key = "c",   mods = "CTRL|SHIFT",          action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
+	{ key = "v",   mods = "CTRL|SHIFT",          action = act({ PasteFrom = "Clipboard" }) },
 	{ key = "F10", action = fuzzy_domains },
 	{ key = "F11", action = act.ToggleFullScreen },
 	{ key = "F12", action = fuzzy_commands },
-	{ key = "F9", action = fuzzy_tabs },
-	{ key = "F7", action = act.Hide },
+	{ key = "F9",  action = fuzzy_tabs },
+	{ key = "F7",  action = act.Hide },
 	{
 		key = "F8",
 		action = term.action_callback(function(window)
 			window:maximize()
 		end),
 	},
-	{ key = "Escape", mods = "LEADER", action = act.QuitApplication },
-	{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
-	{ key = "Tab", mods = "LEADER", action = act.SwitchToWorkspace },
-	{ key = "\\", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
-	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-	{ key = "f", mods = "LEADER", action = "QuickSelect" },
-	{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
-	{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
-	{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
-	{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
-	{ key = "n", mods = "LEADER", action = act.SpawnWindow },
-	{ key = "o", mods = "LEADER", action = fuzzy_domains },
-	{ key = "p", mods = "LEADER", action = fuzzy_commands },
-	{ key = "q", mods = "LEADER", action = act.PaneSelect },
-	{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
-	{ key = "s", mods = "LEADER", action = act({ Search = { CaseInSensitiveString = "" } }) },
-	{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
-	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
-	{ key = "y", mods = "LEADER", action = "ActivateCopyMode" },
-	{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
-	{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(0) },
-	{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-2) },
-	{ key = "H", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
-	{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
-	{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
-	{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
-	{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
-	{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
-	{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
-	{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
-	{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
-	{ key = "3", mods = "ALT", action = act({ ActivateTab = 2 }) },
-	{ key = "4", mods = "ALT", action = act({ ActivateTab = 3 }) },
-	{ key = "5", mods = "ALT", action = act({ ActivateTab = 4 }) },
-	{ key = "6", mods = "ALT", action = act({ ActivateTab = 5 }) },
-	{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
-	{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
-	{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
+	{ key = "Escape", mods = "LEADER",       action = act.QuitApplication },
+	{ key = "-",      mods = "LEADER",       action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
+	{ key = "0",      mods = "LEADER",       action = act.ResetFontAndWindowSize },
+	{ key = "Tab",    mods = "LEADER",       action = act.SwitchToWorkspace },
+	{ key = "\\",     mods = "LEADER",       action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
+	{ key = "c",      mods = "LEADER",       action = act({ SpawnTab = "CurrentPaneDomain" }) },
+	{ key = "f",      mods = "LEADER",       action = "QuickSelect" },
+	{ key = "h",      mods = "LEADER",       action = act({ ActivatePaneDirection = "Left" }) },
+	{ key = "j",      mods = "LEADER",       action = act({ ActivatePaneDirection = "Down" }) },
+	{ key = "k",      mods = "LEADER",       action = act({ ActivatePaneDirection = "Up" }) },
+	{ key = "l",      mods = "LEADER",       action = act({ ActivatePaneDirection = "Right" }) },
+	{ key = "n",      mods = "LEADER",       action = act.SpawnWindow },
+	{ key = "o",      mods = "LEADER",       action = fuzzy_domains },
+	{ key = "p",      mods = "LEADER",       action = fuzzy_commands },
+	{ key = "q",      mods = "LEADER",       action = act.PaneSelect },
+	{ key = "r",      mods = "LEADER",       action = act.ReloadConfiguration },
+	{ key = "s",      mods = "LEADER",       action = act({ Search = { CaseInSensitiveString = "" } }) },
+	{ key = "w",      mods = "LEADER",       action = act.CloseCurrentTab({ confirm = false }) },
+	{ key = "x",      mods = "LEADER",       action = act.CloseCurrentPane({ confirm = false }) },
+	{ key = "y",      mods = "LEADER",       action = "ActivateCopyMode" },
+	{ key = "z",      mods = "LEADER",       action = "TogglePaneZoomState" },
+	{ key = ">",      mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(0) },
+	{ key = "<",      mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-2) },
+	{ key = "H",      mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
+	{ key = "J",      mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
+	{ key = "K",      mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
+	{ key = "L",      mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
+	{ key = "-",      mods = "LEADER|CTRL",  action = act.DecreaseFontSize },
+	{ key = "=",      mods = "LEADER|CTRL",  action = act.IncreaseFontSize },
+	{ key = "Tab",    mods = "CTRL",         action = act({ ActivateTabRelative = 1 }) },
+	{ key = "1",      mods = "CTRL",         action = act({ ActivateTab = 0 }) },
+	{ key = "2",      mods = "CTRL",         action = act({ ActivateTab = 1 }) },
+	{ key = "3",      mods = "CTRL",         action = act({ ActivateTab = 2 }) },
+	{ key = "4",      mods = "CTRL",         action = act({ ActivateTab = 3 }) },
+	{ key = "5",      mods = "CTRL",         action = act({ ActivateTab = 4 }) },
+	{ key = "6",      mods = "CTRL",         action = act({ ActivateTab = 5 }) },
+	{ key = "7",      mods = "CTRL",         action = act({ ActivateTab = 6 }) },
+	{ key = "8",      mods = "CTRL",         action = act({ ActivateTab = 7 }) },
+	{ key = "9",      mods = "CTRL",         action = act({ ActivateTab = 8 }) },
 }
 
 -- copy_mode
@@ -225,28 +229,28 @@ config.key_tables = {
 	copy_mode = copy_mode,
 	search_mode = search_mode,
 	super = {
-		{ key = "`", mods = "CTRL", action = "PopKeyTable" },
-		{ key = "Space", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) },
-		{ key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
-		{ key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
-		{ key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
-		{ key = "PageUp", mods = "NONE", action = act.CopyMode("PriorMatchPage") },
+		{ key = "`",        mods = "CTRL", action = "PopKeyTable" },
+		{ key = "Space",    mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) },
+		{ key = "n",        mods = "CTRL", action = act.CopyMode("NextMatch") },
+		{ key = "p",        mods = "CTRL", action = act.CopyMode("PriorMatch") },
+		{ key = "r",        mods = "CTRL", action = act.CopyMode("CycleMatchType") },
+		{ key = "PageUp",   mods = "NONE", action = act.CopyMode("PriorMatchPage") },
 		{ key = "PageDown", mods = "NONE", action = act.CopyMode("NextMatchPage") },
-		{ key = "s", mods = "CTRL", action = act.CopyMode("ClearPattern") },
+		{ key = "s",        mods = "CTRL", action = act.CopyMode("ClearPattern") },
 		{
 			key = "Escape",
 			mods = "NONE",
 			action = act.Multiple({ act.CopyMode("Close"), "PopKeyTable" }),
 		},
-		{ key = "RightArrow", mods = "NONE", action = act.CopyMode("MoveRight") },
-		{ key = "LeftArrow", mods = "NONE", action = act.CopyMode("MoveLeft") },
-		{ key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
-		{ key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
-		{ key = "K", mods = "CTRL", action = act.ScrollByPage(-0.5) },
-		{ key = "J", mods = "CTRL", action = act.ScrollByPage(1) },
-		{ key = "k", mods = "CTRL", action = act.ScrollByLine(-1) },
-		{ key = "j", mods = "CTRL", action = act.ScrollByLine(1) },
-		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
+		{ key = "RightArrow", mods = "NONE",       action = act.CopyMode("MoveRight") },
+		{ key = "LeftArrow",  mods = "NONE",       action = act.CopyMode("MoveLeft") },
+		{ key = "UpArrow",    mods = "NONE",       action = act.CopyMode("MoveUp") },
+		{ key = "DownArrow",  mods = "NONE",       action = act.CopyMode("MoveDown") },
+		{ key = "K",          mods = "CTRL",       action = act.ScrollByPage(-0.5) },
+		{ key = "J",          mods = "CTRL",       action = act.ScrollByPage(1) },
+		{ key = "k",          mods = "CTRL",       action = act.ScrollByLine(-1) },
+		{ key = "j",          mods = "CTRL",       action = act.ScrollByLine(1) },
+		{ key = "c",          mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
 	},
 }
 
@@ -312,34 +316,47 @@ local tab_title = function(tab_info)
 end
 
 term.on("format-tab-title", function(tab)
-	local title = tab_title(tab)
-	title = " " .. title .. " "
-	local tab_active = tab.is_active
-	local icon = " " .. " "
-	local icon_attr = { Intensity = "Bold" }
-	local italized = { Italic = false }
-	local active_fg = { Color = "#a6e3a1" }
-	local tab_icon = " "
-	if not tab_active then
-		icon = string.format(" %s", tab.tab_index + 1)
-		icon = ""
-		icon_attr = { Intensity = "Half" }
-		italized = { Italic = true }
-		active_fg = { Color = "#f39ba8" }
+	-- local title = tab_title(tab)
+	-- title = " " .. title .. " "
+	-- local tab_active = tab.is_active
+	-- local icon = " " .. " "
+	-- local icon_attr = { Intensity = "Bold" }
+	-- local italized = { Italic = false }
+	-- local active_fg = { Color = "#a6e3a1" }
+	-- local tab_icon = " "
+	-- if not tab_active then
+	-- 	icon = string.format(" %s", tab.tab_index + 1)
+	-- 	icon = ""
+	-- 	icon_attr = { Intensity = "Half" }
+	-- 	italized = { Italic = true }
+	-- 	active_fg = { Color = "#f39ba8" }
+	-- end
+	--
+	-- return term.format({
+	-- 	{ Attribute = icon_attr },
+	-- 	{ Foreground = active_fg },
+	-- 	{ Text = icon },
+	-- 	"ResetAttributes",
+	-- 	{ Foreground = active_fg },
+	-- 	{ Attribute = italized },
+	-- 	{ Text = title },
+	-- 	"ResetAttributes",
+	-- 	{ Attribute = { Italic = false } },
+	-- 	{ Foreground = { Color = "#6c7086" } },
+	-- 	{ Text = "" },
+	-- })
+	---▕▕ " ⎹ ⎸
+	local tab_index = string.format(" %s  ", tab.tab_index + 1)
+	local tab_fg = "#89b4fa"
+	if not tab.is_active then
+		tab_fg = "#6c7086"
 	end
 
 	return term.format({
-		{ Attribute = icon_attr },
-		{ Foreground = active_fg },
-		{ Text = icon },
-		"ResetAttributes",
-		{ Foreground = active_fg },
-		{ Attribute = italized },
-		{ Text = title },
-		"ResetAttributes",
-		{ Attribute = { Italic = false } },
 		{ Foreground = { Color = "#6c7086" } },
-		{ Text = "" },
+		{ Text = "▏" },
+		{ Foreground = { Color = tab_fg } },
+		{ Text = tab_index },
 	})
 end)
 
@@ -421,21 +438,25 @@ term.on("update-right-status", function(window, pane)
 
 	local elements = {}
 	local num_cells = 0
-
+	-- symbol = "▏",
+	-- symbol = "│",
 	-- Translate into elements
 	function push(text, is_last)
 		local cell_no = num_cells + 1
 
 		table.insert(elements, { Foreground = { Color = "#89b4fa" } })
-		table.insert(elements, { Text = " " .. text .. " " })
+		table.insert(elements, { Text = "" .. text .. " " })
 		if not is_last then
 			if cell_no == 1 then
 				table.insert(elements, { Foreground = { Color = "#a6e3a1" } })
-				table.insert(elements, { Text = "" })
+				table.insert(elements, { Text = " ->" })
 			else
 				table.insert(elements, { Foreground = { Color = "#6c7086" } })
-				table.insert(elements, { Text = "" .. "" .. "" })
+				-- table.insert(elements, { Text = "" .. "▏" .. "" })
+				table.insert(elements, { Text = "" .. "│" .. "" })
 			end
+
+			-- { Text = "▏"}
 		end
 		-- if is_last then
 		-- 	table.insert(elements, { Foreground = { Color = "#6c7086" } })
