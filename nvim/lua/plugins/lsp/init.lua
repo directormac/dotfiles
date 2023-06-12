@@ -556,4 +556,12 @@ return {
       { "<leader>tc", "<cmd>TSC<cr>", desc = "Type-check" },
     },
   },
+  {
+    "NvChad/nvim-colorizer.lua",
+    opts = {
+      user_default_options = {
+        tailwind = true,
+      },
+    },
+  },
 }

@@ -86,7 +86,13 @@ return {
       defaults = {
         prompt_prefix = " ",
         selection_caret = " ",
+--       vimgrep_arguments = require("telescope.config.values.vimgrep_arguments"),
         previewer = false,
+        prickers = {
+          find_files = {
+            find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
+          },
+        },
         mappings = {
           i = {
             ["<c-t>"] = function(...)
@@ -152,7 +158,7 @@ return {
   {
     "ggandor/flit.nvim",
     keys = function()
-      ---@type LazyKeys[]
+      --@type LazyKeys[]
       local ret = {}
       for _, key in ipairs({ "f", "F", "t", "T" }) do
         ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
