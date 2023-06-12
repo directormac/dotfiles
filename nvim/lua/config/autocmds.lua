@@ -1,36 +1,85 @@
--- Autocmds are automatically loaded on the VeryLazy event
--- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
--- Add any additional autocmds here
---
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
+-- This file is automatically loaded by lazyvim.config.init
 
-local set_toggle = augroup("set_toggle", { clear = true })
+local function augroup(name)
+  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
 
-autocmd("InsertEnter", {
-  callback = function()
-    if vim.bo.filetype ~= "alpha" and vim.bo.filetype ~= "NvimTree" and vim.bo.filetype ~= "SidebarNvim" then
-      vim.opt.relativenumber = false
-      vim.opt.list = true
-    end
-  end,
-  group = set_toggle,
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = augroup("checktime"),
+  command = "checktime",
 })
 
-autocmd({ "VimEnter", "BufEnter", "InsertLeave" }, {
+-- Highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup("highlight_yank"),
   callback = function()
-    if vim.bo.filetype ~= "alpha" and vim.bo.filetype ~= "NvimTree" and vim.bo.filetype ~= "SidebarNvim" then
-      vim.opt.relativenumber = true
-      vim.opt.list = false
-    end
+    vim.highlight.on_yank()
   end,
-  group = set_toggle,
 })
 
-local ts_fold = augroup("ts_fold", { clear = true })
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = augroup("resize_splits"),
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
 
-autocmd({ "BufReadPost", "FileReadPost" }, {
-  group = ts_fold,
-  pattern = "*",
-  command = "normal zR",
+-- go to last loc when opening a buffer
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = augroup("last_loc"),
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("close_with_q"),
+  pattern = {
+    "PlenaryTestPopup",
+    "help",
+    "lspinfo",
+    "man",
+    "notify",
+    "qf",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+    "neotest-output",
+    "checkhealth",
+    "neotest-summary",
+    "neotest-output-panel",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+  end,
+})
+
+-- wrap and check for spell in text filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("wrap_spell"),
+  pattern = { "gitcommit", "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
+
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = augroup("auto_create_dir"),
+  callback = function(event)
+    if event.match:match("^%w%w+://") then
+      return
+    end
+    local file = vim.loop.fs_realpath(event.match) or event.match
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+  end,
 })
