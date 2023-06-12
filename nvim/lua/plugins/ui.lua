@@ -77,13 +77,16 @@ return {
 				-- mode = "tabs",
         -- stylua: ignore
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
-        -- close_command = function () require("tabulous").delete_buffer() end,
         -- stylua: ignore
         right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-        -- right_mouse_command = function () require("tabulous").delete_buffer() end,
+        themable = true,
+        -- numbers = "ordinal",
         diagnostics = "nvim_lsp",
-        always_show_bufferline = true,
+        always_show_bufferline = false,
         separator_style = "thin",
+        show_buffer_close_icons = false,
+        show_duplicate_prefix = true,
+        persist_buffer_sort = true,
         diagnostics_indicator = function(_, _, diag)
           local icons = require("helpers.util").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
@@ -424,7 +427,11 @@ return {
       dashboard.section.buttons.val = {
         dashboard.button("b", " " .. " Browse files", ":Telescope file_browser file_browser previewer=false <CR>"),
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files hidden=true path_display=smart<CR>"),
+        dashboard.button(
+          "f",
+          " " .. " Find file",
+          ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  path_display=smart<CR>"
+        ),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
