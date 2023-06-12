@@ -422,20 +422,16 @@ return {
 
       dashboard.section.header.val = vim.split(logo, "\n", { triempty = true })
       dashboard.section.buttons.val = {
-        dashboard.button(
-          "f",
-          " " .. " Find file",
-          ":Telescope find_files find_command=rg,--ignore,--hidden,--files path_display=smart<CR>"
-        ),
         dashboard.button("b", " " .. " Browse files", ":Telescope file_browser file_browser previewer=false <CR>"),
-        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load({lsat = true}) <cr>]]),
+        dashboard.button("f", " " .. " Find file", ":Telescope find_files hidden=true path_display=smart<CR>"),
+        dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("u", "   Update plugins", "<cmd>lua require('lazy').sync()<CR>"),
+        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+        dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
+        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load({lsat = true}) <cr>]]),
+        dashboard.button("u", "   Update plugins", "<cmd>lua require('lazy').sync()<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
