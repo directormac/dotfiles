@@ -438,7 +438,7 @@ return {
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
-        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load({last = true}) <cr>]]),
+        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
         dashboard.button("u", "   Update plugins", "<cmd>lua require('lazy').sync()<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
