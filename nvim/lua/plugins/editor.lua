@@ -86,13 +86,6 @@ return {
       defaults = {
         prompt_prefix = " ",
         selection_caret = " ",
---       vimgrep_arguments = require("telescope.config.values.vimgrep_arguments"),
-        previewer = false,
-        prickers = {
-          find_files = {
-            find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
-          },
-        },
         mappings = {
           i = {
             ["<c-t>"] = function(...)
@@ -135,6 +128,16 @@ return {
       },
     },
     config = function(_, opts)
+      -- local vimgrep_arguments = require("telescope.config.values.vimgrep_arguments")
+      -- table.insert(opts.defaults, { vimgrep_arguments = vimgrep_arguments })
+      opts.previewer = false
+      opts.prickers = {
+        find_files = {
+          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
+        },
+      }
+      opts.extensions = {}
+
       require("telescope").setup(opts)
 
       -- Enable telescope fzf native, if installed
