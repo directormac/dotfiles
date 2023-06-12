@@ -430,7 +430,8 @@ return {
         dashboard.button(
           "f",
           " " .. " Find file",
-          ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  path_display=smart<CR>"
+          -- ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  path_display=smart<CR>"
+          ":Telescope find_files hidden=true  path_display=smart<CR>"
         ),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
