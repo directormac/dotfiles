@@ -1,11 +1,11 @@
 [vim.files]
 nvim = "~/AppData/Local/nvim"
-# pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 
 [helix.files]
 helix = "~/Appdata/Roaming/helix"
 
 [shell.files]
+alacritty = "~/Appdata/Roaming/alacritty/alacritty.yml"
 pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 lazygit = "~/AppData/Roaming/lazygit/config.yml"
 wezterm = "~/.wezterm.lua"
