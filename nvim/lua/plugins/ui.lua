@@ -430,15 +430,15 @@ return {
         dashboard.button(
           "f",
           " " .. " Find file",
-          -- ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  path_display=smart<CR>"
+          -- ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  <CR>"
           ":Telescope find_files hidden=true  path_display=smart<CR>"
         ),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
+        -- dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
-        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load({lsat = true}) <cr>]]),
+        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load({last = true}) <cr>]]),
         dashboard.button("u", "   Update plugins", "<cmd>lua require('lazy').sync()<CR>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do

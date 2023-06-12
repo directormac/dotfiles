@@ -69,23 +69,40 @@ return {
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make", cond = vim.fn.executable("make") == 1 },
       {
         "nvim-telescope/telescope-file-browser.nvim",
-        -- keys = {
-        -- 	{
-        -- 		"<leader>sB",
-        -- 		":Telescope file_browser <cr>",
-        -- 		desc = "Browse Files",
-        -- 	},
-        -- },
-        -- config = function(_, opts)
-        -- 	print(vim.inspect(opts))
-        -- 	require("telescope").load_extension("file_browser")
-        -- end,
       },
     },
     opts = {
       defaults = {
         prompt_prefix = " ",
         selection_caret = " ",
+        file_ignore_patterns = {
+          "node_modules",
+          "build",
+          "dist",
+          "yarn.lock",
+          "target",
+          ".git",
+        },
+        vimgrep_arguments = {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+          "--glob",
+          "!**/.git/*",
+          "-L",
+        },
+        pickers = {
+          live_grep = {
+            additional_args = function(opts)
+              return { "--hidden" }
+            end,
+          },
+        },
+        extensions = {},
         mappings = {
           i = {
             ["<c-t>"] = function(...)
@@ -104,12 +121,6 @@ return {
               local line = action_state.get_current_line()
               Util.telescope("find_files", { hidden = true, default_text = line })()
             end,
-            -- ["<C-Down>"] = function(...)
-            -- 	return require("telescope.actions").cycle_history_next(...)
-            -- end,
-            -- ["<C-Up>"] = function(...)
-            -- 	return require("telescope.actions").cycle_history_prev(...)
-            -- end,
             ["<C-u>"] = false,
             ["<C-d>"] = false,
             ["<C-f>"] = function(...)
@@ -128,23 +139,16 @@ return {
       },
     },
     config = function(_, opts)
-      -- local vimgrep_arguments = require("telescope.config.values.vimgrep_arguments")
-      -- table.insert(opts.defaults, { vimgrep_arguments = vimgrep_arguments })
-      opts.previewer = false
-      opts.prickers = {
-        find_files = {
-          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
-        },
-      }
-      opts.extensions = {}
-
       require("telescope").setup(opts)
 
       -- Enable telescope fzf native, if installed
       require("telescope").load_extension("fzf")
 
-      -- Enable t,elescope file browser
+      -- Enable telescope file browser
       require("telescope").load_extension("file_browser")
+
+      --Enable telescope scope
+      require("telescope").load_extension("scope")
     end,
   },
   -- search/replace in multiple files

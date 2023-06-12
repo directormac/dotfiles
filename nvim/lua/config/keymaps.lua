@@ -79,6 +79,7 @@ map("n", "<leader>fW", Util.telescope("grep_string", { cwd = false }), { desc = 
 -- Files
 map("n", "<leader>ff", Util.telescope("files"), { desc = "Find Files (root dir)" })
 map("n", "<leader>fF", Util.telescope("files", { cwd = false }), { desc = "Find Files (cwd)" })
+map("n", "<leader>fs", "<cmd>Telescope scope buffers<cr>", { desc = "Sessions" })
 
 -- Blazing Greps
 map("n", "<leader>sg", Util.telescope("live_grep"), { desc = "Grep (root dir)" })
@@ -285,3 +286,4 @@ map("n", "<leader>M", "<cmd>Mason<cr>", { desc = "Show Mason" })
 -- lsp_map("K", vim.lsp.buf.hover, bufnr, { desc = "Hover Documentation" })
 -- lsp_map("gD", vim.lsp.buf.declaration, bufnr, { desc = "Goto Declaration" })
 -- lsp_map("<leader>cf", "<cmd>Format<cr>", bufnr, { desc = "Format" })
+--
