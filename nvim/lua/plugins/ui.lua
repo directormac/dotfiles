@@ -81,6 +81,7 @@ return {
         right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
         themable = true,
         -- numbers = "ordinal",
+        indicator = { style = "none" },
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         separator_style = "thin",
@@ -134,6 +135,9 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = {
+            -- { "fileformat", separator = " ", padding = { left = 1, right = 0 } },
+            -- { "progress", separator = " ", padding = { left = 1, right = 0 } },
+            { "location", seperator = " ", padding = { left = 1, right = 1 } },
             {
               "diagnostics",
               symbols = {
@@ -142,37 +146,22 @@ return {
                 info = icons.diagnostics.Info,
                 hint = icons.diagnostics.Hint,
               },
-            -- stylua: ignore
-            {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            },
             },
           },
-          lualine_x = {
-            { "fileformat", separator = " ", padding = { left = 1, right = 0 } },
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", padding = { left = 0, right = 1 } },
+          lualine_c = {
+          -- stylua: ignore
+          {function() return require("nvim-navic").get_location() end,cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,},
           },
+          lualine_x = {},
           lualine_y = {
             -- stylua: ignore
-            {
-              function() return require("noice").api.status.command.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = Util.fg("Statement"),
+            {function() return require("noice").api.status.command.get() end, cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end, color = Util.fg("Statement"),
             },
             -- stylua: ignore
-            {
-              function() return require("noice").api.status.mode.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = Util.fg("Constant"),
+            {function() return require("noice").api.status.mode.get() end,cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,color = Util.fg("Constant"),
             },
             -- stylua: ignore
-            {
-              function() return "  " .. require("dap").status() end,
-              cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = Util.fg("Debug"),
-            },
+            {function() return "  " .. require("dap").status() end, cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,color = Util.fg("Debug"),},
             { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
             {
               "diff",

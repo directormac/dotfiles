@@ -10,6 +10,6 @@ helix = "~/.config/helix"
 lazygit = "~/.config/lazygit/config.yml"
 zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
-tmux = "~/.tmux.config"
+tmux = "~/.tmux.conf"
 wezterm = "~/.wezterm.lua"
 
