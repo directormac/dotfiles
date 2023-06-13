@@ -61,6 +61,22 @@ disabled = false
 style = "bold white"
 format = "[$time]($style)"
 
+#[memory_usage]
+#format = "$symbol[${ram}( | ${swap})]($style) "
+#threshold = 70
+#style = "bold dimmed white"
+#disabled = false
+
+[hostname]
+ssh_only = false
+format = "<[$hostname]($style)>"
+trim_at = "-"
+style = "bold dimmed white"
+disabled = true
+
+[username]
+style_user = "bold dimmed blue"
+show_always = false
 [custom.stunnel]
 when = "ps aux | grep stunnel | grep -v grep"
 command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')"
@@ -85,19 +101,4 @@ shell = ["bash", "--noprofile", "--norc"]
 symbol = "🔑"
 style = "bold fg:green"
 
-[memory_usage]
-format = "$symbol[${ram}( | ${swap})]($style) "
-threshold = 70
-style = "bold dimmed white"
-disabled = false
 
-[hostname]
-ssh_only = false
-format = "<[$hostname]($style)>"
-trim_at = "-"
-style = "bold dimmed white"
-disabled = true
-
-[username]
-style_user = "bold dimmed blue"
-show_always = false
