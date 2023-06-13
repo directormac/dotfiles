@@ -10,8 +10,8 @@ map({ "n", "v" }, "<leader>yy", '"+yy', { noremap = true, desc = "Copy to OSC52 
 map("i", "jj", "<esc>")
 map("i", "jk", "<esc>")
 map("i", "<C-c>", "<esc>")
-map("t", "jj", "<C\\><C-n>")
-map("t", "jk", "<C\\><C-n>")
+map("t", "jj", "<C-\\><C-n>")
+map("t", "jk", "<C-\\><C-n>")
 map("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Escape Insert Mode" })
 
 -- Beter scrolllssssssss

@@ -63,11 +63,13 @@ return {
           BufferLineNumbers = { fg = C.green, bg = C.crust },
           BufferLineNumbersSelected = { fg = C.green, bg = C.crust },
           BufferLineNumbersVisible = { fg = C.green, bg = C.crust },
-          BufferLineTab = { bg = C.base, fg = C.overlay0 },
-          BufferLineTabClose = { fg = C.blue, bg = C.base },
-          -- BufferLineTabSelected = { fg = C.blue, bg = C.base },
-          BufferLineTabSeparator = { bg = C.base, fg = C.base },
-          BufferLineTabSeparatorSelected = { bg = C.base, fg = C.base },
+
+          -- Bufferline Tab
+          BufferLineTab = { bg = C.blue, fg = C.crust },
+          BufferLineTabClose = { bg = C.base, fg = C.blue },
+          BufferLineTabSelected = { bg = C.peach, fg = C.crust },
+          BufferLineTabSeparator = { bg = C.blue, fg = C.base },
+          BufferLineTabSeparatorSelected = { bg = C.peach, fg = C.base },
         }
       end,
     },
