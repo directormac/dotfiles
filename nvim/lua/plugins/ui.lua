@@ -8,73 +8,27 @@ return {
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
       { "<leader>ba", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-      {
-        "<A-1>",
-        function()
-          require("bufferline").go_to(1, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-2>",
-        function()
-          require("bufferline").go_to(2, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-3>",
-        function()
-          require("bufferline").go_to(3, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-4>",
-        function()
-          require("bufferline").go_to(4, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-5>",
-        function()
-          require("bufferline").go_to(5, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-6>",
-        function()
-          require("bufferline").go_to(6, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-7>",
-        function()
-          require("bufferline").go_to(7, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-8>",
-        function()
-          require("bufferline").go_to(8, true)
-        end,
-        desc = "Go to first buffer",
-      },
-      {
-        "<A-9>",
-        function()
-          require("bufferline").go_to(9, true)
-        end,
-        desc = "Go to first buffer",
-      },
+      -- stylua: ignore
+      { "<A-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-7>", function() require("bufferline").go_to(7, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-8>", function() require("bufferline").go_to(8, true) end, desc = "Go to first buffer", },
+      -- stylua: ignore
+      { "<A-9>", function() require("bufferline").go_to(9, true) end, desc = "Go to first buffer", },
     },
     opts = {
       options = {
-				-- mode = "tabs",
         -- stylua: ignore
         close_command = function(n) require("mini.bufremove").delete(n, false) end,
         -- stylua: ignore
@@ -132,19 +86,31 @@ return {
 
       return {
         options = {
-          theme = "auto",
+          -- fmt = string.lower,
+          theme = "catppuccin",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha" } },
           icons_enabled = true,
-          component_separators = "|",
+          -- component_separators = "█",
+          component_separators = "",
           section_separators = "",
         },
         sections = {
-          lualine_a = { "mode" },
+          lualine_a = {
+            {
+              "mode",
+              fmt = function(str)
+                -- return str:sub(1, 1)
+                return ""
+              end,
+              -- "mode",
+              -- icon = "",
+            },
+          },
           lualine_b = {
-            -- { "fileformat", separator = " ", padding = { left = 1, right = 0 } },
-            -- { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", seperator = " ", padding = { left = 1, right = 1 } },
+            { "fileformat", separator = "", padding = { left = 1, right = 1 } },
+            { "location", seperator = "", padding = { left = 0, right = 1 } },
+            -- { "progress", separator = "", padding = { left = 1, right = 1 } },
             {
               "diagnostics",
               symbols = {
@@ -156,11 +122,11 @@ return {
             },
           },
           lualine_c = {
-          -- stylua: ignore
-          {function() return require("nvim-navic").get_location() end,cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,},
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
+            -- stylua: ignore
+            {function() return require("nvim-navic").get_location() end,cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,},
           },
-          lualine_x = {},
-          lualine_y = {
+          lualine_x = {
             -- stylua: ignore
             {function() return require("noice").api.status.command.get() end, cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end, color = Util.fg("Statement"),
             },
@@ -169,18 +135,26 @@ return {
             },
             -- stylua: ignore
             {function() return "  " .. require("dap").status() end, cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,color = Util.fg("Debug"),},
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
+          },
+          lualine_y = {
+            {
+              "filename",
+              path = 1,
+              color = { bg = "#11111b" },
+              symbols = { modified = "  ", readonly = "", unnamed = "" },
+            },
             {
               "diff",
+              color = { bg = "#11111b" },
               symbols = {
                 added = icons.git.added,
                 modified = icons.git.modified,
                 removed = icons.git.removed,
               },
             },
+            { "branch", color = { bg = "#11111b" } },
           },
-
-          lualine_z = { "branch" },
+          lualine_z = {},
         },
         extensions = { "lazy" },
       }
@@ -334,52 +308,20 @@ return {
     },
     -- stylua: ignore
     keys = {
-      {
-        "<S-Enter>",
-        function() require("noice").redirect(vim.fn.getcmdline()) end,
-        mode = "c",
-        desc =
-        "Redirect Cmdline"
-      },
-      {
-        "<leader>snl",
-        function() require("noice").cmd("last") end,
-        desc =
-        "Noice Last Message"
-      },
-      {
-        "<leader>snh",
-        function() require("noice").cmd("history") end,
-        desc =
-        "Noice History"
-      },
+      -- stylua: ignore
+      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
+      -- stylua: ignore
+      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      -- stylua: ignore
+      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      --stylua: ignore
       { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      {
-        "<leader>snd",
-        function() require("noice").cmd("dismiss") end,
-        desc =
-        "Dismiss All"
-      },
-      {
-        "<c-f>",
-        function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end,
-        silent = true,
-        expr = true,
-        desc =
-        "Scroll forward",
-        mode = {
-          "i", "n", "s" }
-      },
-      {
-        "<c-b>",
-        function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end,
-        silent = true,
-        expr = true,
-        desc =
-        "Scroll backward",
-        mode = {
-          "i", "n", "s" }
-      },
+      --stylua: ignore
+      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+      --stylua: ignore
+      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
+      --stylua: ignore
+      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true,expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
   },
   -- lsp symbol navigation for lualine
