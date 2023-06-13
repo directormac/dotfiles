@@ -12,10 +12,12 @@ function global:$name {
     write-debug "Defined function:`n$func"
     $func | iex
 }
+Set-Alias ls -Value lsd
+Add-Alias c 'clear'
 Add-Alias lg 'lazygit'
 Add-Alias v 'nvim'
 Add-Alias vim 'nvim'
-Add-Alias ls 'lsd'
+# Add-Alias ls 'lsd'
 Add-Alias la 'lsd -a'
 Add-Alias gs 'git status'
 
@@ -28,9 +30,6 @@ $ENV:NEOVIM_CONFIG = "%USERPROFILE\AppData\Local\nvim"
 
 # Shows navigable menu of all options when hitting Tab
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-# Install-Module -Name posh-alias
-
-
 # Autocompletion for arrow keys
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
@@ -42,4 +41,3 @@ function Pwsh-Config(){
 function Nvim-Config(){
   nvim $NEOVIM_CONFIG 
    }
-
