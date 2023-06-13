@@ -82,9 +82,43 @@ end)
 
 ---- Appearance
 -- config.front_end = "OpenGL"
-
+-- Color pallete
+local colors = {
+	rosewater = "#f5e0dc",
+	flamingo = "#f2cdcd",
+	pink = "#f5c2e7",
+	mauve = "#cba6f7",
+	red = "#f38ba8",
+	maroon = "#eba0ac",
+	peach = "#fab387",
+	yellow = "#f9e2af",
+	green = "#a6e3a1",
+	teal = "#94e2d5",
+	sky = "#89dceb",
+	sapphire = "#74c7ec",
+	blue = "#89b4fa",
+	lavender = "#b4befe",
+	text = "#cdd6f4",
+	subtext1 = "#bac2de",
+	subtext0 = "#a6adc8",
+	overlay2 = "#9399b2",
+	overlay1 = "#7f849c",
+	overlay0 = "#6c7086",
+	surface2 = "#585b70",
+	surface1 = "#45475a",
+	surface0 = "#313244",
+	base = "#1e1e2e",
+	mantle = "#181825",
+	crust = "#11111b",
+}
 config.status_update_interval = 1000
 config.color_scheme = "Catppuccin Mocha"
+
+local custom = term.color.get_builtin_schemes()["Catppuccin Mocha"]
+custom.background = "#11111B"
+local color_schemes = {
+	["Catppuccin Dark"] = custom,
+}
 
 config.animation_fps = 240
 config.max_fps = 240
@@ -106,13 +140,14 @@ config.window_decorations = "RESIZE"
 config.window_frame = {
 	border_left_width = "0.25cell",
 	border_right_width = "0.25cell",
-	border_bottom_height = "0.125cell",
-	border_top_height = "0.125cell",
-	border_left_color = "#11111b",
-	border_right_color = "#11111b",
-	border_bottom_color = "#11111b",
-	border_top_color = "#11111b",
-	font_size = 16,
+	border_bottom_height = "0.40cell",
+	border_top_height = "0.25cell",
+	border_left_color = colors.crust,
+	border_right_color = colors.crust,
+	border_bottom_color = colors.crust,
+	border_top_color = colors.crust,
+	font_size = 15,
+	-- font_size = 16,
 }
 config.enable_scroll_bar = false
 config.default_cursor_style = "SteadyBar"
@@ -120,17 +155,16 @@ config.default_cursor_style = "SteadyBar"
 config.inactive_pane_hsb = { saturation = 1.0, brightness = 0.5 }
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.colors = {
-	background = "#11111b",
+	background = colors.crust,
 	tab_bar = {
-		background = "#11111b",
+		background = colors.crust,
 		active_tab = {
-			bg_color = "#11111b",
-			fg_color = "#11111b",
-			intensity = "Bold",
+			bg_color = colors.peach,
+			fg_color = colors.crust,
 		},
 		inactive_tab = {
-			bg_color = "#11111b",
-			fg_color = "#181825",
+			bg_color = colors.blue,
+			fg_color = colors.base,
 		},
 	},
 }
@@ -288,97 +322,34 @@ config.mouse_bindings = {
 -- Local Functions
 --------------------------------------
 
-local tab_title = function(tab_info)
-	local process_icons = {
-		["btm"] = { { Text = "" } },
-		["cargo"] = { { Text = "" } },
-		["cmd.exe"] = { { Text = "" } },
-		["docker"] = { { Text = "" } },
-		["hx"] = { { Text = "" } },
-		["node"] = { { Text = "" } },
-		["nvim"] = { { Text = "" } },
-		["nvim.exe"] = { { Text = "" } },
-		["pnpm"] = { { Text = " " } },
-		["pwsh.exe"] = { { Text = " " } },
-		["v"] = { { Text = " " } },
-		["vi"] = { { Text = " " } },
-		["vim"] = { { Text = " " } },
-		["yarn"] = { { Text = "" } },
-		["zsh"] = { { Text = "" } },
-		["~"] = { { Text = "" } },
-	}
-	local process_name = string.gsub(tab_info.active_pane.title, "(.*[/\\])(.*)", "%2")
-
-	if not process_name then
-		process_name = "zsh"
-	end
-
-	return term.format(process_icons[process_name] or { { Text = string.format("%s", process_name) } })
-end
-
 term.on("format-tab-title", function(tab)
-	-- local title = tab_title(tab)
-	-- title = " " .. title .. " "
-	-- local tab_active = tab.is_active
-	-- local icon = " " .. " "
-	-- local icon_attr = { Intensity = "Bold" }
-	-- local italized = { Italic = false }
-	-- local active_fg = { Color = "#a6e3a1" }
-	-- local tab_icon = " "
-	-- if not tab_active then
-	-- 	icon = string.format(" %s", tab.tab_index + 1)
-	-- 	icon = ""
-	-- 	icon_attr = { Intensity = "Half" }
-	-- 	italized = { Italic = true }
-	-- 	active_fg = { Color = "#f39ba8" }
-	-- end
-	--
-	-- return term.format({
-	-- 	{ Attribute = icon_attr },
-	-- 	{ Foreground = active_fg },
-	-- 	{ Text = icon },
-	-- 	"ResetAttributes",
-	-- 	{ Foreground = active_fg },
-	-- 	{ Attribute = italized },
-	-- 	{ Text = title },
-	-- 	"ResetAttributes",
-	-- 	{ Attribute = { Italic = false } },
-	-- 	{ Foreground = { Color = "#6c7086" } },
-	-- 	{ Text = "" },
-	-- })
-	---▕▕ " ⎹ ⎸
-	local tab_index = string.format(" %s  ", tab.tab_index + 1)
-	local tab_fg = "#89b4fa"
-	if not tab.is_active then
-		tab_fg = "#6c7086"
-	end
-
+	local tab_index = string.format("%s ", tab.tab_index + 1)
 	return term.format({
-		{ Foreground = { Color = "#6c7086" } },
 		{ Text = "▏" },
-		{ Foreground = { Color = tab_fg } },
 		{ Text = tab_index },
 	})
 end)
-
+--  
 term.on("update-right-status", function(window, pane)
 	local cells = {}
-
 	local key_mode = window:active_key_table()
 	local mode = {
 		["search_mode"] = "󰜏",
 		["copy_mode"] = "",
 	}
+	if not key_mode then
+		table.insert(cells, "")
+	else
+		table.insert(cells, mode[key_mode])
+	end
 
-	table.insert(cells, mode[key_mode] or " ")
-
+	--
 	local workspace = window:active_workspace()
-
 	if workspace == "default" then
 		workspace = ""
 	end
-
 	table.insert(cells, workspace)
+
 	local cwd_uri = pane:get_current_working_dir()
 	if cwd_uri then
 		cwd_uri = cwd_uri:sub(8)
@@ -404,10 +375,6 @@ term.on("update-right-status", function(window, pane)
 			end
 		end
 	end
-
-	local date = term.strftime("%a %b %d %H:%M:%S")
-	table.insert(cells, date)
-
 	local current_time = tonumber(term.strftime("%H"))
 	local time = {
 		[00] = "",
@@ -423,48 +390,46 @@ term.on("update-right-status", function(window, pane)
 		[10] = "󰗲",
 		[11] = "",
 		[12] = "",
-		[13] = "",
+		[13] = "",
 		[14] = "",
 		[15] = "",
-		[16] = "",
+		[16] = "",
 		[17] = "",
 		[18] = "",
 		[19] = "󰗲",
-		[20] = "",
+		[20] = "",
 		[21] = "",
 		[22] = "",
 		[23] = "",
 	}
-	table.insert(cells, time[current_time])
+	table.insert(cells, time[current_time] .. " ")
+	local date = term.strftime("%H:%M:%S %a %b %d")
+	table.insert(cells, date)
+	local text_fg = "#11111b"
+	local SEPERATOR = "█"
+	local pallete = {
+		"#f5e0dc",
+		"#f5c2e7",
+		"#a6e3a1",
+		"#89b4fa",
+		"#94e2d5",
+		"#cba6f7",
+		"#b4befe",
+	}
 
 	local elements = {}
 	local num_cells = 0
-	-- symbol = "▏",
-	-- symbol = "│",
+
 	-- Translate into elements
 	function push(text, is_last)
 		local cell_no = num_cells + 1
-
-		table.insert(elements, { Foreground = { Color = "#89b4fa" } })
-		table.insert(elements, { Text = "" .. text .. " " })
+		table.insert(elements, { Foreground = { Color = pallete[cell_no] } })
+		table.insert(elements, { Background = { Color = "#11111b" } })
+		table.insert(elements, { Text = "" .. text .. "" })
 		if not is_last then
-			if cell_no == 1 then
-				table.insert(elements, { Foreground = { Color = "#a6e3a1" } })
-				table.insert(elements, { Text = " ->" })
-			else
-				table.insert(elements, { Foreground = { Color = "#6c7086" } })
-				-- table.insert(elements, { Text = "" .. "▏" .. "" })
-				table.insert(elements, { Text = "" .. "│" .. "" })
-			end
-
-			-- { Text = "▏"}
+			table.insert(elements, { Foreground = { Color = "#11111b" } })
+			table.insert(elements, { Text = SEPERATOR })
 		end
-		-- if is_last then
-		-- 	table.insert(elements, { Foreground = { Color = "#6c7086" } })
-		-- 	table.insert(elements, { Text = "" .. "" .. " " })
-		-- 	table.insert(elements, { Foreground = { Color = "#89dceb" } })
-		-- 	table.insert(elements, { Text = time })
-		-- end
 		num_cells = num_cells + 1
 	end
 
@@ -476,29 +441,3 @@ term.on("update-right-status", function(window, pane)
 end)
 
 return config
--- 		rosewater = "#f5e0dc",
--- 		flamingo = "#f2cdcd",
--- 		pink = "#f5c2e7",
--- 		mauve = "#cba6f7",
--- 		red = "#f38ba8",
--- 		maroon = "#eba0ac",
--- 		peach = "#fab387",
--- 		yellow = "#f9e2af",
--- 		green = "#a6e3a1",
--- 		teal = "#94e2d5",
--- 		sky = "#89dceb",
--- 		sapphire = "#74c7ec",
--- 		blue = "#89b4fa",
--- 		lavender = "#b4befe",
--- 		text = "#cdd6f4",
--- 		subtext1 = "#bac2de",
--- 		subtext0 = "#a6adc8",
--- 		overlay2 = "#9399b2",
--- 		overlay1 = "#7f849c",
--- 		overlay0 = "#6c7086",
--- 		surface2 = "#585b70",
--- 		surface1 = "#45475a",
--- 		surface0 = "#313244",
--- 		base = "#1e1e2e",
--- 		mantle = "#181825",
--- 		crust = "#11111b",
