@@ -138,16 +138,15 @@ config.window_decorations = "RESIZE"
 -- config.text_background_opacity = 0.3
 -- config.window_background_opacity = 0.618
 config.window_frame = {
-	border_left_width = "0.25cell",
-	border_right_width = "0.25cell",
-	border_bottom_height = "0.40cell",
-	border_top_height = "0.25cell",
+	border_left_width = "1px",
+	border_right_width = "1px",
+	border_bottom_height = "1px",
+	border_top_height = "1px",
 	border_left_color = colors.crust,
 	border_right_color = colors.crust,
 	border_bottom_color = colors.crust,
 	border_top_color = colors.crust,
-	font_size = 15,
-	-- font_size = 16,
+	font_size = 16,
 }
 config.enable_scroll_bar = false
 config.default_cursor_style = "SteadyBar"
@@ -321,9 +320,43 @@ config.mouse_bindings = {
 --------------------------------------
 -- Local Functions
 --------------------------------------
+function recompute_padding(window)
+	local window_dims = window:get_dimensions()
+	local overrides = window:get_config_overrides() or {}
+
+	if not window_dims.is_full_screen then
+		if not overrides.window_padding then
+			-- not changing anything
+			return
+		end
+		overrides.window_padding = nil
+	else
+		-- Use only the middle 33%
+		local third = math.floor(window_dims.pixel_width / 3)
+		local new_padding = {
+			left = third,
+			right = third,
+			top = 0,
+			bottom = 0,
+		}
+		if overrides.window_padding and new_padding.left == overrides.window_padding.left then
+			-- padding is same, avoid triggering further changes
+			return
+		end
+		overrides.window_padding = new_padding
+	end
+	window:set_config_overrides(overrides)
+end
+
+term.on("window-resized", function(window, pane)
+	recompute_padding(window)
+end)
+term.on("window-config-reloaded", function(window)
+	recompute_padding(window)
+end)
 
 term.on("format-tab-title", function(tab)
-	local tab_index = string.format("%s ", tab.tab_index + 1)
+	local tab_index = string.format(" %s  ", tab.tab_index + 1)
 	return term.format({
 		{ Text = "▏" },
 		{ Text = tab_index },

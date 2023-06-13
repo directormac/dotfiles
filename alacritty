@@ -39,8 +39,8 @@ window:
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
   position:
-    x: 5
-    y: 3
+    x: 0
+    y: 0
 
   # Window padding (changes require restart)
   #
@@ -51,7 +51,7 @@ window:
     y: 0
 
   # Spread additional padding evenly around the terminal content.
-  dynamic_padding: true
+  dynamic_padding: false
 
   # Window decorations
   #
@@ -62,14 +62,13 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  #decorations: full
+  decorations: full
 
   # Background opacity
   #
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  # opacity: 0.8
-
+  opacity: 0.618
   # Startup Mode (changes require restart)
   #
   # Values for `startup_mode`:
@@ -79,10 +78,10 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  #startup_mode: Windowed
+  startup_mode: Windowed
 
   # Window title
-  # title: Alacritty
+  title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
@@ -173,7 +172,7 @@ font:
   # of as modifying the line spacing, and `offset.x` as modifying the letter
   # spacing.
   offset:
-    x: 1
+    x: 0
     y: 1
 
   # Glyph offset determines the locations of the glyphs within their cells with
@@ -384,8 +383,7 @@ colors:
   # Default:
   #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
   #   - (Windows) powershell
-shell:
-  pwsh
+shell: pwsh
   #  program: /bin/bash
   #  args:
   #    - --login
@@ -394,7 +392,7 @@ shell:
   #
   # Directory the shell is started in. If this is unset, or `None`, the working
   # directory of the parent process will be used.
-  #working_directory: None
+working_directory: ~
 
   # Offer IPC using `alacritty msg` (unix only)
   #ipc_socket: true
@@ -495,8 +493,31 @@ shell:
   #  - { mouse: Middle, mode: ~Vi,     action: PasteSelection  }
 
   # Key bindings
-  #
-  # Key bindings are specified as a list of objects. For example, this is the
+# Bindings are always filled by default, but will be replaced when a new
+# binding with the same triggers is defined. To unset a default binding, it can
+# be mapped to the `ReceiveChar` action. Alternatively, you can use `None` for
+# a no-op if you do not wish to receive input characters for that binding.
+key_bindings:
+    # (Windows, Linux, and BSD only)
+  - { key: V,         mods: Control|Shift, action: Paste                       }
+  - { key: C,         mods: Control|Shift, action: Copy                        }
+  - { key: Insert,    mods: Shift,         action: PasteSelection              }
+  - { key: Key0,      mods: Control,       action: ResetFontSize               }
+  - { key: Equals,    mods: Control,       action: IncreaseFontSize            }
+  - { key: Plus,      mods: Control,       action: IncreaseFontSize            }
+  - { key: Minus,     mods: Control,       action: DecreaseFontSize            }
+  - { key: F11,       mods: None,          action: ToggleFullscreen            }
+  - { key: Paste,     mods: None,          action: Paste                       }
+  - { key: Copy,      mods: None,          action: Copy                        }
+  - { key: L,         mods: Control,       action: ClearLogNotice              }
+  - { key: L,         mods: Control,       chars: "\x0c"                       }
+  - { key: PageUp,    mods: None,          action: ScrollPageUp,   mode: ~Alt  }
+  - { key: PageDown,  mods: None,          action: ScrollPageDown, mode: ~Alt  }
+  - { key: Home,      mods: Shift,         action: ScrollToTop,    mode: ~Alt  }
+  - { key: End,       mods: Shift,         action: ScrollToBottom, mode: ~Alt  }
+
+
+  #None # Key bindings are specified as a list of objects. For example, this is the
   # default paste binding:
   #
   # `- { key: V, mods: Control|Shift, action: Paste }`
@@ -837,19 +858,14 @@ shell:
   #   - glsl3
   #   - gles2
   #   - gles2_pure
-  #renderer: None
+renderer:
+  glsl3
 
   # Print all received window events.
   #print_events: false
 
   # Highlight window damage information.
   #highlight_damage: false
-
-  # opacity: 0.85
-  # startup_mode: Windowed
-  # title: Alacritty
-  # decorations: none
-
 # Arch launch
 # shell:
 #   program: "C:\\Windows\\System32\\wsl.exe"
@@ -858,40 +874,3 @@ shell:
 # working_directory: \\wsl$\Arch\home\artifex
 
 # Features not needed because of tmux
-
-key_bindings:
-  #Leader Key Unbind
-  - { key: A, mods: Control, action: ReceiveChar }
-  # scrollback
-  - { key: PageUp, mods: Shift, mode: ~Alt, action: ReceiveChar }
-  - { key: PageDown, mods: Shift, mode: ~Alt, action: ReceiveChar }
-  - { key: Home, mods: Shift, mode: ~Alt, action: ReceiveChar }
-  - { key: End, mods: Shift, mode: ~Alt, action: ReceiveChar }
-  - { key: K, mods: Command, mode: ~Vi, action: ReceiveChar }
-  # searching
-  # - { key: F, mods: Shift, mode: ~Search, action: ReceiveChar }
-  - { key: F, mods: None, mode: ~Search, action: ReceiveChar }
-  - { key: F, mods: Command, mode: ~Search, action: ReceiveChar }
-  - { key: B, mods: Control|Shift, mode: ~Search, action: ReceiveChar }
-  - { key: B, mods: Command, mode: ~Search, action: ReceiveChar }
-  - { key: K, mods: Command, mode: ~Search, action: ReceiveChar }
-  - { key: C, mods: Command, mode: ~Search, action: ReceiveChar }
-  - { key: C, mods: Control|Shift, mode: ~Search, action: ReceiveChar }
-  # copy/paste
-  - { key: Paste, action: ReceiveChar }
-  - { key: Copy, action: ReceiveChar }
-  - { key: V, mods: Control|Shift, mode: ~Vi, action: ReceiveChar }
-  - { key: V, mods: Command, action: ReceiveChar }
-  - { key: C, mods: Control|Shift, action: ReceiveChar }
-  - { key: C, mods: Command, action: ReceiveChar }
-  - { key: C, mods: Control|Shift, mode: Vi, action: ReceiveChar }
-  - { key: C, mods: Command, mode: Vi, action: ReceiveChar }
-  - { key: Insert, mods: Shift, action: ReceiveChar }
-
-mouse_bindings:
-  - { mouse: Right, action: ReceiveChar }
-
-selection:
-  save_to_clipboard: false
-live_config_reload: true
-working_directory: None

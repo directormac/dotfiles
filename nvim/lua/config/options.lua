@@ -64,7 +64,7 @@ vo.undolevels = 10000
 vo.updatetime = 100 -- If in this many milliseconds nothing is typed, the swap file will be written to disk. Also used for CursorHold autocommand and set to 100 as per https://github.com/antoinemadec/FixCursorHold.nvim
 vo.wildignore = { "*/.git/*", "*/node_modules/*" } -- Ignore these files/folders
 vo.wildmode = "list:longest" -- Command-line completion mode
-vo.winbar = "%=%m %f"
+-- vo.winbar = "%=%m %f"
 vo.winblend = 0
 vo.winminwidth = 5
 vo.wrap = false
