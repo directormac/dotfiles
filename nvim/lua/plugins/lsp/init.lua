@@ -45,7 +45,7 @@ return {
         -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
         -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
         -- prefix = "icons",
-        virtual_text = false,
+        virtual_text = true,
         signs = {
           active = require("helpers.util").icons.diagnostics,
         },
@@ -112,6 +112,13 @@ return {
         rust_analyzer = {
           -- mason = false,
           -- cmd = { vim.fn.expand("~/.rustup/toolchains/stable-x86_64-pc-windows-msvc/bin/rust-analyzer.exe", nosuf?)}
+          settings = {
+            ["rust-analyzer"] = {
+              hover_actions = {
+                enable = false,
+              },
+            },
+          },
         },
         jsonls = {
           -- lazy-load schemastore when needed
@@ -153,7 +160,6 @@ return {
                 -- exit early if autoformat is not enabled
                 return
               end
-
               local client = vim.lsp.get_active_clients({ bufnr = event.buf, name = "eslint" })[1]
               if client then
                 local diag = vim.diagnostic.get(event.buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
@@ -187,7 +193,22 @@ return {
           end, tw.default_config.filetypes)
         end,
         rust_analyzer = function(_, opts)
-          require("rust-tools").setup({ server = opts })
+          local rusttools = require("rust-tools")
+          rusttools.setup({
+            ft = "rust",
+            tools = {
+              hover_actions = {
+                auto_focus = true,
+              },
+            },
+            capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            server = {
+              on_attach = function(_, bufnr)
+                vim.keymap.set("n", "<Leader>k", rusttools.hover_actions, { buffer = bufnr })
+                vim.keymap.set("n", "<Leader>a", rusttools.code_action_group.code_action_group, { buffer = bufnr })
+              end,
+            },
+          })
           return true
         end,
       },
@@ -205,17 +226,17 @@ return {
         name = "DiagnosticSign" .. name
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
       end
-      -- if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
-      --   opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-      --       or function(diagnostic)
-      --         local icons = require("lazyvim.config").icons.diagnostics
-      --         for d, icon in pairs(icons) do
-      --           if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-      --             return icon
-      --           end
-      --         end
-      --       end
-      -- end
+      if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
+        opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
+          or function(diagnostic)
+            local icons = require("helpers.util").icons.diagnostics
+            for d, icon in pairs(icons) do
+              if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+                return icon
+              end
+            end
+          end
+      end
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
       local servers = opts.servers
       local capabilities = vim.tbl_deep_extend(
@@ -225,7 +246,6 @@ return {
         require("cmp_nvim_lsp").default_capabilities(),
         opts.capabilities or {}
       )
-
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
@@ -242,14 +262,12 @@ return {
         end
         require("lspconfig")[server].setup(server_opts)
       end
-
       -- get all the servers that are available thourgh mason-lspconfig
       local have_mason, mlsp = pcall(require, "mason-lspconfig")
       local all_mslp_servers = {}
       if have_mason then
         all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       end
-
       local ensure_installed = {} ---@type string[]
       for server, server_opts in pairs(servers) do
         if server_opts then
@@ -288,8 +306,8 @@ return {
         sources = {
           require("typescript.extensions.null-ls.code-actions"),
           nls.builtins.formatting.prettierd,
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
+          -- nls.builtins.formatting.fish_indent,
+          -- nls.builtins.diagnostics.fish,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
           nls.builtins.formatting.clang_format,
@@ -392,7 +410,6 @@ return {
           end
         end,
       },
-
       -- virtual text for the debugger
       {
         "theHamsta/nvim-dap-virtual-text",
@@ -407,11 +424,9 @@ return {
           -- Makes a best effort to setup the various debuggers with
           -- reasonable debug configurations
           automatic_installation = true,
-
           -- You can provide additional configuration to the handlers,
           -- see mason-nvim-dap README for more information
           handlers = {},
-
           -- You'll need to check that you have the required things installed
           -- online, please don't ask me how to install them :)
           ensure_installed = {
@@ -425,87 +440,35 @@ return {
     },
     -- stylua: ignore
     keys = {
-      {
-        "<leader>dB",
-        function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
-        desc =
-        "Breakpoint Condition"
-      },
-      {
-        "<leader>db",
-        function() require("dap").toggle_breakpoint() end,
-        desc =
-        "Toggle Breakpoint"
-      },
-      {
-        "<leader>dc",
-        function() require("dap").continue() end,
-        desc =
-        "Continue"
-      },
-      {
-        "<leader>dC",
-        function() require("dap").run_to_cursor() end,
-        desc =
-        "Run to Cursor"
-      },
-      {
-        "<leader>dg",
-        function() require("dap").goto_() end,
-        desc =
-        "Go to line (no execute)"
-      },
-      {
-        "<leader>di",
-        function() require("dap").step_into() end,
-        desc =
-        "Step Into"
-      },
+      -- stylua: ignore
+      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+      -- stylua: ignore
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" }, 
+      -- stylua: ignore
+      { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
+      -- stylua: ignore
+      { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+      -- stylua: ignore
+      { "<leader>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
+      -- stylua: ignore
+      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
       { "<leader>dj", function() require("dap").down() end, desc = "Down" },
       { "<leader>dk", function() require("dap").up() end,   desc = "Up" },
-      {
-        "<leader>dl",
-        function() require("dap").run_last() end,
-        desc =
-        "Run Last"
-      },
-      {
-        "<leader>do",
-        function() require("dap").step_out() end,
-        desc =
-        "Step Out"
-      },
-      {
-        "<leader>dO",
-        function() require("dap").step_over() end,
-        desc =
-        "Step Over"
-      },
+      --stylua: ignore
+      { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+      --stylua: ignore
+      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
+      --stylua: ignore
+      { "<leader>dO", function() require("dap").step_over() end,desc = "Step Over" },
       { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
-      {
-        "<leader>dr",
-        function() require("dap").repl.toggle() end,
-        desc =
-        "Toggle REPL"
-      },
-      {
-        "<leader>ds",
-        function() require("dap").session() end,
-        desc =
-        "Session"
-      },
-      {
-        "<leader>dt",
-        function() require("dap").terminate() end,
-        desc =
-        "Terminate"
-      },
-      {
-        "<leader>dw",
-        function() require("dap.ui.widgets").hover() end,
-        desc =
-        "Widgets"
-      },
+      -- stylua: ignore
+      { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+      -- stylua: ignore
+      { "<leader>ds", function() require("dap").session() end, desc = "Session" },
+      -- stylua: ignore
+      { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
+      -- stylua: ignore
+      { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
     },
 
     config = function()
@@ -523,7 +486,6 @@ return {
   },
   {
     "mfussenegger/nvim-dap",
-
     dependencies = {
       {
         "jbyuki/one-small-step-for-vimkind",

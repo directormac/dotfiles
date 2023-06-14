@@ -79,6 +79,19 @@ return {
         "vue",
         "yaml",
       },
+      autotag = {
+        enable = true,
+        filetypes = {
+          "html",
+          "javascript",
+          "javascriptreact",
+          "svelte",
+          "typescript",
+          "typescriptreact",
+          "vue",
+          "xml",
+        },
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
