@@ -348,6 +348,8 @@ return {
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
+    component_separators = "",
+    section_separators = "",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
