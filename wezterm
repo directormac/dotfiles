@@ -146,7 +146,7 @@ config.window_frame = {
 	border_right_color = colors.crust,
 	border_bottom_color = colors.crust,
 	border_top_color = colors.crust,
-	font_size = 16,
+	-- font_size = 16,
 }
 config.enable_scroll_bar = false
 config.default_cursor_style = "SteadyBar"
@@ -362,7 +362,6 @@ term.on("format-tab-title", function(tab)
 		{ Text = tab_index },
 	})
 end)
---  
 term.on("update-right-status", function(window, pane)
 	local cells = {}
 	local key_mode = window:active_key_table()
@@ -435,9 +434,9 @@ term.on("update-right-status", function(window, pane)
 		[22] = "",
 		[23] = "",
 	}
-	table.insert(cells, time[current_time] .. " ")
 	local date = term.strftime("%H:%M:%S %a %b %d")
-	table.insert(cells, date)
+	local date_time = time[current_time] .. " " .. date
+	table.insert(cells, date_time)
 	local text_fg = "#11111b"
 	local SEPERATOR = "█"
 	local pallete = {
@@ -449,13 +448,17 @@ term.on("update-right-status", function(window, pane)
 		"#cba6f7",
 		"#b4befe",
 	}
-
+	local cols = pane:get_dimensions().cols
+	local padding = term.pad_right("", (cols / 2) - string.len(date_time) - 2)
 	local elements = {}
 	local num_cells = 0
 
 	-- Translate into elements
 	function push(text, is_last)
 		local cell_no = num_cells + 1
+		if is_last then
+			table.insert(elements, { Text = padding })
+		end
 		table.insert(elements, { Foreground = { Color = pallete[cell_no] } })
 		table.insert(elements, { Background = { Color = "#11111b" } })
 		table.insert(elements, { Text = "" .. text .. "" })
