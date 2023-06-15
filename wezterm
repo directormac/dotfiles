@@ -201,7 +201,7 @@ config.keys = {
 			window:maximize()
 		end),
 	},
-	{ key = "Escape", mods = "LEADER", action = act.QuitApplication },
+	-- { key = "Escape", mods = "LEADER", action = act.QuitApplication },
 	{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
 	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
 	{ key = "Tab", mods = "LEADER", action = act.SwitchToWorkspace },
