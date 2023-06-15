@@ -119,6 +119,12 @@ alias gps="git push"
 alias gs="git status -sb"
 alias gm="git merge"
 
+
+
+nvimone () {
+  NVIM_APPNAME="nvimone" nvim
+}
+
 #Aliases
 alias hx="helix"
 alias ls="lsd"

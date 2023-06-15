@@ -2,6 +2,7 @@
 
 [vim.files]
 nvim = "~/.config/nvim"
+nvimone = "~/.config/nvimone"
 
 [helix.files]
 helix = "~/.config/helix"
@@ -13,4 +14,3 @@ zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
 tmux = "~/.tmux.conf"
 wezterm = "~/.wezterm.lua"
-

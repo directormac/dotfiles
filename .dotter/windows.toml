@@ -1,5 +1,6 @@
 [vim.files]
 nvim = "~/AppData/Local/nvim"
+nvimone = "~/AppData/Local/nvimone"
 
 [helix.files]
 helix = "~/Appdata/Roaming/helix"
@@ -10,4 +11,3 @@ pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 lazygit = "~/AppData/Roaming/lazygit/config.yml"
 wezterm = "~/.wezterm.lua"
 starship = "~/.config/starship.toml"
-

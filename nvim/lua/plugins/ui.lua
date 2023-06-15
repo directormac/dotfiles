@@ -1,40 +1,23 @@
 return {
-  -- bufferline
   {
     "akinsho/bufferline.nvim",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    event = "VeryLazy",
-    lazy = true,
+    -- events = "VeryLazy",
     keys = {
-      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
-      { "<leader>ba", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-      -- stylua: ignore
-      { "<A-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-7>", function() require("bufferline").go_to(7, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-8>", function() require("bufferline").go_to(8, true) end, desc = "Go to first buffer", },
-      -- stylua: ignore
-      { "<A-9>", function() require("bufferline").go_to(9, true) end, desc = "Go to first buffer", },
+        -- stylua: ignore
+        { "<A-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
+        -- stylua: ignore
+        { "<A-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to second buffer", },
+        -- stylua: ignore
+        { "<A-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to third buffer", },
+        -- stylua: ignore
+        { "<A-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to fourth buffer", },
+        -- stylua: ignore
+        { "<A-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to fifth buffer", },
+        -- stylua: ignore
+        { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
     },
-    opts = {
-      options = {
-        -- stylua: ignore
-        close_command = function(n) require("mini.bufremove").delete(n, false) end,
-        -- stylua: ignore
-        right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-        themable = true,
-        -- numbers = "ordinal",
+    opts = function(_, opts)
+      opts.options = {
         indicator = { style = "none" },
         diagnostics = "nvim_lsp",
         always_show_bufferline = true,
@@ -43,18 +26,6 @@ return {
         show_duplicate_prefix = true,
         persist_buffer_sort = true,
         show_close_icon = false,
-        -- custom_filter = function(buf, buf_nums)
-        --   return not vim.bo[buf].filetype == "oil"
-        --   local oil = vim.bo[buf].filetype == "oil"
-        --
-        -- end,
-        --
-        diagnostics_indicator = function(_, _, diag)
-          local icons = require("helpers.util").icons.diagnostics
-          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-            .. (diag.warning and icons.Warn .. diag.warning or "")
-          return vim.trim(ret)
-        end,
         offsets = {
           {
             filetype = "oil",
@@ -63,286 +34,54 @@ return {
             text_align = "left",
           },
         },
+      }
+    end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = {
+      options = {
+        component_separators = "",
+        section_separators = "",
+      },
+      sections = {
+        lualine_a = {
+          {
+            "mode",
+            fmt = function(str)
+              return ""
+            end,
+          },
+        },
+        lualine_z = {},
       },
     },
-    -- config = function(_, opts)
-    --   require("bufferline").setup(opts)
-    -- end,
   },
   {
     "tiagovla/scope.nvim",
     opts = {
       restore_state = true,
     },
-    config = function(_, opts)
-      require("scope").setup(opts)
-    end,
   },
-  {
-    "nvim-lualine/lualine.nvim",
-    opts = function()
-      local icons = require("helpers.util").icons
-      local Util = require("helpers.util")
-
-      return {
-        options = {
-          -- fmt = string.lower,
-          theme = "catppuccin",
-          globalstatus = true,
-          disabled_filetypes = { statusline = { "dashboard", "alpha" } },
-          icons_enabled = true,
-          -- component_separators = "█",
-          component_separators = "",
-          section_separators = "",
-        },
-        sections = {
-          lualine_a = {
-            {
-              "mode",
-              fmt = function(str)
-                -- return str:sub(1, 1)
-                return ""
-              end,
-              -- "mode",
-              -- icon = "",
-            },
-          },
-          lualine_b = {
-            { "fileformat", separator = "", padding = { left = 1, right = 1 } },
-            { "location", seperator = "", padding = { left = 0, right = 1 } },
-            -- { "progress", separator = "", padding = { left = 1, right = 1 } },
-            {
-              "diagnostics",
-              symbols = {
-                error = icons.diagnostics.Error,
-                warn = icons.diagnostics.Warn,
-                info = icons.diagnostics.Info,
-                hint = icons.diagnostics.Hint,
-              },
-            },
-          },
-          lualine_c = {
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Util.fg("Special") },
-            -- stylua: ignore
-            {function() return require("nvim-navic").get_location() end,cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,},
-          },
-          lualine_x = {
-            -- stylua: ignore
-            {function() return require("noice").api.status.command.get() end, cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end, color = Util.fg("Statement"),
-            },
-            -- stylua: ignore
-            {function() return require("noice").api.status.mode.get() end,cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,color = Util.fg("Constant"),
-            },
-            -- stylua: ignore
-            {function() return "  " .. require("dap").status() end, cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,color = Util.fg("Debug"),},
-          },
-          lualine_y = {
-            {
-              "filename",
-              path = 1,
-              color = { bg = "#11111b" },
-              symbols = { modified = "  ", readonly = "", unnamed = "" },
-            },
-            {
-              "diff",
-              color = { bg = "#11111b" },
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-            },
-            { "branch", color = { bg = "#11111b" } },
-          },
-          lualine_z = {},
-        },
-        extensions = { "lazy" },
-      }
-    end,
-  },
-  -- Better `vim.notify()`
   {
     "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Dismiss all Notifications",
-      },
-    },
     opts = {
       render = "compact",
       timeout = 2000,
+      background_colour = "#11111b",
       max_height = function()
-        return math.floor(vim.o.lines * 0.75)
+        return math.floor(vim.o.lines * 0.50)
       end,
       max_width = function()
         return math.floor(vim.o.columns * 0.50)
       end,
     },
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("helpers.util")
-      if not Util.has("noice.nvim") then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
   },
-
-  -- better vim.ui
   {
-    "stevearc/dressing.nvim",
-    lazy = true,
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.input(...)
-      end
-    end,
-  },
-  -- indent guides for Neovim
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      -- char = "▏",
-      char = "│",
-      filetype_exclude = {
-        "help",
-        "alpha",
-        "dashboard",
-        "neo-tree",
-        "Trouble",
-        "lazy",
-        "mason",
-        "notify",
-        "toggleterm",
-        "lazyterm",
-      },
-      show_trailing_blankline_indent = false,
-      show_current_context = false,
-    },
-  },
-  -- active indent guide and indent text objects
-  {
-    "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      -- symbol = "▏",
-      symbol = "│",
-      options = { try_as_border = true },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
-  },
-  -- noicer ui
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      -- which key integration
-      {
-        "folke/which-key.nvim",
-        opts = function(_, opts)
-          if require("helpers.util").has("noice.nvim") then
-            opts.defaults["<leader>sn"] = { name = "+noice" }
-          end
-        end,
-      },
-    },
-    opts = {
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { find = "%d+L, %d+B" },
-              { find = "; after #%d+" },
-              { find = "; before #%d+" },
-            },
-          },
-          view = "mini",
-        },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = true,
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      -- stylua: ignore
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      -- stylua: ignore
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      -- stylua: ignore
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      --stylua: ignore
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      --stylua: ignore
-      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      --stylua: ignore
-      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
-      --stylua: ignore
-      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true,expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
-    },
-  },
-  -- lsp symbol navigation for lualine
-  {
-    "SmiteshP/nvim-navic",
-    lazy = true,
-    init = function()
-      vim.g.navic_silence = true
-      require("helpers.util").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, buffer)
-        end
-      end)
-    end,
-    opts = function()
-      return {
-        separator = " ",
-        highlight = true,
-        depth_limit = 5,
-        icons = require("helpers.util").icons.kinds,
-      }
+    "tzachar/highlight-undo.nvim",
+    config = function()
+      require("highlight-undo").setup()
     end,
   },
   {
@@ -354,15 +93,14 @@ return {
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       local logo = [[
-       █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
-      ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
-      ███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝
-      ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗
-      ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
-      ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
-                             
-      ]]
-
+   █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
+  ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
+  ███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝
+  ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗
+  ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
+  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
+                         
+  ]]
       dashboard.section.header.val = vim.split(logo, "\n", { triempty = true })
       dashboard.section.buttons.val = {
         dashboard.button("b", " " .. " Browse files", ":Telescope file_browser file_browser previewer=false <CR>"),
@@ -385,7 +123,6 @@ return {
         button.opts.hl = "AlphaButtons"
         button.opts.hl_shortcut = "AlphaShortcut"
       end
-
       dashboard.section.buttons.opts = {
         spacing = 0,
       }
@@ -426,10 +163,4 @@ return {
       })
     end,
   },
-
-  -- icons
-  { "nvim-tree/nvim-web-devicons", lazy = true },
-
-  -- ui components
-  { "MunifTanjim/nui.nvim", lazy = true },
 }
