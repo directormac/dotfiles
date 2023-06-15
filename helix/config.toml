@@ -3,6 +3,13 @@ theme = "artifex"
 [keys.normal]
 esc = ["collapse_selection", "keep_primary_selection"]
 C-s = ":w"
+"A-k" = ["goto_line_end","extend_line_below", "delete_selection", "move_line_up", "paste_before"]
+"A-j" = ["goto_line_end","extend_line_below", "delete_selection", "paste_after"]
+
+[keys.select]
+"A-k" = ["goto_line_end","extend_line_below",  "delete_selection", "move_line_up", "paste_before", "select_mode"]
+"A-j" = ["goto_line_end","extend_line_below",  "delete_selection", "paste_after", "select_mode" ]
+
 # w = ["move_line_up", "scroll_up"]
 # s = ["move_line_down", "scroll_down"]
 
