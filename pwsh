@@ -39,5 +39,5 @@ function Pwsh-Config(){
 }
 
 function Nvim-Config(){
-  nvim $NEOVIM_CONFIG 
-   }
+  NVIM_APPNAME="nvimone" nvim
+}
