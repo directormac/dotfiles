@@ -1,12 +1,8 @@
-# Installing Development Dependencies
+# Installing Development Dependencies for windows
 
 <hr>
 
-<h4 align="center">
-<a href="link here">Repositry</a>
-</h4>
-
-### After installing OS(arch and windows prefered) on WSL or container
+## [Home](https://directormac/dotfiles "Home Repo")
 
 ### Dependencies
 
@@ -16,7 +12,7 @@
 
 Scoop requires .NET Framework 4.5+ to work. Go [here](https://microsoft.com/net/download "Download link").
 
-`
+```powershell
 #Optional: Needed to run a remote script the first
 
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -24,7 +20,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 # Install Scoop
 
 irm get.scoop.sh | iex
-`
+```
 
 ```powershell
 # Optional: Needed to run a remote script the first
