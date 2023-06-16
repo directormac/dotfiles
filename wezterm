@@ -31,7 +31,8 @@ if term.target_triple == "x86_64-pc-windows-msvc" then
 		},
 	}
 	-- config.win32_system_backdrop = "Acrylic"
-	config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+	-- config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+	config.default_prog = { "C:\\Program Files\\Git\\bin\\bash.exe -li" }
 	-- config.default_gui_startup_args = { "connect", "SSHMUX:192.168.110.182" }
 
 	for _, domain in ipairs(wsl_domains) do
