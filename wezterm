@@ -46,6 +46,7 @@ if term.target_triple == "x86_64-pc-windows-msvc" then
 			label = " WSL cwd",
 			args = { "wsl" },
 		},
+		{ label = " Bash", args = { "C:/Program Files/Git/bin/bash.exe", "-li" } },
 		{ label = " PowerShell", args = { "pwsh" } },
 		{ label = " Nushell", args = { "nu" } },
 		{ label = " Cmd", args = { "cmd" } },

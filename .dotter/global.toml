@@ -8,6 +8,7 @@ nvimone = "~/.config/nvimone"
 helix = "~/.config/helix"
 
 [shell.files]
+bashrc = "~/.bashrc"
 alacritty = "~/.alacritty.yaml"
 lazygit = "~/.config/lazygit/config.yml"
 zshrc = "~/.zshrc"
