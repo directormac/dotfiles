@@ -1,5 +1,10 @@
 [helpers]
 
+[wezterm.files]
+w3zterm = "~/.config/wezterm"
+wezterm = "~/.wezterm.lua"
+
+
 [vim.files]
 nvim = "~/.config/nvim"
 nvimone = "~/.config/nvimone"
@@ -14,4 +19,3 @@ lazygit = "~/.config/lazygit/config.yml"
 zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
 tmux = "~/.tmux.conf"
-wezterm = "~/.wezterm.lua"
