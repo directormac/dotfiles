@@ -89,7 +89,22 @@ return {
   },
   {
     "stevearc/oil.nvim",
-    events = "VeryLazy",
+    event = "VeryLazy",
     opts = {},
+  },
+  {
+    "sindrets/diffview.nvim",
+    event = "VeryLazy",
+    config = function()
+      local wk = require("which-key")
+      wk.register({
+        ["<leader>g"] = {
+          f = { ":DiffviewFileHistory %<cr>", "File Diff Viewer" },
+          v = { ":DiffviewOpen<cr>", "Git Diff" },
+        },
+      })
+      require("diffview").setup()
+      -- code
+    end,
   },
 }
