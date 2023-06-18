@@ -18,6 +18,13 @@ global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
 global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 
+-- Set shell if windows
+if vim.loop.os_uname().sysname == "Windows_NT" then
+  set.shell = "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe"
+else
+  set.shell = "/usr/bin/zsh"
+end
+
 set.foldcolumn = "0" -- Show the fold column
 set.foldenable = true
 set.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
