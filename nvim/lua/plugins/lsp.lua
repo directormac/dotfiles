@@ -1,5 +1,29 @@
 return {
   {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      local lspconfig = require("lspconfig")
+      local configs = require("lspconfig/configs")
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      lspconfig.emmet_ls.setup({
+        -- on_attach = on_attach,
+        capabilities = capabilities,
+        -- stylua: ignore
+        filetypes = { "css","html","javascript","javascriptreact","less","sass","scss","svelte","markdown","typescriptreact","vue",
+        },
+        init_options = {
+          html = {
+            options = {
+              -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+              ["bem.enabled"] = true,
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "astro-language-server")
@@ -7,6 +31,7 @@ return {
       table.insert(opts.ensure_installed, "css-lsp")
       table.insert(opts.ensure_installed, "eslint-lsp")
       table.insert(opts.ensure_installed, "eslint_d")
+      table.insert(opts.ensure_installed, "emmet-ls")
       table.insert(opts.ensure_installed, "grammarly-languageserver")
       table.insert(opts.ensure_installed, "html-lsp")
       table.insert(opts.ensure_installed, "js-debug-adapter")
@@ -17,6 +42,7 @@ return {
       table.insert(opts.ensure_installed, "rustfmt")
       table.insert(opts.ensure_installed, "svelte-language-server")
       table.insert(opts.ensure_installed, "typescript-language-server")
+      table.insert(opts.ensure_installed, "prisma-language-server")
       table.insert(opts.ensure_installed, "vue-language-server")
     end,
   },

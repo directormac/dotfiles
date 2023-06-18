@@ -6,65 +6,22 @@ local term = require("wezterm")
 local act = term.action
 local gui = term.gui
 local mux = term.mux
--- Get ssh and wsl defaults
-local wsl_domains = term.default_wsl_domains()
-local ssh_domains = term.default_ssh_domains()
-local launch_menu = {}
+
+local windows = require("windows") -- file located at ~/.config/wezterm/windows.lua
+local linux = require("linux") -- file located at ~/.config/wezterm/linux.lua
+local terminal = require("terminal")
+local keymaps = require("keymaps")
+
 local config = {}
 
 -- For windows host custom configuration
 if term.target_triple == "x86_64-pc-windows-msvc" then
-	-- Load SSH Domains from ~/.ssh/config
-	for _, domain in ipairs(ssh_domains) do
-		domain.assume_shell = "Posix"
-	end
-	config.ssh_domains = {
-		{
-			name = "ArchX",
-			remote_address = "192.168.110.182",
-			username = "artifex",
-		},
-		{
-			name = "UbuntuX",
-			remote_address = "192.168.110.174",
-			username = "artifex",
-		},
-	}
-	-- config.win32_system_backdrop = "Acrylic"
-	-- config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
-	config.default_prog = { "C:\\Program Files\\Git\\bin\\bash.exe -li" }
-	-- config.default_gui_startup_args = { "connect", "SSHMUX:192.168.110.182" }
-
-	for _, domain in ipairs(wsl_domains) do
-		domain.default_cwd = "~"
-	end
-
-	-- Using latest features
-	config.prefer_egl = true
-
-	config.launch_menu = {
-		{
-			label = " WSL cwd",
-			args = { "wsl" },
-		},
-		{ label = " Bash", args = { "C:/Program Files/Git/bin/bash.exe", "-li" } },
-		{ label = " PowerShell", args = { "pwsh" } },
-		{ label = " Nushell", args = { "nu" } },
-		{ label = " Cmd", args = { "cmd" } },
-		{
-			label = " NeoVim Config",
-			args = { "pwsh", "-NoExit", "-Command", "cd C:/Users/Administrator/AppData/Local/nvim && nvim" },
-		},
-		{
-			label = " Dotfiles",
-			args = { "pwsh", "-NoExit", "-Command", "cd C:/Users/Administrator/dotfiles && nvim" },
-		},
-	}
+	windows.options(config)
 end
--- pwsh -NoExit -Command "nvim C:/Users/Administrator/dotfiles/"
 
 -- For linux host custom configuration
 if term.target_triple == "x86_64-unknown-linux-gnu" then
+	linux.options(config)
 end
 
 --Startup settings
@@ -82,242 +39,8 @@ term.on("mux-startup", function()
 	-- pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
----- Appearance
--- config.front_end = "OpenGL"
--- Color pallete
-local colors = {
-	rosewater = "#f5e0dc",
-	flamingo = "#f2cdcd",
-	pink = "#f5c2e7",
-	mauve = "#cba6f7",
-	red = "#f38ba8",
-	maroon = "#eba0ac",
-	peach = "#fab387",
-	yellow = "#f9e2af",
-	green = "#a6e3a1",
-	teal = "#94e2d5",
-	sky = "#89dceb",
-	sapphire = "#74c7ec",
-	blue = "#89b4fa",
-	lavender = "#b4befe",
-	text = "#cdd6f4",
-	subtext1 = "#bac2de",
-	subtext0 = "#a6adc8",
-	overlay2 = "#9399b2",
-	overlay1 = "#7f849c",
-	overlay0 = "#6c7086",
-	surface2 = "#585b70",
-	surface1 = "#45475a",
-	surface0 = "#313244",
-	base = "#1e1e2e",
-	mantle = "#181825",
-	crust = "#11111b",
-}
-config.status_update_interval = 1000
-config.color_scheme = "Catppuccin Mocha"
-
-local custom = term.color.get_builtin_schemes()["Catppuccin Mocha"]
-custom.background = "#11111B"
-local color_schemes = {
-	["Catppuccin Dark"] = custom,
-}
-
-config.animation_fps = 240
-config.max_fps = 240
-
-config.initial_cols = 115
-config.initial_rows = 28
-config.font = term.font({
-	family = "FiraCode Nerd Font",
-	weight = "Regular",
-	stretch = "Normal",
-	style = "Normal",
-	harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
-	-- scale = 1.0
-})
-config.font_size = 14
-config.window_decorations = "RESIZE"
--- config.text_background_opacity = 0.3
--- config.window_background_opacity = 0.618
-config.window_frame = {
-	border_left_width = "0px",
-	border_right_width = "0px",
-	border_bottom_height = "6px",
-	border_top_height = "0px",
-	border_left_color = colors.crust,
-	border_right_color = colors.crust,
-	border_bottom_color = colors.crust,
-	border_top_color = colors.crust,
-	-- font_size = 16,
-}
-config.enable_scroll_bar = false
-config.default_cursor_style = "SteadyBar"
--- config.cursor_blink_rate = 333
-config.inactive_pane_hsb = { saturation = 1.0, brightness = 0.5 }
-config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
-config.colors = {
-	background = colors.crust,
-	tab_bar = {
-		background = colors.crust,
-		active_tab = {
-			bg_color = colors.peach,
-			fg_color = colors.crust,
-		},
-		inactive_tab = {
-			bg_color = colors.blue,
-			fg_color = colors.base,
-		},
-	},
-}
-
------ Misc
-config.adjust_window_size_when_changing_font_size = false
-config.adjust_window_size_when_changing_font_size = false
-config.audible_bell = "Disabled"
-config.exit_behavior = "Close"
-config.window_close_confirmation = "NeverPrompt"
-config.scrollback_lines = 50000
-config.tab_max_width = 9999
-config.hide_tab_bar_if_only_one_tab = false
-config.tab_bar_at_bottom = true
-config.use_fancy_tab_bar = false
-config.show_new_tab_button_in_tab_bar = false
-config.allow_win32_input_mode = true
-config.disable_default_key_bindings = true
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
-
-local fuzzy_commands = act.ShowLauncherArgs({ title = "  Fuzzy Commands", flags = "FUZZY|KEY_ASSIGNMENTS|COMMANDS" })
-local fuzzy_domains = act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
-local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS" })
-config.keys = {
-	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
-	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
-	{ key = "F10", action = fuzzy_domains },
-	{ key = "F11", action = act.ToggleFullScreen },
-	{ key = "F12", action = fuzzy_commands },
-	{ key = "F9", action = fuzzy_tabs },
-	{ key = "F7", action = act.Hide },
-	{
-		key = "F8",
-		action = term.action_callback(function(window)
-			window:maximize()
-		end),
-	},
-	-- { key = "Escape", mods = "LEADER", action = act.QuitApplication },
-	{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-	{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
-	{ key = "Tab", mods = "LEADER", action = act.SwitchToWorkspace },
-	{ key = "\\", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
-	{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-	{ key = "f", mods = "LEADER", action = "QuickSelect" },
-	{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
-	{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
-	{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
-	{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
-	{ key = "n", mods = "LEADER", action = act.SpawnWindow },
-	{ key = "o", mods = "LEADER", action = fuzzy_domains },
-	{ key = "p", mods = "LEADER", action = fuzzy_commands },
-	{ key = "q", mods = "LEADER", action = act.PaneSelect },
-	{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
-	{ key = "s", mods = "LEADER", action = act({ Search = { CaseInSensitiveString = "" } }) },
-	{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
-	{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
-	{ key = "y", mods = "LEADER", action = "ActivateCopyMode" },
-	{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
-	{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(0) },
-	{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-2) },
-	{ key = "H", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
-	{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
-	{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
-	{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
-	{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
-	{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
-	{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
-	{ key = "1", mods = "CTRL", action = act({ ActivateTab = 0 }) },
-	{ key = "2", mods = "CTRL", action = act({ ActivateTab = 1 }) },
-	{ key = "3", mods = "CTRL", action = act({ ActivateTab = 2 }) },
-	{ key = "4", mods = "CTRL", action = act({ ActivateTab = 3 }) },
-	{ key = "5", mods = "CTRL", action = act({ ActivateTab = 4 }) },
-	{ key = "6", mods = "CTRL", action = act({ ActivateTab = 5 }) },
-	{ key = "7", mods = "CTRL", action = act({ ActivateTab = 6 }) },
-	{ key = "8", mods = "CTRL", action = act({ ActivateTab = 7 }) },
-	{ key = "9", mods = "CTRL", action = act({ ActivateTab = 8 }) },
-}
-
--- copy_mode
-local copy_mode = gui.default_key_tables().copy_mode
-table.insert(copy_mode, { key = "h", mods = "SHIFT", action = act.CopyMode("MoveToStartOfLineContent") })
-table.insert(copy_mode, { key = "l", mods = "SHIFT", action = act.CopyMode("MoveToEndOfLineContent") })
-table.insert(copy_mode, {
-	key = "y",
-	mods = "NONE",
-	action = act.Multiple({ act.CopyTo("PrimarySelection"), act.ClearSelection, act.CopyMode("ClearSelectionMode") }),
-})
--- search_mode
-local search_mode = gui.default_key_tables().search_mode
-table.insert(search_mode, { key = "c", mods = "CTRL", action = act.CopyMode("Close") })
-
--- copy_mode <=> search_mode
-table.insert(copy_mode, { key = "i", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) })
-table.insert(search_mode, { key = "Enter", mods = "SHIFT", action = act.ActivateCopyMode })
-
-config.key_tables = {
-	copy_mode = copy_mode,
-	search_mode = search_mode,
-	super = {
-		{ key = "`", mods = "CTRL", action = "PopKeyTable" },
-		{ key = "Space", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) },
-		{ key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
-		{ key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
-		{ key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
-		{ key = "PageUp", mods = "NONE", action = act.CopyMode("PriorMatchPage") },
-		{ key = "PageDown", mods = "NONE", action = act.CopyMode("NextMatchPage") },
-		{ key = "s", mods = "CTRL", action = act.CopyMode("ClearPattern") },
-		{
-			key = "Escape",
-			mods = "NONE",
-			action = act.Multiple({ act.CopyMode("Close"), "PopKeyTable" }),
-		},
-		{ key = "RightArrow", mods = "NONE", action = act.CopyMode("MoveRight") },
-		{ key = "LeftArrow", mods = "NONE", action = act.CopyMode("MoveLeft") },
-		{ key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
-		{ key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
-		{ key = "K", mods = "CTRL", action = act.ScrollByPage(-0.5) },
-		{ key = "J", mods = "CTRL", action = act.ScrollByPage(1) },
-		{ key = "k", mods = "CTRL", action = act.ScrollByLine(-1) },
-		{ key = "j", mods = "CTRL", action = act.ScrollByLine(1) },
-		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
-	},
-}
-
-config.mouse_bindings = {
-	-- Scrolling up while holding CTRL increases the font size
-	{
-		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
-		mods = "CTRL",
-		action = act.IncreaseFontSize,
-	},
-
-	-- Scrolling down while holding CTRL decreases the font size
-	{
-		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
-		mods = "CTRL",
-		action = act.DecreaseFontSize,
-	},
-	{
-		event = { Down = { streak = 1, button = "Right" } },
-		mods = "NONE",
-		action = term.action_callback(function(window, pane)
-			local has_selection = window:get_selection_text_for_pane(pane) ~= ""
-			if has_selection then
-				window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
-				window:perform_action(act.ClearSelection, pane)
-			else
-				window:perform_action(act({ PasteFrom = "Clipboard" }), pane)
-			end
-		end),
-	},
-}
+terminal.options(config)
+keymaps.options(config)
 
 --------------------------------------
 -- Local Functions
@@ -410,6 +133,7 @@ term.on("update-right-status", function(window, pane)
 		end
 	end
 	local current_time = tonumber(term.strftime("%H"))
+	-- stylua: ignore
 	local time = {
 		[00] = "",
 		[01] = "",
