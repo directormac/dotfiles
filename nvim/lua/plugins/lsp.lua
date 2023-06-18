@@ -1,35 +1,10 @@
 return {
   {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      local lspconfig = require("lspconfig")
-      local configs = require("lspconfig/configs")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-      lspconfig.emmet_ls.setup({
-        -- on_attach = on_attach,
-        capabilities = capabilities,
-        -- stylua: ignore
-        filetypes = { "css","html","javascript","javascriptreact","less","sass","scss","svelte","markdown","typescriptreact","vue",
-        },
-        init_options = {
-          html = {
-            options = {
-              -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-              ["bem.enabled"] = true,
-            },
-          },
-        },
-      })
-    end,
-  },
-  {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "astro-language-server")
       table.insert(opts.ensure_installed, "codelldb")
       table.insert(opts.ensure_installed, "css-lsp")
-      table.insert(opts.ensure_installed, "eslint-lsp")
       table.insert(opts.ensure_installed, "eslint_d")
       table.insert(opts.ensure_installed, "emmet-ls")
       table.insert(opts.ensure_installed, "grammarly-languageserver")
@@ -73,6 +48,8 @@ return {
       local nls = require("null-ls")
       table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
       table.insert(opts.sources, nls.builtins.formatting.prettierd)
+      table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
+      table.insert(opts.sources, nls.builtins.formatting.yamlfmt)
     end,
   },
   {

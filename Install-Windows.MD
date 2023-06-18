@@ -26,7 +26,7 @@ For advance installation refer to the [Installer's Readme](https://github.com/Sc
 #### Base Windows Dependencies
 
 ```sh
-scoop install vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter tree-sitter
+scoop install git vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter tree-sitter
 ```
 
 ---
@@ -153,7 +153,7 @@ scoop install oraclejdk-lts
 
 ---
 
-### Specific Configuration Snippets
+## Specific Configuration Snippets
 
 Append this to the settings.json on object schemes at ~/scoop/apps/windows-terminal/current/settings/settings.json
 

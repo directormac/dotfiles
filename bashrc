@@ -1,7 +1,6 @@
 export EDITOR=nvim
 export DOTFILES="~/dotfiles/home"
 path+=$HOME/.cargo/bin
-path+=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 
 # Git
 alias ga="git add"
@@ -40,7 +39,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
-alias nvimconf="cd ~/.config/nvim/ && nvim"
+alias nvimconf="cd ~/AppData/Local/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"

@@ -11,7 +11,7 @@ return {
     "stevearc/aerial.nvim",
     event = "VeryLazy",
     keys = {
-      { "<leader>cs", "<cmd>AerialToggle!<CR>", desc = { "Toggle Symbols(aerial)" } },
+      { "<leader>cs", "<cmd>AerialToggle!<CR>", { desc = "Toggle Symbols(aerial)" } },
     },
     opts = {
       backends = { "treesitter", "lsp", "markdown", "man" },
@@ -86,5 +86,10 @@ return {
     config = function(_, opts)
       require("telescope").load_extension("fzf")
     end,
+  },
+  {
+    "stevearc/oil.nvim",
+    events = "VeryLazy",
+    opts = {},
   },
 }
