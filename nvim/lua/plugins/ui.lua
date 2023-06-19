@@ -41,7 +41,14 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = {
+      -- local icons = require("lazyvim.config").icons
+      -- local Util = require("lazyvim.util")
       options = {
+        -- fmt = string.lower,
+        theme = "auto",
+        globalstatus = true,
+        disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+        icons_enabled = true,
         component_separators = "",
         section_separators = "",
       },
@@ -49,13 +56,52 @@ return {
         lualine_a = {
           {
             "mode",
-            fmt = function(str)
+            fmt = function()
               return ""
             end,
           },
         },
+        lualine_b = {
+          { "location", seperator = " ", padding = { left = 1, right = 0 } },
+          { "progress", separator = " ", padding = { left = 0, right = 0 } },
+          { "fileformat", separator = "", padding = { left = 0, right = 1 } },
+        },
+        lualine_c = {
+          {
+            "diagnostics",
+            symbols = {
+              error = " ",
+              warn = " ",
+              hint = " ",
+              info = " ",
+            },
+          },
+          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+          { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+        },
+        lualine_x = {
+          -- stylua: ignore
+          {function() return require("noice").api.status.command.get() end, cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end, color = { fg = "#bb9af7"},},
+          -- stylua: ignore
+          {function() return require("noice").api.status.mode.get() end,cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,color = { fg = "#7aa2f7"},},
+          -- stylua: ignore
+          {function() return "  " .. require("dap").status() end, cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end, color = { fg = "#f7768e"},},
+        },
+        lualine_y = {
+          {
+            "diff",
+            color = { bg = "#1d202f" },
+            symbols = {
+              added = " ",
+              modified = " ",
+              removed = " ",
+            },
+          },
+          { "branch" },
+        },
         lualine_z = {},
       },
+      extensions = { "lazy" },
     },
   },
   {

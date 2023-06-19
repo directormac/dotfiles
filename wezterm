@@ -160,19 +160,19 @@ term.on("update-right-status", function(window, pane)
 		[22] = "",
 		[23] = "",
 	}
-	local date = term.strftime("%H:%M:%S %a %b %d")
+	local date = term.strftime("%H:%M:%S %a %b %d ")
 	local date_time = time[current_time] .. " " .. date
 	table.insert(cells, date_time)
-	local text_fg = "#11111b"
-	local SEPERATOR = "█"
+	local text_fg = terminal.colors.transparent
+	-- local SEPERATOR = " █"
+	local SEPERATOR = "  "
 	local pallete = {
-		"#f5e0dc",
-		"#f5c2e7",
-		"#a6e3a1",
-		"#89b4fa",
-		"#94e2d5",
-		"#cba6f7",
-		"#b4befe",
+		"#f7768e",
+		"#9ece6a",
+		"#e0af68",
+		"#7aa2f7",
+		"#bb9af7",
+		"#7dcfff",
 	}
 	local cols = pane:get_dimensions().cols
 	local padding = term.pad_right("", (cols / 2) - string.len(date_time) - 2)
@@ -183,13 +183,15 @@ term.on("update-right-status", function(window, pane)
 	function push(text, is_last)
 		local cell_no = num_cells + 1
 		if is_last then
+			-- table.insert(elements, text_fg)
 			table.insert(elements, { Text = padding })
 		end
 		table.insert(elements, { Foreground = { Color = pallete[cell_no] } })
-		table.insert(elements, { Background = { Color = "#11111b" } })
+		table.insert(elements, { Background = { Color = terminal.colors.transparent } })
 		table.insert(elements, { Text = "" .. text .. "" })
 		if not is_last then
-			table.insert(elements, { Foreground = { Color = "#11111b" } })
+			table.insert(elements, { Foreground = { Color = terminal.colors.transparent } })
+			table.insert(elements, { Background = { Color = terminal.colors.transparent } })
 			table.insert(elements, { Text = SEPERATOR })
 		end
 		num_cells = num_cells + 1
