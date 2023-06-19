@@ -41,6 +41,7 @@ return {
           jumpBot = "]",
         },
       },
+      fold_virt_text_handler = require("config.util").fold_virtual_text,
       ---@diagnostic disable-next-line: assign-type-mismatch
       close_fold_kinds = { "imports", "comment" },
       ---@diagnostic disable-next-line: unused-local

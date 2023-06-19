@@ -2,7 +2,7 @@ export EDITOR=nvim
 export DOTFILES="~/dotfiles/home"
 path+=$HOME/.cargo/bin
 
-# Git
+# Aliases
 alias ga="git add"
 alias gb="git branch"
 alias gca="git commit -a"
@@ -16,15 +16,6 @@ alias gpl="git pull --prune"
 alias gps="git push"
 alias gs="git status -sb"
 alias gm="git merge"
-
-nvimone() {
-	NVIM_APPNAME="nvimone" nvim
-}
-normvim() {
-	NVIM_APPNAME="normvim" nvim
-}
-
-#Aliases
 alias hx="helix"
 alias ls="lsd"
 alias l="ls -a"
@@ -47,6 +38,15 @@ alias hxconf="helix ~/.config/helix/config.toml"
 alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
 alias pnpx="pnpm dlx"
+alias pn="pnpm"
+
+nvimone() {
+	NVIM_APPNAME="nvimone" nvim
+}
+normvim() {
+	NVIM_APPNAME="normvim" nvim
+}
+
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 eval "$(navi widget bash)"
