@@ -63,7 +63,7 @@ return {
         },
         lualine_b = {
           { "location", seperator = " ", padding = { left = 1, right = 0 } },
-          { "progress", separator = " ", padding = { left = 0, right = 0 } },
+          { "progress", separator = " ", padding = { left = 1, right = 0 } },
           { "fileformat", separator = "", padding = { left = 0, right = 1 } },
         },
         lualine_c = {

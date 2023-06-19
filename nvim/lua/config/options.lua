@@ -7,11 +7,11 @@ local set = vim.opt
 local window = vim.w
 local Util = require("config.util")
 
-global.clipboard = {
-  name = "osc52",
-  copy = { ["+"] = Util.copy, ["*"] = Util.copy },
-  paste = { ["+"] = Util.paste, ["*"] = Util.paste },
-}
+-- global.clipboard = {
+--   name = "osc52",
+--   copy = { ["+"] = Util.copy, ["*"] = Util.copy },
+--   paste = { ["+"] = Util.paste, ["*"] = Util.paste },
+-- }
 global.loaded_netrw = 1 -- Override for oil explorer
 global.loaded_netrwPlugin = 1 -- Override for oil explorer
 global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
