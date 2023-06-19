@@ -59,28 +59,53 @@ bind -n M-L next-window
 # bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
 # bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
-#Catppuccin Theme Options
-set -g @catppuccin_flavour "mocha"
-set -g @cappuccin_window_tabs_enabled "on"
-set -g @catppuccin_user "on"
-set -g @catppuccin_left_separator "█"
-set -g @catppuccin_right_separator "█"
-# set -g @catppuccin_date_time "%Y-%m-%d %H:%M:%S"
-# set -g @catppuccin_datetime_icon "A"
-# set -g @catppuccin_user_icon "B"
-# set -g @catppuccin_directory_icon "C"
- # set -g @catppuccin_window_icon "D"
-# set -g @catppuccin_session_icon "E"
-# set -g @catppuccin_host_icon "F"
 
-# End of catppuccin section
+
+# Tokyonight Storm
+
+#!/usr/bin/env bash
+
+# TokyoNight colors for Tmux
+
+set -g mode-style "fg=#7aa2f7,bg=#3b4261"
+
+set -g message-style "fg=#7aa2f7,bg=#3b4261"
+set -g message-command-style "fg=#7aa2f7,bg=#3b4261"
+
+set -g pane-border-style "fg=#3b4261"
+set -g pane-active-border-style "fg=#7aa2f7"
+
+set -g status "on"
+set -g status-justify "left"
+
+set -g status-style "fg=#7aa2f7,bg=#1f2335"
+
+set -g status-left-length "100"
+set -g status-right-length "100"
+
+set -g status-left-style NONE
+set -g status-right-style NONE
+
+set -g status-left "#[fg=#1d202f,bg=#7aa2f7,bold]#[fg=#7aa2f7,bg=#1f2335,nobold,nounderscore,noitalics]"
+set -g status-right "#[fg=#1f2335,bg=#1f2335,nobold,nounderscore,noitalics]#[fg=#7aa2f7,bg=#1f2335] #{prefix_highlight} #[fg=#3b4261,bg=#1f2335,nobold,nounderscore,noitalics]#[fg=#7aa2f7,bg=#3b4261] %Y-%m-%d  %H:%M #[fg=#7aa2f7,bg=#3b4261,nobold,nounderscore,noitalics]#[fg=#1d202f,bg=#7aa2f7,bold] #S | #h "
+
+setw -g window-status-activity-style "underscore,fg=#a9b1d6,bg=#1f2335"
+setw -g window-status-separator ""
+setw -g window-status-style "NONE,fg=#a9b1d6,bg=#1f2335"
+setw -g window-status-format "#[fg=#1f2335,bg=#1f2335,nobold,nounderscore,noitalics]#[default] #I  #W #F #[fg=#1f2335,bg=#1f2335,nobold,nounderscore,noitalics]"
+setw -g window-status-current-format "#[fg=#1f2335,bg=#3b4261,nobold,nounderscore,noitalics]#[fg=#3b4261,bg=#7aa2f7,bold] #I #W #F #[fg=#3b4261,bg=#1f2335,nobold,nounderscore,noitalics]"
+
+# tmux-plugins/tmux-prefix-highlight support
+set -g @prefix_highlight_output_prefix "#[fg=#e0af68]#[bg=#1f2335]#[fg=#1f2335]#[bg=#e0af68]"
+set -g @prefix_highlight_output_suffix ""
+
+
 
 #Plugins Install <Prefix-I> to Install
 set -g @plugin 'tmux-plugins/tpm' #Plugin Manager
 set -g @plugin 'tmux-plugins/tmux-sensible' #sensible commands
 set -g @plugin 'jimeh/tmuxifier' #tmux persistent layouts
 set -g @plugin 'tmux-plugins/tmux-yank' #tmux copy pastaaa
-set -g @plugin 'catppuccin/tmux' #soothing pastel colored theme
 
 #<Perfix-t> or t anywhere on shell, shows all directory and creates new session
 set -g @plugin 'joshmedeski/t-smart-tmux-session-manager'
