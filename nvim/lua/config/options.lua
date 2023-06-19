@@ -7,11 +7,6 @@ local set = vim.opt
 local window = vim.w
 local Util = require("config.util")
 
--- global.clipboard = {
---   name = "osc52",
---   copy = { ["+"] = Util.copy, ["*"] = Util.copy },
---   paste = { ["+"] = Util.paste, ["*"] = Util.paste },
--- }
 global.loaded_netrw = 1 -- Override for oil explorer
 global.loaded_netrwPlugin = 1 -- Override for oil explorer
 global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
@@ -22,6 +17,11 @@ global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 if vim.loop.os_uname().sysname == "Windows_NT" then
   set.shell = "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe"
 else
+  global.clipboard = {
+    name = "osc52",
+    copy = { ["+"] = Util.copy, ["*"] = Util.copy },
+    paste = { ["+"] = Util.paste, ["*"] = Util.paste },
+  }
   set.shell = "/usr/bin/zsh"
 end
 
