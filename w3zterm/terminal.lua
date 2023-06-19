@@ -90,8 +90,8 @@ function M.options(config)
 				fg_color = M.colors.transparent,
 			},
 			inactive_tab = {
-				bg_color = M.colors.crust,
 				fg_color = M.colors.tab_fg,
+				bg_color = M.colors.transparent,
 			},
 		},
 	}
