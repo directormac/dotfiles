@@ -14,7 +14,7 @@ global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 
 -- Set shell if windows
-if vim.loop.os_uname().sysname == "Windows_NT" then
+if jit.os == "Windows" then
   set.shell = "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe"
 else
   global.clipboard = {

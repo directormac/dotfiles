@@ -2,6 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 local map = require("config.util").map
+local Util = require("lazyvim.util")
 
 -- Copy Paste Fixes
 map("v", "p", "P", { noremap = true, silent = true, desc = "Paste content previously yanked" })
@@ -10,7 +11,7 @@ map("v", "P", "p", { noremap = true, silent = true, desc = "Yank what you are go
 -- map({ "n", "v" }, "<leader>yy", '"+yy', { noremap = true, desc = "Copy to OSC52 Clipboard" })
 map({ "n", "v" }, "<C-x>", '"+y<esc>dd', { noremap = true, desc = "Copy and delete line" })
 map({ "n", "v" }, "<C-y>", '"+yy<esc>', { noremap = true, desc = "Copy" })
-
+map({ "n" }, "<C-p>", '"+p<esc>', { noremap = true, desc = "Paste" })
 map("v", "x", "_x", { noremap = true, silent = true, desc = "Delete character without yanking" })
 map(
   "n",
@@ -43,6 +44,29 @@ map("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Escape Insert Mode" }
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center cursor" })
 map("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
 
+-- Tabulation in visual mode
+map("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
+map("v", "<Tab>", ">gv", { desc = "Indent line" })
+
+-- Code Folding
+if Util.has("nvim-ufo") then
+  map("n", "zR", function()
+    require("ufo").openAllFolds()
+  end, { desc = "Open all folds" })
+  map("n", "zM", function()
+    require("ufo").closeAllFolds()
+  end, { desc = "Close all Folds" })
+  map("n", "zr", function()
+    require("ufo").openFoldsExceptKinds()
+  end, { desc = "Fold less" })
+  map("n", "zm", function()
+    require("ufo").closeFoldsWith()
+  end, { desc = "Fold more" })
+  map("n", "zv", function()
+    require("ufo").peekFoldedLinesUnderCursor()
+  end, { desc = "Peek folds" })
+end
+-- Telescope
 --stylua: ignore
 map("n", "<leader>fb", "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>", { noremap = true, desc = "Browse Files" })
 map("n", "<leadeR>fo", require("oil").open, { desc = "Open Oil Explorer" })
