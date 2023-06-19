@@ -81,9 +81,9 @@ term.on("window-config-reloaded", function(window)
 end)
 
 term.on("format-tab-title", function(tab)
-	local tab_index = string.format(" %s  ", tab.tab_index + 1)
+	local tab_index = string.format("  %s  ", tab.tab_index + 1)
 	return term.format({
-		{ Text = "▏" },
+		-- { Text = "▏" },
 		{ Text = tab_index },
 	})
 end)
