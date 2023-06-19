@@ -67,19 +67,19 @@ function M.options(config)
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
-		border_bottom_height = "6px",
+		border_bottom_height = "7px",
 		border_top_height = "0px",
 		border_left_color = M.colors.transparent,
 		border_right_color = M.colors.transparent,
 		border_bottom_color = M.colors.transparent,
 		border_top_color = M.colors.transparent,
-		-- font_size = ,
+		-- font_size = 16,
 	}
 	config.enable_scroll_bar = false
 	config.default_cursor_style = "SteadyBar"
 	-- config.cursor_blink_rate = 333
 	config.inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 }
-	config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+	config.window_padding = { left = "0%", right = 0, top = 0, bottom = "0%" }
 	config.colors = {
 		background = M.colors.crust,
 		-- background = M.colors.transparent,

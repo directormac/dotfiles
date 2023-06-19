@@ -20,6 +20,9 @@ alias gm="git merge"
 nvimone() {
 	NVIM_APPNAME="nvimone" nvim
 }
+normvim() {
+	NVIM_APPNAME="normvim" nvim
+}
 
 #Aliases
 alias hx="helix"

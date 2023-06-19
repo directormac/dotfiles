@@ -84,7 +84,7 @@ window:
   title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
-  dynamic_title: true
+  dynamic_title: false
 
   # Window class (Linux/BSD only):
   #class:
@@ -130,7 +130,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: FiraCode Nerd Font
+    # family: FiraCode Nerd Font
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Regular
 
@@ -140,7 +141,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: FiraCode Nerd Font
+    family: JetBrainsMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -150,7 +151,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: FiraCode Nerd Font
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Italic
 
@@ -160,13 +161,13 @@ font:
       #
       # If the bold italic family is not specified, it will fall back to the
       # value specified for the normal font.
-      family: FiraCode Nerd Font
+      family: JetBrainsMono Nerd Font
 
       # The `style` can be specified to pick a specific face.
-      style: SemiBold
+      style: Bold Italic
 
   # Point size
-  size: 14.0
+  size: 13.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -192,86 +193,40 @@ font:
   # If `true`, bold text is drawn using the bright color variants.
   draw_bold_text_with_bright_colors: false
 #Catppuccin Mocha
+# TokyoNight Alacritty Colors
 colors:
+  # Default colors
   primary:
-    background: "#11111B" # base
-    foreground: "#CDD6F4" # text
-    # Bright and dim foreground colors
-    dim_foreground: "#CDD6F4" # text
-    bright_foreground: "#CDD6F4" # text
-
-  # Cursor colors
-  cursor:
-    text: "#1E1E2E" # base
-    cursor: "#F5E0DC" # rosewater
-  vi_mode_cursor:
-    text: "#1E1E2E" # base
-    cursor: "#B4BEFE" # lavender
-
-  # Search colors
-  search:
-    matches:
-      foreground: "#1E1E2E" # base
-      background: "#A6ADC8" # subtext0
-    focused_match:
-      foreground: "#1E1E2E" # base
-      background: "#A6E3A1" # green
-    footer_bar:
-      foreground: "#1E1E2E" # base
-      background: "#A6ADC8" # subtext0
-
-  # Keyboard regex hints
-  hints:
-    start:
-      foreground: "#1E1E2E" # base
-      background: "#F9E2AF" # yellow
-    end:
-      foreground: "#1E1E2E" # base
-      background: "#A6ADC8" # subtext0
-
-  # Selection colors
-  selection:
-    text: "#1E1E2E" # base
-    background: "#F5E0DC" # rosewater
+    background: "0x24283b"
+    foreground: "0xc0caf5"
 
   # Normal colors
   normal:
-    black: "#45475A" # surface1
-    red: "#F38BA8" # red
-    green: "#A6E3A1" # green
-    yellow: "#F9E2AF" # yellow
-    blue: "#89B4FA" # blue
-    magenta: "#F5C2E7" # pink
-    cyan: "#94E2D5" # teal
-    white: "#BAC2DE" # subtext1
+    black: "0x1d202f"
+    red: "0xf7768e"
+    green: "0x9ece6a"
+    yellow: "0xe0af68"
+    blue: "0x7aa2f7"
+    magenta: "0xbb9af7"
+    cyan: "0x7dcfff"
+    white: "0xa9b1d6"
 
   # Bright colors
   bright:
-    black: "#585B70" # surface2
-    red: "#F38BA8" # red
-    green: "#A6E3A1" # green
-    yellow: "#F9E2AF" # yellow
-    blue: "#89B4FA" # blue
-    magenta: "#F5C2E7" # pink
-    cyan: "#94E2D5" # teal
-    white: "#A6ADC8" # subtext0
-
-  # Dim colors
-  dim:
-    black: "#45475A" # surface1
-    red: "#F38BA8" # red
-    green: "#A6E3A1" # green
-    yellow: "#F9E2AF" # yellow
-    blue: "#89B4FA" # blue
-    magenta: "#F5C2E7" # pink
-    cyan: "#94E2D5" # teal
-    white: "#BAC2DE" # subtext1
+    black: "0x414868"
+    red: "0xf7768e"
+    green: "0x9ece6a"
+    yellow: "0xe0af68"
+    blue: "0x7aa2f7"
+    magenta: "0xbb9af7"
+    cyan: "0x7dcfff"
+    white: "0xc0caf5"
 
   indexed_colors:
-    - { index: 16, color: "#FAB387" }
-    - { index: 17, color: "#F5E0DC" }
+    - { index: 16, color: "0xff9e64" }
+    - { index: 17, color: "0xdb4b4b" }
 
-    # Transparent cell backgrounds
+  # Transparent cell backgrounds
   #
   # Whether or not `window.opacity` applies to all cell backgrounds or only to
   # the default background. When set to `true` all cells will be transparent
@@ -383,7 +338,8 @@ colors:
   # Default:
   #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
   #   - (Windows) powershell
-shell: "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe -li" 
+shell:
+  "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe -li"
   #  program: /bin/bash
   #  args:
   #    - --login
@@ -392,7 +348,8 @@ shell: "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe -li"
   #
   # Directory the shell is started in. If this is unset, or `None`, the working
   # directory of the parent process will be used.
-working_directory: ~
+working_directory:
+  ~
 
   # Offer IPC using `alacritty msg` (unix only)
   #ipc_socket: true
@@ -498,24 +455,23 @@ working_directory: ~
 # be mapped to the `ReceiveChar` action. Alternatively, you can use `None` for
 # a no-op if you do not wish to receive input characters for that binding.
 key_bindings:
-    # (Windows, Linux, and BSD only)
-  - { key: V,         mods: Control|Shift, action: Paste                       }
-  - { key: C,         mods: Control|Shift, action: Copy                        }
-  - { key: Insert,    mods: Shift,         action: PasteSelection              }
-  - { key: Key0,      mods: Control,       action: ResetFontSize               }
-  - { key: Equals,    mods: Control,       action: IncreaseFontSize            }
-  - { key: Plus,      mods: Control,       action: IncreaseFontSize            }
-  - { key: Minus,     mods: Control,       action: DecreaseFontSize            }
-  - { key: F11,       mods: None,          action: ToggleFullscreen            }
-  - { key: Paste,     mods: None,          action: Paste                       }
-  - { key: Copy,      mods: None,          action: Copy                        }
-  - { key: L,         mods: Control,       action: ClearLogNotice              }
-  - { key: L,         mods: Control,       chars: "\x0c"                       }
-  - { key: PageUp,    mods: None,          action: ScrollPageUp,   mode: ~Alt  }
-  - { key: PageDown,  mods: None,          action: ScrollPageDown, mode: ~Alt  }
-  - { key: Home,      mods: Shift,         action: ScrollToTop,    mode: ~Alt  }
-  - { key: End,       mods: Shift,         action: ScrollToBottom, mode: ~Alt  }
-
+  # (Windows, Linux, and BSD only)
+  - { key: V, mods: Control|Shift, action: Paste }
+  - { key: C, mods: Control|Shift, action: Copy }
+  - { key: Insert, mods: Shift, action: PasteSelection }
+  - { key: Key0, mods: Control, action: ResetFontSize }
+  - { key: Equals, mods: Control, action: IncreaseFontSize }
+  - { key: Plus, mods: Control, action: IncreaseFontSize }
+  - { key: Minus, mods: Control, action: DecreaseFontSize }
+  - { key: F11, mods: None, action: ToggleFullscreen }
+  - { key: Paste, mods: None, action: Paste }
+  - { key: Copy, mods: None, action: Copy }
+  - { key: L, mods: Control, action: ClearLogNotice }
+  - { key: L, mods: Control, chars: "\x0c" }
+  - { key: PageUp, mods: None, action: ScrollPageUp, mode: ~Alt }
+  - { key: PageDown, mods: None, action: ScrollPageDown, mode: ~Alt }
+  - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
+  - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
 
   #None # Key bindings are specified as a list of objects. For example, this is the
   # default paste binding:

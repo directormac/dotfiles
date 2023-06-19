@@ -1,0 +1,28 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell\Windows Terminal]
+@="Open in Windows &Terminal"
+"Icon"="C:\\Users\\Administrator\\scoop\\apps\\windows-terminal\\current\\WindowsTerminal.exe"
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell\Windows Terminal\command]
+@="\"C:\\Users\\Administrator\\scoop\\apps\\windows-terminal\\current\\WindowsTerminal.exe\" -d ."
+
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\shell\Windows Terminal]
+@="Open in Windows &Terminal"
+"Icon"="C:\\Users\\Administrator\\scoop\\apps\\windows-terminal\\current\\WindowsTerminal.exe"
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\shell\Windows Terminal\command]
+@="\"C:\\Users\\Administrator\\scoop\\apps\\windows-terminal\\current\\WindowsTerminal.exe\" -d ."
+
+; Wezterm
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Open WezTerm here]
+"icon"="C:\\Users\\Administrator\\scoop\\apps\\wezterm\\current\\wezterm-gui.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Open WezTerm here\command]
+@="\"C:\\Users\\Administrator\\scoop\\apps\\wezterm\\current\\wezterm-gui.exe\" start --no-auto-connect --cwd \"%V"
+
+; alacritty
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Open Alacritty here]
+"Icon"="C:\\Users\\Administrator\\scoop\\apps\\alacritty\\current\\alacritty.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\Open Alacritty here\command]
+@="C:\\Users\\Administrator\\scoop\\apps\\alacritty\\current\\alacritty.exe"
+
