@@ -38,8 +38,9 @@ M.colors = {
 	-- crust = "rgba(17,17,27,0.618)",
 	crust = "rgba(36,40,59,0.618)",
 	transparent = "rgba(0,0,0,0)",
-	tab_active = "#e0af68",
-	tab_inactive = "#7aa2f7",
+	tab_active = "#7aa2f7",
+	tab_inactive = "#1f2335",
+	tab_fg = "#a9b1d6",
 }
 
 function M.options(config)
@@ -89,8 +90,8 @@ function M.options(config)
 				fg_color = M.colors.transparent,
 			},
 			inactive_tab = {
-				bg_color = M.colors.tab_inactive,
-				fg_color = M.colors.transparent,
+				bg_color = M.colors.crust,
+				fg_color = M.colors.tab_fg,
 			},
 		},
 	}
