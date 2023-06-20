@@ -91,7 +91,18 @@ return {
   {
     "stevearc/oil.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      columns = {
+        "icon",
+        "size",
+        "mtime",
+      },
+      -- Skip the confirmation popup for simple operations
+      skip_confirm_for_simple_edits = true,
+      keymaps = {
+        ["q"] = "actions.close",
+      },
+    },
   },
   {
     "sindrets/diffview.nvim",
@@ -105,7 +116,6 @@ return {
         },
       })
       require("diffview").setup()
-      -- code
     end,
   },
 }

@@ -69,9 +69,8 @@ return {
             require("notify").notify("Rust Tools Initialized", "info")
           end,
           hover_actions = {
-
             max_height = function()
-              return math.floor(vim.o.lines * 0.50)
+              return math.floor(vim.o.lines * 0.60)
             end,
             max_width = function()
               return math.floor(vim.o.columns * 0.60)
@@ -81,14 +80,11 @@ return {
         },
         server = {
           on_attach = function(_, bufnr)
+            -- Override Code action on rust files
             wk.register({
               ["<leader>c"] = {
-                t = {
-                  name = "Rust Tools",
-                  -- Hover Actions
-                  h = { rust_tools.hover_actions.hover_actions, "Rust Tools Hover Actions", buffer = bufnr },
-                  a = { rust_tools.code_action_group.code_action_group, "Rust Tools Hover Actions", buffer = bufnr },
-                },
+                h = { rust_tools.hover_actions.hover_actions, "Rust Tools Hover Actions", buffer = bufnr },
+                a = { rust_tools.code_action_group.code_action_group, "Rust Tools Code Actions", buffer = bufnr },
               },
             })
           end,
