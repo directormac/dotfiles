@@ -169,10 +169,10 @@ term.on("update-right-status", function(window, pane)
 	local pallete = {
 		"#f7768e",
 		"#9ece6a",
+		"#7dcfff",
+		"#bb9af7",
 		"#e0af68",
 		"#7aa2f7",
-		"#bb9af7",
-		"#7dcfff",
 	}
 	local cols = pane:get_dimensions().cols
 	local padding = term.pad_right("", (cols / 2) - string.len(date_time) - 2)
