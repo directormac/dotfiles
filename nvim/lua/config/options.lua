@@ -25,6 +25,7 @@ else
   set.shell = "/usr/bin/zsh"
 end
 
+-- set.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 set.foldcolumn = "0" -- Show the fold column
 set.foldenable = true
 set.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
