@@ -12,7 +12,7 @@ map("v", "P", "p", { noremap = true, silent = true, desc = "Yank what you are go
 map({ "n", "v" }, "<C-x>", '"+y<esc>dd', { noremap = true, desc = "Copy and delete line" })
 map({ "n", "v" }, "<C-y>", '"+yy<esc>', { noremap = true, desc = "Copy" })
 map({ "n" }, "<C-p>", '"+p<esc>', { noremap = true, desc = "Paste" })
-map("v", "x", "_x", { noremap = true, silent = true, desc = "Delete character without yanking" })
+-- map("v", "x", "_x", { noremap = true, silent = true, desc = "Delete character without yanking" })
 map(
   "n",
   "x", -- Also let's allow 'x' key to delete blank lines in normal mode.
