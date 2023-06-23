@@ -8,7 +8,7 @@ echo "Scoop is installed proceeding to the next step"
 
 
 REM Installing Windows Base Dependencies
-powershell -Command "scoop install git vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter"
+powershell -Command "scoop install git gh cygwin mingw vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter"
 
 REM Disabling aria2 warnings
 powershell -Command "scoop config aria2-warning-enabled false"
