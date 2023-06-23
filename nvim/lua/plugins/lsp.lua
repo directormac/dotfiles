@@ -28,6 +28,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
+      table.insert(opts.ensure_installed, "astro")
       table.insert(opts.ensure_installed, "css")
       table.insert(opts.ensure_installed, "cpp")
       table.insert(opts.ensure_installed, "html")
