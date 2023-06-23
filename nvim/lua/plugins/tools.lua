@@ -63,7 +63,7 @@ return {
       hint = true,
       allow_different_key = false,
       --stylua: ignore
-      resetting_keys = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "c", "C", "x", "X",  "p", "P", },
+      resetting_keys = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "c", "C", },
       restricted_keys = { "h", "l", "-", "+", "gj", "gk" },
       hint_keys = { "k", "j", "^", "$", "a", "i", "c", "l" },
       disabled_keys = { "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>" },
