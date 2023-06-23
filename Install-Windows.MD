@@ -26,7 +26,7 @@ For advance installation refer to the [Installer's Readme](https://github.com/Sc
 #### Base Windows Dependencies
 
 ```sh
-scoop install git vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter tree-sitter
+scoop install git gh cygwin mingw vcredist-aio cmake make 7zip unzip wget pkg-config aria2 dotter tree-sitter
 ```
 
 ---

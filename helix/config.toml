@@ -17,8 +17,8 @@ C-s = ":w"
 a = "code_action" # Maps `ga` to show possible code actions
 
 [keys.normal.space]
-w = ":write" # Maps `space + w` to save file
-q = ":quit" # Maps `space + q` to quit
+#w = ":write" # Maps `space + w` to save file
+q = { q = ":quit" }# Maps `space + q` to quit
 c = ":buffer-close" # Maps `space +c ` to close current buffer
 
 [keys.insert]
@@ -29,7 +29,9 @@ C-a = "goto_line_start"
 C-f = "move_char_right"
 C-b = "move_char_left"
 "A-x" = "normal_mode"
-j = { j = "normal_mode"}
+j = { j = "normal_mode", k = "normal_mode"}
+C-c = "normal_mode"
+C-s = [":write", "normal_mode"]
 
 # [keys.insert.j]
 # j = "normal_mode"
@@ -50,6 +52,7 @@ shell = ["sh", "-c"]
 bufferline = "multiple"
 gutters = ["diff", "diagnostics", "line-numbers", "spacer"]
 true-color = true
+#bufferline = "always"
 
 [editor.indent-guides]
 render = true

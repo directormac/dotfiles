@@ -3,6 +3,10 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "astro-language-server")
+      table.insert(opts.ensure_installed, "clang-format")
+      table.insert(opts.ensure_installed, "clangd")
+      table.insert(opts.ensure_installed, "cpplint")
+      table.insert(opts.ensure_installed, "cpptools")
       table.insert(opts.ensure_installed, "codelldb")
       table.insert(opts.ensure_installed, "css-lsp")
       table.insert(opts.ensure_installed, "eslint_d")
@@ -25,6 +29,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "css")
+      table.insert(opts.ensure_installed, "cpp")
       table.insert(opts.ensure_installed, "html")
       table.insert(opts.ensure_installed, "javascript")
       table.insert(opts.ensure_installed, "json")
@@ -70,10 +75,10 @@ return {
           end,
           hover_actions = {
             max_height = function()
-              return math.floor(vim.o.lines * 0.60)
+              return math.floor(vim.o.lines * 0.75)
             end,
             max_width = function()
-              return math.floor(vim.o.columns * 0.60)
+              return math.floor(vim.o.columns * 0.75)
             end,
             auto_focus = true,
           },
