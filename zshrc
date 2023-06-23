@@ -150,6 +150,10 @@ alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
 alias pnpx="pnpm dlx"
 
+
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/completions/asdf.bash"
+
 # . /opt/asdf-vm/asdf.sh #for asdf
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
