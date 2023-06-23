@@ -150,7 +150,7 @@ alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
 alias pnpx="pnpm dlx"
 
-. /opt/asdf-vm/asdf.sh #for asdf
+# . /opt/asdf-vm/asdf.sh #for asdf
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
