@@ -57,7 +57,7 @@ return {
           {
             "mode",
             fmt = function()
-              return ""
+              return "  "
             end,
           },
         },
@@ -142,7 +142,18 @@ return {
         -- custom LazyVim option to enable the tailwind integration
         tailwind = {
           enabled = true,
-          ft = { "typescriptreact", "javascriptreact", "css", "javascript", "typescript", "svelte", "html", "vue" },
+          ft = {
+            "typescriptreact",
+            "javascriptreact",
+            "css",
+            "javascript",
+            "typescript",
+            "svelte",
+            "html",
+            "vue",
+            "astro",
+            "markdown",
+          },
           -- full: the whole css class will be highlighted
           -- compact: only the color will be highlighted
           style = "full",

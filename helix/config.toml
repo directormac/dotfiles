@@ -10,14 +10,10 @@ C-s = ":w"
 "A-k" = ["goto_line_end","extend_line_below",  "delete_selection", "move_line_up", "paste_before", "select_mode"]
 "A-j" = ["goto_line_end","extend_line_below",  "delete_selection", "paste_after", "select_mode" ]
 
-# w = ["move_line_up", "scroll_up"]
-# s = ["move_line_down", "scroll_down"]
-
 [keys.normal.g]
 a = "code_action" # Maps `ga` to show possible code actions
 
 [keys.normal.space]
-#w = ":write" # Maps `space + w` to save file
 q = { q = ":quit" }# Maps `space + q` to quit
 c = ":buffer-close" # Maps `space +c ` to close current buffer
 
@@ -32,9 +28,6 @@ C-b = "move_char_left"
 j = { j = "normal_mode", k = "normal_mode"}
 C-c = "normal_mode"
 C-s = [":write", "normal_mode"]
-
-# [keys.insert.j]
-# j = "normal_mode"
 
 
 [editor]
