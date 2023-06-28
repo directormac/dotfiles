@@ -5,9 +5,8 @@
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR=nvim
 export DOTFILES="~/dotfiles/home"
-path+=$HOME/.cargo/bin
-path+=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
-path+=$HOME/.asdf/asdf.sh
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -74,7 +73,14 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(
+  git 
+  zsh-syntax-highlighting 
+  zsh-autosuggestions 
+  starship 
+  rust 
+  nvm 
+  node)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -148,22 +154,14 @@ alias nvimconf="cd ~/.config/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
-alias pnpx="pnpm dlx"
+alias px="pnpm dlx"
+alias pn="pnpm"
 
-
-. "$HOME/.asdf/asdf.sh"
-. "$HOME/.asdf/completions/asdf.bash"
 
 # . /opt/asdf-vm/asdf.sh #for asdf
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 
-# pnpm
-export PNPM_HOME="/home/artifex/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
