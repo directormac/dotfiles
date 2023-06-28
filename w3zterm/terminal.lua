@@ -50,8 +50,8 @@ function M.options(config)
 	config.animation_fps = 240
 	config.max_fps = 240
 
-	-- config.initial_cols = 115
-	-- config.initial_rows = 35
+	config.initial_cols = 117
+	config.initial_rows = 32
 	config.font = term.font({
 		family = "FiraCode Nerd Font",
 		weight = "Regular",

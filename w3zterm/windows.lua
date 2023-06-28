@@ -17,6 +17,11 @@ function M.options(config)
 			remote_address = "192.168.110.174",
 			username = "artifex",
 		},
+		{
+			name = "Master",
+			remote_address = "192.168.110.100",
+			username = "artifex",
+		},
 	}
 
 	for _, domain in ipairs(extra_ssh) do
