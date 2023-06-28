@@ -50,8 +50,8 @@ function M.options(config)
 	config.animation_fps = 240
 	config.max_fps = 240
 
-	config.initial_cols = 115
-	config.initial_rows = 28
+	-- config.initial_cols = 115
+	-- config.initial_rows = 35
 	config.font = term.font({
 		family = "FiraCode Nerd Font",
 		weight = "Regular",
@@ -60,14 +60,14 @@ function M.options(config)
 		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
 		-- scale = 1.0
 	})
-	config.font_size = 14
+	config.font_size = 13
 	config.window_decorations = "RESIZE"
 	-- config.text_background_opacity = 0.7
 	-- config.window_background_opacity = 0.618
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
-		border_bottom_height = "7px",
+		border_bottom_height = "1px",
 		border_top_height = "0px",
 		border_left_color = M.colors.transparent,
 		border_right_color = M.colors.transparent,

@@ -7,6 +7,7 @@ helix = "~/Appdata/Roaming/helix"
 
 [shell.files]
 bashrc = ""
+zshrc = ""
 alacritty = "~/Appdata/Roaming/alacritty/alacritty.yml"
 pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 lazygit = "~/AppData/Roaming/lazygit/config.yml"
