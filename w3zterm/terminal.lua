@@ -60,14 +60,14 @@ function M.options(config)
 		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
 		-- scale = 1.0
 	})
-	config.font_size = 13
+	config.font_size = 12
 	config.window_decorations = "RESIZE"
 	-- config.text_background_opacity = 0.7
 	-- config.window_background_opacity = 0.618
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
-		border_bottom_height = "1px",
+		border_bottom_height = "4px",
 		border_top_height = "0px",
 		border_left_color = M.colors.transparent,
 		border_right_color = M.colors.transparent,
@@ -79,7 +79,7 @@ function M.options(config)
 	config.default_cursor_style = "SteadyBar"
 	-- config.cursor_blink_rate = 333
 	config.inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 }
-	config.window_padding = { left = "0px", right = "0px", top = 0, bottom = 0 }
+	config.window_padding = { left = "1px", right = "1px", top = "1px", bottom = "0px" }
 	config.colors = {
 		background = M.colors.crust,
 		-- background = M.colors.transparent,

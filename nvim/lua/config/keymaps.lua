@@ -10,25 +10,25 @@ map("v", "P", "p", { noremap = true, silent = true, desc = "Yank what you are go
 map({ "n", "v" }, "<C-x>", '"+y<esc>dd', { noremap = true, desc = "Copy and delete line" })
 map({ "n", "v" }, "<C-y>", '"+yy<esc>', { noremap = true, desc = "Copy" })
 map({ "n" }, "<C-p>", '"+p<esc>', { noremap = true, desc = "Paste" })
--- map("v", "x", "_x", { noremap = true, silent = true, desc = "Delete character without yanking" })
--- map(
---   "n",
---   "x", -- Also let's allow 'x' key to delete blank lines in normal mode.
---   function()
---     if vim.fn.col(".") == 1 then
---       local line = vim.fn.getline(".")
---       if line:match("^%s*$") then
---         vim.api.nvim_feedkeys("dd", "n", false)
---         vim.api.nvim_feedkeys("$", "n", false)
---       else
---         vim.api.nvim_feedkeys('"_x', "n", false)
---       end
---     else
---       vim.api.nvim_feedkeys('"_x', "n", false)
---     end
---   end,
---   { noremap = true, silent = true, desc = "Delete character without yanking" }
--- )
+map("v", "x", '"_x', { noremap = true, silent = true, desc = "Delete character without yanking" })
+map(
+  "n",
+  "x", -- Also let's allow 'x' key to delete blank lines in normal mode.
+  function()
+    if vim.fn.col(".") == 1 then
+      local line = vim.fn.getline(".")
+      if line:match("^%s*$") then
+        vim.api.nvim_feedkeys("dd", "n", false)
+        vim.api.nvim_feedkeys("$", "n", false)
+      else
+        vim.api.nvim_feedkeys('"_x', "n", false)
+      end
+    else
+      vim.api.nvim_feedkeys('"_x', "n", false)
+    end
+  end,
+  { noremap = true, silent = true, desc = "Delete blank line without yanking" }
+)
 
 -- Blazingly fast way out of insert mode and terminal mode
 map("i", "jj", "<esc>")

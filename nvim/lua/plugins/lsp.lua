@@ -39,6 +39,7 @@ return {
       table.insert(opts.ensure_installed, "lua")
       table.insert(opts.ensure_installed, "markdown")
       table.insert(opts.ensure_installed, "markdown_inline")
+      table.insert(opts.ensure_installed, "prisma")
       table.insert(opts.ensure_installed, "rust")
       table.insert(opts.ensure_installed, "svelte")
       table.insert(opts.ensure_installed, "toml")
