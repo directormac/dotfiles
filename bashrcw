@@ -1,6 +1,5 @@
 export EDITOR=nvim
 export DOTFILES="~/dotfiles/home"
-path+=$HOME/.cargo/bin
 
 # Aliases
 alias ga="git add"
@@ -31,11 +30,9 @@ alias find="fd"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
-alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
 alias nvimconf="cd ~/AppData/Local/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
-alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"

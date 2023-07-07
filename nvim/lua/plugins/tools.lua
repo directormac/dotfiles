@@ -52,7 +52,11 @@ return {
   },
   {
     "m4xshen/hardtime.nvim", --hardtime practice
+    keys = {
+      { "<leader>uh", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
+    },
     dependencies = "neovim/nvim-lspconfig",
+    vscode = true,
     opts = {
       max_time = 1000,
       max_count = 4,
@@ -81,6 +85,13 @@ return {
   },
   {
     "nvim-telescope/telescope-file-browser.nvim",
+    keys = {
+      {
+        "<leader>fb",
+        "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
+        { desc = "Browse Files in root directory" },
+      },
+    },
     event = "VeryLazy",
     dependencies = "nvim-telescope/telescope.nvim",
     config = function(_, opts)
@@ -99,6 +110,13 @@ return {
   },
   {
     "stevearc/oil.nvim",
+    keys = {
+      {
+        "<leader>fo",
+        "<cmd>Oil<cr>",
+        { desc = "Oil explorer on current buffer directory" },
+      },
+    },
     event = "VeryLazy",
     opts = {
       columns = {
@@ -110,6 +128,10 @@ return {
       skip_confirm_for_simple_edits = true,
       keymaps = {
         ["q"] = "actions.close",
+        ["<C-s>"] = "actions.save",
+      },
+      view_options = {
+        show_hidden = true,
       },
     },
   },

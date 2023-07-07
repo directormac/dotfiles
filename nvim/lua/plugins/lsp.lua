@@ -61,7 +61,8 @@ return {
   },
   {
     "simrat39/rust-tools.nvim",
-    events = "VeryLazy",
+    -- ft = { "rust" },
+    events = { "VeryLazy" },
     dependencies = "neovim/nvim-lspconfig",
     config = function()
       local rust_tools = require("rust-tools")
