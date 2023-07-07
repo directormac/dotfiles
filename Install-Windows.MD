@@ -139,31 +139,31 @@ scoop install rustup-msvc
 **[Python](https://pyenv-win.github.io/pyenv-win/)**
 
 ```sh
-scoop install pyenv@2.64.11
+scoop install pyenv@2.64.11 #other versions not working well
 scoop hold pyenv
 ```
 
-**[Java(JDK)](https://jdk.java.net/)**
+---
+
+**[Java(JDK)](https://jdk.java.net/)** With android-clt
 
 Flavours available openjdk, oraclejdk, oraclejdk-lts
 
 ```sh
-scoop install oraclejdk-lts
-```
-
----
-
-Android
-
-```sh
 scoop bucket add extras
-scoop install extras/android-studio #installs and manages everything
-# Have not tried if these work without studio
-scoop install main/android-clt
-scoop install extras/android-sdk
+scoon install java/openjdk17 # Dependency
+scoop install main/android-clt # Replaces Android SDK
+scoop install extras/android-studio # Instructions Below
 ```
 
----
+This is the only time you need to open it for initial setup and adding emulator
+TODO: Discover how android-clt works didnt see any shims from scoop either
+
+1. Open Android Studio
+2. It will ask for Android SDK after you install openjdk17 and android-clt this will be auto detected
+3. Let it download what it needs next next next next next next and finish
+4. Create an emulator run it for the first time
+5. Forget you installed android studio 🤖
 
 ## Specific Configuration Snippets
 
