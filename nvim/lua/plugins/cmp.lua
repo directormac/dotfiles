@@ -47,4 +47,10 @@ return {
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "crates" } }))
     end,
   },
+  -- {
+  --   "jose-elias-alvarez/null-ls.nvim",
+  --   opts = function(_, opts)
+  --     table.insert(opts.sources, {})
+  --   end,
+  -- },
 }

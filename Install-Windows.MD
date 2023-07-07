@@ -153,6 +153,18 @@ scoop install oraclejdk-lts
 
 ---
 
+Android
+
+```sh
+scoop bucket add extras
+scoop install extras/android-studio #installs and manages everything
+# Have not tried if these work without studio
+scoop install main/android-clt
+scoop install extras/android-sdk
+```
+
+---
+
 ## Specific Configuration Snippets
 
 Append this to the settings.json on object schemes at ~/scoop/apps/windows-terminal/current/settings/settings.json
