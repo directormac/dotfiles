@@ -79,7 +79,7 @@ function M.options(config)
 	config.default_cursor_style = "SteadyBar"
 	-- config.cursor_blink_rate = 333
 	config.inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 }
-	config.window_padding = { left = "1px", right = "1px", top = "1px", bottom = "0px" }
+	config.window_padding = { left = "1px", right = "1px", top = "0.1cell", bottom = "0.1cell" }
 	config.colors = {
 		background = M.colors.crust,
 		-- background = M.colors.transparent,

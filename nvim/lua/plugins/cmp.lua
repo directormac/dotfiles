@@ -9,10 +9,10 @@ return {
         autofocus = true,
         hide_on_select = true,
       },
-      null_ls = {
-        enabled = true,
-        name = "Crates",
-      },
+      -- null_ls = {
+      --   enabled = true,
+      --   name = "Crates",
+      -- },
     },
     config = function(_, opts)
       local wk = require("which-key")

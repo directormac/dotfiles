@@ -86,6 +86,30 @@ return {
           {function() return require("noice").api.status.mode.get() end,cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,color = { fg = "#7aa2f7"},},
           -- stylua: ignore
           {function() return "  " .. require("dap").status() end, cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end, color = { fg = "#f7768e"},},
+          {
+            function()
+              local icon = " "
+              local status = require("copilot.api").status.data
+              return icon .. (status.message or "")
+            end,
+            cond = function()
+              local ok, clients = pcall(vim.lsp.get_active_clients, { name = "copilot", bufnr = 0 })
+              return ok and #clients > 0
+            end,
+            color = function()
+              if not package.loaded["copilot"] then
+                return
+              end
+              local status = require("copilot.api").status.data
+              local colors = {
+                [""] = { fg = "#7aa2f7" },
+                ["Normal"] = { fg = "#7aa2f7" },
+                ["Warning"] = { fg = "#f7768e" },
+                ["InProgress"] = { fg = "#9ece6a" },
+              }
+              return colors[status.status] or colors[""]
+            end,
+          },
         },
         lualine_y = {
           {
