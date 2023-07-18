@@ -106,6 +106,13 @@ nvm use lts
 scoop install pnpm yarn
 ```
 
+Personal choice is pnpm additional steps
+
+```sh
+#https://pnpm.io/cli/dlx
+
+```
+
 ---
 
 ### Rust
@@ -157,13 +164,36 @@ scoop install extras/android-studio # Instructions Below
 ```
 
 This is the only time you need to open it for initial setup and adding emulator
-TODO: Discover how android-clt works didnt see any shims from scoop either
+TODO: Discover how android-clt works didnt see any shims from scoop either have not found clear
+docs about it either
 
 1. Open Android Studio
 2. It will ask for Android SDK after you install openjdk17 and android-clt this will be auto detected
 3. Let it download what it needs next next next next next next and finish
 4. Create an emulator run it for the first time
+
+- Depending on your target version please select both its SDK for it and API Level
+
 5. Forget you installed android studio 🤖
+6. On running capacitor or ionic built apps please refer to guide below
+
+For ionic and cordova and capacitor dependencies
+commands like `npx cap open android` and `npx cap run android` wont work with this type of installation
+
+test run time
+
+```sh
+pnpm create ionic-svelte-app@latest # select necessary steps and dependencies
+#For HMR in dev mode rename _server to server in `capacitor.config.json`
+pnpm cap add android # add android project
+pnpm run build #
+npx cap sync
+explorer . #and open the directory android with android studio then trust the project
+pnpm dev -- --open
+```
+
+Grable will do its thing and now you can select app and
+run the app in dev mode with HMR from your SK app
 
 ## Specific Configuration Snippets
 
