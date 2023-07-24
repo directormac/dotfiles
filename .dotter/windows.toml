@@ -1,6 +1,6 @@
 [vim.files]
-nvim = "~/AppData/Local/nvim"
-nvimone = "~/AppData/Local/nvimone"
+nvim = "~/AppData/Local/nvimartifex"
+vscodenvim = "~/AppData/Local/nvim"
 
 [helix.files]
 helix = "~/Appdata/Roaming/helix"

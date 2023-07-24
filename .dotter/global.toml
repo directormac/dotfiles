@@ -7,7 +7,7 @@ wezterm = "~/.wezterm.lua"
 
 [vim.files]
 nvim = "~/.config/nvim"
-nvimone = "~/.config/nvimone"
+vscodenvim = "~/.config/nvimartifex"
 
 [helix.files]
 helix = "~/.config/helix"
