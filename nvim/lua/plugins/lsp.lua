@@ -28,24 +28,24 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      table.insert(opts.ensure_installed, "astro")
-      table.insert(opts.ensure_installed, "css")
-      table.insert(opts.ensure_installed, "cpp")
-      table.insert(opts.ensure_installed, "html")
-      table.insert(opts.ensure_installed, "javascript")
-      table.insert(opts.ensure_installed, "json")
-      table.insert(opts.ensure_installed, "json5")
-      table.insert(opts.ensure_installed, "jsonc")
-      table.insert(opts.ensure_installed, "lua")
-      table.insert(opts.ensure_installed, "markdown")
-      table.insert(opts.ensure_installed, "markdown_inline")
-      table.insert(opts.ensure_installed, "prisma")
-      table.insert(opts.ensure_installed, "rust")
-      table.insert(opts.ensure_installed, "svelte")
-      table.insert(opts.ensure_installed, "toml")
-      table.insert(opts.ensure_installed, "tsx")
-      table.insert(opts.ensure_installed, "typescript")
-      table.insert(opts.ensure_installed, "vue")
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, {
+          "astro",
+          "css",
+          "cpp",
+          "html",
+          "javascript",
+          "json",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "prisma",
+          "svelte",
+          "tsx",
+          "typescript",
+          "vue",
+        })
+      end
       table.insert(opts.incremental_selection, { enable = false })
     end,
   },
@@ -57,55 +57,6 @@ return {
       table.insert(opts.sources, nls.builtins.formatting.prettierd)
       table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
       table.insert(opts.sources, nls.builtins.formatting.yamlfmt)
-    end,
-  },
-  {
-    "simrat39/rust-tools.nvim",
-    -- ft = { "rust" },
-    events = { "VeryLazy" },
-    dependencies = "neovim/nvim-lspconfig",
-    config = function()
-      local rust_tools = require("rust-tools")
-      local wk = require("which-key")
-      rust_tools.setup({
-        tools = {
-          runnables = {
-            use_telescope = true,
-          },
-          on_initialized = function()
-            ---@diagnostic disable-next-line: missing-parameter
-            require("notify").notify("Rust Tools Initialized", "info")
-          end,
-          hover_actions = {
-            max_height = function()
-              return math.floor(vim.o.lines * 0.75)
-            end,
-            max_width = function()
-              return math.floor(vim.o.columns * 0.75)
-            end,
-            auto_focus = true,
-          },
-        },
-        server = {
-          on_attach = function(_, bufnr)
-            -- Override Code action on rust files
-            wk.register({
-              ["<leader>c"] = {
-                h = { rust_tools.hover_actions.hover_actions, "Rust Tools Hover Actions", buffer = bufnr },
-                a = { rust_tools.code_action_group.code_action_group, "Rust Tools Code Actions", buffer = bufnr },
-              },
-            })
-          end,
-          settings = {
-            ["rust-analyzer"] = {
-              -- enable clippy on save
-              checkOnSave = {
-                command = "clippy",
-              },
-            },
-          },
-        },
-      })
     end,
   },
 }
