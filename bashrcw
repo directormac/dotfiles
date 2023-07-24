@@ -27,25 +27,27 @@ alias grep="rg"
 alias c="clear"
 alias du="dust"
 alias find="fd"
-alias v="nvim"
-alias vi="nvim"
-alias vim="nvim"
+# alias v="nvimone"
+# alias vi="nvim"
+# alias vim="nvim"
 alias tmuxconf="nvim ~/.tmux.conf"
-alias nvimconf="cd ~/AppData/Local/nvim/ && nvim"
+alias nvimconf="cd ~/AppData/Local/nvimartifex/ && nvim"
+alias codenvimconf="cd ~/AppData/Local/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"
 
-nvimone() {
-	NVIM_APPNAME="nvimone" nvim
-}
-normvim() {
-	NVIM_APPNAME="normvim" nvim
+v() {
+	NVIM_APPNAME="nvimartifex" nvim
 }
 
-lazyvim() {
-	NVIM_APPNAME="lazyvim" nvim
+vi() {
+	NVIM_APPNAME="nvimartifex" nvim
+}
+
+vim() {
+	NVIM_APPNAME="nvimartifex" nvim
 }
 
 # . "$HOME/.asdf/asdf.sh"
