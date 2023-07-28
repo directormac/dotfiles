@@ -1,2 +1,4 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- VSCODE RELATED BULLSHIT
