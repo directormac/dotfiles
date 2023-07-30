@@ -47,9 +47,6 @@ normvim() {
 	NVIM_APPNAME="normvim" nvim
 }
 
-. "$HOME/.asdf/asdf.sh"
-. "$HOME/.asdf/completions/asdf.bash"
-
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
 eval "$(navi widget bash)"
