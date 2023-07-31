@@ -18,7 +18,6 @@ return {
       table.insert(opts.ensure_installed, "prettierd")
       table.insert(opts.ensure_installed, "rust-analyzer")
       table.insert(opts.ensure_installed, "taplo")
-      table.insert(opts.ensure_installed, "rustfmt")
       table.insert(opts.ensure_installed, "svelte-language-server")
       table.insert(opts.ensure_installed, "typescript-language-server")
       table.insert(opts.ensure_installed, "prisma-language-server")
