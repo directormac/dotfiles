@@ -13,8 +13,13 @@ function M.options(config)
 			username = "artifex",
 		},
 		{
-			name = "ubuntu.server",
-			remote_address = "192.168.110.174",
+			name = "ArchDev100",
+			remote_address = "192.168.110.171",
+			username = "artifex",
+		},
+		{
+			name = "ArchDev101",
+			remote_address = "192.168.110.30",
 			username = "artifex",
 		},
 		{
