@@ -116,6 +116,11 @@ return {
         "<cmd>Oil<cr>",
         { desc = "Oil explorer on current buffer directory" },
       },
+      {
+        "<leader>fO",
+        "<cmd>Oil .<cr>",
+        { desc = "Oil explorer on current buffer directory" },
+      },
     },
     event = "VeryLazy",
     opts = {
