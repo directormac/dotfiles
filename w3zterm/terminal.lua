@@ -67,7 +67,7 @@ function M.options(config)
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
-		border_bottom_height = "4px",
+		border_bottom_height = "0px",
 		border_top_height = "0px",
 		border_left_color = M.colors.transparent,
 		border_right_color = M.colors.transparent,

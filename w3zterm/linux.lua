@@ -17,9 +17,9 @@ function M.options(config)
 		table.insert(ssh_domains, domain)
 	end
 
-	config.ssh_domains = ssh_domains
+	-- config.ssh_domains = ssh_domains
 
-	config.default_prog = { "zsh" }
+	-- config.default_prog = { "bash" }
 end
 
 return M

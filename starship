@@ -83,22 +83,22 @@ command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print 
 style = "red"
 format = "[TUNNEL OPEN for $output]($style)"
 
-[custom.ssh_no_keys]
-description = "SSH missing keys"
-when = "ssh-add -l | grep -q 'no identities'"
-command = "echo 🚫"
-format = "$symbol[$output]($style) "
-shell = ["bash", "--noprofile", "--norc"]
-symbol = "🔑"
-style = "bold fg:red"
-
-[custom.ssh_keys]
-description = "SSH key count"
-when = "ssh-add -l | grep -v -q 'no identities'"
-command = "ssh-add -l | grep -v 'no identities' | wc -l"
-format = "$symbol[$output]($style) "
-shell = ["bash", "--noprofile", "--norc"]
-symbol = "🔑"
-style = "bold fg:green"
+# [custom.ssh_no_keys]
+# description = "SSH missing keys"
+# when = "ssh-add -l | grep -q 'no identities'"
+# command = "echo 🚫"
+# format = "$symbol[$output]($style) "
+# shell = ["bash", "--noprofile", "--norc"]
+# symbol = "🔑"
+# style = "bold fg:red"
+#
+# [custom.ssh_keys]
+# description = "SSH key count"
+# when = "ssh-add -l | grep -v -q 'no identities'"
+# command = "ssh-add -l | grep -v 'no identities' | wc -l"
+# format = "$symbol[$output]($style) "
+# shell = ["bash", "--noprofile", "--norc"]
+# symbol = "🔑"
+# style = "bold fg:green"
 
 
