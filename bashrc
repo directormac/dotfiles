@@ -33,7 +33,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
-alias nvimconf="cd ~/AppData/Local/nvim/ && nvim"
+alias nvimconf="cd ~/.config/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
@@ -49,7 +49,7 @@ normvim() {
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
-eval "$(navi widget bash)"
+# eval "$(navi widget bash)"
 
 #nvm
 export NVM_DIR="$HOME/.nvm"

@@ -22,7 +22,7 @@ else
     copy = { ["+"] = Util.copy, ["*"] = Util.copy },
     paste = { ["+"] = Util.paste, ["*"] = Util.paste },
   }
-  set.shell = "/usr/bin/zsh"
+  set.shell = "/usr/bin/bash"
 end
 
 -- set.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
