@@ -37,7 +37,7 @@ alias nvimconf="cd ~/.config/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias tn="tmux new -s $(basename $PWD)"
 alias home="cd ~"
-alias pnpx="pnpm dlx"
+alias px="pnpm dlx"
 alias pn="pnpm"
 
 nvimone() {

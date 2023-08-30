@@ -56,15 +56,15 @@ function M.options(config)
 		{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
 		{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
 		{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
-		{ key = "1", mods = "CTRL", action = act({ ActivateTab = 0 }) },
-		{ key = "2", mods = "CTRL", action = act({ ActivateTab = 1 }) },
-		{ key = "3", mods = "CTRL", action = act({ ActivateTab = 2 }) },
-		{ key = "4", mods = "CTRL", action = act({ ActivateTab = 3 }) },
-		{ key = "5", mods = "CTRL", action = act({ ActivateTab = 4 }) },
-		{ key = "6", mods = "CTRL", action = act({ ActivateTab = 5 }) },
-		{ key = "7", mods = "CTRL", action = act({ ActivateTab = 6 }) },
-		{ key = "8", mods = "CTRL", action = act({ ActivateTab = 7 }) },
-		{ key = "9", mods = "CTRL", action = act({ ActivateTab = 8 }) },
+		{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
+		{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
+		{ key = "3", mods = "ALT", action = act({ ActivateTab = 2 }) },
+		{ key = "4", mods = "ALT", action = act({ ActivateTab = 3 }) },
+		{ key = "5", mods = "ALT", action = act({ ActivateTab = 4 }) },
+		{ key = "6", mods = "ALT", action = act({ ActivateTab = 5 }) },
+		{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
+		{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
+		{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
 	}
 
 	-- copy_mode
@@ -85,7 +85,7 @@ function M.options(config)
 	table.insert(search_mode, { key = "c", mods = "CTRL", action = act.CopyMode("Close") })
 
 	-- copy_mode <=> search_mode
-	table.insert(copy_mode, { key = "i", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) })
+	table.insert(copy_mode, { key = "/", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) })
 	table.insert(search_mode, { key = "Enter", mods = "SHIFT", action = act.ActivateCopyMode })
 
 	config.key_tables = {

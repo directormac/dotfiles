@@ -4,14 +4,15 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR=nvim
+export YTUI_MUSIC_DIR="$HOME/Music"
 export DOTFILES="~/dotfiles/home"
 export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
+# export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="archcraft"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -111,7 +112,33 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
-# Git
+function tmux_dev {
+  SESSION_NAME=$(pwd | sed 's/.*\///g') # Get CWD assign it as session name
+  TMUX_RUNNING=$(pgrep tmux) # Grep processes and list ID's
+
+  tmux new -s $SESSION_NAME -n code -d
+  tmux send-keys -t $SESSION_NAME 'nvim' C-m
+  tmux new-window -n commands -t $SESSION_NAME
+  tmux split-window -v -t $SESSION_NAME:2
+  tmux new-window -n run -t $SESSION_NAME
+  tmux select-window -t $SESSION_NAME:1
+  tmux attach -t $SESSION_NAME
+}
+
+function tmux_pnpm_node {
+  SESSION_NAME=$(pwd | sed 's/.*\///g')
+  tmux new -s $SESSION_NAME -n code -d
+  tmux send-keys -t $SESSION_NAME 'nvim' C-m
+  tmux new-window -n commands -t $SESSION_NAME
+  tmux split-window -h -t $SESSION_NAME:2
+  tmux send-keys -t $SESSION_NAME:2.right 'pnpm install && pnpm dev' C-m
+  tmux send-keys -t $SESSION_NAME:2.left 'git init' C-m
+  tmux new-window -n run -t $SESSION_NAME
+  tmux select-window -t $SESSION_NAME:1
+  tmux attach -t $SESSION_NAME
+}
+
+#Aliases
 alias ga="git add"
 alias gb="git branch"
 alias gca="git commit -a"
@@ -125,14 +152,6 @@ alias gpl="git pull --prune"
 alias gps="git push"
 alias gs="git status -sb"
 alias gm="git merge"
-
-
-
-nvimone () {
-  NVIM_APPNAME="nvimone" nvim
-}
-
-#Aliases
 alias hx="helix"
 alias ls="lsd"
 alias l="ls -a"
@@ -152,23 +171,47 @@ alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
 alias nvimconf="cd ~/.config/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
-alias tn="tmux new -s $(basename $PWD)"
+alias tls="tmux ls" # Create new tmux session on current directory
+alias tn="t $(basename $PWD)" # Create new tmux session on current directory
+alias td="tmux new -s $(pwd | sed 's/.*\///g')"
+alias dev="tmux_dev"
+alias pnp="tmux_pnpm_node"
 alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"
+alias yt="ytui-music"
+
+# Bun Aliases
+alias brun="bun --bun run dev"
+alias bdev="bun --bun run dev"
+alias bbuild="bun --bun run build"
+alias bprewiew="bun --bun run preview"
+alias btest="bun --bun run test"
 
 
-# . /opt/asdf-vm/asdf.sh #for asdf
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+#nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+#nvm
+#
+#
 # pnpm
-export PNPM_HOME="/home/artifex/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# bun completions
+[ -s "/home/artifex/.bun/_bun" ] && source "/home/artifex/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
