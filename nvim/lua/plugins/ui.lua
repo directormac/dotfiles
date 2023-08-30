@@ -4,17 +4,17 @@ return {
     -- events = "VeryLazy",
     keys = {
         -- stylua: ignore
-        { "<A-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
+        { "<C-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
         -- stylua: ignore
-        { "<A-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to second buffer", },
+        { "<C-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to second buffer", },
         -- stylua: ignore
-        { "<A-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to third buffer", },
+        { "<C-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to third buffer", },
         -- stylua: ignore
-        { "<A-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to fourth buffer", },
+        { "<C-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to fourth buffer", },
         -- stylua: ignore
-        { "<A-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to fifth buffer", },
+        { "<C-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to fifth buffer", },
         -- stylua: ignore
-        { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
+        { "<C-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
     },
     opts = function(_, opts)
       opts.options = {
