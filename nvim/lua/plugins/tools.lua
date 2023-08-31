@@ -87,7 +87,7 @@ return {
     "nvim-telescope/telescope-file-browser.nvim",
     keys = {
       {
-        "<leader>fb",
+        "<leader>fB",
         "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
         { desc = "Browse Files in root directory" },
       },
@@ -152,6 +152,55 @@ return {
         },
       })
       require("diffview").setup()
+    end,
+  },
+  {
+    "telescope.nvim",
+    config = function(_, opts)
+      -- Custom ripgrep configuration:
+
+      local telescopeConfig = require("telescope.config")
+
+      -- Clone the default Telescope configuration
+      local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
+      -- Clone the default Telescope configuration
+      -- local vimgrep_arguments = { opts.values.vimgrep_arguments }
+
+      -- I want to search in hidden/dot files.
+      table.insert(vimgrep_arguments, "--hidden")
+      -- I don't want to search in the `.git` directory.
+      table.insert(vimgrep_arguments, "--glob")
+      table.insert(vimgrep_arguments, "!**/.git/*")
+
+      -- table.insert(opts.defaults, { vimgrep_arguments = vimgrep_arguments })
+      -- table.insert(opts.pickers, { find_files = { hidden = true } })
+      -- table.insert(opts.pickers.find_files, {
+      --   find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
+      -- })
+      opts.defaults = {
+        vimgrep_arguments = vimgrep_arguments,
+      }
+      opts.pickers = {
+        find_files = {
+          hidden = true,
+          find_command = {
+            "rg",
+            "-uu",
+            "--files",
+            "--hidden",
+            "-g",
+            "!.git/",
+            "-g",
+            "!node_modules",
+            "-g",
+            "!tmp/",
+            "-g",
+            "!build/",
+            "!dist/",
+            "-L",
+          },
+        },
+      }
     end,
   },
 }

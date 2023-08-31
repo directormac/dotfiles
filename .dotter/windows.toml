@@ -13,3 +13,6 @@ pwsh = "~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
 lazygit = "~/AppData/Roaming/lazygit/config.yml"
 starship = "~/.config/starship.toml"
 bashrcw = "~/.bashrc"
+
+[bspwm.files]
+bspwm = ""

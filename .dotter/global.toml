@@ -1,9 +1,7 @@
 [helpers]
 
 [wezterm.files]
-w3zterm = "~/.config/wezterm"
-wezterm = "~/.wezterm.lua"
-
+wezterm = "~/.config/wezterm"
 
 [vim.files]
 nvim = "~/.config/nvim"
@@ -14,8 +12,15 @@ helix = "~/.config/helix"
 
 [shell.files]
 bashrc = "~/.bashrc"
-alacritty = "~/.alacritty.yaml"
 lazygit = "~/.config/lazygit/config.yml"
 zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
 tmux = "~/.tmux.conf"
+tmuxifier = "~/.tmux/layouts"
+
+[terminal.files]
+alacritty = "~/.config/alacritty"
+
+[archcraft.files]
+# "archcraft/i3" = "~/.config/i3"
+# "archcraft/bspwm" = "~/.config/bspwm"

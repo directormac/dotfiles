@@ -38,6 +38,8 @@ bind k select-pane -U
 bind l select-pane -R
 # <Prefix-x>
 bind-key x kill-pane
+bind C-w kill-window
+bind-key C-q run-shell "tmux detach-client" \; run-shell "tmux kill-session" \; run-shell "clear"
 # <Prefix-k>
 # bind-key k run-shell "tmux detach-client" \; run-shell "tmux kill-session" \; run-shell "clear"
 # Split current window horizontally
@@ -64,13 +66,13 @@ bind-key -T copy-mode-vi v send-keys -X begin-selection
 bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
 bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
-is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
-
-bind-key -n C-2 if-shell "$is_vim" "send-keys C-2"
-bind-key -n C-3 if-shell "$is_vim" "send-keys C-3"
-bind-key -n C-k if-shell "$is_vim" "send-keys C-k"
-bind-key -n C-l if-shell "$is_vim" "send-keys C-l"
+# is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+#     | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+#
+# bind-key -n C-2 if-shell "$is_vim" "send-keys C-2"
+# bind-key -n C-3 if-shell "$is_vim" "send-keys C-3"
+# bind-key -n C-k if-shell "$is_vim" "send-keys C-k"
+# bind-key -n C-l if-shell "$is_vim" "send-keys C-l"
 
 # Navigation
 #Use alt-keys to navigation
@@ -151,4 +153,4 @@ set -g @session-wizard 't'
 
 
 # Resource TMUX Plugins
-run '~/.tmux/plugins/tpm/tpm'
+run '/usr/share/tmux-plugin-manager/tpm'" >> ~/.tmux.conf

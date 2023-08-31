@@ -61,19 +61,19 @@ function M.options(config)
 		-- scale = 1.0
 	})
 	config.font_size = 12
-	config.window_decorations = "RESIZE"
+	-- config.window_decorations = "RESIZE"
 	-- config.text_background_opacity = 0.7
 	-- config.window_background_opacity = 0.618
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
 		border_bottom_height = "0px",
-		border_top_height = "0px",
+		border_top_height = "5px",
 		border_left_color = M.colors.transparent,
 		border_right_color = M.colors.transparent,
 		border_bottom_color = M.colors.transparent,
 		border_top_color = M.colors.transparent,
-		-- font_size = 16,
+		font_size = 14,
 	}
 	config.enable_scroll_bar = false
 	config.default_cursor_style = "SteadyBar"
@@ -103,7 +103,7 @@ function M.options(config)
 	config.window_close_confirmation = "NeverPrompt"
 	config.scrollback_lines = 50000
 	config.tab_max_width = 9999
-	config.hide_tab_bar_if_only_one_tab = false
+	config.hide_tab_bar_if_only_one_tab = true
 	config.tab_bar_at_bottom = true
 	config.use_fancy_tab_bar = false
 	config.show_new_tab_button_in_tab_bar = false

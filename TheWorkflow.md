@@ -11,7 +11,7 @@ Base
 ```sh
 pacman -S --needed base-devel git neovim helix zsh rustup unzip
 # Fonts
-pacman -S ttf-fira-code ttf-fira-mono ttf-fira-sans ttf-firacode-nerd otf-firamono-nerd ttf-jeybrains-mono ttf-jetbrains-mono-nerd
+pacman -S ttf-fira-code ttf-fira-mono ttf-fira-sans ttf-firacode-nerd otf-firamono-nerd ttf-jetbrains-mono ttf-jetbrains-mono-nerd
 ```
 
 ### Git
@@ -56,7 +56,7 @@ paru
 Test paru by installing additional Fonts & a dotfiles manager
 
 ```sh
-paru -S ttf-devicons ttf-octicons
+paru -S ttf-devicons ttf-octicons ttf-all-the-icons
 paru -S dotter-rs-bin
 ```
 
@@ -179,7 +179,7 @@ set -g @plugin '27medkamal/tmux-session-wizard'
 run '/usr/share/tmux-plugin-manager/tpm'" >> ~/.tmux.conf
 
 # Activate t command to run it on the shell
-cp ~/.dotfiles/scripts/session-wizard.sh > /usr/local/bin/t && chmod u+x /usr/local/bin/t
+cp ~/.dotfiles/scripts/session-wizard.sh ~/.config/artifex/scripts/t && chmod u+x ~/.config/artifex/scripts/t
 ```
 
 Configuration Overrides & Key Bindings
@@ -258,4 +258,12 @@ paru -S bunjs-bin
 
 ```sh
 sudo pacman -S deno
+```
+
+# Desktop Apps
+
+```sh
+sudo pacman -S qemu-full virt-manager
+sudo systemctl enable libvirtd
+sudo systemctl start libvirtd
 ```
