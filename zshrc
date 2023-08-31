@@ -2,17 +2,17 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-export EDITOR=nvim
-export YTUI_MUSIC_DIR="$HOME/Music"
-export DOTFILES="~/dotfiles/home"
-export PATH=$HOME/.cargo/bin:$PATH
+#export ZSH="$HOME/.oh-my-zsh"
+#export YTUI_MUSIC_DIR="$HOME/Music"
+#export EDITOR=nvim
+#export DOTFILES="~/dotfiles/home"
+#export PATH=$HOME/.cargo/bin:$PATH
 # export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="archcraft"
+#ZSH_THEME="archcraft"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -74,16 +74,16 @@ ZSH_THEME="archcraft"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git 
-  zsh-syntax-highlighting 
-  zsh-autosuggestions 
-  starship 
-  rust 
-  nvm 
-  node)
+#plugins=(
+#  git 
+#  zsh-syntax-highlighting 
+#  zsh-autosuggestions 
+#  starship 
+#  rust 
+#  nvm 
+#  node)
 
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -112,18 +112,29 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
-function tmux_dev {
-  SESSION_NAME=$(pwd | sed 's/.*\///g') # Get CWD assign it as session name
-  TMUX_RUNNING=$(pgrep tmux) # Grep processes and list ID's
+# Exports
+export BROWSER=google-chrome # set google chrome as default browser
+export EDITOR=nvim # set neovim as default editor
+export DOTFILES="$HOME/.dotfiles/" # dotfiles path
+export PATH=$HOME/.cargo/bin:$PATH # cargo bins
+export PATH=$HOME/.tmux/plugins/tmuxifier/bin:$PATH # tmuxifier
+export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 
-  tmux new -s $SESSION_NAME -n code -d
-  tmux send-keys -t $SESSION_NAME 'nvim' C-m
-  tmux new-window -n commands -t $SESSION_NAME
-  tmux split-window -v -t $SESSION_NAME:2
-  tmux new-window -n run -t $SESSION_NAME
-  tmux select-window -t $SESSION_NAME:1
-  tmux attach -t $SESSION_NAME
+# Scripts
+export PATH=$HOME/.config/artifex/scripts/:$PATH
+
+[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
+plug "zsh-users/zsh-autosuggestions"
+plug "zsh-users/zsh-syntax-highlighting"
+
+# Load and initialise completion system
+autoload -Uz compinit
+compinit
+
+function node_project {
+  t . && tmuxifier w web
 }
+
 
 function tmux_pnpm_node {
   SESSION_NAME=$(pwd | sed 's/.*\///g')
@@ -169,17 +180,19 @@ alias vi="nvim"
 alias vim="nvim"
 alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
-alias nvimconf="cd ~/.config/nvim/ && nvim"
+alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
 alias hxconf="helix ~/.config/helix/config.toml"
-alias tls="tmux ls" # Create new tmux session on current directory
+alias tx="tmuxifier"
+alias tls="tmux ls" # tmux session list
 alias tn="t $(basename $PWD)" # Create new tmux session on current directory
 alias td="tmux new -s $(pwd | sed 's/.*\///g')"
-alias dev="tmux_dev"
-alias pnp="tmux_pnpm_node"
+alias tw="node_project"
+alias tweb="tmux_pnpm_node"
 alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"
 alias yt="ytui-music"
+alias wh="which"
 
 # Bun Aliases
 alias brun="bun --bun run dev"
@@ -192,26 +205,20 @@ alias btest="bun --bun run test"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
+eval "$(tmuxifier init -)"
 
 #nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+source /usr/share/nvm/init-nvm.sh
 #nvm
-#
-#
+
+
 # pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
+export PNPM_HOME="/home/artifex/.local/share/pnpm"
 case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
-# bun completions
-[ -s "/home/artifex/.bun/_bun" ] && source "/home/artifex/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
+# opam configuration
+[[ ! -r /home/artifex/.opam/opam-init/init.zsh ]] || source /home/artifex/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

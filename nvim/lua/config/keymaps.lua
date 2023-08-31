@@ -68,7 +68,6 @@ end
 --stylua: ignore
 -- map("n", "<leader>fb", "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>", { noremap = true, desc = "Browse Files" })
 -- map("n", "<leader>fo", require("oil").open, { desc = "Open Oil Explorer" })
-
 -- vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
 -- vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
 

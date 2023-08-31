@@ -10,3 +10,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
   group = diag_float_grp,
 })
+
+vim.filetype.add({
+  extension = {
+    mdx = "markdown.mdx",
+  },
+})
+
+vim.treesitter.language.register("markdown.mdx", "mdx")

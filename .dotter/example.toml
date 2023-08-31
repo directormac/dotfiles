@@ -3,6 +3,4 @@
 # packages = ["shell","helix", "vim", "wezterm"]
 
 # If linux uncomment line below
-# packages = ["shell","helix", "vim", "wezterm" ]
-
-
+# packages = ["shell","terminal","helix", "vim", "wezterm", "archcraft" ]

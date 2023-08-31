@@ -207,15 +207,14 @@ return {
   ]]
       dashboard.section.header.val = vim.split(logo, "\n", { triempty = true })
       dashboard.section.buttons.val = {
-        dashboard.button("b", " " .. " Browse files", ":Telescope file_browser file_browser previewer=false <CR>"),
+        -- dashboard.button(
+        --   "b",
+        --   " " .. " Browse files",
+        --   ":Telescope file_browser file_browser follow=true previewer=false <CR>"
+        -- ),
+        dashboard.button("f", " " .. " Find file", ":Telescope find_files follow=true path_display=smart<CR>"),
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button(
-          "f",
-          " " .. " Find file",
-          -- ":Telescope find_files find_command=rg,--files,--hidden,--globm--!**/.git/*,-L  <CR>"
-          ":Telescope find_files hidden=true  path_display=smart<CR>"
-        ),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep path_display=smart<CR>"),
+        -- dashboard.button("g", " " .. " Find text", ":Telescope live_grep follow=true path_display=smart<CR>"),
         -- dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
