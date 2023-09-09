@@ -212,7 +212,8 @@ return {
         --   " " .. " Browse files",
         --   ":Telescope file_browser file_browser follow=true previewer=false <CR>"
         -- ),
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files follow=true path_display=smart<CR>"),
+        -- dashboard.button("f", " " .. " Find file", ":Telescope find_files follow=true<CR>"),
+        dashboard.button("f", " " .. " Find file", ":Telescope find_files path_display=smart<CR>"),
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
         -- dashboard.button("g", " " .. " Find text", ":Telescope live_grep follow=true path_display=smart<CR>"),
         -- dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),

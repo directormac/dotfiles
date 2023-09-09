@@ -17,6 +17,17 @@ function M.options(config)
 		table.insert(ssh_domains, domain)
 	end
 
+	term.unix_domains = {
+		{
+			name = "unix",
+		},
+		{
+			name = "artifex",
+		},
+	}
+
+	term.defailt_gui_startuo_args = { "connect", "unix" }
+
 	-- config.ssh_domains = ssh_domains
 
 	-- config.default_prog = { "bash" }

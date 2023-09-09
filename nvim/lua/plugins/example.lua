@@ -150,6 +150,7 @@ return {
         "python",
         "query",
         "regex",
+        "kotlin",
         "tsx",
         "typescript",
         "vim",
