@@ -111,15 +111,14 @@
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-
 # Exports
-export BROWSER=google-chrome # set google chrome as default browser
+export BROWSER=google-chrome-stable # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export PATH=$HOME/.tmux/plugins/tmuxifier/bin:$PATH # tmuxifier
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
-
+export JAVA_HOME=/usr/lib/jvm/default/
 # Scripts
 export PATH=$HOME/.config/artifex/scripts/:$PATH
 
@@ -172,12 +171,13 @@ alias lg="lazygit"
 alias cat="bat"
 alias cd="z"
 alias grep="rg"
+alias ripgrep="rg"
 alias c="clear"
 alias du="dust"
 alias find="fd"
 alias v="nvim"
 alias vi="nvim"
-alias vim="nvim"
+# alias vim="nvim"
 alias zshconf="nvim ~/.zshrc"
 alias tmuxconf="nvim ~/.tmux.conf"
 alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
@@ -191,8 +191,15 @@ alias tweb="tmux_pnpm_node"
 alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"
-alias yt="ytui-music"
 alias wh="which"
+alias moji="rofi -modi emoji -show emoji"
+alias bunx="bun x"
+
+
+# Arch Related
+
+
+
 
 # Bun Aliases
 alias brun="bun --bun run dev"

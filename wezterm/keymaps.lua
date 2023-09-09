@@ -11,7 +11,7 @@ function M.options(config)
 		act.ShowLauncherArgs({ title = "  Fuzzy Commands", flags = "FUZZY|KEY_ASSIGNMENTS|COMMANDS" })
 	local fuzzy_domains =
 		act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
-	local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS" })
+	local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS|DOMAINS" })
 	config.keys = {
 		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
 		{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },

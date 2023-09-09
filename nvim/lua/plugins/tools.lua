@@ -1,5 +1,15 @@
 return {
   {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    keys = {
+      { "<leader>gd", "<cmd>Neogen<CR>", { desc = "Generate function docs" } },
+    },
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*"
+  },
+  {
     "ojroques/nvim-osc52", -- OSC52 Copy to system clipboard
     opts = {
       max_length = 0, -- Maximum length of selection (0 for no limit)
@@ -84,31 +94,6 @@ return {
     },
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    keys = {
-      {
-        "<leader>fB",
-        "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
-        { desc = "Browse Files in root directory" },
-      },
-    },
-    event = "VeryLazy",
-    dependencies = "nvim-telescope/telescope.nvim",
-    config = function(_, opts)
-      require("telescope").load_extension("file_browser")
-    end,
-  },
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-    conf = vim.fn.executable("make") == 1,
-    event = "VeryLazy",
-    dependencies = "nvim-telescope/telescope.nvim",
-    config = function(_, opts)
-      require("telescope").load_extension("fzf")
-    end,
-  },
-  {
     "stevearc/oil.nvim",
     keys = {
       {
@@ -155,52 +140,116 @@ return {
     end,
   },
   {
-    "telescope.nvim",
+    "nvim-telescope/telescope-file-browser.nvim",
+    keys = {
+      {
+        "<leader>fB",
+        "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
+        { desc = "Browse Files in root directory" },
+      },
+    },
+    event = "VeryLazy",
+    dependencies = "nvim-telescope/telescope.nvim",
     config = function(_, opts)
-      -- Custom ripgrep configuration:
-
-      local telescopeConfig = require("telescope.config")
-
-      -- Clone the default Telescope configuration
-      local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-      -- Clone the default Telescope configuration
-      -- local vimgrep_arguments = { opts.values.vimgrep_arguments }
-
-      -- I want to search in hidden/dot files.
-      table.insert(vimgrep_arguments, "--hidden")
-      -- I don't want to search in the `.git` directory.
-      table.insert(vimgrep_arguments, "--glob")
-      table.insert(vimgrep_arguments, "!**/.git/*")
-
-      -- table.insert(opts.defaults, { vimgrep_arguments = vimgrep_arguments })
-      -- table.insert(opts.pickers, { find_files = { hidden = true } })
-      -- table.insert(opts.pickers.find_files, {
-      --   find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
-      -- })
-      opts.defaults = {
-        vimgrep_arguments = vimgrep_arguments,
-      }
-      opts.pickers = {
-        find_files = {
-          hidden = true,
-          find_command = {
-            "rg",
-            "-uu",
-            "--files",
-            "--hidden",
-            "-g",
-            "!.git/",
-            "-g",
-            "!node_modules",
-            "-g",
-            "!tmp/",
-            "-g",
-            "!build/",
-            "!dist/",
-            "-L",
-          },
+      require("telescope").load_extension("file_browser")
+    end,
+  },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+    conf = vim.fn.executable("make") == 1,
+    event = "VeryLazy",
+    dependencies = "nvim-telescope/telescope.nvim",
+    config = function(_, opts)
+      require("telescope").load_extension("fzf")
+    end,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      defaults = {
+        -- vimgrep_arguments = {
+        --   "rg",
+        --   "-uu",
+        --   "--files",
+        --   "--hidden",
+        -- },
+        -- NOTE: Add Ignore Patterns here
+        file_ignore_patterns = {
+          ".git/", -- ignore git files
+          "node_modules/", -- ignore node_modules
+          "tmp/", -- tmp folders ignore
+          "build/", -- Build Folders
+          "dist/", -- Dist Folders
+          ".svelte-kit/", -- Svelte kit
+          ".next/", -- Next Ignore
         },
-      }
+      },
+      -- pickers = {
+      --   find_command = {
+      --     "rg",
+      --     "-uu",
+      --     "--files",
+      --     "--hidden",
+      --     "-g",
+      --     "!.git/",
+      --     "!node_modules",
+      --     "!tmp/",
+      --     "!build/",
+      --     "!dist/",
+      --     "!.svelte-kit/", -- Svelte kit
+      --     "!.next/", -- Next Ignore
+      --     "-L",
+      --   },
+      -- },
+    },
+  },
+  {
+    "ziontee113/color-picker.nvim",
+    keys = {
+      {
+        "<leader>fc ",
+        "<cmd>PickColor<cr>",
+        { desc = "Color Picker" },
+      },
+      {
+        "<leader>fcc",
+        "<cmd>PickColorInsert<cr>",
+        { desc = "HTML Color Picker" },
+      },
+      {
+        "<leader>fcx",
+        "<cmd>ConvertHEXandRGB<cr>",
+        { desc = "Convert Hex and RGB" },
+      },
+      {
+        "<leader>fcv",
+        "<cmd>ConvertHEXandHSL<cr>",
+        { desc = "Convert Hex and HSL" },
+      },
+    },
+    config = function()
+      require("color-picker")
+    end,
+  },
+  {
+    "ziontee113/icon-picker.nvim",
+    keys = {
+      {
+        "<leader>fh",
+        "<cmd>IconPickerInsert html_colors<cr>",
+        { desc = "HTML Color Picker" },
+      },
+      {
+        "<leader>.",
+        "<cmd>IconPickerInsert emoji symbols html_colors nerd_font_v3 nerd_font<cr>",
+        { desc = "Icon Picker" },
+      },
+    },
+    config = function()
+      require("icon-picker").setup({
+        disable_legacy_commands = true,
+      })
     end,
   },
 }
