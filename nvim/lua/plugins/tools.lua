@@ -54,10 +54,10 @@ return {
       fold_virt_text_handler = require("config.util").fold_virtual_text,
       ---@diagnostic disable-next-line: assign-type-mismatch
       close_fold_kinds = { "imports", "comment" },
-      ---@diagnostic disable-next-line: unused-local
-      provider_selector = function(bufnr, filetype, buftype)
-        return { "treesitter", "indent" }
-      end,
+      -- ---@diagnostic disable-next-line: unused-local
+      -- provider_selector = function(bufnr, filetype, buftype)
+      --   return { "treesitter", "indent" }
+      -- end,
     },
   },
   {
@@ -140,71 +140,6 @@ return {
     end,
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    keys = {
-      {
-        "<leader>fB",
-        "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
-        { desc = "Browse Files in root directory" },
-      },
-    },
-    event = "VeryLazy",
-    dependencies = "nvim-telescope/telescope.nvim",
-    config = function(_, opts)
-      require("telescope").load_extension("file_browser")
-    end,
-  },
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-    conf = vim.fn.executable("make") == 1,
-    event = "VeryLazy",
-    dependencies = "nvim-telescope/telescope.nvim",
-    config = function(_, opts)
-      require("telescope").load_extension("fzf")
-    end,
-  },
-  {
-    "nvim-telescope/telescope.nvim",
-    opts = {
-      defaults = {
-        -- vimgrep_arguments = {
-        --   "rg",
-        --   "-uu",
-        --   "--files",
-        --   "--hidden",
-        -- },
-        -- NOTE: Add Ignore Patterns here
-        file_ignore_patterns = {
-          ".git/", -- ignore git files
-          "node_modules/", -- ignore node_modules
-          "tmp/", -- tmp folders ignore
-          "build/", -- Build Folders
-          "dist/", -- Dist Folders
-          ".svelte-kit/", -- Svelte kit
-          ".next/", -- Next Ignore
-        },
-      },
-      -- pickers = {
-      --   find_command = {
-      --     "rg",
-      --     "-uu",
-      --     "--files",
-      --     "--hidden",
-      --     "-g",
-      --     "!.git/",
-      --     "!node_modules",
-      --     "!tmp/",
-      --     "!build/",
-      --     "!dist/",
-      --     "!.svelte-kit/", -- Svelte kit
-      --     "!.next/", -- Next Ignore
-      --     "-L",
-      --   },
-      -- },
-    },
-  },
-  {
     "ziontee113/color-picker.nvim",
     keys = {
       {
@@ -241,9 +176,19 @@ return {
         { desc = "HTML Color Picker" },
       },
       {
-        "<leader>.",
-        "<cmd>IconPickerInsert emoji symbols html_colors nerd_font_v3 nerd_font<cr>",
-        { desc = "Icon Picker" },
+        "<leader>..",
+        "<cmd>IconPickerInsert emoji<cr>",
+        { desc = "Emoji Picker" },
+      },
+      {
+        "<leader>. ",
+        "<cmd>IconPickerInsert emoji<cr>",
+        { desc = "Emoji Picker" },
+      },
+      {
+        "<leader>./",
+        "<cmd>IconPickerInsert symbols nerd_font_v3<cr>",
+        { desc = "Icon Picker - symbols and fonts" },
       },
     },
     config = function()
@@ -251,5 +196,10 @@ return {
         disable_legacy_commands = true,
       })
     end,
+  },
+
+  {
+    "wakatime/vim-wakatime",
+    setup = true,
   },
 }
