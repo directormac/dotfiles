@@ -112,7 +112,7 @@
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Exports
-export BROWSER=google-chrome-stable # set google chrome as default browser
+export BROWSER=firefox-developer-edition # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
