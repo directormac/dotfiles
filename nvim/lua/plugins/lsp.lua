@@ -23,6 +23,7 @@ return {
       table.insert(opts.ensure_installed, "taplo")
       table.insert(opts.ensure_installed, "svelte-language-server")
       table.insert(opts.ensure_installed, "typescript-language-server")
+      table.insert(opts.ensure_installed, "unocss-language-server")
       table.insert(opts.ensure_installed, "prisma-language-server")
       table.insert(opts.ensure_installed, "vue-language-server")
     end,
