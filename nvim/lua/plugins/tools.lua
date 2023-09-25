@@ -52,8 +52,11 @@ return {
         },
       },
       fold_virt_text_handler = require("config.util").fold_virtual_text,
-      ---@diagnostic disable-next-line: assign-type-mismatch
-      close_fold_kinds = { "imports", "comment" },
+      close_fold_kinds = {
+        "imports",
+        "comment",
+        "class",
+      },
       -- ---@diagnostic disable-next-line: unused-local
       -- provider_selector = function(bufnr, filetype, buftype)
       --   return { "treesitter", "indent" }
@@ -197,9 +200,28 @@ return {
       })
     end,
   },
-
   {
     "wakatime/vim-wakatime",
     setup = true,
+  },
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      vim.g.codeium_disable_bindings = 1
+      -- Change '<C-g>' here to any keycode you like.
+      vim.keymap.set("i", "<C-g>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      vim.keymap.set("i", "<c-;>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-,>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true })
+    end,
   },
 }
