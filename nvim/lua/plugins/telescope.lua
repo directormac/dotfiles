@@ -54,6 +54,8 @@ return {
           "--glob",
           "!**/test-results/*",
           "--glob",
+          "!**/.yarn/*",
+          "--glob",
           "!**/playwright-report/*",
           "-L",
         },
@@ -69,6 +71,7 @@ return {
           ".next/", -- Next Ignore
           ".vitepress/cache/*", -- Vitepress Cache Ignore
           "**/**-lock.yaml",
+          "**/.yarn",
           "**/test-results/",
           "**/playwright-report/",
         },
@@ -95,6 +98,8 @@ return {
             "!**/.target/*",
             "--glob",
             "!**/test-results/*",
+            "--glob",
+            "!**/.yarn/*",
             "--glob",
             "!**/playwright-report/*",
             "-L",

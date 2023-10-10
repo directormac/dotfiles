@@ -167,10 +167,12 @@ alias ls="lsd"
 alias l="ls -a"
 alias lla="ls -la"
 alias lt="ls --tree"
-alias lg="lazygit"
+alias lzd="lazydocker"
+alias lzg="lazygit"
 alias cat="bat"
 alias cd="z"
 alias grep="rg"
+alias gpt="tgpt"
 alias ripgrep="rg"
 alias c="clear"
 alias du="dust"
@@ -192,16 +194,16 @@ alias home="cd ~"
 alias px="pnpm dlx"
 alias pn="pnpm"
 alias wh="which"
-alias moji="rofi -modi emoji -show emoji"
-alias bunx="bun x"
 
 
 # Arch Related
+alias winbox="wine start /unix $HOME/.dotfiles/winbox64.exe"
 
 
 
 
 # Bun Aliases
+alias bunx="bun x"
 alias brun="bun --bun run dev"
 alias bdev="bun --bun run dev"
 alias bbuild="bun --bun run build"
@@ -226,6 +228,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 
 # opam configuration
 [[ ! -r /home/artifex/.opam/opam-init/init.zsh ]] || source /home/artifex/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

@@ -1,5 +1,38 @@
 return {
   {
+    "nvim-neorg/neorg",
+    build = ":Neorg sync-parsers",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("neorg").setup({
+        load = {
+          ["core.defaults"] = {}, -- Loads default behaviour
+          ["core.concealer"] = {}, -- Adds pretty icons to your documents
+          -- ["core.export.markdown"] = {
+          --   extension = "md markdown",
+          -- },
+          -- ["core.completion"] = {},
+          ["core.dirman"] = { -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                default = "~/notes/neorg",
+                personal = "~/notes/neorg/personal",
+                work = "~/notes/neorg/work",
+                dev = "~/notes/neorg/dev",
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    opts = {
+      filetypes = { "svelte", "html", "astro", "markdown", "mdx", "tsx", "javascriptreact", "typescriptreact" },
+    },
+  },
+  {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
     keys = {

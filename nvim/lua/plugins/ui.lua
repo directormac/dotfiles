@@ -217,7 +217,7 @@ return {
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
         dashboard.button("g", " " .. " Find text", ":Telescope live_grep follow=true path_display=smart<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("n", " " .. " Notes", ":Neorg<CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
         dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
