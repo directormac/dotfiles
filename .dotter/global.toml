@@ -13,6 +13,7 @@ helix = "~/.config/helix"
 [shell.files]
 bashrc = "~/.bashrc"
 lazygit = "~/.config/lazygit/config.yml"
+gitui = "~/.config/gitui"
 zshrc = "~/.zshrc"
 starship = "~/.config/starship.toml"
 tmux = "~/.tmux.conf"

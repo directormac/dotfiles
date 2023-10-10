@@ -50,16 +50,7 @@ return {
         })
       end
       table.insert(opts.incremental_selection, { enable = false })
-    end,
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
-      table.insert(opts.sources, nls.builtins.formatting.prettierd)
-      table.insert(opts.sources, nls.builtins.code_actions.eslint_d)
-      table.insert(opts.sources, nls.builtins.formatting.yamlfmt)
+      -- table.insert(opts.autotag, { enable = true })
     end,
   },
 }
