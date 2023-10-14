@@ -18,7 +18,7 @@ return {
       table.insert(opts.ensure_installed, "html-lsp")
       table.insert(opts.ensure_installed, "js-debug-adapter")
       table.insert(opts.ensure_installed, "marksman")
-      table.insert(opts.ensure_installed, "prettierd")
+      -- table.insert(opts.ensure_installed, "prettierd")
       table.insert(opts.ensure_installed, "rust-analyzer")
       table.insert(opts.ensure_installed, "taplo")
       table.insert(opts.ensure_installed, "svelte-language-server")

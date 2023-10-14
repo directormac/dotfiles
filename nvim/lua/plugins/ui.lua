@@ -189,82 +189,111 @@ return {
     end,
   },
   {
-    "goolord/alpha-nvim",
+    "glepnir/dashboard-nvim",
     event = "VimEnter",
-    component_separators = "",
-    section_separators = "",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
-      local dashboard = require("alpha.themes.dashboard")
       local logo = [[
-   █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
-  ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
-  ███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝
-  ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗
-  ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
-  ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
-                         
-  ]]
-      dashboard.section.header.val = vim.split(logo, "\n", { triempty = true })
-      dashboard.section.buttons.val = {
-        -- dashboard.button(
-        --   "b",
-        --   " " .. " Browse files",
-        --   ":Telescope file_browser file_browser follow=true previewer=false <CR>"
-        -- ),
-        -- dashboard.button("f", " " .. " Find file", ":Telescope find_files follow=true<CR>"),
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files path_display=smart<CR>"),
-        dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep follow=true path_display=smart<CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("n", " " .. " Notes", ":Neorg<CR>"),
-        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope frecency workspace=CWD <CR>"),
-        dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
-        dashboard.button("u", "   Update plugins", "<cmd>lua require('lazy').sync()<CR>"),
+       █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
+      ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
+    ███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝
+    ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗
+      ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
+      ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
+               
+          ]]
+      -- local logo = [[ARTIFEX]]
+
+      logo = string.rep("\n", 2) .. logo .. "\n\n"
+
+      local opts = {
+        theme = "doom",
+        hide = {
+          -- this is taken care of by lualine
+          -- enabling this messes up the actual laststatus setting after loading a file
+          statusline = false,
+        },
+        config = {
+          header = vim.split(logo, "\n"),
+        -- stylua: ignore
+        center = {
+          { action = "Telescope find_files",              desc = " Find file",       icon = " ", key = "f" },
+          { action = "ene | startinsert",                 desc = " New file",        icon = " ", key = "n" },
+          { action = "Telescope oldfiles",                desc = " Recent files",    icon = " ", key = "r" },
+          { action = "Telescope live_grep",               desc = " Find text",       icon = " ", key = "g" },
+          { action = "e $MYVIMRC",                        desc = " Config",          icon = " ", key = "c" },
+          { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
+          { action = "LazyExtras",                        desc = " Lazy Extras",     icon = " ", key = "e" },
+          { action = "Lazy",                              desc = " Lazy",            icon = "󰒲 ", key = "l" },
+          { action = "qa",                                desc = " Quit",            icon = " ", key = "q" },
+        },
+          footer = function()
+            local stats = require("lazy").stats()
+            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+            return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
+          end,
+        },
       }
-      for _, button in ipairs(dashboard.section.buttons.val) do
-        button.opts.hl = "AlphaButtons"
-        button.opts.hl_shortcut = "AlphaShortcut"
+
+      for _, button in ipairs(opts.config.center) do
+        button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
       end
-      dashboard.section.buttons.opts = {
-        spacing = 0,
-      }
-      dashboard.config.layout = {
-        { type = "padding", val = 2 },
-        dashboard.section.header,
-        { type = "padding", val = 2 },
-        dashboard.section.buttons,
-        { type = "padding", val = 2 },
-        dashboard.section.footer,
-      }
-      dashboard.config.opts = { margin = 5 }
-      dashboard.section.header.opts.hl = "AlphaHeader"
-      dashboard.section.buttons.opts.hl = "AlphaButtons"
-      dashboard.section.footer.opts.hl = "AlphaFooter"
-      return dashboard
-    end,
-    config = function(_, dashboard)
+
       -- close Lazy and re-open when the dashboard is ready
       if vim.o.filetype == "lazy" then
         vim.cmd.close()
         vim.api.nvim_create_autocmd("User", {
-          pattern = "AlphaReady",
+          pattern = "DashboardLoaded",
           callback = function()
             require("lazy").show()
           end,
         })
       end
-      require("alpha").setup(dashboard.opts)
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LazyVimStarted",
-        callback = function()
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms 🚀"
-          pcall(vim.cmd.AlphaRedraw)
-        end,
-      })
+
+      return opts
     end,
   },
+  -- {
+  --   "nvim-lualine/lualine.nvim",
+  --   optional = true,
+  --   event = "VeryLazy",
+  --   opts = function(_, opts)
+  --     local started = false
+  --     local function status()
+  --       if not package.loaded["cmp"] then
+  --         return
+  --       end
+  --       for _, s in ipairs(require("cmp").core.sources) do
+  --         if s.name == "codeium" then
+  --           if s.source:is_available() then
+  --             started = true
+  --           else
+  --             return started and "error" or nil
+  --           end
+  --           if s.status == s.SourceStatus.FETCHING then
+  --             return "pending"
+  --           end
+  --           return "ok"
+  --         end
+  --       end
+  --     end
+  --
+  --     local Util = require("lazyvim.util")
+  --     local colors = {
+  --       ok = Util.fg("Special"),
+  --       error = Util.fg("DiagnosticError"),
+  --       pending = Util.fg("DiagnosticWarn"),
+  --     }
+  --     table.insert(opts.sections.lualine_x, 2, {
+  --       function()
+  --         return require("lazyvim.config").icons.kinds.Codeium
+  --       end,
+  --       cond = function()
+  --         return status() ~= nil
+  --       end,
+  --       color = function()
+  --         return colors[status()] or colors.ok
+  --       end,
+  --     })
+  --   end,
+  -- },
 }
