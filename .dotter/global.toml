@@ -21,6 +21,7 @@ tmuxifier = "~/.tmux/layouts"
 
 [terminal.files]
 alacritty = "~/.config/alacritty"
+btop = "~/.config/btop"
 
 [archcraft.files]
 # "archcraft/i3" = "~/.config/i3"

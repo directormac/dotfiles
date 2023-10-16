@@ -1,32 +1,5 @@
 return {
   {
-    "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("neorg").setup({
-        load = {
-          ["core.defaults"] = {}, -- Loads default behaviour
-          ["core.concealer"] = {}, -- Adds pretty icons to your documents
-          -- ["core.export.markdown"] = {
-          --   extension = "md markdown",
-          -- },
-          -- ["core.completion"] = {},
-          ["core.dirman"] = { -- Manages Neorg workspaces
-            config = {
-              workspaces = {
-                default = "~/notes/neorg",
-                personal = "~/notes/neorg/personal",
-                work = "~/notes/neorg/work",
-                dev = "~/notes/neorg/dev",
-              },
-            },
-          },
-        },
-      })
-    end,
-  },
-  {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
     keys = {
@@ -35,29 +8,6 @@ return {
     config = true,
     -- Uncomment next line if you want to follow only stable versions
     -- version = "*"
-  },
-  {
-    "ojroques/nvim-osc52", -- OSC52 Copy to system clipboard
-    opts = {
-      max_length = 0, -- Maximum length of selection (0 for no limit)
-      silent = true, -- Disable message on successful copy
-      trim = true, -- Trim surrounding whitespaces before copy
-    },
-  },
-  {
-    "stevearc/aerial.nvim",
-    event = "VeryLazy",
-    keys = {
-      { "<leader>cs", "<cmd>AerialToggle!<CR>", { desc = "Toggle Symbols(aerial)" } },
-    },
-    opts = {
-      backends = { "treesitter", "lsp", "markdown", "man" },
-    },
-    -- Optional dependencies
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
   },
   {
     "kevinhwang91/nvim-ufo", -- Better folds in Neovim
@@ -231,24 +181,4 @@ return {
     "wakatime/vim-wakatime",
     setup = true,
   },
-  -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
-  --   config = function()
-  --     vim.g.codeium_disable_bindings = 1
-  --     -- Change '<C-g>' here to any keycode you like.
-  --     vim.keymap.set("i", "<C-g>", function()
-  --       return vim.fn["codeium#Accept"]()
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<c-;>", function()
-  --       return vim.fn["codeium#CycleCompletions"](1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<c-,>", function()
-  --       return vim.fn["codeium#CycleCompletions"](-1)
-  --     end, { expr = true })
-  --     vim.keymap.set("i", "<c-x>", function()
-  --       return vim.fn["codeium#Clear"]()
-  --     end, { expr = true })
-  --   end,
-  -- },
 }

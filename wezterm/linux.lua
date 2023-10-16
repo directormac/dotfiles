@@ -26,11 +26,32 @@ function M.options(config)
 		},
 	}
 
-	term.defailt_gui_startuo_args = { "connect", "unix" }
+	term.default_gui_startup_args = { "connect", "unix" }
+
+	config.prefer_egl = true
 
 	-- config.ssh_domains = ssh_domains
 
 	-- config.default_prog = { "bash" }
+	--
+	config.launch_menu = {
+		-- {
+		-- 	label = " WSL cwd",
+		-- 	args = { "wsl" },
+		-- },
+		-- -- { label = " Bash", args = { "C:/Program Files/Git/bin/bash.exe", "-li" } },
+		-- { label = " PowerShell", args = { "pwsh" } },
+		-- { label = " Nushell", args = { "nu" } },
+		-- { label = " Cmd", args = { "cmd" } },
+		-- {
+		-- 	label = " NeoVim Config",
+		-- 	args = { "cd ~/.dotfiles/nvim/ && nvim" },
+		-- },
+		-- {
+		-- 	label = " Dotfiles",
+		-- 	args = { "pwsh", "-NoExit", "-Command", "cd C:/Users/Administrator/dotfiles && nvim" },
+		-- },
+	}
 end
 
 return M
