@@ -7,54 +7,102 @@ local M = {}
 function M.options(config)
 	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
+	--=========================================
+	-- Custom Launcher Functions
+	--=========================================
 	local fuzzy_commands =
 		act.ShowLauncherArgs({ title = "  Fuzzy Commands", flags = "FUZZY|KEY_ASSIGNMENTS|COMMANDS" })
 	local fuzzy_domains =
 		act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
 	local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS|DOMAINS" })
+	local workspace_new = act.PromptInputLine({
+		description = term.format({
+			{ Attribute = { Intensity = "Bold" } },
+			{ Foreground = { AnsiColor = "Fuchsia" } },
+			{ Text = "Enter name for new workspace" },
+		}),
+		action = term.action_callback(function(window, pane, line)
+			-- line will be `nil` if they hit escape without entering anything
+			-- An empty string if they just hit enter
+			-- Or the actual line of text they wrote
+			if line then
+				window:perform_action(
+					act.SwitchToWorkspace({
+						name = line,
+					}),
+					pane
+				)
+			end
+		end),
+	})
+	local monitor = act.SwitchToWorkspace({
+		name = "monitor",
+		spwn = {
+			args = { "btop" },
+		},
+	})
+	--=========================================
+
+	--=========================================
+	-- General Keybindings
+	--=========================================
 	config.keys = {
 		{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "ClipboardAndPrimarySelection" }) },
 		{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
+		{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
+
+		--=========================================
+		-- Launcher Keybindings
+		--=========================================
 		{ key = "F10", action = fuzzy_domains },
-		{ key = "F11", action = act.ToggleFullScreen },
 		{ key = "F12", action = fuzzy_commands },
 		{ key = "F9", action = fuzzy_tabs },
-		{ key = "F7", action = act.Hide },
-		{
-			key = "F8",
-			action = term.action_callback(function(window)
-				window:maximize()
-			end),
-		},
-		-- { key = "Escape", mods = "LEADER", action = act.QuitApplication },
-		{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-		{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
-		{ key = "Tab", mods = "LEADER", action = act.SwitchToWorkspace },
-		{ key = "=", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
-		{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-		{ key = "f", mods = "LEADER", action = "QuickSelect" },
-		{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
-		{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
-		{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
-		{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
-		{ key = "n", mods = "LEADER", action = act.SpawnWindow },
+		{ key = "Tab", mods = "LEADER", action = fuzzy_tabs },
+		{ key = "N", mods = "LEADER|SHIFT", action = workspace_new },
 		{ key = "o", mods = "LEADER", action = fuzzy_domains },
 		{ key = "p", mods = "LEADER", action = fuzzy_commands },
-		{ key = "q", mods = "LEADER", action = act.PaneSelect },
-		{ key = "r", mods = "LEADER", action = act.ReloadConfiguration },
+
+		--=========================================
+
+		--=========================================
+		-- Modes -  Select, Copy, Keybindings
+		--=========================================
 		{ key = "s", mods = "LEADER", action = act({ Search = { CaseInSensitiveString = "" } }) },
-		{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = false }) },
-		{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
+		{ key = "f", mods = "LEADER", action = "QuickSelect" },
 		{ key = "y", mods = "LEADER", action = "ActivateCopyMode" },
 		{ key = "z", mods = "LEADER", action = "TogglePaneZoomState" },
-		{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(0) },
-		{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-2) },
+		--=========================================
+
+		--=========================================
+		-- Panes, Windows Keybindings
+		--=========================================
 		{ key = "H", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Left", 5 } }) },
 		{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
 		{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
 		{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
 		{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
 		{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
+		{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },
+		{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
+		{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
+		{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
+		{ key = "=", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
+		{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+		{ key = "q", mods = "LEADER", action = act.PaneSelect },
+		{ key = "n", mods = "LEADER", action = act.SpawnWindow },
+		{
+			key = "F8",
+			action = term.action_callback(function(window)
+				window:maximize()
+			end),
+		},
+		{ key = "F7", action = act.Hide },
+		{ key = "F11", action = act.ToggleFullScreen },
+		--=========================================
+
+		--=========================================
+		-- Navigation  Keybindings
+		--=========================================
 		{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
 		{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
 		{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
@@ -65,9 +113,19 @@ function M.options(config)
 		{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
 		{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
 		{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
+		{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
+		{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
+		{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },
+		{ key = "j", mods = "LEADER", action = act({ ActivatePaneDirection = "Down" }) },
+		{ key = "k", mods = "LEADER", action = act({ ActivatePaneDirection = "Up" }) },
+		{ key = "l", mods = "LEADER", action = act({ ActivatePaneDirection = "Right" }) },
+		--=========================================
 	}
+	--=========================================
 
-	-- copy_mode
+	--=========================================
+	-- Copy Mode
+	--=========================================
 	local copy_mode = gui.default_key_tables().copy_mode
 	table.insert(copy_mode, { key = "h", mods = "SHIFT", action = act.CopyMode("MoveToStartOfLineContent") })
 	table.insert(copy_mode, { key = "l", mods = "SHIFT", action = act.CopyMode("MoveToEndOfLineContent") })
@@ -80,14 +138,24 @@ function M.options(config)
 			act.CopyMode("ClearSelectionMode"),
 		}),
 	})
-	-- search_mode
+	--=========================================
+
+	--=========================================
+	-- Search Mode
+	--=========================================
 	local search_mode = gui.default_key_tables().search_mode
 	table.insert(search_mode, { key = "c", mods = "CTRL", action = act.CopyMode("Close") })
+	--=========================================
 
-	-- copy_mode <=> search_mode
+	--=========================================
+	-- Switch Copy <=> Search Mode
+	--=========================================
 	table.insert(copy_mode, { key = "/", mods = "NONE", action = act.Search({ CaseInSensitiveString = "" }) })
 	table.insert(search_mode, { key = "Enter", mods = "SHIFT", action = act.ActivateCopyMode })
 
+	--=========================================
+	-- Super Mode, Key_Tables
+	--=========================================
 	config.key_tables = {
 		copy_mode = copy_mode,
 		search_mode = search_mode,
@@ -117,6 +185,9 @@ function M.options(config)
 		},
 	}
 
+	--=========================================
+	-- Mouse Bindings
+	--=========================================
 	config.mouse_bindings = {
 		-- Scrolling up while holding CTRL increases the font size
 		{

@@ -122,6 +122,7 @@ export JAVA_HOME=/usr/lib/jvm/default/
 # Scripts
 export PATH=$HOME/.config/artifex/scripts/:$PATH
 
+
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
@@ -129,6 +130,9 @@ plug "zsh-users/zsh-syntax-highlighting"
 # Load and initialise completion system
 autoload -Uz compinit
 compinit
+
+source ~/.config/wezterm/zsh_completions
+
 
 function node_project {
   t . && tmuxifier w web
@@ -148,59 +152,66 @@ function tmux_pnpm_node {
   tmux attach -t $SESSION_NAME
 }
 
+function ya() {
+    tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+    yazi --cwd-file="$tmp"
+    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+}
+
 #Aliases
+alias c="clear"
+alias cat="bat"
+alias cd="z"
+alias du="dust"
+alias find="fd"
 alias ga="git add"
 alias gb="git branch"
+alias gc="git commit"
 alias gca="git commit -a"
 alias gcam="git commit -am"
-alias gc="git commit"
 alias gcm="git commit -m"
 alias gd="git diff"
 alias gds="git diff --staged"
 alias glg="git log --all --oneline --graph --decorate"
+alias gm="git merge"
 alias gpl="git pull --prune"
 alias gps="git push"
+alias gpt="tgpt"
+alias grep="rg"
 alias gs="git status -sb"
-alias gm="git merge"
+alias home="cd ~"
 alias hx="helix"
-alias ls="lsd"
+alias hxconf="helix ~/.config/helix/config.toml"
 alias l="ls -a"
-alias lla="ls -la"
+alias la="ls -la"
+alias ls="lsd"
 alias lt="ls --tree"
 alias lzd="lazydocker"
 alias lzg="lazygit"
-alias cat="bat"
-alias cd="z"
-alias grep="rg"
-alias gpt="tgpt"
-alias ripgrep="rg"
-alias c="clear"
-alias du="dust"
-alias find="fd"
-alias v="nvim"
-alias vi="nvim"
-# alias vim="nvim"
-alias zshconf="nvim ~/.zshrc"
-alias tmuxconf="nvim ~/.tmux.conf"
 alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
-alias hxconf="helix ~/.config/helix/config.toml"
-alias tx="tmuxifier"
-alias tls="tmux ls" # tmux session list
-alias tn="t $(basename $PWD)" # Create new tmux session on current directory
+alias pn="pnpm"
+alias px="pnpm dlx"
+alias ripgrep="rg"
 alias td="tmux new -s $(pwd | sed 's/.*\///g')"
+alias tls="tmux ls" # tmux session list
+alias tmuxconf="nvim ~/.tmux.conf"
+alias tn="t $(basename $PWD)" # Create new tmux session on current directory
+alias top="btop"
 alias tw="node_project"
 alias tweb="tmux_pnpm_node"
-alias home="cd ~"
-alias px="pnpm dlx"
-alias pn="pnpm"
+alias tx="tmuxifier"
+alias v="nvim"
+alias vi="nvim"
 alias wh="which"
+alias y="ya"
+alias zshconf="nvim ~/.zshrc"
 
 
 # Arch Related
 alias winbox="wine start /unix $HOME/.dotfiles/winbox64.exe"
-
-
-
 
 # Bun Aliases
 alias bunx="bun x"
