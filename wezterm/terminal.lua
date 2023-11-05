@@ -60,20 +60,20 @@ function M.options(config)
 		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
 		scale = 1.0,
 	})
-	config.font_size = 12
+	config.font_size = 13
 	config.window_decorations = "RESIZE"
 	config.text_background_opacity = 1.0
 	config.window_background_opacity = 1
 	config.window_frame = {
 		border_left_width = "0px",
 		border_right_width = "0px",
-		border_bottom_height = "4px",
-		border_top_height = "10px",
+		border_bottom_height = "2px",
+		border_top_height = "11px",
 		border_left_color = M.colors.crust,
 		border_right_color = M.colors.crust,
 		border_bottom_color = M.colors.crust,
 		border_top_color = M.colors.crust,
-		font_size = 12,
+		font_size = 14,
 	}
 	config.enable_scroll_bar = false
 	config.default_cursor_style = "SteadyBar"

@@ -26,7 +26,26 @@ end
 
 --Startup settings
 term.on("gui-startup", function(cmd)
-	local tab, pane, window = mux.spawn_window(cmd or {})
+	local mode = os.getenv("MODE")
+
+	if mode == "float" then
+		config.font_size = 20
+		-- term.initial_cols = 120
+		-- term.initial_rows = 50
+		-- local tab, pane, window = mux.spawn_window(cmd or {})
+		-- window:gui_window():set_inner_size(1280, 720)
+		-- window:gui_window():set_position("main:50%:50%")
+		-- window:maximize()
+		-- pane:split({ direction = "Bottom", size = 0.25 })
+	end
+
+	-- local tab, pane, window = mux.spawn_window(cmd or {})
+	-- window:gui_window():set_inner_size(1280, 720)
+	-- window:gui_window():set_position("main:50%:50%")
+	-- window:maximize()
+	-- pane:split({ direction = "Bottom", size = 0.25 })
+
+	-- local tab, pane, window = mux.spawn_window(cmd or {})
 	-- window:gui_window():set_inner_size(1280, 720)
 	-- window:gui_window():set_position("main:50%:50%")
 	-- window:maximize()
@@ -35,9 +54,9 @@ end)
 
 term.on("mux-startup", function()
 	local tab, pane, window = mux.spawn_window({})
-	-- window:gui_window():set_inner_size(1280, 720)
-	-- window:gui_window():set_position(980, 59)
-	-- pane:split({ direction = "Bottom", size = 0.25 })
+	window:gui_window():set_inner_size(1280, 720)
+	window:gui_window():set_position(980, 59)
+	pane:split({ direction = "Bottom", size = 0.25 })
 end)
 
 terminal.options(config)
