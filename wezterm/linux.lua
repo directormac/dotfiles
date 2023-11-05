@@ -26,11 +26,11 @@ function M.options(config)
 		},
 	}
 
-	term.default_gui_startup_args = { "connect", "unix" }
+	-- term.default_gui_startup_args = { "connect", "unix" }
 
 	config.prefer_egl = true
 
-	-- config.ssh_domains = ssh_domains
+	config.ssh_domains = ssh_domains
 
 	-- config.default_prog = { "bash" }
 	--
