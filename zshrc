@@ -115,10 +115,21 @@
 export BROWSER=firefox-developer-edition # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
-export PATH=$HOME/.cargo/bin:$PATH # cargo bins
+# export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export PATH=$HOME/.tmux/plugins/tmuxifier/bin:$PATH # tmuxifier
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 export JAVA_HOME=/usr/lib/jvm/default/
+
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
+# export FZF_DEFAULT_OPTS=" \
+# --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+# --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+# --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
 # Scripts
 export PATH=$HOME/.config/artifex/scripts/:$PATH
 
@@ -126,6 +137,12 @@ export PATH=$HOME/.config/artifex/scripts/:$PATH
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
+plug "marlonrichert/zsh-autocomplete"
+plug "hlissner/zsh-autopair"
+plug "wintermi/zsh-rust"
+plug "zap-zsh/nvm"
+plug "zap-zsh/fzf"
+plug "zap-zsh/web-search"
 
 # Load and initialise completion system
 autoload -Uz compinit
@@ -161,10 +178,18 @@ function ya() {
     rm -f -- "$tmp"
 }
 
+
+# alias  l='eza -l  --icons'
+# alias ls='eza -1  --icons'
+# alias ll='eza -la --icons'
+# alias ld='eza -lD --icons'
+#
+
 #Aliases
 alias c="clear"
 alias cat="bat"
 alias cd="z"
+alias ci="zi"
 alias du="dust"
 alias find="fd"
 alias ga="git add"
@@ -199,15 +224,23 @@ alias td="tmux new -s $(pwd | sed 's/.*\///g')"
 alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
 alias tn="t $(basename $PWD)" # Create new tmux session on current directory
-alias top="btop"
-alias tw="node_project"
-alias tweb="tmux_pnpm_node"
+alias top="btop" # top/htop alternative
+alias tw="node_project" # works with alacritty + tmux
+alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
 alias tx="tmuxifier"
 alias v="nvim"
 alias vi="nvim"
 alias wh="which"
-alias y="ya"
+alias y="ya" # exit yazi with cwd
 alias zshconf="nvim ~/.zshrc"
+alias in='sudo pacman -S' # install package
+alias un='sudo pacman -Rns' # uninstall package
+alias up='sudo pacman -Syu' # update system/package/aur
+alias pl='pacman -Qs' # list installed package
+alias pa='pacman -Ss' # list availabe package
+alias pc='sudo pacman -Sc' # remove unused cache
+alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
+
 
 
 # Arch Related
@@ -225,7 +258,7 @@ alias btest="bun --bun run test"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
-eval "$(tmuxifier init -)"
+# eval "$(tmuxifier init -)"
 
 #nvm
 source /usr/share/nvm/init-nvm.sh
@@ -242,4 +275,4 @@ esac
 export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 
 # opam configuration
-[[ ! -r /home/artifex/.opam/opam-init/init.zsh ]] || source /home/artifex/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+# [[ ! -r /home/artifex/.opam/opam-init/init.zsh ]] || source /home/artifex/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
