@@ -37,6 +37,7 @@ M.colors = {
 	mantle = "#181825",
 	-- crust = "rgba(17,17,27,0.618)",
 	crust = "rgba(36,40,59,0.618)",
+	-- crust = "rgba(36,40,59,1)",
 	transparent = "rgba(0,0,0,0)",
 	tab_active = "#7aa2f7",
 	tab_inactive = "#1f2335",
@@ -60,7 +61,7 @@ function M.options(config)
 		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
 		scale = 1.0,
 	})
-	config.font_size = 13
+	config.font_size = 12
 	config.window_decorations = "RESIZE"
 	config.text_background_opacity = 1.0
 	config.window_background_opacity = 1
