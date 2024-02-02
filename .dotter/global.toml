@@ -23,6 +23,9 @@ tmuxifier = "~/.tmux/layouts"
 alacritty = "~/.config/alacritty"
 btop = "~/.config/btop"
 
+[scripts.files]
+scripts = "/usr/bin"
+
 [archcraft.files]
 # "archcraft/i3" = "~/.config/i3"
 # "archcraft/bspwm" = "~/.config/bspwm"
