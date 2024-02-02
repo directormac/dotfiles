@@ -44,6 +44,7 @@ return {
           "markdown_inline",
           "prisma",
           "svelte",
+          "slint",
           "tsx",
           "typescript",
           "vue",

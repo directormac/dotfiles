@@ -1,0 +1,28 @@
+import = [
+  "/home/artifex/.config/alacritty/colors.toml",
+  "/home/artifex/.config/alacritty/fonts.toml",
+  "/home/artifex/.config/alacritty/keys.yml",
+]
+live_config_reload = true
+# renderer = "glsl3"
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[window]
+decorations = "none"
+dynamic_padding = true
+dynamic_title = false
+# history = 50000
+# multiplier = 3
+opacity = 0.8
+startup_mode = "Windowed"
+
+[window.padding]
+x = 0
+y = 0
+
+[window.position]
+x = 0
+y = 0

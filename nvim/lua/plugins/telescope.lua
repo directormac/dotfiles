@@ -48,6 +48,8 @@ return {
           "--glob",
           "!**/.svelte-kit/*",
           "--glob",
+          "!**/.nuxt/*",
+          "--glob",
           "!**/.next/*",
           "--glob",
           "!**/.target/*",
@@ -67,6 +69,7 @@ return {
           "build/", -- Build Folders
           "./dist/", -- Dist Folders
           ".svelte-kit/", -- Svelte kit
+          ".nuxt/", -- Svelte kit
           ".target/", -- Rust Target
           ".next/", -- Next Ignore
           ".vitepress/cache/*", -- Vitepress Cache Ignore
@@ -92,6 +95,8 @@ return {
             "!**/build/*",
             "--glob",
             "!**/.svelte-kit/*",
+            "--glob",
+            "!**/.nuxt/*",
             "--glob",
             "!**/.next/*",
             "--glob",
