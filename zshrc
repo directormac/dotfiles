@@ -10,8 +10,12 @@ export PATH=$HOME/.tmux/plugins/tmuxifier/bin:$PATH # tmuxifier
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 export JAVA_HOME=/usr/lib/jvm/default/
 export OPENAI_KEY=
-export GOPATH="$home/.go"
+export GOPATH=$HOME/.go
+# export PATH=$PATH:$GOPATH/bin
 export PATH="/home/artifex/.deno/bin:$PATH"
+
+export ANDROID_HOME="/home/artifex/.android/sdk"
+export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
@@ -36,6 +40,7 @@ plug "wintermi/zsh-rust"
 plug "zap-zsh/nvm"
 plug "zap-zsh/fzf"
 plug "zap-zsh/web-search"
+plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 
 # Load and initialise completion system
 autoload -Uz compinit
@@ -45,7 +50,7 @@ source ~/.config/wezterm/zsh_completions
 
 
 function node_project {
-  t . && tmuxifier w web
+  tmux . && tmuxifier w web
 }
 
 
@@ -70,6 +75,27 @@ function ya() {
     fi
     rm -f -- "$tmp"
 }
+
+
+# git repository greeter
+# last_repository=
+# check_directory_for_new_repository() {
+# 	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
+#
+# 	if [ "$current_repository" ] && \
+# 	   [ "$current_repository" != "$last_repository" ]; then
+# 		onefetch --image $HOME/.dotfiles/avatar.jpg
+# 	fi
+# 	last_repository=$current_repository
+# }
+# cd() {
+# 	builtin cd "$@"
+# 	check_directory_for_new_repository
+# }
+#
+# check_directory_for_new_repository
+# optional, greet also when opening shell directly in repository directory
+# adds time to startup
 
 
 # alias  l='eza -l  --icons'
@@ -117,7 +143,7 @@ alias ripgrep="rg"
 alias td="tmux new -s $(pwd | sed 's/.*\///g')"
 alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
-alias tn="t $(basename $PWD)" # Create new tmux session on current directory
+alias tn="tmux $(basename $PWD)" # Create new tmux session on current directory
 alias top="btop" # top/htop alternative
 alias tw="node_project" # works with alacritty + tmux
 alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
@@ -139,7 +165,7 @@ alias mc="mcli"
 
 
 # Arch Related
-alias winbox="wine start /unix $HOME/.dotfiles/winbox64.exe"
+# alias winbox="wine start /unix $HOME/.dotfiles/winbox64.exe"
 
 # Bun Aliases
 alias bunx="bun x"
@@ -160,6 +186,7 @@ eval "$(tmuxifier init -)"
 source /usr/share/nvm/init-nvm.sh
 #nvm
 
+. "$HOME/.asdf/asdf.sh"
 
 # pnpm
 export PNPM_HOME="/home/artifex/.local/share/pnpm"
@@ -175,3 +202,6 @@ export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 
 
 
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
