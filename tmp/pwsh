@@ -1,0 +1,43 @@
+<#
+    Add Alias
+#>
+function Add-Alias($name, $alias) {
+    $func = @"
+function global:$name {
+    `$expr = ('$alias ' + (( `$args | % { if (`$_.GetType().FullName -eq "System.String") { "``"`$(`$_.Replace('``"','````"').Replace("'","``'"))``"" } else { `$_ } } ) -join ' '))
+    write-debug "Expression: `$expr"
+    Invoke-Expression `$expr
+}
+"@
+    write-debug "Defined function:`n$func"
+    $func | iex
+}
+Set-Alias ls -Value lsd
+Add-Alias c 'clear'
+Add-Alias lg 'lazygit'
+Add-Alias v 'nvim'
+Add-Alias vim 'nvim'
+# Add-Alias ls 'lsd'
+Add-Alias la 'lsd -a'
+Add-Alias gs 'git status'
+
+Invoke-Expression (&starship init powershell)
+$ENV:STARSHIP_CONFIG = "%USERPROFILE%\.config\starship.toml"
+
+$ENV:NEOVIM_CONFIG = "%USERPROFILE\AppData\Local\nvim"
+
+
+
+# Shows navigable menu of all options when hitting Tab
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+# Autocompletion for arrow keys
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+function Pwsh-Config(){
+    nvim $PROFILE
+}
+
+function Nvim-Config(){
+  NVIM_APPNAME="nvimone" nvim
+}
