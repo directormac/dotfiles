@@ -1,4 +1,8 @@
 return {
+  -- {
+  --   "luckasRanarison/tailwind-tools.nvim",
+  --   opts = {}, -- your configuration
+  -- },
   {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
@@ -29,10 +33,8 @@ return {
         },
       },
       fold_virt_text_handler = require("config.util").fold_virtual_text,
-      close_fold_kinds = {
-        "imports",
-        "comment",
-        "class",
+      close_fold_kinds_for_ft = {
+        default = { "imports", "comment", "class" },
       },
       -- ---@diagnostic disable-next-line: unused-local
       -- provider_selector = function(bufnr, filetype, buftype)

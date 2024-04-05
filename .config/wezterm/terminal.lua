@@ -66,21 +66,21 @@ function M.options(config)
 	config.text_background_opacity = 1.0
 	config.window_background_opacity = 1
 	config.window_frame = {
-		border_left_width = "0px",
-		border_right_width = "0px",
+		border_left_width = "1px",
+		border_right_width = "1px",
 		border_bottom_height = "2px",
-		border_top_height = "11px",
+		border_top_height = "4px",
 		border_left_color = M.colors.crust,
 		border_right_color = M.colors.crust,
 		border_bottom_color = M.colors.crust,
 		border_top_color = M.colors.crust,
-		font_size = 14,
+		font_size = 12,
 	}
 	config.enable_scroll_bar = false
 	config.default_cursor_style = "SteadyBar"
 	config.cursor_blink_rate = 333
 	config.inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 }
-	config.window_padding = { left = "1px", right = "1px", top = "0.1cell", bottom = "0.1cell" }
+	config.window_padding = { left = "0px", right = "0px", top = "0.1cell", bottom = "0.1cell" }
 	config.colors = {
 		background = M.colors.crust,
 		-- background = M.colors.transparent,
