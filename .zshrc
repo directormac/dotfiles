@@ -2,19 +2,23 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Exports
+export TZ="Asia/Manila"
 export BROWSER=firefox-developer-edition # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 # export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
-export JAVA_HOME=/usr/lib/jvm/default/
 export OPENAI_KEY=
 export GOPATH=$HOME/.go
-export PATH="/home/artifex/.deno/bin:$PATH"
+export PATH="$HOME/.go/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
 
-export ANDROID_HOME="/home/artifex/.android/sdk"
+export JAVA_HOME=/usr/lib/jvm/default/
+export ANDROID_HOME="$HOME/.android/sdk"
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
+export NDK_HOME="/opt/android-ndk"
+export PATH=$NDK_HOME:$PATH
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
@@ -161,6 +165,8 @@ alias pc='sudo pacman -Sc' # remove unused cache
 alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
 alias kubectl='minikube kubectl --'
 alias mc="mcli"
+alias dcd="docker-compose down"
+alias dcu="docker-compose up -d"
 
 
 # Arch Related
