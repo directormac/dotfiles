@@ -4,6 +4,7 @@ size = 12
 
 [font.bold]
 family = "JetBrainsMono Nerd Font"
+# family = "FiraCode Nerd Font"
 style = "Bold"
 
 [font.glyph_offset]
@@ -11,6 +12,7 @@ x = 0
 y = 0
 
 [font.italic]
+# family = "FiraCode Nerd Font"
 family = "JetBrainsMono Nerd Font"
 style = "Italic"
 
@@ -20,6 +22,7 @@ style = "Italic"
 
 [font.normal]
 family = "JetBrainsMono Nerd Font"
+# family = "FiraCode Nerd Font"
 style = "Regular"
 
 [font.offset]
