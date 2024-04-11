@@ -16,7 +16,7 @@ dynamic_padding = true
 dynamic_title = false
 # history = 50000
 # multiplier = 3
-opacity = 0.8
+opacity = 0.73
 startup_mode = "Windowed"
 
 [window.padding]
