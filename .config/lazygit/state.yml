@@ -1,8 +1,14 @@
 lastupdatecheck: 0
 recentrepos:
 - /home/artifex/.dotfiles
-- /home/artifex/Projects/daedalus/auth-sveltekit
+- /home/artifex/Projects/mkra.dev/cockpit-management
+- /home/artifex/Projects/mkra.dev/super-sveltekit
+- /home/artifex/Projects/mkra.dev/honobun-kit
+- /home/artifex/Projects/mkra.dev/honode-kit
 - /home/artifex/Projects/mkra.dev/artifex-kit
+- /home/artifex/Projects/daedalus/auth-sveltekit
+- /home/artifex/Projects/mkra.dev/sj-system
+- /home/artifex/Projects/mkra.dev/kit4-node-starter
 - /home/artifex/Projects/contributions/shadcn-svelte
 - /home/artifex/Projects/mkra.dev/auth-kit
 - /home/artifex/Projects/mkra.dev/saas-kit

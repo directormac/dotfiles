@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+source ~/.secrets/secrets
+
 # Exports
 export TZ="Asia/Manila"
 export BROWSER=firefox-developer-edition # set google chrome as default browser
@@ -8,17 +10,23 @@ export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 # export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 
+
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 export OPENAI_KEY=
 export GOPATH=$HOME/.go
 export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
-
+export PATH="$HOME/.moon/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export JAVA_HOME=/usr/lib/jvm/default/
 export ANDROID_HOME="$HOME/.android/sdk"
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 export NDK_HOME="/opt/android-ndk"
 export PATH=$NDK_HOME:$PATH
+
+# Neede for tauri dev mode
+export WEBKIT_DISABLE_COMPOSITING_MODE=1
+export WEBKIT_DISABLE_DMABUF_RENDERER=1
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
@@ -33,6 +41,7 @@ export FZF_DEFAULT_OPTS=" \
 # Scripts
 export PATH=$HOME/.config/artifex/scripts/:$PATH
 
+fpath+=~/.zfunc
 
 [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
@@ -44,6 +53,7 @@ plug "zap-zsh/nvm"
 plug "zap-zsh/fzf"
 plug "zap-zsh/web-search"
 plug "MichaelAquilina/zsh-autoswitch-virtualenv"
+
 
 # Load and initialise completion system
 autoload -Uz compinit
@@ -209,3 +219,4 @@ export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
+

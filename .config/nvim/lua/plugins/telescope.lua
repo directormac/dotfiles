@@ -59,6 +59,8 @@ return {
           "!**/.yarn/*",
           "--glob",
           "!**/playwright-report/*",
+          "--glob",
+          "!**/.gradle/*",
           "-L",
         },
         -- NOTE: Add Ignore Patterns here
@@ -77,6 +79,7 @@ return {
           "**/.yarn",
           "**/test-results/",
           "**/playwright-report/",
+          "**/.gradle/",
         },
       },
       pickers = {
@@ -107,6 +110,8 @@ return {
             "!**/.yarn/*",
             "--glob",
             "!**/playwright-report/*",
+            "--glob",
+            "!**/.gradle/*",
             "-L",
           },
         },

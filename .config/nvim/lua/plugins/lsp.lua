@@ -45,6 +45,8 @@ return {
           "markdown_inline",
           "prisma",
           "svelte",
+          "java",
+          "kotlin",
           "slint",
           "tsx",
           "typescript",
