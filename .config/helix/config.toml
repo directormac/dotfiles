@@ -3,18 +3,42 @@ theme = "artifex"
 [keys.normal]
 esc = ["collapse_selection", "keep_primary_selection"]
 C-s = ":w"
-"A-k" = ["goto_line_end","extend_line_below", "delete_selection", "move_line_up", "paste_before"]
-"A-j" = ["goto_line_end","extend_line_below", "delete_selection", "paste_after"]
+"A-k" = [
+  "goto_line_end",
+  "extend_line_below",
+  "delete_selection",
+  "move_line_up",
+  "paste_before",
+]
+"A-j" = [
+  "goto_line_end",
+  "extend_line_below",
+  "delete_selection",
+  "paste_after",
+]
 
 [keys.select]
-"A-k" = ["goto_line_end","extend_line_below",  "delete_selection", "move_line_up", "paste_before", "select_mode"]
-"A-j" = ["goto_line_end","extend_line_below",  "delete_selection", "paste_after", "select_mode" ]
+"A-k" = [
+  "goto_line_end",
+  "extend_line_below",
+  "delete_selection",
+  "move_line_up",
+  "paste_before",
+  "select_mode",
+]
+"A-j" = [
+  "goto_line_end",
+  "extend_line_below",
+  "delete_selection",
+  "paste_after",
+  "select_mode",
+]
 
 [keys.normal.g]
 a = "code_action" # Maps `ga` to show possible code actions
 
 [keys.normal.space]
-q = { q = ":quit" }# Maps `space + q` to quit
+q = { q = ":quit" } # Maps `space + q` to quit
 c = ":buffer-close" # Maps `space +c ` to close current buffer
 
 [keys.insert]
@@ -25,13 +49,13 @@ C-a = "goto_line_start"
 C-f = "move_char_right"
 C-b = "move_char_left"
 "A-x" = "normal_mode"
-j = { j = "normal_mode", k = "normal_mode"}
+j = { j = "normal_mode", k = "normal_mode" }
 C-c = "normal_mode"
 C-s = [":write", "normal_mode"]
 
 
 [editor]
-line-number="relative"
+line-number = "relative"
 mouse = true
 auto-completion = true
 cursorline = true
@@ -62,7 +86,7 @@ skip-levels = 1
 nbsp = "⍽"
 tab = "→"
 newline = "⏎"
-tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
 
 
 [editor.auto-pairs]
@@ -82,9 +106,16 @@ select = "underline"
 hidden = false
 
 [editor.statusline]
-left = ["mode", "spinner", "total-line-numbers", "workspace-diagnostics", ]
+left = ["mode", "spinner", "total-line-numbers", "workspace-diagnostics"]
 center = ["file-name"]
-right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+right = [
+  "diagnostics",
+  "selections",
+  "position",
+  "file-encoding",
+  "file-line-ending",
+  "file-type",
+]
 separator = "|"
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
@@ -97,6 +128,4 @@ display-signature-help-docs = true
 # display-inlay-hints = true
 
 [editor.soft-wrap]
-enable=true
-
-
+enable = true
