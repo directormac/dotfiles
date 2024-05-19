@@ -1,3 +1,2 @@
-install.ps1
-nvim/lazy-lock.json
 .config/lazygit/state.yml
+.config/nvim/lazy-lock.json
