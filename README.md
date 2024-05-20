@@ -16,29 +16,26 @@ This dotfiles repo has the following configuration for
 
 <hr>
 
-### Before linking the dotfliles please make sure all the dependencies are installed check Install.md
+Dependencies `gnu stow`
 
-## Installing <a href="https://github.com/SuperCuber/dotter">Dotter</a>
+Installation:
+
+`pacman -S stow`
 
 ```sh
-# On windows
-# Install scoop, read #scoop section on Install.md
-scoop install dotter
+#clone repo using gh cli
+gh repo clone directormac/dotfiles ~/.dotfiles
 
-# On other platforms
-# Make sure rust is installed
-cargo install dotter
+#clone repo using git
+git clone https://github.com/directormac/dotfiles.git ~/.dotfiles
 ```
 
-### Before running dotter create a local.toml on .dotter directory
+Usage
 
-The existing example.toml will be your reference
+```sh
+# Link
+stow .
 
-```toml
-# For windows system paste the following lines on local.toml
-includes = [".dotter/windows.toml"]
-packages = ["shell","helix", "vim", ]
-
-# For linux use the following on local.toml or omit as global config applies for unix based
-packages = ["shell","helix", "vim", ]
+# Unlink
+stow -D .
 ```
