@@ -1,6 +1,8 @@
 lastupdatecheck: 0
 recentrepos:
     - /home/artifex/.dotfiles
+    - /home/artifex/Projects/contributions/byteminds
+    - /home/artifex/Projects/mkra.dev/elysia-kit
     - /home/artifex/Projects/mkra.dev/honobun-kit
     - /home/artifex/Projects/mkra.dev/cockpit-management
     - /home/artifex/Projects/mkra.dev/super-sveltekit
