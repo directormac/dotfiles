@@ -21,7 +21,7 @@ return {
       opts.options = {
         indicator = { style = "none" },
         diagnostics = "nvim_lsp",
-        always_show_bufferline = false,
+        always_show_bufferline = true,
         separator_style = "thin",
         show_buffer_close_icons = false,
         show_duplicate_prefix = true,
