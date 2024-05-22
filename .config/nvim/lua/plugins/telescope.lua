@@ -4,7 +4,12 @@ return {
     keys = {
       {
         "<leader>fB",
-        "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>",
+        "<cmd>Telescope file_browser previewer=false hidden=true<cr>",
+        { desc = "Browse Files in root directory" },
+      },
+      {
+        "<leader>fb",
+        "<cmd>Telescope file_browser path=%:p:h select_buffer=true previewer=false hidden=true<cr>",
         { desc = "Browse Files in root directory" },
       },
     },
@@ -42,6 +47,8 @@ return {
           "--glob",
           "!**/**-lock.yaml",
           "--glob",
+          "!**/lazy-lock.json",
+          "--glob",
           "!**/dist/*",
           "--glob",
           "!**/build/*",
@@ -76,9 +83,11 @@ return {
           ".next/", -- Next Ignore
           ".vitepress/cache/*", -- Vitepress Cache Ignore
           "**/**-lock.yaml",
+          "**/lazy-lock.json",
           "**/.yarn",
           "**/test-results/",
           "**/playwright-report/",
+          "**/.gradle/",
           "**/.gradle/",
         },
       },
@@ -92,6 +101,8 @@ return {
             "!**/.git/*",
             "--glob",
             "!**/**-lock.yaml",
+            "--glob",
+            "!**/lazy-lock.json",
             "--glob",
             "!**/dist/*",
             "--glob",
