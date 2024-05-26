@@ -64,6 +64,9 @@ if Util.has("nvim-ufo") then
     require("ufo").peekFoldedLinesUnderCursor()
   end, { desc = "Peek folds" })
 end
+
+
+
 -- Telescope
 --stylua: ignore
 -- map("n", "<leader>fb", "<cmd>Telescope file_browser file_browser previewer=false hidden=true<cr>", { noremap = true, desc = "Browse Files" })
