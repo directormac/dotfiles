@@ -66,8 +66,8 @@ function M.options(config)
 	config.text_background_opacity = 1.0
 	config.window_background_opacity = 1
 	config.window_frame = {
-		border_left_width = "0px",
-		border_right_width = "0px",
+		border_left_width = "1px",
+		border_right_width = "1px",
 		border_bottom_height = "0px",
 		border_top_height = "0px",
 		border_left_color = M.colors.crust,
