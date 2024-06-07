@@ -60,6 +60,7 @@ return {
           "css",
           "cpp",
           "html",
+          "gleam",
           "javascript",
           "json",
           "lua",
@@ -78,5 +79,27 @@ return {
       table.insert(opts.incremental_selection, { enable = false })
       -- table.insert(opts.autotag, { enable = true })
     end,
+  },
+  {
+    "nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = false },
+    },
+  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = {
+  --     servers = {
+  --       gleam = {},
+  --     },
+  --   },
+  -- },
+  {
+    "windwp/nvim-ts-autotag",
+    opts = {
+      aliases = {
+        ["heex"] = "html",
+      },
+    },
   },
 }

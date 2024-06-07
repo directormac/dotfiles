@@ -3,20 +3,20 @@ return {
     "luckasRanarison/tailwind-tools.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
-      document_color = {
-        enabled = true, -- can be toggled by commands
-        kind = "inline", -- "inline" | "foreground" | "background"
-        inline_symbol = "󰝤 ", -- only used in inline mode
-        debounce = 200, -- in milliseconds, only applied in insert mode
-      },
-      conceal = {
-        enabled = true, -- can be toggled by commands
-        min_length = nil, -- only conceal classes exceeding the provided length
-        symbol = "󱏿", -- only a single character is allowed
-        highlight = { -- extmark highlight options, see :h 'highlight'
-          fg = "#38BDF8",
-        },
-      },
+      -- document_color = {
+      --   enabled = true, -- can be toggled by commands
+      --   kind = "inline", -- "inline" | "foreground" | "background"
+      --   inline_symbol = "󰝤 ", -- only used in inline mode
+      --   debounce = 200, -- in milliseconds, only applied in insert mode
+      -- },
+      -- conceal = {
+      --   enabled = true, -- can be toggled by commands
+      --   min_length = nil, -- only conceal classes exceeding the provided length
+      --   symbol = "󱏿", -- only a single character is allowed
+      --   highlight = { -- extmark highlight options, see :h 'highlight'
+      --     fg = "#38BDF8",
+      --   },
+      -- },
     }, -- your configuration
   },
   {
@@ -52,14 +52,14 @@ return {
       close_fold_kinds_for_ft = {
         default = { "imports", "comment", "class" },
       },
-      -- ---@diagnostic disable-next-line: unused-local
-      -- provider_selector = function(bufnr, filetype, buftype)
-      --   return { "treesitter", "indent" }
-      -- end,
+      ------@diagnostic disable-next-line: unused-local
+      ---provider_selector = function(bufnr, filetype, buftype)
+      ---  return { "treesitter", "indent" }
+      ---end,
     },
   },
   {
-    "m4xshen/hardtime.nvim", --hardtime practice
+    "m4xshen/hardtime.nvim",
     keys = {
       { "<leader>uh", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
     },
@@ -68,6 +68,7 @@ return {
     opts = {
       max_time = 1000,
       max_count = 4,
+      enabled = true,
       resetting_keys = {
         ["1"] = { "n", "v" },
         ["2"] = { "n", "v" },
@@ -81,7 +82,7 @@ return {
         ["c"] = { "n" },
         ["C"] = { "n" },
         ["d"] = { "n" },
-        -- ["x"] = { "n" },
+        ["x"] = { "n" },
         ["X"] = { "n" },
         ["y"] = { "n" },
         ["Y"] = { "n" },
