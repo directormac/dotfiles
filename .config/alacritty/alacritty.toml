@@ -1,7 +1,8 @@
 import = [
-  "/home/artifex/.config/alacritty/colors.toml",
-  "/home/artifex/.config/alacritty/fonts.toml",
-  "/home/artifex/.config/alacritty/keys.yml",
+  # "~/.config/alacritty/tokyo-night-storm.toml",
+  "~/.config/alacritty/catppuccin-mocha.toml",
+  "~/.config/alacritty/fonts.toml",
+  "~/.config/alacritty/keys.toml",
 ]
 live_config_reload = true
 # renderer = "glsl3"
@@ -14,9 +15,7 @@ WINIT_X11_SCALE_FACTOR = "1.0"
 decorations = "none"
 dynamic_padding = true
 dynamic_title = false
-# history = 50000
-# multiplier = 3
-opacity = 0.73
+opacity = 0.90
 startup_mode = "Windowed"
 
 [window.padding]
@@ -26,6 +25,11 @@ y = 0
 [window.position]
 x = 0
 y = 0
+
+[scrolling]
+history = 50000
+multiplier = 3
+
 
 # [shell]
 # program = "tmux"
