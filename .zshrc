@@ -10,7 +10,7 @@ export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 # export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 
-
+export PATH=$HOME/.tmux/plugins/tmux-session-wizard/bin:$PATH
 export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 export OPENAI_KEY=
 export GOPATH=$HOME/.go
@@ -50,7 +50,7 @@ plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 autoload -Uz compinit
 compinit
 
-source ~/.config/wezterm/zsh_completions
+source ~/.dotfiles/.config/zsh_completions
 
 
 function node_project {
