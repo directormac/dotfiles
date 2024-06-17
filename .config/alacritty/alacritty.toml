@@ -15,7 +15,7 @@ WINIT_X11_SCALE_FACTOR = "1.0"
 decorations = "none"
 dynamic_padding = true
 dynamic_title = false
-opacity = 0.90
+opacity = 0.93
 startup_mode = "Windowed"
 
 [window.padding]
@@ -31,5 +31,6 @@ history = 50000
 multiplier = 3
 
 
-# [shell]
-# program = "tmux"
+[shell]
+program = "/bin/zsh"
+args = ["-l", "-c", "tmux attach || tmux new"]
