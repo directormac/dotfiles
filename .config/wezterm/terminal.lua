@@ -2,14 +2,36 @@ local term = require("wezterm")
 
 local M = {}
 
-local ansi = { "#1d202f", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" }
+local ansi_tn = { "#1d202f", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" }
 
-local brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" }
+local brights_tn = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" }
+
+local ansi = {
+	"#45475a",
+	"#f38ba8",
+	"#a6e3a1",
+	"#f9e2af",
+	"#89b4fa",
+	"#f5c2e7",
+	"#94e2d5",
+	"#bac2de",
+}
+local background = "#1e1e2e"
+local brights = {
+	"#585b70",
+	"#f38ba8",
+	"#a6e3a1",
+	"#f9e2af",
+	"#89b4fa",
+	"#f5c2e7",
+	"#94e2d5",
+	"#a6adc8",
+}
 
 ---- Appearance
 -- config.front_end = "OpenGL"
 -- Color pallete
-M.colors = {
+M.colors_old = {
 	rosewater = "#f5e0dc",
 	flamingo = "#f2cdcd",
 	pink = "#f5c2e7",
@@ -44,9 +66,44 @@ M.colors = {
 	tab_fg = "#a9b1d6",
 }
 
+M.colors = {
+	rosewater = "#f5e0dc",
+	flamingo = "#f2cdcd",
+	pink = "#f5c2e7",
+	mauve = "#cba6f7",
+	red = "#f38ba8",
+	maroon = "#eba0ac",
+	peach = "#fab387",
+	yellow = "#f9e2af",
+	green = "#a6e3a1",
+	teal = "#94e2d5",
+	sky = "#89dceb",
+	sapphire = "#74c7ec",
+	blue = "#89b4fa",
+	lavender = "#b4befe",
+	text = "#cdd6f4",
+	subtext1 = "#bac2de",
+	subtext0 = "#a6adc8",
+	overlay2 = "#9399b2",
+	overlay1 = "#7f849c",
+	overlay0 = "#6c7086",
+	surface2 = "#585b70",
+	surface1 = "#45475a",
+	surface0 = "#313244",
+	base = "#1e1e2e",
+	mantle = "#181825",
+	-- crust = "#11111b",
+	crust = "rgba(17,17,27,0.618)",
+	transparent = "rgba(0,0,0,0)",
+	tab_active = "#89b4fa",
+	tab_inactive = "#1f2335",
+	tab_fg = "#a9b1d6",
+}
+
 function M.options(config)
 	config.status_update_interval = 1000
-	config.color_scheme = "tokyonight_storm"
+	-- config.color_scheme = "tokyonight_storm"
+	config.color_scheme = "Catppuccin Mocha"
 
 	config.animation_fps = 240
 	config.max_fps = 240
