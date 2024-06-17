@@ -3,20 +3,20 @@ return {
     "luckasRanarison/tailwind-tools.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
-      -- document_color = {
-      --   enabled = true, -- can be toggled by commands
-      --   kind = "inline", -- "inline" | "foreground" | "background"
-      --   inline_symbol = "󰝤 ", -- only used in inline mode
-      --   debounce = 200, -- in milliseconds, only applied in insert mode
-      -- },
-      -- conceal = {
-      --   enabled = true, -- can be toggled by commands
-      --   min_length = nil, -- only conceal classes exceeding the provided length
-      --   symbol = "󱏿", -- only a single character is allowed
-      --   highlight = { -- extmark highlight options, see :h 'highlight'
-      --     fg = "#38BDF8",
-      --   },
-      -- },
+      document_color = {
+        enabled = true, -- can be toggled by commands
+        kind = "inline", -- "inline" | "foreground" | "background"
+        inline_symbol = "󰝤 ", -- only used in inline mode
+        debounce = 200, -- in milliseconds, only applied in insert mode
+      },
+      conceal = {
+        enabled = true, -- can be toggled by commands
+        min_length = nil, -- only conceal classes exceeding the provided length
+        symbol = "󱏿", -- only a single character is allowed
+        highlight = { -- extmark highlight options, see :h 'highlight'
+          fg = "#38BDF8",
+        },
+      },
     }, -- your configuration
   },
   {
@@ -56,40 +56,6 @@ return {
       ---provider_selector = function(bufnr, filetype, buftype)
       ---  return { "treesitter", "indent" }
       ---end,
-    },
-  },
-  {
-    "m4xshen/hardtime.nvim",
-    keys = {
-      { "<leader>uh", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
-    },
-    dependencies = "neovim/nvim-lspconfig",
-    vscode = true,
-    opts = {
-      max_time = 1000,
-      max_count = 4,
-      enabled = true,
-      resetting_keys = {
-        ["1"] = { "n", "v" },
-        ["2"] = { "n", "v" },
-        ["3"] = { "n", "v" },
-        ["4"] = { "n", "v" },
-        ["5"] = { "n", "v" },
-        ["6"] = { "n", "v" },
-        ["7"] = { "n", "v" },
-        ["8"] = { "n", "v" },
-        ["9"] = { "n", "v" },
-        ["c"] = { "n" },
-        ["C"] = { "n" },
-        ["d"] = { "n" },
-        ["x"] = { "n" },
-        ["X"] = { "n" },
-        ["y"] = { "n" },
-        ["Y"] = { "n" },
-        ["p"] = { "n" },
-        ["P"] = { "n" },
-      },
-      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
     },
   },
   {
@@ -170,6 +136,7 @@ return {
   },
   {
     "stevearc/oil.nvim",
+    -- commit = "18272ab",
     keys = {
       {
         "<leader>fo",
@@ -194,11 +161,45 @@ return {
       skip_confirm_for_simple_edits = true,
       keymaps = {
         ["q"] = "actions.close",
-        ["<C-s>"] = "actions.save",
+        ["<C-s>"] = false,
       },
+      -- use_default_keymaps = false,
       view_options = {
         show_hidden = true,
       },
+    },
+  },
+  {
+    "m4xshen/hardtime.nvim",
+    keys = {
+      { "<leader>uh", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
+    },
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    vscode = true,
+    opts = {
+      max_time = 1000,
+      max_count = 4,
+      resetting_keys = {
+        ["1"] = { "n", "v" },
+        ["2"] = { "n", "v" },
+        ["3"] = { "n", "v" },
+        ["4"] = { "n", "v" },
+        ["5"] = { "n", "v" },
+        ["6"] = { "n", "v" },
+        ["7"] = { "n", "v" },
+        ["8"] = { "n", "v" },
+        ["9"] = { "n", "v" },
+        ["c"] = { "n" },
+        ["C"] = { "n" },
+        ["d"] = { "n" },
+        ["x"] = { "n" },
+        ["X"] = { "n" },
+        ["y"] = { "n" },
+        ["Y"] = { "n" },
+        ["p"] = { "n" },
+        ["P"] = { "n" },
+      },
+      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
     },
   },
 }
