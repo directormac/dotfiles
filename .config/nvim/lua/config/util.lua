@@ -2,13 +2,13 @@
 
 local M = {}
 
-M.copy = function(lines, _)
-  require("osc52").copy(table.concat(lines, "\n"))
-end
-
-M.paste = function()
-  return { vim.fn.split(vim.fn.getreg(""), "\n", vim.fn.getregtype("")) }
-end
+-- M.copy = function(lines, _)
+--   require("osc52").copy(table.concat(lines, "\n"))
+-- end
+--
+-- M.paste = function()
+--   return { vim.fn.split(vim.fn.getreg(""), "\n", vim.fn.getregtype("")) }
+-- end
 
 M.map = function(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys

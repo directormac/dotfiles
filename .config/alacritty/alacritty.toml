@@ -30,6 +30,9 @@ y = 0
 history = 50000
 multiplier = 3
 
+[selection]
+save_to_clipboard = true
+
 
 [shell]
 program = "/bin/zsh"
