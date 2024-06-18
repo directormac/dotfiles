@@ -1,24 +1,25 @@
 # A dotfiles configuration
 
-<hr>
+Dependencies
 
-This dotfiles repo has the following configuration for
+- [feh](https://feh.finalrewind.org/) for wallpapers
+- [alacritty](https://github.com/alacritty/alacritty)
+- [wezterm](https://github.com/wez/wezterm)
+- [tmux](https://github.com/tmux/tmux)
+- [lazygit](https://github.com/jesseduffield/lazygit)
+- [nvim](https://github.com/neovim/neovim)
+- [i3](https://github.com/i3/i3)
+- [polybar](https://github.com/polybar/polybar)
+- [rofi](https://github.com/davatorium/rofi)
+- [rofi-emoji](https://github.com/Mange/rofi-emoji)
 
-## 🚀 Configuration for
+## Installations
 
-- <a href="https://github.com/neovim/neovim">Neovim</a>
-- <a href="https://github.com/helix-editor/helix">Helix</a>
-- <a href="https://github.com/tmux/tmux/wiki">Tmux</a>
-- <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH">Zsh</a>
-- <a href="https://github.com/starship/starship">Starship</a>
-- <a href="https://github.com/jesseduffield/lazygit">Lazygit</a>
-- <a href="https://github.com/alacritty/alacritty">Alacritty</a>
+The following i3 configuration files are meant to run for
 
-<hr>
+[archcraft](https://github.com/archcraft-os/archcraft) an arch linux distro
 
-Dependencies `gnu stow`
-
-Installation:
+### GNU Stow
 
 `pacman -S stow`
 
