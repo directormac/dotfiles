@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-## Copyright (C) 2020-2023 Aditya Shakya <adi1090x@gmail.com>
 ##
 ## Apply Random Theme With Pywal
 
 ## Theme ------------------------------------
-TDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+TDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 THEME="${TDIR##*/}"
 
 # Set you wallpaper directory here.
-WALLDIR="`xdg-user-dir PICTURES`/wallpapers"
+WALLDIR="$(xdg-user-dir PICTURES)/wallpapers"
 WALFILE="$HOME/.cache/wal/colors.sh"
 
 ## Directories ------------------------------
@@ -22,7 +21,7 @@ PATH_ROFI="$PATH_I3WM/themes/$THEME/rofi"
 ## Pywal ------------------------------------
 check_wallpaper() {
 	if [[ -d "$WALLDIR" ]]; then
-		WFILES="`ls --format=single-column $WALLDIR | wc -l`"
+		WFILES="$(ls --format=single-column $WALLDIR | wc -l)"
 		if [[ "$WFILES" == 0 ]]; then
 			dunstify -u normal -h string:x-dunst-stack-tag:noimage -i /usr/share/archcraft/icons/dunst/picture.png "There are no wallpapers in : $WALLDIR"
 			exit
@@ -34,9 +33,9 @@ check_wallpaper() {
 	fi
 }
 
-generate_colors() {	
+generate_colors() {
 	check_wallpaper
-	if [[ `which wal` ]]; then
+	if [[ $(which wal) ]]; then
 		dunstify -t 50000 -h string:x-dunst-stack-tag:runpywal -i /usr/share/archcraft/icons/dunst/hourglass.png "Generating Colorscheme. Please wait..."
 		wal -q -n -s -t -e -i "$WALLDIR"
 		if [[ "$?" != 0 ]]; then
@@ -51,8 +50,8 @@ generate_colors() {
 
 generate_colors
 source "$WALFILE"
-altbackground="`pastel color $background | pastel lighten 0.06 | pastel format hex`"
-altforeground="`pastel color $foreground | pastel darken 0.50 | pastel format hex`"
+altbackground="$(pastel color $background | pastel lighten 0.06 | pastel format hex)"
+altforeground="$(pastel color $foreground | pastel darken 0.50 | pastel format hex)"
 accent="$color4"
 
 ## Wallpaper ---------------------------------
@@ -63,15 +62,15 @@ apply_wallpaper() {
 ## Polybar -----------------------------------
 apply_polybar() {
 	# rewrite colors file
-	cat > ${PATH_PBAR}/colors.ini <<- EOF
+	cat >${PATH_PBAR}/colors.ini <<-EOF
 		[color]
-		
+
 		BACKGROUND = ${background}
 		FOREGROUND = ${foreground}
 		ALTBACKGROUND = ${altbackground}
 		ALTFOREGROUND = ${altforeground}
 		ACCENT = ${accent}
-		
+
 		BLACK = ${color0}
 		RED = ${color1}
 		GREEN = ${color2}
@@ -94,7 +93,7 @@ apply_polybar() {
 # Rofi --------------------------------------
 apply_rofi() {
 	# rewrite colors file
-	cat > ${PATH_ROFI}/shared/colors.rasi <<- EOF
+	cat >${PATH_ROFI}/shared/colors.rasi <<-EOF
 		* {
 		    background:     ${background};
 		    background-alt: ${altbackground};
@@ -109,7 +108,7 @@ apply_rofi() {
 # Terminal ----------------------------------
 apply_terminal() {
 	# alacritty : colors
-	cat > ${PATH_TERM}/colors.yml <<- _EOF_
+	cat >${PATH_TERM}/colors.yml <<-_EOF_
 		## Colors configuration
 		colors:
 		  # Default colors
@@ -145,7 +144,7 @@ apply_terminal() {
 apply_dunst() {
 	# modify colors
 	sed -i '/urgency_low/Q' ${PATH_I3WM}/dunstrc
-	cat >> ${PATH_I3WM}/dunstrc <<- _EOF_
+	cat >>${PATH_I3WM}/dunstrc <<-_EOF_
 		[urgency_low]
 		timeout = 2
 		background = "${background}"
@@ -196,7 +195,7 @@ apply_i3wm() {
 		-e "s/color_degraded =.*/color_degraded = \"$color3\"/g" \
 		-e "s/color_bad =.*/color_bad = \"$color1\"/g" \
 		-e "s/color_separator =.*/color_separator = \"$altbackground\"/g"
-	
+
 	# restart i3wm
 	i3-msg restart
 }

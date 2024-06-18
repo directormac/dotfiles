@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
-##
-## Apply wallpaper on i3 startup
-
 WALLPAPER='/home/artifex/.config/i3/themes/artifex/wallpaper'
 
 ## For single monitor
 #hsetroot -root -cover "$WALLPAPER"
 
 ## For all monitors
-hsetroot -cover "$WALLPAPER"
+# hsetroot -cover "$WALLPAPER"
 
-# feh --no-fehbg --bg-fill '/home/artifex/.config/themes/artifex/wallpaper/'
+# Span wallpaper accross monitors
+feh --no-fehbg --randomize --no-xinerama --bg-scale '/home/artifex/.wallpapers/'
+
+## Random wallpaper on monitors
+feh --no-fehbg --randomize --bg-scale '/home/artifex/.wallpapers/'
