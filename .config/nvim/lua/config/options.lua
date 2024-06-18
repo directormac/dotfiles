@@ -13,17 +13,19 @@ global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
 global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 
+set.clipboard = "unnamedplus"
+
 -- Set shell if windows
-if jit.os == "Windows" then
-  set.shell = "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe"
-else
-  -- global.clipboard = {
-  --   name = "osc52",
-  --   copy = { ["+"] = Util.copy, ["*"] = Util.copy },
-  --   paste = { ["+"] = Util.paste, ["*"] = Util.paste },
-  -- }
-  -- set.shell = "/usr/bin/bash"
-end
+-- if jit.os == "Windows" then
+--   set.shell = "C:\\Users\\Administrator\\scoop\\apps\\git\\current\\bin\\bash.exe"
+-- else
+--   global.clipboard = {
+-- name = "osc52",
+-- copy = { ["+"] = Util.copy, ["*"] = Util.copy },
+-- paste = { ["+"] = Util.paste, ["*"] = Util.paste },
+-- }
+-- set.shell = "/usr/bin/bash"
+-- end
 
 -- set.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 set.foldcolumn = "0" -- Show the fold column
