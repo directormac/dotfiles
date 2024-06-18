@@ -4,7 +4,7 @@
 ## Run ncmpcpp with alternate config
 
 # i3 directory
-DIR="$HOME/.config/i3"
+DIR="$HOME/.config"
 
 CONFIG="$DIR/alacritty/alacritty.toml"
 

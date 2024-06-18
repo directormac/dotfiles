@@ -7,8 +7,8 @@ DIR="$HOME/.config/"
 CONFIG="$DIR/alacritty/alacritty.toml"
 
 if [ "$1" == "--float" ]; then
-	alacritty --class 'alacritty-float,alacritty-float' --config-file "$CONFIG" \
-		-o window.dimensions.columns=100 window.dimensions.lines=130
+	alacritty --class 'alacritty-float,alacritty-float' --config-file "$CONFIG"
+	# -o window.dimensions.columns=100 window.dimensions.lines=130
 elif [ "$1" == "--full" ]; then
 	alacritty --class 'alacritty-fullscreen,alacritty-fullscreen' --config-file "$CONFIG" \
 		-o window.startup_mode="'Fullscreen'" \
