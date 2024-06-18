@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
-
 # Import Current Theme
 DIR="$HOME/.config/i3"
 STYLE="artifex"
@@ -9,5 +7,5 @@ RASI="$DIR/themes/$STYLE/rofi/windows.rasi"
 
 # Run
 rofi \
-    -show window \
+	-show window \
 	-theme ${RASI}

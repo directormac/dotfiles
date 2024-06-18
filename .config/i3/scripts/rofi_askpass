@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
-
 # Import Current Theme
 DIR="$HOME/.config/i3"
 STYLE="artifex"
@@ -9,7 +7,7 @@ RASI="$DIR/themes/$STYLE/rofi/askpass.rasi"
 
 # Rofi text dialog to get password
 rofi -dmenu \
-     -password \
-     -i \
-     -p "Root" \
-     -theme ${RASI}
+	-password \
+	-i \
+	-p "Root" \
+	-theme ${RASI}

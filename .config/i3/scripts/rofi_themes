@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 
-## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
-
 # Import Current Theme
 DIR="$HOME/.config/i3"
 STYLE="artifex"
 RASI="$DIR/themes/$STYLE/rofi/themes.rasi"
 
 # List Available Themes
-THEMES=(`cd $DIR/themes && ls -d */ | cut -d '/' -f1`)
+THEMES=($(cd $DIR/themes && ls -d */ | cut -d '/' -f1))
 
 # Theme Elements
 prompt="Themes"
-mesg="<b>Available Themes</b> : `cd $DIR/themes && ls -d */ | cut -d '/' -f1 | wc -l`"
+mesg="<b>Available Themes</b> : $(cd $DIR/themes && ls -d */ | cut -d '/' -f1 | wc -l)"
 
 # Rofi CMD
 rofi_cmd() {
@@ -31,8 +29,8 @@ run_rofi() {
 
 # Apply Theme
 apply_theme() {
-	selected="`run_rofi`"
-	current="`cat $DIR/themes/.current`"
+	selected="$(run_rofi)"
+	current="$(cat $DIR/themes/.current)"
 
 	for theme in "${THEMES[@]}"; do
 		if [[ -z "$selected" ]]; then
