@@ -11,3 +11,5 @@ WALLPAPER='/home/artifex/.config/i3/themes/artifex/wallpaper'
 
 ## For all monitors
 hsetroot -cover "$WALLPAPER"
+
+# feh --no-fehbg --bg-fill '/home/artifex/.config/themes/artifex/wallpaper/'

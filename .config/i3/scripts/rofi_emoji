@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+## Copyright (C) 2020-2024 Aditya Shakya <adi1090x@gmail.com>
+
+# Import Current Theme
+DIR="$HOME/.config/i3"
+STYLE="artifex"
+RASI="$DIR/themes/$STYLE/rofi/launcher.rasi"
+
+# Run
+rofi \
+	-modi emoji \
+	-show emoji \
+	-kb-custom-1 Ctrl+c \
+	-kb-cancel Alt-F1 \
+	-theme ${RASI}

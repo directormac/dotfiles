@@ -22,7 +22,7 @@
 if [ "$1" == "--float" ]; then
 	wezterm start --class 'wezterm-float'
 elif [ "$1" == "--full" ]; then
-	wezterm start --class 'Fullscreen'
+	wezterm start --class 'wezterm-fullscreen'
 else
 	wezterm start
 fi
