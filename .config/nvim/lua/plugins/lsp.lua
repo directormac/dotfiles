@@ -26,7 +26,7 @@ return {
       table.insert(opts.ensure_installed, "gofumpt")
       table.insert(opts.ensure_installed, "goimports")
       table.insert(opts.ensure_installed, "gopls")
-      table.insert(opts.ensure_installed, "grammarly-languageserver")
+      -- table.insert(opts.ensure_installed, "grammarly-languageserver")
       table.insert(opts.ensure_installed, "hadolint")
       table.insert(opts.ensure_installed, "helm-ls")
       table.insert(opts.ensure_installed, "html-lsp")
@@ -39,7 +39,7 @@ return {
       table.insert(opts.ensure_installed, "ktlint")
       table.insert(opts.ensure_installed, "kotlin-language-server")
       table.insert(opts.ensure_installed, "html-lsp")
-      table.insert(opts.ensure_installed, "marksman")
+      -- table.insert(opts.ensure_installed, "marksman")
       table.insert(opts.ensure_installed, "ruff")
       table.insert(opts.ensure_installed, "ruff-lsp")
       table.insert(opts.ensure_installed, "rust-analyzer")
@@ -64,8 +64,8 @@ return {
           "javascript",
           "json",
           "lua",
-          "markdown",
-          "markdown_inline",
+          -- "markdown",
+          -- "markdown_inline",
           "prisma",
           "svelte",
           "java",
@@ -86,14 +86,38 @@ return {
       inlay_hints = { enabled = false },
     },
   },
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   opts = {
-  --     servers = {
-  --       gleam = {},
-  --     },
-  --   },
-  -- },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        gleam = {},
+        biome = {},
+      },
+    },
+  },
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      -- for language support
+      -- @see https://biomejs.dev/internals/language-support/
+      formatters_by_ft = {
+        ["javascript"] = { "biome" },
+        ["javascriptreact"] = { "biome" },
+        ["typescript"] = { "biome" },
+        ["typescriptreact"] = { "biome" },
+        ["json"] = { "biome" },
+        ["jsonc"] = { "biome" },
+        -- ["svelte"] = { "biome" },
+        -- ["astro"] = { "biome" },
+        -- ["vue"] = { "biome" },
+        -- ["css"] = { "biome" },
+        -- ["scss"] = { "biome" },
+        -- ["less"] = { "biome" },
+        -- ["html"] = { "biome" },
+      },
+    },
+  },
   {
     "windwp/nvim-ts-autotag",
     opts = {

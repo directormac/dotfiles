@@ -57,6 +57,10 @@ return {
           "--glob",
           "!**/.nuxt/*",
           "--glob",
+          "!**/.turbo/*",
+          "--glob",
+          "!**/.tsup/*",
+          "--glob",
           "!**/.next/*",
           "--glob",
           "!**/.target/*",
@@ -81,6 +85,8 @@ return {
           ".nuxt/", -- Svelte kit
           ".target/", -- Rust Target
           ".next/", -- Next Ignore
+          ".turbo/", -- Next Ignore
+          ".tsup/", -- Next Ignore
           ".vitepress/cache/*", -- Vitepress Cache Ignore
           "**/**-lock.yaml",
           "**/lazy-lock.json",
@@ -111,6 +117,10 @@ return {
             "!**/.svelte-kit/*",
             "--glob",
             "!**/.nuxt/*",
+            "--glob",
+            "!**/.turbo/*",
+            "--glob",
+            "!**/.tsup/*",
             "--glob",
             "!**/.next/*",
             "--glob",
