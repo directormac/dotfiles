@@ -12,4 +12,4 @@ WALLPAPER='/home/artifex/.config/i3/themes/artifex/wallpaper'
 feh --no-fehbg --randomize --no-xinerama --bg-scale '/home/artifex/.wallpapers/'
 
 ## Random wallpaper on monitors
-feh --no-fehbg --randomize --bg-scale '/home/artifex/.wallpapers/'
+# feh --no-fehbg --randomize --bg-scale '/home/artifex/.wallpapers/'

@@ -11,7 +11,6 @@ export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 # export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 
 export PATH=$HOME/.tmux/plugins/tmux-session-wizard/bin:$PATH
-export TMUXIFIER_LAYOUT_PATH="$HOME/.tmux/layouts/"
 export OPENAI_KEY=
 export GOPATH=$HOME/.go
 export PATH="$HOME/.go/bin:$PATH"
@@ -53,9 +52,6 @@ compinit
 source ~/.dotfiles/.config/zsh_completions
 
 
-function node_project {
-  tmux . && tmuxifier w web
-}
 
 
 function tmux_pnpm_node {
@@ -102,12 +98,6 @@ function ya() {
 # adds time to startup
 
 
-# alias  l='eza -l  --icons'
-# alias ls='eza -1  --icons'
-# alias ll='eza -la --icons'
-# alias ld='eza -lD --icons'
-#
-
 #Aliases
 alias c="clear"
 alias cat="bat"
@@ -144,14 +134,15 @@ alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
 alias pn="pnpm"
 alias px="pnpm dlx"
 alias ripgrep="rg"
-alias td="tmux new -s $(pwd | sed 's/.*\///g')"
+# alias td="tmux new -s $(pwd | sed 's/.*\///g')"
 alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
-alias tn="tmux $(basename $PWD)" # Create new tmux session on current directory
+# alias tn="tmux new-session -s $(basename $PWD)" # Create new tmux session on current directory
+alias td='tmux new-session -s $(basename "$PWD") -c "$PWD"'
+alias tn='tmux new-session -s $(basename "$PWD") -c "$PWD"'
 alias top="btop" # top/htop alternative
 alias tw="node_project" # works with alacritty + tmux
 alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
-alias tx="tmuxifier"
 alias v="nvim"
 alias vi="nvim"
 alias wh="which"
