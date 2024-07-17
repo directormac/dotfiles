@@ -31,6 +31,9 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    keys = {
+      { "<leader><space>", "<cmd>Telescope find_files previewer=false hidden=true<cr>", desc = "Find Files (cwd)" },
+    },
     opts = {
       defaults = {
         vimgrep_arguments = {
