@@ -19,8 +19,10 @@ export PATH="$HOME/.moon/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export JAVA_HOME=/usr/lib/jvm/default/
 export ANDROID_HOME="$HOME/.android/sdk"
-export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
-export NDK_HOME="/opt/android-ndk"
+export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+# export NDK_HOME="/opt/android-ndk"
+# export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
+export CAPACITOR_ANDROID_STUDIO_PATH=/usr/bin/android-studio
 export PATH=$NDK_HOME:$PATH
 
 # Neede for tauri dev mode

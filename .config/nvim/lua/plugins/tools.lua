@@ -1,24 +1,27 @@
 return {
-  -- {
-  --   "luckasRanarison/tailwind-tools.nvim",
-  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  --   opts = {
-  --     document_color = {
-  --       enabled = true, -- can be toggled by commands
-  --       kind = "inline", -- "inline" | "foreground" | "background"
-  --       inline_symbol = "󰝤 ", -- only used in inline mode
-  --       debounce = 200, -- in milliseconds, only applied in insert mode
-  --     },
-  --     conceal = {
-  --       enabled = true, -- can be toggled by commands
-  --       min_length = nil, -- only conceal classes exceeding the provided length
-  --       symbol = "󱏿", -- only a single character is allowed
-  --       highlight = { -- extmark highlight options, see :h 'highlight'
-  --         fg = "#38BDF8",
-  --       },
-  --     },
-  --   }, -- your configuration
-  -- },
+  {
+    "luckasRanarison/tailwind-tools.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    -- keys = {
+    --   { "<leader>ut", "<cmd>TailwindConcealToggle<CR>", { desc = "Toggle Tailwind Conceal" } },
+    -- },
+    opts = {
+      document_color = {
+        enabled = true, -- can be toggled by commands
+        kind = "inline", -- "inline" | "foreground" | "background"
+        inline_symbol = "󰝤 ", -- only used in inline mode
+        debounce = 200, -- in milliseconds, only applied in insert mode
+      },
+      conceal = {
+        enabled = true, -- can be toggled by commands
+        min_length = 60, -- only conceal classes exceeding the provided length
+        symbol = "󱏿", -- only a single character is allowed
+        highlight = { -- extmark highlight options, see :h 'highlight'
+          fg = "#38BDF8",
+        },
+      },
+    }, -- your configuration
+  },
   {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
@@ -61,16 +64,20 @@ return {
   {
     "sindrets/diffview.nvim",
     event = "VeryLazy",
-    config = function()
-      local wk = require("which-key")
-      wk.register({
-        ["<leader>g"] = {
-          f = { ":DiffviewFileHistory %<cr>", "File Diff Viewer" },
-          v = { ":DiffviewOpen<cr>", "Git Diff" },
-        },
-      })
-      require("diffview").setup()
-    end,
+    -- keys = {
+    --   { "<leader>gf", "<cmd>DiffviewFileHistory %<cr>", { desc = "File Diff Viewer" } },
+    --   { "<leader>gf", "<cmd>DiffviewOpen<cr>", { desc = "Git Diff" } },
+    -- },
+    -- config = function()
+    --   local wk = require("which-key")
+    --   wk.register({
+    --     ["<leader>g"] = {
+    --       f = { ":DiffviewFileHistory %<cr>", "File Diff Viewer" },
+    --       v = { ":DiffviewOpen<cr>", "Git Diff" },
+    --     },
+    --   })
+    --   require("diffview").setup()
+    -- end,
   },
   {
     "ziontee113/color-picker.nvim",
@@ -167,39 +174,6 @@ return {
       view_options = {
         show_hidden = true,
       },
-    },
-  },
-  {
-    "m4xshen/hardtime.nvim",
-    keys = {
-      { "<leader>uh", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
-    },
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    vscode = true,
-    opts = {
-      max_time = 1000,
-      max_count = 4,
-      resetting_keys = {
-        ["1"] = { "n", "v" },
-        ["2"] = { "n", "v" },
-        ["3"] = { "n", "v" },
-        ["4"] = { "n", "v" },
-        ["5"] = { "n", "v" },
-        ["6"] = { "n", "v" },
-        ["7"] = { "n", "v" },
-        ["8"] = { "n", "v" },
-        ["9"] = { "n", "v" },
-        ["c"] = { "n" },
-        ["C"] = { "n" },
-        ["d"] = { "n" },
-        ["x"] = { "n" },
-        ["X"] = { "n" },
-        ["y"] = { "n" },
-        ["Y"] = { "n" },
-        ["p"] = { "n" },
-        ["P"] = { "n" },
-      },
-      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
     },
   },
 }

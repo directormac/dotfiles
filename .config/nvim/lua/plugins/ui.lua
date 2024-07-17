@@ -193,4 +193,38 @@ return {
       return opts
     end,
   },
+  {
+    "m4xshen/hardtime.nvim",
+    keys = {
+      { "<leader>uH", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
+    },
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    -- vscode = true,
+    opts = {
+      disable_mouse = false,
+      max_time = 1000,
+      max_count = 2,
+      resetting_keys = {
+        ["1"] = { "n", "v" },
+        ["2"] = { "n", "v" },
+        ["3"] = { "n", "v" },
+        ["4"] = { "n", "v" },
+        ["5"] = { "n", "v" },
+        ["6"] = { "n", "v" },
+        ["7"] = { "n", "v" },
+        ["8"] = { "n", "v" },
+        ["9"] = { "n", "v" },
+        ["c"] = { "n" },
+        ["C"] = { "n" },
+        ["d"] = { "n" },
+        ["x"] = { "n" },
+        ["X"] = { "n" },
+        ["y"] = { "n" },
+        ["Y"] = { "n" },
+        ["p"] = { "n" },
+        ["P"] = { "n" },
+      },
+      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
+    },
+  },
 }
