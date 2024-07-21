@@ -172,6 +172,12 @@ local unused = {
         --   open = "Neotree position=top buffers",
         -- },
       },
+      bottom = {
+        {
+          title = "Grug Far",
+          ft = "grug-far",
+        },
+      },
     },
   },
 }
