@@ -2,7 +2,6 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 local map = require("config.util").map
-local Util = require("lazyvim.util")
 
 -- Copy Paste Fixes
 -- map("v", "p", "P", { noremap = true, silent = true, desc = "Paste content previously yanked" })
@@ -45,22 +44,3 @@ map("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
 -- Tabulation in visual mode
 map("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
 map("v", "<Tab>", ">gv", { desc = "Indent line" })
-
--- Code Folding
-if Util.has("nvim-ufo") then
-  map("n", "zR", function()
-    require("ufo").openAllFolds()
-  end, { desc = "Open all folds" })
-  map("n", "zM", function()
-    require("ufo").closeAllFolds()
-  end, { desc = "Close all Folds" })
-  map("n", "zr", function()
-    require("ufo").openFoldsExceptKinds()
-  end, { desc = "Fold less" })
-  map("n", "zm", function()
-    require("ufo").closeFoldsWith()
-  end, { desc = "Fold more" })
-  map("n", "zv", function()
-    require("ufo").peekFoldedLinesUnderCursor()
-  end, { desc = "Peek folds" })
-end

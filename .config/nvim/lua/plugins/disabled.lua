@@ -180,6 +180,57 @@ local unused = {
       },
     },
   },
+  {
+    "kevinhwang91/nvim-ufo", -- Better folds in Neovim
+    event = "VeryLazy",
+    dependencies = "kevinhwang91/promise-async",
+    keys = {
+      -- end, { desc = "Peek folds" })
+      -- { "zR", require("ufo").openAllFolds(), { desc = "Open all folds" } },
+      -- { "zM", require("ufo").closeAllFolds(), { desc = "Close all folds" } },
+      -- { "zr", require("ufo").openFoldsExceptKinds(), { desc = "Generate function docs" } },
+      -- { "zm", require("ufo").closeFoldsWith(), { desc = "Generate function docs" } },
+      -- { "zv", require("ufo").peekFoldedLinesUnderCursor(), { desc = "Generate function docs" } },
+    },
+    opts = {
+      preview = {
+        win_config = {
+          border = { "", "─", "", "", "", "─", "", "" },
+          winhighlight = "Normal:Folded",
+          winblend = 0,
+        },
+        mappings = {
+          scrollU = "<C-u>",
+          scrollD = "<C-d>",
+          jumpTop = "[",
+          jumpBot = "]",
+        },
+      },
+      fold_virt_text_handler = require("config.util").fold_virtual_text,
+      close_fold_kinds_for_ft = {
+        -- default = { "imports", "comment", "class", "functions" },
+        -- c = { "comment", "region" },
+      },
+    },
+  },
+  {
+    "sindrets/diffview.nvim",
+    event = "VeryLazy",
+    -- keys = {
+    --   { "<leader>gf", "<cmd>DiffviewFileHistory %<cr>", { desc = "File Diff Viewer" } },
+    --   { "<leader>gf", "<cmd>DiffviewOpen<cr>", { desc = "Git Diff" } },
+    -- },
+    -- config = function()
+    --   local wk = require("which-key")
+    --   wk.register({
+    --     ["<leader>g"] = {
+    --       f = { ":DiffviewFileHistory %<cr>", "File Diff Viewer" },
+    --       v = { ":DiffviewOpen<cr>", "Git Diff" },
+    --     },
+    --   })
+    --   require("diffview").setup()
+    -- end,
+  },
 }
 
 return {}
