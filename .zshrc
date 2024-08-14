@@ -174,12 +174,16 @@ alias bbuild="bun --bun run build"
 alias bprewiew="bun --bun run preview"
 alias btest="bun --bun run test"
 
+alias b="bun run"
+
+
 
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
+# eval "$(ssh-agent -s)"
 
 
 export FZF_DEFAULT_OPTS=" \

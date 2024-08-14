@@ -195,15 +195,15 @@ return {
   },
   {
     "m4xshen/hardtime.nvim",
-    keys = {
-      { "<leader>uH", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
-    },
+    -- keys = {
+    --   { "<leader>uH", "<cmd>Hardtime toggle<cr>", { desc = "Toggle Hardtime" } },
+    -- },
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     -- vscode = true,
     opts = {
       disable_mouse = false,
       max_time = 1000,
-      max_count = 2,
+      max_count = 3,
       resetting_keys = {
         ["1"] = { "n", "v" },
         ["2"] = { "n", "v" },
