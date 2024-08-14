@@ -147,8 +147,8 @@ hide_edge_borders none
 
 #------
 
-set $FM DP-0
-set $SM DP-2
+set $FM DisplayPort-1
+set $SM DisplayPort-2
 
 ## Automatically putting workspaces on specific screens
 ##

@@ -1,6 +1,7 @@
 return {
   {
     "luckasRanarison/tailwind-tools.nvim",
+    -- commit = "da8eee8a6ae62e99ffc30e0c9ab862cbdc76b3ed",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     -- keys = {
     --   { "<leader>ut", "<cmd>TailwindConcealToggle<CR>", { desc = "Toggle Tailwind Conceal" } },
