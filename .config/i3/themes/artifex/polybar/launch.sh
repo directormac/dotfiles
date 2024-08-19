@@ -28,8 +28,8 @@ launch_bar() {
 
   # Launch the bar
 
-  MONITOR=DisplayPort-1 polybar -q main -c "$DIR"/config.ini &
-  SECONDARY=DisplayPort-2 polybar -q secondary -c "$DIR"/config.ini &
+  MONITOR=DisplayPort-0 polybar -q main -c "$DIR"/config.ini &
+  SECONDARY=DisplayPort-1 polybar -q secondary -c "$DIR"/config.ini &
 
   # for mon in $(polybar --list-monitors | cut -d":" -f1); do
   # 	if [$mon == 'DP-0']; then
