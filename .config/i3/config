@@ -147,8 +147,8 @@ hide_edge_borders none
 
 #------
 
-set $FM DisplayPort-1
-set $SM DisplayPort-2
+set $FM DisplayPort-0
+set $SM DisplayPort-1
 
 ## Automatically putting workspaces on specific screens
 ##
@@ -333,6 +333,8 @@ tiling_drag modifier titlebar
 ## Syntax:
 #exec [--no-startup-id] <command>
 #exec_always [--no-startup-id] <command>
+
+exec_always --no-startup-id ~/.screenlayout/my-layout.sh
 exec_always --no-startup-id ~/.config/i3/scripts/i3_autostart
 
 ## The --no-startup-id parameter disables startup-notification support for this particular exec command.

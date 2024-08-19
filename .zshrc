@@ -1,14 +1,14 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-source ~/.secrets/secrets
+# source ~/.secrets/secrets
 
 # Exports
 export TZ="Asia/Manila"
 export BROWSER=firefox # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
-# export PATH=$HOME/.cargo/bin:$PATH # cargo bins
+export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 
 export PATH=$HOME/.tmux/plugins/tmux-session-wizard/bin:$PATH
 export OPENAI_KEY=
@@ -40,8 +40,8 @@ plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
 plug "marlonrichert/zsh-autocomplete"
 plug "hlissner/zsh-autopair"
-plug "wintermi/zsh-rust"
-plug "zap-zsh/nvm"
+# plug "wintermi/zsh-rust"
+# plug "zap-zsh/nvm"
 plug "zap-zsh/fzf"
 plug "zap-zsh/web-search"
 plug "MichaelAquilina/zsh-autoswitch-virtualenv"
@@ -135,6 +135,7 @@ alias lzg="lazygit"
 alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
 alias pn="pnpm"
 alias px="pnpm dlx"
+alias rmr="rm -r"
 alias ripgrep="rg"
 # alias td="tmux new -s $(pwd | sed 's/.*\///g')"
 alias tls="tmux ls" # tmux session list
@@ -210,17 +211,17 @@ _fzf_compgen_dir() {
 source ~/.dotfiles/fzf-git.sh/fzf-git.sh
 
 #nvm
-source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 #nvm
 
-. "$HOME/.asdf/asdf.sh"
+. "/opt/asdf-vm/asdf.sh"
 
 # pnpm
-export PNPM_HOME="/home/artifex/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+# export PNPM_HOME="/home/artifex/.local/share/pnpm"
+# case ":$PATH:" in
+#   *":$PNPM_HOME:"*) ;;
+#   *) export PATH="$PNPM_HOME:$PATH" ;;
+# esac
 # pnpm end
 export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 
