@@ -42,6 +42,7 @@ plug "marlonrichert/zsh-autocomplete"
 plug "hlissner/zsh-autopair"
 # plug "wintermi/zsh-rust"
 # plug "zap-zsh/nvm"
+plug "zap-zsh/zap-prompt"
 plug "zap-zsh/fzf"
 plug "zap-zsh/web-search"
 plug "MichaelAquilina/zsh-autoswitch-virtualenv"
@@ -51,7 +52,7 @@ plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 autoload -Uz compinit
 compinit
 
-source ~/.dotfiles/.config/zsh_completions
+# source ~/.dotfiles/.config/zsh_completions
 
 
 
@@ -180,7 +181,7 @@ alias b="bun run"
 
 
 
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
@@ -208,7 +209,7 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-source ~/.dotfiles/fzf-git.sh/fzf-git.sh
+source ~/.dotfiles/scripts/fzf-git.sh
 
 #nvm
 # source /usr/share/nvm/init-nvm.sh
