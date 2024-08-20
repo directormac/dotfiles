@@ -17,7 +17,9 @@ export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.moon/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export JAVA_HOME=/usr/lib/jvm/default/
+. ~/.asdf/plugins/java/set-java-home.zsh
+# export JAVA_HOME=/usr/lib/jvm/default/
+# export JAVA_HOME=~/.asdf/plugins/java/set-java-home.zsh
 export ANDROID_HOME="$HOME/.android/sdk"
 export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
 # export NDK_HOME="/opt/android-ndk"
@@ -42,7 +44,7 @@ plug "marlonrichert/zsh-autocomplete"
 plug "hlissner/zsh-autopair"
 # plug "wintermi/zsh-rust"
 # plug "zap-zsh/nvm"
-plug "zap-zsh/zap-prompt"
+# plug "zap-zsh/zap-prompt"
 plug "zap-zsh/fzf"
 plug "zap-zsh/web-search"
 plug "MichaelAquilina/zsh-autoswitch-virtualenv"
@@ -181,7 +183,7 @@ alias b="bun run"
 
 
 
-# eval "$(starship init zsh)"
+eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
