@@ -107,15 +107,38 @@ local function basename(path)
 	return index and trimmed_path:sub(index) or trimmed_path
 end
 
+local function tab_title(tab_info)
+	local title = tab_info.tab_title
+	-- if the tab title is explicitly set, take that
+	if title and #title > 0 then
+		return title
+	end
+	-- Otherwise, use the title from the active pane
+	-- in that tab
+	return tab_info.active_pane.title
+end
+
 term.on("format-tab-title", function(tab)
 	-- local cwd = basename(tab.active_pane.current_working_dir)
 
-	local tab_index = string.format("  %s  ", tab.tab_index + 1)
+	-- local tab_index = string.format("  %s  ", tab.tab_index + 1)
+	--
+	-- return term.format({
+	-- 	-- { Text = "▏" },
+	-- 	{ Text = tab_index },
+	-- })
 
-	return term.format({
-		-- { Text = "▏" },
-		{ Text = tab_index },
-	})
+	local title = tab_title(tab)
+
+	local max = config.tab_max_width - 9
+	if #title > max then
+		title = term.truncate_right(title, max) .. "…"
+	end
+
+	return {
+		{ Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
+		{ Text = " " .. (tab.tab_index + 1) .. ": " .. title .. " " },
+	}
 end)
 
 term.on("update-right-status", function(window, pane)

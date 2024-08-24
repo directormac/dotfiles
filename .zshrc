@@ -3,6 +3,9 @@
 
 # source ~/.secrets/secrets
 
+. "/opt/asdf-vm/asdf.sh"
+. ~/.asdf/plugins/java/set-java-home.zsh
+
 # Exports
 export TZ="Asia/Manila"
 export BROWSER=firefox # set google chrome as default browser
@@ -17,7 +20,6 @@ export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.moon/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-. ~/.asdf/plugins/java/set-java-home.zsh
 # export JAVA_HOME=/usr/lib/jvm/default/
 # export JAVA_HOME=~/.asdf/plugins/java/set-java-home.zsh
 export ANDROID_HOME="$HOME/.android/sdk"
@@ -217,7 +219,6 @@ source ~/.dotfiles/scripts/fzf-git.sh
 # source /usr/share/nvm/init-nvm.sh
 #nvm
 
-. "/opt/asdf-vm/asdf.sh"
 
 # pnpm
 # export PNPM_HOME="/home/artifex/.local/share/pnpm"
