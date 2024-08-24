@@ -55,7 +55,8 @@ return {
           {
             "mode",
             fmt = function()
-              return "  "
+              -- return "  "
+              return "  "
             end,
           },
         },
