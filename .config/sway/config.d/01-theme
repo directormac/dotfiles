@@ -6,7 +6,7 @@ titlebar_border_thickness 2
 titlebar_padding 6 6
 title_align center
 
-gaps inner 10
+gaps inner 1
 gaps outer 0
 
 
