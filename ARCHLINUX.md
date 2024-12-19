@@ -258,6 +258,75 @@ sudo systemctl enable bluetooth
 Themes and icons
 
 ```sh
-sudo pacman -S arc-gtk-theme adapta-gtk-theme materia-gtk-theme
+sudo pacman -S arc-gtk-theme adapta-gtk-theme adw-gtk-theme materia-gtk-theme
 sudo pacman -S papirus-icon-theme
+```
+
+### Sway section
+
+```sh
+sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wlogout wl-clipboard waybar xdg-utils  xorg-xwayland
+```
+
+### Other Apps
+
+```sh
+sudo pacman -S alacritty wezterm firefox
+paru -S lazygit lazydocker asdf-vm kerl
+
+```
+
+```sh
+sudo pacman -S grim slurp wf-recorder thunar
+```
+
+### Docker install
+
+```sh
+sudo pacman -S docker docker-compose
+sudo systemctl enable docker.sock
+
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+newgrp docker
+
+sudo chmod 666 /var/run/docker.sock
+
+sudo systemctl restart docker
+
+# Try running lazydocker
+lazydocker
+
+```
+
+### ASDF
+
+```sh
+asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
+asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+asdf plugin add kotlin https://github.com/asdf-community/asdf-kotlin.git
+asdf plugin-add java https://github.com/halcyon/asdf-java.git
+
+
+# To know
+```
+
+In your ~/.tool-versions file
+This sets global default versions
+
+```.tool-versions
+nodejs 23.4.0
+erlang 27.2
+elixir 1.17.3-otp-27
+kotlin 2.1.0
+java openjdk-17
+```
+
+To get latest and valid versions
+
+```sh
+# To get latest version
+asdf latest nodejs
+# To get specific versions
+asdf list all java openjdk
 ```
