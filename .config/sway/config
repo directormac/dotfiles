@@ -64,6 +64,9 @@ output DP-3 pos 2560 0 res 2560x1440@144Hz
     bindsym $mod+e exec $file_manager
     bindsym $mod+w exec $web_browser
 
+    # Wlogout
+    bindsym $mod+x exec wlogout
+
 
 ### Idle configuration
 #
