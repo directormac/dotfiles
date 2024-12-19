@@ -334,7 +334,7 @@ tiling_drag modifier titlebar
 #exec [--no-startup-id] <command>
 #exec_always [--no-startup-id] <command>
 
-exec_always --no-startup-id ~/.screenlayout/my-layout.sh
+exec_always --no-startup-id ~/.screenlayout/super.sh
 exec_always --no-startup-id ~/.config/i3/scripts/i3_autostart
 
 ## The --no-startup-id parameter disables startup-notification support for this particular exec command.

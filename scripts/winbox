@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-wine start /unix $HOME/.dotfiles/winbox64.exe

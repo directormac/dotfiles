@@ -1,7 +1,7 @@
 .git
 .gitignore
 scripts
-winbox64.exe
+WinBox
 /fzf-git.sh
 avatar.jpg
 tmp

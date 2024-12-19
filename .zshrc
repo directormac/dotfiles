@@ -35,7 +35,7 @@ export WEBKIT_DISABLE_DMABUF_RENDERER=1
 
 
 # Scripts
-export PATH=$HOME/.config/artifex/scripts/:$PATH
+export PATH=$HOME/.dotfiles/scripts/:$PATH
 
 fpath+=~/.zfunc
 
@@ -170,7 +170,7 @@ alias dcu="docker-compose up -d"
 
 
 # Arch Related
-# alias winbox="wine start /unix $HOME/.dotfiles/winbox64.exe"
+alias winbox="~/.dotfiles/WinBox & disown"
 
 # Bun Aliases
 alias bunx="bun x"
@@ -180,10 +180,12 @@ alias bbuild="bun --bun run build"
 alias bprewiew="bun --bun run preview"
 alias btest="bun --bun run test"
 
+
+
 alias b="bun run"
 
 
-
+alias iex-phx="iex -S mix phx.server"
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
