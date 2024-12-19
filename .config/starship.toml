@@ -9,7 +9,6 @@ $character"""
 
 scan_timeout = 1000
 command_timeout = 5000
-ignore_timeout = true
 
 [nodejs]
 format = "[$symbol($version )]($style)"
@@ -23,10 +22,10 @@ read_only = " "
 truncation_length = 4
 truncate_to_repo = false
 
-[character]
-success_symbol = "[❯](green)"
-error_symbol = "[❯](red)"
-vicmd_symbol = "[❮](purple)"
+# [character]
+# success_symbol = "[❯](green)"
+# error_symbol = "[❯](red)"
+# vicmd_symbol = "[❮](purple)"
 
 [git_branch]
 symbol = " "
@@ -51,7 +50,7 @@ style = "bright-black"
 disabled = false
 
 [cmd_duration]
-format = "[$duration]($style)" 
+format = "[$duration]($style)"
 style = "yellow"
 
 [memory_usage]
@@ -104,5 +103,3 @@ format = "[TUNNEL OPEN for $output]($style)"
 # shell = ["bash", "--noprofile", "--norc"]
 # symbol = "🔑"
 # style = "bold fg:green"
-
-
