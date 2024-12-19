@@ -1,3 +1,16 @@
+default_border pixel 2
+default_floating_border pixel 2
+smart_borders off
+
+titlebar_border_thickness 2
+titlebar_padding 6 6
+title_align center
+
+gaps inner 10
+gaps outer 0
+
+
+
 set $rosewater #f5e0dc
 set $flamingo #f2cdcd
 set $pink #f5c2e7

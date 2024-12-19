@@ -1,14 +1,36 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
-
+## Artifex Sway Config
 
 include ~/.config/sway/config.d/*
 
+## General
+default_orientation horizontal
+swaybg_command swaybg
+swaynag_command swaynag
+workspace_layout default
+xwayland enable
+focus_follows_mouse yes
+floating_modifier $mod normal
+mouse_warping none
+popup_during_fullscreen smart
+workspace_auto_back_and_forth yes
+focus_on_window_activation smart
+show_marks yes
+input type:keyboard xkb_numlock enabled
+
+
 ### Variables
-#
+set $wallpapers $HOME/.wallpapers
+set $file_manager thunar
+set $web_browser firefox
+set $term wezterm
+set $open_in_term wezterm start
+
+
+set $left h
+set $down j
+set $up k
+set $right l
+
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 set $alt Mod1
@@ -17,16 +39,31 @@ set $alt Mod1
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
+output * bg ~/.wallpapers/tokyo_night.png fill
+
+# Display Configuration
+
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
-output DP-2 resolution 2560x1440@165Hz position 0,0
-output DP-3 resolution 2560x1440@144Hz position 2560,0
+output DP-2 pos 0 0 res 2560x1440@165Hz
+output DP-3 pos 2560 0 res 2560x1440@144Hz
+
+### Key bindings
+
+    # Kill focused window
+    bindsym $mod+c kill
+
+    # Terminal Related
+    bindsym $mod+Return exec $term	
+    bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
+    bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
+
+    # Apps
+    bindsym $mod+e exec $file_manager
+    bindsym $mod+w exec $web_browser
+
 
 ### Idle configuration
 #
@@ -73,6 +110,8 @@ workspace 7 output $SM
 workspace 8 output $SM
 workspace 9 output $SM
 workspace 10 output $SM
+
+
 
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.

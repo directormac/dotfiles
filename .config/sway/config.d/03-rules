@@ -45,13 +45,20 @@
 # assign [class="firefoxdeveloperedition"] 2
 # assign [class="firefox|google-chrome|Google-chrome"] 1
 # assign [class="google-chrome|Google-chrome"] 1
-assign [class="code|Code|jetbrains-studio"] 3
-assign [class="lutris|steam|virt-manager|Virt-manager|steam|lutris"] 5
-assign [class="Joplin|joplin|atril|Atril|calibre-ebook-viewer|calibre"] 6
-assign [class="discord|telegram-desktop|TelegramDesktop|vesktop"] 7
-assign [class="JDownloader 2|deluge|Deluge-gtk"] 9
-assign [class="winbox64.exe|rustdesk|Rustdesk|anydesk|Anydesk"] 9
-assign [class="vlc"] 8
+assign [app_id="code|Code|jetbrains-studio"] 3
+assign [app_id="lutris|steam|virt-manager|Virt-manager|steam|lutris"] 5
+assign [app_id="Joplin|joplin|atril|Atril|calibre-ebook-viewer|calibre"] 6
+assign [app_id="discord|telegram-desktop|TelegramDesktop|vesktop"] 7
+assign [app_id="JDownloader 2|deluge|Deluge-gtk"] 9
+assign [app_id="winbox64.exe|rustdesk|Rustdesk|anydesk|Anydesk"] 9
+assign [app_id="vlc"] 8
+
+
+for_window [app_id="thunar|Thunar"] floating enable
+for_window [class="PeaZip"] floating enable
+
+# Terminal float rule
+for_window [app_id="wezterm-float"] floating enable
 
 ##-- Window Rules ---------------------------
 
@@ -67,17 +74,17 @@ assign [class="vlc"] 8
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-for_window [class="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
-for_window [class="alacritty-float|wezterm-float|Music|thunar|Thunar|steamwebhelper|steam"] floating enable
-for_window [class="hardware-qemu.ini|Emulator"] floating enable
-for_window [class="Pcmanfm|Onboard|Yad|galculator|Galculator"] floating enable
-for_window [class="zoom|Zoom|skype|Skype|guvcview|microsoft teams - preview"] floating enable
-for_window [class="Lxappearance|Nitrogen"] floating enable
-for_window [class="pavucontrol|Xfce4-power-manager-settings|Nm-connection-editor"] floating enable
-for_window [class="feh|Viewnior|Gpicview|Gimp|MPlayer"] floating enable
-for_window [class="Kvantum Manager|qt5ct"] floating enable
-for_window [class="Calamares|calamares"] floating enable
-for_window [class="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
+for_window [app_id="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
+for_window [app_id="alacritty-float|wezterm-float|Music|thunar|Thunar|steamwebhelper|steam"] floating enable
+for_window [app_id="hardware-qemu.ini|Emulator"] floating enable
+for_window [app_id="Pcmanfm|Onboard|Yad|galculator|Galculator"] floating enable
+for_window [app_id="zoom|Zoom|skype|Skype|guvcview|microsoft teams - preview"] floating enable
+for_window [app_id="Lxappearance|Nitrogen"] floating enable
+for_window [app_id="pavucontrol|Xfce4-power-manager-settings|Nm-connection-editor"] floating enable
+for_window [app_id="feh|Viewnior|Gpicview|Gimp|MPlayer"] floating enable
+for_window [app_id="Kvantum Manager|qt5ct"] floating enable
+for_window [app_id="Calamares|calamares"] floating enable
+for_window [app_id="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
 # for_window [window_role="pop-up"] floating enable
 # for_window [window_role="task_dialog"] floating enable
 # for_window [class="alacritty-float|Music"] floating enable

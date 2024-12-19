@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/.config/"
+
+if [ "$1" == "-f" ]; then
+  wezterm start --class 'wezterm-float'
+elif [ "$1" == "-F" ]; then
+  wezterm start --class 'wezterm-fullscreen'
+else
+  wezterm start
+fi
