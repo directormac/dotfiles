@@ -53,8 +53,7 @@ plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 
 
 # Load and initialise completion system
-autoload -Uz compinit
-compinit
+autoload -U compinit && compinit -u
 
 # source ~/.dotfiles/.config/zsh_completions
 

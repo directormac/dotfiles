@@ -1,4 +1,6 @@
+# Variables
 
+set $term ~/.config/sway/scripts/term
 
 set $mod Mod4
 set $alt Mod1
@@ -17,7 +19,8 @@ set $term wezterm
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | wmenu | xargs swaymsg exec --
-set $menu wofi --show run
+# set $menu wofi --show run
+set $menu fuzzel
 
 set $screenshot grim -g "$(slurp)" - | swappy -f -
 
@@ -30,11 +33,12 @@ set $web_browser firefox
 #
 
     bindsym $mod exec $menu
-    # Start a terminal
-    bindsym $mod+Return exec $term
 
-    # Kill focused window
-    bindsym $mod+c kill
+
+
+# Terminal Keybindings
+
+
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -122,10 +126,10 @@ set $web_browser firefox
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    bindsym $mod+Shift+space focus mode_toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    bindsym $mod+space floating toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
