@@ -288,8 +288,10 @@ sudo pacman -S lxappearance
 ### Sway section
 
 ```sh
-sudo pacman -S sway polkit swaybg swayidle swaylock wlroots  wl-clipboard  xorg-xwayland
-sudo pacman -S waybar wf-recorder grim slurp wofi rofi xdg-desktop-portal-wlr
+
+sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard xorg-xwayland xdg-desktop-portal-wlr
+sudo pacman -S grim slurp swappy # For screenshots
+sudo pacman -S waybar wf-recorderwofi rofi
 paru -S wlogout
 
 ```

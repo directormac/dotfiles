@@ -24,6 +24,7 @@ set $file_manager thunar
 set $web_browser firefox
 set $term wezterm
 set $open_in_term wezterm start
+set $screenshot ~/.config/sway/scripts/screenshot
 
 
 set $left h
@@ -66,6 +67,8 @@ output DP-3 pos 2560 0 res 2560x1440@144Hz render_bit_depth 10
 
     # Wlogout
     bindsym $mod+x exec wlogout
+
+    bindsym $mod+s exec "$screenshot --area"
 
 
 ### Idle configuration
@@ -116,51 +119,30 @@ workspace 10 output $SM
 
 
 
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
-
-
-
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
+# bar
 # bar {
-#     position top
+#   position top
 #
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+#   status_command while date +'%Y-%m-%d %X'; do sleep 1; done
 #
-#     colors {
-#         statusline #ffffff
-#         background #323232
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
+#   colors {
+#     background         $base
+#     statusline         $text
+#     focused_statusline $text
+#     focused_separator  $base
+#
+#     # target           border bg        text
+#     focused_workspace  $base  $mauve    $crust
+#     active_workspace   $base  $surface2 $text
+#     inactive_workspace $base  $base     $text
+#     urgent_workspace   $base  $red      $crust
+#   }
 # }
 
-# target                 title     bg    text   indicator  border
 
-# bar
-bar {
-  position top
-
-  status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-
-  colors {
-    background         $base
-    statusline         $text
-    focused_statusline $text
-    focused_separator  $base
-
-    # target           border bg        text
-    focused_workspace  $base  $mauve    $crust
-    active_workspace   $base  $surface2 $text
-    inactive_workspace $base  $base     $text
-    urgent_workspace   $base  $red      $crust
-  }
+bar { 
+     swaybar_command waybar
 }
-
 
 assign [app_id="code|Code|jetbrains-studio"] 3
 assign [app_id="lutris|steam|virt-manager|Virt-manager|steam|lutris"] 5
