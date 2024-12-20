@@ -282,17 +282,33 @@ Themes and icons
 ```sh
 sudo pacman -S arc-gtk-theme adapta-gtk-theme adw-gtk-theme materia-gtk-theme
 sudo pacman -S papirus-icon-theme
-sudo pacman -S lxappearance
 ```
 
 ### Sway section
 
 ```sh
-
-sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard xorg-xwayland xdg-desktop-portal-wlr
-sudo pacman -S grim slurp swappy # For screenshots
-sudo pacman -S waybar wf-recorderwofi rofi
+sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
+sudo pacman -S xorg-xwayland xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+sudo pacman -S grim slurp satty # For screenshots
+sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
 paru -S wlogout
+
+```
+
+#### Troubleshoot Screensharing issues
+
+[Reference](https://github.com/emersion/xdg-desktop-portal-wlr/wiki/%22It-doesn't-work%22-Troubleshooting-Checklist)
+
+```sh
+#Set display manager
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+# Or modify the way sway is executed
+sudo vim /usr/share/wayland-sessions/sway.desktop
+
+# Replace the Exec=sway
+# to
+# Exec=env XDG_CURRENT_DESKTOP=sway dbus-run-session sway
 
 ```
 
