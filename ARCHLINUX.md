@@ -107,6 +107,16 @@ ln -sf /usr/share/zoneinfo/Asia/Manila /etc/localtime
 hwclock --systohc
 ```
 
+Bootloader Installation & Configuration
+
+```sh
+sudo pacman -S efibootmgr grub grub-btrfs
+
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+# Generate a grub config
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
 Setup hostname
 
 ```sh
@@ -116,14 +126,24 @@ echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 yourhostname" >> /etc/hosts
 ```
 
-Bootloader Installation & Configuration
+Configure Pacman
 
 ```sh
-sudo pacman -S efibootmgr grub grub-btrfs
+vim /etc/pacman.conf
 
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
-# Generate a grub config
-grub-mkconfig -o /boot/grub/grub.cfg
+# Uncomment the following lines
+
+#[multilib]
+#Include = /etc/pacman.d/mirrorlist
+
+#ParallelDownloads = 5
+#Color
+#VerbosePkgLists
+
+# Add the following line below Misc Options
+#ILoveCandy
+
+pacman -Syu
 ```
 
 BTRFS and timeshift
@@ -158,10 +178,11 @@ pacman -S alsa-utils pipewire pipewire-pulse pipewire-jack wireplumber pavucontr
 Video
 
 ```sh
-pacman -S mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader
+#General
+pacman -S mesa mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader lib32-pipewire
 
 # For AMD
-pacman -S xf86-video-amdgpu vulkan-radeon amdvlk
+sudo pacman -S vulkan-radeon amdvlk libva-mesa-driver mesa-vdpau lib32-vulkan-radeon
 
 # For NVIDIA
 pacman -S nvidia nvidia-utils lib32-nvidia-utils libvdpau lib32-libvdpau
@@ -187,9 +208,9 @@ Can't live without packages
 
 ```sh
 # Necessary
-pacman -S git curl wget xdg-user-dirs zip unzip p7zip htop dbus fuse2 lshw
-# Optional
-pacman -S lsd bat zoxide btop starship lazygit
+pacman -S git curl wget fuse2 lshw
+# Terminal Related
+pacman -S lsd bat zoxide navi btop starship lazygit wezterm alacritty yazi ueberzugpp
 # Development needs
 pacman -S rustup neovim
 
@@ -203,7 +224,7 @@ umount -R /mnt
 reboot
 ```
 
-After Initial login installed your prefered desktop environment
+After Initial login install your preferred desktop environment
 
 ```sh
 sudo pacman -S gnome #This will install everything it needs and all its dependencies
@@ -236,9 +257,10 @@ sudo systemctl enable grub-btrfsd
 Essential fonts
 
 ```sh
-sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font
-sudo pacman -S noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono
-sudo pacman -S ttf-firacode-nerd ttf-jetbrains-mono-nerd
+sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono
+sudo pacman -S noto-fonts noto-fonts-emoji
+sudo pacman -S ttf-firacode-nerd ttf-jetbrains-mono-nerd  ttf-noto-nerd
+sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols-common
 ```
 
 Greeter
@@ -260,18 +282,21 @@ Themes and icons
 ```sh
 sudo pacman -S arc-gtk-theme adapta-gtk-theme adw-gtk-theme materia-gtk-theme
 sudo pacman -S papirus-icon-theme
+sudo pacman -S lxappearance
 ```
 
 ### Sway section
 
 ```sh
-sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wlogout wl-clipboard waybar xdg-utils  xorg-xwayland
+sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wlogout wl-clipboard  xorg-xwayland
+sudo pacman -S waybar wf-recorder grim slurp wofi rofi
+
 ```
 
 ### Other Apps
 
 ```sh
-sudo pacman -S alacritty wezterm firefox
+sudo pacman -S firefox foliate evince obsidian file-roller vlc
 paru -S lazygit lazydocker asdf-vm kerl
 
 ```
@@ -330,3 +355,10 @@ asdf latest nodejs
 # To get specific versions
 asdf list all java openjdk
 ```
+
+#### References
+
+[1](https://github.com/silentz/arch-linux-install-guide)
+[2](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
+[3](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
+[4](https://arch.d3sox.me/installation/live-setup)
