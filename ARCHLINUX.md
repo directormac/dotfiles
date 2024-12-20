@@ -288,8 +288,9 @@ sudo pacman -S lxappearance
 ### Sway section
 
 ```sh
-sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wlogout wl-clipboard  xorg-xwayland
-sudo pacman -S waybar wf-recorder grim slurp wofi rofi
+sudo pacman -S sway polkit swaybg swayidle swaylock wlroots  wl-clipboard  xorg-xwayland
+sudo pacman -S waybar wf-recorder grim slurp wofi rofi xdg-desktop-portal-wlr
+paru -S wlogout
 
 ```
 
@@ -324,6 +325,24 @@ lazydocker
 
 ```
 
+### Useful tools
+
+```sh
+# Java Related
+sudo pacman -S maven gradle
+# Dev Goodies
+sudo pacman -S tree-sitter tree-sitter-cli zed nvim
+# Terminal helpers
+sudo pacman -S jq websocat pgcli redis sqlite3
+
+```
+
+### Install Low level tools
+
+```sh
+sudo pacman -S gcc gdb clang cmake ninja nasm boost
+```
+
 ### ASDF
 
 ```sh
@@ -354,6 +373,92 @@ To get latest and valid versions
 asdf latest nodejs
 # To get specific versions
 asdf list all java openjdk
+```
+
+### Android Development
+
+This is inlined with the following environment variables
+
+```
+export ANDROID_HOME="$HOME/.android"
+export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
+```
+
+The Studio option - Manage everything here
+
+```sh
+# Install android studio
+paru -S android-studio
+# Customize the installation and point to ~/.android as your sdk location
+
+```
+
+The Command Line Tools Options - Create devices and download sdk tools using the terminal
+
+[Download Android Command Line Tools](https://developer.android.com/studio)
+
+```sh
+
+# create a `.android/cmdline-tools/latest` in your home directory
+mkdir -p ~/.android/cmdline-tools/latest/
+# In the directory you downloaded the zip
+unzip commandlinetools-linux-*.zip
+mv cmdline-tools/* ~/.android/cmdline-tools/latest
+```
+
+Utilizing the command line tools
+
+```sh
+# 1. First, let's install the matching components for Android 34
+sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools"
+
+# 2. Install the system image (let's use the Google APIs x86_64 version)
+sdkmanager "system-images;android-34;google_apis;x86_64"
+
+# 3. Accept any licenses if prompted
+sdkmanager --licenses
+
+# 4. (Optional) See what devices are available
+avdmanager list device
+
+# 5. Create an AVD (let's create a Pixel 6)
+avdmanager create avd \
+    -n pixel6_api34 \
+    -k "system-images;android-34;google_apis;x86_64" \
+    -d "pixel_6"
+
+# 6. (Optional) Verify your AVD was created
+avdmanager list avd
+# Quick list of available AVDs
+emulator -list-avds
+
+# 7. Launch the emulator
+emulator -avd pixel6_api34
+
+## Launch Tips
+
+# Start emulator in headless mode
+emulator -avd pixel6_api34 -no-window
+
+# Fresh state each launch
+emulator -avd pixel6_api34 -no-snapshot
+
+# Using & to background the process
+emulator -avd pixel6_api34 &
+
+# Or using nohup to keep it running even if terminal closes
+nohup emulator -avd pixel6_api34 &
+
+# If you want to suppress output, redirect to /dev/null
+nohup emulator -avd pixel6_api34 > /dev/null 2>&1 &
+
+#You can also start it normally and then press Ctrl+Z to suspend it,
+#then type bg to continue it in the background.
+#This is useful if you've already started the emulator and want to background it afterward.
+
+# Delete emulator
+avdmanager delete avd -n pixel6_api34
+
 ```
 
 #### References
