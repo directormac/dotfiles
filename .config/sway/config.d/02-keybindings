@@ -22,7 +22,7 @@ set $term wezterm
 # set $menu wofi --show run
 set $menu fuzzel
 
-set $screenshot grim -g "$(slurp)" - | swappy -f -
+# set $screenshot grim -g "$(slurp)" - | swappy -f -
 
 set $file_manager thunar
 set $web_browser firefox
@@ -43,7 +43,7 @@ set $web_browser firefox
     # Start your launcher
     bindsym $mod+d exec $menu
 
-    bindsym $mod+s exec $screenshot
+    # bindsym $mod+s exec $screenshot
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

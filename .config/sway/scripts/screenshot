@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+time=$(date +%Y-%m-%d-%H-%M-%S)
+geometry=$(swaymsg -pt get_outputs | grep 'Current mode:' | cut -d':' -f2 | cut -d'@' -f1 | tr -d ' ')
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+file="Screenshot_${time}_${geometry}.png"
+
+shotnow() {
+  cd ${dir} && sleep 0.5 && grim - | tee "$file" | wl-copy
+}
+
+shotwin() {
+  cd ${dir} && grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | tee "$file" | wl-copy
+}
+
+shotarea() {
+  cd ${dir} && grim -g "$(slurp && sleep 0.3)" - | tee "$file" | wl-copy
+}
+
+if [[ ! -d "$dir" ]]; then
+  mkdir -p "$dir"
+fi
+
+if [[ "$1" == "--now" ]]; then
+  shotnow
+elif [[ "$1" == "--win" ]]; then
+  shotwin
+elif [[ "$1" == "--area" ]]; then
+  shotarea
+else
+  echo -e "Available Options : --now --win --area"
+fi
+
+exit 0
