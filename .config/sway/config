@@ -47,8 +47,8 @@ output * bg ~/.wallpapers/tokyo_night.png fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
-output DP-2 pos 0 0 res 2560x1440@165Hz
-output DP-3 pos 2560 0 res 2560x1440@144Hz
+output DP-2 pos 0 0 res 2560x1440@165Hz render_bit_depth 10
+output DP-3 pos 2560 0 res 2560x1440@144Hz render_bit_depth 10
 
 ### Key bindings
 
@@ -160,6 +160,17 @@ bar {
     urgent_workspace   $base  $red      $crust
   }
 }
+
+
+assign [app_id="code|Code|jetbrains-studio"] 3
+assign [app_id="lutris|steam|virt-manager|Virt-manager|steam|lutris"] 5
+assign [app_id="discord|telegram-desktop|TelegramDesktop|vesktop"] 7
+
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [app_id="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
+for_window [app_id="alacritty-float|wezterm-float|Music|thunar|Thunar|steamwebhelper|steam"] floating enable
 
 # Notification Daemon
 exec swaync
