@@ -1,5 +1,5 @@
-default_border pixel 2
-default_floating_border pixel 2
+default_border pixel 0
+default_floating_border pixel 0
 smart_borders off
 
 titlebar_border_thickness 2
