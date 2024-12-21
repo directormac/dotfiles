@@ -9,96 +9,52 @@ set $up k
 set $right l
 
 
-### Key bindings
+bindsym $mod+c kill
 
-    # Kill focused window
-    bindsym $mod+c kill
+# Terminal Related
+bindsym $mod+Return exec $term	
+bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
+bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
 
-    # Terminal Related
-    bindsym $mod+Return exec $term	
-    bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
-    bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
+# Apps
+bindsym $mod+e exec $file_manager
+bindsym $mod+w exec $web_browser
 
-    # Apps
-    bindsym $mod+e exec $file_manager
-    bindsym $mod+w exec $web_browser
+# Wlogout
+bindsym $mod+x exec wlogout
 
-    # Wlogout
-    bindsym $mod+x exec wlogout
+bindsym $mod+s exec $screenshot
 
-    bindsym $mod+s exec $screenshot
+bindsym ctrl+alt+comma exec pavucontrol
 
-    bindsym ctrl+alt+comma exec pavucontrol
+# Launch Menu
+bindsym $mod exec $menu
+bindsym $mod+d exec $menu
 
-# Your preferred terminal emulator fo
-set $term wezterm
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-# set $menu dmenu_path | wmenu | xargs swaymsg exec --
-# set $menu wofi --show run
-set $menu fuzzel
+bindsym $mod+Shift+r reload
 
-# set $screenshot grim -g "$(slurp)" - | swappy -f -
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+# Or use $mod+[up|down|left|right]
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
-set $file_manager thunar
-set $web_browser firefox
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+# Ditto, with arrow keys
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
 
-### Key bindings
-#
-# Basics:
-#
-
-    bindsym $mod exec $menu
-
-
-
-# Terminal Keybindings
-
-
-
-    # Start your launcher
-    bindsym $mod+d exec $menu
-
-    # bindsym $mod+s exec $screenshot
-
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
-
-    # Reload the configuration file
-    bindsym $mod+Shift+r reload
-
-    # Exit sway (logs you out of your Wayland session)
-    # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-#
-# Moving around:
-#
-    # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
-    # Or use $mod+[up|down|left|right]
-    bindsym $mod+Left focus left
-    bindsym $mod+Down focus down
-    bindsym $mod+Up focus up
-    bindsym $mod+Right focus right
-
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
-    # Ditto, with arrow keys
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
-#
 # Workspaces:
 #
     # Switch to workspace

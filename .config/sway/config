@@ -21,11 +21,13 @@ input type:keyboard xkb_numlock enabled
 
 ### Variables
 set $wallpapers $HOME/.wallpapers
+set $screenshot  grim -g "$(slurp -o -r -c '#ff0000ff')" -t ppm - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png
+
+set $open_in_term wezterm start
+set $term wezterm
+set $menu fuzzel
 set $file_manager thunar
 set $web_browser firefox
-set $term wezterm
-set $open_in_term wezterm start
-set $screenshot  grim -g "$(slurp -o -r -c '#ff0000ff')" -t ppm - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png
 
 
 exec swayidle -w \
