@@ -1,9 +1,4 @@
-# Variables
 
-set $term ~/.config/sway/scripts/term
-
-set $mod Mod4
-set $alt Mod1
 
 
 # Home row direction keys, like vim
@@ -12,6 +7,28 @@ set $left h
 set $down j
 set $up k
 set $right l
+
+
+### Key bindings
+
+    # Kill focused window
+    bindsym $mod+c kill
+
+    # Terminal Related
+    bindsym $mod+Return exec $term	
+    bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
+    bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
+
+    # Apps
+    bindsym $mod+e exec $file_manager
+    bindsym $mod+w exec $web_browser
+
+    # Wlogout
+    bindsym $mod+x exec wlogout
+
+    bindsym $mod+s exec $screenshot
+
+    bindsym ctrl+alt+comma exec pavucontrol
 
 # Your preferred terminal emulator fo
 set $term wezterm
