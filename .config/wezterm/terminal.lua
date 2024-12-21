@@ -115,7 +115,7 @@ function M.options(config)
 		weight = "Regular",
 		stretch = "Normal",
 		style = "Normal",
-		harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
+		-- harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
 		scale = 1.0,
 	})
 	config.font_size = 13

@@ -312,6 +312,8 @@ sudo vim /usr/share/wayland-sessions/sway.desktop
 
 ```
 
+[Useful add-ons for sway](https://github.com/swaywm/sway/wiki/Useful-add-ons-for-sway)
+
 ### Other Apps
 
 ```sh
