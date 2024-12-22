@@ -289,10 +289,19 @@ sudo pacman -S papirus-icon-theme
 ```sh
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
 sudo pacman -S xorg-xwayland xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+sudo pacman -S arc-gtk-theme papirus-icon-theme
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 sudo pacman -S grim slurp satty # For screenshots
 sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
 paru -S wlogout
+```
+
+#### Extra Themes
+
+[Catppuccin](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme)
+
+```sh
+paru -S gnome-themes-extra gtk-engine-murrine sassc tokyonight-gtk-theme-git
 
 ```
 
