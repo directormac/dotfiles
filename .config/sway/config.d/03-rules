@@ -11,6 +11,7 @@
 # assign [app_id="discord|telegram-desktop|TelegramDesktop|vesktop"] 7
 # assign [app_id="winbox64.exe|rustdesk|Rustdesk|anydesk|Anydesk"] 9
 
+#swaymsg -t get_tree
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable

@@ -182,7 +182,7 @@ Video
 pacman -S mesa mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader lib32-pipewire
 
 # For AMD
-sudo pacman -S vulkan-radeon amdvlk libva-mesa-driver mesa-vdpau lib32-vulkan-radeon
+sudo pacman -S vulkan-radeon libva-mesa-driver mesa-vdpau lib32-vulkan-radeon
 
 # For NVIDIA
 pacman -S nvidia nvidia-utils lib32-nvidia-utils libvdpau lib32-libvdpau
@@ -487,12 +487,62 @@ nohup emulator -avd pixel6_api34 > /dev/null 2>&1 &
 
 # Delete emulator
 avdmanager delete avd -n pixel6_api34
+```
+
+### Virtualization
+
+````sh
+paru -S virt-manager qemu-desktop libvirt dnsmasq
+
+```sh
+## Add yourself to libvirt group
+sudo usermod -aG libvirt $(whoami)
+newgrp libvirt
+
+
+# Modular daemons
+
+# 1. Stop all services related to libvirtd
+sudo systemctl stop libvirtd.service
+sudo systemctl stop libvirtd{,-ro,-admin,-tcp,-tls}.socket
+
+#2. Disable all services related to libvirtd
+sudo systemctl disable libvirtd.service
+sudo systemctl disable libvirtd{,-ro,-admin,-tcp,-tls}.socket
+
+#3. Enable new daemons
+sudo for drv in qemu interface network nodedev nwfilter secret storage
+  do
+    systemctl unmask virt${drv}d.service
+    systemctl unmask virt${drv}d{,-ro,-admin}.socket
+    systemctl enable virt${drv}d.service
+    systemctl enable virt${drv}d{,-ro,-admin}.socket
+  done
+
+#4. Start sockets for the new daemons
+
+sudo for drv in qemu network nodedev nwfilter secret storage
+  do
+    systemctl start virt${drv}d{,-ro,-admin}.socket
+  done
+
+# Check list if default is existing
+sudo virsh net-list --all
+# Manual start default network
+sudo virsh net-start default
+# Set enable autostart up in the future
+sudo virsh net-autostart --network default
+
+
+
+````
 
 ```
 
-#### References
+### References
 
 [1](https://github.com/silentz/arch-linux-install-guide)
 [2](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
 [3](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
 [4](https://arch.d3sox.me/installation/live-setup)
+```
