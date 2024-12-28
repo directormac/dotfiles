@@ -1,6 +1,9 @@
 Boot into the Arch Linux install media
 
 ```sh
+# Synchronize to system clock
+hwclock --systohc
+
 # Check if ntp is active and if the time is right
 timedatectl
 
@@ -69,9 +72,9 @@ Mount the compression with compression using Zstd
 
 ```sh
 # First setup the root partition
-mount -o compress=zstc,subvol=@ /dev/nvme0n1p2 /mnt
+mount -o compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 mkdir -p /mnt/home
-mount -o compress=zstc,subvol=@home /dev/nvme0n1p2 /mnt/home
+mount -o compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 
 # Then the boot partition
 mkdir -p /mnt/efi
@@ -123,7 +126,7 @@ Setup hostname
 echo yourhostname > /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 yourhostname" >> /etc/hosts
+echo "127.0.1.1 yourhostname.local yourhostname" >> /etc/hosts
 ```
 
 Configure Pacman
@@ -149,7 +152,7 @@ pacman -Syu
 BTRFS and timeshift
 
 ```sh
-sudo pacman -S btrfs-progs timeshift inotify-tools
+sudo pacman -S btrfs-progs inotify-tools
 ```
 
 Networking
@@ -179,7 +182,10 @@ Video
 
 ```sh
 #General
-pacman -S mesa mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader lib32-pipewire
+pacman -S mesa mesa lib32-mesa lib32-pipewire
+
+# Vulkan
+pacman -S vulkan-icd-loader lib32-vulkan-icd-loader
 
 # For AMD
 sudo pacman -S vulkan-radeon libva-mesa-driver mesa-vdpau lib32-vulkan-radeon
@@ -208,11 +214,11 @@ Can't live without packages
 
 ```sh
 # Necessary
-pacman -S git curl wget fuse2 lshw
+pacman -S git curl wget fuse2 lshw neovim
 # Terminal Related
 pacman -S lsd bat zoxide navi btop starship lazygit wezterm alacritty yazi ueberzugpp
-# Development needs
-pacman -S rustup neovim
+# Development needs and for paru
+pacman -S rustup
 
 ```
 
@@ -232,7 +238,7 @@ sudo pacman -S gnome #This will install everything it needs and all its dependen
 
 AUR Helper
 
-Paru makesure you installed rustup and set it up with `rustup toolchain install stable`
+Paru make sure you installed rustup and set it up with `rustup toolchain install stable`
 
 delete the directory after installation
 
@@ -246,6 +252,7 @@ makepkg -si
 Timeshift and grub
 
 ```sh
+sudo pacman -S timeshift grub-btrfs
 # Edit ExecStart for a custom timeshift auto backup
 # ExecStart=/usr/bin/grub-btrfsd --syslog --timeshift-auto
 sudo systemctl edit --full grub-btrfsd
@@ -257,13 +264,31 @@ sudo systemctl enable grub-btrfsd
 Essential fonts
 
 ```sh
-sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono
-sudo pacman -S noto-fonts noto-fonts-emoji
+sudo pacman -S noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-font-awesome
+sudo pacman -S adobe-source-han-sans-cn-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-hk-fonts
 sudo pacman -S ttf-firacode-nerd ttf-jetbrains-mono-nerd  ttf-noto-nerd
 sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols-common
+sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono
 ```
 
-Greeter
+Greeter only choose 1
+
+greetd-tuigreet
+
+```sh
+pacman -S greetd-tuigreet
+sudo systemctl enable greetd
+
+# For i3 & x11 to launch i3
+echo "exec i3" >> $HOME/.xinitrc
+
+# Edit configuration
+# Repalace the `command = "agreety --cmd /bin/sh`
+# command = "tuigreet --cmd startx"
+
+```
+
+ly
 
 ```sh
 sudo pacman -S ly
@@ -284,11 +309,29 @@ sudo pacman -S arc-gtk-theme adapta-gtk-theme adw-gtk-theme materia-gtk-theme
 sudo pacman -S papirus-icon-theme
 ```
 
-### Sway section
+XDG Utils
+
+```sh
+sudo pacman -S xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-gtk
+```
+
+### i3 Section X11
+
+```sh
+# Install i3
+sudo pacman -S i3 dmenu
+# Individual
+sudo pacman -S i3-wm i3block i3lock i3status dmenu
+# Other Xorg utils
+sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xorg-xkill xorg-xinput xorg-xwininfo
+
+```
+
+### Sway Section Wayland
 
 ```sh
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
-sudo pacman -S xorg-xwayland xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr
 sudo pacman -S arc-gtk-theme papirus-icon-theme
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 sudo pacman -S grim slurp satty # For screenshots
