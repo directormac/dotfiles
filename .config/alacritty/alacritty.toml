@@ -1,11 +1,12 @@
+[general]
+live_config_reload = true
+ipc_socket = true
 import = [
   # "~/.config/alacritty/tokyo-night-storm.toml",
   "~/.config/alacritty/catppuccin-mocha.toml",
   "~/.config/alacritty/fonts.toml",
   "~/.config/alacritty/keys.toml",
 ]
-live_config_reload = true
-ipc_socket = true
 
 [colors]
 draw_bold_text_with_bright_colors = true
@@ -20,7 +21,7 @@ WINIT_X11_SCALE_FACTOR = "1.0"
 decorations = "None"
 dynamic_padding = true
 dynamic_title = false
-opacity = 0.9
+opacity = 0.82
 blur = false
 startup_mode = "Windowed"
 class = { instance = "Alacritty", general = "Alacritty" }

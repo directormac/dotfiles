@@ -1,0 +1,5 @@
+window-decoration = false
+theme = catppuccin-mocha
+gtk-tabs-location = bottom
+gtk-adwaita = false
+gtk-wide-tabs = false
