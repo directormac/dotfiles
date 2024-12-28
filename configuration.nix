@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs,... }:
 
 {
   imports =
@@ -75,6 +75,8 @@
     packages = with pkgs; [];
   };
 
+  users.defaultUserShell = pkgs.zsh;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -94,9 +96,15 @@
 	git
 	neovim
 	aria2
+	xdg-user-dirs
+	xdg-utils
+	stow
+	inputs.wezterm.packages.${pkgs.system}.default
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
+
+  environment.shells = with pkgs; [ zsh ];
 
 
   # Hardware related
@@ -113,7 +121,15 @@
 	pulse.enable = true;
   };
 
+
+	programs.zsh = {
+		enable = true;
+		enableCompletion = true;
+	};
+
   programs.dconf.enable = true;
+
+  programs.ssh.startAgent = true;
 
 
   security.rtkit.enable = true;

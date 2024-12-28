@@ -40,10 +40,8 @@
 		iftop
 		zoxide
 		starship
-		zsh
 
 		alacritty
-		wezterm
 
 		firefox
 
