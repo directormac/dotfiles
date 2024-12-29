@@ -11,7 +11,7 @@
       shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
-        source-file ~/tmux.conf
+        source-file tmux.conf
       '';
     };
   };
