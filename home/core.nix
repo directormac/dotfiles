@@ -1,11 +1,11 @@
-{username, ...}:{
+{ username, ... }: {
 
-home = {
-inherit username;
-homeDirectory = "/home/${username}";
+  home = {
+    inherit username;
+    homeDirectory = "/home/${username}";
 
-stateVersion = "24.11";
-};
+    stateVersion = "24.11";
+  };
 
-programs.home-manager.enable = true;
+  programs.home-manager.enable = true;
 }
