@@ -1,4 +1,4 @@
 {
-  imports = [ ./common.nix ./git.nix ./xdg.nix ./zsh.nix ];
+  imports = [ ./common.nix ./git.nix ./xdg.nix ./tmux ./zsh.nix ];
 
 }
