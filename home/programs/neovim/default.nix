@@ -86,9 +86,11 @@ in {
     recursive = true;
   };
 
-  home.file."./.config/nvim/lua/artifex/init.lua".text = ''
-    require("artifex.set")
-    require("artifex.remap")
+  home.file."./.config/nvim/lua/config/init.lua".text = ''
+    require("config.options")
+    require("config.keymaps")
+    require("config.autocmds")
+    require("config.util")
     vim.opt.runtimepath:append("${treesitter-parsers}")
   '';
 
