@@ -595,14 +595,30 @@ sudo virsh net-list --all
 sudo virsh net-start default
 # Set enable autostart up in the future
 sudo virsh net-autostart --network default
-
-
-
 ````
+
+Auto Mounting Other Drives
+
+```sh
+#Get Drive uuid
+lsblk -f
+# Create the directory where you want to mount it
+sudo mkdir -p /mnt/ntfs_drive  # or whatever path you prefer
+
+# Add this line to `/etc/fstab`
+
+UUID=YOUR-UUID-HERE /mnt/ntfs_drive ntfs defaults,uid=1000,gid=1000,dmask=022,fmask=133 0 0
+
+# Test mount
+sudo mount -a
+```
 
 ### References
 
 [1](https://github.com/silentz/arch-linux-install-guide)
+
 [2](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
+
 [3](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
+
 [4](https://arch.d3sox.me/installation/live-setup)
