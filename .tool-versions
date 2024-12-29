@@ -1,5 +1,6 @@
-nodejs 23.4.0
+nodejs 23.5.0
 erlang 27.2
 elixir 1.18.0-otp-27
 kotlin 2.1.0
 java openjdk-17
+pnpm 9.15.2

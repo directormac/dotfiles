@@ -381,7 +381,7 @@ sudo vim /usr/share/wayland-sessions/sway.desktop
 ```sh
 # Used Apps
 sudo pacman -S firefox foliate evince thunar obsidian file-roller vlc
-paru -S lazydocker asdf-vm kerl
+paru -S lazydocker asdf-vm kerl bun
 
 # Others
 paru -S google-chrome vesktop
@@ -442,6 +442,7 @@ asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
 asdf plugin add kotlin https://github.com/asdf-community/asdf-kotlin.git
 asdf plugin-add java https://github.com/halcyon/asdf-java.git
+asdf plugin-add pnpm
 
 
 # To know
@@ -555,7 +556,7 @@ avdmanager delete avd -n pixel6_api34
 ### Virtualization
 
 ````sh
-paru -S virt-manager qemu-desktop libvirt dnsmasq
+paru -S virt-manager qemu-desktop libvirt dnsmasq spice-vdagent
 
 ```sh
 ## Add yourself to libvirt group
