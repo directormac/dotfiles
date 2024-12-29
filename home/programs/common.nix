@@ -1,6 +1,12 @@
 { lib, pkgs, ... }: {
 
+  users.defaultUserShell = pkgs.zsh;
+
   home.packages = with pkgs; [
+    #Legacy
+    htop
+    aria2
+
     # Archives
     zip
     unzip
@@ -8,31 +14,46 @@
 
     # Utilities
     ripgrep
+    fzf
     jq
-    htop
-    aria2
+    fd
+    bat
+    btop
+    lsd
+    navi
+    zoxide
+    fzf-git-sh
+    yazi
+    ueberzugpp
+    lazygit
 
     # Misc
     libnotify
     xdg-utils
 
+    # DB Related
     mycli
     pgcli
 
   ];
 
   programs = {
+
     tmux = {
       enable = true;
       clock24 = true;
       keyMode = "vi";
-      extraConfig = "mouse on";
+      baseIndex = 1;
+      terminal = "tmux-256color";
+
+      extraConfig = ''
+        set -g default-terminal "tmux-256color"
+        set -ag terminal-overrides ",*:Tc"
+        set-environment -g COLORTERM "truecolor"
+      '';
     };
 
-    btop.enable = true;
-    lsd.enable = true;
     ssh.enable = true;
-    zoxide.enable = true;
 
   };
 
