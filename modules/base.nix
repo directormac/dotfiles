@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, username, }: {
+{ pkgs, lib, inputs, username, ... }: {
 
   imports = [
     ./locale.nix
