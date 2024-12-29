@@ -8,3 +8,10 @@ tmp
 README.md
 assets
 ARCHLINUX.md
+flake.nix
+configuration.nix
+modules
+home
+home.nix
+hardware-configuration.nix
+flake.lock

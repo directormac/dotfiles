@@ -12,6 +12,8 @@ export BROWSER=firefox # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 export PATH=$HOME/.tmux/plugins/tmux-session-wizard/bin:$PATH
 export OPENAI_KEY=
@@ -39,17 +41,17 @@ export PATH=$HOME/.dotfiles/scripts/:$PATH
 
 fpath+=~/.zfunc
 
-[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-plug "zsh-users/zsh-autosuggestions"
-plug "zsh-users/zsh-syntax-highlighting"
-plug "marlonrichert/zsh-autocomplete"
-plug "hlissner/zsh-autopair"
+# [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
+# plug "zsh-users/zsh-autosuggestions"
+# plug "zsh-users/zsh-syntax-highlighting"
+# plug "marlonrichert/zsh-autocomplete"
+# plug "hlissner/zsh-autopair"
 # plug "wintermi/zsh-rust"
 # plug "zap-zsh/nvm"
 # plug "zap-zsh/zap-prompt"
-plug "zap-zsh/fzf"
-plug "zap-zsh/web-search"
-plug "MichaelAquilina/zsh-autoswitch-virtualenv"
+# plug "zap-zsh/fzf"
+# plug "zap-zsh/web-search"
+# plug "MichaelAquilina/zsh-autoswitch-virtualenv"
 
 
 # Load and initialise completion system
@@ -190,8 +192,7 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
-# eval "$(ssh-agent -s)"
-
+# eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
