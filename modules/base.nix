@@ -1,41 +1,31 @@
-{
-pkgs,
-lib,
-inputs,
-username,
-}:{
+{ pkgs, lib, inputs, username, }: {
 
-	imports = [
-	  ./locale.nix
-	  ./packages.nix
-	
-	];
+  imports = [
+    ./locale.nix
+    ./packages.nix
 
+  ];
 
-	users.users.${username} = {
-	  isNormalUser = true;
-	  description = username;
-	  extraGroups = ["networkmanager" "wheel"];
-	};
+  users.users.${username} = {
+    isNormalUser = true;
+    description = username;
+    extraGroups = [ "networkmanager" "wheel" ];
+  };
 
+  nix.settings.trusted-users = [ username ];
 
-	nix.settings.trusted-users = [username];
+  nix.settings = { experimental-features = [ "nix-command" "flakes" ]; };
 
-	nix.settings = {
-	  experimental-features = ["nix-command" "flakes"];
-	};
+  nix.gc = {
+    automatic = lib.mkDefault true;
+    dates = lib.mkDefault "weekly";
+    options = lib.mkDefault "--delete-older-than 7d";
+  };
 
-	nix.gc = {
-	  automatic = lib.mkDefault true;
-	  dates = lib.mkDefault "weekly";
-	  options = lib.mkDefault "--delete-older-than 7d";
-	};
-
-	nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config.allowUnfree = true;
 
   environment.pathsToLink = [ "/libexec" ];
-  
+
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     git
@@ -47,32 +37,33 @@ username,
     # inputs.wezterm.packages.${pkgs.system}.default
   ];
 
-	fonts = {
+  fonts = {
 
-	  packages = with pkgsl [
-	  material-design-icons
-	  font-awesome
+    packages = with pkgs; [
+      material-design-icons
+      font-awesome
 
-	  noto-fonts
-	  noto-fonts-cjk-sans
-	  noto-fonts-emoji
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-emoji
 
-	  (nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"];})
-	  ];
+      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+    ];
 
-	  enableDefaultPackages = false;
-	  
-	  fontconfig.defaultFonts = {
-		serif = "Noto Serif" "Noto Color Emoji"];
-		sansSerif = ["Noto Sans" "Noto Color Emoji"];
-		monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
-		emoji = ["Noto Color Emoji"];
-	  };
-	};
+    # use fonts specified by user rather than default ones
+    enableDefaultPackages = false;
 
-	programs.dconf.enable = true;
+    fontconfig.defaultFonts = {
+      serif = [ "Noto Serif" "Noto Color Emoji" ];
+      sansSerif = [ "Noto Sans" "Noto Color Emoji" ];
+      monospace = [ "JetBrainsMono Nerd Font" "Noto Color Emoji" ];
+      emoji = [ "Noto Color Emoji" ];
+    };
+  };
 
-	security.polkit.enable = true;
+  programs.dconf.enable = true;
+
+  security.polkit.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
