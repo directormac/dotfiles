@@ -40,14 +40,18 @@
   fonts = {
 
     packages = with pkgs; [
-      material-design-icons
-      font-awesome
 
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
+      material-design-icons
+      font-awesome
+      source-han-sans
+      source-han-sans-japanese
+      source-han-serif-japanese
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
 
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
     ];
 
     # use fonts specified by user rather than default ones
