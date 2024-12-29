@@ -1,4 +1,5 @@
 disableStartupPopups: true
 gui:
-  showIcons: true
+  nerdFontsVersion: "3"
 
+notARepository: "quit"
