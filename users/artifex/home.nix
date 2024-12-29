@@ -2,7 +2,7 @@
 
   imports = [ ../../home/core.nix ../../home/programs ];
 
-  defaultUserShell = pkgs.zsh;
+  # defaultUserShell = pkgs.zsh;
 
   programs.git = {
     userName = "Mark Asena";
