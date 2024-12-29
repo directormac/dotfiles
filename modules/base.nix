@@ -26,6 +26,8 @@
 
   environment.pathsToLink = [ "/libexec" ];
 
+  environment.shells = with pkgs; [ zsh ];
+
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     git
