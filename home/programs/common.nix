@@ -24,6 +24,7 @@
     yazi
     ueberzugpp
     lazygit
+    starship
 
     # Misc
     libnotify
