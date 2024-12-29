@@ -1,5 +1,7 @@
 { pkgs, ... }: {
 
+  home.file.".tmux.conf".source = ./tmux.conf;
+
   programs = {
 
     tmux = {
@@ -10,9 +12,9 @@
       terminal = "tmux-256color";
       shell = "${pkgs.zsh}/bin/zsh";
 
-      extraConfig = ''
-        source-file ~/.dotfiles/home/programs/tmux/tmux.conf
-      '';
+      # extraConfig = ''
+      #   source-file ~/.tmux.conf
+      # '';
     };
   };
 
