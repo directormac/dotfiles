@@ -36,6 +36,6 @@
 
   };
 
-  sertvies = { udiskie.eable = true; };
+  services = { udiskie.enable = true; };
 
 }
