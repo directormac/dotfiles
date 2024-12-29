@@ -1,6 +1,6 @@
 { pkgs, ... }: {
 
-  imports = [ ../../home/common.nix ../../home/programs.nix ];
+  imports = [ ../../home/core.nix ../../home/programs.nix ];
 
   programs.git = {
     userName = "Mark Asena";
