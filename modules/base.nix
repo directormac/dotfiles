@@ -34,9 +34,7 @@
     git
     neovim
     aria2
-    # xdg-user-dirs
-    # xdg-utils
-    # stow
+    zsh
     # inputs.wezterm.packages.${pkgs.system}.default
   ];
 
