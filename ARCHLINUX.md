@@ -322,7 +322,7 @@ sudo pacman -S i3 dmenu
 # Individual
 sudo pacman -S i3-wm i3block i3lock i3status dmenu
 # Other Xorg utils
-sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xorg-xkill xorg-xinput xorg-xwininfo
+sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xorg-xkill xorg-xinput xorg-xwininfo xclip xsel
 
 ```
 
