@@ -44,6 +44,7 @@
       keyMode = "vi";
       baseIndex = 1;
       terminal = "tmux-256color";
+      shell = "${pkgs.zsh}/bin/zsh";
 
       extraConfig = ''
         set -g default-terminal "tmux-256color"
