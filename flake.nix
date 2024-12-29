@@ -22,22 +22,56 @@
 
   };
 
-  outputs = inputs@{self, nixpkgs, home-manager, ...}:{
-  nixosConfigurations.super= nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
-    specialArgs = { inherit inputs; };
-    modules = [
-	./configuration.nix
+  outputs = inputs @ {
+  	self, 
+	nixpkgs, 
+	home-manager, 
+	...
+	}: {
+  
+	  nixosConfigurations = {
 
-	home-manager.nixosModules.home-manager
-	{
-	 home-manager.useGlobalPkgs = true;
-	 home-manager.useUserPackages = true;
-	 home-manager.backupFileExtension = "backup";
+		nixos-test = let
+		  username = "artifex";
+		  specialArgs = {inherit username;};
+		in
+		  nixpkgs.lib.nixosSystem {
+		   inherit specialArgs;
+		   system = "x86_640-linux";
 
-	 home-manager.users.artifex = import ./home.nix;
-	}
-    ];
-  };
-  };
+		   modules = [
+		     ./hosts/nixos-test
+		     #./users/${username}/nixos.nix
+		     
+		     home-manager.nixosModules.home-manager
+		     {
+			home-manager.useGlobalPkgs = true;
+			home-manager.useUserPackagees = true;
+
+			home-manager.extraSpecialArgs = inputs // specialArgs;
+			home-manager.users.${username} = import ./users/${username}/home.nix;
+		     }
+		   ];
+		  };
+
+	  };
+
+
+	#  nixosConfigurations.super= nixpkgs.lib.nixosSystem {
+	#    system = "x86_64-linux";
+	#    specialArgs = { inherit inputs; };
+	#    modules = [
+	# ./configuration.nix
+	#
+	# home-manager.nixosModules.home-manager
+	# {
+	#  home-manager.useGlobalPkgs = true;
+	#  home-manager.useUserPackages = true;
+	#  home-manager.backupFileExtension = "backup";
+	#
+	#  home-manager.users.artifex = import ./home.nix;
+	# }
+	#    ];
+	#  };
+	#  };
 }
