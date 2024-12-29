@@ -1,11 +1,9 @@
-{config, pkgs, ...};
-{
+{ config, pkgs, ... }: {
   imports = [
     ../../modules/base.nix
 
     ./hardware-configuration.nix
   ];
-
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -50,7 +48,7 @@
     isNormalUser = true;
     description = "Mark Asena";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -58,10 +56,11 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      #  wget
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

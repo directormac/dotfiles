@@ -2,16 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs,... }:
+{ config, pkgs, inputs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/locale.nix
-      ./modules/packages.nix
-      ./modules/programs.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./modules/locale.nix
+    ./modules/packages.nix
+    ./modules/programs.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -29,24 +28,24 @@
 
   # X11 and Display Configuration
   services.xserver = {
-	enable = true;
-	windowManager.i3.enable = true;
+    enable = true;
+    windowManager.i3.enable = true;
 
-	xkb = {
-	    layout = "us";
-	    variant = "";
-	  };
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
 
-  }; 
-
-  services.pipewire = {
-	enable = true;
-	alsa.enable = true;
-	alsa.support32Bit = true;
-	pulse.enable = true;
   };
 
- # Polkit
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # Polkit
   security.polkit.enable = true;
 
   # Gnome Keyring
@@ -57,29 +56,24 @@
     isNormalUser = true;
     description = "Mark Asena";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
   };
 
   users.defaultUserShell = pkgs.zsh;
-
 
   # Configure keymap in X11
   services.greetd = {
     enable = true;
     settings = {
-    default_session = {
-	command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-	user = "greeter";
-    };
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        user = "greeter";
+      };
     };
   };
 
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
- 
-
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -89,32 +83,27 @@
   # Hardware related
 
   hardware.graphics = {
-  	enable = true;
-	enable32Bit = true;
+    enable = true;
+    enable32Bit = true;
   };
 
-
-
-
-	programs.zsh = {
-		enable = true;
-		enableCompletion = true;
-	};
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+  };
 
   programs.dconf.enable = true;
 
   programs.ssh.startAgent = true;
 
   programs.ssh.extraConfig = ''
-  Host github.com
-    IdentityFile ~/.ssh/mac_mkra_dev
-  ''; 
-
-
+    Host github.com
+      IdentityFile ~/.ssh/mac_mkra_dev
+  '';
 
   security.rtkit.enable = true;
 
-   fonts = {
+  fonts = {
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
@@ -131,12 +120,14 @@
     };
   };
 
-  security.pam.loginLimits = [
-  { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
-  ];
+  security.pam.loginLimits = [{
+    domain = "@users";
+    item = "rtprio";
+    type = "-";
+    value = 1;
+  }];
 
-  security.pam.services.swaylock = {};
-
+  security.pam.services.swaylock = { };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

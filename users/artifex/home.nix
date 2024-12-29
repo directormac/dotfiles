@@ -1,13 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
 
-imports = [
-../../home/common.nix
-../../home/programs.nix
-];
+  imports = [ ../../home/common.nix ../../home/programs.nix ];
 
-programs.git = {
- userName = "Mark Asena";
- userEmail = "mac@mkra.dev";
-};
+  programs.git = {
+    userName = "Mark Asena";
+    userEmail = "mac@mkra.dev";
+  };
 
 }
