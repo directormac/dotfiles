@@ -210,18 +210,6 @@ EDITOR=vim visudo
 #%wheel ALL=(ALL) ALL
 ```
 
-Can't live without packages
-
-```sh
-# Necessary
-pacman -S git curl wget fuse2 lshw neovim
-# Terminal Related
-pacman -S lsd bat zoxide navi btop starship lazygit wezterm alacritty yazi ueberzugpp
-# Development needs and for paru
-pacman -S rustup
-
-```
-
 Unmount Everything and Reboot
 
 ```sh
@@ -230,10 +218,40 @@ umount -R /mnt
 reboot
 ```
 
-After Initial login install your preferred desktop environment
+Timeshift and grub
 
 ```sh
+sudo pacman -S timeshift grub-btrfs
+# Edit ExecStart for a custom timeshift auto backup
+# ExecStart=/usr/bin/grub-btrfsd --syslog --timeshift-auto
+sudo systemctl edit --full grub-btrfsd
+
+# Enable grub-btrfsd service to run on boot
+sudo systemctl enable grub-btrfsd
+```
+
+After Initial login install your preferred desktop environment or window manager
+
+```sh
+# Optional
 sudo pacman -S gnome #This will install everything it needs and all its dependencies
+```
+
+```sh
+# Necessary
+pacman -S git curl wget fuse2 lshw neovim
+# Terminal Emulators
+pacman -S alacritty wezterm
+# Terminal Goodies
+pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq fzf ripgrep websocat
+
+# Cli tools
+sudo pacman -S pgcli redis sqlite3
+
+
+# Development needs and for paru AUR Helper
+pacman -S rustup
+
 ```
 
 AUR Helper
@@ -249,16 +267,10 @@ cd paru
 makepkg -si
 ```
 
-Timeshift and grub
+After installing AUR Helper
 
 ```sh
-sudo pacman -S timeshift grub-btrfs
-# Edit ExecStart for a custom timeshift auto backup
-# ExecStart=/usr/bin/grub-btrfsd --syslog --timeshift-auto
-sudo systemctl edit --full grub-btrfsd
 
-# Enable grub-btrfsd service to run on boot
-sudo systemctl enable grub-btrfsd
 ```
 
 Essential fonts
@@ -318,7 +330,7 @@ sudo pacman -S xdg-user-dirs xdg-utils xdg-desktop-portal xdg-desktop-portal-gtk
 
 ```sh
 # Install i3
-sudo pacman -S i3 dmenu
+sudo pacman -S i3 dmenu picom
 # Individual
 sudo pacman -S i3-wm i3block i3lock i3status dmenu
 # Other Xorg utils
@@ -331,7 +343,6 @@ sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xo
 ```sh
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
 sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr
-sudo pacman -S arc-gtk-theme papirus-icon-theme
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 sudo pacman -S grim slurp satty # For screenshots
 sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
@@ -368,26 +379,38 @@ sudo vim /usr/share/wayland-sessions/sway.desktop
 ### Other Apps
 
 ```sh
-sudo pacman -S firefox foliate evince obsidian file-roller vlc
-paru -S lazygit lazydocker asdf-vm kerl
+# Used Apps
+sudo pacman -S firefox foliate evince thunar obsidian file-roller vlc
+paru -S lazydocker asdf-vm kerl
+
+# Others
+paru -S google-chrome vesktop
+paru -S zoom teams
+
 
 ```
 
+### GPG and Keychain
+
 ```sh
-sudo pacman -S grim slurp wf-recorder thunar
+# Install
+sudo pacman -S gnupg keychain
+# Add this this at your zshrc or bashrc
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+# Edit your keys accordingly
+eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg id_ed25519 another_key YOURGPGKEYID)
 ```
 
 ### Docker install
 
 ```sh
 sudo pacman -S docker docker-compose
-sudo systemctl enable docker.sock
+sudo systemctl enable docker.socket
 
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
 newgrp docker
-
-sudo chmod 666 /var/run/docker.sock
 
 sudo systemctl restart docker
 
@@ -402,9 +425,7 @@ lazydocker
 # Java Related
 sudo pacman -S maven gradle
 # Dev Goodies
-sudo pacman -S tree-sitter tree-sitter-cli zed nvim
-# Terminal helpers
-sudo pacman -S jq websocat pgcli redis sqlite3
+sudo pacman -S tree-sitter tree-sitter-cli zed neovim
 
 ```
 
@@ -579,12 +600,9 @@ sudo virsh net-autostart --network default
 
 ````
 
-```
-
 ### References
 
 [1](https://github.com/silentz/arch-linux-install-guide)
 [2](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
 [3](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
 [4](https://arch.d3sox.me/installation/live-setup)
-```
