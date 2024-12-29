@@ -1,7 +1,5 @@
 { lib, pkgs, ... }: {
 
-  users.defaultUserShell = pkgs.zsh;
-
   home.packages = with pkgs; [
     #Legacy
     htop
