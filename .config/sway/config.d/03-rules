@@ -23,6 +23,9 @@ for_window [app_id="hardware-qemu.ini|Emulator"] floating enable
 for_window [app_id="galculator|Galculator"] floating enable
 for_window [app_id="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
 
+for_window [class="Pinentry-gtk"] floating enable
+for_window [app_id="virt-manager"] floating enable
+
 # Force firefox in floating mode as it's breaking on popups
 for_window [app_id="^firefox$"] floating enable
 
