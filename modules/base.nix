@@ -11,6 +11,8 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+  users.defaultUserShell = pkgs.zsh;
+
   nix.settings.trusted-users = [ username ];
 
   nix.settings = { experimental-features = [ "nix-command" "flakes" ]; };
