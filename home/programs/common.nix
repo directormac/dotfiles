@@ -36,26 +36,7 @@
 
   ];
 
-  programs = {
-
-    tmux = {
-      enable = true;
-      clock24 = true;
-      keyMode = "vi";
-      baseIndex = 1;
-      terminal = "tmux-256color";
-      shell = "${pkgs.zsh}/bin/zsh";
-
-      extraConfig = ''
-        set -g default-terminal "tmux-256color"
-        set -ag terminal-overrides ",*:Tc"
-        set-environment -g COLORTERM "truecolor"
-      '';
-    };
-
-    ssh.enable = true;
-
-  };
+  programs.ssh.enable = true;
 
   services = { udiskie.enable = true; };
 
