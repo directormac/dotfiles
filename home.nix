@@ -1,5 +1,6 @@
 { config, pkgs, ...}:
 {
+	
 	home.username = "artifex";
 	home.homeDirectory = "/home/artifex";
 
@@ -13,13 +14,17 @@
 	      };
 	    };
 
+	    home.sessionVariables = {
+	    	EDITOR = "nvim";
+	    };
+
 
 	home.packages = with pkgs; [
 		zip
 		xz
 		unzip
 		curl
-		neovim
+		# neovim
 		ripgrep
 		jq
 		fzf
@@ -53,14 +58,25 @@
 
 		swaylock
 		swayidle
+		#swaync
 		wl-clipboard
 		mako
 		grim
 		slurp
 		dmenu
+		wlogout
+		fuzzel
+		fuzzel
 
 		xfce.thunar
 	];
+
+	programs.neovim = {
+	  enable = true;
+	  vimAlias = true;
+	  vimdiffAlias = true;
+	  withNodeJs = true;
+	};
 
 
 	programs.git = {
@@ -81,14 +97,17 @@
 	  };
 	};
 
+	xdg.configFile.".config/sway/config".source = ".config/sway/config";
+
 	
 	wayland.windowManager.sway = {
 	 enable = true;
 	 wrapperFeatures.gtk = true;
-	config = {
-		terminal = "wezterm";
-		modifier = "Mod4";
-	};
+	 # config = "${home.file.".config/sway/config".source}";
+	# config = {
+	# 	terminal = "wezterm";
+	# 	modifier = "Mod4";
+	# };
 	};
 
 	programs.waybar.enable = true;

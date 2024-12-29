@@ -123,6 +123,7 @@
       source-han-sans
       source-han-sans-japanese
       source-han-serif-japanese
+      nerd-fonts.fira-code
     ];
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" "Source Han Serif" ];
