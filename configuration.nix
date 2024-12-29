@@ -8,6 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/locale.nix
+      ./modules/packages.nix
+      ./modules/programs.nix
     ];
 
   # Bootloader.
@@ -24,48 +27,30 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Asia/Manila";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_PH.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_PH.UTF-8";
-    LC_IDENTIFICATION = "en_PH.UTF-8";
-    LC_MEASUREMENT = "en_PH.UTF-8";
-    LC_MONETARY = "en_PH.UTF-8";
-    LC_NAME = "en_PH.UTF-8";
-    LC_NUMERIC = "en_PH.UTF-8";
-    LC_PAPER = "en_PH.UTF-8";
-    LC_TELEPHONE = "en_PH.UTF-8";
-    LC_TIME = "en_PH.UTF-8";
-  };
-
-  environment.pathsToLink = [ "/libexec" ];
-
+  # X11 and Display Configuration
   services.xserver = {
 	enable = true;
 	windowManager.i3.enable = true;
+
+	xkb = {
+	    layout = "us";
+	    variant = "";
+	  };
+
   }; 
 
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  services.pipewire = {
+	enable = true;
+	alsa.enable = true;
+	alsa.support32Bit = true;
+	pulse.enable = true;
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-    default_session = {
-	command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-	user = "greeter";
-    };
-    };
-  };
+ # Polkit
+  security.polkit.enable = true;
 
+  # Gnome Keyring
+  services.gnome.gnome-keyring.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.artifex = {
@@ -77,35 +62,29 @@
 
   users.defaultUserShell = pkgs.zsh;
 
+
+  # Configure keymap in X11
+  services.greetd = {
+    enable = true;
+    settings = {
+    default_session = {
+	command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+	user = "greeter";
+    };
+    };
+  };
+
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Polkit
-  security.polkit.enable = true;
-
-  # Gnome Keyring
-  services.gnome.gnome-keyring.enable = true;
+ 
 
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-	git
-	neovim
-	aria2
-	xdg-user-dirs
-	xdg-utils
-	stow
-	inputs.wezterm.packages.${pkgs.system}.default
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
-
   environment.shells = with pkgs; [ zsh ];
-
 
   # Hardware related
 
@@ -114,12 +93,7 @@
 	enable32Bit = true;
   };
 
-  services.pipewire = {
-	enable = true;
-	alsa.enable = true;
-	alsa.support32Bit = true;
-	pulse.enable = true;
-  };
+
 
 
 	programs.zsh = {
@@ -130,6 +104,12 @@
   programs.dconf.enable = true;
 
   programs.ssh.startAgent = true;
+
+  programs.ssh.extraConfig = ''
+  Host github.com
+    IdentityFile ~/.ssh/mac_mkra_dev
+  ''; 
+
 
 
   security.rtkit.enable = true;
