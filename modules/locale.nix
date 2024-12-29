@@ -18,4 +18,10 @@
     LC_TELEPHONE = "en_PH.UTF-8";
     LC_TIME = "en_PH.UTF-8";
   };
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
 }
