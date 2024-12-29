@@ -285,7 +285,6 @@ echo "exec i3" >> $HOME/.xinitrc
 # Edit configuration
 # Repalace the `command = "agreety --cmd /bin/sh`
 # command = "tuigreet --cmd startx"
-
 ```
 
 ly
