@@ -5,13 +5,18 @@
 #assign [app_id="thunar"] → workspace number 3
 #assign [app_id="geany"] → workspace number 4
 #assign [app_id="vlc"] 8
-# assign [app_id="code|Code|jetbrains-studio"] 3
 # assign [app_id="lutris|steam|virt-manager|Virt-manager|steam|lutris"] 5
 # assign [app_id="Joplin|joplin|atril|Atril|calibre-ebook-viewer|calibre"] 6
 # assign [app_id="discord|telegram-desktop|TelegramDesktop|vesktop"] 7
 # assign [app_id="winbox64.exe|rustdesk|Rustdesk|anydesk|Anydesk"] 9
 
 #swaymsg -t get_tree
+
+
+assign [app_id="code|Code|jetbrains-studio"] 3
+assign [class="vesktop"] workspace 7
+assign [class="vlc"] workspace 8
+
 
 # Basic pop-up
 for_window [window_role="pop-up"] floating enable

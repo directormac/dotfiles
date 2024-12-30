@@ -1,3 +1,6 @@
+font-family = FiraCode Nerd Font Ret
+font-size = 13
+
 window-decoration = false
 window-padding-x = 0
 window-padding-y = 0
@@ -7,10 +10,11 @@ gtk-adwaita = false
 gtk-wide-tabs = false
 adw-toolbar-style = flat
 gtk-single-instance=false
+copy-on-select = clipboard
 
 shell-integration-features = no-cursor,sudo,no-title
 # cursor-style = block
-adjust-cell-height = 35%
+#adjust-cell-height = 35%
 background-opacity = 0.96
 
 mouse-hide-while-typing = true
@@ -19,74 +23,78 @@ mouse-hide-while-typing = true
 window-padding-balance = true 
 window-save-state = always
 
+# Unbind all
 
-keybind = alt+one=unbind
-keybind = alt+two=unbind
-keybind = alt+three=unbind
-keybind = alt+four=unbind
-keybind = alt+five=unbind
-keybind = alt+six=unbind
-keybind = alt+seven=unbind
-keybind = alt+eight=unbind
+keybind=clear 
 
 
-keybind = ctrl+one=unbind
-keybind = ctrl+two=unbind
-keybind = ctrl+three=unbind
-keybind = ctrl+four=unbind
-keybind = ctrl+five=unbind
-keybind = ctrl+six=unbind
-keybind = ctrl+seven=unbind
-keybind = ctrl+eight=unbind
+# Keybindings
 
-# keybindings
-keybind = ctrl+q>r=reload_config
-#keybind = ctrl+a>x=close_surface
+# General
+keybind = ctrl+grave_accent>r=reload_config
 
-keybind = ctrl+a>n=new_window
+keybind = ctrl+shift+a=select_all
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+c=copy_to_clipboard
+
+# Font Sizing
+# keybind = ctrl+grave_accent>equal=increase_font_size
+# keybind = ctrl+grave_accent>minus=decrease_font_size
+
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:2
+keybind = ctrl+zero=reset_font_size
+
+
+keybind = ctrl+grave_accent>backslash=new_split:right
+keybind = ctrl+grave_accent>minus=new_split:down
+
+keybind = ctrl+grave_accent>j=goto_split:bottom
+keybind = ctrl+grave_accent>k=goto_split:top
+keybind = ctrl+grave_accent>h=goto_split:left
+keybind = ctrl+grave_accent>l=goto_split:right
+
+keybind = cmd+grave_accent>z=toggle_split_zoom
+keybind = cmd+grave_accent>equal=equalize_splits
+
+# Windows
+keybind = ctrl+grave_accent>x=close_surface
+keybind = ctrl+grave_accent>n=new_window
+
+# Scrolling
+keybind = shift+page_up=scroll_page_up
+keybind = shift+end=scroll_to_bottom
+keybind = shift+right=adjust_selection:right
+keybind = shift+page_down=scroll_page_down
+keybind = shift+down=adjust_selection:down
+keybind = shift+home=scroll_to_top
+keybind = ctrl+shift+page_down=jump_to_prompt:1
+keybind = ctrl+shift+page_up=jump_to_prompt:-1
+
+keybind = ctr+alt+shift+j=write_scrollback_file:open
+keybind = ctrl+shift+j=write_scrollback_file:paste
+
 
 # tabs 
-#keybind = ctrl+a>c=new_tab
-#keybind = ctrl+a>shift+l=next_tab
-#keybind = ctrl+a>shift+h=previous_tab
-#keybind = ctrl+a>comma=move_tab:-1
-#keybind = ctrl+a>period=move_tab:1
+#keybind = ctrl+grave_accent>c=new_tab
+#keybind = ctrl+grave_accent>shift+l=next_tab
+#keybind = ctrl+grave_accent>shift+h=previous_tab
+#keybind = ctrl+grave_accent>comma=move_tab:-1
+#keybind = ctrl+grave_accent>period=move_tab:1
 
 # quick tab switch
-#keybind = ctrl+a>1=goto_tab:1
-#keybind = ctrl+a>2=goto_tab:2
-#keybind = ctrl+a>3=goto_tab:3
-#keybind = ctrl+a>4=goto_tab:4
-#keybind = ctrl+a>5=goto_tab:5
-#keybind = ctrl+a>6=goto_tab:6
-#keybind = ctrl+a>7=goto_tab:7
-#keybind = ctrl+a>8=goto_tab:8
-#keybind = ctrl+a>9=goto_tab:9
+# keybind = ctrl+grave_accent>1=goto_tab:1
+# keybind = ctrl+grave_accent>2=goto_tab:2
+# keybind = ctrl+grave_accent>3=goto_tab:3
+# keybind = ctrl+grave_accent>4=goto_tab:4
+# keybind = ctrl+grave_accent>5=goto_tab:5
+# keybind = ctrl+grave_accent>6=goto_tab:6
+# keybind = ctrl+grave_accent>7=goto_tab:7
+# keybind = ctrl+grave_accent>8=goto_tab:8
+# keybind = ctrl+grave_accent>9=goto_tab:9
 
-# quick tab switch
-#keybind = alt+1=goto_tab:1
-#keybind = alt+2=goto_tab:2
-#keybind = alt+3=goto_tab:3
-#keybind = alt+4=goto_tab:4
-#keybind = alt+5=goto_tab:5
-#keybind = alt+6=goto_tab:6
-#keybind = alt+7=goto_tab:7
-#keybind = alt+8=goto_tab:8
-#keybind = alt+9=goto_tab:9
 
 
 # split
-#keybind = ctrl+a>\=new_split:right
-#keybind = ctrl+a>-=new_split:down
-
-#keybind = ctrl+a>j=goto_split:bottom
-#keybind = ctrl+a>k=goto_split:top
-#keybind = ctrl+a>h=goto_split:left
-#keybind = ctrl+a>l=goto_split:right
-
-#keybind = cmd+a>z=toggle_split_zoom
-
-#keybind = cmd+a>e=equalize_splits
 
 # other
-copy-on-select = clipboard
