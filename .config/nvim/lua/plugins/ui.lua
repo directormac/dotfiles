@@ -1,8 +1,6 @@
 return {
   {
     "akinsho/bufferline.nvim",
-    -- events = "VeryLazy",
-    -- commit = "73540cb95f8d95aa1af3ed57713c6720c78af915",
     keys = {
         -- stylua: ignore
         { "<C-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
@@ -20,7 +18,6 @@ return {
     opts = function(_, opts)
       opts.options = {
         indicator = { style = "none" },
-        diagnostics = "nvim_lsp",
         always_show_bufferline = true,
         separator_style = "thin",
         show_buffer_close_icons = false,
