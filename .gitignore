@@ -1,3 +1,4 @@
 .config/lazygit/state.yml
 .config/xfce4/xfconf/*
 .config/btop/btop.log
+.config/gtk-3.0/bookmarks
