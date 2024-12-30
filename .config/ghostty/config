@@ -1,10 +1,12 @@
 window-decoration = false
+window-padding-x = 0
+window-padding-y = 0
 theme = catppuccin-mocha
-gtk-tabs-location = hidden
+gtk-tabs-location = bottom
 gtk-adwaita = false
 gtk-wide-tabs = false
 adw-toolbar-style = flat
-
+gtk-single-instance=false
 
 shell-integration-features = no-cursor,sudo,no-title
 # cursor-style = block
@@ -12,14 +14,23 @@ adjust-cell-height = 35%
 background-opacity = 0.96
 
 mouse-hide-while-typing = true
-mouse-scroll-multiplier = 2
-
+#mouse-scroll-multiplier = 2
 
 window-padding-balance = true 
 window-save-state = always
 
+
+keybind = alt+one=unbind
+keybind = alt+two=unbind
+keybind = alt+three=unbind
+keybind = alt+four=unbind
+keybind = alt+five=unbind
+keybind = alt+six=unbind
+keybind = alt+seven=unbind
+keybind = alt+eight=unbind
+
 # keybindings
-#keybind = ctrl+a>r=reload_config
+keybind = ctrl+q>r=reload_config
 #keybind = ctrl+a>x=close_surface
 
 keybind = ctrl+a>n=new_window

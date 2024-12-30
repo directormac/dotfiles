@@ -12,9 +12,12 @@ set $right l
 bindsym $mod+c kill
 
 # Terminal Related
+# bindsym $mod+Return exec $term	
+# bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
+# bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
 bindsym $mod+Return exec $term	
-bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
-bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
+bindsym $mod+Shift+Return 		exec $term -f
+bindsym $mod+$alt+Return 		exec $term -F
 
 # Apps
 bindsym $mod+e exec $file_manager

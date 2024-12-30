@@ -243,7 +243,7 @@ pacman -S git curl wget fuse2 lshw neovim
 # Terminal Emulators
 pacman -S alacritty wezterm
 # Terminal Goodies
-pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq fzf ripgrep websocat fd
+pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq yq fzf ripgrep websocat fd
 
 # Cli tools
 sudo pacman -S pgcli redis sqlite3
