@@ -30,6 +30,16 @@ keybind=clear
 
 # Keybindings
 
+keybind = ctrl+one=text:\x1b\x31
+keybind = ctrl+two=text:\x1b\x32
+keybind = ctrl+three=text:\x1b\x33
+keybind = ctrl+four=text:\x1b\x34
+keybind = ctrl+five=text:\x1b\x35
+keybind = ctrl+six=text:\x1b\x36
+keybind = ctrl+seven=text:\x1b\x37
+keybind = ctrl+eight=text:\x1b\x38
+keybind = ctrl+nine=text:\x1b\x39
+
 # General
 keybind = ctrl+grave_accent>r=reload_config
 
@@ -62,6 +72,7 @@ keybind = ctrl+grave_accent>x=close_surface
 keybind = ctrl+grave_accent>n=new_window
 
 # Scrolling
+
 keybind = shift+page_up=scroll_page_up
 keybind = shift+end=scroll_to_bottom
 keybind = shift+right=adjust_selection:right
@@ -71,9 +82,8 @@ keybind = shift+home=scroll_to_top
 keybind = ctrl+shift+page_down=jump_to_prompt:1
 keybind = ctrl+shift+page_up=jump_to_prompt:-1
 
-keybind = ctr+alt+shift+j=write_scrollback_file:open
-keybind = ctrl+shift+j=write_scrollback_file:paste
-
+#keybind = ctr+alt+shift+j=write_scrollback_file:open
+#keybind = ctrl+shift+j=write_scrollback_file:paste
 
 # tabs 
 #keybind = ctrl+grave_accent>c=new_tab
@@ -93,8 +103,3 @@ keybind = ctrl+shift+j=write_scrollback_file:paste
 # keybind = ctrl+grave_accent>8=goto_tab:8
 # keybind = ctrl+grave_accent>9=goto_tab:9
 
-
-
-# split
-
-# other
