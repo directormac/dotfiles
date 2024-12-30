@@ -29,6 +29,16 @@ keybind = alt+six=unbind
 keybind = alt+seven=unbind
 keybind = alt+eight=unbind
 
+
+keybind = ctrl+one=unbind
+keybind = ctrl+two=unbind
+keybind = ctrl+three=unbind
+keybind = ctrl+four=unbind
+keybind = ctrl+five=unbind
+keybind = ctrl+six=unbind
+keybind = ctrl+seven=unbind
+keybind = ctrl+eight=unbind
+
 # keybindings
 keybind = ctrl+q>r=reload_config
 #keybind = ctrl+a>x=close_surface
