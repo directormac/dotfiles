@@ -27,9 +27,11 @@ else
 
 fi
 
+rofi_focused="$HOME/.config/sway/scripts/rofi_focused"
+
 # Rofi CMD
 rofi_cmd() {
-  rofi -dmenu \
+  "$rofi_focused" -dmenu \
     -p "$prompt" \
     -mesg "$mesg" \
     -markup-rows \
