@@ -17,4 +17,48 @@ configuration{
     sidebar-mode: true;
 }
 
-@theme "colors"
+@theme "catppuccin-mocha"
+
+
+
+@import "master-config.rasi" 
+
+/* ---- Window ---- */
+window {
+    width:	40%;
+}
+
+/* ---- Entry input ---- */
+entry {
+    width:	8%;
+}
+
+/* ---- Mode Switcher ---- */
+button {
+    width:	110px;
+}
+
+/* ---- Listview ---- */
+listview {
+  columns: 6;
+  lines: 4;
+  fixed-height:	true;
+}
+
+/* ---- Element ---- */
+element {
+  orientation: vertical;
+  padding: 0px 0px 0px 0px;
+  spacing: 6px;
+  border-radius: 12px;
+}
+
+element-icon {
+  size: 5%;
+}
+
+element-text {
+  font: "Fira Code SemiBold 12";
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+}
