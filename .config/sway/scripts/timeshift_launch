@@ -1,0 +1,17 @@
+#!/bin/bash
+
+USER=$(whoami)
+
+rofi_focused="$HOME/.config/sway/scripts/rofi_focused"
+
+run_cmd() {
+  export SUDO_ASKPASS="$HOME/.config/rofi/sudo.rasi"
+  "$rofi_focused" -dmenu \
+    -password \
+    -i \
+    -p "Root" \
+    -mesg "Timeshift Requires a Super User" \
+    -theme "$SUDO_ASKPASS" | sudo -S -E timeshift-gtk
+}
+
+run_cmd

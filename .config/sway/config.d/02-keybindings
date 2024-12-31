@@ -14,17 +14,15 @@ bindsym $mod+$alt+Return 		exec $term -F
 bindsym $mod+e exec $file_manager
 bindsym $mod+w exec $web_browser
 bindsym ctrl+alt+comma exec pavucontrol
+bindsym $mod+t exec $timeshift_launch
+bindsym $mod+comma exec $rofi_emoji
+
 
 # Wlogout
 bindsym $mod+x exec wlogout
 
-
-# Launch Menu
-bindsym $mod exec $menu
-
-
 # Rofi
-bindsym $mod+d exec $menu
+bindsym $mod+d exec $rofi_apps
 bindsym $mod+grave exec $menu
 bindsym $mod+s 					exec $rofi_screenshot
 

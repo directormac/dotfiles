@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+RASI="$HOME/.config/rofi/emoji.rasi"
+
+rofi_focused="$HOME/.config/sway/scripts/rofi_focused"
+
+# Run
+"$rofi_focused" \
+  -modi emoji \
+  -show emoji \
+  -kb-custom-1 Ctrl+c \
+  -theme ${RASI}
