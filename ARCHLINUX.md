@@ -344,7 +344,7 @@ sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xo
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
 sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-sudo pacman -S grim slurp satty feh convert hyprpicker # For screenshots
+sudo pacman -S grim slurp satty feh hyprpicker # For screenshots
 sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
 paru -S wlogout
 ```
