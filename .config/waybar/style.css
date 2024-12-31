@@ -65,7 +65,7 @@ button:hover {
 }
 
 #workspaces button {
-  padding: 0 4px;
+  padding: 0 0px;
 }
 
 #workspaces button.focused {
@@ -121,7 +121,6 @@ button:hover {
 #tray,
 #window,
 #wireplumber,
-#workspaces,
 #custom-notification,
 #custom-updates,
 #custom-lock,

@@ -2,3 +2,6 @@
 .config/xfce4/xfconf/*
 .config/btop/btop.log
 .config/gtk-3.0/bookmarks
+.config/mpd/*
+!.config/mpd/mpd.conf
+.config/ncmpcpp/error.log
