@@ -1,3 +1,7 @@
+
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
 # Kill active window
 bindsym $mod+c kill
 
