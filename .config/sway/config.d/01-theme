@@ -1,14 +1,13 @@
-default_border pixel 0
-default_floating_border pixel 0
+default_border pixel 1
+default_floating_border pixel 1
 smart_borders off
 
-titlebar_border_thickness 2
-titlebar_padding 6 6
+titlebar_border_thickness 1
+titlebar_padding 2 2
 title_align center
 
-gaps inner 1
+gaps inner 0
 gaps outer 0
-
 
 
 set $rosewater #f5e0dc

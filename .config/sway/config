@@ -25,7 +25,7 @@ set $screenshot  grim -g "$(slurp -o -r -c '#ff0000ff')" -t ppm - | satty --file
 
 set $open_in_term wezterm start
 set $term ~/.config/sway/scripts/term
-set $menu fuzzel
+set $menu exec rofi -show
 set $file_manager thunar
 set $web_browser firefox
 

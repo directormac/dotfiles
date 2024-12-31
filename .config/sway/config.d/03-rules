@@ -44,7 +44,7 @@ for_window [app_id="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
 
 
 # Force firefox in floating mode as it's breaking on popups
-for_window [app_id="^firefox$"] floating enable
+# for_window [app_id="^firefox$"] floating enable
 # for_window [app_id="firefox" title="Mozilla Firefox"] floating disabled
 # for_window [title="Mozilla Firefox"] floating disabled
 
