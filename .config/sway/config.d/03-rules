@@ -22,6 +22,7 @@ assign [class="vlc"] workspace 8
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [class="Pinentry-gtk"] floating enable
+for_window [class="feh"] floating enable
 
 # Nm editor
 for_window [app_id="nm-connection-editor"] floating enable

@@ -1,20 +1,7 @@
-
-
-
-# Home row direction keys, like vim
-
-set $left h
-set $down j
-set $up k
-set $right l
-
-
+# Kill active window
 bindsym $mod+c kill
 
-# Terminal Related
-# bindsym $mod+Return exec $term	
-# bindsym $mod+Shift+Return 		exec $term start --class 'wezterm-float'
-# bindsym $mod+$alt+Return 		exec $term start --class 'wezterm-fullscreen'
+# Terminal 
 bindsym $mod+Return exec $term	
 bindsym $mod+Shift+Return 		exec $term -f
 bindsym $mod+$alt+Return 		exec $term -F
@@ -22,12 +9,11 @@ bindsym $mod+$alt+Return 		exec $term -F
 # Apps
 bindsym $mod+e exec $file_manager
 bindsym $mod+w exec $web_browser
+bindsym ctrl+alt+comma exec pavucontrol
 
 # Wlogout
 bindsym $mod+x exec wlogout
 
-
-bindsym ctrl+alt+comma exec pavucontrol
 
 # Launch Menu
 bindsym $mod exec $menu
@@ -35,11 +21,60 @@ bindsym $mod exec $menu
 
 # Rofi
 bindsym $mod+d exec $menu
+bindsym $mod+grave exec $menu
 bindsym $mod+s 					exec $rofi_screenshot
 
+# -- Screenshots --
+bindsym Print 					exec "$screenshot --now"
+bindsym $alt+Print 				exec "$screenshot --in5"
+bindsym Shift+Print 			exec "$screenshot --in10"
+bindsym Control+Print 			exec "$screenshot --win"
+bindsym $mod+Print 				exec "$screenshot --area"
 
-bindsym $mod+Shift+r reload
 
+## Send Notification
+##
+set $send-notify exec --no-startup-id notify-send -u low -h string:x-canonical-private-synchronous:swayconfig
+
+## Splitting containers
+##
+## split in horizontal orientation
+bindsym $mod+b split horizontal, $send-notify 'Split Horizontally'
+## split in vertical orientation
+bindsym $mod+v split vertical, $send-notify 'Split Vertically'
+## toggle split
+bindsym $mod+g split toggle, $send-notify 'Split Mode'
+
+
+## Manipulating layout
+##
+## change container layout (stacked, tabbed, toggle split)
+## Set stacking layout
+bindsym $mod+Shift+s layout stacking, $send-notify 'Layout - Stacking'
+## Set tabbed layout
+bindsym $mod+Shift+t layout tabbed, $send-notify 'Layout - Tabbed'
+## Set default layout
+bindsym $mod+Shift+d layout default, $send-notify 'Layout - Default'
+## Toggle between stacking/tabbed/split:
+bindsym $mod+Shift+grave layout toggle, $send-notify 'Cycling Layouts'
+## Toggle between horizontal/vertical:
+bindsym $mod+Shift+v layout toggle split, $send-notify 'Layout - Hor/Vert'
+## Toggle fullscreen
+bindsym $mod+f fullscreen toggle, $send-notify 'Toggled Fullscreen'
+## Toggle floating/tiling
+bindsym $mod+space floating toggle, $send-notify 'Toggled Floating Mode'
+
+
+# # Move focus to the parent container
+# Focusing
+## Sets focus to the parent container of the current container.
+bindsym $mod+a focus parent
+## The opposite of `focus parent`, sets the focus to the last focused child container.
+bindsym $mod+z focus child
+## Automatically sets focus to the adjacent container.
+bindsym $mod+Tab focus next
+## Toggles focus between floating/tiling containers.
+bindsym $mod+Shift+space focus mode_toggle
 # Move your focus around
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -51,6 +86,8 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
+## Moving containers
+##
 # Move the focused window with the same, but add Shift
 bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
@@ -61,91 +98,69 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+## Move floating container to the center of all outputs (floating only)
+bindsym $mod+$alt+c move absolute position center
+## Move container to the current position of the cursor (floating only)
+bindsym $mod+$alt+p move position mouse
+
+
+
+## Resizing containers/windows
+##
+bindsym $mod+$alt+Left resize shrink width 10 px or 10 ppt
+bindsym $mod+$alt+Down resize grow height 10 px or 10 ppt
+bindsym $mod+$alt+Up resize shrink height 10 px or 10 ppt
+bindsym $mod+$alt+Right resize grow width 10 px or 10 ppt
+
+## Sticky floating windows (floating only)
+##
+bindsym $mod+o sticky toggle, $send-notify 'Toggled Sticky'
+
+#------
+
+## Changing border style
+##
+bindsym $mod+y border toggle, $send-notify 'Toggled Borders'
+
+#------
+
+## Scratchpad
+##
+## Make the currently focused window a scratchpad
+bindsym $mod+minus move scratchpad, $send-notify 'Scratchpad'
+## Show the first scratchpad window
+bindsym $mod+Shift+minus scratchpad show
+
+#------
+
+# Reload Sway Config
+bindsym $mod+Shift+r reload, $send-notify 'Configuration Reloaded!'
+## quit sway session
+bindsym $mod+Shift+q exit
 
 # Workspaces:
 #
-    # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
-    # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace number 1
-    bindsym $mod+Shift+2 move container to workspace number 2
-    bindsym $mod+Shift+3 move container to workspace number 3
-    bindsym $mod+Shift+4 move container to workspace number 4
-    bindsym $mod+Shift+5 move container to workspace number 5
-    bindsym $mod+Shift+6 move container to workspace number 6
-    bindsym $mod+Shift+7 move container to workspace number 7
-    bindsym $mod+Shift+8 move container to workspace number 8
-    bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
-    # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
-#
-# Layout stuff:
-#
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+Shift+b splith
-    bindsym $mod+Shift+v splitv
-
-    # Switch the current container between different layout styles
-    bindsym $mod+Shift+s layout stacking
-    bindsym $mod+Shift+w layout tabbed
-    bindsym $mod+Shift+e layout toggle split
-
-    # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
-
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space focus mode_toggle
-
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space floating toggle
-
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
-#
-# Scratchpad:
-#
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
-
-    # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
-
-    # Show the next scratchpad window or hide the focused scratchpad window.
-    # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+minus scratchpad show
-#
-# Resizing containers:
-#
-mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-
-    # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-
-    # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+r mode "resize"
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+# Note: workspaces can have any name you want, not just numbers.
+# We just use 1-10 as the default.
