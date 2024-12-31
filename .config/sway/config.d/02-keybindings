@@ -26,13 +26,17 @@ bindsym $mod+w exec $web_browser
 # Wlogout
 bindsym $mod+x exec wlogout
 
-bindsym $mod+s exec $screenshot
 
 bindsym ctrl+alt+comma exec pavucontrol
 
 # Launch Menu
 bindsym $mod exec $menu
+
+
+# Rofi
 bindsym $mod+d exec $menu
+bindsym $mod+s 					exec $rofi_screenshot
+
 
 bindsym $mod+Shift+r reload
 
