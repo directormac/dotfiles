@@ -344,7 +344,7 @@ sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xo
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
 sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-sudo pacman -S grim slurp satty feh # For screenshots
+sudo pacman -S grim slurp satty feh convert hyprpicker # For screenshots
 sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
 paru -S wlogout
 ```
@@ -394,8 +394,23 @@ Music
 paru -S mpd mpv mpc ncmpcpp
 
 mkdir -p ~/.config/mpd
-cp /usr/share/doc/mpd/mpdconf.example ~/.config/mpd/mpd.conf
+mkdir -p ~/.config/mpd/playlists
 mkdir -p ~/.config/ncmpcpp
+mkdir -p ~/.local/state/mpd
+
+# Enable and Start User Services
+systemctl --user --now enable mpd.socket
+
+# Extras
+paru -S mpris mpd-mpris
+systemctl --user --now enable mpd-mpris
+
+# Extrass
+paru -S playerctl
+
+
+# Default config reference
+cp /usr/share/doc/mpd/mpdconf.example ~/.config/mpd/mpd.conf
 cp /usr/share/doc/ncmpcpp/config ~/.config/ncmpcpp/config
 ```
 
