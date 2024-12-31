@@ -1,19 +1,64 @@
 #!/usr/bin/env bash
 
+# Get Colors
+DIR="$HOME/.config/sway"
 background="$(cat $HOME/.config/rofi/mini.rasi | grep 'background:' | cut -d':' -f2 | tr -d ' '\;)"
 accent="$(cat $HOME/.config/rofi/mini.rasi | grep 'selected:' | cut -d':' -f2 | tr -d ' '\;)"
 
+# Import Current Theme
+RASI="$HOME/.config/rofi/screenshot.rasi"
+
+# Theme Elements
+prompt='Screenshot'
+mesg="Directory :: $(xdg-user-dir PICTURES)/Screenshots"
+
+# Options
+layout=$(cat ${RASI} | grep 'USE_ICON' | cut -d'=' -f2)
+if [[ "$layout" == 'NO' ]]; then
+  option_1=" Capture Desktop"
+  option_2="󰡊 Capture Area"
+  option_3="󰞣 Capture Window"
+  option_4="󰻜 Capture in 5s"
+else
+  option_1=""
+  option_2="󰡊"
+  option_3="󰞣"
+  option_4="󰻜"
+
+fi
+
+# Rofi CMD
+rofi_cmd() {
+  rofi -dmenu \
+    -p "$prompt" \
+    -mesg "$mesg" \
+    -markup-rows \
+    -theme ${RASI}
+}
+
+# Pass variables to rofi dmenu
+run_rofi() {
+  echo -e "$option_1\n$option_2\n$option_3\n$option_4" | rofi_cmd
+}
+
+# Screenshot
 time=$(date +%Y-%m-%d-%H-%M-%S)
 geometry=$(swaymsg -pt get_outputs | grep 'Current mode:' | cut -d':' -f2 | cut -d'@' -f1 | tr -d ' ')
 dir="$(xdg-user-dir PICTURES)/Screenshots"
 file="Screenshot_${time}_${geometry}.png"
 
-iDIR="$HOME/.config/swaync/icons"
+# Directory
+if [[ ! -d "$dir" ]]; then
+  mkdir -p "$dir"
+fi
 
-notify_cmd_shot="notify-send -h string:x-canonical-private-synchronous:sys-notify-shot -u low -i ${iDIR}/picture.png"
+# notify and view screenshot
+iDIR="$HOME/.config/swaync/icons"
 notify_view() {
+  notify_cmd_shot="notify-send -h string:x-canonical-private-synchronous:sys-notify-shot -u low -i ${iDIR}/picture.png"
   ${notify_cmd_shot} "Copied to clipboard."
   paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &>/dev/null &
+  # viewnior ${dir}/"$file"
   satty -f ${dir}/"$file" -o ${dir}/"$file" --copy-command "wl-copy"
   if [[ -e "$dir/$file" ]]; then
     ${notify_cmd_shot} "Screenshot Saved."
@@ -22,6 +67,7 @@ notify_view() {
   fi
 }
 
+# countdown
 countdown() {
   for sec in $(seq $1 -1 1); do
     notify-send -h string:x-canonical-private-synchronous:sys-notify-count -t 1000 -i "$iDIR"/timer.png "Taking shot in : $sec"
@@ -29,10 +75,10 @@ countdown() {
   done
 }
 
+# take shots
 shotnow() {
   cd ${dir} && sleep 0.5 && grim - | tee "$file" | wl-copy
   notify_view
-
 }
 
 shot5() {
@@ -57,18 +103,32 @@ shotarea() {
   notify_view
 }
 
-if [[ ! -d "$dir" ]]; then
-  mkdir -p "$dir"
-fi
+# Execute Command
+run_cmd() {
+  if [[ "$1" == '--opt1' ]]; then
+    shotnow
+  elif [[ "$1" == '--opt2' ]]; then
+    shotarea
+  elif [[ "$1" == '--opt3' ]]; then
+    shotwin
+  elif [[ "$1" == '--opt4' ]]; then
+    shot5
+  fi
+}
 
-if [[ "$1" == "--now" ]]; then
-  shotnow
-elif [[ "$1" == "--win" ]]; then
-  shotwin
-elif [[ "$1" == "--area" ]]; then
-  shotarea
-else
-  echo -e "Available Options : --now --win --area"
-fi
-
-exit 0
+# Actions
+chosen="$(run_rofi)"
+case ${chosen} in
+$option_1)
+  run_cmd --opt1
+  ;;
+$option_2)
+  run_cmd --opt2
+  ;;
+$option_3)
+  run_cmd --opt3
+  ;;
+$option_4)
+  run_cmd --opt4
+  ;;
+esac
