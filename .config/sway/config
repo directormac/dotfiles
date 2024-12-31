@@ -25,9 +25,14 @@ set $wallpapers $HOME/.wallpapers
 set $screenshot ~/.config/sway/scripts/screenshot
 set $rofi_screenshot ~/.config/sway/scripts/rofi_screenshot
 
+set $left h
+set $down j
+set $up k
+set $right l
 
-set $open_in_term wezterm start
+
 set $term ~/.config/sway/scripts/term
+set $open_in_term $term
 set $menu exec rofi -show
 set $file_manager thunar
 set $web_browser firefox
