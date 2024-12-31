@@ -58,7 +58,7 @@ mainbox {
 	padding:					 10px;
     enabled:                     true;
     orientation:                 vertical;
-    children:                    [ "inputbar", "listbox" ];
+    children:                    [ "inputbar", "listbox", "mode-switcher" ];
     background-color:            transparent;
 }
 
@@ -70,15 +70,15 @@ inputbar {
     margin:                      10px;
     background-color:            transparent;
     border-radius:               0px;
+    width: 100%;
     orientation:                 horizontal;
-    children:                    ["entry", "dummy", "mode-switcher" ];
+    children:                    ["entry"];
 }
 
 /* ---- Entry input ---- */
 entry {
     enabled:                     true;
-    expand:                      false;
-    width:                       10%;
+    expand:                      true;
     padding:                     10px;
     border-radius:               0px;
     background-color:            @selected;
