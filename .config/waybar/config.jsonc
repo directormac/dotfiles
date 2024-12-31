@@ -27,7 +27,14 @@
 		// Choose the order of the modules
 		"modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
 		"modules-center": ["mpd"],
-		"modules-right": ["network", "cpu", "memory", "disk", "temperature"]
+		"modules-right": [
+			"network",
+			"cpu",
+			"memory",
+			"disk",
+			"temperature",
+			"custom/notification"
+		]
 	},
 
 	{
@@ -68,6 +75,7 @@
 			"custom/updates",
 			"tray",
 			"idle_inhibitor",
+			"custom/lock",
 			"custom/power"
 		]
 	}
