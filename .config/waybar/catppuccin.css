@@ -39,3 +39,45 @@
 @define-color base #1e1e2e;
 @define-color mantle #181825;
 @define-color crust #11111b;
+
+@keyframes rainbow-gradient {
+  0% {
+    border-image: linear-gradient(
+        90deg,
+        red,
+        orange,
+        yellow,
+        green,
+        blue,
+        indigo,
+        violet
+      )
+      1;
+  }
+  50% {
+    border-image: linear-gradient(
+        270deg,
+        violet,
+        indigo,
+        blue,
+        green,
+        yellow,
+        orange,
+        red
+      )
+      1 1 1 1;
+  }
+  100% {
+    border-image: linear-gradient(
+        90deg,
+        red,
+        orange,
+        yellow,
+        green,
+        blue,
+        indigo,
+        violet
+      )
+      1;
+  }
+}

@@ -386,8 +386,17 @@ paru -S lazydocker asdf-vm kerl bun
 # Others
 paru -S google-chrome vesktop
 paru -S zoom teams
+```
 
+Music
 
+```sh
+paru -S mpd mpv mpc ncmpcpp
+
+mkdir -p ~/.config/mpd
+cp /usr/share/doc/mpd/mpdconf.example ~/.config/mpd/mpd.conf
+mkdir -p ~/.config/ncmpcpp
+cp /usr/share/doc/ncmpcpp/config ~/.config/ncmpcpp/config
 ```
 
 ### GPG and Keychain
