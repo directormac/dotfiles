@@ -136,8 +136,12 @@ button:hover {
   padding-left: 6px;
 }
 
+#idle_inhibitor {
+  color: @foreground;
+}
+
 #idle_inhibitor.activated {
-  color: #39ff14;
+  color: @green;
 }
 
 #clock {
