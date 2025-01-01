@@ -29,7 +29,7 @@
 
       nixos-test = let
         username = "artifex";
-        specialArgs = { inherit username; };
+        specialArgs = { inherit username inputs; };
       in nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         system = "x86_640-linux";
@@ -51,7 +51,7 @@
       };
       hypr-playground = let
         username = "artifex";
-        specialArgs = { inherit username; };
+        specialArgs = { inherit username inputs; };
       in nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         system = "x86_640-linux";
