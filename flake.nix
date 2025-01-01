@@ -19,6 +19,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
+
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
@@ -44,6 +47,32 @@
             home-manager.extraSpecialArgs = inputs // specialArgs;
             home-manager.users.${username} =
               import ./users/${username}/home.nix;
+          }
+        ];
+      };
+
+      hyprplayground = let
+        username = "artifex";
+        specialArgs = { inherit username; };
+      in nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        system = "x86_640-linux";
+
+        modules = [
+          ./hosts/hyprplayground
+
+          #./users/${username}/nixos.nix
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+
+            home-manager.extraSpecialArgs = inputs // specialArgs;
+            home-manager.users.${username} =
+              import ./users/${username}/home.nix;
+
+	    
           }
         ];
       };
