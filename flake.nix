@@ -21,7 +21,6 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
 
-
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
@@ -50,8 +49,7 @@
           }
         ];
       };
-
-      hyprplayground = let
+      hypr-playground = let
         username = "artifex";
         specialArgs = { inherit username; };
       in nixpkgs.lib.nixosSystem {
@@ -59,7 +57,7 @@
         system = "x86_640-linux";
 
         modules = [
-          ./hosts/hyprplayground
+          ./hosts/hypr-playground
 
           #./users/${username}/nixos.nix
 
@@ -72,7 +70,6 @@
             home-manager.users.${username} =
               import ./users/${username}/home.nix;
 
-	    
           }
         ];
       };
