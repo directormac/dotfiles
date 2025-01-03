@@ -188,7 +188,7 @@ pacman -S mesa mesa lib32-mesa lib32-pipewire
 pacman -S vulkan-icd-loader lib32-vulkan-icd-loader
 
 # For AMD
-sudo pacman -S vulkan-radeon libva-mesa-driver mesa-vdpau lib32-vulkan-radeon
+sudo pacman -S vulkan-radeon libva-mesa-driver mesa-vdpau lib32-vulkan-radeon rocm-smi-lib radeontop
 
 # For NVIDIA
 pacman -S nvidia nvidia-utils lib32-nvidia-utils libvdpau lib32-libvdpau
