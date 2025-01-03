@@ -1,11 +1,19 @@
 #!/bin/bash
 
+systemctl --user restart pipewire pipewire-pulse
+
+sleep 1
+
+pactl set-card-profile alsa_card.pci-0000_03_00.1 off
+
 # Find Cards
 # pactl list cards
 # Find the desired card you want to restore and set it's available output
 
 # Set profile for your specific card
 sleep 1
+
+pactl set-card-profile alsa_card.pci-0000_03_00.1 output:hdmi-stereo
 pactl set-card-profile alsa_card.pci-0000_03_00.1 output:hdmi-stereo-extra1
 
 # Find Sinks
@@ -14,4 +22,10 @@ pactl set-card-profile alsa_card.pci-0000_03_00.1 output:hdmi-stereo-extra1
 
 # Set it back as default
 sleep 1
-pactl set-default-sink "alsa_output.pci-0000_03_00.1.hdmi-stereo-extra1"
+
+# pactl set-default-sink "alsa_output.pci-0000_03_00.1.hdmi-stereo"
+pactl set-card-profile alsa_card.pci-0000_03_00.1 output:hdmi-stereo
+
+sleep 1
+
+pactl set-default-sink "alsa_output.pci-0000_03_00.1.hdmi-stereo"
