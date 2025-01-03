@@ -1,17 +1,17 @@
 { inputs, pkgs, ... }: {
 
   environment.systemPackages = with pkgs; [
-	kitty
-	hyprpicker
-	hypridle
-	hyprlock
-	xdg-desktop-portal-hyprland
-	hyprsunset
-	hyprpolkitagent
-	hyprcursor
-	aquamarine
-	hyprgraphics
-	hyprland-qtutils
+    kitty
+    hyprpicker
+    hypridle
+    hyprlock
+    xdg-desktop-portal-hyprland
+    hyprsunset
+    hyprpolkitagent
+    hyprcursor
+    aquamarine
+    hyprgraphics
+    hyprland-qtutils
   ];
 
   programs.hyprland = {
