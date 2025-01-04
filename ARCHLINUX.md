@@ -243,7 +243,7 @@ pacman -S git curl wget fuse2 lshw neovim
 # Terminal Emulators
 pacman -S alacritty wezterm
 # Terminal Goodies
-pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq yq fzf ripgrep websocat fd
+pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd
 
 # Cli tools
 sudo pacman -S pgcli redis sqlite3
@@ -381,7 +381,7 @@ sudo vim /usr/share/wayland-sessions/sway.desktop
 ```sh
 # Used Apps
 sudo pacman -S firefox foliate evince thunar obsidian file-roller vlc
-paru -S lazydocker asdf-vm kerl bun
+paru -S lazydocker asdf-vm kerl bun moar
 
 # Others
 paru -S google-chrome vesktop
