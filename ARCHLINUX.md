@@ -243,7 +243,7 @@ pacman -S git curl wget fuse2 lshw neovim
 # Terminal Emulators
 pacman -S alacritty wezterm
 # Terminal Goodies
-pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd
+pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd dust
 
 # Cli tools
 sudo pacman -S pgcli redis sqlite3
@@ -334,7 +334,7 @@ sudo pacman -S i3 dmenu picom
 # Individual
 sudo pacman -S i3-wm i3block i3lock i3status dmenu
 # Other Xorg utils
-sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xorg-xkill xorg-xinput xorg-xwininfo xclip xsel
+sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xorg-xkill xorg-xinput xorg-xwininfo xclip xsel libnotify
 
 ```
 
@@ -342,7 +342,7 @@ sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xfontsel xorg-xlsfonts xo
 
 ```sh
 sudo pacman -S sway polkit swaybg swayidle swaylock wlroots wl-clipboard
-sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr
+sudo pacman -S xorg-xwayland xdg-desktop-portal-wlr libnotify
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 sudo pacman -S grim slurp satty feh hyprpicker # For screenshots
 sudo pacman -S waybar wf-recorder wofi rofi rofi-wayland
@@ -402,7 +402,7 @@ mkdir -p ~/.local/state/mpd
 systemctl --user --now enable mpd.socket
 
 # Extras
-paru -S mpris mpd-mpris
+paru -S mpd-mpris
 systemctl --user --now enable mpd-mpris
 
 # Extrass
