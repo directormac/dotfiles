@@ -380,6 +380,7 @@ slider {
 }
 
 .widget-mpris .widget-mpris-player {
+  margin-top: 5px;
   background: #313244;
   padding: 7px;
 }
