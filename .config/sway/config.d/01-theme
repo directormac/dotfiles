@@ -38,7 +38,7 @@ client.background        $base
 set $gnome-schema org.gnome.desktop.interface
 exec_always {
     gsettings set $gnome-schema gtk-theme 'Tokyonight-Dark'
-    gsettings set $gnome-schema icon-theme 'Tokyonight-Moon'
+    gsettings set $gnome-schema icon-theme 'Papirus Dark'
 #    gsettings set $gnome-schema cursor-theme 'Qogirr'
 #    gsettings set $gnome-schema font-name 'Noto Sans 9'
 }
