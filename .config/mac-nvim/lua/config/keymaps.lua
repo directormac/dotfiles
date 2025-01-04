@@ -1,0 +1,62 @@
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+
+-- local function map(mode, l, r, desc)
+-- 	vim.keymap.set(mode, l, r, { desc = desc })
+-- end
+
+-- Copy Paste Fixes
+-- map("v", "p", "P", { noremap = true, silent = true, desc = "Paste content previously yanked" })
+-- map("v", "P", "p", { noremap = true, silent = true, desc = "Yank what you are going to override, then paste" })
+
+-- map({ "n", "v" }, "<C-x>", '"+y<esc>dd', { noremap = true, desc = "Copy and delete line" })
+-- map({ "n", "v" }, "<C-y>", '"+yy<esc>', { noremap = true, desc = "Copy" })
+-- map({ "n" }, "<C-p>", '"+p<esc>', { noremap = true, desc = "Paste" })
+-- map("v", "x", '"_x', { noremap = true, silent = true, desc = "Delete character without yanking" })
+-- map(
+-- 	"n",
+-- 	"x", -- Also let's allow 'x' key to delete blank lines in normal mode.
+-- 	function()
+-- 		if vim.fn.col(".") == 1 then
+-- 			local line = vim.fn.getline(".")
+-- 			if line:match("^%s*$") then
+-- 				vim.api.nvim_feedkeys("dd", "n", false)
+-- 				vim.api.nvim_feedkeys("$", "n", false)
+-- 			else
+-- 				vim.api.nvim_feedkeys('"_x', "n", false)
+-- 			end
+-- 		else
+-- 			vim.api.nvim_feedkeys('"_x', "n", false)
+-- 		end
+-- 	end,
+-- 	{ noremap = true, silent = true, desc = "Delete blank line without yanking" }
+-- )
+--
+-- -- Blazingly fast way out of insert mode and terminal mode
+-- map("i", "<C-c>", "<esc>")
+-- -- map("t", "jj", "<C-\\><C-n>")
+-- -- map("t", "jk", "<C-\\><C-n>")
+--
+-- map("t", "<Esc>", "<C-\\><C-n>", { noremap = true, desc = "Escape Insert Mode" })
+--
+-- -- Beter scrolllssssssss
+-- map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center cursor" })
+-- map("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
+--
+-- -- Tabulation in visual mode
+-- map("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
+-- map("v", "<Tab>", ">gv", { desc = "Indent line" })o
+
+local km = vim.keymap
+
+-- Here is a utility function that closes any floating windows when you press escape
+local function close_floating()
+	for _, win in pairs(vim.api.nvim_list_wins()) do
+		if vim.api.nvim_win_get_config(win).relative == "win" then
+			vim.api.nvim_win_close(win, false)
+		end
+	end
+end
+
+km.set("n", "<leader>k", require("fzf-lua").keymaps, { desc = "Keymaps" })

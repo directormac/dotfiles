@@ -80,6 +80,7 @@ export SAL_USE_VCLPLUGIN=gtk3
 ## Clutter
 export CLUTTER_BACKEND="wayland"
 
+
 ## GDK
 export GDK_BACKEND="wayland,x11"
 
@@ -217,6 +218,8 @@ alias kubectl='minikube kubectl --'
 alias mc="mcli"
 alias dcd="docker-compose down"
 alias dcu="docker-compose up -d"
+
+alias mvim="NVIM_APPNAME=mac-nvim nvim"
 
 
 # Arch Related
