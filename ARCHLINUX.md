@@ -246,7 +246,7 @@ pacman -S alacritty wezterm
 pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd dust
 
 # Cli tools
-sudo pacman -S pgcli redis sqlite3
+sudo pacman -S pgcli redis
 
 
 # Development needs and for paru AUR Helper
