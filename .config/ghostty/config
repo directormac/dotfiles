@@ -30,16 +30,6 @@ keybind=clear
 
 # Keybindings
 
-keybind = ctrl+one=text:\x1b\x31
-keybind = ctrl+two=text:\x1b\x32
-keybind = ctrl+three=text:\x1b\x33
-keybind = ctrl+four=text:\x1b\x34
-keybind = ctrl+five=text:\x1b\x35
-keybind = ctrl+six=text:\x1b\x36
-keybind = ctrl+seven=text:\x1b\x37
-keybind = ctrl+eight=text:\x1b\x38
-keybind = ctrl+nine=text:\x1b\x39
-
 # General
 keybind = ctrl+grave_accent>r=reload_config
 
