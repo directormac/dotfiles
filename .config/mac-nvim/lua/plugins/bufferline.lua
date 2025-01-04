@@ -4,17 +4,17 @@ return {
 		event = "VeryLazy",
 		keys = {
         -- stylua: ignore
-        { "<C-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
+        { "<A-1>", function() require("bufferline").go_to(1, true) end, desc = "Go to first buffer", },
         -- stylua: ignore
-        { "<C-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to second buffer", },
+        { "<A-2>", function() require("bufferline").go_to(2, true) end, desc = "Go to second buffer", },
         -- stylua: ignore
-        { "<C-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to third buffer", },
+        { "<A-3>", function() require("bufferline").go_to(3, true) end, desc = "Go to third buffer", },
         -- stylua: ignore
-        { "<C-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to fourth buffer", },
+        { "<A-4>", function() require("bufferline").go_to(4, true) end, desc = "Go to fourth buffer", },
         -- stylua: ignore
-        { "<C-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to fifth buffer", },
+        { "<A-5>", function() require("bufferline").go_to(5, true) end, desc = "Go to fifth buffer", },
         -- stylua: ignore
-        { "<C-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
+        { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
 			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
 			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
 			{ "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers to the Right" },
