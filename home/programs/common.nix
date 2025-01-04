@@ -4,35 +4,39 @@
     #Legacy
     htop
     aria2
+    less
 
     # Archives
-    zip
-    unzip
     p7zip
+    unzip
+    zip
 
     # Utilities
-    ripgrep
-    fzf
-    jq
-    fd
     bat
     btop
-    lsd
-    navi
-    zoxide
+    dust
+    fd
+    fzf
     fzf-git-sh
-    yazi
-    ueberzugpp
+    jq
+    lazydocker
     lazygit
+    lsd
+    moar
+    navi
+    navi
+    ripgrep
     starship
+    ueberzugpp
+    yazi
+    yq
+    zoxide
 
     # Misc
     libnotify
-    xdg-utils
-
-    # DB Related
     mycli
     pgcli
+    redis
 
   ];
 
