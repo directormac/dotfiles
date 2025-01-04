@@ -97,7 +97,7 @@ return {
   },
   {
     "stevearc/oil.nvim",
-    -- commit = "18272ab",
+    commit = "50c4bd4ee216f08907f64d0295c0663a69e58ffb",
     keys = {
       {
         "<leader>fo",
