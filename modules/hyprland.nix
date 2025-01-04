@@ -14,8 +14,15 @@
     hyprland-qtutils
   ];
 
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+
+    NIXOS_OZON_WL = "1";
+  };
+
   programs.hyprland = {
     enable = true;
+    xwayland.enable = true;
 
     # set the flake package
     package =
