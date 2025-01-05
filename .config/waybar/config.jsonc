@@ -46,7 +46,7 @@
 		"name": "secondary", // Waybar name
 		"id": "secondary", // Waybar id
 		"output": "DP-3",
-		"layer": "top", // Waybar at top layer
+		"layer": "bottom", // Waybar at top layer
 		//"mode": "dock", 				// Display mode (dock|hide|invisible|overlay)
 		"exclusive": true, // Request an exclusive zone from the compositor
 		"passthrough": false, // Pass any pointer events to the window under the bar
@@ -63,7 +63,7 @@
 		"fixed-center": true, // Center modules position
 		"ipc": true, // Control waybar with `swaymsg bar` commands
 		// Choose the order of the modules
-		"modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
+		"modules-left": ["sway/workspaces#kanji", "sway/mode", "sway/window"],
 		//"modules-center": ["mpd"],
 		"modules-right": [
 			"network",
