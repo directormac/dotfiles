@@ -25,12 +25,9 @@ fdisk -l
 
 Start Partitioning with the following commands
 
-```sh
-# Replace "nvme0n1" with the name of the disk you want to use
-
+```sh # Replace "nvme0n1" with the name of the disk you want to use
 #fdisk text based
 fdisk /dev/nvme0n1
-
 #uefi only text based
 gdisk /dev/nvme0n1
 
@@ -354,8 +351,7 @@ paru -S wlogout
 [Catppuccin](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme)
 
 ```sh
-paru -S gnome-themes-extra gtk-engine-murrine sassc tokyonight-gtk-theme-git
-
+paru -S gnome-themes-extra gtk-engine-murrine sassc tokyonight-gtk-theme-git papirus-icon-theme
 ```
 
 #### Troubleshoot Screensharing issues
@@ -381,6 +377,7 @@ sudo vim /usr/share/wayland-sessions/sway.desktop
 ```sh
 # Used Apps
 sudo pacman -S firefox foliate evince thunar obsidian file-roller vlc
+sudo pacman -S thunar-archive-plugin thunar-volman
 paru -S lazydocker asdf-vm kerl bun moar
 
 # Others
