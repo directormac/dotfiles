@@ -59,6 +59,7 @@
 		"icon-size": 20,
 		"spacing": 4
 	},
+
 	// Kanji / Japanese style
 	"sway/workspaces#kanji": {
 		"disable-scroll": true,
