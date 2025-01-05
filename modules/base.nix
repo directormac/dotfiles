@@ -8,7 +8,7 @@
   users.users.${username} = {
     isNormalUser = true;
     description = username;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" ];
   };
 
   users.defaultUserShell = pkgs.zsh;
@@ -33,7 +33,6 @@
   environment.systemPackages = with pkgs; [
     git
     neovim
-    aria2
     zsh
     # inputs.wezterm.packages.${pkgs.system}.default
   ];
