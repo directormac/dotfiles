@@ -2,6 +2,7 @@
 
   xdg = {
     enable = true;
+    wlr.enable = true;
     cacheHome = config.home.homeDirectory + "/.local/cache";
 
     mimeApps = { enable = true; };
@@ -16,8 +17,13 @@
 
     portal = {
       enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal ];
       xdgOpenUsePortal = true;
+      configPackages = [
+            pkgs.xdg-desktop-portal-gtk
+            pkgs.xdg-desktop-portal-hyprland
+            pkgs.xdg-desktop-portal
+      ];
     };
 
   };
