@@ -20,6 +20,12 @@ return {
 			{ "<leader>gc", "<cmd>FzfLua git_commits<CR>", desc = "Commits" },
 			{ "<leader>gs", "<cmd>FzfLua git_status<CR>", desc = "Status" },
 		},
-		opts = {},
+		opts = {
+			fzf_colors = {
+				true,
+				bg = "-1",
+				gutter = "-1",
+			},
+		},
 	},
 }
