@@ -31,6 +31,8 @@ for_window [app_id="nm-connection-editor"] floating enable
 # Terminal floats
 for_window [app_id="alacritty-float|wezterm-float|ghostty.float"] floating enable
 
+for_window [app_id="org.gnome.FileRoller"] floating enable
+
 # Apps
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="timeshift-gtk"] floating enable
