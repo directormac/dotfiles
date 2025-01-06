@@ -5,6 +5,7 @@ set $screenshot ~/.config/sway/scripts/screenshot
 set $rofi_screenshot ~/.config/sway/scripts/rofi_screenshot
 set $rofi_apps ~/.config/sway/scripts/rofi_apps
 set $rofi_emoji ~/.config/sway/scripts/rofi_emoji
+set $rofi_clipboard ~/.config/sway/scripts/rofi_clipboard
 set $timeshift_launch ~/.config/sway/scripts/timeshift_launch
 set $colorpicker ~/.config/sway/scripts/colorpicker
 
@@ -84,6 +85,8 @@ workspace 10 output $SM
 
 # Notification Daemon Launch on init
 exec swaync
+# Cliphist watcher
+exec wl-paste --watch cliphist store
 # Launch Firefox on init
 exec $browser
 

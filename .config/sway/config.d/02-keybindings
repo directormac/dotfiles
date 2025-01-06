@@ -17,10 +17,11 @@ bindsym ctrl+alt+comma exec pavucontrol
 bindsym $mod+t exec $timeshift_launch
 bindsym $mod+comma exec $rofi_emoji
 bindsym $mod+p exec $colorpicker
+bindsym $mod+slash exec $rofi_clipboard 
 
 
 # Wlogout
-bindsym $mod+x exec wlogout
+bindsym $mod+Shift+x exec wlogout
 
 # Rofi
 bindsym $mod+d exec $rofi_apps
