@@ -3,8 +3,6 @@
 
 # source ~/.secrets/secrets
 
-. "/opt/asdf-vm/asdf.sh"
-. ~/.asdf/plugins/java/set-java-home.zsh
 
 # Exports
 export TZ="Asia/Manila"
@@ -31,8 +29,40 @@ export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDR
 export CAPACITOR_ANDROID_STUDIO_PATH=/usr/bin/android-studio
 export PATH=$NDK_HOME:$PATH
 
+# ASDF Exports
+. "/opt/asdf-vm/asdf.sh"
+. ~/.asdf/plugins/java/set-java-home.zsh
 
-# Neede for tauri dev mode
+# FZF Exports
+
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
+export FZF_DEFAULT_COMMAND="fd --hiden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
+
+
+# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --exclude .git . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type=d --hidden --exclude .git . "$1"
+}
+
+source ~/.dotfiles/scripts/fzf-git.sh
+
+
+# Needed for tauri dev mode
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 
@@ -49,7 +79,11 @@ export XDG_CURRENT_SESSION=sway
 ## GTK environment
 export TDESKTOP_DISABLE_GTK_INTEGRATION=1
 export CLUTTER_BACKEND=wayland
-export BEMENU_BACKEND=wayland
+export GDK_BACKEND="wayland,x11"
+export NO_AT_BRIDGE=1
+export WINIT_UNIX_BACKEND=wayland
+export DBUS_SESSION_BUS_ADDRESS
+export DBUS_SESSION_BUS_PID
 
 ## Firefox
 export MOZ_ENABLE_WAYLAND=1
@@ -77,40 +111,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # LibreOffice
 export SAL_USE_VCLPLUGIN=gtk3
 
-## Clutter
-export CLUTTER_BACKEND="wayland"
-
-
-## GDK
-export GDK_BACKEND="wayland,x11"
-
-export NO_AT_BRIDGE=1
-export WINIT_UNIX_BACKEND=wayland
-export DBUS_SESSION_BUS_ADDRESS
-export DBUS_SESSION_BUS_PID
-
-fpath+=~/.zfunc
-
-# [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
-# plug "zsh-users/zsh-autosuggestions"
-# plug "zsh-users/zsh-syntax-highlighting"
-# plug "marlonrichert/zsh-autocomplete"
-# plug "hlissner/zsh-autopair"
-# plug "wintermi/zsh-rust"
-# plug "zap-zsh/nvm"
-# plug "zap-zsh/zap-prompt"
-# plug "zap-zsh/fzf"
-# plug "zap-zsh/web-search"
-# plug "MichaelAquilina/zsh-autoswitch-virtualenv"
-
-
-# Load and initialise completion system
-autoload -U compinit && compinit -u
-
-# source ~/.dotfiles/.config/zsh_completions
-
-
-
+# Functions
 
 function tmux_pnpm_node {
   SESSION_NAME=$(pwd | sed 's/.*\///g')
@@ -133,27 +134,6 @@ function ya() {
     fi
     rm -f -- "$tmp"
 }
-
-
-# git repository greeter
-# last_repository=
-# check_directory_for_new_repository() {
-# 	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
-#
-# 	if [ "$current_repository" ] && \
-# 	   [ "$current_repository" != "$last_repository" ]; then
-# 		onefetch --image $HOME/.dotfiles/avatar.jpg
-# 	fi
-# 	last_repository=$current_repository
-# }
-# cd() {
-# 	builtin cd "$@"
-# 	check_directory_for_new_repository
-# }
-#
-# check_directory_for_new_repository
-# optional, greet also when opening shell directly in repository directory
-# adds time to startup
 
 
 #Aliases
@@ -194,10 +174,8 @@ alias pn="pnpm"
 alias px="pnpm dlx"
 alias rmr="rm -r"
 alias ripgrep="rg"
-# alias td="tmux new -s $(pwd | sed 's/.*\///g')"
 alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
-# alias tn="tmux new-session -s $(basename $PWD)" # Create new tmux session on current directory
 alias td='tmux new-session -s $(basename "$PWD") -c "$PWD"'
 alias tn='tmux new-session -s $(basename "$PWD") -c "$PWD"'
 alias top="btop" # top/htop alternative
@@ -206,7 +184,7 @@ alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
 alias v="nvim"
 alias vi="nvim"
 alias wh="which"
-alias y="ya" # exit yazi with cwd
+alias y="ya" 
 alias zshconf="nvim ~/.zshrc"
 alias in='sudo pacman -S' # install package
 alias un='sudo pacman -Rns' # uninstall package
@@ -222,7 +200,6 @@ alias dcu="docker-compose up -d"
 
 alias mvim="NVIM_APPNAME=mac-nvim nvim"
 
-
 # Arch Related
 alias winbox="~/.dotfiles/WinBox & disown"
 
@@ -234,10 +211,7 @@ alias bbuild="bun --bun run build"
 alias bprewiew="bun --bun run preview"
 alias btest="bun --bun run test"
 
-
-
 alias b="bun run"
-
 
 alias iex-phx="iex -S mix phx.server"
 
@@ -247,49 +221,4 @@ eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
 # eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
-
-export FZF_DEFAULT_COMMAND="fd --hiden --strip-cwd-prefix --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-
-# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --exclude .git . "$1"
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type=d --hidden --exclude .git . "$1"
-}
-
-source ~/.dotfiles/scripts/fzf-git.sh
-
-#nvm
-# source /usr/share/nvm/init-nvm.sh
-#nvm
-
-
-# pnpm
-# export PNPM_HOME="/home/artifex/.local/share/pnpm"
-# case ":$PATH:" in
-#   *":$PNPM_HOME:"*) ;;
-#   *) export PATH="$PNPM_HOME:$PATH" ;;
-# esac
-# pnpm end
-export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
-
-# opam configuration
-# [[ ! -r /home/artifex/.opam/opam-init/init.zsh ]] || source /home/artifex/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-
-
-# Add JBang to environment
-alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"
 
