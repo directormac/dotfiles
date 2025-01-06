@@ -242,8 +242,8 @@ pacman -S alacritty wezterm
 # Terminal Goodies
 pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd dust
 
-# Cli tools
-sudo pacman -S pgcli redis
+# Tools
+sudo pacman -S pgcli redis cliphist
 
 
 # Development needs and for paru AUR Helper
@@ -262,12 +262,6 @@ sudo pacman -S --needed base-devel
 git clone https://aur.archlinux.org/paru.git
 cd paru
 makepkg -si
-```
-
-After installing AUR Helper
-
-```sh
-
 ```
 
 Essential fonts

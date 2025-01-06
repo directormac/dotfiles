@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+RASI="$HOME/.config/rofi/emoji.rasi"
+
+rofi_focused="$HOME/.config/sway/scripts/rofi_focused"
+rofi_cliphist_img="$HOME/.config/sway/scripts/rofi_cliphist_img"
+
+# Run
+"$rofi_focused" \
+  -modi clipboard:${rofi_cliphist_img} \
+  -show clipboard \
+  -show-icons \
+  -theme ${RASI}
