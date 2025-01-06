@@ -32,7 +32,7 @@
 	},
 
 	"custom/updates": {
-		"exec": "(checkupdates ; paru -Qua) | wc -l",
+		"exec": "paru -Qu | wc -l",
 		"interval": 7200,
 		"format": " {}"
 	},
