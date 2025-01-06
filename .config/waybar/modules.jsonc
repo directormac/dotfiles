@@ -168,7 +168,7 @@
 		"tooltip-format-disconnected": "󰌙 Disconnected",
 		"max-length": 30,
 		"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-		"on-click-right": "ghostty --class='ghostty.float' -e nmtui"
+		"on-click-right": "nm-connection-editor"
 	},
 
 	"network#speed": {
