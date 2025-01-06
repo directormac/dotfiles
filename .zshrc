@@ -3,6 +3,9 @@
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
+declare -A ZINIT
+ZINIT[NO_ALIASES]=1
+
 # Download Zinit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
    mkdir -p "$(dirname $ZINIT_HOME)"
@@ -102,7 +105,7 @@ export FZF_DEFAULT_OPTS=" \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 
-export FZF_DEFAULT_COMMAND="fd --hiden --strip-cwd-prefix --exclude .git"
+export FZF_DEFAULT_COMMAND="fd --hidden --no-ignore --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
@@ -197,6 +200,10 @@ function ya() {
     rm -f -- "$tmp"
 }
 
+function open_in_nvim(){
+ nvim $(fzf --preview="bat {}")
+}
+
 
 #Aliases
 alias c="clear"
@@ -225,6 +232,7 @@ alias gs="git status -sb"
 alias home="cd ~"
 alias hx="helix"
 alias hxconf="helix ~/.config/helix/config.toml"
+alias inv='nvim $(fd --type=f --hidden | fzf -m --preview="bat --color=always {}")'
 alias l="ls -a"
 alias less="moar"
 alias la="ls -la"
