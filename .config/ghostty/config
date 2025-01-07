@@ -1,3 +1,6 @@
+# https://github.com/hackrmomo/ghostty-shaders
+custom-shader = shaders/matrix-hallway.glsl
+
 font-family = FiraCode Nerd Font Ret
 font-size = 13
 
