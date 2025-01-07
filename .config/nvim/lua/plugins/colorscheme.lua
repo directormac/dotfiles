@@ -11,7 +11,19 @@ return {
           mantle = "#11111B",
         },
       },
+      custom_highlights = function(colors)
+        return {
+          -- Comment = { fg = colors.flamingo },
+          RenderMarkdownCode = { bg = colors.surface0 },
+        }
+      end,
+      highlight_overrides = {
+        all = function(colors)
+          return {}
+        end,
+      },
     },
+
     show_end_of_buffer = false,
     term_colors = true,
   },
