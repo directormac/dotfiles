@@ -1,4 +1,5 @@
 return {
+
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
@@ -85,6 +86,44 @@ return {
     opts = {
       inlay_hints = { enabled = false },
     },
+  },
+  {
+    "nvim-lspconfig",
+    opts = function(_, opts)
+      local lspconfig = require("lspconfig")
+      local configs = require("lspconfig/configs")
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+      lspconfig.emmet_ls.setup({
+        -- on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = {
+          "css",
+          "eruby",
+          "html",
+          "javascript",
+          "javascriptreact",
+          "less",
+          "sass",
+          "scss",
+          "svelte",
+          "pug",
+          "typescriptreact",
+          "vue",
+          "ex",
+          "heex",
+        },
+        init_options = {
+          html = {
+            options = {
+              -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+              ["bem.enabled"] = true,
+            },
+          },
+        },
+      })
+    end,
   },
   {
     "neovim/nvim-lspconfig",

@@ -17,13 +17,30 @@ return {
     },
     opts = function(_, opts)
       opts.options = {
-        indicator = { style = "none" },
         always_show_bufferline = true,
         separator_style = "thin",
         show_buffer_close_icons = false,
         show_duplicate_prefix = true,
         persist_buffer_sort = true,
-        show_close_icon = false,
+        -- show_close_icon = false,
+        diagnostics = "nvim_lsp",
+        indicator = {
+          icon = " ",
+          style = "icon",
+        },
+        -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
+        --   if context.buffer:current() then
+        --     local s = " "
+        --     for e, n in pairs(diagnostics_dict) do
+        --       local sym = e == "error" and "" or (e == "warning" and "" or "")
+        --       s = s .. n .. sym
+        --     end
+        --     return s
+        --   end
+        --
+        --   return " "
+        -- end,
+
         offsets = {
           {
             filetype = "oil",
