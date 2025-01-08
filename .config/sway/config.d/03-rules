@@ -12,28 +12,26 @@
 
 #swaymsg -t get_tree
 
+# Assignments
 
-assign [app_id="code|Code|jetbrains-studio"] 3
+assign [app_id="code|Code|jetbrains-studio"] workspace 3
 assign [class="vesktop"] workspace 7
-assign [class="vlc"] workspace 8
-
+# assign [class="vlc"] workspace 8
+assign [app_id="virt-manager"] workspace 5
 
 # Basic pop-up
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-for_window [class="Pinentry-gtk"] floating enable
-for_window [app_id="pinentry-gtk"] floating enable
-for_window [class="feh"] floating enable
-
-# Nm editor
-for_window [app_id="nm-connection-editor"] floating enable
-
-# Terminal floats
-for_window [app_id="alacritty-float|wezterm-float|ghostty.float"] floating enable
-
-for_window [app_id="org.gnome.FileRoller"] floating enable
-
 # Apps
+for_window [class="Pinentry-gtk"] floating enable
+for_window [class="feh"] floating enable
+for_window [class="vlc"] floating enable
+for_window [app_id="pinentry-gtk"] floating enable
+for_window [app_id="mpv|vlc"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="alacritty-float|wezterm-float|ghostty.float"] floating enable
+for_window [app_id="org.gnome.FileRoller|thunar|Tunar"] floating enable
+
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="timeshift-gtk"] floating enable
 for_window [app_id="virt-manager"] floating enable
@@ -42,7 +40,7 @@ for_window [app_id="steamwebhelper|steam"] floating enable
 for_window [app_id="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
 
 for_window [app_id="alacritty-float|wezterm-float|Music|thunar|Thunar|steamwebhelper|steam"] floating enable
-for_window [app_id="thunar|Thunar|steamwebhelper|steam"] floating enable
+for_window [app_id="steamwebhelper|steam"] floating enable
 for_window [app_id="hardware-qemu.ini|Emulator"] floating enable
 for_window [app_id="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
 
