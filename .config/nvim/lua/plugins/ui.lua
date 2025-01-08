@@ -16,6 +16,11 @@ return {
         { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
     },
     opts = function(_, opts)
+      opts.highlights = {
+        indicator_selected = {
+          fg = "#f5c2e7",
+        },
+      }
       opts.options = {
         always_show_bufferline = true,
         separator_style = "thin",
@@ -40,6 +45,7 @@ return {
         --
         --   return " "
         -- end,
+        --
 
         offsets = {
           {
