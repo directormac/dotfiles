@@ -31,6 +31,9 @@ zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+
 # Load completions
 autoload -Uz compinit && compinit
 

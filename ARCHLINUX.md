@@ -342,10 +342,12 @@ paru -S wlogout
 
 #### Extra Themes
 
-[Catppuccin](https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme)
+[Colloid](https://github.com/vinceliuice/Colloid-gtk-theme)
 
 ```sh
 paru -S gnome-themes-extra gtk-engine-murrine sassc tokyonight-gtk-theme-git papirus-icon-theme
+# For catppuccin
+paru -S paru -S colloid-catppuccin-gtk-theme-git colloid-catppuccin-theme-git
 ```
 
 #### Troubleshoot Screensharing issues
