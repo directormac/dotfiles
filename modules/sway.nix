@@ -18,6 +18,40 @@
   };
 
 
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        user = "greeter";
+      };
+    };
+  };
+
+  # Graphics
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  # Programs configuration
+  programs.dconf.enable = true;
+  programs.ssh.startAgent = true;
+
+  # Services configuration
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  services.gnome.gnome-keyring.enable = true;
+
+  # Security configurations
+  security.rtkit.enable = true;
+  security.polkit.enable = true;
+  security.pam.services.swaylock = {};
   security.pam.loginLimits = [{
     domain = "@users";
     item = "rtprio";
@@ -25,21 +59,30 @@
     value = 1;
   }];
 
-
-
-  security.pam.services.swaylock = { };
-
-  programs.hyprland = {
+  wayland.windowManager.sway = {
     enable = true;
-    xwayland.enable = true;
-
-    # set the flake package
-    package =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-
+    wrapperFeatures.gtk = true;
+    # config = "${home.file.".config/sway/config".source}";
+    # config = {
+    # 	terminal = "wezterm";
+    # 	modifier = "Mod4";
+    # };
   };
+
+  programs.waybar.enable = true;
+
+
+  # programs.hyprland = {
+  #   enable = true;
+  #   xwayland.enable = true;
+  #
+  #   # set the flake package
+  #   package =
+  #     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  #   # make sure to also set the portal package, so that they are in sync
+  #   portalPackage =
+  #     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  #
+  # };
 
 }
