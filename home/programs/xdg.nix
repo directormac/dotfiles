@@ -2,7 +2,6 @@
 
   xdg = {
     enable = true;
-    wlr.enable = true;
     cacheHome = config.home.homeDirectory + "/.local/cache";
 
     mimeApps = { enable = true; };
