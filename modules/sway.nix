@@ -59,14 +59,10 @@
     value = 1;
   }];
 
-  wayland.windowManager.sway = {
+  programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    # config = "${home.file.".config/sway/config".source}";
-    # config = {
-    # 	terminal = "wezterm";
-    # 	modifier = "Mod4";
-    # };
+    xwayland.enable = true;
   };
 
   programs.waybar.enable = true;
