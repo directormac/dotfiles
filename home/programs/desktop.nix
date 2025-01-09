@@ -1,7 +1,7 @@
 { pkgs, ... }: {
 
-  imports =
-    [ ./helix ];
+  # imports =
+  #   [ ./helix ];
 
   # Graphics
   hardware.graphics = {
