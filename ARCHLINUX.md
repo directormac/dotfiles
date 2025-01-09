@@ -269,7 +269,7 @@ Essential fonts
 ```sh
 sudo pacman -S noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-font-awesome
 sudo pacman -S adobe-source-han-sans-cn-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-hk-fonts
-sudo pacman -S ttf-firacode-nerd ttf-jetbrains-mono-nerd  ttf-noto-nerd ttf-devavu-nerd
+sudo pacman -S ttf-firacode-nerd ttf-jetbrains-mono-nerd  ttf-noto-nerd ttf-devavu-nerd ttf-iosevka-nerd
 sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-nerd-fonts-symbols-common
 sudo pacman -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono
 ```
