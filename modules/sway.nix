@@ -52,12 +52,9 @@
   security.rtkit.enable = true;
   security.polkit.enable = true;
   security.pam.services.swaylock = {};
-  security.pam.loginLimits = [{
-    domain = "@users";
-    item = "rtprio";
-    type = "-";
-    value = 1;
-  }];
+  security.pam.loginLimits = [
+    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+  ];
 
   programs.sway = {
     enable = true;
@@ -66,19 +63,5 @@
   };
 
   programs.waybar.enable = true;
-
-
-  # programs.hyprland = {
-  #   enable = true;
-  #   xwayland.enable = true;
-  #
-  #   # set the flake package
-  #   package =
-  #     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-  #   # make sure to also set the portal package, so that they are in sync
-  #   portalPackage =
-  #     inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  #
-  # };
 
 }
