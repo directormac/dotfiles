@@ -11,8 +11,8 @@
     executable = true;
   };
 
-  home.file."~/.config/bat/" = {
-    source = "~/.dotfiles/.config/bat";
+  home.file."./.config/bat/" = {
+    source = ../.config/bat;
     recursive = true;
   };
 }
