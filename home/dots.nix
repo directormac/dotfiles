@@ -1,5 +1,10 @@
 {...}: {
 
+  home.file."./.wallpapers/" = {
+    source = ../.wallpapers;
+    recursive = true;
+  };
+
   home.file."./.config/sway/" = {
     source = ../.config/sway;
     recursive = true;
