@@ -8,7 +8,7 @@
   home.file."./.config/sway/scripts/" = {
     source = ../.config/sway/scripts;
     recursive = true;
-    fileMode = "0755";
+    executable = true;
   };
 
   home.file."~/.config/bat/" = {
