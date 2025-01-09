@@ -1,41 +1,42 @@
 { pkgs, ... }:
-let
+# let
 
-  tmux-nerd-font-window-name = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = tmux-nerd-font-window-name;
-    src = pkgs.fetchFromGitHub {
-      src = pkgs.fetchFromGitHub {
-        owner = "joshmedeski";
-        repo = "tmux-nerd-font-window-name";
-        rev = "master"; # Or specific commit hash
-        sha256 =
-          "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Replace with actual hash
-      };
-    };
-  };
+  # tmux-nerd-font-window-name = pkgs.tmuxPlugins.mkTmuxPlugin {
+  #   pluginName = tmux-nerd-font-window-name;
+  #   src = pkgs.fetchFromGitHub {
+  #     src = pkgs.fetchFromGitHub {
+  #       owner = "joshmedeski";
+  #       repo = "tmux-nerd-font-window-name";
+  #       rev = "master"; # Or specific commit hash
+  #       sha256 =
+  #         "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Replace with actual hash
+  #     };
+  #   };
+  # };
+  #
+  # tmux-which-key = pkgs.tmuxPlugins.mkTmuxPlugin {
+  #   pluginName = tmux-which-key;
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "lexwforsythe";
+  #     repo = "tmux-which-key";
+  #     rev = "master"; # Or specific commit hash
+  #     sha256 =
+  #       "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Replace with actual hash
+  #   };
+  # };
+  #
+  # tmux-session-wizard = pkgs.tmuxPlugins.mkTmuxPlugin {
+  #   pluginName = tmux-session-wizard;
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "27medkamal";
+  #     repo = "tmux-session-wizard";
+  #     rev = "master";
+  #     sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  #   };
+  # };
 
-  tmux-which-key = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = tmux-which-key;
-    src = pkgs.fetchFromGitHub {
-      owner = "lexwforsythe";
-      repo = "tmux-which-key";
-      rev = "master"; # Or specific commit hash
-      sha256 =
-        "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # Replace with actual hash
-    };
-  };
-
-  tmux-session-wizard = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = tmux-session-wizard;
-    src = pkgs.fetchFromGitHub {
-      owner = "27medkamal";
-      repo = "tmux-session-wizard";
-      rev = "master";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    };
-  };
-
-in {
+# in 
+  {
 
   home.file.".tmux.conf".source = ./tmux.conf;
 
@@ -84,15 +85,15 @@ in {
         pain-control
         fzf-tmux-url
 
-        { plugin = tmux-nerd-font-window-name; }
-        { plugin = tmux-which-key; }
-
-        {
-          plugin = tmux-session-wizard;
-          extraConfig = ''
-            set -g @session-wizard 't'
-          '';
-        }
+        # { plugin = tmux-nerd-font-window-name; }
+        # { plugin = tmux-which-key; }
+        #
+        # {
+        #   plugin = tmux-session-wizard;
+        #   extraConfig = ''
+        #     set -g @session-wizard 't'
+        #   '';
+        # }
 
         {
           plugin = resurrect;
