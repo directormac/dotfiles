@@ -33,5 +33,7 @@
 
   environment.systemPackages = with pkgs; [
     firefox
+    ghostty
+    alacritty
   ];
 }
