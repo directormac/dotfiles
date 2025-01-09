@@ -32,7 +32,7 @@
     { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
   ];
 
-  home.packages = with pkgs; [
-    firefox 
+  environment.systemPackages = with pkgs; [
+    firefox
   ];
 }
