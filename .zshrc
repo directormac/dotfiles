@@ -157,9 +157,10 @@ export DBUS_SESSION_BUS_PID
 export MOZ_ENABLE_WAYLAND=1
 
 ## Qt environment
+export QT_QPA_PLATFORM=xcb
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
-export QT_QPA_PLATFORM=wayland-egl #error with apps xcb
+# export QT_QPA_PLATFORM=wayland-egl #error with apps xcb
 #export QT_WAYLAND_FORCE_DPI=physical #uncomment this to use monitor's DPI
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 
@@ -206,6 +207,28 @@ function ya() {
 function open_in_nvim(){
  nvim $(fzf --preview="bat {}")
 }
+
+function notes() {
+  local session_name="notes"
+
+  if tmux has-session -t "$session_name" 2>/dev/null; then
+    echo "Attaching to existing tmux session '$session_name'..."
+    tmux attach-session -t "$session_name"
+  else
+    tmux detach-client
+
+    echo "Creating new tmux session '$session_name'..."
+    tmux new-session -d -s "$session_name" -c "~/Notes"
+
+    # You can add any commands you want to run in the new session here
+    # For example, to open Vim:
+    tmux send-keys -t "$session_name" "nvim" Enter
+
+    tmux attach-session -t "$session_name"
+  fi
+}
+
+alias notes='notes'
 
 
 #Aliases
@@ -266,6 +289,7 @@ alias up='sudo pacman -Syu' # update system/package/aur
 alias pl='pacman -Qs' # list installed package
 alias pa='pacman -Ss' # list availabe package
 alias pc='sudo pacman -Sc' # remove unused cache
+alias paclean='sudo pacman -Rns $(pacman -Qdtq)'
 alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
 alias kubectl='minikube kubectl --'
 alias mc="mcli"
@@ -273,6 +297,7 @@ alias dcd="docker-compose down"
 alias dcu="docker-compose up -d"
 
 alias mvim="NVIM_APPNAME=mac-nvim nvim"
+
 
 # Arch Related
 alias winbox="~/.dotfiles/WinBox & disown"
