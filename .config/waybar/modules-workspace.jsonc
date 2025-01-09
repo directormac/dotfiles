@@ -40,14 +40,15 @@
 	},
 
 	"sway/mode": {
-		"format": "<span style=\"italic\">{}</span>"
+		"format": " {}",
+		"max-length": 50
 	},
 
 	// waybar-sway-window
 	"sway/window": {
 		"format": "{}",
 		"max-length": 50,
-		"icon": false
+		"icon": true
 	},
 
 	// waybar-tray

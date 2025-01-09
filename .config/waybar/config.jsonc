@@ -25,7 +25,7 @@
 		"fixed-center": true, // Center modules position
 		"ipc": true, // Control waybar with `swaymsg bar` commands
 		// Choose the order of the modules
-		"modules-left": ["sway/workspaces#kanji-left", "sway/mode"],
+		"modules-left": ["sway/workspaces#kanji-left", "mpd"],
 		"modules-center": ["sway/window"],
 		"modules-right": [
 			"network",
@@ -64,7 +64,7 @@
 		"ipc": true, // Control waybar with `swaymsg bar` commands
 		// Choose the order of the modules
 		"modules-left": ["sway/workspaces#kanji-right", "sway/mode", "sway/window"],
-		"modules-center": ["mpd"],
+		"modules-center": ["mpris"],
 		"modules-right": [
 			"network",
 			"pulseaudio",
