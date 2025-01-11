@@ -14,7 +14,7 @@ return {
       custom_highlights = function(colors)
         return {
           -- Comment = { fg = colors.flamingo },
-          RenderMarkdownCode = { bg = colors.surface0 },
+          RenderMarkdownCode = { bg = colors.mantle },
         }
       end,
       highlight_overrides = {
