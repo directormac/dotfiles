@@ -30,33 +30,8 @@ term.on("gui-startup", function(cmd)
 
 	if mode == "float" then
 		config.font_size = 20
-		-- term.initial_cols = 120
-		-- term.initial_rows = 50
-		-- local tab, pane, window = mux.spawn_window(cmd or {})
-		-- window:gui_window():set_inner_size(1280, 720)
-		-- window:gui_window():set_position("main:50%:50%")
-		-- window:maximize()
-		-- pane:split({ direction = "Bottom", size = 0.25 })
 	end
-
-	-- local tab, pane, window = mux.spawn_window(cmd or {})
-	-- window:gui_window():set_inner_size(1280, 720)
-	-- window:gui_window():set_position("main:50%:50%")
-	-- window:maximize()
-	-- pane:split({ direction = "Bottom", size = 0.25 })
-
-	-- local tab, pane, window = mux.spawn_window(cmd or {})
-	-- window:gui_window():set_inner_size(1280, 720)
-	-- window:gui_window():set_position("main:50%:50%")
-	-- window:maximize()
-	-- pane:split({ direction = "Bottom", size = 0.25 })
-end)
-
-term.on("mux-startup", function()
-	local tab, pane, window = mux.spawn_window({})
-	window:gui_window():set_inner_size(1280, 720)
-	window:gui_window():set_position(980, 59)
-	pane:split({ direction = "Bottom", size = 0.25 })
+	-- mux.set_active_workspace("default")
 end)
 
 terminal.options(config)
@@ -65,6 +40,98 @@ keymaps.options(config)
 --------------------------------------
 -- Local Functions
 --------------------------------------
+local function getDirectoryName(path)
+	if not path then
+		return "Unknown"
+	end
+	-- Remove any trailing slashes from the path
+	path = path:gsub("/+$", "")
+	-- Extract the last part of the path (the directory name)
+	local directoryName = path:match("([^/]+)$")
+	return directoryName or "Unknown"
+end
+
+local process_icons = { -- for get_process function
+	["docker"] = term.nerdfonts.linux_docker,
+	["docker-compose"] = term.nerdfonts.linux_docker,
+	["psql"] = term.nerdfonts.dev_postgresql,
+	["kuberlr"] = term.nerdfonts.linux_docker,
+	["kubectl"] = term.nerdfonts.linux_docker,
+	["stern"] = term.nerdfonts.linux_docker,
+	["make"] = term.nerdfonts.seti_makefile,
+	-- ["nvim"] = term.nerdfonts.custom_vim,
+	-- ["vim"] = term.nerdfonts.dev_vim,
+	["vim"] = "",
+	["nvim"] = "",
+	["go"] = term.nerdfonts.seti_go,
+	["zsh"] = term.nerdfonts.dev_terminal,
+	["bash"] = term.nerdfonts.cod_terminal_bash,
+	["btm"] = term.nerdfonts.mdi_chart_donut_variant,
+	["htop"] = term.nerdfonts.mdi_chart_donut_variant,
+	["cargo"] = term.nerdfonts.dev_rust,
+	["sudo"] = term.nerdfonts.fa_hashtag,
+	["lazydocker"] = term.nerdfonts.linux_docker,
+	["git"] = term.nerdfonts.dev_git,
+	["lazygit"] = term.nerdfonts.dev_git,
+	["lua"] = term.nerdfonts.seti_lua,
+	["wget"] = term.nerdfonts.mdi_arrow_down_box,
+	["curl"] = term.nerdfonts.mdi_flattr,
+	["gh"] = term.nerdfonts.dev_github_badge,
+	["ruby"] = term.nerdfonts.cod_ruby,
+	["pwsh"] = term.nerdfonts.seti_powershell,
+	["node"] = term.nerdfonts.dev_nodejs_small,
+	["dotnet"] = term.nerdfonts.md_language_csharp,
+}
+
+local function get_process(process_name)
+	-- local icon = process_icons[process_name] or string.format('[%s]', process_name)
+	local icon = process_icons[process_name] or term.nerdfonts.seti_checkbox_unchecked
+
+	return icon
+end
+
+term.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	local pane = tab.active_pane
+	local cwd_uri = pane.current_working_dir
+	local directoryName = "Unknown"
+	local process_name = tab.active_pane.foreground_process_name:match("([^/\\]+)%.exe$")
+		or tab.active_pane.foreground_process_name:match("([^/\\]+)$")
+
+	local process_icon = get_process(process_name) or tab.active_pane.foreground_process_name:match("([^/\\]+)$")
+
+	local current_number = tab.tab_index + 1
+
+	local numbers = {
+		term.nerdfonts.md_numeric_1,
+		term.nerdfonts.md_numeric_2,
+		term.nerdfonts.md_numeric_3,
+		term.nerdfonts.md_numeric_4,
+		term.nerdfonts.md_numeric_5,
+		term.nerdfonts.md_numeric_6,
+		term.nerdfonts.md_numeric_7,
+		term.nerdfonts.md_numeric_8,
+		term.nerdfonts.md_numeric_9,
+		term.nerdfonts.md_numeric_10,
+	}
+
+	if cwd_uri then
+		-- Convert the URI to a string, remove the hostname, and decode %20s:
+		local cwd_path = cwd_uri.file_path
+		-- cwd_path = cwd_path:gsub("^file://[^/]+", "") -- not needed
+		-- cwd_path = decodeURI(cwd_path) -- not needed
+
+		-- Extract the directory name from the decoded path:
+		directoryName = getDirectoryName(cwd_path)
+	end
+
+	-- local title = string.format(" %s %s %s ", (tab.tab_index + 1), process_icon, process_name)
+	local title = string.format(" %s %s %s ", numbers[current_number], process_icon, process_name)
+
+	return {
+		{ Text = title },
+	}
+end)
+
 local function recompute_padding(window)
 	local window_dims = window:get_dimensions()
 	local overrides = window:get_config_overrides() or {}
@@ -100,50 +167,11 @@ term.on("window-config-reloaded", function(window)
 	recompute_padding(window)
 end)
 
-local function basename(path)
-	local trimmed_path = path:gsub("[/\\]*$", "") ---Remove trailing slashes from the path
-	local index = trimmed_path:find("[^/\\]*$") ---Find the last occurrence of '/' in the path
-
-	return index and trimmed_path:sub(index) or trimmed_path
-end
-
-local function tab_title(tab_info)
-	local title = tab_info.tab_title
-	-- if the tab title is explicitly set, take that
-	if title and #title > 0 then
-		return title
-	end
-	-- Otherwise, use the title from the active pane
-	-- in that tab
-	return tab_info.active_pane.title
-end
-
-term.on("format-tab-title", function(tab)
-	-- local cwd = basename(tab.active_pane.current_working_dir)
-
-	-- local tab_index = string.format("  %s  ", tab.tab_index + 1)
-	--
-	-- return term.format({
-	-- 	-- { Text = "▏" },
-	-- 	{ Text = tab_index },
-	-- })
-
-	local title = tab_title(tab)
-
-	local max = config.tab_max_width - 9
-	if #title > max then
-		title = term.truncate_right(title, max) .. "…"
-	end
-
-	return {
-		{ Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
-		{ Text = " " .. (tab.tab_index + 1) .. ": " .. title .. " " },
-	}
-end)
-
 term.on("update-right-status", function(window, pane)
 	local cells = {}
 	local key_mode = window:active_key_table()
+
+	-- Mode Section
 	local mode = {
 		["search_mode"] = "󰜏",
 		["copy_mode"] = "",
@@ -154,38 +182,16 @@ term.on("update-right-status", function(window, pane)
 		table.insert(cells, mode[key_mode])
 	end
 
-	--
+	-- Workspace Section
 	local workspace = window:active_workspace()
+
 	if workspace == "default" then
 		workspace = ""
 	end
+
 	table.insert(cells, workspace)
 
-	local cwd_uri = pane:get_current_working_dir()
-	if cwd_uri then
-		cwd_uri = cwd_uri:sub(8)
-		local slash = cwd_uri:find("/")
-		local cwd = ""
-		local hostname = ""
-		if slash then
-			hostname = cwd_uri:sub(1, slash - 1)
-			-- Remove the domain name portion of the hostname
-			local dot = hostname:find("[.]")
-			if dot then
-				hostname = hostname:sub(1, dot - 1)
-			end
-			-- and extract the cwd from the uri
-			cwd = cwd_uri:sub(slash)
-			-- table.insert(cells, cwd)
-			if hostname == "" then
-				table.insert(cells, "")
-			elseif string.find(hostname, "arch") then
-				table.insert(cells, "")
-			else
-				table.insert(cells, "")
-			end
-		end
-	end
+	-- Time Section
 	local current_time = tonumber(term.strftime("%H"))
 	-- stylua: ignore
 	local time = {
@@ -217,6 +223,7 @@ term.on("update-right-status", function(window, pane)
 	local date = term.strftime("%H:%M:%S %a %b %d ")
 	local date_time = time[current_time] .. " " .. date
 	table.insert(cells, date_time)
+
 	local text_fg = terminal.colors.transparent
 	-- local SEPERATOR = " █"
 	local SEPERATOR = "  "
@@ -234,7 +241,7 @@ term.on("update-right-status", function(window, pane)
 	local num_cells = 0
 
 	-- Translate into elements
-	function push(text, is_last)
+	local function push(text, is_last)
 		local cell_no = num_cells + 1
 		if is_last then
 			-- table.insert(elements, text_fg)
@@ -255,6 +262,7 @@ term.on("update-right-status", function(window, pane)
 		local cell = table.remove(cells, 1)
 		push(cell, #cells == 0)
 	end
+
 	window:set_right_status(term.format(elements))
 end)
 

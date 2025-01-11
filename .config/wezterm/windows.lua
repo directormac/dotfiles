@@ -8,21 +8,6 @@ function M.options(config)
 
 	local extra_ssh = {
 		{
-			name = "ArchX",
-			remote_address = "192.168.110.182",
-			username = "artifex",
-		},
-		{
-			name = "ArchDev100",
-			remote_address = "192.168.110.171",
-			username = "artifex",
-		},
-		{
-			name = "ArchDev101",
-			remote_address = "192.168.110.30",
-			username = "artifex",
-		},
-		{
 			name = "Master",
 			remote_address = "192.168.110.100",
 			username = "artifex",
