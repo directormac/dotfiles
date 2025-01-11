@@ -1,14 +1,15 @@
----@class WezTerm
-local wez = require("wezterm")
+---@diagnostic disable: undefined-field
 
----@class Config
+local wt = require "wezterm"
+local fs = require("utils.fn").fs
+
 local Config = {}
 
 Config.adjust_window_size_when_changing_font_size = false
 Config.allow_square_glyphs_to_overflow_width = "WhenFollowedBySpace"
 Config.anti_alias_custom_block_glyphs = true
 
-Config.font = wez.font_with_fallback({
+Config.font = wt.font_with_fallback {
   {
     family = "FiraCode Nerd Font",
     weight = "Regular",
@@ -49,9 +50,9 @@ Config.font = wez.font_with_fallback({
   },
   { family = "Noto Color Emoji" },
   { family = "LegacyComputing" },
-})
+}
 
-if require("utils.fun").is_windows() then
+if fs.platform().is_win then
   Config.font_size = 9.5
 else
   Config.font_size = 10.5
@@ -64,35 +65,35 @@ Config.warn_about_missing_glyphs = false
 -- local monaspace_features =
 --   { "dlig", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" }
 
-Config.font_rules = {
-  -- {
-  --   intensity = "Normal",
-  --   italic = true,
-  --   font = wez.font_with_fallback {
-  --     {
-  --       family = "FiraCode Nerd Font",
-  --       style = "Normal",
-  --       weight = "Regular",
-  --       stretch = "Expanded",
-  --       harfbuzz_features = monaspace_features,
-  --     },
-  --     { family = "Symbols Nerd Font" },
-  --   },
-  -- },
-  -- {
-  --   intensity = "Bold",
-  --   italic = true,
-  --   font = wez.font_with_fallback {
-  --     {
-  --       family = "FiraCode Nerd Font",
-  --       style = "Italic",
-  --       weight = "Black",
-  --       harfbuzz_features = monaspace_features,
-  --       scale = 1.1,
-  --     },
-  --     { family = "Symbols Nerd Font" },
-  --   },
-  -- },
-}
+-- Config.font_rules = {
+--   {
+--     intensity = "Normal",
+--     italic = true,
+--     font = wt.font_with_fallback {
+--       {
+--         family = "Monaspace Radon Var",
+--         style = "Normal",
+--         weight = "Regular",
+--         stretch = "Normal",
+--         harfbuzz_features = monaspace_features,
+--       },
+--       { family = "Symbols Nerd Font" },
+--     },
+--   },
+--   {
+--     intensity = "Bold",
+--     italic = true,
+--     font = wt.font_with_fallback {
+--       {
+--         family = "Monaspace Krypton Var",
+--         style = "Italic",
+--         weight = "Black",
+--         harfbuzz_features = monaspace_features,
+--         scale = 1.1,
+--       },
+--       { family = "Symbols Nerd Font" },
+--     },
+--   },
+-- }
 
 return Config

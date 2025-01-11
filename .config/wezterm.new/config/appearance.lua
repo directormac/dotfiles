@@ -1,19 +1,22 @@
----@class Config
+local Utils = require "utils"
+local color = Utils.fn.color
+
+---@diagnostic disable-next-line: undefined-field
+local G = require("wezterm").GLOBAL
+
 local Config = {}
 
--- local scheme = require("utils.fun").get_scheme()
--- local theme = require("colors")[scheme]
--- Config.color_schemes = require("colors")
+Config.color_schemes = color.get_schemes()
+Config.color_scheme = color.get_scheme()
 
-local wez = require("wezterm")
-local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
-Config.color_scheme = "Catppuccin Mocha"
+local theme = Config.color_schemes[Config.color_scheme]
 
 Config.background = {
   {
     source = { Color = theme.background },
     width = "100%",
     height = "100%",
+    opacity = G.opacity or 1,
   },
 }
 
@@ -37,7 +40,7 @@ Config.default_cursor_style = "BlinkingUnderline"
 Config.cursor_thickness = 1
 Config.force_reverse_video_cursor = true
 
-Config.enable_scroll_bar = false
+Config.enable_scroll_bar = true
 
 Config.hide_mouse_cursor_when_typing = true
 
@@ -50,7 +53,7 @@ Config.text_blink_rate = 500
 Config.text_blink_rate_rapid = 250
 
 ---visual bell
-Config.audible_bell = "Disabled"
+Config.audible_bell = "SystemBeep"
 Config.visual_bell = {
   fade_in_function = "EaseOut",
   fade_in_duration_ms = 200,
@@ -60,7 +63,6 @@ Config.visual_bell = {
 
 ---window appearance
 Config.window_padding = { left = 2, right = 2, top = 2, bottom = 1 }
-Config.window_decorations = "RESIZE"
 Config.integrated_title_button_alignment = "Right"
 Config.integrated_title_button_style = "Windows"
 Config.integrated_title_buttons = { "Hide", "Maximize", "Close" }
@@ -82,14 +84,6 @@ Config.skip_close_confirmation_for_processes_named = {
 }
 Config.window_close_confirmation = "AlwaysPrompt"
 
----new tab button
-Config.tab_bar_style = {}
-for _, tab_button in ipairs({ "new_tab", "new_tab_hover" }) do
-  Config.tab_bar_style[tab_button] = require("wezterm").format({
-    { Text = require("utils.icons").Separators.TabBar.right },
-    { Text = " + " },
-    { Text = require("utils.icons").Separators.TabBar.left },
-  })
-end
+color.set_tab_button(Config, theme)
 
 return Config
