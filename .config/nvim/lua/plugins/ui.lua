@@ -18,7 +18,7 @@ return {
     opts = function(_, opts)
       opts.highlights = {
         indicator_selected = {
-          fg = "#f5c2e7",
+          fg = "#cba6f7",
         },
       }
       opts.options = {
