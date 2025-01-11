@@ -2,6 +2,8 @@ local term = require("wezterm")
 local act = term.action
 local gui = term.gui
 
+local workspace_switcher = term.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
+
 local M = {}
 
 function M.options(config)
@@ -15,6 +17,7 @@ function M.options(config)
 	local fuzzy_domains =
 		act.ShowLauncherArgs({ title = "  Find Domains", flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" })
 	local fuzzy_tabs = act.ShowLauncherArgs({ title = " Tabs", flags = "FUZZY|WORKSPACES|TABS|DOMAINS" })
+	local fuzzy_workspaces = act.ShowLauncherArgs({ title = " Workspaces", flags = "FUZZY|WORKSPACES" })
 	local workspace_new = act.PromptInputLine({
 		description = term.format({
 			{ Attribute = { Intensity = "Bold" } },
@@ -61,6 +64,13 @@ function M.options(config)
 		{ key = "N", mods = "LEADER|SHIFT", action = workspace_new },
 		{ key = "o", mods = "LEADER", action = fuzzy_domains },
 		{ key = "p", mods = "LEADER", action = fuzzy_commands },
+		{ key = "w", mods = "LEADER", action = fuzzy_workspaces },
+		{ key = "t", mods = "LEADER", action = workspace_switcher.switch_workspace() },
+		{ key = "t", mods = "CTRL|SHIFT", action = workspace_switcher.switch_workspace() },
+		-- { key = "s", mods = "CTRL|SHIFT", action = workspace_switcher.switch_workspace() }) }
+		-- table.insert(keys, { key = "t", mods = "CTRL|SHIFT", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) })
+		-- table.insert(keys, { key = "[", mods = "CTRL|SHIFT", action = act.SwitchWorkspaceRelative(1) })
+		-- table.insert(keys, { key = "]", mods = "CTRL|SHIFT", action = act.SwitchWorkspaceRelative(-1) })
 
 		--=========================================
 
@@ -80,11 +90,11 @@ function M.options(config)
 		{ key = "J", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Down", 5 } }) },
 		{ key = "K", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Up", 5 } }) },
 		{ key = "L", mods = "LEADER|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
-		{ key = "-", mods = "LEADER|CTRL", action = act.DecreaseFontSize },
-		{ key = "=", mods = "LEADER|CTRL", action = act.IncreaseFontSize },
-		{ key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },
+		{ key = "-", mods = "CTRL", action = act.DecreaseFontSize },
+		{ key = "=", mods = "CTRL", action = act.IncreaseFontSize },
+		{ key = "0", mods = "CTRL", action = act.ResetFontSize },
+		-- { key = "w", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },
 		{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
-		{ key = "0", mods = "LEADER", action = act.ResetFontAndWindowSize },
 		{ key = "-", mods = "LEADER", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
 		{ key = "=", mods = "LEADER", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
 		{ key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
@@ -104,15 +114,26 @@ function M.options(config)
 		-- Navigation  Keybindings
 		--=========================================
 		{ key = "Tab", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
-		{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
-		{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
-		{ key = "3", mods = "ALT", action = act({ ActivateTab = 2 }) },
-		{ key = "4", mods = "ALT", action = act({ ActivateTab = 3 }) },
-		{ key = "5", mods = "ALT", action = act({ ActivateTab = 4 }) },
-		{ key = "6", mods = "ALT", action = act({ ActivateTab = 5 }) },
-		{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
-		{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
-		{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
+		{ key = "1", mods = "LEADER", action = act({ ActivateTab = 0 }) },
+		{ key = "2", mods = "LEADER", action = act({ ActivateTab = 1 }) },
+		{ key = "3", mods = "LEADER", action = act({ ActivateTab = 2 }) },
+		{ key = "4", mods = "LEADER", action = act({ ActivateTab = 3 }) },
+		{ key = "5", mods = "LEADER", action = act({ ActivateTab = 4 }) },
+		{ key = "6", mods = "LEADER", action = act({ ActivateTab = 5 }) },
+		{ key = "7", mods = "LEADER", action = act({ ActivateTab = 6 }) },
+		{ key = "8", mods = "LEADER", action = act({ ActivateTab = 7 }) },
+		{ key = "9", mods = "LEADER", action = act({ ActivateTab = 8 }) },
+		{ key = "1", mods = "CTRL", action = act({ ActivateTab = 0 }) },
+		{ key = "2", mods = "CTRL", action = act({ ActivateTab = 1 }) },
+		{ key = "3", mods = "CTRL", action = act({ ActivateTab = 2 }) },
+		{ key = "4", mods = "CTRL", action = act({ ActivateTab = 3 }) },
+		{ key = "5", mods = "CTRL", action = act({ ActivateTab = 4 }) },
+		{ key = "6", mods = "CTRL", action = act({ ActivateTab = 5 }) },
+		{ key = "7", mods = "CTRL", action = act({ ActivateTab = 6 }) },
+		{ key = "8", mods = "CTRL", action = act({ ActivateTab = 7 }) },
+		{ key = "9", mods = "CTRL", action = act({ ActivateTab = 8 }) },
+		{ key = "h", mods = "CTRL", action = act({ ActivateTabRelative = -1 }) },
+		{ key = "l", mods = "CTRL", action = act({ ActivateTabRelative = 1 }) },
 		{ key = ">", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(1) },
 		{ key = "<", mods = "LEADER|SHIFT", action = act.SwitchWorkspaceRelative(-1) },
 		{ key = "h", mods = "LEADER", action = act({ ActivatePaneDirection = "Left" }) },

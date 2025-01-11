@@ -1,18 +1,16 @@
+# Arch Linux Install
+
 Boot into the Arch Linux install media
 
 ```sh
 # Synchronize to system clock
 hwclock --systohc
-
 # Check if ntp is active and if the time is right
 timedatectl
-
 # In case it's not active you can do
 timedatectl set-ntp true
-
 # Or this
 systemctl enable systemd-timesyncd.service
-
 ```
 
 Disk Formatting
@@ -25,7 +23,8 @@ fdisk -l
 
 Start Partitioning with the following commands
 
-```sh # Replace "nvme0n1" with the name of the disk you want to use
+```sh
+# Replace "nvme0n1" with the name of the disk you want to use
 #fdisk text based
 fdisk /dev/nvme0n1
 #uefi only text based
@@ -243,7 +242,7 @@ pacman -S alacritty wezterm
 pacman -S lsd bat zoxide navi btop starship lazygit yazi ueberzugpp jq less yq fzf ripgrep websocat fd dust
 
 # Tools
-sudo pacman -S pgcli redis cliphist
+sudo pacman -S pgcli redis cliphist man tealdeer
 
 
 # Development needs and for paru AUR Helper
@@ -521,16 +520,12 @@ Utilizing the command line tools
 ```sh
 # 1. First, let's install the matching components for Android 34
 sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools"
-
 # 2. Install the system image (let's use the Google APIs x86_64 version)
 sdkmanager "system-images;android-34;google_apis;x86_64"
-
 # 3. Accept any licenses if prompted
 sdkmanager --licenses
-
 # 4. (Optional) See what devices are available
 avdmanager list device
-
 # 5. Create an AVD (let's create a Pixel 6)
 avdmanager create avd \
     -n pixel6_api34 \
@@ -541,31 +536,23 @@ avdmanager create avd \
 avdmanager list avd
 # Quick list of available AVDs
 emulator -list-avds
-
 # 7. Launch the emulator
 emulator -avd pixel6_api34
-
 ## Launch Tips
-
 # Start emulator in headless mode
 emulator -avd pixel6_api34 -no-window
-
 # Fresh state each launch
 emulator -avd pixel6_api34 -no-snapshot
-
 # Using & to background the process
 emulator -avd pixel6_api34 &
-
 # Or using nohup to keep it running even if terminal closes
 nohup emulator -avd pixel6_api34 &
-
 # If you want to suppress output, redirect to /dev/null
 nohup emulator -avd pixel6_api34 > /dev/null 2>&1 &
 
 #You can also start it normally and then press Ctrl+Z to suspend it,
 #then type bg to continue it in the background.
 #This is useful if you've already started the emulator and want to background it afterward.
-
 # Delete emulator
 avdmanager delete avd -n pixel6_api34
 ```
@@ -633,10 +620,7 @@ sudo mount -a
 
 ### References
 
-[1](https://github.com/silentz/arch-linux-install-guide)
-
-[2](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
-
-[3](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
-
-[4](https://arch.d3sox.me/installation/live-setup)
+[silentz/arch-linux-install-guide](https://github.com/silentz/arch-linux-install-guide)
+[mjkstra/96ce7a5689d753e7a6bdd92cdc169bae](https://gist.github.com/mjkstra/96ce7a5689d753e7a6bdd92cdc169bae)
+[Ataraxxia/secure-arch](https://github.com/Ataraxxia/secure-arch/blob/main/00_basic_system_installation.md)
+[arch.d3sox.me](https://arch.d3sox.me/installation/live-setup)
