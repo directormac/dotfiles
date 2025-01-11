@@ -2,7 +2,7 @@
 # is not a hard requirement: lines may fall under or over the limit.
 #
 # (default: `120`)
-column_width = 80
+column_width = 90
 
 # Line endings type. Possible options: `Unix` (LF) or `Windows` (CRLF)
 #
@@ -48,7 +48,7 @@ quote_style = "AutoPreferDouble"
 #   present in input code: consistency is not enforced.
 #
 # (default: `Always`)
-call_parentheses = "Always"
+call_parentheses = "None"
 
 # Specify whether to collapse simple statements. Possible options:
 #
@@ -70,4 +70,4 @@ collapse_simple_statement = "Never"
 #
 # Requires sorting is off by default.
 [sort_requires]
-enabled = false
+enabled = true
