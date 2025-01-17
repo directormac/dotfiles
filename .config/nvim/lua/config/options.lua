@@ -12,6 +12,7 @@ global.loaded_netrwPlugin = 1 -- Override for oil explorer
 global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
 global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
+global.lazyvim_prettier_needs_config = true
 
 set.clipboard = "unnamedplus"
 
