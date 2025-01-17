@@ -6,7 +6,7 @@ return {
       table.insert(opts.ensure_installed, "ansible-language-server")
       table.insert(opts.ensure_installed, "ansible-lint")
       table.insert(opts.ensure_installed, "astro-language-server")
-      table.insert(opts.ensure_installed, "biome")
+      -- table.insert(opts.ensure_installed, "biome")
       table.insert(opts.ensure_installed, "clang-format")
       table.insert(opts.ensure_installed, "clangd")
       table.insert(opts.ensure_installed, "cmakelang")
@@ -17,7 +17,7 @@ return {
       table.insert(opts.ensure_installed, "css-lsp")
       table.insert(opts.ensure_installed, "debugpy")
       table.insert(opts.ensure_installed, "delve")
-      table.insert(opts.ensure_installed, "deno")
+      -- table.insert(opts.ensure_installed, "deno")
       table.insert(opts.ensure_installed, "docker-compose-language-service")
       table.insert(opts.ensure_installed, "dockerfile-language-server")
       table.insert(opts.ensure_installed, "elixir-ls")
@@ -46,9 +46,10 @@ return {
       table.insert(opts.ensure_installed, "rust-analyzer")
       table.insert(opts.ensure_installed, "taplo")
       table.insert(opts.ensure_installed, "svelte-language-server")
-      table.insert(opts.ensure_installed, "typescript-language-server")
-      table.insert(opts.ensure_installed, "unocss-language-server")
-      table.insert(opts.ensure_installed, "prisma-language-server")
+      -- table.insert(opts.ensure_installed, "typescript-language-server")
+      table.insert(opts.ensure_installed, "vtsls")
+      -- table.insert(opts.ensure_installed, "unocss-language-server")
+      -- table.insert(opts.ensure_installed, "prisma-language-server")
       table.insert(opts.ensure_installed, "vue-language-server")
     end,
   },
@@ -130,7 +131,7 @@ return {
     opts = {
       servers = {
         gleam = {},
-        biome = {},
+        -- biome = {},
       },
     },
   },
@@ -141,12 +142,12 @@ return {
       -- for language support
       -- @see https://biomejs.dev/internals/language-support/
       formatters_by_ft = {
-        ["javascript"] = { "biome" },
-        ["javascriptreact"] = { "biome" },
-        ["typescript"] = { "biome" },
-        ["typescriptreact"] = { "biome" },
-        ["json"] = { "biome" },
-        ["jsonc"] = { "biome" },
+        -- ["javascript"] = { "biome" },
+        -- ["javascriptreact"] = { "biome" },
+        -- ["typescript"] = { "biome" },
+        -- ["typescriptreact"] = { "biome" },
+        -- ["json"] = { "biome" },
+        -- ["jsonc"] = { "biome" },
         -- ["svelte"] = { "biome" },
         -- ["astro"] = { "biome" },
         -- ["vue"] = { "biome" },

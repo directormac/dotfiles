@@ -219,13 +219,6 @@ return {
           end,
           size = { height = 0.5 },
         },
-        {
-          ft = "aerial",
-          title = "Symbols",
-          size = { width = 0.3 },
-          pinned = true,
-          open = "AerialToggle!",
-        },
         -- {
         --   title = "Neo-Tree Git",
         --   ft = "neo-tree",
@@ -244,6 +237,15 @@ return {
         --   pinned = true,
         --   open = "Neotree position=top buffers",
         -- },
+      },
+      right = {
+        {
+          ft = "aerial",
+          title = "Symbols",
+          size = { width = 0.3 },
+          pinned = true,
+          open = "AerialToggle!",
+        },
       },
       bottom = {
         {
