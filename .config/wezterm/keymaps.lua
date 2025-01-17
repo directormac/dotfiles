@@ -3,6 +3,7 @@ local act = term.action
 local gui = term.gui
 
 local workspace_switcher = term.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
+local resurrect = term.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 local M = {}
 
@@ -67,6 +68,45 @@ function M.options(config)
 		{ key = "w", mods = "LEADER", action = fuzzy_workspaces },
 		{ key = "t", mods = "LEADER", action = workspace_switcher.switch_workspace() },
 		{ key = "t", mods = "CTRL|SHIFT", action = workspace_switcher.switch_workspace() },
+
+		{ key = "S", mods = "LEADER|SHIFT", action = act({ EmitEvent = "save_session" }) },
+		{ key = "L", mods = "LEADER|SHIFT", action = act({ EmitEvent = "load_session" }) },
+		{ key = "R", mods = "LEADER|SHIFT", action = act({ EmitEvent = "restore_session" }) },
+		{
+			key = "s",
+			mods = "ALT",
+			action = term.action_callback(function(win, pane)
+				resurrect.save_state(resurrect.workspace_state.get_workspace_state())
+				resurrect.window_state.save_window_action()
+			end),
+		},
+		{
+			key = "r",
+			mods = "ALT",
+			action = term.action_callback(function(win, pane)
+				resurrect.fuzzy_load(win, pane, function(id, label)
+					local type = string.match(id, "^([^/]+)") -- match before '/'
+					id = string.match(id, "([^/]+)$") -- match after '/'
+					id = string.match(id, "(.+)%..+$") -- remove file extention
+					local opts = {
+						relative = true,
+						restore_text = true,
+						on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+					}
+					if type == "workspace" then
+						local state = resurrect.load_state(id, "workspace")
+						resurrect.workspace_state.restore_workspace(state, opts)
+					elseif type == "window" then
+						local state = resurrect.load_state(id, "window")
+						resurrect.window_state.restore_window(pane:window(), state, opts)
+					elseif type == "tab" then
+						local state = resurrect.load_state(id, "tab")
+						resurrect.tab_state.restore_tab(pane:tab(), state, opts)
+					end
+				end)
+			end),
+		},
+
 		-- { key = "s", mods = "CTRL|SHIFT", action = workspace_switcher.switch_workspace() }) }
 		-- table.insert(keys, { key = "t", mods = "CTRL|SHIFT", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) })
 		-- table.insert(keys, { key = "[", mods = "CTRL|SHIFT", action = act.SwitchWorkspaceRelative(1) })
