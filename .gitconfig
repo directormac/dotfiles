@@ -1,3 +1,5 @@
 [user]
     name = Mark Asena
     email = mac@mkra.dev
+[init]
+	defaultBranch = main
