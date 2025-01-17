@@ -7,6 +7,7 @@ local act = term.action
 local gui = term.gui
 local mux = term.mux
 
+local resurrect = term.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 local windows = require("windows") -- file located at ~/.config/wezterm/windows.lua
 local linux = require("linux") -- file located at ~/.config/wezterm/linux.lua
 local terminal = require("terminal")
@@ -25,14 +26,7 @@ if term.target_triple == "x86_64-unknown-linux-gnu" then
 end
 
 --Startup settings
-term.on("gui-startup", function(cmd)
-	local mode = os.getenv("MODE")
-
-	if mode == "float" then
-		config.font_size = 20
-	end
-	-- mux.set_active_workspace("default")
-end)
+term.on("gui-startup", resurrect.resurrect_on_gui_startup)
 
 terminal.options(config)
 keymaps.options(config)
@@ -264,6 +258,23 @@ term.on("update-right-status", function(window, pane)
 	end
 
 	window:set_right_status(term.format(elements))
+end)
+
+term.on("smart_workspace_switcher.workspace_switcher.created", function(window, path, label)
+	local workspace_state = resurrect.workspace_state
+
+	workspace_state.restore_workspace(resurrect.load_state(label, "workspace"), {
+		window = window,
+		relative = true,
+		restore_text = true,
+		on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+	})
+end)
+
+-- Saves the state whenever I select a workspace
+term.on("smart_workspace_switcher.workspace_switcher.selected", function(window, path, label)
+	local workspace_state = resurrect.workspace_state
+	resurrect.save_state(workspace_state.get_workspace_state())
 end)
 
 return config
