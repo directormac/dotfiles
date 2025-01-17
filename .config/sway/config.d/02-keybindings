@@ -13,7 +13,9 @@ bindsym $mod+$alt+Return 		exec $term -F
 # Apps
 bindsym $mod+e exec $file_manager
 bindsym $mod+w exec $web_browser
+bindsym $mod+z exec zen-browser
 bindsym ctrl+alt+comma exec pavucontrol
+bindsym ctrl+alt+period exec galculator
 bindsym $mod+t exec $timeshift_launch
 bindsym $mod+comma exec $rofi_emoji
 bindsym $mod+p exec $colorpicker
@@ -72,9 +74,9 @@ bindsym $mod+space floating toggle, $send-notify 'Toggled Floating Mode'
 # # Move focus to the parent container
 # Focusing
 ## Sets focus to the parent container of the current container.
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 ## The opposite of `focus parent`, sets the focus to the last focused child container.
-bindsym $mod+z focus child
+# bindsym $mod+z focus child
 ## Automatically sets focus to the adjacent container.
 bindsym $mod+Tab focus next
 ## Toggles focus between floating/tiling containers.
