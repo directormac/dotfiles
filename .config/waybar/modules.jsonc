@@ -92,7 +92,7 @@
 		"tooltip-format-disconnected": "MPD (disconnected)",
 		// Commands to execute on events
 		"on-click": "mpc toggle",
-		"on-click-middle": "ghostty -e ncmpcpp",
+		"on-click-middle": "ghostty --class='ghostty.float' -e rmpc",
 		"on-click-right": "mpc next",
 		"on-update": "",
 		"on-scroll-up": "volume --inc",

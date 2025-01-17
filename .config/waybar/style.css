@@ -20,43 +20,43 @@ window#waybar {
 /*   opacity: 1; */
 /* } */
 /**/
-/* #taskbar button, */
-/* #workspaces button { */
-/*   color: @overlay1; */
-/*   box-shadow: none; */
-/*   text-shadow: none; */
-/*   padding: 0px; */
-/*   border-radius: 9px; */
-/*   padding-left: 4px; */
-/*   padding-right: 4px; */
-/*   animation: gradient_f 20s ease-in infinite; */
-/*   transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682); */
-/* } */
-/**/
-/* workspaces button.persistent { */
-/*   color: @surface1; */
-/*   border-radius: 10px; */
-/* } */
-/**/
-/* #taskbar button.active, */
-/* #workspaces button.active { */
-/*   color: @mauve; */
-/*   border-radius: 10px; */
-/*   padding-left: 8px; */
-/*   padding-right: 8px; */
-/*   animation: gradient_f 20s ease-in infinite; */
-/*   transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682); */
-/* } */
-/**/
-/* #workspaces button.urgent { */
-/*   color: @red; */
-/*   border-radius: 0px; */
-/* } */
+
+#taskbar button,
+#workspaces button {
+  color: @overlay1;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 0px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+workspaces button.persistent {
+  color: @surface1;
+  border-radius: 0px;
+}
+
+#taskbar button.active,
+#workspaces button.active {
+  color: @mauve;
+  padding-left: 8px;
+  padding-right: 8px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+}
+
+#workspaces button.urgent {
+  padding-left: 0px;
+  padding-right: 0px;
+  color: @red;
+}
 
 button {
   box-shadow: inset 0 -3px transparent;
   border: none;
-  border-radius: 0;
 }
 
 button:hover {
@@ -70,7 +70,8 @@ button:hover {
 
 #workspaces button.focused {
   background-color: rgba(0, 0, 0, 0.3);
-  color: @blue;
+  border-bottom: 2px solid @mauve;
+  color: @mauve;
 }
 
 #workspaces button.urgent {
