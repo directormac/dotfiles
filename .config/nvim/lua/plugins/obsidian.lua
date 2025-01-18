@@ -25,7 +25,7 @@ return {
       },
       {
         name = "Personal",
-        path = "~/Notes/Personal",
+        path = "~/Notes/personal",
       },
     },
 
