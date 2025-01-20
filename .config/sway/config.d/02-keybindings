@@ -13,7 +13,6 @@ bindsym $mod+$alt+Return 		exec $term -F
 # Apps
 bindsym $mod+e exec $file_manager
 bindsym $mod+w exec $web_browser
-bindsym $mod+z exec zen-browser
 bindsym ctrl+alt+comma exec pavucontrol
 bindsym ctrl+alt+period exec galculator
 bindsym $mod+t exec $timeshift_launch
@@ -24,6 +23,16 @@ bindsym $mod+slash exec $rofi_clipboard
 
 # Wlogout
 bindsym $mod+Shift+x exec wlogout
+
+# Output
+bindsym $mod+End output $SM disable
+bindsym $mod+Home output $SM adaptive_sync enabled ; output $SM pos 2560 0 res 2560x1440@144Hz
+
+# output $monitor_main adaptive_sync enabled 
+# output $monitor_aux disable
+# output $monitor_main mode 1920x1080@144Hz pos 0 0 background /home/john/Pictures/hREDS.jpg fill #000000
+# bindsym $mod+Delete output $monitor_aux disable ; output $monitor_main mode 1920x1080@144Hz pos 0 0 background /home/john/Pictures/hREDS.jpg fill #000000
+# bindsym $mod+Insert output $monitor_aux enable mode 1920x1080@144Hz pos 0 0 transform 270 background /home/john/Pictures/HelsinkiReds.png center #000000 ; output $monitor_main mode 1920x1080@144Hz pos 1080 0 background /home/john/Pictures/hREDS.jpg fill #000000
 
 # Rofi
 bindsym $mod+d exec $rofi_apps
@@ -74,9 +83,9 @@ bindsym $mod+space floating toggle, $send-notify 'Toggled Floating Mode'
 # # Move focus to the parent container
 # Focusing
 ## Sets focus to the parent container of the current container.
-# bindsym $mod+a focus parent
+bindsym $mod+a focus parent
 ## The opposite of `focus parent`, sets the focus to the last focused child container.
-# bindsym $mod+z focus child
+bindsym $mod+z focus child
 ## Automatically sets focus to the adjacent container.
 bindsym $mod+Tab focus next
 ## Toggles focus between floating/tiling containers.
