@@ -18,7 +18,7 @@ set $term ~/.config/sway/scripts/term
 set $open_in_term $term
 set $menu exec rofi -show
 set $file_manager thunar
-set $web_browser firefox
+set $web_browser zen-browser
 set $mod Mod4
 set $alt Mod1
 
@@ -67,14 +67,14 @@ input type:keyboard xkb_numlock enabled
 
 # Assign workspace to outputs
 
-set $FM DP-2
+set $PM DP-2
 set $SM DP-3
 
-workspace 1 output $FM
-workspace 2 output $FM
-workspace 3 output $FM
-workspace 4 output $FM
-workspace 5 output $FM
+workspace 1 output $PM
+workspace 2 output $PM
+workspace 3 output $PM
+workspace 4 output $PM
+workspace 5 output $PM
 workspace 6 output $SM
 workspace 7 output $SM
 workspace 8 output $SM
@@ -88,7 +88,7 @@ exec swaync
 # Cliphist watcher
 exec wl-paste --watch cliphist store
 # Launch Firefox on init
-exec $browser
+exec $web_browser
 
 include /etc/sway/config.d/*
 include ~/.config/sway/config.d/*
