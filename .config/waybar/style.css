@@ -30,8 +30,8 @@ window#waybar {
   padding-left: 4px;
   padding-right: 4px;
   border-radius: 0px;
-  animation: gradient_f 20s ease-in infinite;
-  transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+  /* animation: gradient_f 20s ease-in infinite; */
+  /* transition: all 0.5s cubic-bezier(0.55, -0.68, 0.48, 1.682); */
 }
 
 workspaces button.persistent {
@@ -44,8 +44,8 @@ workspaces button.persistent {
   color: @mauve;
   padding-left: 8px;
   padding-right: 8px;
-  animation: gradient_f 20s ease-in infinite;
-  transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682);
+  /* animation: gradient_f 20s ease-in infinite; */
+  /* transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.682); */
 }
 
 #workspaces button.urgent {
@@ -193,16 +193,18 @@ button:hover {
 #network {
   color: @teal;
 }
+
 #network.disconnected,
 #network.disabled {
   background-color: @surface0;
   color: @text;
 }
 
-#tray > .passive {
+#tray>.passive {
   -gtk-icon-effect: dim;
 }
-#tray > .needs-attention {
+
+#tray>.needs-attention {
   -gtk-icon-effect: highlight;
 }
 
@@ -229,6 +231,7 @@ button:hover {
 #pulseaudio.bluetooth {
   color: @pink;
 }
+
 #pulseaudio.muted {
   color: @red;
 }
