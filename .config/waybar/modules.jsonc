@@ -6,7 +6,7 @@
       "activated": "",
       "deactivated": ""
     },
-    "timeout": 120
+    "timeout": 360
   },
   "clock": {
     "interval": 1,
