@@ -27,6 +27,7 @@ return {
       table.insert(opts.ensure_installed, "gofumpt")
       table.insert(opts.ensure_installed, "goimports")
       table.insert(opts.ensure_installed, "gopls")
+      table.insert(opts.ensure_installed, "graphql-language-service-cli")
       -- table.insert(opts.ensure_installed, "grammarly-languageserver")
       table.insert(opts.ensure_installed, "hadolint")
       table.insert(opts.ensure_installed, "helm-ls")
@@ -63,6 +64,7 @@ return {
           "cpp",
           "html",
           "gleam",
+          "graphql",
           "javascript",
           "json",
           "lua",

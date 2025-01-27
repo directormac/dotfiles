@@ -94,7 +94,7 @@ return {
       restore_state = true,
     },
     config = function(_, opts)
-      require("telescope").load_extension("scope")
+      -- require("telescope").load_extension("scope")
       require("scope").setup(opts)
     end,
   },
