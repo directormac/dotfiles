@@ -98,7 +98,8 @@ export CAPACITOR_ANDROID_STUDIO_PATH=/usr/bin/android-studio
 export PATH=$NDK_HOME:$PATH
 
 # ASDF Exports
-. "/opt/asdf-vm/asdf.sh"
+# . "/opt/asdf-vm/asdf.sh"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 . ~/.asdf/plugins/java/set-java-home.zsh
 
 # FZF Exports
