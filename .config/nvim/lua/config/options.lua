@@ -75,3 +75,5 @@ if vim.g.neovide then
   vim.g.neovide_light_angle_degrees = 45
   vim.g.neovide_light_radius = 5
 end
+
+vim.g.lazyvim_picker = "snacks"
