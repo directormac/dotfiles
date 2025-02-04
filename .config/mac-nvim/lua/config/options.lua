@@ -110,3 +110,15 @@ end
 vim.g.markdown_recommended_style = 0
 
 vim.g.lazyvim_picker = "snacks"
+
+vim.treesitter.language.register("markdown", "livebook")
+vim.treesitter.language.register("markdown", "mdx")
+vim.treesitter.language.register("css", "postcss")
+vim.treesitter.language.register("css", "pcss")
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	buffer = buffer,
+	callback = function()
+		vim.lsp.buf.format({ async = false })
+	end,
+})

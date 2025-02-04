@@ -36,5 +36,9 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd.colorscheme("catppuccin")
+-- require("lazy").setup("plugins")
+
+require("config.autocmds")
 require("config.keymaps")
+
+vim.cmd.colorscheme("catppuccin-mocha")
