@@ -3,6 +3,83 @@ return {
 		"folke/snacks.nvim",
 		priority = 1000,
 		lazy = false,
+		---@type snacks.Config
+		opts = {
+			bigfile = {},
+			indent = {},
+			input = {},
+			notifier = {},
+			quickfile = {},
+			scroll = {},
+			statuscolumn = {},
+			words = {},
+			picker = {
+				win = {
+					input = {
+						keys = {
+							["<a-s>"] = { "flash", mode = { "n", "i" } },
+							["s"] = { "flash" },
+						},
+					},
+				},
+				actions = {
+					flash = function(picker)
+						require("flash").jump({
+							pattern = "^",
+							label = { after = { 0, 0 } },
+							search = {
+								mode = "search",
+								exclude = {
+									function(win)
+										return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list"
+									end,
+								},
+							},
+							action = function(match)
+								local idx = picker.list:row2idx(match.pos[1])
+								picker.list:_move(idx, true, true)
+							end,
+						})
+					end,
+				},
+			},
+			explorer = {},
+
+			dashboard = {
+				preset = {
+					header = [[
+
+ █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
+██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
+███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝ 
+██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗ 
+██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
+╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
+ɔɐɯɹoʇɔǝɹᴉp
+         
+
+        ]],
+              -- stylua: ignore
+              ---@type snacks.dashboard.Item[]
+      keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+              },
+				},
+			},
+
+			terminal = {
+				keys = {
+					q = "hide",
+				},
+			},
+		},
     -- stylua: ignore
     keys = {
       { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
@@ -13,20 +90,8 @@ return {
       { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
       { "<leader><space>", function() Snacks.picker.files() end, desc = "Find Files" },
       -- explorer
-      {
-        "<leader>fe",
-        function()
-          Snacks.explorer({ cwd = LazyVim.root() })
-        end,
-        desc = "Explorer Snacks (root dir)",
-      },
-      {
-        "<leader>fE",
-        function()
-          Snacks.explorer()
-        end,
-        desc = "Explorer Snacks (cwd)",
-      },
+      { "<leader>fe", function() Snacks.explorer() end, desc = "Explorer Snacks (root dir)", },
+      { "<leader>fE", function() Snacks.explorer() end, desc = "Explorer Snacks (cwd)",},
       { "<leader>e", "<leader>fe", desc = "Explorer Snacks (root dir)", remap = true },
       { "<leader>E", "<leader>fE", desc = "Explorer Snacks (cwd)", remap = true },
       -- find
@@ -70,59 +135,5 @@ return {
       { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
       { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
     },
-		---@type snacks.Config
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-			bigfile = { enabled = true },
-			indent = { enabled = true },
-			input = { enabled = true },
-			notifier = { enabled = true },
-			quickfile = { enabled = true },
-			scroll = { enabled = true },
-			statuscolumn = { enabled = true },
-			words = { enabled = true },
-			dashboard = {
-				preset = {
-					header = [[
-
- █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
-██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
-███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝ 
-██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗ 
-██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
-╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
-ɔɐɯɹoʇɔǝɹᴉp
-         
-
-        ]],
-              -- stylua: ignore
-              ---@type snacks.dashboard.Item[]
-      keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-              },
-				},
-			},
-			-- terminal = {
-			-- 	win = {
-			-- 		keys = {
-			-- 			nav_h = { "<C-h>", term_nav("h"), desc = "Go to Left Window", expr = true, mode = "t" },
-			-- 			nav_j = { "<C-j>", term_nav("j"), desc = "Go to Lower Window", expr = true, mode = "t" },
-			-- 			nav_k = { "<C-k>", term_nav("k"), desc = "Go to Upper Window", expr = true, mode = "t" },
-			-- 			nav_l = { "<C-l>", term_nav("l"), desc = "Go to Right Window", expr = true, mode = "t" },
-			-- 		},
-			-- 	},
-			-- },
-			picker = {},
-			explorer = {},
-		},
 	},
 }
