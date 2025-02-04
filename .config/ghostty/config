@@ -82,20 +82,20 @@ keybind = ctrl+shift+page_up=jump_to_prompt:-1
 #keybind = ctrl+shift+j=write_scrollback_file:paste
 
 # tabs 
-#keybind = ctrl+grave_accent>c=new_tab
+keybind = ctrl+grave_accent>c=new_tab
 #keybind = ctrl+grave_accent>shift+l=next_tab
 #keybind = ctrl+grave_accent>shift+h=previous_tab
-#keybind = ctrl+grave_accent>comma=move_tab:-1
-#keybind = ctrl+grave_accent>period=move_tab:1
+keybind = ctrl+grave_accent>comma=move_tab:-1
+keybind = ctrl+grave_accent>period=move_tab:1
 
 # quick tab switch
-# keybind = ctrl+grave_accent>1=goto_tab:1
-# keybind = ctrl+grave_accent>2=goto_tab:2
-# keybind = ctrl+grave_accent>3=goto_tab:3
-# keybind = ctrl+grave_accent>4=goto_tab:4
-# keybind = ctrl+grave_accent>5=goto_tab:5
-# keybind = ctrl+grave_accent>6=goto_tab:6
-# keybind = ctrl+grave_accent>7=goto_tab:7
-# keybind = ctrl+grave_accent>8=goto_tab:8
-# keybind = ctrl+grave_accent>9=goto_tab:9
+keybind = ctrl+grave_accent>1=goto_tab:1
+keybind = ctrl+grave_accent>2=goto_tab:2
+keybind = ctrl+grave_accent>3=goto_tab:3
+keybind = ctrl+grave_accent>4=goto_tab:4
+keybind = ctrl+grave_accent>5=goto_tab:5
+keybind = ctrl+grave_accent>6=goto_tab:6
+keybind = ctrl+grave_accent>7=goto_tab:7
+keybind = ctrl+grave_accent>8=goto_tab:8
+keybind = ctrl+grave_accent>9=goto_tab:9
 
