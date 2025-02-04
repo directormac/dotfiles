@@ -52,6 +52,10 @@ return {
 		},
 		show_end_of_buffer = false,
 		term_colors = true,
+		config = function(_, opts)
+			require("catppuccin").setup(opts)
+			vim.cmd.colorscheme("catppuccin-mocha")
+		end,
 	},
 	{
 		"folke/tokyonight.nvim",
@@ -66,11 +70,4 @@ return {
 			},
 		},
 	},
-	-- {
-	--   "LazyVim/LazyVim",
-	--   opts = {
-	--     colorscheme = "catppuccin",
-	--     -- colorscheme = "tokyonight",
-	--   },
-	-- },
 }
