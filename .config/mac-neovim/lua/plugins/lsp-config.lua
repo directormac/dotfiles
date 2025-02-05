@@ -7,7 +7,13 @@ if not is_nixos then
 			"williamboman/mason.nvim",
 			lazy = false,
 			config = function()
-				require("mason").setup()
+				require("mason").setup({
+					auto_install = true,
+					ensure_installed = {
+						"elixir-ls",
+						"tailwindcss-language-server",
+					},
+				})
 			end,
 		},
 		{
@@ -26,7 +32,7 @@ if not is_nixos then
 					-- "denols",
 					"docker_compose_language_service",
 					"dockerls",
-					"elixirls",
+					-- "elixirls",
 					"emmet_ls",
 					-- "erlangls",
 					"eslint",
@@ -63,6 +69,9 @@ if not is_nixos then
 					-- "markdown-toc",
 				},
 			},
+			config = function(_, opts)
+				require("mason-lspconfig").setup(opts)
+			end,
 		},
 		{
 			"neovim/nvim-lspconfig",
@@ -72,6 +81,7 @@ if not is_nixos then
 					lua_ls = {},
 					ts_ls = {},
 					svelte = {},
+					nil_ls = {},
 					elixirls = {},
 					vtsls = {
 						-- explicitly add default filetypes, so that we can extend

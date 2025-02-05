@@ -21,6 +21,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+require("config.options")
+
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
@@ -34,8 +36,9 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-require("config.options")
--- require("config.colorscheme")
--- require("config.autocmds")
--- require("config.keymaps")
--- require("config.dap")
+-- require("lazy").setup("plugins")
+
+require("config.autocmds")
+require("config.keymaps")
+
+vim.cmd.colorscheme("catppuccin-mocha")
