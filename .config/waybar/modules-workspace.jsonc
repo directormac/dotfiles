@@ -1,210 +1,257 @@
 {
-	"sway/workspaces": {
-		"disable-scroll": false,
-		"disable-click": false,
-		"all-outputs": true,
-		"format": "{icon}",
-		"persistent-workspaces": {
-			"1": [],
-			"2": [],
-			"3": [],
-			"4": [],
-			"5": [],
-			"6": [],
-			"7": [],
-			"8": [],
-			"9": [],
-			"10": []
-		},
-		"format-icons": {
-			"1": "1",
-			"2": "2",
-			"3": "3",
-			"4": "4",
-			"5": "5",
-			"6": "6",
-			"7": "7",
-			"8": "8",
-			"9": "9",
-			"10": "10",
-			"urgent": "",
-			// "focused": "",
-			"default": ""
-		},
-
-		"smooth-scrolling-threshold": 1,
-		"disable-scroll-wraparound": false,
-		"enable-bar-scroll": false,
-		"disable-markup": false,
-		"current-only": false
-	},
-
-	"sway/mode": {
-		"format": " {}",
-		"max-length": 50
-	},
-
-	// waybar-sway-window
-	"sway/window": {
-		"format": "{}",
-		"max-length": 50,
-		"icon": true
-	},
-
-	// waybar-tray
-	"tray": {
-		"icon-size": 20,
-		"spacing": 4
-	},
-
-	// Kanji / Japanese style
-	"sway/workspaces#kanji": {
-		"disable-scroll": true,
-		"show-special": false,
-		"all-outputs": true,
-		"format": "{icon} ",
-		"persistent-workspaces": {
-			"1": [],
-			"2": [],
-			"3": [],
-			"4": [],
-			"5": [],
-			"6": [],
-			"7": [],
-			"8": [],
-			"9": [],
-			"10": []
-		},
-		"format-icons": {
-			"1": "一",
-			"2": "二",
-			"3": "三",
-			"4": "四",
-			"5": "五",
-			"6": "六",
-			"7": "七",
-			"8": "八",
-			"9": "九",
-			"10": "十",
-			"urgent": "",
-			"focused": "",
-			"default": ""
-		}
-	},
-
-	"sway/workspaces#kanji-left": {
-		"disable-scroll": true,
-		"show-special": false,
-		// "all-outputs": true,
-		"format": " {icon} ",
-		"persistent-workspaces": {
-			"1": [],
-			"2": [],
-			"3": [],
-			"4": [],
-			"5": []
-		},
-		"format-icons": {
-			"1": "一",
-			"2": "二",
-			"3": "三",
-			"4": "四",
-			"5": "五",
-			"urgent": "",
-			// "focused": "",
-			"default": ""
-		}
-	},
-
-	"sway/workspaces#kanji-right": {
-		"disable-scroll": true,
-		"show-special": false,
-		// "all-outputs": true,
-		"format": " {icon} ",
-		"persistent-workspaces": {
-			"6": [],
-			"7": [],
-			"8": [],
-			"9": [],
-			"10": []
-		},
-		"format-icons": {
-			"6": "六",
-			"7": "七",
-			"8": "八",
-			"9": "九",
-			"10": "十",
-			"urgent": "",
-			// "focused": "",
-			"default": ""
-		}
-	},
-
-	//  NUMBERS and ICONS style
-	"sway/workspaces#4": {
-		"format": " {name} {icon} ",
-		//"format": " {icon} ",
-		"show-special": false,
-		"on-click": "activate",
-		"all-outputs": true,
-		"sort-by-number": true,
-		"format-icons": {
-			"1": " ",
-			"2": " ",
-			"3": " ",
-			"4": " ",
-			"5": " ",
-			"6": " ",
-			"7": "",
-			"8": " ",
-			"9": "",
-			"10": "10",
-			"focused": "",
-			"default": ""
-		}
-	},
-	// NUMBERS and ICONS style with window rewrite
-	"sway/workspaces#rw": {
-		"disable-scroll": true,
-		"all-outputs": true,
-		"warp-on-scroll": false,
-		"sort-by-number": true,
-		"show-special": false,
-		"on-click": "activate",
-		"format": "{icon} {windows}",
-		"format-window-separator": " ",
-		"window-rewrite-default": " ",
-		"window-rewrite": {
-			"title<.*youtube.*>": " ",
-			"title<.*amazon.*>": " ",
-			"title<.*reddit.*>": " ",
-			"title<.*Picture-in-Picture.*>": " ",
-			"class<firefox|org.mozilla.firefox|librewolf|floorp|mercury-browser>": " ",
-			"class<kitty|konsole>": " ",
-			"class<kitty-dropterm>": " ",
-			"class<Chromium|Thorium>": " ",
-			"class<org.telegram.desktop|io.github.tdesktop_x64.TDesktop>": " ",
-			"class<[Ss]potify>": " ",
-			"class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
-			"class<thunar>": "󰝰 ",
-			"class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
-			"class<discord|[Ww]ebcord|Vesktop>": " ",
-			"class<subl>": "󰅳 ",
-			"class<mpv>": " ",
-			"class<celluloid|Zoom>": " ",
-			"class<Cider>": "󰎆 ",
-			"class<virt-manager>": " ",
-			"class<codeblocks>": "󰅩 ",
-			"class<mousepad>": " ",
-			"class<libreoffice-writer>": " ",
-			"class<libreoffice-startcenter>": "󰏆 ",
-			"class<com.obsproject.Studio>": " ",
-			"class<polkit-gnome-authentication-agent-1>": "󰒃 ",
-			"class<nwg-look>": " ",
-			"class<zen-alpha>": "󰰷 ", //Zen Browser
-			"class<waterfox|waterfox-bin>": " ",
-			"class<microsoft-edge>": " ",
-			"class<vlc>": "󰕼 "
-		}
-	}
+  "sway/workspaces": {
+    "disable-scroll": false,
+    "disable-click": false,
+    "all-outputs": true,
+    "format": "{icon}",
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": []
+    },
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "urgent": "",
+      // "focused": "",
+      "default": ""
+    },
+    "smooth-scrolling-threshold": 1,
+    "disable-scroll-wraparound": false,
+    "enable-bar-scroll": false,
+    "disable-markup": false,
+    "current-only": false
+  },
+  "sway/mode": {
+    "format": " {}",
+    "max-length": 50
+  },
+  "hyprland/mode": {
+    "format": " {}",
+    "max-length": 50
+  },
+  // waybar-sway-window
+  "sway/window": {
+    "format": "{}",
+    "max-length": 50,
+    "icon": true
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 50,
+    "icon": true
+  },
+  // waybar-tray
+  "tray": {
+    "icon-size": 20,
+    "spacing": 4
+  },
+  // Kanji / Japanese style
+  "sway/workspaces#kanji": {
+    "disable-scroll": true,
+    "show-special": false,
+    "all-outputs": true,
+    "format": "{icon} ",
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": []
+    },
+    "format-icons": {
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "6": "六",
+      "7": "七",
+      "8": "八",
+      "9": "九",
+      "10": "十",
+      "urgent": "",
+      "focused": "",
+      "default": ""
+    }
+  },
+  "sway/workspaces#kanji-left": {
+    "disable-scroll": true,
+    "show-special": false,
+    // "all-outputs": true,
+    "format": " {icon} ",
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
+    },
+    "format-icons": {
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "urgent": "",
+      // "focused": "",
+      "default": ""
+    }
+  },
+  "hyprland/workspaces#kanji-left": {
+    "disable-scroll": true,
+    "show-special": false,
+    // "all-outputs": true,
+    "format": " {icon} ",
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
+    },
+    "format-icons": {
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "urgent": "",
+      // "focused": "",
+      "default": ""
+    }
+  },
+  "sway/workspaces#kanji-right": {
+    "disable-scroll": true,
+    "show-special": false,
+    // "all-outputs": true,
+    "format": " {icon} ",
+    "persistent-workspaces": {
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": []
+    },
+    "format-icons": {
+      "6": "六",
+      "7": "七",
+      "8": "八",
+      "9": "九",
+      "10": "十",
+      "urgent": "",
+      // "focused": "",
+      "default": ""
+    }
+  },
+  "hyprland/workspaces#kanji-right": {
+    "disable-scroll": true,
+    "show-special": false,
+    // "all-outputs": true,
+    "format": " {icon} ",
+    "persistent-workspaces": {
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": []
+    },
+    "format-icons": {
+      "6": "六",
+      "7": "七",
+      "8": "八",
+      "9": "九",
+      "10": "十",
+      "urgent": "",
+      // "focused": "",
+      "default": ""
+    }
+  },
+  //  NUMBERS and ICONS style
+  "sway/workspaces#4": {
+    "format": " {name} {icon} ",
+    //"format": " {icon} ",
+    "show-special": false,
+    "on-click": "activate",
+    "all-outputs": true,
+    "sort-by-number": true,
+    "format-icons": {
+      "1": " ",
+      "2": " ",
+      "3": " ",
+      "4": " ",
+      "5": " ",
+      "6": " ",
+      "7": "",
+      "8": " ",
+      "9": "",
+      "10": "10",
+      "focused": "",
+      "default": ""
+    }
+  },
+  // NUMBERS and ICONS style with window rewrite
+  "sway/workspaces#rw": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "sort-by-number": true,
+    "show-special": false,
+    "on-click": "activate",
+    "format": "{icon} {windows}",
+    "format-window-separator": " ",
+    "window-rewrite-default": " ",
+    "window-rewrite": {
+      "title<.*youtube.*>": " ",
+      "title<.*amazon.*>": " ",
+      "title<.*reddit.*>": " ",
+      "title<.*Picture-in-Picture.*>": " ",
+      "class<firefox|org.mozilla.firefox|librewolf|floorp|mercury-browser>": " ",
+      "class<kitty|konsole>": " ",
+      "class<kitty-dropterm>": " ",
+      "class<Chromium|Thorium>": " ",
+      "class<org.telegram.desktop|io.github.tdesktop_x64.TDesktop>": " ",
+      "class<[Ss]potify>": " ",
+      "class<VSCode|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
+      "class<thunar>": "󰝰 ",
+      "class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
+      "class<discord|[Ww]ebcord|Vesktop>": " ",
+      "class<subl>": "󰅳 ",
+      "class<mpv>": " ",
+      "class<celluloid|Zoom>": " ",
+      "class<Cider>": "󰎆 ",
+      "class<virt-manager>": " ",
+      "class<codeblocks>": "󰅩 ",
+      "class<mousepad>": " ",
+      "class<libreoffice-writer>": " ",
+      "class<libreoffice-startcenter>": "󰏆 ",
+      "class<com.obsproject.Studio>": " ",
+      "class<polkit-gnome-authentication-agent-1>": "󰒃 ",
+      "class<nwg-look>": " ",
+      "class<zen-alpha>": "󰰷 ", //Zen Browser
+      "class<waterfox|waterfox-bin>": " ",
+      "class<microsoft-edge>": " ",
+      "class<vlc>": "󰕼 "
+    }
+  }
 }
