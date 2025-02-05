@@ -49,6 +49,18 @@
 -- map("v", "<Tab>", ">gv", { desc = "Indent line" })o
 
 local map = vim.keymap.set
+
+-- Here is a utility function that closes any floating windows when you press escape
+local function close_floating()
+	for _, win in pairs(vim.api.nvim_list_wins()) do
+		if vim.api.nvim_win_get_config(win).relative == "win" then
+			vim.api.nvim_win_close(win, false)
+		end
+	end
+end
+
+map("n", "<leader>k", require("fzf-lua").keymaps, { desc = "Keymaps" })
+
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 

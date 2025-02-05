@@ -4,18 +4,18 @@ vim.g.maplocalleader = "\\"
 
 vim.g.autoformat = true
 
--- vim.g.snacks_animate = true
+vim.g.snacks_animate = true
 
 -- if the completion engine supports the AI source,
 -- use that instead of inline suggestions
--- vim.g.ai_cmp = true
+vim.g.ai_cmp = true
 
 -- LazyVim root dir detection
 -- Each entry can be:
 -- * the name of a detector function like `lsp` or `cwd`
 -- * a pattern or array of patterns like `.git` or `lua`.
 -- * a function with signature `function(buf) -> string|string[]`
--- vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
+vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 
 -- Optionally setup the terminal to use
 -- This sets `vim.o.shell` and does some additional configuration for:
@@ -25,14 +25,14 @@ vim.g.autoformat = true
 
 -- Set LSP servers to be ignored when used with `util.root.detectors.lsp`
 -- for detecting the LSP root
--- vim.g.root_lsp_ignore = { "copilot" }
+vim.g.root_lsp_ignore = { "copilot" }
 
 -- Hide deprecation warnings
--- vim.g.deprecation_warnings = false
+vim.g.deprecation_warnings = false
 
 -- Show the current document symbols location from Trouble in lualine
 -- You can disable this for a buffer by setting `vim.b.trouble_lualine = false`
--- vim.g.trouble_lualine = true
+vim.g.trouble_lualine = true
 
 local opt = vim.opt
 
@@ -84,7 +84,7 @@ opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitkeep = "screen"
 opt.splitright = true -- Put new windows right of current
--- opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.termguicolors = true -- True color support
 opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
@@ -109,16 +109,16 @@ end
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 
--- vim.g.lazyvim_picker = "snacks"
---
--- vim.treesitter.language.register("markdown", "livebook")
--- vim.treesitter.language.register("markdown", "mdx")
--- vim.treesitter.language.register("css", "postcss")
--- vim.treesitter.language.register("css", "pcss")
---
--- vim.api.nvim_create_autocmd("BufWritePre", {
--- 	buffer = buffer,
--- 	callback = function()
--- 		vim.lsp.buf.format({ async = false })
--- 	end,
--- })
+vim.g.lazyvim_picker = "snacks"
+
+vim.treesitter.language.register("markdown", "livebook")
+vim.treesitter.language.register("markdown", "mdx")
+vim.treesitter.language.register("css", "postcss")
+vim.treesitter.language.register("css", "pcss")
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	buffer = buffer,
+	callback = function()
+		vim.lsp.buf.format({ async = false })
+	end,
+})
