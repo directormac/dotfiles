@@ -1,82 +1,91 @@
 [
-	{
-		"include": [
-			"~/.config/waybar/modules.jsonc",
-			"~/.config/waybar/modules-custom.jsonc",
-			"~/.config/waybar/modules-workspace.jsonc"
-		],
-		"name": "primary", // Waybar name
-		"id": "primary", // Waybar id
-		"output": "DP-2",
-		"layer": "top", // Waybar at top layer
-		//"mode": "dock", 				// Display mode (dock|hide|invisible|overlay)
-		"exclusive": true, // Request an exclusive zone from the compositor
-		"passthrough": false, // Pass any pointer events to the window under the bar
-		"position": "top", // Waybar position (top|bottom|left|right)
-		//"height": 32, 					// Waybar height (to be removed for auto height)
-		"height": 26, // Waybar height (to be removed for auto height)
-		"width": "", // Waybar width (empty for auto width)
-		"spacing": 6, // Gaps between modules
-		"margin": 0, // Space around the bar
-		"margin-top": 0, // Space above the bar
-		"margin-bottom": 0, // Space below the bar
-		"margin-left": 0, // Space to the left of the bar
-		"margin-right": 0, // Space to the right of the bar
-		"fixed-center": true, // Center modules position
-		"ipc": true, // Control waybar with `swaymsg bar` commands
-		// Choose the order of the modules
-		"modules-left": ["sway/workspaces#kanji-left", "mpd"],
-		"modules-center": ["sway/window"],
-		"modules-right": [
-			"network",
-			"cpu",
-			"memory",
-			"disk",
-			"temperature",
-			"custom/notification"
-		]
-	},
-
-	{
-		"include": [
-			"~/.config/waybar/modules.jsonc",
-			"~/.config/waybar/modules-custom.jsonc",
-			"~/.config/waybar/modules-workspace.jsonc"
-		],
-		"name": "secondary", // Waybar name
-		"id": "secondary", // Waybar id
-		"output": "DP-3",
-		"layer": "bottom", // Waybar at top layer
-		//"mode": "dock", 				// Display mode (dock|hide|invisible|overlay)
-		"exclusive": true, // Request an exclusive zone from the compositor
-		"passthrough": false, // Pass any pointer events to the window under the bar
-		"position": "top", // Waybar position (top|bottom|left|right)
-		//"height": 32, 					// Waybar height (to be removed for auto height)
-		"height": 26, // Waybar height (to be removed for auto height)
-		"width": "", // Waybar width (empty for auto width)
-		"spacing": 6, // Gaps between modules
-		"margin": 0, // Space around the bar
-		"margin-top": 0, // Space above the bar
-		"margin-bottom": 0, // Space below the bar
-		"margin-left": 0, // Space to the left of the bar
-		"margin-right": 0, // Space to the right of the bar
-		"fixed-center": true, // Center modules position
-		"ipc": true, // Control waybar with `swaymsg bar` commands
-		// Choose the order of the modules
-		"modules-left": ["sway/workspaces#kanji-right", "sway/mode", "sway/window"],
-		"modules-center": ["mpris"],
-		"modules-right": [
-			"network",
-			"pulseaudio",
-			"backlight",
-			"battery",
-			"clock",
-			"custom/notification",
-			"custom/updates",
-			"tray",
-			"idle_inhibitor",
-			"custom/lock",
-			"custom/power"
-		]
-	}
+  {
+    "include": [
+      "~/.config/waybar/modules.jsonc",
+      "~/.config/waybar/modules-custom.jsonc",
+      "~/.config/waybar/modules-workspace.jsonc"
+    ],
+    "name": "primary", // Waybar name
+    "id": "primary", // Waybar id
+    "output": "DP-2",
+    "layer": "top", // Waybar at top layer
+    //"mode": "dock", 				// Display mode (dock|hide|invisible|overlay)
+    "exclusive": true, // Request an exclusive zone from the compositor
+    "passthrough": false, // Pass any pointer events to the window under the bar
+    "position": "top", // Waybar position (top|bottom|left|right)
+    //"height": 32, 					// Waybar height (to be removed for auto height)
+    "height": 26, // Waybar height (to be removed for auto height)
+    "width": "", // Waybar width (empty for auto width)
+    "spacing": 6, // Gaps between modules
+    "margin": 0, // Space around the bar
+    "margin-top": 0, // Space above the bar
+    "margin-bottom": 0, // Space below the bar
+    "margin-left": 0, // Space to the left of the bar
+    "margin-right": 0, // Space to the right of the bar
+    "fixed-center": true, // Center modules position
+    "ipc": true, // Control waybar with `swaymsg bar` commands
+    // Choose the order of the modules
+    "modules-left": [
+      "sway/workspaces#kanji-left",
+      "mpd"
+    ],
+    "modules-center": [
+      "sway/window"
+    ],
+    "modules-right": [
+      "network",
+      "cpu",
+      "memory",
+      "disk",
+      "temperature",
+      "custom/notification"
+    ]
+  },
+  {
+    "include": [
+      "~/.config/waybar/modules.jsonc",
+      "~/.config/waybar/modules-custom.jsonc",
+      "~/.config/waybar/modules-workspace.jsonc"
+    ],
+    "name": "secondary", // Waybar name
+    "id": "secondary", // Waybar id
+    "output": "DP-3",
+    "layer": "bottom", // Waybar at top layer
+    //"mode": "dock", 				// Display mode (dock|hide|invisible|overlay)
+    "exclusive": true, // Request an exclusive zone from the compositor
+    "passthrough": false, // Pass any pointer events to the window under the bar
+    "position": "top", // Waybar position (top|bottom|left|right)
+    //"height": 32, 					// Waybar height (to be removed for auto height)
+    "height": 26, // Waybar height (to be removed for auto height)
+    "width": "", // Waybar width (empty for auto width)
+    "spacing": 6, // Gaps between modules
+    "margin": 0, // Space around the bar
+    "margin-top": 0, // Space above the bar
+    "margin-bottom": 0, // Space below the bar
+    "margin-left": 0, // Space to the left of the bar
+    "margin-right": 0, // Space to the right of the bar
+    "fixed-center": true, // Center modules position
+    "ipc": true, // Control waybar with `swaymsg bar` commands
+    // Choose the order of the modules
+    "modules-left": [
+      "sway/workspaces#kanji-right",
+      "sway/mode"
+    ],
+    "modules-center": [
+      "sway/window"
+    ],
+    "modules-right": [
+      "network",
+      "pulseaudio",
+      "backlight",
+      "battery",
+      "clock",
+      "custom/notification",
+      "custom/updates",
+      "tray",
+      "idle_inhibitor",
+      "custom/lock",
+      "custom/power"
+    ]
+  }
 ]
