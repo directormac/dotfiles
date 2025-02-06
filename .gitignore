@@ -5,3 +5,5 @@
 .config/mpd/*
 !.config/mpd/mpd.conf
 .config/ncmpcpp/error.log
+!.gnupg/gpg-agent.conf
+.gnupg/*
