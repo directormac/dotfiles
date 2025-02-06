@@ -26,11 +26,11 @@
     "ipc": true, // Control waybar with `swaymsg bar` commands
     // Choose the order of the modules
     "modules-left": [
-      "sway/workspaces#kanji-left",
+      "hyprland/workspaces#kanji-left",
       "mpd"
     ],
     "modules-center": [
-      "sway/window"
+      "hyprland/window"
     ],
     "modules-right": [
       "network",
@@ -68,8 +68,8 @@
     "ipc": true, // Control waybar with `swaymsg bar` commands
     // Choose the order of the modules
     "modules-left": [
-      "sway/workspaces#kanji-right",
-      "sway/mode"
+      "hyprland/workspaces#kanji-right",
+      "hyprland/mode"
     ],
     "modules-center": [
       "hyprland/window"
