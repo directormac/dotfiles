@@ -298,6 +298,7 @@ alias dcd="docker-compose down"
 alias dcu="docker-compose up -d"
 
 alias mvim="NVIM_APPNAME=mac-nvim nvim"
+alias ws="windsurf"
 
 
 # Arch Related
