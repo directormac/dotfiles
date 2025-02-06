@@ -15,6 +15,7 @@
 # Assignments
 
 assign [app_id="code|Code|jetbrains-studio"] workspace 3
+assign [app_id="vesktop"] workspace 7
 assign [class="vesktop"] workspace 7
 # assign [class="vlc"] workspace 8
 assign [app_id="virt-manager"] workspace 5
