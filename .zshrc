@@ -88,8 +88,6 @@ export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.moon/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-# export JAVA_HOME=/usr/lib/jvm/default/
-# export JAVA_HOME=~/.asdf/plugins/java/set-java-home.zsh
 export ANDROID_HOME="$HOME/.android"
 export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 export NDK_HOME="$ANDROID_HOME/ndk/27.2.12479018/"
@@ -100,7 +98,7 @@ export PATH=$NDK_HOME:$PATH
 # ASDF Exports
 # . "/opt/asdf-vm/asdf.sh"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-# . ~/.asdf/plugins/java/set-java-home.zsh
+. ~/.asdf/plugins/java/set-java-home.zsh
 
 # FZF Exports
 
