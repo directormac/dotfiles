@@ -18,3 +18,5 @@ hosts
 users
 flake.lock
 vimium_c.json
+!.gnupg/gpg-agent.conf
+.gnupg/*
