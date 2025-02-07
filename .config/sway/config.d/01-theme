@@ -40,30 +40,3 @@ client.background        $base
 client.background        $clear
 
 
-
-set $gnome-schema org.gnome.desktop.interface
-exec_always {
-    gsettings set $gnome-schema gtk-application-prefer-dark-theme '1'
-    gsettings set $gnome-schema gtk-theme 'Tokyonight-Dark'
-    gsettings set $gnome-schema icon-theme 'Papirus Dark'
-    gsettings set $gnome-schema font-name 'NotoSans Nerd Font 11'
-
-    # Find app names here
-    # ls /usr/share/applications
-    xdg-mime default zen.desktop x-scheme-handler/http
-    xdg-mime default zen.desktop x-scheme-handler/https
-    xdg-mime default zen.desktop text/html
-    xdg-settings set default-url-scheme-handler http zen.desktop
-    xdg-settings set default-url-scheme-handler https zen.desktop
-    xdg-settings set default-web-browser zen.desktop
-
-#    gsettings set $gnome-schema gtk-theme 'Catppuccin-Dark'
-#    gsettings set $gnome-schema icon-theme 'Colloid-Catppuccin-Dark'
-#    gsettings set $gnome-schema cursor-theme 'Qogirr'
-#    gsettings set $gnome-schema font-name 'Noto Sans 9'
-#    xdg-mime default zen-browser.desktop x-scheme-handler/http
-#    xdg-mime default zen-browser.desktop x-scheme-handler/https
-#    xdg-mime default zen-browser.desktop text/html
-#    xdg-settings set default-web-browser zen-browser.desktop
-}
-
