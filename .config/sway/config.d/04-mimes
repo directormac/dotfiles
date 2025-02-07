@@ -1,0 +1,42 @@
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-application-prefer-dark-theme '1'
+    gsettings set $gnome-schema gtk-theme 'Tokyonight-Dark'
+    gsettings set $gnome-schema icon-theme 'Papirus Dark'
+    gsettings set $gnome-schema font-name 'NotoSans Nerd Font 11'
+
+    # Find app names here
+    # ls /usr/share/applications
+
+    # Zen
+    xdg-mime default zen.desktop x-scheme-handler/http
+    xdg-mime default zen.desktop x-scheme-handler/https
+    xdg-mime default zen.desktop x-scheme-handler/chrome
+    xdg-mime default zen.desktop application/x-extension-htm
+    xdg-mime default zen.desktop application/x-extension-html
+    xdg-mime default zen.desktop application/x-extension-shtml
+    xdg-mime default zen.desktop application/xhtml+xml
+    xdg-mime default zen.desktop application/x-extension-xhtml
+    xdg-mime default zen.desktop application/x-extension-xht
+
+    # General
+    xdg-mime default zen.desktop text/html
+    xdg-mime default nvim.desktop text/plain
+    xdg-mime default thunar.desktop inode/directory
+
+
+    xdg-mime default vesktop.desktop x-scheme-handler/discord
+    xdg-mime default vlc.desktop video/mp4
+
+
+    # Other apps
+    xdg-mime default org.gnome.Evince.desktop application/pdf
+    xdg-mime default com.github.johnfactotum.Foliate.desktop application/epub
+    
+# Settings
+    xdg-settings set default-url-scheme-handler http zen.desktop
+    xdg-settings set default-url-scheme-handler https zen.desktop
+    xdg-settings set default-web-browser zen.desktop
+}
+
