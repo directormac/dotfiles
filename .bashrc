@@ -41,10 +41,10 @@ alias px="pnpm dlx"
 alias pn="pnpm"
 
 nvimone() {
-	NVIM_APPNAME="nvimone" nvim
+  NVIM_APPNAME="nvimone" nvim
 }
 normvim() {
-	NVIM_APPNAME="normvim" nvim
+  NVIM_APPNAME="normvim" nvim
 }
 
 eval "$(starship init bash)"
@@ -72,3 +72,5 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
+
+exec zsh
