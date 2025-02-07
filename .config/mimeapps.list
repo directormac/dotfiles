@@ -1,12 +1,7 @@
 
 [Default Applications]
-inode/directory=thunar.desktop
-video/mp4=vlc.desktop
-rd=vesktop.desktop
-application/pdf=org.gnome.Evince.desktop
-application/epub=com.github.johnfactotum.Foliate.desktop
-x-scheme-handler/http=zen.desktop
-text/html=zen.desktop
 x-scheme-handler/https=zen.desktop
+text/html=zen.desktop
+x-scheme-handler/http=zen.desktop
 x-scheme-handler/about=zen.desktop
 x-scheme-handler/unknown=zen.desktop

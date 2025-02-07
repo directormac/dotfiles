@@ -14,6 +14,9 @@
 
 # Assignments
 
+# Disable idling when something is fullscreen
+for_window [shell=".*"] inhibit_idle fullscreen 
+
 assign [app_id="code|Code|jetbrains-studio"] workspace 3
 assign [app_id="vesktop"] workspace 7
 assign [class="vesktop"] workspace 7
