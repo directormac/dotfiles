@@ -76,6 +76,7 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 export TZ="Asia/Manila"
 export BROWSER="/sbin/zen-browser" # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
+export TERMINAL=ghostty
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export GPG_TTY=$(tty)
@@ -280,7 +281,7 @@ alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
 alias v="nvim"
 alias vi="nvim"
 alias wh="which"
-alias y="ya" 
+alias y="yazi" 
 alias zshconf="nvim ~/.zshrc"
 alias in='sudo pacman -S' # install package
 alias un='sudo pacman -Rns' # uninstall package
