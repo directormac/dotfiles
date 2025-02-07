@@ -74,9 +74,9 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Exports
 export TZ="Asia/Manila"
-export BROWSER="/sbin/zen-browser" # set google chrome as default browser
+# export BROWSER="/sbin/zen-browser" # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
-export TERMINAL=ghostty
+# export TERMINAL="/sbin/ghostty"
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export GPG_TTY=$(tty)
