@@ -44,3 +44,7 @@ map("n", "<C-u>", "<C-u>zz", { desc = " up and center cursor" })
 -- Tabulation in visual mode
 map("v", "<S-Tab>", "<gv", { desc = "Unindent line" })
 map("v", "<Tab>", ">gv", { desc = "Indent line" })
+
+map("n", "<leader>cw", ":Codeium Chat<CR>", { desc = "Codeium Chat" })
+
+-- { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
