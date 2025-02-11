@@ -194,6 +194,11 @@ button:hover {
   color: @teal;
 }
 
+
+#custom-audio_idle_inhibitor {
+  color: @green;
+}
+
 #network.disconnected,
 #network.disabled {
   background-color: @surface0;
