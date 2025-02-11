@@ -1,7 +1,15 @@
 
 [Default Applications]
-x-scheme-handler/https=zen.desktop
-text/html=zen.desktop
+x-scheme-handler/discord=vesktop.desktop
+video/mp4=vlc.desktop
+application/pdf=org.gnome.Evince.desktop
+application/epub=com.github.johnfactotum.Foliate.desktop
 x-scheme-handler/http=zen.desktop
+text/html=zen.desktop
+x-scheme-handler/https=zen.desktop
 x-scheme-handler/about=zen.desktop
 x-scheme-handler/unknown=zen.desktop
+application/x-extension-xhtml=zen.desktop
+application/xhtml+xml=zen.desktop
+sktop
+p
