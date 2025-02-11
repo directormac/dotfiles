@@ -75,9 +75,9 @@
       "sway/window"
     ],
     "modules-right": [
-      "custom/audio_idle_inhibitor",
       "network",
       "pulseaudio",
+      "custom/audio_idle_inhibitor",
       "backlight",
       "battery",
       "clock",
