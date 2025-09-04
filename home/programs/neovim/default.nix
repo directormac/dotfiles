@@ -38,7 +38,7 @@ in {
   home.packages = with pkgs; [
     # Language Servers and Tools
     astro-language-server
-    biome
+    # biome
     clang-tools
     docker-compose-language-service
     dockerfile-language-server-nodejs
