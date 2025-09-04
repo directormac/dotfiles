@@ -95,6 +95,7 @@ export NDK_HOME="$ANDROID_HOME/ndk/27.2.12479018/"
 # export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export CAPACITOR_ANDROID_STUDIO_PATH=/usr/bin/android-studio
 export PATH=$NDK_HOME:$PATH
+export PATH=$HOME/.bun/bin:$PATH
 
 # ASDF Exports
 # . "/opt/asdf-vm/asdf.sh"
@@ -258,7 +259,7 @@ alias gpt="tgpt"
 alias grep="rg"
 alias gs="git status -sb"
 alias home="cd ~"
-alias hx="helix"
+# alias hx="helix"
 alias hxconf="helix ~/.config/helix/config.toml"
 alias inv='nvim $(fd --type=f --hidden | fzf -m --preview="bat --color=always {}")'
 alias l="ls -a"
