@@ -12,13 +12,13 @@ output * bg ~/.wallpapers/tokyo_night.png fill
 output $PM adaptive_sync off
 output $SM adaptive_sync off
 
-output $PM pos 0 0 res 2560x1440@165Hz 
+output $PM pos 0 0 res 2560x1440@164.958Hz 
 output $SM pos 2560 0 res 2560x1440@144Hz 
 
 
 exec swayidle -w \
     timeout 600 'swaylock -f -c 000000' \
-    timeout 900 'swaymsg "output * dpms off"' \
+    timeout 1800 'swaymsg "output * dpms off"' \
     resume 'swaymsg "output * dpms on" && ~/.config/sway/scripts/restore_audio' \
     before-sleep 'swaylock -f -c 000000'
 
