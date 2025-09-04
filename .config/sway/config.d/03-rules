@@ -40,6 +40,8 @@ for_window [app_id="org.gnome.FileRoller|thunar|Tunar"] floating enable
 for_window [app_id="org.gnome.Nautilus"] floating enable
 for_window [class="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
 
+for_window [class="steam"] floating enable
+
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="timeshift-gtk"] floating enable
 for_window [app_id="virt-manager"] floating enable
