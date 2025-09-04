@@ -1,7 +1,7 @@
 return {
-
   {
-    "williamboman/mason.nvim",
+    --"williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = function(_, opts)
       table.insert(opts.ensure_installed, "ansible-language-server")
       table.insert(opts.ensure_installed, "ansible-lint")
@@ -20,7 +20,7 @@ return {
       -- table.insert(opts.ensure_installed, "deno")
       table.insert(opts.ensure_installed, "docker-compose-language-service")
       table.insert(opts.ensure_installed, "dockerfile-language-server")
-      table.insert(opts.ensure_installed, "elixir-ls")
+      table.insert(opts.ensure_installed, "expert")
       table.insert(opts.ensure_installed, "emmet-ls")
       table.insert(opts.ensure_installed, "eslint-lsp")
       table.insert(opts.ensure_installed, "eslint_d")
@@ -43,9 +43,10 @@ return {
       table.insert(opts.ensure_installed, "html-lsp")
       -- table.insert(opts.ensure_installed, "marksman")
       table.insert(opts.ensure_installed, "ruff")
-      table.insert(opts.ensure_installed, "ruff-lsp")
+      -- table.insert(opts.ensure_installed, "ruff-lsp")
       table.insert(opts.ensure_installed, "rust-analyzer")
       table.insert(opts.ensure_installed, "taplo")
+      -- table.insert(opts.ensure_installed, "svelte")
       table.insert(opts.ensure_installed, "svelte-language-server")
       -- table.insert(opts.ensure_installed, "typescript-language-server")
       table.insert(opts.ensure_installed, "vtsls")
@@ -137,29 +138,29 @@ return {
       },
     },
   },
-  {
-    "stevearc/conform.nvim",
-    optional = true,
-    opts = {
-      -- for language support
-      -- @see https://biomejs.dev/internals/language-support/
-      formatters_by_ft = {
-        -- ["javascript"] = { "biome" },
-        -- ["javascriptreact"] = { "biome" },
-        -- ["typescript"] = { "biome" },
-        -- ["typescriptreact"] = { "biome" },
-        -- ["json"] = { "biome" },
-        -- ["jsonc"] = { "biome" },
-        -- ["svelte"] = { "biome" },
-        -- ["astro"] = { "biome" },
-        -- ["vue"] = { "biome" },
-        -- ["css"] = { "biome" },
-        -- ["scss"] = { "biome" },
-        -- ["less"] = { "biome" },
-        -- ["html"] = { "biome" },
-      },
-    },
-  },
+  -- {
+  --   "stevearc/conform.nvim",
+  --   optional = true,
+  --   opts = {
+  --     -- for language support
+  --     -- @see https://biomejs.dev/internals/language-support/
+  --     formatters_by_ft = {
+  --       -- ["javascript"] = { "biome" },
+  --       -- ["javascriptreact"] = { "biome" },
+  --       -- ["typescript"] = { "biome" },
+  --       -- ["typescriptreact"] = { "biome" },
+  --       -- ["json"] = { "biome" },
+  --       -- ["jsonc"] = { "biome" },
+  --       -- ["svelte"] = { "biome" },
+  --       -- ["astro"] = { "biome" },
+  --       -- ["vue"] = { "biome" },
+  --       -- ["css"] = { "biome" },
+  --       -- ["scss"] = { "biome" },
+  --       -- ["less"] = { "biome" },
+  --       -- ["html"] = { "biome" },
+  --     },
+  --   },
+  -- },
   {
     "windwp/nvim-ts-autotag",
     opts = {

@@ -15,6 +15,14 @@ return {
         -- stylua: ignore
         { "<A-6>", function() require("bufferline").go_to(6, true) end, desc = "Go to sixth buffer", },
     },
+    --Temporary fix
+    --https://github.com/LazyVim/LazyVim/pull/6354
+    init = function()
+      local bufline = require("catppuccin.groups.integrations.bufferline")
+      function bufline.get()
+        return bufline.get_theme()
+      end
+    end,
     opts = function(_, opts)
       opts.highlights = {
         indicator_selected = {
