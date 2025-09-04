@@ -4,9 +4,21 @@ return {
     event = "VeryLazy",
     vscode = true,
     opts = {
+      labels = "asdfghjklqwertyuiopzxcvbnm",
       modes = {
+        search = {
+          enabled = true,
+        },
         char = {
           jump_labels = true,
+          multi_line = true,
+          label = { exclude = "hjkliardcx" },
+          jump = {
+            register = false,
+            -- when using jump labels, set to 'true' to automatically jump
+            -- or execute a motion when there is only one match
+            autojump = true,
+          },
         },
       },
     },

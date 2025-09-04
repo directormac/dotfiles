@@ -3,7 +3,12 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
+      transparent = true,
       transparent_background = true,
+      float = {
+        transparent = true,
+        solid = true,
+      },
       falvour = "mocha",
       color_overrides = {
         all = {
@@ -17,14 +22,14 @@ return {
           RenderMarkdownCode = { bg = colors.mantle },
         }
       end,
-      highlight_overrides = {
-        all = function(colors)
-          return {}
-        end,
-      },
+      -- highlight_overrides = {
+      --   all = function(colors)
+      --     return {}
+      --   end,
+      -- },
     },
 
-    show_end_of_buffer = false,
+    -- show_end_of_buffer = false,
     term_colors = true,
   },
   {
@@ -32,8 +37,8 @@ return {
     opts = {
       transparent = true,
       terminal_colors = true,
-      style = "storm",
-      light_style = "storm",
+      style = "night",
+      light_style = "night",
       styles = {
         sidebars = "transparent",
         floats = "transparent",
