@@ -10,6 +10,8 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return 		exec $term -f
 bindsym $mod+$alt+Return 		exec $term -F
 
+bindsym $mod+m exec "$term -f -e btop"
+
 # Apps
 bindsym $mod+e exec $file_manager
 bindsym $mod+w exec $web_browser

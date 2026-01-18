@@ -38,7 +38,8 @@
       "memory",
       "disk",
       "temperature",
-      "custom/notification"
+      "custom/calendar",
+      "clock"
     ]
   },
   {
@@ -86,7 +87,8 @@
       "tray",
       "idle_inhibitor",
       "custom/lock",
-      "custom/power"
+      "custom/power",
+      "custom/notification"
     ]
   }
 ]

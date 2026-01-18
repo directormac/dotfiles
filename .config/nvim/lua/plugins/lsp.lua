@@ -20,7 +20,7 @@ return {
       -- table.insert(opts.ensure_installed, "deno")
       table.insert(opts.ensure_installed, "docker-compose-language-service")
       table.insert(opts.ensure_installed, "dockerfile-language-server")
-      table.insert(opts.ensure_installed, "expert")
+      -- table.insert(opts.ensure_installed, "expert")
       table.insert(opts.ensure_installed, "emmet-ls")
       table.insert(opts.ensure_installed, "eslint-lsp")
       table.insert(opts.ensure_installed, "eslint_d")
@@ -81,7 +81,7 @@ return {
           "vue",
         })
       end
-      table.insert(opts.incremental_selection, { enable = false })
+      -- table.insert(opts.incremental_selection, { enable = false })
       -- table.insert(opts.autotag, { enable = true })
     end,
   },

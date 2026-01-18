@@ -11,9 +11,10 @@ DIR="$HOME/.config/"
 # fi
 
 if [ "$1" == "-f" ]; then
-  ghostty --class="ghostty.float"
+  # ghostty --class="ghostty.float"
+  ghostty --class="ghostty.float" --window-width=120 --window-height=35
 elif [ "$1" == "-F" ]; then
-  ghostty --class="ghostty.fullscreen"
+  ghostty --class="ghostty.fullscreen" --fullscreen=true
 else
   ghostty
 fi

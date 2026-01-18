@@ -1,0 +1,10 @@
+[tools]
+elixir = "1.18.2-otp-27"
+erlang = "27.3.3"
+java = "openjdk-17"
+jq = "1.7"
+kotlin = "2.1.0"
+node = "latest"
+bun = "latest"
+pnpm = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
