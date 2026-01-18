@@ -8,3 +8,7 @@ node = "latest"
 bun = "latest"
 pnpm = "latest"
 "npm:@anthropic-ai/claude-code" = "latest"
+
+[settings]
+trusted_config_paths = ['~/.dotfiles', '~/Code']
+# env_file = '.env.development'
