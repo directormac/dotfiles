@@ -17,12 +17,12 @@ return {
     },
     --Temporary fix
     --https://github.com/LazyVim/LazyVim/pull/6354
-    init = function()
-      local bufline = require("catppuccin.groups.integrations.bufferline")
-      function bufline.get()
-        return bufline.get_theme()
-      end
-    end,
+    -- init = function()
+    --   local bufline = require("catppuccin.special.bufferline")
+    --   function bufline.get()
+    --     return bufline.get_theme()
+    --   end
+    -- end,
     opts = function(_, opts)
       opts.highlights = {
         indicator_selected = {
@@ -127,7 +127,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.hipatterns",
+    "nvim-mini/mini.hipatterns",
     opts = function(_, opts)
       local hi = require("mini.hipatterns")
       return {

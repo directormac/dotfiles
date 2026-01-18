@@ -37,6 +37,19 @@ zinit light jeffreytse/zsh-vi-mode
 # Load completions
 autoload -Uz compinit && compinit
 
+# zinit as="command" lucid from="gh-r" for \
+#     id-as="usage" \
+#     atpull="%atclone" \
+#     jdx/usage
+#     #atload='eval "$(mise activate zsh)"' \
+
+# zinit as="command" lucid from="gh-r" for \
+#     id-as="mise" mv="mise* -> mise" \
+#     atclone="./mise* completion zsh > _mise" \
+#     atpull="%atclone" \
+#     atload='eval "$(mise activate zsh)"' \
+#     jdx/mise
+
 zinit cdreplay -q
 
 # Keybindings
@@ -97,10 +110,13 @@ export CAPACITOR_ANDROID_STUDIO_PATH=/usr/bin/android-studio
 export PATH=$NDK_HOME:$PATH
 export PATH=$HOME/.bun/bin:$PATH
 
+# cargo install --locked launch-editor-nvim
+export LAUNCH_EDITOR=launch-editor-nvim
+
 # ASDF Exports
 # . "/opt/asdf-vm/asdf.sh"
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-. ~/.asdf/plugins/java/set-java-home.zsh
+# export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+# . ~/.asdf/plugins/java/set-java-home.zsh
 
 # FZF Exports
 
@@ -322,6 +338,7 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
+eval "$(mise activate zsh)"
 # eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
 
