@@ -87,7 +87,7 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Exports
 export TZ="Asia/Manila"
-# export BROWSER="/sbin/zen-browser" # set google chrome as default browser
+export BROWSER="/usr/sbin/zen-browser" # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
 # export TERMINAL="/sbin/ghostty"
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
@@ -189,6 +189,8 @@ export ECORE_EVAS_ENGINE=wayland_egl
 export ELM_ENGINE=wayland_egl
 export ELM_ACCEL=opengl
 # export ELM_SCALE=1
+
+export MISE_EXPERIMENTAL=1
 
 ## SDL environment
 export SDL_VIDEODRIVER=wayland
@@ -314,6 +316,8 @@ alias kubectl='minikube kubectl --'
 alias mc="mcli"
 alias dcd="docker-compose down"
 alias dcu="docker-compose up -d"
+alias ddcu="docker-compose -f docker/docker-compose.dev.yaml  up -d"
+alias dcv="docker-compose down -v"
 
 alias mvim="NVIM_APPNAME=mac-nvim nvim"
 alias ws="windsurf"
@@ -333,6 +337,8 @@ alias btest="bun --bun run test"
 alias b="bun run"
 
 alias iex-phx="iex -S mix phx.server"
+
+alias phxdev="iex --name phxdev@127.0.0.1 --cookie secret -S mix phx.server"
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
