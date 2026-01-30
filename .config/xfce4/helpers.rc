@@ -1,2 +1,2 @@
-TerminalEmulator=wezterm
+TerminalEmulator=ghostty
 TerminalEmulatorDismissed=true

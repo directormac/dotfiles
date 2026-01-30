@@ -1,14 +1,21 @@
 [tools]
-elixir = "1.18.2-otp-27"
-erlang = "27.3.3"
+elixir = "1.19.5-otp-28"
+erlang = "28.3.1"
 java = "openjdk-17"
 jq = "1.7"
 kotlin = "2.1.0"
 node = "latest"
 bun = "latest"
 pnpm = "latest"
-"npm:@anthropic-ai/claude-code" = "latest"
+pitchfork = "latest"
+opencode = "latest"
+# "aqua:biomejs/biome" = "latest"
+# "npm:@anthropic-ai/claude-code" = "latest"
 
 [settings]
 trusted_config_paths = ['~/.dotfiles', '~/Code']
 # env_file = '.env.development'
+experimental = true
+not_found_auto_install = true
+task_output = "prefix"
+npm = { package_manager = "bun" }

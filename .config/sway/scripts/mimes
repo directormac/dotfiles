@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Wait a split second for the system to settle
+sleep 1
+
+# Find app names here
+# ls /usr/share/applications
+
+IMAGE_MIMES="image/png image/jpeg image/gif image/webp image/bmp image/tiff"
+
+# Set the defaults
+xdg-settings set default-url-scheme-handler http zen.desktop
+xdg-settings set default-url-scheme-handler https zen.desktop
+xdg-settings set default-web-browser zen.desktop
+
+# Bulk apply mimes
+xdg-mime default zen.desktop x-scheme-handler/http x-scheme-handler/https x-scheme-handler/chrome text/html application/xhtml+xml application/x-extension-htm application/x-extension-html application/x-extension-shtml
+# xdg-mime default zen.desktop x-scheme-handler/http x-scheme-handler/https x-scheme-handler/chrome text/html application/xhtml+xml
+xdg-mime default nvim.desktop text/plain
+
+xdg-mime default thunar.desktop inode/directory
+xdg-mime default vesktop.desktop x-scheme-handler/discord
+xdg-mime default vlc.desktop video/mp4
+xdg-mime default org.gnome.Evince.desktop application/pdf
+xdg-mime default com.github.johnfactotum.Foliate.desktop application/epub+zip
+xdg-mime default feh.desktop $IMAGE_MIMES
+
+# xdg-mime default nvim-float.desktop text/plain
