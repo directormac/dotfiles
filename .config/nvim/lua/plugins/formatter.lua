@@ -1,0 +1,36 @@
+return {
+  -- {
+  --   "stevearc/conform.nvim",
+  --   opts = {
+  --     formatters_by_ft = {
+  --       -- Use a list to run multiple, or a sub-list to pick the first available
+  --       -- For Svelte, I highly recommend ONLY Prettier to avoid the semicolon bug
+  --       svelte = { "prettier" },
+  --       javascript = { "prettier", "eslint" },
+  --       typescript = { "prettier", "eslint" },
+  --     },
+  --     formatters = {
+  --       prettier = {
+  --         -- This is redundant with your global option but good for safety
+  --         condition = function(self, ctx)
+  --           return vim.fs.find({ ".prettierrc", "prettier.config.js" }, { path = ctx.filename, upward = true })[1]
+  --         end,
+  --       },
+  --       eslint = {
+  --         condition = function(self, ctx)
+  --           return vim.fs.find({ "eslint.config.js", ".eslintrc.js" }, { path = ctx.filename, upward = true })[1]
+  --         end,
+  --       },
+  --       biome = {
+  --         -- Only run biome if a config file is found walking up from the current file
+  --         condition = function(self, ctx)
+  --           return vim.fs.find({ "biome.json", "biome.jsonc", ".git" }, {
+  --             path = ctx.filename,
+  --             upward = true,
+  --           })[1]
+  --         end,
+  --       },
+  --     },
+  --   },
+  --  },
+}

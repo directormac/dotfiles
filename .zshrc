@@ -37,19 +37,6 @@ zinit light jeffreytse/zsh-vi-mode
 # Load completions
 autoload -Uz compinit && compinit
 
-# zinit as="command" lucid from="gh-r" for \
-#     id-as="usage" \
-#     atpull="%atclone" \
-#     jdx/usage
-#     #atload='eval "$(mise activate zsh)"' \
-
-# zinit as="command" lucid from="gh-r" for \
-#     id-as="mise" mv="mise* -> mise" \
-#     atclone="./mise* completion zsh > _mise" \
-#     atpull="%atclone" \
-#     atload='eval "$(mise activate zsh)"' \
-#     jdx/mise
-
 zinit cdreplay -q
 
 # Keybindings
@@ -89,7 +76,7 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 export TZ="Asia/Manila"
 export BROWSER="/usr/sbin/zen-browser" # set google chrome as default browser
 export EDITOR=nvim # set neovim as default editor
-# export TERMINAL="/sbin/ghostty"
+export TERMINAL="/usr/sbin/ghostty"
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export GPG_TTY=$(tty)
@@ -319,7 +306,8 @@ alias dcu="docker-compose up -d"
 alias ddcu="docker-compose -f docker/docker-compose.dev.yaml  up -d"
 alias dcv="docker-compose down -v"
 
-alias mvim="NVIM_APPNAME=mac-nvim nvim"
+# alias mvim="NVIM_APPNAME=mac-nvim nvim"
+alias mvim="NVIM_APPNAME=nvimmac nvim"
 alias ws="windsurf"
 
 

@@ -54,6 +54,7 @@ for_window [app_id="Winbox|rustdesk|Rustdesk|anydesk|Anydesk"] floating enable
 
 for_window [app_id="alacritty-float|wezterm-float|Music|thunar|Thunar|steamwebhelper|steam"] floating enable
 for_window [app_id="steamwebhelper|steam"] floating enable
+for_window [app_id="com.gabm.satty"] floating enable
 for_window [app_id="hardware-qemu.ini|Emulator"] floating enable
 for_window [app_id="VirtualBox Manager|qemu|Qemu-system-x86_64"] floating enable
 

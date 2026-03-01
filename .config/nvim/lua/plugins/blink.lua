@@ -1,6 +1,13 @@
 local trigger_text = ";"
 
-return {}
+return {
+  {
+    "saghen/blink.cmp",
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {},
+  },
+}
 
 -- return {
 --   "saghen/blink.cmp",
