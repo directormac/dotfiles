@@ -9,6 +9,7 @@ bun = "latest"
 pnpm = "latest"
 pitchfork = "latest"
 opencode = "latest"
+gemini-cli = "latest"
 # "aqua:biomejs/biome" = "latest"
 # "npm:@anthropic-ai/claude-code" = "latest"
 
@@ -19,3 +20,6 @@ experimental = true
 not_found_auto_install = true
 task_output = "prefix"
 npm = { package_manager = "bun" }
+
+[shell_alias]
+phxdev = "iex --name phxdev@127.0.0.1 --cookie secret -S mix phx.server"
