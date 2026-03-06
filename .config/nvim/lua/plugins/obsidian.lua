@@ -20,29 +20,55 @@ return {
   opts = {
     workspaces = {
       {
-        name = "General",
+        name = "Vault",
         path = "~/Notes",
       },
       {
-        name = "Personal",
-        path = "~/Notes/personal",
+        name = "Areas",
+        path = "~/Notes/areas",
+      },
+      {
+        name = "Resources",
+        path = "~/Notes/resources",
+      },
+      {
+        name = "Public",
+        path = "~/Notes/public",
       },
     },
 
     -- see below for full list of options 👇
     notes_subdir = "notes",
 
+    note_frontmatter_func = function(note)
+      if note.title then
+        note:add_alias(note.title)
+      end
+      local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+      if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+        for k, v in pairs(note.metadata) do
+          out[k] = v
+        end
+      end
+      return out
+    end,
+
     daily_notes = {
-      -- Optional, if you keep daily notes in a separate directory.
-      folder = "dailies",
-      -- Optional, if you want to change the date format for the ID of daily notes.
+      folder = "areas/dailies",
       date_format = "%Y-%m-%d",
-      -- Optional, if you want to change the date format of the default alias of daily notes.
       alias_format = "%B %-d, %Y",
-      -- Optional, default tags to add to each new daily note created.
       default_tags = { "daily-notes" },
-      -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-      template = nil,
+      template = "daily.md",
+    },
+
+    templates = {
+      folder = "templates",
+      date_format = "%Y-%m-%d",
+      substitutions = {
+        desc = function()
+          return "Post created on " .. os.date("%Y-%m-%d")
+        end,
+      },
     },
   },
 }

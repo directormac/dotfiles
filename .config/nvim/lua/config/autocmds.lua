@@ -16,6 +16,21 @@ vim.filetype.add({
     mdx = "markdown.mdx",
     postcss = "css",
     pcss = "css",
+    caddy = "caddy",
+  },
+  filename = {
+    ["Caddyfile"] = "caddy",
+    ["docker-compose.yaml"] = "yaml.docker-compose",
+  },
+  pattern = {
+    -- Matches Caddyfile.dev, Caddyfile.local, etc.
+    ["Caddyfile%.%w+"] = "caddy",
+
+    -- Matches compose.dev.yaml, compose.infra.yaml, etc.
+    ["compose%.%w+%.yaml"] = "yaml.docker-compose",
+
+    -- If you want to catch Dockerfile.dev as well:
+    ["Dockerfile%.%w+"] = "dockerfile",
   },
 })
 

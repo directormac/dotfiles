@@ -7,6 +7,7 @@ return {
           "astro",
           "css",
           "cpp",
+          "caddy",
           "html",
           "gleam",
           "graphql",

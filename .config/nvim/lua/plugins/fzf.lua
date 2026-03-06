@@ -4,6 +4,7 @@ local file_ignore_patterns = {
   "_build",
   "deps",
   ".elixir_ls",
+  ".expert",
   -- JS Ignores
   "node_modules",
   "**-lock.yaml",
@@ -21,6 +22,7 @@ local file_ignore_patterns = {
   "playwright-report",
   -- Others
   ".gradle",
+  "src/content/docs/reference/.*",
 }
 
 return {
@@ -32,13 +34,10 @@ return {
         file_ignore_patterns = file_ignore_patterns,
 
         files = {
-          -- resume = true,
           cwd_prompt = true,
           find_opts = [[-type f -not -path '*/\.git/*']],
-          -- rg_opts           = [[--color=never --files -g "!.git"]],
-          -- fd_opts           = [[--color=never --type f --type l --exclude .git --strip-cwd-prefix]],
-          rg_opts = [[--color=never --files --hidden --follow -g "!.git"]],
-          fd_opts = [[--color=never --type f --hidden --follow --exclude .git]],
+          -- rg_opts = [[--color=never --files --hidden --follow -g "!.git"]],
+          -- fd_opts = [[--color=never --type f --hidden --follow --exclude .git]],
         },
         grep = {
           rg_glob = true,

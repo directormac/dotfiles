@@ -15,11 +15,21 @@ return {
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-      picker = {
-        files = {
-          hidden = true,
-        },
-      },
+      -- picker = {
+      --   sources = {
+      --     files = {
+      --       exclude = { "**/src/content/docs/reference/**" },
+      --     },
+      --     grep = {
+      --       exclude = { "**/src/content/docs/reference/**" },
+      --     },
+      --   },
+      --   finder = {
+      --     files = {
+      --       exclude = {},
+      --     },
+      --   },
+      -- },
       dashboard = {
         preset = {
           header = [[
