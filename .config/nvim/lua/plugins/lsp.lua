@@ -25,7 +25,6 @@ return {
       -- table.insert(opts.ensure_installed, "deno")
       table.insert(opts.ensure_installed, "docker-compose-language-service")
       table.insert(opts.ensure_installed, "dockerfile-language-server")
-      -- table.insert(opts.ensure_installed, "expert")
       table.insert(opts.ensure_installed, "emmet-ls")
       table.insert(opts.ensure_installed, "eslint-lsp")
       -- table.insert(opts.ensure_installed, "elixir-ls")
@@ -75,8 +74,16 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        lua_ls = {},
-        jsonls = {},
+        -- lua_ls = {},
+        -- jsonls = {},
+        expert = {
+          settings = {
+            workspaceSymbos = {
+              minQueryLength = 0,
+            },
+          },
+        },
+        -- elixirls = {},
       },
       inlay_hints = { enabled = false },
     },
