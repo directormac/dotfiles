@@ -20,6 +20,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light marlonrichert/zsh-hist
 
 # Add in snippets
 zinit snippet OMZL::git.zsh
@@ -34,6 +35,26 @@ zinit snippet OMZP::command-not-found
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
 
+
+autoload -Uz add-zsh-hook
+
+command-not-found () {
+  local last_status=$?
+  
+  case $last_status in
+    # 126: Permission denied (e.g., trying to run a directory)
+    # 127: Command not found (e.g., typos like 'gti commit')
+    126|127) 
+      hist -fs delete -1
+      ;;
+    *)
+      # Do nothing for other codes, including 130 (Ctrl+C)
+      ;;
+  esac
+}
+
+add-zsh-hook precmd command-not-found
+
 # Load completions
 autoload -Uz compinit && compinit
 
@@ -46,9 +67,9 @@ bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 
 # History
-HISTSIZE=5000
+HISTSIZE=120000
+SAVEHIST=100000
 HISTFILE=~/.zsh_history
-SAVEHIST=$HISTSIZE
 HISTDUP=erase
 setopt appendhistory
 setopt sharehistory
@@ -107,7 +128,7 @@ export LAUNCH_EDITOR=launch-editor-nvim
 
 # FZF Exports
 
-export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Resources/*:$HOME/Downloads/*:$HOME/Music:$HOME/Videos/*:$HOME/Downloads/*:$HOME/Pictures/*:$HOME/Documents/*"
+export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Resources/*:$HOME/Downloads/*:$HOME/Music:$HOME/Videos/*:$HOME/Downloads/*:$HOME/Pictures/*:$HOME/Documents/*:/tmp:/var:/proc:/sys:/deps:/_build:/node_modules/:/.git"
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,gutter:-1,spinner:#f5e0dc,hl:#f38ba8 \
@@ -242,8 +263,6 @@ alias notes='notes'
 #Aliases
 alias c="clear"
 alias cat="bat"
-alias cd="z"
-alias ci="zi"
 alias clip="cliphist list | fzf --no-sort | cliphist decode | wl-copy"
 alias du="dust"
 alias find="fd"
@@ -293,7 +312,7 @@ alias y="yazi"
 alias zshconf="nvim ~/.zshrc"
 alias in='sudo pacman -S' # install package
 alias un='sudo pacman -Rns' # uninstall package
-alias up='sudo pacman -Syu' # update system/package/aur
+# alias up='sudo pacman -Syu' # update system/package/aur
 alias pl='pacman -Qs' # list installed package
 alias pa='pacman -Ss' # list availabe package
 alias pc='sudo pacman -Sc' # remove unused cache
@@ -328,11 +347,44 @@ alias iex-phx="iex -S mix phx.server"
 
 alias phxdev="iex --name phxdev@127.0.0.1 --cookie secret -S mix phx.server"
 
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+# alias cd="z"
+# alias ci="zi"
+# alias ca='zoxide add'
+# alias cq='zoxide query'
+# alias cr='zoxide remove'
+
+up() {
+  local d=""
+  # If no argument is provided, default to 1 level up
+  local limit=${1:-1}
+  
+  for i in {1..$limit}; do
+    d+="../"
+  done
+  
+  cd "$d"
+}
+
+
+alias pf="pitchfork"
+alias pfui="pitchfork tui"
+
 eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
 eval "$(navi widget zsh)"
 eval "$(fzf --zsh)"
 eval "$(mise activate zsh)"
+# eval "$(zoxide init --cmd cd zsh)"
+
+if [[ "$CLAUDECODE" != "1" ]]; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
+
 # eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
 
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

@@ -21,3 +21,4 @@ image/gif=feh.desktop
 image/webp=feh.desktop
 image/bmp=feh.desktop
 image/tiff=feh.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop

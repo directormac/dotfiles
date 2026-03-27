@@ -126,36 +126,36 @@ return {
       require("highlight-undo").setup()
     end,
   },
-  {
-    "nvim-mini/mini.hipatterns",
-    opts = function(_, opts)
-      local hi = require("mini.hipatterns")
-      return {
-        -- custom LazyVim option to enable the tailwind integration
-        tailwind = {
-          enabled = true,
-          ft = {
-            "typescriptreact",
-            "javascriptreact",
-            "css",
-            "javascript",
-            "typescript",
-            "svelte",
-            "html",
-            "vue",
-            "astro",
-            "markdown",
-          },
-          -- full: the whole css class will be highlighted
-          -- compact: only the color will be highlighted
-          style = "full",
-        },
-        highlighters = {
-          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
-        },
-      }
-    end,
-  },
+  -- {
+  --   "nvim-mini/mini.hipatterns",
+  --   opts = function(_, opts)
+  --     local hi = require("mini.hipatterns")
+  --     return {
+  --       -- custom LazyVim option to enable the tailwind integration
+  --       tailwind = {
+  --         enabled = true,
+  --         ft = {
+  --           "typescriptreact",
+  --           "javascriptreact",
+  --           "css",
+  --           "javascript",
+  --           "typescript",
+  --           "svelte",
+  --           "html",
+  --           "vue",
+  --           "astro",
+  --           "markdown",
+  --         },
+  --         -- full: the whole css class will be highlighted
+  --         -- compact: only the color will be highlighted
+  --         style = "full",
+  --       },
+  --       highlighters = {
+  --         hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     "m4xshen/hardtime.nvim",
     -- keys = {

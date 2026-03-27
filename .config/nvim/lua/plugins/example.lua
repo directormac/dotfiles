@@ -262,4 +262,150 @@ return {
       })
     end,
   },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        elixirls = {
+          -- This forces the LSP to use the root LazyVim picked
+          root_dir = function(fname)
+            return require("lspconfig.util").root_pattern("mix.exs")(fname)
+          end,
+        },
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        -- biome = {
+        --   -- Force Biome to use UTF-16 to match ESLint/Svelte and stop the warning
+        --   capabilities = {
+        --     offsetEncoding = { "utf-16" },
+        --   },
+        --   -- ONLY run if biome.json is in the CURRENT folder or immediate parent
+        --   -- This prevents the root Biome from "stealing" files in the Phoenix app
+        --   root_dir = function(fname)
+        --     return require("lspconfig.util").root_pattern("biome.json", "biome.jsonc")(fname)
+        --   end,
+        --   single_file_support = false,
+        -- },
+        --
+        -- eslint = {
+        --   settings = {
+        --     -- IMPORTANT: Disable ESLint as a formatter so it doesn't fight Biome
+        --     format = false,
+        --     workingDirectories = { mode = "auto" },
+        --   },
+        --   root_dir = function(fname)
+        --     return require("lspconfig.util").root_pattern("eslint.config.js", ".eslintrc.js", "package.json")(fname)
+        --   end,
+        -- },
+        -- eslint = {
+        --   settings = {
+        --     -- This is the modern way to handle this in the eslint-lsp
+        --     workingDirectories = { mode = "auto" },
+        --   },
+        --   -- Explicitly tell it NOT to run if no config is found
+        --   on_new_config = function(config, new_root_dir)
+        --     config.settings.rulesCustomizations = config.settings.rulesCustomizations or {}
+        --     -- If no eslint config is found in the root, disable the server for this instance
+        --     local util = require("lspconfig.util")
+        --     local found_config = util.root_pattern(".eslintrc", ".eslintrc.js", "eslint.config.js")(new_root_dir)
+        --     if not found_config then
+        --       config.enabled = false
+        --     end
+        --   end,
+        -- },
+        -- biome = {
+        --   single_file_support = false,
+        --   root_dir = function(fname)
+        --     return require("lspconfig.util").root_pattern("biome.json", "biome.jsonc")(fname)
+        --   end,
+        -- },
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = { "saghen/blink.cmp" },
+    opts = {
+      servers = {
+        lua_ls = {},
+        svelte = {},
+        nil_ls = {},
+        elixirls = {},
+        vtsls = {
+          -- explicitly add default filetypes, so that we can extend
+          -- them in related extras
+          filetypes = {
+            "javascript",
+            "javascriptreact",
+            "javascript.jsx",
+            "typescript",
+            "typescriptreact",
+            "typescript.tsx",
+          },
+          settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+            },
+            typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      local lspconfig = require("lspconfig")
+
+      -- 1. Get the capabilities from blink.cmp
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
+      capabilities.offsetEncoding = { "utf-16" }
+
+      for server, server_opts in pairs(opts.servers) do
+        -- Skip special keys that aren't actually LSP servers
+        if server == "setup" or server == "*" or server == "mason" then
+          goto continue
+        end
+
+        -- Check if the server configuration exists in lspconfig
+        local server_cfg = lspconfig[server]
+
+        if server_cfg and type(server_cfg.setup) == "function" then
+          -- Merge capabilities
+          server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
+
+          -- Finally, run the setup
+          server_cfg.setup(server_opts)
+        else
+          -- This helps you debug which "server" is causing the ghost error
+          vim.notify("LSP Config: Skipping " .. tostring(server), vim.log.levels.DEBUG)
+        end
+
+        ::continue::
+      end
+    end,
+  },
 }

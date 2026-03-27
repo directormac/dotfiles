@@ -13,10 +13,12 @@ global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
 global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 global.lazyvim_prettier_needs_config = true
+global.lazyvim_blink_main = false
 -- global.root_spec = { "cwd", "lsp", { ".git", "lua" } }
 global.lazyvim_picker = "snacks"
-global.lazyvim_blink_main = false
 global.lazydev_enabled = true
+global.lazyvim_ts_lsp = "tsgo"
+-- global.vscode = true
 
 set.clipboard = "unnamedplus"
 
@@ -79,5 +81,3 @@ if vim.g.neovide then
   vim.g.neovide_light_angle_degrees = 45
   vim.g.neovide_light_radius = 5
 end
-
-vim.g.lazyvim_blink_main = false

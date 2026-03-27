@@ -2,7 +2,6 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    -- commit = "f19cab18ec4dc86d415512c7a572863b2adbcc18",
     opts = {
       transparent = true,
       transparent_background = true,
@@ -13,8 +12,8 @@ return {
       falvour = "mocha",
       color_overrides = {
         all = {
-          base = "#11111B",
-          mantle = "#11111B",
+          -- base = "#11111B",
+          -- mantle = "#11111B",
         },
       },
       custom_highlights = function(colors)
