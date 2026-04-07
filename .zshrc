@@ -16,13 +16,10 @@ fi
 source "${ZINIT_HOME}/zinit.zsh"
 
 # Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
 zinit light marlonrichert/zsh-hist
 
-# Add in snippets
+# Snippets
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
@@ -32,9 +29,16 @@ zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
+# Load completions before plugins that depend on them
+autoload -Uz compinit && compinit
+zinit cdreplay -q
+
+zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
+
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
-
 
 autoload -Uz add-zsh-hook
 
@@ -55,16 +59,29 @@ command-not-found () {
 
 add-zsh-hook precmd command-not-found
 
-# Load completions
-autoload -Uz compinit && compinit
-
-zinit cdreplay -q
-
 # Keybindings
-bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^[w' kill-region
+bindkey -e                               # Use Emacs-style keybindings (standard Zsh behavior)
+bindkey '^p' history-search-backward     # Ctrl + P : Search history backward (based on what you've typed)
+bindkey '^n' history-search-forward      # Ctrl + N : Search history forward (based on what you've typed)
+bindkey '^[w' kill-region                # Alt  + W : Kill/Delete from cursor to the start of the word/region
+
+# Smart Tab: Accept autosuggestion if it exists, otherwise do completion
+# This combines zsh-autosuggestions and fzf-tab into one key
+_smart_tab() {
+  if [[ -n "$ZSH_AUTOSUGGEST_TEXT" ]]; then
+    zle autosuggest-accept               # If there's a gray hint, Tab accepts it
+  else
+    zle expand-or-complete               # If no hint, Tab opens the completion menu (fzf-tab)
+  fi
+}
+zle -N _smart_tab
+bindkey '^I' _smart_tab                  # Tab (Ctrl + I is equivalent to Tab in terminals)
+
+# Ensure zsh-vi-mode plays nice with other plugins
+# This hook re-applies our Tab binding every time zsh-vi-mode initializes or changes modes
+function zvm_after_init() {
+  zvm_bindkey insert '^I' _smart_tab     # Keep Tab behavior active in Vi Insert Mode
+}
 
 # History
 HISTSIZE=120000
@@ -103,7 +120,28 @@ export PATH=$HOME/.cargo/bin:$PATH # cargo bins
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
-export PATH=$HOME/.tmux/plugins/tmux-session-wizard/bin:$PATH
+# Sesh function
+function t() {
+  local session
+  if [[ -n "$1" ]]; then
+    sesh connect "$1"
+    return
+  fi
+  session=$(sesh list --icons | fzf --ansi --prompt='⚡  ' --border-label=' sesh ' --header='  ^a all ^t tmux ^g configs ^x zoxide ^d tmux <ctrl-c>...' \
+      --bind 'tab:up,btab:down' \
+      --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+      --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
+      --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
+      --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
+      --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .git .)' \
+      --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)')
+  [[ -n "$session" ]] && sesh connect "$session"
+}
+
+# Sesh Keybind (Alt-s)
+zle -N t
+bindkey '\es' t
+
 export OPENAI_KEY=
 export GOPATH=$HOME/.go
 export PATH="$HOME/.go/bin:$PATH"
@@ -301,7 +339,7 @@ alias ripgrep="rg"
 alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
 alias td='tmux new-session -s $(basename "$PWD") -c "$PWD"'
-alias tn='tmux new-session -s $(basename "$PWD") -c "$PWD"'
+alias tn='sesh connect .'
 alias top="btop" # top/htop alternative
 alias tw="node_project" # works with alacritty + tmux
 alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
@@ -342,6 +380,10 @@ alias bprewiew="bun --bun run preview"
 alias btest="bun --bun run test"
 
 alias b="bun run"
+
+
+alias oc="opencode"
+alias zc="zeroclaw"
 
 alias iex-phx="iex -S mix phx.server"
 
@@ -388,3 +430,5 @@ fi
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
+
+alias claude-mem='bun "/home/artifex/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'

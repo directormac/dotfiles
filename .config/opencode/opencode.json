@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "svelte": {
+      "type": "remote",
+      "url": " https://mcp.svelte.dev/mcp"
+    },
+    "context-mode": {
+      "type": "local",
+      "command": [
+        "context-mode"
+      ]
+    }
+  },
+  "plugin": [
+    "context-mode",
+    "@slkiser/opencode-quota"
+  ]
+}

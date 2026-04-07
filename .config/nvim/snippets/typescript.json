@@ -1,0 +1,65 @@
+{
+  "SvelteKit Remote Query": {
+    "prefix": "skquery",
+    "body": [
+      "import { query } from '$app/server';",
+      "",
+      "export const ${1:getData} = query(async () => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Query"
+  },
+  "SvelteKit Remote Query (Validated)": {
+    "prefix": "skqueryv",
+    "body": [
+      "import { query } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:getData} = query(${2:v.string()}, async (${3:arg}) => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Query with validation"
+  },
+  "SvelteKit Remote Form": {
+    "prefix": "skform",
+    "body": [
+      "import { form } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:actionName} = form(",
+      "\tv.object({",
+      "\t\t${2:field}: v.string(),",
+      "\t}),",
+      "\tasync (${3:data}) => {",
+      "\t\t$0",
+      "\t}",
+      ");"
+    ],
+    "description": "SvelteKit Remote Form"
+  },
+  "SvelteKit Remote Command": {
+    "prefix": "skcommand",
+    "body": [
+      "import { command } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:commandName} = command(${2:v.string()}, async (${3:arg}) => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Command"
+  },
+  "SvelteKit Remote Prerender": {
+    "prefix": "skprerender",
+    "body": [
+      "import { prerender } from '$app/server';",
+      "",
+      "export const ${1:getStaticData} = prerender(async () => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Prerender"
+  }
+}
