@@ -7,3 +7,8 @@
 .config/ncmpcpp/error.log
 !.gnupg/gpg-agent.conf
 .gnupg/*
+GEMINI.md
+GEMINI.md
+.gemini
+AGENTS.md
+noice.log

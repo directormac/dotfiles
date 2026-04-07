@@ -1,0 +1,32 @@
+{
+  "Function with JSDoc": {
+    "prefix": "fnjs",
+    "body": [
+      "/**",
+      " * ${1:Description}",
+      " *",
+      " * @param {${2:any}} ${3:param} - ${4:description}",
+      " * @returns {${5:void}}",
+      " */",
+      "function ${6:name}(${3:param}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Function with JSDoc"
+  },
+  "Arrow Function with JSDoc": {
+    "prefix": "afnjs",
+    "body": [
+      "/**",
+      " * ${1:Description}",
+      " *",
+      " * @param {${2:any}} ${3:param} - ${4:description}",
+      " * @returns {${5:void}}",
+      " */",
+      "const ${6:name} = (${3:param}) => {",
+      "\t$0",
+      "};"
+    ],
+    "description": "Arrow Function with JSDoc"
+  }
+}

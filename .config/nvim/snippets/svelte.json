@@ -1,0 +1,279 @@
+{
+  "SvelteKit Remote Query": {
+    "prefix": "skquery",
+    "body": [
+      "import { query } from '$app/server';",
+      "",
+      "export const ${1:getData} = query(async () => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Query"
+  },
+  "SvelteKit Remote Query (Validated)": {
+    "prefix": "skqueryv",
+    "body": [
+      "import { query } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:getData} = query(${2:v.string()}, async (${3:arg}) => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Query with validation"
+  },
+  "SvelteKit Remote Form": {
+    "prefix": "skform",
+    "body": [
+      "import { form } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:actionName} = form(",
+      "\tv.object({",
+      "\t\t${2:field}: v.string(),",
+      "\t}),",
+      "\tasync (${3:data}) => {",
+      "\t\t$0",
+      "\t}",
+      ");"
+    ],
+    "description": "SvelteKit Remote Form"
+  },
+  "SvelteKit Remote Command": {
+    "prefix": "skcommand",
+    "body": [
+      "import { command } from '$app/server';",
+      "import * as v from 'valibot';",
+      "",
+      "export const ${1:commandName} = command(${2:v.string()}, async (${3:arg}) => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Command"
+  },
+  "SvelteKit Remote Prerender": {
+    "prefix": "skprerender",
+    "body": [
+      "import { prerender } from '$app/server';",
+      "",
+      "export const ${1:getStaticData} = prerender(async () => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "SvelteKit Remote Prerender"
+  },
+  "Svelte Component Boilerplate": {
+    "prefix": "sv-comp",
+    "body": [
+      "<script lang=\"ts\">",
+      "\timport type { Snippet } from 'svelte';",
+      "",
+      "\tlet { children }: { children: Snippet<[]> } = \\$props();",
+      "</script>",
+      "",
+      "{@render children()}",
+      "$0"
+    ],
+    "description": "Full Svelte 5 component with typed children"
+  },
+  "Svelte Runes $state": {
+    "prefix": "state",
+    "body": "let ${1:name} = \\$state(${2:initialValue});",
+    "description": "Svelte 5 state rune"
+  },
+  "Svelte Runes $state.raw": {
+    "prefix": "stateraw",
+    "body": "let ${1:name} = \\$state.raw(${2:initialValue});",
+    "description": "Svelte 5 state.raw rune"
+  },
+  "Svelte Runes $derived": {
+    "prefix": "derived",
+    "body": "let ${1:name} = \\$derived(${2:expression});",
+    "description": "Svelte 5 derived rune"
+  },
+  "Svelte Runes $derived.by": {
+    "prefix": "derivedby",
+    "body": [
+      "let ${1:name} = \\$derived.by(() => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "Svelte 5 derived.by rune"
+  },
+  "Svelte Runes $effect": {
+    "prefix": "effect",
+    "body": [
+      "\\$effect(() => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "Svelte 5 effect rune"
+  },
+  "Svelte Runes $props": {
+    "prefix": "props",
+    "body": "let { ${1:prop} } = \\$props();",
+    "description": "Svelte 5 props rune"
+  },
+  "Svelte Runes $bindable": {
+    "prefix": "bind",
+    "body": "let { ${1:prop} = \\$bindable() } = \\$props();",
+    "description": "Svelte 5 bindable prop"
+  },
+  "Svelte Runes $inspect": {
+    "prefix": "inspect",
+    "body": "\\$inspect(${1:value});",
+    "description": "Svelte 5 inspect rune"
+  },
+  "Svelte Markup Each": {
+    "prefix": "each",
+    "body": [
+      "{#each ${1:items} as ${2:item}}",
+      "\t$0",
+      "{/each}"
+    ],
+    "description": "Svelte each block"
+  },
+  "Svelte Markup If": {
+    "prefix": "if",
+    "body": [
+      "{#if ${1:condition}}",
+      "\t$0",
+      "{/if}"
+    ],
+    "description": "Svelte if block"
+  },
+  "Svelte Markup Snippet": {
+    "prefix": "snip",
+    "body": [
+      "{@snippet ${1:name}(${2:args})}",
+      "\t$0",
+      "{/snippet}"
+    ],
+    "description": "Svelte 5 snippet definition"
+  },
+  "Svelte Boundary": {
+    "prefix": "sbound",
+    "body": [
+      "<svelte:boundary>",
+      "\t$0",
+      "\t{#snippet failed(error, reset)}",
+      "\t\t<p>{error.message} <button onclick={reset}>Retry</button></p>",
+      "\t{/snippet}",
+      "\t{#snippet loading()}",
+      "\t\t<p>Loading...</p>",
+      "\t{/snippet}",
+      "</svelte:boundary>"
+    ],
+    "description": "Svelte boundary with failed and loading snippets"
+  },
+  "Accordion": {
+    "prefix": [
+      "shadcn-x-accordion-next",
+      "cnx-accordion-next"
+    ],
+    "body": [
+      "<Accordion.Root type=\"single\">",
+      "  <Accordion.Item value=\"item-1\">",
+      "    <Accordion.Trigger>Is it accessible?</Accordion.Trigger>",
+      "    <Accordion.Content>",
+      "      Yes. It adheres to the WAI-ARIA design pattern.",
+      "    </Accordion.Content>",
+      "  </Accordion.Item>",
+      "</Accordion.Root>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/accordion"
+  },
+  "Alert": {
+    "prefix": [
+      "shadcn-x-alert-next",
+      "cnx-alert-next"
+    ],
+    "body": [
+      "<Alert.Root>",
+      "  <Alert.Title>Heads up!</Alert.Title>",
+      "  <Alert.Description>",
+      "    You can add components to your app using the cli.",
+      "  </Alert.Description>",
+      "</Alert.Root>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/alert.html"
+  },
+  "Alert Destructive": {
+    "prefix": [
+      "shadcn-x-alert-destructive-next",
+      "cnx-alert-destructive-next"
+    ],
+    "body": [
+      "<Alert.Root variant=\"destructive\">",
+      "  <CircleAlert class=\"size-4\" />",
+      "  <Alert.Title>Error</Alert.Title>",
+      "  <Alert.Description",
+      "    >Your session has expired. Please login again.</Alert.Description",
+      "  >",
+      "</Alert.Root>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/alert.html"
+  },
+  "Alert Dialog": {
+    "prefix": [
+      "shadcn-x-alert-dialog-next",
+      "cnx-alert-dialog-next"
+    ],
+    "body": [
+      "<AlertDialog.Root>",
+      "  <AlertDialog.Trigger>Open</AlertDialog.Trigger>",
+      "  <AlertDialog.Content>",
+      "    <AlertDialog.Header>",
+      "      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>",
+      "      <AlertDialog.Description>",
+      "        This action cannot be undone. This will permanently delete your account",
+      "        and remove your data from our servers.",
+      "      </AlertDialog.Description>",
+      "    </AlertDialog.Header>",
+      "    <AlertDialog.Footer>",
+      "      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>",
+      "      <AlertDialog.Action>Continue</AlertDialog.Action>",
+      "    </AlertDialog.Footer>",
+      "  </AlertDialog.Content>",
+      "</AlertDialog.Root>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/alert-dialog.html"
+  },
+  "Aspect Ratio": {
+    "prefix": [
+      "shadcn-x-aspect-ratio-next",
+      "cnx-aspect-ratio-next"
+    ],
+    "body": [
+      "<div class=\"w-[450px]\">",
+      "    <AspectRatio ratio={16 / 9}>",
+      "      <img src=\"...\" alt=\"Image\" class=\"rounded-md object-cover\">",
+      "    </AspectRatio>",
+      "</div>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/aspect-ratio.html"
+  },
+  "Avatar": {
+    "prefix": [
+      "shadcn-x-avatar-next",
+      "cnx-avatar-next"
+    ],
+    "body": [
+      "<Avatar.Root>",
+      "  <Avatar.Image src=\"https://github.com/shadcn.png\" alt=\"@shadcn\" />",
+      "  <Avatar.Fallback>CN</Avatar.Fallback>",
+      "</Avatar.Root>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/avatar.html"
+  },
+  "Badge": {
+    "prefix": [
+      "shadcn-x-badge-next",
+      "cnx-badge-next"
+    ],
+    "body": [
+      "<Badge>Badge</Badge>"
+    ],
+    "description": "https://next.shadcn-svelte.com/docs/components/badge.html"
+  }
+}

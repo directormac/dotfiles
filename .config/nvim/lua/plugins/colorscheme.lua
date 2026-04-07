@@ -3,13 +3,16 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
-      transparent = true,
+      falvour = "mocha",
+      background = { -- :h background
+        light = "latte",
+        dark = "mocha",
+      },
       transparent_background = true,
       float = {
         transparent = true,
-        solid = true,
+        -- solid = true,
       },
-      falvour = "mocha",
       color_overrides = {
         all = {
           -- base = "#11111B",
@@ -22,26 +25,13 @@ return {
           RenderMarkdownCode = { bg = colors.mantle },
         }
       end,
+      term_colors = true,
       -- highlight_overrides = {
       --   all = function(colors)
       --     return {}
       --   end,
       -- },
     },
-
-    -- show_end_of_buffer = false,
-    term_colors = true,
-    -- specs = {
-    --   {
-    --     "akinsho/bufferline.nvim",
-    --     optional = true,
-    --     opts = function(_, opts)
-    --       if (vim.g.colors_name or ""):find("catppuccin") then
-    --         opts.highlights = require("catppuccin.special.bufferline").get_theme()
-    --       end
-    --     end,
-    --   },
-    -- },
   },
   {
     "folke/tokyonight.nvim",
@@ -59,7 +49,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin",
+      colorscheme = "catppuccin-nvim",
       -- colorscheme = "tokyonight",
     },
   },

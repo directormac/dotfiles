@@ -15,21 +15,20 @@ return {
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-      -- picker = {
-      --   sources = {
-      --     files = {
-      --       exclude = { "**/src/content/docs/reference/**" },
-      --     },
-      --     grep = {
-      --       exclude = { "**/src/content/docs/reference/**" },
-      --     },
-      --   },
-      --   finder = {
-      --     files = {
-      --       exclude = {},
-      --     },
-      --   },
-      -- },
+      picker = {
+        sources = {
+          files = {
+            hidden = true, -- Show dotfiles like .config
+            ignored = false, -- Respect .gitignore (skips node_modules, etc.)
+            exclude = { ".git", "node_modules", ".svelte-kit", ".astro", ".next", ".vercel", ".turbo", ".expert", ".elixir_ls", ".vscode" },
+          },
+          grep = {
+            hidden = true,
+            ignored = false,
+            exclude = { ".git", "node_modules", ".svelte-kit", ".astro", ".next", ".vercel", ".turbo", ".expert", ".elixir_ls", ".vscode" },
+          },
+        },
+      },
       dashboard = {
         preset = {
           header = [[
@@ -58,8 +57,8 @@ return {
       },
     },
 
-  -- stylua: ignore
-  keys = {
+    -- stylua: ignore
+    keys = {
     { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
     { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
     { "<leader>dps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Buffer" },
