@@ -389,6 +389,11 @@ alias iex-phx="iex -S mix phx.server"
 
 alias phxdev="iex --name phxdev@127.0.0.1 --cookie secret -S mix phx.server"
 
+export HIP_PATH=/opt/rocm
+export HIPCXX=/opt/rocm/bin/hipcc
+export AMDGPU_TARGETS="gfx1101"
+export GPU_TARGETS="gfx1101"
+
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -426,6 +431,10 @@ fi
 
 # eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
+#Load secret API keys
+if [ -f ~/.zsh_secrets ]; then
+    source ~/.zsh_secrets
+fi
 
 
 # Vite+ bin (https://viteplus.dev)

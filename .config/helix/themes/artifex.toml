@@ -1,2 +1,5 @@
-inherits = "tokyonight_storm"
-#"ui.background" = {}
+inherits = "catppuccin_mocha"
+"ui.background" = {}
+"ui.cursor" = { fg = "base", bg = "mauve" }
+"ui.linenr.selected" = { fg = "mauve", modifiers = ["bold"] }
+"ui.selection" = { bg = "surface1" }
