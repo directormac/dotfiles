@@ -11,9 +11,12 @@ node = "latest"
 bun = "latest"
 pnpm = "latest"
 pitchfork = "2.0.0"
-opencode = "1.3.15"
-gemini-cli = "0.36.0"
-"npm:context-mode" = "1.0.74"
+opencode = "1.4.0"
+gemini-cli = "0.37.1"
+"npm:context-mode" = "1.0.75"
+"cargo:zeroclawlabs" = "latest"
+uv = "latest"
+# "npm:openclaw" = "latest"
 
 [settings]
 trusted_config_paths = ['~/.dotfiles', '~/Code']

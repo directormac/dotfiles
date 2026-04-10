@@ -1,0 +1,36 @@
+# LSD Configuration
+# See https://github.com/lsd-rs/lsd#configurations
+
+classic: false
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+color:
+  when: always
+  theme: custom
+date: relative
+dereference: false
+display: all
+icons:
+  when: always
+  theme: fancy
+  separator: " "
+indicators: false
+layout: grid
+recursion:
+  enabled: false
+  depth: 2
+size: default
+permission: rwx
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: first
+no-symlink: false
+total-size: false
+symlink-arrow: "⇒"
+hyperlink: never

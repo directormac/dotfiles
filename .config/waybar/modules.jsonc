@@ -20,11 +20,11 @@
       "weeks-pos": "right",
       "on-scroll": 1,
       "format": {
-        "months": "<span color='#ffead3'><b>{}</b></span>",
-        "days": "<span color='#ecc6d9'><b>{}</b></span>",
-        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+        "months": "<span color='#f5e0dc'><b>{}</b></span>", // rosewater
+        "days": "<span color='#cdd6f4'><b>{}</b></span>",   // text
+        "weeks": "<span color='#94e2d5'><b>W{}</b></span>",  // teal
+        "weekdays": "<span color='#f9e2af'><b>{}</b></span>", // yellow
+        "today": "<span color='#cba6f7'><b><u>{}</u></b></span>" // mauve
       }
     }
   },

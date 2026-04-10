@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "opencode-go/kimi-k2.5",
   "mcp": {
     "svelte": {
       "type": "remote",
@@ -14,6 +15,9 @@
   },
   "plugin": [
     "context-mode",
-    "@slkiser/opencode-quota"
+    "@slkiser/opencode-quota",
+    "@nick-vi/opencode-type-inject",
+    "opencode-gemini-auth@latest",
+    "opencode-skills"
   ]
 }

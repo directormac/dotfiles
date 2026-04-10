@@ -12,10 +12,17 @@ iDIR="$HOME/.config/swaync/icons"
 
 notify_cmd_shot="notify-send -h string:x-canonical-private-synchronous:sys-notify-shot -u low -i ${iDIR}/picture.png"
 notify_view() {
+  # Notify user of copy (the actual copy happens in the shot function)
   ${notify_cmd_shot} "Copied to clipboard."
+  
   paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &>/dev/null &
-  satty -f ${dir}/"$file" -o ${dir}/"$file" --copy-command "wl-copy"
-  if [[ -e "$dir/$file" ]]; then
+  
+  if command -v satty &> /dev/null; then
+    # Run satty for optional annotation, but don't block
+    satty -f "${dir}/${file}" -o "${dir}/${file}" --copy-command "wl-copy"
+  fi
+
+  if [[ -f "$dir/$file" ]]; then
     ${notify_cmd_shot} "Screenshot Saved."
   else
     ${notify_cmd_shot} "Screenshot Deleted."
@@ -30,31 +37,43 @@ countdown() {
 }
 
 shotnow() {
-  cd ${dir} && sleep 0.5 && grim - | tee "$file" | wl-copy
+  mkdir -p "${dir}"
+  cd "${dir}" && sleep 0.5 && grim - | tee "$file" | wl-copy
   notify_view
-
 }
 
 shot5() {
   countdown '5'
-  sleep 1 && cd ${dir} && grim - | tee "$file" | wl-copy
+  mkdir -p "${dir}"
+  sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
   notify_view
 }
 
 shot10() {
   countdown '10'
-  sleep 1 && cd ${dir} && grim - | tee "$file" | wl-copy
+  mkdir -p "${dir}"
+  sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
   notify_view
 }
 
 shotwin() {
-  cd ${dir} && grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | tee "$file" | wl-copy
-  notify_view
+  mkdir -p "${dir}"
+  # Focused window geometry for Sway
+  geometry=$(swaymsg -t get_tree | jq -r '.. | select(.focused? == true) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
+  if [[ -n "$geometry" ]]; then
+    cd "${dir}" && grim -g "$geometry" - | tee "$file" | wl-copy
+    notify_view
+  fi
 }
 
 shotarea() {
-  cd ${dir} && grim -g "$(slurp -b ${background:1}CC -c ${accent:1}ff -s ${accent:1}0D -w 2 && sleep 0.3)" - | tee "$file" | wl-copy
-  notify_view
+  mkdir -p "${dir}"
+  # Area selection for Sway
+  area=$(slurp -b "${background:1}CC" -c "${accent:1}ff" -s "${accent:1}0D" -w 2)
+  if [[ -n "$area" ]]; then
+    cd "${dir}" && grim -g "$area" - | tee "$file" | wl-copy
+    notify_view
+  fi
 }
 
 if [[ ! -d "$dir" ]]; then

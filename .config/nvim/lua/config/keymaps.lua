@@ -47,7 +47,7 @@ map("v", "<Tab>", ">gv", { desc = "Indent line" })
 
 map("n", "<leader>cw", ":Codeium Chat<CR>", { desc = "Codeium Chat" })
 map("n", "<leader>r", function()
-  vim.cmd("LspRestart")
+  vim.cmd("lsp restart")
   vim.notify("LSP restarted", vim.log.levels.INFO, { title = "LSP" })
 end, { desc = "Restart Lsp" })
 
