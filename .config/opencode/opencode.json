@@ -2,10 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "opencode-go/kimi-k2.5",
   "mcp": {
-    "svelte": {
-      "type": "remote",
-      "url": " https://mcp.svelte.dev/mcp"
-    },
     "context-mode": {
       "type": "local",
       "command": [
@@ -15,6 +11,7 @@
   },
   "plugin": [
     "context-mode",
+    "@sveltejs/opencode",
     "@slkiser/opencode-quota",
     "@nick-vi/opencode-type-inject",
     "opencode-gemini-auth@latest",

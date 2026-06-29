@@ -1,5 +1,6 @@
 return {
   {
+
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
@@ -14,6 +15,7 @@ return {
           "javascript",
           "json",
           "lua",
+          "http",
           -- "mdx",
           "markdown",
           -- "markdown_inline",

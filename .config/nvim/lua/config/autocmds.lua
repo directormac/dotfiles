@@ -37,3 +37,9 @@ vim.filetype.add({
 vim.treesitter.language.register("markdown.mdx", "mdx")
 vim.treesitter.language.register("css", "postcss")
 vim.treesitter.language.register("css", "pcss")
+
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   callback = function(args)
+--     vim.lsp.document_color.enable(false)
+--   end,
+-- })

@@ -51,4 +51,15 @@ map("n", "<leader>r", function()
   vim.notify("LSP restarted", vim.log.levels.INFO, { title = "LSP" })
 end, { desc = "Restart Lsp" })
 
+-- map({ "n" }, "<leader>cj", function()
+--   local jsdoc_nvim = require("jsdoc_nvim")
+--   -- is the current context JavaScript?
+--   if jsdoc_nvim.is_context_javascript() then
+--     jsdoc_nvim.generate()
+--   else
+--     -- optionally run another doc generator
+--     -- require('neogen').generate()
+--   end
+-- end, { silent = true })
+
 -- { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },

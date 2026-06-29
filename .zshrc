@@ -331,9 +331,9 @@ alias ls="lsd"
 alias lt="ls --tree"
 alias lzd="lazydocker"
 alias lzg="lazygit"
-alias nvimconf="cd ~/.dotfiles/nvim/ && nvim"
+alias nvimconf="cd ~/.dotfiles/.config/nvim/ && nvim"
 alias pn="pnpm"
-alias px="pnpm dlx"
+alias px="pnx"
 alias rmr="rm -r"
 alias ripgrep="rg"
 alias tls="tmux ls" # tmux session list
@@ -380,6 +380,8 @@ alias bprewiew="bun --bun run preview"
 alias btest="bun --bun run test"
 
 alias b="bun run"
+
+alias miseconf="nvim .config/mise/config.toml"
 
 
 alias oc="opencode"
@@ -436,8 +438,43 @@ if [ -f ~/.zsh_secrets ]; then
     source ~/.zsh_secrets
 fi
 
+# Intercept 'bun test' and redirect it to 'bun run test'
+
+bun() {
+  case "$1" in
+    test|build)
+      local cmd="$1"
+      shift
+      command bun run "$cmd" "$@"
+      ;;
+    *)
+      command bun "$@"
+      ;;
+  esac
+}
+
+vp() {
+  case "$1" in
+    test|build|fix)
+      local cmd="$1"
+      shift
+      command vp run "$cmd" "$@"
+      ;;
+    *)
+      command bun "$@"
+      ;;
+  esac
+}
+
+
+
+alias claude-mem='bun "/home/artifex/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+# alias portless = 'sudo /home/artifex/.local/share/mise/installs/portless/latest/bin/portless'
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/artifex/.local/bin:$PATH"
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
-
-alias claude-mem='bun "/home/artifex/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
