@@ -7,7 +7,6 @@ return {
         "ansible-language-server",
         "ansible-lint",
         "astro-language-server",
-        "biome",
         "clang-format",
         "clangd",
         "cmakelang",
@@ -45,6 +44,8 @@ return {
         "rust-analyzer",
         "taplo",
         "tsgo",
+        "oxfmt",
+        "oxlint",
         "svelte-language-server",
         "vue-language-server",
       })

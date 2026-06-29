@@ -13,6 +13,9 @@ global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
 global.neoterm_autoscroll = 1 -- Autoscroll the terminal
 global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 global.lazyvim_prettier_needs_config = true
+global.lazyvim_eslint_auto_format = false
+-- Motivation: Less clutter in completion windows and a more direct usage of snippets
+global.lazyvim_mini_snippets_in_completion = true
 global.lazyvim_blink_main = false
 -- global.root_spec = { "cwd", "lsp", { ".git", "lua" } }
 global.lazyvim_picker = "snacks"
@@ -81,3 +84,47 @@ if vim.g.neovide then
   vim.g.neovide_light_angle_degrees = 45
   vim.g.neovide_light_radius = 5
 end
+
+-- vim.diagnostic.config({
+--   -- Turn off the cramped side-text entirely
+--   virtual_text = false,
+--
+--   -- Enable native multi-line rendering below the code
+--   virtual_lines = true,
+--
+--   float = {
+--     source = "always",
+--     border = "rounded",
+--   },
+--   signs = true,
+--   underline = true,
+--   update_in_insert = false,
+-- })
+
+-- Add this somewhere in your core init or options file
+-- vim.diagnostic.config({
+--   virtual_text = {
+--     -- You can set this to false if you want to completely hide inline text
+--     -- and rely entirely on Trouble or floating windows
+--     source = "if_many",
+--     prefix = "●",
+--     -- Truncate long messages in virtual text so they don't break your layout
+--     format = function(diagnostic)
+--       local first_line = diagnostic.message:match("([^\n]+)")
+--       if #first_line > 60 then
+--         return string.sub(first_line, 1, 60) .. "..."
+--       end
+--       return first_line
+--     end,
+--   },
+--   float = {
+--     source = "always",
+--     border = "rounded",
+--     -- This ensures the floating window wraps text to your editor width
+--     wrap = true,
+--     max_width = math.floor(vim.api.nvim_win_get_width(0) * 0.8),
+--   },
+--   signs = true,
+--   underline = true,
+--   update_in_insert = false,
+-- })

@@ -23,16 +23,30 @@ return {
   --     },
   --   }, -- your configuration
   -- },
-  {
-    "danymat/neogen",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    keys = {
-      { "<leader>gd", "<cmd>Neogen<CR>", { desc = "Generate function docs" } },
-    },
-    config = true,
-    -- Uncomment next line if you want to follow only stable versions
-    -- version = "*"
-  },
+  -- {
+  --   "danymat/neogen",
+  --   dependencies = "nvim-treesitter/nvim-treesitter",
+  --   keys = {
+  --     { "<leader>gd", "<cmd>Neogen<CR>", { desc = "Generate function docs" } },
+  --   },
+  --   config = true,
+  --   -- Uncomment next line if you want to follow only stable versions
+  --   -- version = "*"
+  -- },
+  -- {
+  --   "ramhejazi/jsdoc.nvim",
+  --   event = "VeryLazy",
+  --   -- keys = {
+  --   --   {
+  --   --     "<leader>fc ",
+  --   --     "<cmd>PickColor<cr>",
+  --   --     { desc = "Color Picker" },
+  --   --   },
+  --   --      },
+  --   config = function()
+  --     require("jsdoc.nvim").setup({})
+  --   end,
+  -- },
   {
     "ziontee113/color-picker.nvim",
     keys = {
