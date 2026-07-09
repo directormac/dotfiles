@@ -19,6 +19,7 @@ login_shell = "/bin/zsh"
 "pacman:base" ="latest"
 "pacman:base-devel" ="latest"
 "pacman:git" = "latest"
+"pacman:github-cli" = "latest"
 "pacman:vim" = "latest"
 
 # Terminal Essentials
