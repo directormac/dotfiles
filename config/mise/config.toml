@@ -23,7 +23,6 @@ login_shell = "/bin/zsh"
 "pacman:7zip" = "latest"
 "pacman:curl" = "latest"
 "pacman:wget" = "latest"
-"pacman:ffmpeg" = "latest"
 "pacman:man" = "latest"
 "pacman:lshw" = "latest"
 "pacman:github-cli" = "latest"
@@ -54,7 +53,9 @@ login_shell = "/bin/zsh"
 "pacman:zoxide" = "latest"
 
 # Extra
-
+"pacman:ffmpeg" = "latest"
+"pacman:poppler" = "latest"
+"pacman:resvg" = "latest"
 
 [bootstrap.mise_shell_activate]
 zprofile = {enabled = true, mode = "shims"}
