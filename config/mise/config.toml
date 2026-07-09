@@ -1,0 +1,57 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+# General Settings
+[settings]
+experimental = true
+dotfiles.root = "~/.dotfiles"
+dotfiles.default_mode = "symlink"
+
+# Bootstrap
+[bootstrap.user]
+login_shell = "/bin/zsh"
+
+[bootstrap.repos]
+"~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git", ref = "mised" }
+
+[bootstrap.packages]
+"pacman:openssh" = "latest" # install for remote machines
+# Essentials
+"pacman:base" ="latest"
+"pacman:base-devel" ="latest"
+"pacman:git" = "latest"
+"pacman:vim" = "latest"
+
+# Terminal Essentials
+"pacman:lazygit" = "latest"
+"pacman:lazydocker" = "latest"
+"pacman:neovim" = "latest"
+"pacman:starship" = "latest"
+
+[bootstrap.mise_shell_activate]
+zprofile = {enabled = true, mode = "shims"}
+zshrc = {enabled = true, mode = "activate"}
+
+[dotfiles]
+"~/.zshrc" = {}
+"~/.bashrc" = {}
+"~/.gitconfig" = {}
+"~/.config/mise/config.toml" = "~/.dotfiles/config/mise/config.toml"
+
+
+
+# Tools
+[tools]
+rust = "latest"
+
+
+
+# Shell Aliases
+[shell_alias]
+lzg = "lazygit"
+lzd = "lazydocker"
+ll = "ls -la"
+la = "ls -A"
+gs = "git status"
+gc = "git commit"
+
+
