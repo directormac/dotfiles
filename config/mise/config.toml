@@ -15,18 +15,46 @@ login_shell = "/bin/zsh"
 
 [bootstrap.packages]
 "pacman:openssh" = "latest" # install for remote machines
+
 # Essentials
 "pacman:base" ="latest"
 "pacman:base-devel" ="latest"
 "pacman:git" = "latest"
+"pacman:7zip" = "latest"
+"pacman:curl" = "latest"
+"pacman:wget" = "latest"
+"pacman:ffmpeg" = "latest"
+"pacman:man" = "latest"
+"pacman:lshw" = "latest"
 "pacman:github-cli" = "latest"
 "pacman:vim" = "latest"
+"pacman:inotify-tools" = "latest"
+"pacman:neovim" = "latest"
 
 # Terminal Essentials
-"pacman:lazygit" = "latest"
+"pacman:bat" = "latest"
+"pacman:btop" = "latest"
+"pacman:dust" = "latest"
+"pacman:fd" = "latest"
+"pacman:fzf" = "latest"
+"pacman:jq" = "latest"
 "pacman:lazydocker" = "latest"
-"pacman:neovim" = "latest"
+"pacman:lazygit" = "latest"
+"pacman:less" = "latest"
+"pacman:lsd" = "latest"
+"pacman:navi" = "latest"
+"pacman:ripgrep" = "latest"
+"pacman:tmux" = "latest"
+"pacman:ueberzugpp" = "latest"
 "pacman:starship" = "latest"
+"pacman:tealdeer" = "latest"
+"pacman:websocat" = "latest"
+"pacman:yazi" = "latest"
+"pacman:yq" = "latest"
+"pacman:zoxide" = "latest"
+
+# Extra
+
 
 [bootstrap.mise_shell_activate]
 zprofile = {enabled = true, mode = "shims"}
