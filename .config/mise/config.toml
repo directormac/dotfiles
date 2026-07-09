@@ -1,5 +1,8 @@
 #:schema https://mise.jdx.dev/schema/mise.json
 
+[env]
+# VP_PR_VERSION = ""
+
 [tools]
 elixir = "1.19.5-otp-28"
 erlang = "28.4.1"
@@ -20,6 +23,7 @@ aube = "latest"
 copilot = "latest"
 portless = "latest"
 agy = "latest"
+herdr = "latest"
 
 [settings]
 trusted_config_paths = ['~/.dotfiles', '~/Code']
@@ -27,6 +31,7 @@ trusted_config_paths = ['~/.dotfiles', '~/Code']
 experimental = true
 not_found_auto_install = true
 task_output = "prefix"
+idiomatic_version_file_enable_tools = []
 npm = { package_manager = "bun" }
 
 [shell_alias]

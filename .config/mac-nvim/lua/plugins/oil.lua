@@ -22,6 +22,10 @@ return {
 		columns = {
 			"icon",
 			"size",
+			"ctime",
+			"mtime",
+			"atime",
+			"birthtime",
 		},
 		-- Skip the confirmation popup for simple operations
 		skip_confirm_for_simple_edits = true,
