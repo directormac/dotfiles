@@ -29,6 +29,7 @@ login_shell = "/bin/zsh"
 "pacman:vim" = "latest"
 "pacman:inotify-tools" = "latest"
 "pacman:neovim" = "latest"
+"pacman:tree-sitter" = "latest"
 
 # Terminal Essentials
 "pacman:bat" = "latest"
