@@ -10,8 +10,8 @@ dotfiles.default_mode = "symlink"
 [bootstrap.user]
 login_shell = "/bin/zsh"
 
-[bootstrap.repos]
-"~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git", ref = "mised" }
+# [bootstrap.repos]
+# "~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git", ref = "mised" }
 
 [bootstrap.packages]
 "pacman:openssh" = "latest" # install for remote machines
@@ -30,6 +30,7 @@ login_shell = "/bin/zsh"
 "pacman:inotify-tools" = "latest"
 "pacman:neovim" = "latest"
 "pacman:tree-sitter" = "latest"
+"pacman:tree-sitter-cli" = "latest"
 
 # Terminal Essentials
 "pacman:bat" = "latest"
@@ -58,6 +59,17 @@ login_shell = "/bin/zsh"
 "pacman:poppler" = "latest"
 "pacman:resvg" = "latest"
 
+# Fonts
+"pacman:noto-fonts" = "latest"
+"pacman:noto-fonts-emoji" = "latest"
+"pacman:noto-fonts-cjk" = "latest"
+# "pacman:ttf-font-awesome" = "latest"
+"pacman:ttf-noto-nerd" = "latest"
+"pacman:ttf-nerd-fonts-symbols" = "latest"
+"pacman:ttf-nerd-fonts-symbols-common" = "latest"
+"pacman:ttf-nerd-fonts-symbols-mono" = "latest"
+
+
 [bootstrap.mise_shell_activate]
 zprofile = {enabled = true, mode = "shims"}
 zshrc = {enabled = true, mode = "activate"}
@@ -66,6 +78,7 @@ zshrc = {enabled = true, mode = "activate"}
 "~/.zshrc" = {}
 "~/.bashrc" = {}
 "~/.gitconfig" = {}
+"~/.config/nvim" = "~/.dotfiles/config/nvim"
 "~/.config/mise/config.toml" = "~/.dotfiles/config/mise/config.toml"
 
 
