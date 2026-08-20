@@ -81,9 +81,9 @@ zshrc = { enabled = true, mode = "activate" }
 # [services](https://mise.jdx.dev/bootstrap/services.html#system-services)
 [bootstrap.services]
 
-[bootstrap.services.docker.socket]
-state = "running"
-enabled = "true"
+# [bootstrap.services.docker.socket]
+# state = "running"
+# enabled = "true"
 
 # [users and groups](https://mise.jdx.dev/bootstrap/accounts.html#linux-users-and-groups)
 # [bootstrap.groups.docker]
@@ -171,7 +171,7 @@ enabled = "true"
 "pacman:yq" = "latest"
 "pacman:zoxide" = "latest"
 "pacman:rsync" = "latest"
-"pacman:sesh" = "latest"
+# "pacman:sesh" = "latest"
 
 
 # Extra
@@ -251,7 +251,7 @@ enabled = "true"
 "pacman:noto-fonts-emoji" = "latest"
 "pacman:ttf-dejavu-nerd" = "latest"
 "pacman:ttf-firacode-nerd" = "latest"
-"pacman:ttf-jetbrains-mono-nerd " = "latest"
+#"pacman:ttf-jetbrains-mono-nerd " = "latest"
 "pacman:ttf-nerd-fonts-symbols" = "latest"
 "pacman:ttf-nerd-fonts-symbols-common" = "latest"
 "pacman:ttf-nerd-fonts-symbols-mono" = "latest"
