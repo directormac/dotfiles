@@ -12,6 +12,8 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
+autoload -U compinit && compinit
+
 # Sesh
 # https://github.com/joshmedeski/sesh
 
