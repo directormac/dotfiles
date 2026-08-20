@@ -13,6 +13,8 @@
 
 vim.filetype.add({
   extension = {
+    mjml = "html",
+    ["mjml.eex"] = "html.eex",
     mdx = "markdown.mdx",
     postcss = "css",
     pcss = "css",

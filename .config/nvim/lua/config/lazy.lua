@@ -35,8 +35,9 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.snacks_picker" },
     -- Typescript
     { import = "lazyvim.plugins.extras.lang.typescript.biome" },
+    { import = "lazyvim.plugins.extras.lang.typescript.vtsls" },
     -- { import = "lazyvim.plugins.extras.lang.typescript.oxc" },
-    { import = "lazyvim.plugins.extras.lang.typescript.tsgo" },
+    -- { import = "lazyvim.plugins.extras.lang.typescript.tsgo" },
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.formatting.prettier" },
     { import = "lazyvim.plugins.extras.lang.svelte" },

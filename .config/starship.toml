@@ -1,16 +1,27 @@
-"$schema" = 'https://starship.rs/config-schema.json'
+#:schema https://starship.rs/config-schema.json
+
+# [Config](https://starship.rs/config/)
+# [Custom](https://starship.rs/config/#custom-commands)
+# [Advance](https://starship.rs/advanced-config/)
+# [Showcase](https://github.com/starship/starship/discussions/1107)
+
+add_newline = false
+palette = "catppuccin_mocha"
+continuation_prompt = '▶▶ '
+scan_timeout = 1000
+command_timeout = 5000
 
 format = """
 $all\
-$fill\
-$cmd_duration $jobs $time\
+$line_break\
+$directory\
 $line_break\
 $character"""
 
-palette = "catppuccin_mocha"
+right_format = """
+$cmd_duration $jobs $time
+"""
 
-scan_timeout = 1000
-command_timeout = 5000
 
 [nodejs]
 format = "[$symbol($version )]($style)"
@@ -19,10 +30,11 @@ format = "[$symbol($version )]($style)"
 symbol = " "
 
 [directory]
-style = "mauve"
+style = "fg:mauve"
 read_only = " "
 truncation_length = 4
-truncate_to_repo = false
+truncate_to_repo = true
+# truncation_symbol = "…/"
 
 [character]
 success_symbol = '[❯](mauve)'
@@ -56,8 +68,12 @@ style = "bright-black"
 disabled = false
 
 [cmd_duration]
-format = "[$duration]($style)"
-style = "yellow"
+show_milliseconds = true
+format = " in $duration "
+style = "fg:text"
+disabled = false
+# show_notifications = true
+# min_time_to_notify = 45000
 
 [memory_usage]
 symbol = " "
@@ -65,10 +81,27 @@ symbol = " "
 [rust]
 symbol = " "
 
+[mise]
+disabled = false
+
+
 [time]
 disabled = false
 style = "bold white"
-format = "[$time]($style)"
+format = '[[  $time ](fg:text)]($style)'
+
+# [cmd_duration]
+# show_milliseconds = true
+# format = " in $duration "
+# style = "bg:lavender"
+# disabled = false
+# show_notifications = true
+# min_time_to_notify = 45000
+
+# [time]
+# disabled = false
+# style = "bold white"
+# format = "[$time]($style)"
 
 [hostname]
 ssh_only = false
@@ -86,6 +119,7 @@ when = "ps aux | grep stunnel | grep -v grep"
 command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')"
 style = "red"
 format = "[TUNNEL OPEN for $output]($style)"
+
 
 # [custom.ssh_no_keys]
 # description = "SSH missing keys"

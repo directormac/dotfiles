@@ -4,14 +4,14 @@
 #:schema https://yazi-rs.github.io/schemas/yazi.json
 
 [mgr]
-ratio = [1, 4, 3]
+ratio = [1, 5, 2]
 sort_by = "alphabetical"
 sort_sensitive = false
 sort_reverse = false
 sort_dir_first = true
 sort_translit = false
 sort_fallback = "alphabetical"
-linemode = "none"
+linemode = "size"
 show_hidden = false
 show_symlink = true
 scrolloff = 5
@@ -29,6 +29,9 @@ image_quality = 75
 ueberzug_scale = 1
 ueberzug_offset = [0, 0, 0, 0]
 
+# /home/artifex/Resources/Devops/TechWorld - DevOps Bootcamp By Nana/lesson1.mp4
+# /home/artifex/Resources/Devops/TechWorld - DevOps Bootcamp By Nana/lesson10.mp4
+
 [opener]
 edit = [
   { run = "${EDITOR:-vi} %s", desc = "$EDITOR", for = "unix", block = true },
@@ -42,6 +45,10 @@ play = [
   { run = "termux-open %s1", desc = "Play", for = "android" },
   { run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
   { run = "mediainfo %s1 & pause", block = true, desc = "Show media info", for = "windows" },
+]
+vlc = [{ run = "vlc --one-instance %S", desc = "Play with VLC", for = "linux", orphan = true }]
+vlc_queue = [
+  { run = "vlc --one-instance %S", desc = "Add to VLC queue", for = "linux", orphan = true },
 ]
 open = [
   { run = "xdg-open %s1", desc = "Open", for = "linux" },
@@ -81,8 +88,14 @@ rules = [
     "reveal",
   ] },
   # Media
-  { mime = "{audio,video}/*", use = [
+  { mime = "audio/*", use = [
     "play",
+    "reveal",
+  ] },
+  { mime = "video/*", use = [
+    "play",
+    "vlc",
+    "vlc_queue",
     "reveal",
   ] },
   # Code
@@ -110,13 +123,13 @@ rules = [
 ]
 
 [tasks]
-file_workers = 3
+file_workers = 5
 plugin_workers = 5
 fetch_workers = 5
 preload_workers = 2
 process_workers = 5
 bizarre_retry = 3
-image_alloc = 536870912      # 512MB
+image_alloc = 536870912 # 512MB
 image_bound = [10000, 10000]
 suppress_preload = false
 
