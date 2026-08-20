@@ -35,6 +35,7 @@ aube = "latest"
 expert = "latest"
 
 # Utils
+usage = "latest"
 jq = "latest"
 pitchfork = "latest"
 watchexec = "latest"
