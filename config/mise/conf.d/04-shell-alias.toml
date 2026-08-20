@@ -26,7 +26,7 @@ miseatasks = "nvim ~/.dotfiles/config/mise/conf.d/06-tasks.toml"
 nvimconf = "cd ~/.dotfiles/config/nvim/ && nvim"
 tmuxconf = "nvim ~/.dotfiles/config/tmux/.tmux.conf"
 hxconf = "helix ~/.dotfiles/config/helix/config.toml"
-zshconf = "nvim ~/.dotfiles/config/zsh/zshrc"
+zshconf = "nvim ~/.dotfiles/config/zsh/.zshrc"
 
 
 # Improved cli tools
