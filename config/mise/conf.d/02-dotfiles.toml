@@ -1,0 +1,70 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
+# [How](https://mise.jdx.dev/bootstrap.html#how-it-runs)
+# [What](https://mise.jdx.dev/bootstrap.html#what-goes-where)
+# [Workflow](https://mise.jdx.dev/bootstrap.html#common-workflows)
+# [Machine Bootstraping](https://mise.jdx.dev/tips-and-tricks.html#machine-bootstrapping)
+# [Remote bootstrap](https://mise.jdx.dev/bootstrap/remote.html#remote-bootstrap-over-ssh)
+# [Bootstrap script](https://mise.jdx.dev/tips-and-tricks.html#bootstrap-script)
+
+# CLI Reference
+# [mise bootstrap](https://mise.jdx.dev/cli/bootstrap.html)
+#
+# Run on new machine
+# `mise bootstrap dotfiles appy --force`
+# `mise bootstrap --yes`
+
+
+# [repos](https://mise.jdx.dev/bootstrap/repos.html)
+[bootstrap.repos]
+"~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git" }
+# "~/Notes" = { url = "https://github.com/directormac/notes.git" }
+
+# [mise_shell_activate](https://mise.jdx.dev/bootstrap/shell.html)
+[bootstrap.mise_shell_activate]
+zprofile = { enabled = true, mode = "shims" }
+zshrc = { enabled = true, mode = "activate" }
+
+# [dotfiles](https://mise.jdx.dev/dotfiles.html)
+[dotfiles]
+"~/.zshrc" = "~/.dotfiles/config/zsh/.zshrc"
+"~/.bashrc" = "~/.dotfiles/config/bash/.bashrc"
+"~/.tmux.conf" = "~/.dotfiles/config/tmux/.tmux.conf"
+"~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
+"~/.config/starship.toml" = "~/.dotfiles/config/starship/starship.toml"
+"~/.config/mimeapps.list" = "~/.dotfiles/config/mimeapps.list"
+"~/.config/alacritty" = "~/.dotfiles/config/alacritty"
+"~/.config/bat" = "~/.dotfiles/config/bat"
+"~/.config/btop/btop.conf" = "~/.dotfiles/config/btop/btop.conf"
+"~/.config/ghostty" = "~/.dotfiles/config/ghostty"
+"~/.config/fuzzel" = "~/.dotfiles/config/fuzzel"
+"~/.config/gtk-3.0" = "~/.dotfiles/config/gtk-3.0"
+"~/.config/gtk-4.0" = "~/.dotfiles/config/gtk-4.0"
+"~/.config/helix" = "~/.dotfiles/config/helix"
+"~/.config/hypr" = "~/.dotfiles/config/hypr"
+"~/.config/lazygit" = "~/.dotfiles/config/lazygit"
+"~/.config/lsd" = "~/.dotfiles/config/lsd"
+"~/.config/mise" = "~/.dotfiles/config/mise"
+"~/.config/mpd/mpd.conf" = "~/.dotfiles/config/mpd/mpd.conf"
+"~/.config/ncmpcpp" = "~/.dotfiles/config/ncmpcpp"
+"~/.config/nvim" = "~/.dotfiles/config/nvim"
+"~/.config/nvimp" = "~/.dotfiles/config/nvimp"
+"~/.config/picom" = "~/.dotfiles/config/picom"
+"~/.config/rmpc" = "~/.dotfiles/config/rmpc"
+"~/.config/rofi" = "~/.dotfiles/config/rofi"
+"~/.config/sesh" = "~/.dotfiles/config/sesh"
+"~/.config/sway" = "~/.dotfiles/config/sway"
+"~/.config/swaylock" = "~/.dotfiles/config/swaylock"
+"~/.config/swaync" = "~/.dotfiles/config/swaync"
+"~/.config/waybar" = "~/.dotfiles/config/waybar"
+"~/.config/wezterm" = "~/.dotfiles/config/wezterm"
+"~/.config/wlogout" = "~/.dotfiles/config/wlogout"
+"~/.config/xfce4" = "~/.dotfiles/config/xfce4"
+"~/.config/yazi" = "~/.dotfiles/config/yazi"
+
