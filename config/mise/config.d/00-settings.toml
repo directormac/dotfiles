@@ -1,0 +1,29 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
+# [Settings](https://mise.jdx.dev/configuration/settings.html#settings)
+[settings]
+
+experimental = true
+lockfile = true
+
+dotfiles.root = "~/.dotfiles"
+dotfiles.default_mode = "symlink"
+
+trusted_config_paths = ['~/.dotfiles', '~/Code']
+
+not_found_auto_install = true
+
+# [idiomatic version files](https://mise.jdx.dev/configuration.html#idiomatic-version-files)
+idiomatic_version_file_enable_tools = []
+npm = { package_manager = "bun" }
+
+#minimum_release_age = "0"
+minimum_release_age_excludes = ["bun", "node", "expert", "pnpm"]
+
+task.output = "prefix"

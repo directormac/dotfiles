@@ -142,7 +142,7 @@ function t() {
 zle -N t
 bindkey '\es' t
 
-export OPENAI_KEY=
+export OPENAI_KEY=""
 export GOPATH=$HOME/.go
 export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
