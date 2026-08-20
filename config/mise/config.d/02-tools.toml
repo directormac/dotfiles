@@ -12,7 +12,6 @@
 [tools]
 # Runtimes and Compilers
 
-
 rust = "latest"
 
 # OTP

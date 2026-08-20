@@ -25,10 +25,11 @@
 [bootstrap.user]
 login_shell = "/bin/zsh"
 
+
 # [repos](https://mise.jdx.dev/bootstrap/repos.html)
 [bootstrap.repos]
-"~/tmp/" = { url = "https://github.com/directormac/dotfiles.git" }
-"~/Notes" = { url = "https://github.com/directormac/notes.git" }
+"~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git" }
+# "~/Notes" = { url = "https://github.com/directormac/notes.git" }
 
 # [mise_shell_activate](https://mise.jdx.dev/bootstrap/shell.html)
 [bootstrap.mise_shell_activate]
@@ -80,6 +81,19 @@ zshrc = { enabled = true, mode = "activate" }
 # [services](https://mise.jdx.dev/bootstrap/services.html#system-services)
 [bootstrap.services]
 
+[bootstrap.services.docker.socket]
+state = "running"
+enabled = "true"
+
+# [users and groups](https://mise.jdx.dev/bootstrap/accounts.html#linux-users-and-groups)
+# [bootstrap.groups.docker]
+# system = true
+#
+# [bootstrap.users.docker]
+# system = true
+# group = "docker"
+# groups = ["docker"]
+
 # [secrets](https://mise.jdx.dev/bootstrap/secrets.html#bootstrap-secret-inputs)
 [bootstrap.secrets]
 
@@ -112,8 +126,11 @@ zshrc = { enabled = true, mode = "activate" }
 "pacman:git" = "latest"
 "pacman:7zip" = "latest"
 "pacman:curl" = "latest"
+"pacman:cifs-utils" = "latest"
+"pacman:nfs-utils" = "latest"
+"pacman:ntfs-3g" = "latest"
 "pacman:wget" = "latest"
-# "pacman:man" = "latest" # bug keeps reinstalling
+"pacman:man-db" = "latest"
 "pacman:lshw" = "latest"
 "pacman:github-cli" = "latest"
 "pacman:vim" = "latest"
@@ -121,10 +138,18 @@ zshrc = { enabled = true, mode = "activate" }
 "pacman:neovim" = "latest"
 "pacman:tree-sitter" = "latest"
 "pacman:tree-sitter-cli" = "latest"
+"pacman:nix" = "latest"
+"pacman:websocat" = "latest"
+
+# Terminal Emulators
+"pacman:ghostty" = "latest"
+"pacman:ghostty-shell-integration" = "latest"
+"pacman:alacritty" = "latest"
 
 # Terminal Essentials
 "pacman:bat" = "latest"
 "pacman:btop" = "latest"
+"pacman:cliphist" = "latest"
 "pacman:dust" = "latest"
 "pacman:fd" = "latest"
 "pacman:fzf" = "latest"
@@ -133,32 +158,108 @@ zshrc = { enabled = true, mode = "activate" }
 "pacman:lazygit" = "latest"
 "pacman:less" = "latest"
 "pacman:lsd" = "latest"
+"pacman:sd" = "latest"
 "pacman:navi" = "latest"
 "pacman:ripgrep" = "latest"
-"pacman:tmux" = "latest"
-"pacman:ueberzugpp" = "latest"
 "pacman:starship" = "latest"
 "pacman:tealdeer" = "latest"
-"pacman:websocat" = "latest"
+"pacman:tmux" = "latest"
+"pacman:trippy" = "latest"
+"pacman:tokei" = "latest"
+"pacman:ueberzugpp" = "latest"
 "pacman:yazi" = "latest"
 "pacman:yq" = "latest"
 "pacman:zoxide" = "latest"
+"pacman:rsync" = "latest"
+"pacman:sesh" = "latest"
+
 
 # Extra
 "pacman:ffmpeg" = "latest"
 "pacman:poppler" = "latest"
 "pacman:resvg" = "latest"
 
+
+# # Multimedia Terminal
+# "pacman:mpd" = "latest"
+# "pacman:rmpc" = "latest"
+#
+# # [Wayland Compositors](https://wiki.archlinux.org/title/Wayland)
+# # Common tools
+# "pacman:rofi" = "latest"
+# "pacman:satty" = "latest"
+# "pacman:slurp" = "latest"
+# "pacman:uwsm" = "latest"
+# "pacman:waybar" = "latest"
+# "pacman:wlogout" = "latest"
+#
+# # [Hyprland](https://wiki.archlinux.org/title/Hyprland)
+# "pacman:hyprland" = "latest"
+# "pacman:hyprlock" = "latest"
+# "pacman:hyprpaper" = "latest"
+# "pacman:hyprpicker" = "latest"
+# "pacman:hypridle" = "latest"
+#
+# # [Sway](https://wiki.archlinux.org/title/Sway)
+# "pacman:sway" = "latest"
+# "pacman:swaync" = "latest"
+# "pacman:swaybg" = "latest"
+# "pacman:swayidle" = "latest"
+# "pacman:swaylock" = "latest"
+
+# [Cosmic](https://wiki.archlinux.org/title/COSMIC)
+
+# Desktop common 
+# xdg-desktop-portal
+# xdg-desktop-portal-gtk
+# xdg-desktop-portal-hyprland
+# xdg-desktop-portal-wlr
+# xdg-user-dirs
+# xdg-utils
+# xorg-xwayland
+
+
+# Virtualization
+# "pacman:virt-manager" = "latest"
+# "pacman:qemu-desktop" = "latest"
+# "pacman:libvirt" = "latest"
+# "pacman:dnsmasq" = "latest"
+# "pacman:spice-vdagent" = "latest"
+
+# [Docker](https://wiki.archlinux.org/title/Docker)
+"pacman:docker" = "latest"
+"pacman:docker-compose" = "latest"
+
+
+# # Desktop Apps
+# "pacman:mpv" = "latest"
+# "pacman:evince" = "latest"
+# "pacman:feh" = "latest"
+# "pacman:file-roller" = "latest"
+# "pacman:firefox" = "latest"
+# "pacman:foliate" = "latest"
+# "pacman:galculator" = "latest"
+# "pacman:obs-studio" = "latest"
+# "pacman:pavucontrol" = "latest"
+# "pacman:vlc" = "latest"
+# "pacman:vlc-plugins-all" = "latest"
+
+
 # Fonts
 "pacman:noto-fonts" = "latest"
-"pacman:noto-fonts-emoji" = "latest"
 "pacman:noto-fonts-cjk" = "latest"
-# "pacman:ttf-font-awesome" = "latest"
-"pacman:ttf-noto-nerd" = "latest"
+"pacman:noto-fonts-emoji" = "latest"
+"pacman:ttf-dejavu-nerd" = "latest"
+"pacman:ttf-firacode-nerd" = "latest"
+"pacman:ttf-jetbrains-mono-nerd " = "latest"
 "pacman:ttf-nerd-fonts-symbols" = "latest"
 "pacman:ttf-nerd-fonts-symbols-common" = "latest"
 "pacman:ttf-nerd-fonts-symbols-mono" = "latest"
+"pacman:ttf-noto-nerd" = "latest"
+"pacman:woff2-font-awesome" = "latest"
 
 
 [tasks.bootstrap]
 run = "gh auth status || gh auth login"
+
+
