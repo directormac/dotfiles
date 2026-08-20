@@ -15,6 +15,7 @@
 
 # CLI Reference
 # [mise bootstrap](https://mise.jdx.dev/cli/bootstrap.html)
+#
 # Run on new machine
 # `mise trust`
 # `mise bootstrap --yes`
