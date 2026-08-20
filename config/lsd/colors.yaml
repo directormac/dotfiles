@@ -1,0 +1,47 @@
+user: "#cdd6f4" # text
+group: "#cdd6f4" # text
+permission:
+  read: "#a6e3a1" # green
+  write: "#f9e2af" # yellow
+  exec: "#f38ba8" # red
+  exec-sticky: "#f5c2e7" # pink
+  no-access: "#6c7086" # overlay0
+date:
+  hour: "#89b4fa" # blue
+  day: "#89b4fa" # blue
+  older: "#94e2d5" # teal
+size:
+  none: "#6c7086" # overlay0
+  small: "#a6e3a1" # green
+  medium: "#f9e2af" # yellow
+  large: "#fab387" # peach
+inode:
+  valid: "#a6e3a1" # green
+  invalid: "#f38ba8" # red
+links:
+  valid: "#89b4fa" # blue
+  invalid: "#f38ba8" # red
+tree-edge: "#6c7086" # overlay0
+extension:
+  "nix": "#cba6f7" # mauve
+  "rs": "#fab387" # peach
+  "js": "#f9e2af" # yellow
+  "ts": "#89b4fa" # blue
+  "json": "#f9e2af" # yellow
+  "md": "#89dceb" # sky
+file-type:
+  dir:
+    uid: "#cba6f7" # mauve
+    no-uid: "#cba6f7" # mauve
+  file:
+    uid: "#cdd6f4" # text
+    no-uid: "#cdd6f4" # text
+  symlink:
+    default: "#94e2d5" # teal
+    broken: "#f38ba8" # red
+  device:
+    char: "#f5c2e7" # pink
+    block: "#f5c2e7" # pink
+  pipe: "#f2cdcd" # flamingo
+  socket: "#f2cdcd" # flamingo
+  special: "#f5e0dc" # rosewater

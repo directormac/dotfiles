@@ -1,0 +1,55 @@
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "1"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "2"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "3"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "4"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "5"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "6"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "7"
+mods = "Control"
+
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "/"
+mods = "Control"
