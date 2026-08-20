@@ -1,38 +1,59 @@
 #:schema https://mise.jdx.dev/schema/mise.json
 
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
 [env]
 # VP_PR_VERSION = ""
 
 [tools]
-elixir = "1.19.5-otp-28"
-erlang = "28.4.1"
-"aqua:elixir-lang/expert" = "0.1.0"
-java = "openjdk-17"
-jq = "1.7"
-kotlin = "2.1.0"
+# Runtimes
+elixir = "1.20.2-otp-28"
+erlang = "28.5"
+
 node = "latest"
 bun = "latest"
+
+java = "openjdk-17"
+kotlin = "2.1.0"
+
+# Package Managers
 pnpm = "latest"
-pitchfork = "2.0.0"
+uv = "latest"
+aube = "latest"
+
+# LSP
+expert = "0.1.8"
+
+# Utils
+jq = "1.7"
+pitchfork = "latest"
+watchexec = "latest"
+
+# Terminal Goodies
+herdr = "latest"
+
+# Build tools
+bazel = "latest"
+
+# Harness
 opencode = "latest"
 "npm:context-mode" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "cargo:zeroclawlabs" = "latest"
-uv = "latest"
-aube = "latest"
 copilot = "latest"
 portless = "latest"
 agy = "latest"
-herdr = "latest"
 
 [settings]
 trusted_config_paths = ['~/.dotfiles', '~/Code']
-# env_file = '.env.development'
 experimental = true
 not_found_auto_install = true
-task_output = "prefix"
+task.output = "prefix"
 idiomatic_version_file_enable_tools = []
 npm = { package_manager = "bun" }
+minimum_release_age_excludes = ["bun", "expert"]
 
-[shell_alias]
-phxdev = "iex --name phxdev@127.0.0.1 --cookie secret -S mix phx.server"

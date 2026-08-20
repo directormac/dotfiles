@@ -20,7 +20,7 @@ global.lazyvim_blink_main = false
 -- global.root_spec = { "cwd", "lsp", { ".git", "lua" } }
 global.lazyvim_picker = "snacks"
 global.lazydev_enabled = true
-global.lazyvim_ts_lsp = "tsgo"
+global.lazyvim_ts_lsp = "vtsls"
 -- global.vscode = true
 
 set.clipboard = "unnamedplus"

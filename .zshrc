@@ -484,8 +484,4 @@ vp () {
 . "$HOME/.vite-plus/env"
 
 
-# alias claude-mem='bun "/home/artifex/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
-
-
-
 eval "$(mise activate zsh)"

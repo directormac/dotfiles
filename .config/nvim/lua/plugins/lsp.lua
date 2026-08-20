@@ -43,7 +43,7 @@ return {
         "ruff",
         "rust-analyzer",
         "taplo",
-        "tsgo",
+        -- "tsgo",
         "oxfmt",
         "oxlint",
         "svelte-language-server",
