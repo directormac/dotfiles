@@ -9,7 +9,8 @@
 # [Environments](https://mise.jdx.dev/environments/#environments)
 
 [env]
+MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/rustup"
+MISE_CARGO_HOME = "{{env.HOME}}/.local/share/cargo"
 
-LAUNCH_EDITOR = "launch-editor-nvim"
 
 [vars] # [Task Vars](https://mise.jdx.dev/tasks/task-configuration.html#vars)

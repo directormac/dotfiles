@@ -12,6 +12,8 @@
 experimental = true
 lockfile = true
 
+auto_env = true
+
 dotfiles.root = "~/.dotfiles"
 dotfiles.default_mode = "symlink"
 
