@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/.config/"
+
+# if [ "$1" == "-f" ]; then
+#   wezterm start --always-new-process --class 'wezterm-float'
+# elif [ "$1" == "-F" ]; then
+#   wezterm start --class 'wezterm-fullscreen'
+# else
+#   wezterm start
+# fi
+
+# if [ "$1" == "-f" ]; then
+#   # ghostty --class="ghostty.float"
+#   ghostty --class="ghostty.float" --window-width=120 --window-height=35
+# elif [ "$1" == "-F" ]; then
+#   ghostty --class="ghostty.fullscreen" --fullscreen=true
+# else
+#   ghostty
+# fi
+
+if [ "$1" == "-f" ]; then
+  shift # remove the -f from the arguments
+  ghostty --class="ghostty.float" --window-width=120 --window-height=35 "$@"
+elif [ "$1" == "-F" ]; then
+  shift
+  ghostty --class="ghostty.fullscreen" --fullscreen=true "$@"
+else
+  ghostty "$@"
+fi

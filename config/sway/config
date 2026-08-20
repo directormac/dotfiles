@@ -1,0 +1,99 @@
+
+### Variables
+set $wallpapers $HOME/.wallpapers
+set $screenshot ~/.config/sway/scripts/screenshot
+set $rofi_screenshot ~/.config/sway/scripts/rofi_screenshot
+set $rofi_apps ~/.config/sway/scripts/rofi_apps
+set $rofi_emoji ~/.config/sway/scripts/rofi_emoji
+set $rofi_clipboard ~/.config/sway/scripts/rofi_clipboard
+set $timeshift_launch ~/.config/sway/scripts/timeshift_launch
+set $colorpicker ~/.config/sway/scripts/colorpicker
+
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $term ~/.config/sway/scripts/term
+set $open_in_term $term
+set $menu exec rofi -show
+set $file_manager thunar
+set $web_browser zen-browser
+set $mod Mod4
+set $alt Mod1
+
+## General
+
+swaybg_command swaybg
+swaynag_command swaynag
+
+bar {
+ swaybar_command waybar
+}
+
+default_orientation horizontal
+workspace_layout default
+xwayland enable
+focus_follows_mouse yes
+floating_modifier $mod normal
+mouse_warping none
+popup_during_fullscreen smart
+workspace_auto_back_and_forth yes
+focus_on_window_activation smart
+show_marks yes
+
+#  Window Borders
+default_border none
+default_border pixel 1
+default_floating_border pixel 0
+smart_borders off
+
+# Titles
+
+titlebar_border_thickness 1
+titlebar_padding 1 1
+title_align center
+for_window [class=".*"] title_format "%class | %title"
+for_window [all] title_window_icon off
+
+# Gaps
+gaps inner 0 
+gaps outer 0
+smart_gaps off
+
+
+# Turn on numlock by default
+input type:keyboard xkb_numlock enabled
+
+
+# Assign workspace to outputs
+
+set $PM DP-2
+set $SM DP-3
+
+workspace 1 output $PM
+workspace 2 output $PM
+workspace 3 output $PM
+workspace 4 output $PM
+workspace 5 output $PM
+workspace 6 output $SM
+workspace 7 output $SM
+workspace 8 output $SM
+workspace 9 output $SM
+workspace 10 output $SM
+
+## Executables
+
+# Notification Daemon Launch on init
+exec swaync
+# Audio Idle Inhibitor
+exec sway-audio-idle-inhibit
+# Cliphist watcher
+exec wl-paste --watch cliphist store
+# Launch Firefox on init
+exec $web_browser
+
+include /etc/sway/config.d/*
+include ~/.config/sway/config.d/*
+
+

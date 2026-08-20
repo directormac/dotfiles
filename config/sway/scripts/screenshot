@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+background="$(cat $HOME/.config/rofi/mini.rasi | grep 'background:' | cut -d':' -f2 | tr -d ' '\;)"
+accent="$(cat $HOME/.config/rofi/mini.rasi | grep 'selected:' | cut -d':' -f2 | tr -d ' '\;)"
+
+time=$(date +%Y-%m-%d-%H-%M-%S)
+geometry=$(swaymsg -pt get_outputs | grep 'Current mode:' | cut -d':' -f2 | cut -d'@' -f1 | tr -d ' ')
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+file="Screenshot_${time}_${geometry}.png"
+
+iDIR="$HOME/.config/swaync/icons"
+
+notify_cmd_shot="notify-send -h string:x-canonical-private-synchronous:sys-notify-shot -u low -i ${iDIR}/picture.png"
+notify_view() {
+  # Notify user of copy (the actual copy happens in the shot function)
+  ${notify_cmd_shot} "Copied to clipboard."
+  
+  paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga &>/dev/null &
+  
+  if command -v satty &> /dev/null; then
+    # Run satty for optional annotation, but don't block
+    satty -f "${dir}/${file}" -o "${dir}/${file}" --copy-command "wl-copy"
+  fi
+
+  if [[ -f "$dir/$file" ]]; then
+    ${notify_cmd_shot} "Screenshot Saved."
+  else
+    ${notify_cmd_shot} "Screenshot Deleted."
+  fi
+}
+
+countdown() {
+  for sec in $(seq $1 -1 1); do
+    notify-send -h string:x-canonical-private-synchronous:sys-notify-count -t 1000 -i "$iDIR"/timer.png "Taking shot in : $sec"
+    sleep 1
+  done
+}
+
+shotnow() {
+  mkdir -p "${dir}"
+  cd "${dir}" && sleep 0.5 && grim - | tee "$file" | wl-copy
+  notify_view
+}
+
+shot5() {
+  countdown '5'
+  mkdir -p "${dir}"
+  sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
+  notify_view
+}
+
+shot10() {
+  countdown '10'
+  mkdir -p "${dir}"
+  sleep 1 && cd "${dir}" && grim - | tee "$file" | wl-copy
+  notify_view
+}
+
+shotwin() {
+  mkdir -p "${dir}"
+  # Focused window geometry for Sway
+  geometry=$(swaymsg -t get_tree | jq -r '.. | select(.focused? == true) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
+  if [[ -n "$geometry" ]]; then
+    cd "${dir}" && grim -g "$geometry" - | tee "$file" | wl-copy
+    notify_view
+  fi
+}
+
+shotarea() {
+  mkdir -p "${dir}"
+  # Area selection for Sway
+  area=$(slurp -b "${background:1}CC" -c "${accent:1}ff" -s "${accent:1}0D" -w 2)
+  if [[ -n "$area" ]]; then
+    cd "${dir}" && grim -g "$area" - | tee "$file" | wl-copy
+    notify_view
+  fi
+}
+
+if [[ ! -d "$dir" ]]; then
+  mkdir -p "$dir"
+fi
+
+if [[ "$1" == "--now" ]]; then
+  shotnow
+elif [[ "$1" == "--win" ]]; then
+  shotwin
+elif [[ "$1" == "--area" ]]; then
+  shotarea
+else
+  echo -e "Available Options : --now --win --area"
+fi
+
+exit 0

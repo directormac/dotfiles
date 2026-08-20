@@ -1,0 +1,183 @@
+
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
+# Kill active window
+bindsym $mod+c kill
+
+# Terminal 
+bindsym $mod+Return exec $term	
+bindsym $mod+Shift+Return 		exec $term -f
+bindsym $mod+$alt+Return 		exec $term -F
+
+bindsym $mod+m exec "$term -f -e btop"
+
+# Apps
+bindsym $mod+e exec $file_manager
+bindsym $mod+w exec $web_browser
+bindsym ctrl+alt+comma exec pavucontrol
+bindsym ctrl+alt+period exec galculator
+bindsym $mod+t exec $timeshift_launch
+bindsym $mod+comma exec $rofi_emoji
+bindsym $mod+p exec $colorpicker
+bindsym $mod+slash exec $rofi_clipboard 
+
+
+# Wlogout
+bindsym $mod+Shift+x exec wlogout
+
+# Output
+bindsym $mod+End output $SM disable
+bindsym $mod+Home output $SM adaptive_sync enabled ; output $SM pos 2560 0 res 2560x1440@144Hz
+
+# output $monitor_main adaptive_sync enabled 
+# output $monitor_aux disable
+# output $monitor_main mode 1920x1080@144Hz pos 0 0 background /home/john/Pictures/hREDS.jpg fill #000000
+# bindsym $mod+Delete output $monitor_aux disable ; output $monitor_main mode 1920x1080@144Hz pos 0 0 background /home/john/Pictures/hREDS.jpg fill #000000
+# bindsym $mod+Insert output $monitor_aux enable mode 1920x1080@144Hz pos 0 0 transform 270 background /home/john/Pictures/HelsinkiReds.png center #000000 ; output $monitor_main mode 1920x1080@144Hz pos 1080 0 background /home/john/Pictures/hREDS.jpg fill #000000
+
+# Rofi
+bindsym $mod+d exec $rofi_apps
+bindsym $mod+grave exec $menu
+bindsym $mod+s 					exec $rofi_screenshot
+
+# -- Screenshots --
+bindsym Print 					exec "$screenshot --now"
+bindsym $alt+Print 				exec "$screenshot --in5"
+bindsym Shift+Print 			exec "$screenshot --in10"
+bindsym Control+Print 			exec "$screenshot --win"
+bindsym $mod+Print 				exec "$screenshot --area"
+
+
+## Send Notification
+##
+set $send-notify exec --no-startup-id notify-send -u low -h string:x-canonical-private-synchronous:swayconfig
+
+## Splitting containers
+##
+## split in horizontal orientation
+bindsym $mod+b split horizontal, $send-notify 'Split Horizontally'
+## split in vertical orientation
+bindsym $mod+v split vertical, $send-notify 'Split Vertically'
+## toggle split
+bindsym $mod+g split toggle, $send-notify 'Split Mode'
+
+
+## Manipulating layout
+##
+## change container layout (stacked, tabbed, toggle split)
+## Set stacking layout
+bindsym $mod+Shift+s layout stacking, $send-notify 'Layout - Stacking'
+## Set tabbed layout
+bindsym $mod+Shift+t layout tabbed, $send-notify 'Layout - Tabbed'
+## Set default layout
+bindsym $mod+Shift+d layout default, $send-notify 'Layout - Default'
+## Toggle between stacking/tabbed/split:
+bindsym $mod+Shift+grave layout toggle, $send-notify 'Cycling Layouts'
+## Toggle between horizontal/vertical:
+bindsym $mod+Shift+v layout toggle split, $send-notify 'Layout - Hor/Vert'
+## Toggle fullscreen
+bindsym $mod+f fullscreen toggle, $send-notify 'Toggled Fullscreen'
+## Toggle floating/tiling
+bindsym $mod+space floating toggle, $send-notify 'Toggled Floating Mode'
+
+
+# # Move focus to the parent container
+# Focusing
+## Sets focus to the parent container of the current container.
+bindsym $mod+a focus parent
+## The opposite of `focus parent`, sets the focus to the last focused child container.
+bindsym $mod+z focus child
+## Automatically sets focus to the adjacent container.
+bindsym $mod+Tab focus next
+## Toggles focus between floating/tiling containers.
+bindsym $mod+Shift+space focus mode_toggle
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+# Or use $mod+[up|down|left|right]
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+## Moving containers
+##
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+# Ditto, with arrow keys
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+## Move floating container to the center of all outputs (floating only)
+bindsym $mod+$alt+c move absolute position center
+## Move container to the current position of the cursor (floating only)
+bindsym $mod+$alt+p move position mouse
+
+
+
+## Resizing containers/windows
+##
+bindsym $mod+$alt+Left resize shrink width 10 px or 10 ppt
+bindsym $mod+$alt+Down resize grow height 10 px or 10 ppt
+bindsym $mod+$alt+Up resize shrink height 10 px or 10 ppt
+bindsym $mod+$alt+Right resize grow width 10 px or 10 ppt
+
+## Sticky floating windows (floating only)
+##
+bindsym $mod+o sticky toggle, $send-notify 'Toggled Sticky'
+
+#------
+
+## Changing border style
+##
+bindsym $mod+y border toggle, $send-notify 'Toggled Borders'
+
+#------
+
+## Scratchpad
+##
+## Make the currently focused window a scratchpad
+bindsym $mod+minus move scratchpad, $send-notify 'Scratchpad'
+## Show the first scratchpad window
+bindsym $mod+Shift+minus scratchpad show
+
+#------
+
+# Reload Sway Config
+bindsym $mod+Shift+r reload, $send-notify 'Configuration Reloaded!'
+## quit sway session
+bindsym $mod+Shift+q exit
+
+# Workspaces:
+#
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+# Note: workspaces can have any name you want, not just numbers.
+# We just use 1-10 as the default.

@@ -1,0 +1,168 @@
+#:schema https://starship.rs/config-schema.json
+
+# [Config](https://starship.rs/config/)
+# [Custom](https://starship.rs/config/#custom-commands)
+# [Advance](https://starship.rs/advanced-config/)
+# [Showcase](https://github.com/starship/starship/discussions/1107)
+
+add_newline = false
+palette = "catppuccin_mocha"
+continuation_prompt = '▶▶ '
+scan_timeout = 1000
+command_timeout = 5000
+
+format = """
+$all\
+$line_break\
+$directory\
+$line_break\
+$character"""
+
+right_format = """
+$cmd_duration $jobs $time
+"""
+
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+
+[fill]
+symbol = " "
+
+[directory]
+style = "fg:mauve"
+read_only = " "
+truncation_length = 4
+truncate_to_repo = true
+# truncation_symbol = "…/"
+
+[character]
+success_symbol = '[❯](mauve)'
+error_symbol = '[❯](red)'
+# vimcmd_symbol = '[❮](bold purple) '
+vimcmd_symbol = '[](bold mauve) '
+vimcmd_replace_one_symbol = '[](bold mauve)'
+vimcmd_replace_symbol = '[](bold mauve)'
+vimcmd_visual_symbol = '[](bold yellow)'
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "green"
+
+[jobs]
+symbol = ""
+style = "bold red"
+number_threshold = 1
+format = "[$symbol]($style)"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "cyan"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[git_metrics]
+disabled = false
+
+[cmd_duration]
+show_milliseconds = true
+format = " in $duration "
+style = "fg:text"
+disabled = false
+# show_notifications = true
+# min_time_to_notify = 45000
+
+[memory_usage]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[mise]
+disabled = false
+
+
+[time]
+disabled = false
+style = "bold white"
+format = '[[  $time ](fg:text)]($style)'
+
+# [cmd_duration]
+# show_milliseconds = true
+# format = " in $duration "
+# style = "bg:lavender"
+# disabled = false
+# show_notifications = true
+# min_time_to_notify = 45000
+
+# [time]
+# disabled = false
+# style = "bold white"
+# format = "[$time]($style)"
+
+[hostname]
+ssh_only = false
+format = "<[$hostname]($style)>"
+trim_at = "-"
+style = "bold dimmed white"
+disabled = true
+
+[username]
+style_user = "bold dimmed blue"
+show_always = false
+
+[custom.stunnel]
+when = "ps aux | grep stunnel | grep -v grep"
+command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')"
+style = "red"
+format = "[TUNNEL OPEN for $output]($style)"
+
+
+# [custom.ssh_no_keys]
+# description = "SSH missing keys"
+# when = "ssh-add -l | grep -q 'no identities'"
+# command = "echo 🚫"
+# format = "$symbol[$output]($style) "
+# shell = ["bash", "--noprofile", "--norc"]
+# symbol = "🔑"
+# style = "bold fg:red"
+#
+# [custom.ssh_keys]
+# description = "SSH key count"
+# when = "ssh-add -l | grep -v -q 'no identities'"
+# command = "ssh-add -l | grep -v 'no identities' | wc -l"
+# format = "$symbol[$output]($style) "
+# shell = ["bash", "--noprofile", "--norc"]
+# symbol = "🔑"
+# style = "bold fg:green"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+DESKTOP_FILE="$HOME/.local/share/applications/nvim-float.desktop"
+
+# Create the directory if it doesn't exist
+mkdir -p "$(dirname "$DESKTOP_FILE")"
+
+cat <<EOF >"$DESKTOP_FILE"
+[Desktop Entry]
+Type=Application
+Name=Neovim (Float)
+Comment=Open in floating Neovim
+Exec=$HOME/.config/sway/scripts/term -f -e nvim %F
+Icon=nvim
+Terminal=false
+Categories=Development;TextEditor;
+MimeType=text/plain;text/markdown;text/x-shellscript;application/x-zerosize;
+EOF
+
+# Update the desktop database so the system sees it
+update-desktop-database "$HOME/.local/share/applications"
