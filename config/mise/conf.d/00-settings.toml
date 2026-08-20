@@ -19,6 +19,8 @@ dotfiles.default_mode = "symlink"
 
 trusted_config_paths = ['~/.dotfiles/config', '~/Code']
 
+ignored_config_paths = ['~/.dotfiles/.config']
+
 not_found_auto_install = true
 
 # [idiomatic version files](https://mise.jdx.dev/configuration.html#idiomatic-version-files)

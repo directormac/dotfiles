@@ -1,0 +1,228 @@
+-- This file is to configure all related oxc toooling
+
+-- [nvim-lint](https://github.com/mfussenegger/nvim-lint)
+-- [oxlint(conform)](https://github.com/stevearc/conform.nvim/blob/master/lua/conform/formatters/oxlint.lua)
+-- [oxlint(lspconfig)](https://github.com/neovim/nvim-lspconfig/blob/master/lsp/oxlint.lua)
+
+local oxlintSupported = require("lspconfig.configs.oxlint").default_config.filetypes
+local oxfmtSupported = {
+  "astro",
+  "javascript",
+  "javascriptreact",
+  "svelte",
+  "typescript",
+  "typescriptreact",
+  "vue",
+  "toml",
+  "json",
+  "jsonc",
+  "json5",
+  "yaml",
+  "html",
+  "handlebars",
+  "css",
+  "scss",
+  "less",
+  "graphql",
+  "markdown",
+}
+
+local allSupported = {}
+local seen = {}
+for _, ft in ipairs(oxlintSupported) do
+  if not seen[ft] then
+    seen[ft] = true
+    table.insert(allSupported, ft)
+  end
+end
+for _, ft in ipairs(oxfmtSupported) do
+  if not seen[ft] then
+    seen[ft] = true
+    table.insert(allSupported, ft)
+  end
+end
+
+return {
+  {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "oxfmt", "oxlint" } },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ---@type lspconfig.settings.oxlint
+        oxlint = {},
+        ---@type lspconfig.settings.oxfmt
+        oxfmt = {},
+      },
+      setup = {
+        oxlint = function()
+          Snacks.util.lsp.on(function(bufnr, client)
+            if client.name ~= "oxlint" then
+              return
+            end
+            -- Register a custom formatter that calls oxc.fixAll synchronously
+            local oxlint_fixer = {
+              name = "oxlint: fixAll",
+              primary = false,
+              priority = 300, -- Run before oxfmt (priority 100)
+              sources = function()
+                return { client }
+              end,
+              format = function(buf)
+                local result = client:request_sync("workspace/executeCommand", {
+                  command = "oxc.fixAll",
+                  arguments = { { uri = vim.uri_from_bufnr(buf) } },
+                }, 2000, buf)
+
+                if result and result.err then
+                  vim.notify(result.err.message, vim.log.levels.ERROR)
+                end
+              end,
+            }
+
+            LazyVim.format.register(oxlint_fixer)
+          end)
+        end,
+        oxfmt = function()
+          local formatter = LazyVim.lsp.formatter({
+            name = "oxfmt: lsp",
+            primary = true,
+            priority = 100,
+            filter = "oxfmt",
+          })
+          LazyVim.format.register(formatter)
+        end,
+      },
+    },
+  },
+
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = function(_, opts)
+      -- Ensure formatter lists exist
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
+
+      -- Register oxlint and oxfmt for all relevant filetypes.
+      -- Order matters: conform runs them sequentially in this order.
+      for _, ft in ipairs(allSupported) do
+        local formatters = opts.formatters_by_ft[ft] or {}
+
+        -- Ensure oxlint runs first (fix), then oxfmt (format)
+        local hasOxlint = vim.tbl_contains(formatters, "oxlint")
+        local hasOxfmt = vim.tbl_contains(formatters, "oxfmt")
+
+        if not hasOxlint then
+          table.insert(formatters, 1, "oxlint")
+        end
+        if not hasOxfmt then
+          table.insert(formatters, "oxfmt")
+        end
+
+        opts.formatters_by_ft[ft] = formatters
+      end
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      opts.events = { "BufWritePost", "BufReadPost", "InsertLeave", "TextChanged" }
+      opts.linters.oxlint = {
+        stdin = false,
+        args = {
+          function()
+            return vim.api.nvim_buf_get_name(0)
+          end,
+          "--",
+          "--format",
+          "json",
+        }, -- Switched to JSON format
+        stream = "stdout",
+        ignore_exitcode = true,
+        parser = function(output, bufnr)
+          if output == "" then
+            return {}
+          end
+
+          -- Extract the JSON array cleanly (ignores any trailing terminal text)
+          local json_str = output:match("%[.*%]") or output
+          local success, decoded = pcall(vim.json.decode, json_str)
+
+          if not success or not decoded then
+            return {}
+          end
+
+          -- Handle edge cases depending on if oxlint wraps the array in an object
+          local items = {}
+          if type(decoded) == "table" then
+            items = decoded[1] and decoded or (decoded.diagnostics or {})
+          end
+
+          local diagnostics = {}
+          for _, item in ipairs(items) do
+            local lnum = 0
+            local col = 0
+            local end_lnum = 0
+            local end_col = 0
+
+            -- Start with the base message
+            local full_message = item.message
+
+            -- Oxc labels provide 1-indexed lines/columns, Neovim API needs 0-indexed
+            if item.labels and #item.labels > 0 then
+              local span = item.labels[1].span
+              lnum = math.max(0, (span.line or 1) - 1)
+              col = math.max(0, (span.column or 1) - 1)
+              end_lnum = lnum
+              end_col = col + (span.length or 0)
+
+              -- Append label details to create a multi-line message
+              for _, label_obj in ipairs(item.labels) do
+                if label_obj.label then
+                  -- The \n forces Trouble and the floating window to render a new line
+                  full_message = full_message .. "\n  └─ " .. label_obj.label
+                end
+              end
+            end
+
+            local severity = vim.diagnostic.severity.ERROR
+            if item.severity == "warning" then
+              severity = vim.diagnostic.severity.WARN
+            end
+
+            table.insert(diagnostics, {
+              lnum = lnum,
+              col = col,
+              end_lnum = end_lnum,
+              end_col = end_col,
+              severity = severity,
+              source = "oxlint",
+              message = full_message, -- Use the newly constructed string
+              code = item.code,
+              reference = {
+                url = item.url,
+                related = item.related or {},
+              },
+            })
+          end
+
+          return diagnostics
+        end,
+      }
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = function(_, opts)
+      opts.events = { "BufWritePost", "BufReadPost", "InsertLeave", "TextChanged" }
+      opts.linters_by_ft = opts.linters_by_ft or {}
+      for _, ft in ipairs(oxlintSupported) do
+        opts.linters_by_ft[ft] = opts.linters_by_ft[ft] or {}
+        table.insert(opts.linters_by_ft[ft], "oxlint")
+      end
+    end,
+  },
+}

@@ -10,4 +10,6 @@
 # This file is for some custom overrides 
 # [Configuration Heirarchy](https://mise.jdx.dev/configuration.html#visual-configuration-hierarchy)
 
-
+# [settings](./conf.d/00-settings.toml)
+# [bootstrap](./conf.d/01-bootstrap.toml)
+# [dotfiles](./conf.d/02-dotfiles.toml)

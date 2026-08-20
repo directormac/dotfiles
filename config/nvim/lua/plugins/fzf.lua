@@ -1,32 +1,52 @@
-return {
-	{
-		"ibhagwan/fzf-lua",
-		-- optional for icon support
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		-- or if using mini.icons/mini.nvim
-		-- dependencies = { "echasnovski/mini.icons" },
-		keys = {
-			{ "<c-j>", "<c-j>", ft = "fzf", mode = "t", nowait = true },
-			{ "<c-k>", "<c-k>", ft = "fzf", mode = "t", nowait = true },
-			{
-				"<leader>,",
-				"<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>",
-				desc = "Switch Buffer",
-			},
-			{ "<leader>fb", "<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
-			{ "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
-			{ "<leader>fr", "<cmd>FzfLua oldfiles<cr>", desc = "Recent" },
-			-- git
-			{ "<leader>gc", "<cmd>FzfLua git_commits<CR>", desc = "Commits" },
-			{ "<leader>gs", "<cmd>FzfLua git_status<CR>", desc = "Status" },
-		},
-		opts = {
-			fzf_colors = {
-				true,
-				bg = "-1",
-				gutter = "-1",
-			},
-		},
-	},
+local file_ignore_patterns = {
+  ".git",
+  -- Elixir Ignores
+  "_build",
+  "deps",
+  ".elixir_ls",
+  ".expert",
+  -- JS Ignores
+  "node_modules",
+  "**-lock.yaml",
+  "lazy-lock.json",
+  "dist",
+  "build",
+  ".svelte-kit",
+  ".nuxt",
+  ".turbo",
+  ".tsup",
+  ".next",
+  ".target",
+  "test-results",
+  ".yarn",
+  "playwright-report",
+  -- Others
+  ".gradle",
+  "src/content/docs/reference/.*",
 }
 
+return {
+  {
+    "ibhagwan/fzf-lua",
+    opts = function(_, opts)
+      return vim.tbl_deep_extend("force", opts, {
+
+        file_ignore_patterns = file_ignore_patterns,
+
+        files = {
+          cwd_prompt = true,
+          find_opts = [[-type f -not -path '*/\.git/*']],
+          -- rg_opts = [[--color=never --files --hidden --follow -g "!.git"]],
+          -- fd_opts = [[--color=never --type f --hidden --follow --exclude .git]],
+        },
+        grep = {
+          rg_glob = true,
+          glob_flag = "--iglob",
+          glob_separator = "%s%-%-",
+          resume = true,
+          cwd_prompt = true,
+        },
+      })
+    end,
+  },
+}

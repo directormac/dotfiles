@@ -1,5 +1,6 @@
 return {
   {
+
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
@@ -19,6 +20,9 @@ return {
           "markdown",
           -- "markdown_inline",
           "prisma",
+          "tera",
+          "jinja",
+          "kdl",
           "svelte",
           "java",
           "kotlin",
@@ -62,7 +66,12 @@ return {
           -- "zsh",
         })
       end
+      -- table.insert(opts.incremental_selection, { enable = false })
+      -- table.insert(opts.autotag, { enable = true })
     end,
   },
+  {
+    "davidmh/mdx.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
 }
-
