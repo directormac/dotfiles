@@ -17,7 +17,7 @@ auto_env = true
 dotfiles.root = "~/.dotfiles"
 dotfiles.default_mode = "symlink"
 
-trusted_config_paths = ['~/.dotfiles', '~/Code']
+trusted_config_paths = ['~/.dotfiles/config', '~/Code']
 
 not_found_auto_install = true
 
