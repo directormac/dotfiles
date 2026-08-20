@@ -1,1 +1,21 @@
 #:schema https://mise.jdx.dev/schema/mise.json
+
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
+# [How](https://mise.jdx.dev/bootstrap.html#how-it-runs)
+# [What](https://mise.jdx.dev/bootstrap.html#what-goes-where)
+# [Workflow](https://mise.jdx.dev/bootstrap.html#common-workflows)
+# [Machine Bootstraping](https://mise.jdx.dev/tips-and-tricks.html#machine-bootstrapping)
+# [Remote bootstrap](https://mise.jdx.dev/bootstrap/remote.html#remote-bootstrap-over-ssh)
+# [Bootstrap script](https://mise.jdx.dev/tips-and-tricks.html#bootstrap-script)
+
+# CLI Reference
+# [mise bootstrap](https://mise.jdx.dev/cli/bootstrap.html)
+#
+# Run on new machine
+# `mise trust`
+# `mise bootstrap --yes`

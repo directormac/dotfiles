@@ -20,7 +20,7 @@
 # `mise trust`
 # `mise bootstrap --yes`
 
-[bootstrap]
+# [bootstrap]
 # config_roots = ["bundles/*"]
 
 [bootstrap.user]
@@ -262,5 +262,4 @@ zshrc = { enabled = true, mode = "activate" }
 
 [tasks.bootstrap]
 run = "gh auth status || gh auth login"
-
 
