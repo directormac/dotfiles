@@ -1,0 +1,137 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
+# [How](https://mise.jdx.dev/bootstrap.html#how-it-runs)
+# [What](https://mise.jdx.dev/bootstrap.html#what-goes-where)
+# [Workflow](https://mise.jdx.dev/bootstrap.html#common-workflows)
+# [Machine Bootstraping](https://mise.jdx.dev/tips-and-tricks.html#machine-bootstrapping)
+# [Remote bootstrap](https://mise.jdx.dev/bootstrap/remote.html#remote-bootstrap-over-ssh)
+# [Bootstrap script](https://mise.jdx.dev/tips-and-tricks.html#bootstrap-script)
+
+# CLI Reference
+# [mise bootstrap](https://mise.jdx.dev/cli/bootstrap.html)
+# Run on new machine
+# `mise trust`
+# `mise bootstrap --yes`
+
+[bootstrap]
+# config_roots = ["bundles/*"]
+
+[bootstrap.user]
+login_shell = "/bin/zsh"
+
+# [repos](https://mise.jdx.dev/bootstrap/repos.html)
+[bootstrap.repos]
+"~/tmp/" = { url = "https://github.com/directormac/dotfiles.git" }
+"~/Notes" = { url = "https://github.com/directormac/notes.git" }
+
+# [mise_shell_activate](https://mise.jdx.dev/bootstrap/shell.html)
+[bootstrap.mise_shell_activate]
+zprofile = { enabled = true, mode = "shims" }
+zshrc = { enabled = true, mode = "activate" }
+
+# [dotfiles](https://mise.jdx.dev/dotfiles.html)
+[dotfiles]
+"~/.zshrc" = "~/.dotfiles/config/zsh/.zshrc"
+"~/.bashrc" = "~/.dotfiles/config/bash/.bashrc"
+"~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
+"~/.config/nvim" = "~/.dotfiles/config/nvim"
+"~/.config/mise" = "~/.dotfiles/config/mise"
+
+# [hooks](https://mise.jdx.dev/bootstrap.html#hooks)
+# [bootstrap.hooks]
+
+# Linux Specific
+# [systemd](https://mise.jdx.dev/bootstrap/systemd.html#systemd)
+[bootstrap.linux]
+
+# [services](https://mise.jdx.dev/bootstrap/services.html#system-services)
+[bootstrap.services]
+
+# [secrets](https://mise.jdx.dev/bootstrap/secrets.html#bootstrap-secret-inputs)
+[bootstrap.secrets]
+
+# [files and directories](https://mise.jdx.dev/bootstrap/files.html#system-files-and-directories)
+[bootstrap.files]
+
+# [bootstrap.files."/etc/example.conf"]
+# source = "./files/example.conf"
+# owner = "root"
+# group = "root"
+# mode = "0644"
+
+
+[bootstrap.directories]
+
+# [bootstrap.directories."/opt/example"]
+# owner = "root"
+# group = "root"
+# mode = "0755"
+
+
+# System packages
+# [packages](https://mise.jdx.dev/bootstrap/packages/)
+[bootstrap.packages]
+"pacman:openssh" = "latest" # install for remote machines
+
+# Essentials
+"pacman:base" = "latest"
+"pacman:base-devel" = "latest"
+"pacman:git" = "latest"
+"pacman:7zip" = "latest"
+"pacman:curl" = "latest"
+"pacman:wget" = "latest"
+# "pacman:man" = "latest" # bug keeps reinstalling
+"pacman:lshw" = "latest"
+"pacman:github-cli" = "latest"
+"pacman:vim" = "latest"
+"pacman:inotify-tools" = "latest"
+"pacman:neovim" = "latest"
+"pacman:tree-sitter" = "latest"
+"pacman:tree-sitter-cli" = "latest"
+
+# Terminal Essentials
+"pacman:bat" = "latest"
+"pacman:btop" = "latest"
+"pacman:dust" = "latest"
+"pacman:fd" = "latest"
+"pacman:fzf" = "latest"
+"pacman:jq" = "latest"
+"pacman:lazydocker" = "latest"
+"pacman:lazygit" = "latest"
+"pacman:less" = "latest"
+"pacman:lsd" = "latest"
+"pacman:navi" = "latest"
+"pacman:ripgrep" = "latest"
+"pacman:tmux" = "latest"
+"pacman:ueberzugpp" = "latest"
+"pacman:starship" = "latest"
+"pacman:tealdeer" = "latest"
+"pacman:websocat" = "latest"
+"pacman:yazi" = "latest"
+"pacman:yq" = "latest"
+"pacman:zoxide" = "latest"
+
+# Extra
+"pacman:ffmpeg" = "latest"
+"pacman:poppler" = "latest"
+"pacman:resvg" = "latest"
+
+# Fonts
+"pacman:noto-fonts" = "latest"
+"pacman:noto-fonts-emoji" = "latest"
+"pacman:noto-fonts-cjk" = "latest"
+# "pacman:ttf-font-awesome" = "latest"
+"pacman:ttf-noto-nerd" = "latest"
+"pacman:ttf-nerd-fonts-symbols" = "latest"
+"pacman:ttf-nerd-fonts-symbols-common" = "latest"
+"pacman:ttf-nerd-fonts-symbols-mono" = "latest"
+
+
+[tasks.bootstrap]
+run = "gh auth status || gh auth login"

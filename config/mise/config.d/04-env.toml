@@ -6,8 +6,10 @@
 # [tera](https://mise.jdx.dev/templates.html#template-rendering)
 # [configuration](https://mise.jdx.dev/configuration.html#configuration)
 
-# Config files are located in `config/mise/config.d`
-# This file is for some custom overrides 
-# [Configuration Heirarchy](https://mise.jdx.dev/configuration.html#visual-configuration-hierarchy)
+# [Environments](https://mise.jdx.dev/environments/#environments)
 
+[env]
 
+LAUNCH_EDITOR = "launch-editor-nvim"
+
+[vars] # [Task Vars](https://mise.jdx.dev/tasks/task-configuration.html#vars)

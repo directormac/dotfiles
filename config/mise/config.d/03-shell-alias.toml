@@ -1,0 +1,114 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+# References
+# [cli](https://mise.jdx.dev/cli/)
+# [toml](https://toml.io/en/v1.1.0)
+# [tera](https://mise.jdx.dev/templates.html#template-rendering)
+# [configuration](https://mise.jdx.dev/configuration.html#configuration)
+
+# [Shell Alias](https://mise.jdx.dev/shell-aliases.html)
+
+[shell_alias]
+
+# Quickies
+c = "clear"
+home = "cd ~"
+wh = "which"
+rmr = "rm -r"
+rmrf = "rm -rf"
+miseconf = "nvim ~/.dotfiles/config/mise/config.toml"
+nvimconf = "cd ~/.dotfiles/config/nvim/ && nvim"
+tmuxconf = "nvim ~/.dotfiles/config/tmux/.tmux.conf"
+hxconf = "helix ~/.dotfiles/config/helix/config.toml"
+zshconf = "nvim ~/.dotfiles/config/zsh/zshrc"
+
+
+# Improved cli tools
+clip = "cliphist list | fzf --no-sort | cliphist decode | wl-copy"
+cat = "bat"
+du = "dust"
+find = "fd"
+ripgrep = "rg"
+y = "yazi"
+top = "btop" # top/htop alternative
+
+# Git aliases
+ga = "git add"
+gb = "git branch"
+gc = "git commit"
+gca = "git commit -a"
+gcam = "git commit -am"
+gcm = "git commit -m"
+gd = "git diff"
+gds = "git diff --staged"
+glg = "git log --all --oneline --graph --decorate"
+gm = "git merge"
+gpl = "git pull --prune"
+gps = "git push"
+gpom = "git push"
+gpt = "tgpt"
+grep = "rg"
+gs = "git status -sb"
+
+
+# Package Manager Aliases
+bunx = "bun x"
+brun = "bun --bun run dev"
+bdev = "bun --bun run dev"
+bbuild = "bun --bun run build"
+bprewiew = "bun --bun run preview"
+btest = "bun --bun run test"
+b = "bun run"
+
+pn = "pnpm"
+px = "pnx"
+
+pf = "pitchfork"
+pfui = "pitchfork tui"
+
+# alias hx="helix"
+inv = 'nvim $(fd --type=f --hidden | fzf -m --preview="bat --color=always {}")'
+l = "ls -a"
+less = "moar"
+la = "ls -la"
+ls = "lsd"
+lt = "ls --tree"
+
+lzd = "lazydocker"
+lzg = "lazygit"
+
+tls = "tmux ls" # tmux session list
+
+tn = 'sesh connect .'
+v = "nvim"
+vi = "nvim"
+
+# Pacman aliases
+in = 'sudo pacman -S' # install package
+un = 'sudo pacman -Rns' # uninstall package
+# up='sudo pacman -Syu' # update system/package/aur
+pl = 'pacman -Qs' # list installed package
+pa = 'pacman -Ss' # list availabe package
+pc = 'sudo pacman -Sc' # remove unused cache
+paclean = 'sudo pacman -Rns $(pacman -Qdtq)'
+po = 'pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
+
+kubectl = 'minikube kubectl --'
+mc = "mcli"
+dcd = "docker-compose down"
+dcu = "docker-compose up -d"
+ddcu = "docker-compose -f docker/docker-compose.dev.yaml  up -d"
+dcv = "docker-compose down -v"
+
+# alias mvim="NVIM_APPNAME=mac-nvim nvim"
+mvim = "NVIM_APPNAME=nvimmac nvim"
+ws = "windsurf"
+
+
+# Arch Related
+winbox = "~/.dotfiles/WinBox & disown"
+
+
+oc = "opencode"
+zc = "zeroclaw"
+
