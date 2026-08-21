@@ -8,8 +8,8 @@ ZINIT[NO_ALIASES]=1
 
 # Download Zinit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
 # Source/Load zinit
@@ -42,45 +42,46 @@ zinit light jeffreytse/zsh-vi-mode
 
 autoload -Uz add-zsh-hook
 
-command-not-found () {
+# [command-not-found](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/command-not-found/command-not-found.plugin.zsh)
+command-not-found() {
   local last_status=$?
-  
+
   case $last_status in
-    # 126: Permission denied (e.g., trying to run a directory)
-    # 127: Command not found (e.g., typos like 'gti commit')
-    126|127) 
-      hist -fs delete -1
-      ;;
-    *)
-      # Do nothing for other codes, including 130 (Ctrl+C)
-      ;;
+  # 126: Permission denied (e.g., trying to run a directory)
+  # 127: Command not found (e.g., typos like 'gti commit')
+  126 | 127)
+    hist -fs delete -1
+    ;;
+  *)
+    # Do nothing for other codes, including 130 (Ctrl+C)
+    ;;
   esac
 }
 
 add-zsh-hook precmd command-not-found
 
 # Keybindings
-bindkey -e                               # Use Emacs-style keybindings (standard Zsh behavior)
-bindkey '^p' history-search-backward     # Ctrl + P : Search history backward (based on what you've typed)
-bindkey '^n' history-search-forward      # Ctrl + N : Search history forward (based on what you've typed)
-bindkey '^[w' kill-region                # Alt  + W : Kill/Delete from cursor to the start of the word/region
+bindkey -e                           # Use Emacs-style keybindings (standard Zsh behavior)
+bindkey '^p' history-search-backward # Ctrl + P : Search history backward (based on what you've typed)
+bindkey '^n' history-search-forward  # Ctrl + N : Search history forward (based on what you've typed)
+bindkey '^[w' kill-region            # Alt  + W : Kill/Delete from cursor to the start of the word/region
 
 # Smart Tab: Accept autosuggestion if it exists, otherwise do completion
 # This combines zsh-autosuggestions and fzf-tab into one key
 _smart_tab() {
   if [[ -n "$ZSH_AUTOSUGGEST_TEXT" ]]; then
-    zle autosuggest-accept               # If there's a gray hint, Tab accepts it
+    zle autosuggest-accept # If there's a gray hint, Tab accepts it
   else
-    zle expand-or-complete               # If no hint, Tab opens the completion menu (fzf-tab)
+    zle expand-or-complete # If no hint, Tab opens the completion menu (fzf-tab)
   fi
 }
 zle -N _smart_tab
-bindkey '^I' _smart_tab                  # Tab (Ctrl + I is equivalent to Tab in terminals)
+bindkey '^I' _smart_tab # Tab (Ctrl + I is equivalent to Tab in terminals)
 
 # Ensure zsh-vi-mode plays nice with other plugins
 # This hook re-applies our Tab binding every time zsh-vi-mode initializes or changes modes
 function zvm_after_init() {
-  zvm_bindkey insert '^I' _smart_tab     # Keep Tab behavior active in Vi Insert Mode
+  zvm_bindkey insert '^I' _smart_tab # Keep Tab behavior active in Vi Insert Mode
 }
 
 # History
@@ -88,6 +89,7 @@ HISTSIZE=120000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
 HISTDUP=erase
+
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -109,11 +111,10 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # source ~/.secrets/secrets
 
-
 # Exports
 export TZ="Asia/Manila"
 export BROWSER="/usr/sbin/zen-browser" # set google chrome as default browser
-export EDITOR=nvim # set neovim as default editor
+export EDITOR=nvim                     # set neovim as default editor
 export TERMINAL="/usr/sbin/ghostty"
 export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export PATH=$HOME/.cargo/bin:$PATH # cargo bins
@@ -128,13 +129,13 @@ function t() {
     return
   fi
   session=$(sesh list --icons | fzf --ansi --prompt='⚡  ' --border-label=' sesh ' --header='  ^a all ^t tmux ^g configs ^x zoxide ^d tmux <ctrl-c>...' \
-      --bind 'tab:up,btab:down' \
-      --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
-      --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
-      --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
-      --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
-      --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .git .)' \
-      --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)')
+    --bind 'tab:up,btab:down' \
+    --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' \
+    --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t --icons)' \
+    --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c --icons)' \
+    --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z --icons)' \
+    --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .git .)' \
+    --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)')
   [[ -n "$session" ]] && sesh connect "$session"
 }
 
@@ -179,7 +180,6 @@ export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git
 
 export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
 
-
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
@@ -194,14 +194,12 @@ _fzf_compgen_dir() {
 
 source ~/.dotfiles/scripts/fzf-git.sh
 
-
 # Needed for tauri dev mode
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 
 # Scripts
 export PATH=$HOME/.dotfiles/scripts/:$PATH
-
 
 ## Setting environment variables for wayland session
 export XDG_SESSION_TYPE=wayland
@@ -263,16 +261,16 @@ function tmux_pnpm_node {
 }
 
 function ya() {
-    tmp="$(mktemp -t "yazi-cwd.XXXXX")"
-    yazi --cwd-file="$tmp"
-    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-        cd -- "$cwd"
-    fi
-    rm -f -- "$tmp"
+  tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+  yazi --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
 }
 
-function open_in_nvim(){
- nvim $(fzf --preview="bat {}")
+function open_in_nvim() {
+  nvim $(fzf --preview="bat {}")
 }
 
 function notes() {
@@ -296,7 +294,6 @@ function notes() {
 }
 
 alias notes='notes'
-
 
 #Aliases
 alias c="clear"
@@ -340,19 +337,19 @@ alias tls="tmux ls" # tmux session list
 alias tmuxconf="nvim ~/.tmux.conf"
 alias td='tmux new-session -s $(basename "$PWD") -c "$PWD"'
 alias tn='sesh connect .'
-alias top="btop" # top/htop alternative
-alias tw="node_project" # works with alacritty + tmux
-alias tweb="tmux_pnpm_node"  # works with alacritty + tmux
+alias top="btop"            # top/htop alternative
+alias tw="node_project"     # works with alacritty + tmux
+alias tweb="tmux_pnpm_node" # works with alacritty + tmux
 alias v="nvim"
 alias vi="nvim"
 alias wh="which"
-alias y="yazi" 
+alias y="yazi"
 alias zshconf="nvim ~/.zshrc"
-alias in='sudo pacman -S' # install package
+alias in='sudo pacman -S'   # install package
 alias un='sudo pacman -Rns' # uninstall package
 # alias up='sudo pacman -Syu' # update system/package/aur
-alias pl='pacman -Qs' # list installed package
-alias pa='pacman -Ss' # list availabe package
+alias pl='pacman -Qs'      # list installed package
+alias pa='pacman -Ss'      # list availabe package
 alias pc='sudo pacman -Sc' # remove unused cache
 alias paclean='sudo pacman -Rns $(pacman -Qdtq)'
 alias po='pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
@@ -366,7 +363,6 @@ alias dcv="docker-compose down -v"
 # alias mvim="NVIM_APPNAME=mac-nvim nvim"
 alias mvim="NVIM_APPNAME=nvimmac nvim"
 alias ws="windsurf"
-
 
 # Arch Related
 alias winbox="~/.dotfiles/WinBox & disown"
@@ -382,7 +378,6 @@ alias btest="bun --bun run test"
 alias b="bun run"
 
 alias miseconf="nvim .config/mise/config.toml"
-
 
 alias oc="opencode"
 alias zc="zeroclaw"
@@ -409,14 +404,13 @@ up() {
   local d=""
   # If no argument is provided, default to 1 level up
   local limit=${1:-1}
-  
+
   for i in {1..$limit}; do
     d+="../"
   done
-  
+
   cd "$d"
 }
-
 
 alias pf="pitchfork"
 alias pfui="pitchfork tui"
@@ -427,61 +421,60 @@ eval "$(fzf --zsh)"
 # eval "$(zoxide init --cmd cd zsh)"
 
 if [[ "$CLAUDECODE" != "1" ]]; then
-    eval "$(zoxide init --cmd cd zsh)"
+  eval "$(zoxide init --cmd cd zsh)"
 fi
 
 # eval $(keychain --eval --quiet --gpg2 --agents ssh,gpg mac_mkra_dev markasena_gmail_com)
 
 #Load secret API keys
 if [ -f ~/.zsh_secrets ]; then
-    source ~/.zsh_secrets
+  source ~/.zsh_secrets
 fi
 
 # Intercept 'bun test' and redirect it to 'bun run test'
 
 bun() {
   case "$1" in
-    check|test|build)
-      local cmd="$1"
-      shift
-      command bun run "$cmd" "$@"
-      ;;
-    *)
-      command bun "$@"
-      ;;
+  check | test | build)
+    local cmd="$1"
+    shift
+    command bun run "$cmd" "$@"
+    ;;
+  *)
+    command bun "$@"
+    ;;
   esac
 }
 
-
-
-vp () {
-    # 1. The native environment hook (keep this so vp doesn't break)
-    if [ "$1" = "env" ] && [ "$2" = "use" ]; then
-        case " $* " in
-            (*" -h "* | *" --help "*) command vp "$@"
-                return ;;
-        esac
-        __vp_out="$(VP_ENV_USE_EVAL_ENABLE=1 VP_SHELL=sh command vp "$@")"  || return $?
-        eval "$__vp_out"
-        return
-    fi
-
-    # 2. Your custom run intercepts
-    case "$1" in
-        check|test|build|fix)
-            local cmd="$1"
-            shift
-            command vp run "$cmd" "$@"
-            ;;
-        *)
-            # 3. Standard fallback
-            command vp "$@"
-            ;;
+vp() {
+  # 1. The native environment hook (keep this so vp doesn't break)
+  if [ "$1" = "env" ] && [ "$2" = "use" ]; then
+    case " $* " in
+    *" -h "* | *" --help "*)
+      command vp "$@"
+      return
+      ;;
     esac
+    __vp_out="$(VP_ENV_USE_EVAL_ENABLE=1 VP_SHELL=sh command vp "$@")" || return $?
+    eval "$__vp_out"
+    return
+  fi
+
+  # 2. Your custom run intercepts
+  case "$1" in
+  check | test | build | fix)
+    local cmd="$1"
+    shift
+    command vp run "$cmd" "$@"
+    ;;
+  *)
+    # 3. Standard fallback
+    command vp "$@"
+    ;;
+  esac
 }
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
-
 
 eval "$(mise activate zsh)"

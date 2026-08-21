@@ -18,6 +18,7 @@ rmr = "rm -r"
 rmrf = "rm -rf"
 miseconf = "nvim ~/.dotfiles/config/mise/config.toml"
 misedots = "nvim ~/.dotfiles/config/mise/conf.d/02-dotfiles.toml"
+misedotsapply = "mise bootstrap dotfiles apply --force"
 misetrap = "nvim ~/.dotfiles/config/mise/conf.d/01-bootstrap.toml"
 misetools = "nvim ~/.dotfiles/config/mise/conf.d/03-tools.toml"
 misealias = "nvim ~/.dotfiles/config/mise/conf.d/04-shell-alias.toml"
@@ -37,6 +38,12 @@ find = "fd"
 ripgrep = "rg"
 y = "yazi"
 top = "btop" # top/htop alternative
+
+cd = "z"
+ci = "zi"
+ca = 'zoxide add'
+cq = 'zoxide query'
+cr = 'zoxide remove'
 
 # Git aliases
 ga = "git add"
@@ -113,9 +120,5 @@ ws = "windsurf"
 
 
 # Arch Related
-winbox = "~/.dotfiles/WinBox & disown"
-
-
-oc = "opencode"
-zc = "zeroclaw"
+# winbox = "~/.dotfiles/WinBox & disown"
 

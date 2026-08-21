@@ -13,6 +13,7 @@
 
 vim.filetype.add({
   extension = {
+    zsh = "zsh",
     mjml = "html",
     ["mjml.eex"] = "html.eex",
     mdx = "markdown.mdx",
@@ -23,6 +24,8 @@ vim.filetype.add({
   filename = {
     ["Caddyfile"] = "caddy",
     ["docker-compose.yaml"] = "yaml.docker-compose",
+    [".zshrc"] = "zsh",
+    [".zshenv"] = "zsh",
   },
   pattern = {
     -- Matches Caddyfile.dev, Caddyfile.local, etc.

@@ -8,6 +8,15 @@
 
 # [Tools](https://mise.jdx.dev/dev-tools/#dev-tools)
 # [Versions](https://mise-versions.jdx.dev/)
+# [github backend](https://mise.jdx.dev/dev-tools/backends/github.html)
+# [http](https://mise.jdx.dev/dev-tools/backends/http.html)
+
+[tool_alias]
+oxlint = "github:oxc-project/oxc"
+oxfmt = "github:oxc-project/oxc"
+vite-plus = "github:voidzero-dev/vite-plus"
+sesh = "github:joshmedeski/sesh"
+
 
 [tools]
 # Runtimes and Compilers
@@ -33,6 +42,27 @@ aube = "latest"
 
 # LSP
 expert = "latest"
+"aqua:oxc-project/oxc/oxlint" = "latest"
+
+
+[tools.oxlint]
+version = "apps_v1.79.0"
+matching = "oxlint"
+rename_exe = "oxlint"
+
+[tools.oxfmt]
+version = "apps_v1.79.0"
+matching = "oxfmt"
+rename_exe = "oxfmt"
+
+[tools.vite-plus]
+version = "v0.2.9"
+matching = "vp"
+rename_exe = "vp"
+
+[tools.sesh]
+version = "v2.28.0"
+
 
 # Utils
 usage = "latest"
@@ -40,8 +70,29 @@ jq = "latest"
 pitchfork = "latest"
 watchexec = "latest"
 
+
+"http:winbox" = { version = "4.3", url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip", raname_exe = { "WinBox" = "winbox" } }
+
+
 # Build tools
 bazel = "latest"
+
+
+# # Terminal Goodies
+# herdr = "latest"
+#
+# # Build tools
+# bazel = "latest"
+#
+# # Harness
+# opencode = "latest"
+# "npm:context-mode" = "latest"
+# "npm:@earendil-works/pi-coding-agent" = "latest"
+# "cargo:zeroclawlabs" = "latest"
+# copilot = "latest"
+# portless = "latest"
+# agy = "latest"
+
 
 # [Tools Deps](https://mise.jdx.dev/dev-tools/deps.html#deps)
 [deps]
