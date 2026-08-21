@@ -26,36 +26,29 @@
 [bootstrap.user]
 login_shell = "/bin/zsh"
 
-
-# [repos](https://mise.jdx.dev/bootstrap/repos.html)
-[bootstrap.repos]
-"~/.dotfiles" = { url = "https://github.com/directormac/dotfiles.git" }
-# "~/Notes" = { url = "https://github.com/directormac/notes.git" }
-
-# [mise_shell_activate](https://mise.jdx.dev/bootstrap/shell.html)
-[bootstrap.mise_shell_activate]
-zprofile = { enabled = true, mode = "shims" }
-zshrc = { enabled = true, mode = "activate" }
-
-
 # [hooks](https://mise.jdx.dev/bootstrap.html#hooks)
 # [bootstrap.hooks]
 
 # Linux Specific
 # [systemd](https://mise.jdx.dev/bootstrap/systemd.html#systemd)
-[bootstrap.linux]
+# [bootstrap.linux]
 
 # [services](https://mise.jdx.dev/bootstrap/services.html#system-services)
-[bootstrap.services]
+# [bootstrap.services]
 
-# [bootstrap.services.docker.socket]
+# [bootstrap.files."/etc/docker/daemon.json"]
+# content = '{ "log-driver": "local" }'
+# notify = ["docker"]
+#
+# [bootstrap.services.docker.sockets]
 # state = "running"
 # enabled = "true"
-
-# [users and groups](https://mise.jdx.dev/bootstrap/accounts.html#linux-users-and-groups)
+# on_change = "reload_or_restart"
+#
+# # [users and groups](https://mise.jdx.dev/bootstrap/accounts.html#linux-users-and-groups)
 # [bootstrap.groups.docker]
 # system = true
-#
+# #
 # [bootstrap.users.docker]
 # system = true
 # group = "docker"
@@ -129,6 +122,7 @@ zshrc = { enabled = true, mode = "activate" }
 "pacman:navi" = "latest"
 "pacman:ripgrep" = "latest"
 "pacman:starship" = "latest"
+"pacman:skim" = "latest"
 "pacman:tealdeer" = "latest"
 "pacman:tmux" = "latest"
 "pacman:trippy" = "latest"
@@ -138,7 +132,6 @@ zshrc = { enabled = true, mode = "activate" }
 "pacman:yq" = "latest"
 "pacman:zoxide" = "latest"
 "pacman:rsync" = "latest"
-# "pacman:sesh" = "latest"
 
 
 # Extra

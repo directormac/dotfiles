@@ -60,6 +60,9 @@ return {
         -- Explicitly disabling vtsls here with `vtsls = { enabled = false }`
         -- was causing the Vue extra to crash because it expected vtsls to be
         -- configured with filetypes.
+        bashls = {
+          filetypes = { "sh", "bash", "zsh" },
+        },
         cssls = {
           settings = {
             css = {

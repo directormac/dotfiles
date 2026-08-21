@@ -7,7 +7,7 @@
 # [configuration](https://mise.jdx.dev/configuration.html#configuration)
 
 # [Environments](https://mise.jdx.dev/environments/#environments)
-
+# [Encryption](https://mise.jdx.dev/environments/secrets/age.html#quick-start)
 [env]
 MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/rustup"
 MISE_CARGO_HOME = "{{env.HOME}}/.local/share/cargo"

@@ -28,12 +28,13 @@
 
 # [mise_shell_activate](https://mise.jdx.dev/bootstrap/shell.html)
 [bootstrap.mise_shell_activate]
-zprofile = { enabled = true, mode = "shims" }
+zshenv = { enabled = true, mode = "shims" }
 zshrc = { enabled = true, mode = "activate" }
 
 # [dotfiles](https://mise.jdx.dev/dotfiles.html)
 [dotfiles]
 "~/.zshrc" = "~/.dotfiles/config/zsh/.zshrc"
+"~/.zshenv" = "~/.dotfiles/config/zsh/.zshenv"
 "~/.bashrc" = "~/.dotfiles/config/bash/.bashrc"
 "~/.tmux.conf" = "~/.dotfiles/config/tmux/.tmux.conf"
 "~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
