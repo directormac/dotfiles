@@ -39,6 +39,8 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.tmux.conf" = "~/.dotfiles/config/tmux/.tmux.conf"
 "~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
 "~/.config/starship.toml" = "~/.dotfiles/config/starship/starship.toml"
+"~/.config/navi/config.yaml" = "~/.dotfiles/config/navi/config.yaml"
+"~/.config/herdr/config.toml" = "~/.dotfiles/config/herdr/config.toml"
 "~/.config/mimeapps.list" = "~/.dotfiles/config/mimeapps.list"
 "~/.config/alacritty" = "~/.dotfiles/config/alacritty"
 "~/.config/bat" = "~/.dotfiles/config/bat"

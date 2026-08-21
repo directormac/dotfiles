@@ -1,0 +1,11 @@
+
+# [Task Config](https://mise.jdx.dev/tasks/task-configuration.html#task-configuration-settings)
+[task_config] # 
+includes = [
+  "mise-tasks",
+  ".mise-tasks",
+  ".mise/tasks",
+  ".config/mise/tasks",
+  "mise/tasks",
+  "tasks.toml",
+]
