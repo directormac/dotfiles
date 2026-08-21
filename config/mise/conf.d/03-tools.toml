@@ -42,7 +42,18 @@ aube = "latest"
 
 # LSP
 expert = "latest"
-"aqua:oxc-project/oxc/oxlint" = "latest"
+"npm:oxlint-tsgolint" = "latest"
+
+
+# Utils
+usage = "latest"
+jq = "latest"
+pitchfork = "latest"
+watchexec = "latest"
+
+
+# Build tools
+bazel = "latest"
 
 
 [tools.oxlint]
@@ -63,19 +74,10 @@ rename_exe = "vp"
 [tools.sesh]
 version = "v2.28.0"
 
-
-# Utils
-usage = "latest"
-jq = "latest"
-pitchfork = "latest"
-watchexec = "latest"
-
-
-"http:winbox" = { version = "4.3", url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip", raname_exe = { "WinBox" = "winbox" } }
-
-
-# Build tools
-bazel = "latest"
+[tools."http:winbox"]
+version = "4.3"
+url = "https://download.mikrotik.com/routeros/winbox/{{ version }}/WinBox_Linux.zip"
+checksum_url = "https://download.mikrotik.com/routeros/winbox/{{ version }}/WinBox_Linux.zip.sha256"
 
 
 # # Terminal Goodies

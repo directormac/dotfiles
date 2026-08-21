@@ -1,3 +1,5 @@
+[tools]
+herdr = "latest"
 #:schema https://mise.jdx.dev/schema/mise.json
 
 # References
@@ -13,3 +15,4 @@
 # [settings](./conf.d/00-settings.toml)
 # [bootstrap](./conf.d/01-bootstrap.toml)
 # [dotfiles](./conf.d/02-dotfiles.toml)
+

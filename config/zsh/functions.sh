@@ -1,3 +1,8 @@
+# https://github.com/scaryrawr/fzf.zsh
+# https://github.com/junegunn/fzf/blob/master/ADVANCED.md
+# https://github.com/junegunn/fzf/wiki/Examples
+# https://github.com/junegunn/fzf/wiki/Examples-(completion)
+
 up() {
   local d=""
   # If no argument is provided, default to 1 level up
@@ -81,17 +86,28 @@ bindkey -M viins '\es' sesh-sessions
 
 # https://github.com/beauwilliams/awesome-fzf
 
-function fzf-rm() {
+function rmr() {
   if [[ "$#" -eq 0 ]]; then
     local files
-    files=$(find . -maxdepth 1 -type f | fzf --multi)
-    echo $files | xargs -I '{}' rm {} #we use xargs to capture filenames with spaces in them properly
+
+    # Run fd and pipe to fzf with an instructional header and custom prompt
+    files=$(fd --hidden --no-ignore --strip-cwd-prefix --exclude .git -d 1 -t f | fzf --multi \
+      --prompt="Delete> " \
+      --header="[TAB] Select/Deselect | [ENTER] Confirm | [ESC] Cancel")
+
+    # Check if files were selected (user didn't press ESC)
+    if [[ -n "$files" ]]; then
+      # Convert newlines to null bytes and pass to rm -v (verbose)
+      echo "$files" | tr '\n' '\0' | xargs -0 rm -v
+    else
+      echo "Cancelled. No files deleted."
+    fi
   else
     command rm "$@"
   fi
 }
 
-function fzf-aliases-functions() {
+function xalias() {
   CMD=$(
     (
       (alias)
@@ -102,13 +118,13 @@ function fzf-aliases-functions() {
   eval $CMD
 }
 
-function fzf-env-vars() {
+function xvars() {
   local out
   out=$(env | fzf)
   echo $(echo $out | cut -d= -f2)
 }
 
-function fzf-kill-processes() {
+function find-proc() {
   local pid
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
 
@@ -117,20 +133,30 @@ function fzf-kill-processes() {
   fi
 }
 
-# [command-not-found](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/command-not-found/command-not-found.plugin.zsh)
-command-not-found() {
-  local last_status=$?
+xkill() {
+  local pid
+  if [ "$UID" != "0" ]; then
+    pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+  else
+    pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  fi
 
-  case $last_status in
-  # 126: Permission denied (e.g., trying to run a directory)
-  # 127: Command not found (e.g., typos like 'gti commit')
-  126 | 127)
-    hist -fs delete -1
-    ;;
-  *)
-    # Do nothing for other codes, including 130 (Ctrl+C)
-    ;;
-  esac
+  if [ "x$pid" != "x" ]; then
+    echo $pid | xargs kill -${1:-9}
+  fi
 }
 
-add-zsh-hook precmd command-not-found
+# _cache_eval() {
+#   local name=$1
+#   shift
+#   local cache=~/.zsh/cache/$name.zsh
+#   [[ -s $cache && $cache -nt ${commands[$1]:-/dev/null} ]] ||
+#     {
+#       mkdir -p ~/.zsh/cache
+#       "$@" >$cache
+#     }
+#   source $cache
+# }
+
+# source ./fuzzy-completions.sh
+# source ./fuzzy-functions.sh

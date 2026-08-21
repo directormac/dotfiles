@@ -17,6 +17,78 @@ export DOTFILES="$HOME/.dotfiles/" # dotfiles path
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
+# [fzf](https://github.com/junegunn/fzf#setting-up-shell-integration)
+
+# Use `` as the trigger sequence instead of the default **
+export FZF_COMPLETION_TRIGGER='`'
+
+# Options to fzf command
+export FZF_COMPLETION_OPTS='--border --info=inline'
+
+# Options for path completion (e.g. vim **<TAB>)
+export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
+
+# Options for directory completion (e.g. cd **<TAB>)
+export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+
+# --color=fg:#CDD6F4,fg+:#CDD6F4,bg:#1E1E2E,bg+:#313244
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  --color=fg:#CDD6F4,fg+:#CDD6F4,bg:-1,bg+:-1
+  --color=hl:#F38BA8,hl+:#F38BA8,info:#CBA6F7,marker:#B4BEFE
+  --color=prompt:#CBA6F7,spinner:#F5E0DC,pointer:#CBA6F7,header:#F38BA8
+  --color=border:#6C7086,label:#CDD6F4,query:#F5E0DC
+  --border="none" --border-label="" --preview-window="border-sharp" --prompt="> "
+  --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
+
+export FZF_DEFAULT_FD_PARAMS="--strip-cwd-prefix --hidden --no-ignore --follow --exclude .git"
+
+export FZF_DEFAULT_COMMAND="fd --type f $FZF_DEFAULT_FD_PARAMS"
+
+export FZF_ALT_C_COMMAND="fd --type d $FZF_DEFAULT_FD_PARAMS"
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# --bind 'ctrl-d:reload(find . -type d),ctrl-f:reload(eval "$FZF_DEFAULT_COMMAND")
+
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+export FZF_ALT_C_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'tree -C {}'"
+
+#--bind 'ctrl-d:reload(find . -type d),ctrl-f:reload(eval "$FZF_DEFAULT_COMMAND")
+
+export FZF_CTRL_R_OPTS="
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+export FZF_MARKS_FILE="${HOME}/.dotfiles/config/zsh/fzf-marks"
+export FZF_MARKS_JUMP="^[m"
+
+# Override the default open command
+export ZVM_OPEN_CMD='xdg-open'
+export KEYTIMEOUT=30
+
+# Override the open command for URLs
+export ZVM_OPEN_URL_CMD='firefox'
+export ZVM_OPEN_FILE_CMD='nvim'
+export ZVM_LAZY_KEYBINDINGS=false
+
+# export FZF_MARKER_MAIN_KEY='\C-@'
+# export FZF_MARKER_PLACEHOLDER_KEY='\C-v'
+
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}'
+  --preview-window 'down:3:hidden:wrap'
+  --bind 'ctrl-/:toggle-preview'
+"
+
+export LS_COLORS=':tw=01;34:ow=01;34:st=01;34'
+
 # Needed for tauri dev mode
 export WEBKIT_DISABLE_COMPOSITING_MODE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1

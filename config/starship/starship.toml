@@ -11,8 +11,7 @@ continuation_prompt = '▶▶ '
 scan_timeout = 1000
 command_timeout = 5000
 
-format = """
-$all\
+format = """$all\
 $line_break\
 $directory\
 $line_break\
@@ -34,7 +33,7 @@ style = "fg:mauve"
 read_only = " "
 truncation_length = 4
 truncate_to_repo = true
-# truncation_symbol = "…/"
+truncation_symbol = "~/"
 
 [character]
 success_symbol = '[❯](mauve)'

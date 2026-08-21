@@ -12,10 +12,9 @@
 
 # Quickies
 c = "clear"
+cc = "zsh"
 home = "cd ~"
 wh = "which"
-rmr = "rm -r"
-rmrf = "rm -rf"
 miseconf = "nvim ~/.dotfiles/config/mise/config.toml"
 misedots = "nvim ~/.dotfiles/config/mise/conf.d/02-dotfiles.toml"
 misedotsapply = "mise bootstrap dotfiles apply --force"
@@ -26,8 +25,10 @@ miseenv = "nvim ~/.dotfiles/config/mise/conf.d/05-env.toml"
 miseatasks = "nvim ~/.dotfiles/config/mise/conf.d/06-tasks.toml"
 nvimconf = "cd ~/.dotfiles/config/nvim/ && nvim"
 tmuxconf = "nvim ~/.dotfiles/config/tmux/.tmux.conf"
+tmuxkeys = "cat ~/.dotfiles/config/tmux/tmuxkeybinds"
 hxconf = "helix ~/.dotfiles/config/helix/config.toml"
 zshconf = "nvim ~/.dotfiles/config/zsh/.zshrc"
+zshkeys = "cat ~/.dotfiles/config/zsh/zshkeybinds"
 
 
 # Improved cli tools
@@ -118,7 +119,6 @@ mvim = "NVIM_APPNAME=nvimmac nvim"
 pvim = "NVIM_APPNAME=nvimp nvim"
 ws = "windsurf"
 
-
 # Arch Related
-# winbox = "~/.dotfiles/WinBox & disown"
+winbox = "WinBox | NUL"
 
