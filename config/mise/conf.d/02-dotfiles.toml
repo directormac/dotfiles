@@ -37,6 +37,7 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.zshenv" = "~/.dotfiles/config/zsh/zshenv.zsh"
 "~/.zprofile" = "~/.dotfiles/config/zsh/zprofile.zsh"
 "~/.bashrc" = "~/.dotfiles/config/bash/.bashrc"
+"~/.vimrc" = "~/.dotfiles/config/vim/vimrc"
 "~/.tmux.conf" = "~/.dotfiles/config/tmux/tmux.conf"
 "~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
 "~/.config/starship.toml" = "~/.dotfiles/config/starship/starship.toml"

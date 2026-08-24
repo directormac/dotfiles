@@ -9,11 +9,31 @@ output * bg ~/.wallpapers/tokyo_night.png fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
-output $PM adaptive_sync on
-output $SM adaptive_sync on
+# output $PM adaptive_sync on
+# output $SM adaptive_sync on
+#
+# output $PM pos 0 0 res 2560x1440@165Hz 
+# output $SM pos 2560 0 res 2560x1440@144Hz 
 
-output $PM pos 0 0 res 2560x1440@165Hz 
-output $SM pos 2560 0 res 2560x1440@144Hz 
+
+# output "GIGA-BYTE TECHNOLOGY CO., LTD. AORUS AD27QD 19110B001090" {
+output $SM {
+    mode 2560x1440@143.972Hz
+    pos 2560 0
+    scale 1
+    transform normal
+    adaptive_sync on
+}
+
+# output "LG Electronics LG ULTRAGEAR 308NTGY1D007" {
+
+output $PM {
+    mode 2560x1440@164.958Hz
+    pos 0 0
+    scale 1
+    transform normal
+    adaptive_sync on
+}
 
 
 exec swayidle -w \

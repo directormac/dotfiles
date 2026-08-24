@@ -12,7 +12,7 @@
 
 # Quickies
 c = "clear"
-cc = "zsh"
+cc = "exec zsh -l"
 home = "cd ~"
 wh = "which"
 miseconf = "nvim ~/.dotfiles/config/mise/config.toml"
