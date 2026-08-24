@@ -104,6 +104,11 @@ return {
             },
           },
         },
+        qmlls = {
+          cmd = { "qmlls6" },
+          filetypes = { "qml", "qmljs" },
+          root_markers = { ".git" },
+        },
       },
       inlay_hints = { enabled = false },
     },

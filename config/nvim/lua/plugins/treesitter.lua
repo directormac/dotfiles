@@ -27,6 +27,7 @@ return {
           "java",
           "kotlin",
           "slint",
+          "qmljs",
           "tsx",
           "typescript",
           "vue",
