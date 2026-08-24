@@ -130,6 +130,7 @@ login_shell = "/bin/zsh"
 "pacman:ueberzugpp" = "latest"
 "pacman:yazi" = "latest"
 "pacman:yq" = "latest"
+"pacman:vivid" = "latest"
 "pacman:zoxide" = "latest"
 "pacman:rsync" = "latest"
 

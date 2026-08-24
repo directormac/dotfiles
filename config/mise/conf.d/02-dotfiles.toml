@@ -33,10 +33,11 @@ zshrc = { enabled = true, mode = "activate" }
 
 # [dotfiles](https://mise.jdx.dev/dotfiles.html)
 [dotfiles]
-"~/.zshrc" = "~/.dotfiles/config/zsh/.zshrc"
-"~/.zshenv" = "~/.dotfiles/config/zsh/.zshenv"
+"~/.zshrc" = "~/.dotfiles/config/zsh/zshrc.zsh"
+"~/.zshenv" = "~/.dotfiles/config/zsh/zshenv.zsh"
+"~/.zprofile" = "~/.dotfiles/config/zsh/zprofile.zsh"
 "~/.bashrc" = "~/.dotfiles/config/bash/.bashrc"
-"~/.tmux.conf" = "~/.dotfiles/config/tmux/.tmux.conf"
+"~/.tmux.conf" = "~/.dotfiles/config/tmux/tmux.conf"
 "~/.gitconfig" = "~/.dotfiles/config/git/.gitconfig"
 "~/.config/starship.toml" = "~/.dotfiles/config/starship/starship.toml"
 "~/.config/navi/config.yaml" = "~/.dotfiles/config/navi/config.yaml"
@@ -67,6 +68,7 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.config/swaync" = "~/.dotfiles/config/swaync"
 "~/.config/waybar" = "~/.dotfiles/config/waybar"
 "~/.config/wezterm" = "~/.dotfiles/config/wezterm"
+"~/.config/television" = "~/.dotfiles/config/television"
 "~/.config/wlogout" = "~/.dotfiles/config/wlogout"
 "~/.config/xfce4" = "~/.dotfiles/config/xfce4"
 "~/.config/yazi" = "~/.dotfiles/config/yazi"

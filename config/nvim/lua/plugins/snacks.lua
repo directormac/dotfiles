@@ -20,12 +20,34 @@ return {
           files = {
             hidden = true, -- Show dotfiles like .config
             ignored = false, -- Respect .gitignore (skips node_modules, etc.)
-            exclude = { ".git", "node_modules", ".svelte-kit", ".astro", ".next", ".vercel", ".turbo", ".expert", ".elixir_ls", ".vscode" },
+            exclude = {
+              ".git",
+              "node_modules",
+              ".svelte-kit",
+              ".astro",
+              ".next",
+              ".vercel",
+              ".turbo",
+              ".expert",
+              ".elixir_ls",
+              ".vscode",
+            },
           },
           grep = {
             hidden = true,
             ignored = false,
-            exclude = { ".git", "node_modules", ".svelte-kit", ".astro", ".next", ".vercel", ".turbo", ".expert", ".elixir_ls", ".vscode" },
+            exclude = {
+              ".git",
+              "node_modules",
+              ".svelte-kit",
+              ".astro",
+              ".next",
+              ".vercel",
+              ".turbo",
+              ".expert",
+              ".elixir_ls",
+              ".vscode",
+            },
           },
         },
       },

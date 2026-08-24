@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # [zsh](https://zsh.sourceforge.io/Doc/Release/zsh_toc.html)
 # zmodload zsh/zprof
 
@@ -18,13 +20,24 @@
 # [plugins](https://github.com/unixorn/awesome-zsh-plugins)
 
 # Zinit
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
+# ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+# [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+# [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+source "${DOTSZSH}/zinit.zsh"
 #
 # autoload -Uz _zinit
 # ((${+_comps})) && _comps[zinit]=_zinit
+#
+# https://github.com/zenobi-us/dotfiles
+# zinit_load_local_module() {
+#   local module_path="$DOTFILES/config/$1"
+#   if [[ -f "$module_path" ]]; then
+#     source "$module_path"
+#   fi
+# }
+#
+# zinit_load_local_module "zsh/functions.sh"
 
 # Plugins
 # [Loading Plugins](https://zdharma-continuum.github.io/zinit/wiki/INTRODUCTION/)
@@ -35,52 +48,69 @@ source "${ZINIT_HOME}/zinit.zsh"
 # [fzf-marks](https://github.com/urbainvaes/fzf-marks)
 
 # zinit ice depth=1
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
+# zinit ice depth=1
+# zinit light jeffreytse/zsh-vi-mode
 
 # Autosuggestions & fast-syntax-highlighting
-zinit wait lucid light-mode for \
-  atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
-  zdharma-continuum/fast-syntax-highlighting \
-  atload"_zsh_autosuggest_start;" \
-  zsh-users/zsh-autosuggestions \
-  blockf atpull'zinit creinstall -q .' \
-  zsh-users/zsh-completions \
-  marlonrichert/zsh-hist
+# zinit wait lucid light-mode for \
+#   atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+#   zdharma-continuum/fast-syntax-highlighting \
+#   atload"_zsh_autosuggest_start;" \
+#   zsh-users/zsh-autosuggestions \
+#   blockf atpull'zinit creinstall -q .' \
+#   zsh-users/zsh-completions \
+#   marlonrichert/zsh-hist
 # atload!"bindkey '^g' fzm;" \
 
-zinit ice src"fzf-git.sh"
-zinit light junegunn/fzf-git.sh
+# zinit ice src"fzf-git.sh"
+# zinit light junegunn/fzf-git.sh
 
 # [ZVM_INIT_DONE](https://github.com/jeffreytse/zsh-vi-mode/blob/master/zsh-vi-mode.zsh#L243)
 # [zsh-vi-mode](https://github.com/jeffreytse/zsh-vi-mode#execute-extra-commands)
-zinit wait'[[ $ZVM_INIT_DONE != "true" ]]' \
-  lucid light-mode for \
-  atload"bindkey '^G' fzm; unalias zi" \
-  urbainvaes/fzf-marks \
-  Aloxaf/fzf-tab
-# chitoku-k/fzf-zsh-completions \
-# lincheney/fzf-tab-completion
+# zinit wait'[[ $ZVM_INIT_DONE != "true" ]]' \
+#   lucid light-mode for \
+#   atload"bindkey '^G' fzm; unalias zi" \
+#   urbainvaes/fzf-marks \
+#   Aloxaf/fzf-tab \
+#   chitoku-k/fzf-zsh-completions \
+#   lincheney/fzf-tab-completion
 
 # zinit ice wait'[[ $ZVM_INIT_DONE != "true" ]]' lucid light-mode for \
 #   Aloxaf/fzf-tab
 # chitoku-k/fzf-zsh-completions \
 # lincheney/fzf-tab-completion
 
-ZSHFUNCTIONS=$DOTFILES/config/zsh
+# function zvm_after_init() {
+#
+#   bindkey -r '^g'
+#
+#   bindkey '^ ' autosuggest-accept
+#   bindkey -M viins '^M' accept-line
+#
+#   # zvm_bindkey vicmd '^I' ftb-fzf
+#
+#   eval "$(fzf --zsh)"
+#
+#   bindkey '^]' _navi_widget
+# }
 
-zinit snippet "$ZSHFUNCTIONS/functions.sh"
-zinit snippet "$ZSHFUNCTIONS/fuzzy-functions.sh"
-
-zvm_after_init() {
-
-  bindkey -r '^g'
-  bindkey -M viins '^M' accept-line
-
-  eval "$(fzf --zsh)"
-
-  bindkey '^]' _navi_widget
-}
+# # Smart Tab: Accept autosuggestion if it exists, otherwise do completion
+# # This combines zsh-autosuggestions and fzf-tab into one key
+# _smart_tab() {
+#   if [[ -n "$ZSH_AUTOSUGGEST_TEXT" ]]; then
+#     zle autosuggest-accept # If there's a gray hint, Tab accepts it
+#   else
+#     zle expand-or-complete # If no hint, Tab opens the completion menu (fzf-tab)
+#   fi
+# }
+# zle -N _smart_tab
+# bindkey '^I' _smart_tab # Tab (Ctrl + I is equivalent to Tab in terminals)
+#
+# # Ensure zsh-vi-mode plays nice with other plugins
+# # This hook re-applies our Tab binding every time zsh-vi-mode initializes or changes modes
+# # function zvm_after_lazy_keybindings() {
+# #   zvm_bindkey vicmd '^I' _smart_tab
+# # }
 
 # source ~/.dotfiles/config/zsh/functions.sh
 # source ~/.dotfiles/config/zsh/fuzzy-functions.sh
@@ -111,22 +141,22 @@ zvm_after_init() {
 #     { git diff --color=always -- "$arg" | git log --color=always "$arg" } 2>/dev/null
 # done'
 
-zstyle ':hist:*' auto-format yes
-zstyle ':hist:*' expand-aliases yes
-
-# [zsh-clean-history](https://github.com/Automaat/zsh-clean-history)
+# zstyle ':hist:*' auto-format yes
+# zstyle ':hist:*' expand-aliases yes
 #
-zstyle ':completion:*:git-checkout:*' sort false
-zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+# # [zsh-clean-history](https://github.com/Automaat/zsh-clean-history)
+# #
+# zstyle ':completion:*:git-checkout:*' sort false
+# zstyle ':completion:*:descriptions' format '[%d]'
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
+# zstyle ':completion:*' menu no
+# zstyle ':fzf-tab:*' switch-group '<' '>'
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+# zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+# zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
 
 # [command-not-found](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/command-not-found/command-not-found.plugin.zsh)
 command-not-found() {
@@ -144,7 +174,7 @@ command-not-found() {
   esac
 }
 
-add-zsh-hook precmd command-not-found
+# add-zsh-hook precmd command-not-found
 
 # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
@@ -158,33 +188,33 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-# # https://dev.to/martin_oehlert/from-14s-to-53ms-optimizing-zsh-startup-on-macos-5f09
-ZSH_COMP_CACHE="$HOME/.zsh-completion-cache"
-[[ -d "$ZSH_COMP_CACHE" ]] || mkdir -p "$ZSH_COMP_CACHE"
-
-_cache_fpath() {
-  local name="$1"
-  shift
-  local cache_file="$ZSH_COMP_CACHE/_$name"
-  local -a stale=($cache_file(N.mh+24))
-  if [[ ! -f "$cache_file" ]] || (($#stale)); then
-    "$@" >"$cache_file" 2>/dev/null
-  fi
-}
-
-fpath=($ZSH_COMP_CACHE $fpath)
-
-_cache_source() {
-  local name="$1"
-  shift
-  local cache_file="$ZSH_COMP_CACHE/$name.zsh"
-  local -a stale=($cache_file(N.mh+24))
-  if [[ ! -f "$cache_file" ]] || (($#stale)); then
-    "$@" >"$cache_file" 2>/dev/null
-    zcompile "$cache_file" 2>/dev/null
-  fi
-  source "$cache_file"
-}
+# # # https://dev.to/martin_oehlert/from-14s-to-53ms-optimizing-zsh-startup-on-macos-5f09
+# ZSH_COMP_CACHE="$HOME/.zsh-completion-cache"
+# [[ -d "$ZSH_COMP_CACHE" ]] || mkdir -p "$ZSH_COMP_CACHE"
+#
+# _cache_fpath() {
+#   local name="$1"
+#   shift
+#   local cache_file="$ZSH_COMP_CACHE/_$name"
+#   local -a stale=($cache_file(N.mh+24))
+#   if [[ ! -f "$cache_file" ]] || (($#stale)); then
+#     "$@" >"$cache_file" 2>/dev/null
+#   fi
+# }
+#
+# fpath=($ZSH_COMP_CACHE $fpath)
+#
+# _cache_source() {
+#   local name="$1"
+#   shift
+#   local cache_file="$ZSH_COMP_CACHE/$name.zsh"
+#   local -a stale=($cache_file(N.mh+24))
+#   if [[ ! -f "$cache_file" ]] || (($#stale)); then
+#     "$@" >"$cache_file" 2>/dev/null
+#     zcompile "$cache_file" 2>/dev/null
+#   fi
+#   source "$cache_file"
+# }
 
 # autoload -Uz compinit
 # local -a zcompdump_stale=(~/.zcompdump(N.mh+24))
@@ -214,10 +244,10 @@ setopt hist_reduce_blanks
 
 # Open the current command in your $EDITOR (e.g., neovim)
 # Press Ctrl+X followed by Ctrl+E to trigger
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '^X^E' edit-command-line
-bindkey -M vicmd 'v' edit-command-line
+# autoload -Uz edit-command-line
+# zle -N edit-command-line
+# bindkey '^X^E' edit-command-line
+# bindkey -M vicmd 'v' edit-command-line
 
 # Press Ctrl+_ (Ctrl+Underscore) to undo
 # This is built-in, no configuration needed!
@@ -225,7 +255,7 @@ bindkey -M vicmd 'v' edit-command-line
 # bindkey '^Y' redo  # Example binding if you want it
 
 # Expands history expressions like !! or !$ when you press space
-bindkey ' ' magic-space
+# bindkey ' ' magic-space
 
 # Redirect stderr to /dev/null
 alias -g NE='2>/dev/null'
@@ -258,13 +288,13 @@ autoload -Uz zmv
 alias zcp='zmv -C' # Copy with patterns
 alias zln='zmv -L' # Link with patterns
 
-function copy-buffer-to-clipboard() {
-  echo -n "$BUFFER" | wl-copy
-  zle -M "Copied to clipboard"
-}
-
-zle -N copy-buffer-to-clipboard
-bindkey '^Xc' copy-buffer-to-clipboard
+# function copy-buffer-to-clipboard() {
+#   echo -n "$BUFFER" | wl-copy
+#   zle -M "Copied to clipboard"
+# }
+#
+# zle -N copy-buffer-to-clipboard
+# bindkey '^Xc' copy-buffer-to-clipboard
 
 # unset **<TAB>
 # export **<TAB>
@@ -281,7 +311,7 @@ alias ....="cd ../../.."
 # alias vi="vi $(fzf)"
 
 # eval "$(navi widget zsh)"
-_cache_source navi navi widget zsh
+# _cache_source navi navi widget zsh
 
 eval "$(zoxide init zsh)"
 
@@ -290,5 +320,3 @@ eval "$(starship init zsh)"
 # >>> mise:activate >>> managed by mise - do not edit between markers
 eval "$(mise activate zsh)"
 # <<< mise:activate <<<
-
-# zprof
