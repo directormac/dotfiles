@@ -11,7 +11,7 @@
   <property name="last-sort-column" type="string" value="THUNAR_COLUMN_DATE_MODIFIED"/>
   <property name="last-sort-order" type="string" value="GTK_SORT_DESCENDING"/>
   <property name="last-details-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_38_PERCENT"/>
-  <property name="last-details-view-column-widths" type="string" value="50,50,200,200,221,550,50,50,679,50,50,73,50,210"/>
+  <property name="last-details-view-column-widths" type="string" value="50,50,198,200,221,550,50,50,758,50,50,58,50,148"/>
   <property name="misc-single-click" type="bool" value="false"/>
   <property name="misc-directory-specific-settings" type="bool" value="true"/>
   <property name="misc-show-delete-action" type="bool" value="true"/>

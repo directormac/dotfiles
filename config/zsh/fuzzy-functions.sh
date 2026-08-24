@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # https://github.com/scaryrawr/fzf.zsh
 # https://github.com/junegunn/fzf/blob/master/ADVANCED.md
 # https://github.com/junegunn/fzf/wiki/Examples
@@ -10,6 +12,15 @@ fzf-history-widget-accept() {
 zle -N fzf-history-widget-accept
 bindkey '^X^R' fzf-history-widget-accept
 
+fz() {
+  local dir=$(
+    zoxide query --list --score |
+      fzf --height 40% --layout reverse --info inline \
+        --nth 2.. --tac --no-sort --query "$*" \
+        --bind 'enter:become:echo {2..}'
+  ) && cd "$dir"
+}
+
 function _fzf_super_search_widget() {
 
   # local fd_cmd="fd --type f --hidden --exclude .git --color=always"
@@ -19,7 +30,9 @@ function _fzf_super_search_widget() {
 
   local rg_reload="[ -n {q} ] && $rg_cmd {q} || true"
 
-  fzf --height 50% --tmux 90%,70% \
+  # fzf --height 50% --tmux 90%,70% \
+
+  fzf --height 50% --popup 90%,70% \
     --layout reverse --multi --min-height 20+ \
     --no-separator --header-border horizontal \
     --border-label-pos 2 \
@@ -57,6 +70,7 @@ fzf-man-widget() {
     fzf \
       -q "$1" \
       --ansi \
+      --height 50% --popup 90%,70% \
       --tiebreak=begin \
       --prompt=' Man > ' \
       --preview-window '50%,rounded,<50(up,85%,border-bottom)' \
@@ -68,8 +82,8 @@ fzf-man-widget() {
   zle reset-prompt
 }
 # `Ctrl-H` keybinding to launch the widget (this widget works only on zsh, don't know how to do it on bash and fish (additionaly pressing`ctrl-backspace` will trigger the widget to be executed too because both share the same keycode)
-bindkey '^h' fzf-man-widget
 zle -N fzf-man-widget
+bindkey '^h' fzf-man-widget
 # Icon used is nerdfont
 
 # Use fd and fzf to get the args to a command.
