@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "idle": {
+    "screensaver": 5000,
+    "lock": 12000
+  },
+  "bar": {
+    "position": "top",
+    "transparent": true,
+    "centerAnchor": "omarchy.menu",
+    "layout": {
+      "left": [
+        {
+          "id": "agx.screen-time"
+        },
+        {
+          "id": "im0001gt.screens.workspaces"
+        },
+        {
+          "id": "omarchy.spacer"
+        },
+        {
+          "id": "ncc.yet-another-active-window"
+        },
+        {
+          "id": "b.everything"
+        }
+      ],
+      "center": [
+        {
+          "id": "io.github.gardnmi.window-shelf"
+        },
+        {
+          "id": "felixzsh.key-visualizer"
+        },
+        {
+          "id": "io.github.twiking.omasettings"
+        },
+        {
+          "id": "omaplug"
+        },
+        {
+          "id": "omarchy.spacer"
+        },
+        {
+          "id": "omarchy.clock",
+          "format": "ddd d MMM HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
+        },
+        {
+          "id": "omarchy.spacer"
+        },
+        {
+          "id": "omarchy.weather"
+        },
+        {
+          "id": "jesseburlamaque.omarchy-find"
+        }
+      ],
+      "right": [
+        {
+          "id": "omarchy.indicators"
+        },
+        {
+          "id": "omarchy.agents"
+        },
+        {
+          "id": "io.github.fernandomenolli.encore"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "ssupt.audio-control"
+        },
+        {
+          "id": "jonasbove.devices"
+        },
+        {
+          "id": "jankeesvw.notification-center"
+        },
+        {
+          "id": "ucmz851.omagpu"
+        },
+        {
+          "id": "im0001gt.screens"
+        },
+        {
+          "id": "vitals",
+          "gpuGraphEnabled": false
+        },
+        {
+          "id": "io.github.edgarsilva.power-button"
+        },
+        {
+          "id": "omarchy.system-update"
+        },
+        {
+          "id": "omarchy.menu"
+        },
+        {
+          "id": "io.github.lubabs770.gamut"
+        }
+      ]
+    }
+  },
+  "plugins": [
+    {
+      "id": "b.omahud"
+    },
+    {
+      "id": "io.github.chris.window-hints",
+      "inset": 8,
+      "maxHints": 25,
+      "watchdogMs": 15000,
+      "armMs": 250,
+      "inputPath": "submap",
+      "suggestedBind": "SUPER+H"
+    },
+    {
+      "id": "jkoestinger.vpn"
+    },
+    {
+      "id": "omarchy.bluetooth"
+    }
+  ],
+  "disabledPlugins": [
+    "omarchy.battery",
+    "omarchy.nightlight",
+    "omarchy.audio"
+  ],
+  "cloneSourceRestores": [
+    "ssupt.audio-control"
+  ]
+}

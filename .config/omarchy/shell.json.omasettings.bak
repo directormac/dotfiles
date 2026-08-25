@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "idle": {
+    "screensaver": 5000,
+    "lock": 12000
+  },
+  "bar": {
+    "position": "top",
+    "transparent": false,
+    "centerAnchor": "omarchy.clock",
+    "layout": {
+      "left": [
+        {
+          "id": "omarchy.menu"
+        },
+        {
+          "id": "io.github.twiking.omasettings"
+        },
+        {
+          "id": "jesseburlamaque.omarchy-find"
+        },
+        {
+          "id": "omarchy.indicators"
+        }
+      ],
+      "center": [
+        {
+          "id": "im0001gt.screens.workspaces"
+        },
+        {
+          "id": "omarchy.active-window"
+        }
+        ],
+      "right": [
+        {
+          "id": "omarchy.tray"
+        },
+        {
+          "id": "omaconnect"
+        },
+        {
+          "id": "jkoestinger.vpn"
+        },
+        {
+          "id": "omaplug"
+        },
+        {
+          "id": "im0001gt.screens"
+        },
+        {
+          "id": "vitals"
+        },
+        {
+          "id": "agx.screen-time"
+        },
+        {
+          "id": "omarchy.agents"
+        },
+        {
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.power"
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.keyboard-layout"
+        },
+        {
+          "id": "omarchy.weather"
+        },
+        {
+          "id": "omarchy.power"
+        },
+        {
+          "id": "omarchy.system-update"
+        },
+        {
+          "id": "omarchy.clock",
+          "format": "dddd h:mm AP",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
+        }
+      ]
+    }
+  },
+  "plugins": [
+    {
+      "id": "bobbynicholas.omaland"
+    }
+  ],
+  "disabledPlugins": [
+    "omarchy.battery",
+    "omarchy.nightlight"
+  ]
+}
