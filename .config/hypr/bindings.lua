@@ -66,43 +66,48 @@
 -- #define XKB_KEY_question                      0x003f  /* U+003F QUESTION MARK */
 -- #define XKB_KEY_at                            0x0040  /* U+0040 COMMERCIAL AT */
 
-hl.bind("SUPER + H",  function ()
-  hl.dsp.exec_cmd("omarchy-shell shell toggle io.github.chris.window-hints '{}'")
-  hl.dsp.submap("hints")
-end
-)
-
-hl.define_submap("hints", function()
-
-
-    local function key(k)
-        return hl.dsp.exec_cmd("omarchy-shell window-hints key " .. k)
-    end
-
-    for _, ch in ipairs({ "a", "s", "d", "f", "g", "h", "j", "k", "l" }) do
-        hl.bind(ch, key(ch))
-        hl.bind("SHIFT + " .. ch, key(string.upper(ch)))
-    end
-
-    hl.bind("x", key("x"))
-    for n = 1, 9 do
-        hl.bind(tostring(n), key(tostring(n)))
-    end
-
-    hl.bind("escape", function()
-        hl.dispatch(key("escape"))
-        hl.dispatch(hl.dsp.submap("reset"))
-    end)
-    hl.bind("catchall", hl.dsp.no_op())
-end)
+-- hl.bind("SUPER + H",  function ()
+--   hl.dsp.exec_cmd("omarchy-shell shell toggle io.github.chris.window-hints '{}'")
+--   hl.dsp.submap("hints")
+-- end
+-- )
+--
+-- hl.define_submap("hints", function()
+--
+--
+--     local function key(k)
+--         return hl.dsp.exec_cmd("omarchy-shell window-hints key " .. k)
+--     end
+--
+--     for _, ch in ipairs({ "a", "s", "d", "f", "g", "h", "j", "k", "l" }) do
+--         hl.bind(ch, key(ch))
+--         hl.bind("SHIFT + " .. ch, key(string.upper(ch)))
+--     end
+--
+--     hl.bind("x", key("x"))
+--     for n = 1, 9 do
+--         hl.bind(tostring(n), key(tostring(n)))
+--     end
+--
+--     hl.bind("escape", function()
+--         hl.dispatch(key("escape"))
+--         hl.dispatch(hl.dsp.submap("reset"))
+--     end)
+--     hl.bind("catchall", hl.dsp.no_op())
+-- end)
 
 
 hl.unbind("SUPER + backslash")
 o.bind("SUPER + backslash", "Find everything . ","$HOME/.local/bin/omarchy-find")
 
 -- BEGIN im0001gt.screens
-hl.unbind("SUPER + SLASH")
-hl.unbind("SUPER + ALT + SLASH")
-o.bind("SUPER + SLASH", "Monitor scaling up", "/home/artifex/.config/omarchy/plugins/im0001gt.screens/scripts/display-ctl scale up")
-o.bind("SUPER + ALT + SLASH", "Monitor scaling down", "/home/artifex/.config/omarchy/plugins/im0001gt.screens/scripts/display-ctl scale down")
+-- hl.unbind("SUPER + SLASH")
+-- hl.unbind("SUPER + ALT + SLASH")
+-- o.bind("SUPER + SLASH", "Monitor scaling up", "/home/artifex/.config/omarchy/plugins/im0001gt.screens/scripts/display-ctl scale up")
+-- o.bind("SUPER + ALT + SLASH", "Monitor scaling down", "/home/artifex/.config/omarchy/plugins/im0001gt.screens/scripts/display-ctl scale down")
 -- END im0001gt.screens
+
+
+
+hl.unbind("SUPER + SLASH")
+o.bind("SUPER + SLASH", "Everything", "omarchy-shell shell toggle b.everything")

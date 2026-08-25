@@ -27,7 +27,7 @@
         }
       ],
       "center": [
-              {
+        {
           "id": "felixzsh.key-visualizer"
         },
         {
@@ -87,7 +87,9 @@
           "id": "im0001gt.screens"
         },
         {
-          "id": "vitals"
+          "id": "vitals",
+          "moduleGridHeight": 319,
+          "processListHeight": 217
         },
         {
           "id": "io.github.edgarsilva.power-button"

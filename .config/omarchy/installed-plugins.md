@@ -3,7 +3,6 @@
 
 ## [Link](https://omarchyplugins.com/index.html#catalog)
 
-
 https://omarchyplugins.com/plugin.html?id=b.omahud
 omarchy plugin add https://github.com/brianblakely/omahud.git --enable
 
@@ -213,7 +212,7 @@ omarchy plugin add https://github.com/weedwhitesandwine/omascratch.git --enablr
 https://omarchyplugins.com/plugin.html?id=gzaal.desktop-layout
 https://omarchyplugins.com/plugin.html?id=io.github.dominicboettger.prompter
 
-
+https://github.com/mwaltzer/omarchy-reprise
 https://omarchyplugins.com/plugin.html?id=io.github.fernandomenolli.encore
 omarchy plugin add https://github.com/fernandomenolli/omarchy-encore.git --enable
 
@@ -257,3 +256,6 @@ https://omarchyplugins.com/plugin.html?id=caniworknow.status
 https://omarchyplugins.com/plugin.html?id=dlpwaters.thesaurus
 https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf
 omarchy plugin add https://github.com/gardnmi/omarchy-minimize.git --enable
+
+
+omarchy plugin add https://github.com/meviusisback/keybinds-plugin.git --enable
