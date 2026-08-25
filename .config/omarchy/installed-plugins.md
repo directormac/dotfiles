@@ -2,77 +2,10 @@
 
 
 ## [Link](https://omarchyplugins.com/index.html#catalog)
-https://omarchyplugins.com/plugin.html?id=cucu0628.dashboard
-https://omarchyplugins.com/plugin.html?id=tenzin.auto-workspace
-https://omarchyplugins.com/plugin.html?id=io.github.wbarakat.session-restore
-https://github.com/prudhviy99/omascenes
 
-https://omarchyplugins.com/plugin.html?id=com.aktivesolutions.bw-vault
-https://omarchyplugins.com/plugin.html?id=white.nights
-https://omarchyplugins.com/plugin.html?id=io.github.chris.window-hints
-
-https://omarchyplugins.com/plugin.html?id=io.github.weedwhitesandwine.omascratch
-omarchy plugin add https://github.com/weedwhitesandwine/omascratch.git --enablr
-
-
-https://omarchyplugins.com/plugin.html?id=gzaal.desktop-layout
-https://omarchyplugins.com/plugin.html?id=io.github.dominicboettger.prompter
-
-
-https://omarchyplugins.com/plugin.html?id=io.github.fernandomenolli.encore
-omarchy plugin add https://github.com/fernandomenolli/omarchy-encore.git --enable
-
-https://omarchyplugins.com/plugin.html?id=jankeesvw.notification-center
-omarchy plugin add https://github.com/jankeesvw/omarchy-notification-center.git --enable
-
-https://omarchyplugins.com/plugin.html?id=io.github.maiosx.preview
-
-https://omarchyplugins.com/plugin.html?id=hancore.keyboard-center
-
-
-https://omarchyplugins.com/plugin.html?id=pedrodrocha.purrpaper
-
-https://omarchyplugins.com/plugin.html?id=omarchy-window-opacity
-omarchy plugin add https://github.com/RishabhRD/omarchy-window-opacity.git --enable
-
-
-https://omarchyplugins.com/plugin.html?id=plugin.hider
-
-https://omarchyplugins.com/plugin.html?id=minimal.dot.workspace
-omarchy plugin add https://github.com/YutaKoyanagi10/Dot-Minimal-Workspaces.git --enable
-
-
-https://omarchyplugins.com/plugin.html?id=felixzsh.key-visualizer
-omarchy plugin add https://github.com/felixzsh/omarchy-key-visualizer.git --enable
-
-
-
-https://omarchyplugins.com/plugin.html?id=io.github.omar-sv88.vlans
-https://omarchyplugins.com/plugin.html?id=gurvindersingh-web.system-stats
-https://omarchyplugins.com/plugin.html?id=mirador
-https://omarchyplugins.com/plugin.html?id=io.github.scttymn.float-snap
-https://omarchyplugins.com/plugin.html?id=sofos.workspaces
-https://omarchyplugins.com/plugin.html?id=io.github.sahzudin.omassh
-https://omarchyplugins.com/plugin.html?id=io.github.rizmi.terminal
-
-https://omarchyplugins.com/plugin.html?id=ncc.yet-another-active-window
-omarchy plugin add https://github.com/ncc001/yet-another-active-window.git --enable
 
 https://omarchyplugins.com/plugin.html?id=b.omahud
 omarchy plugin add https://github.com/brianblakely/omahud.git --enable
-
-https://omarchyplugins.com/plugin.html?id=jonasbove.devices
-omarchy plugin add https://github.com/jonasbove/omarchy-devices.git --enable
-
-https://omarchyplugins.com/plugin.html?id=io.github.rizmi.services
-omarchy plugin add https://github.com/Rizmi/omarchy-services-plugin.git --enable
-
-https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf
-omarchy plugin add https://github.com/gardnmi/omarchy-minimize.git --enable
-
-https://omarchyplugins.com/plugin.html?id=caniworknow.status
-https://omarchyplugins.com/plugin.html?id=dlpwaters.thesaurus
-
 
 
 ```sh
@@ -94,6 +27,7 @@ omarchy restart shell
 
 https://github.com/tslove923/omarchy-system-monitor
 
+[Minimize](https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf)
 
 ## [Everything](https://github.com/brianblakely/omarchy-everything)
 
@@ -152,7 +86,7 @@ omarchy plugin add https://github.com/ucmz851/omagpu.git --enable
 https://omarchyplugins.com/plugin.html?id=io.github.edgarsilva.power-button
 omarchy plugin add https://github.com/edgarsilva/omarchy-power-button.git --enable
 
-    ```sh 
+    ```sh
       # screens
       omarchy plugin add https://github.com/IM0001GT/omarchy-screens.git --enable
     ```
@@ -178,13 +112,6 @@ omarchy plugin add https://github.com/edgarsilva/omarchy-power-button.git --enab
     ```sh 
       # screen time
       omarchy plugin add https://github.com/ax1g/quickshell-screentime-plugin.git --enable
-    ```
-
-- [Omaland](https://omarchyplugins.com/plugin.html?id=bobbynicholas.omaland)
-
-    ```sh 
-      # omaland
-      omarchy plugin add https://github.com/bobby-nicholas/omaland.git --enable
     ```
 
 
@@ -226,7 +153,6 @@ omarchy plugin add https://github.com/edgarsilva/omarchy-power-button.git --enab
     - [dictionary](https://omarchyplugins.com/plugin.html?id=tristonarmstrong.dictionary)
     - [OmaGPU](https://omarchyplugins.com/plugin.html?id=ucmz851.omagpu)
     - [Shell Settings](https://omarchyplugins.com/plugin.html?id=shell.settings)
-    - [Minimize](https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf)
     - [Removable drives](https://omarchyplugins.com/plugin.html?id=wian47.removable-drives)
     - [active window](https://omarchyplugins.com/plugin.html?id=crmne.active-window)
     - [app launcher](https://omarchyplugins.com/plugin.html?id=tyrsolution.app-launcher)
@@ -258,25 +184,76 @@ https://omarchyplugins.com/plugin.html?id=bpbagayas.renameable-workspaces
 https://omarchyplugins.com/plugin.html?id=bscott.scratch-terminal
 https://omarchyplugins.com/plugin.html?id=io.github.prudhviy99.omascenes
 https://omarchyplugins.com/plugin.html?id=io.github.thebenwalther.omalab
-
 https://omarchyplugins.com/plugin.html?id=zezenta.vimoji
 https://omarchyplugins.com/plugin.html?id=io.github.juancasanueva.developer-control-center
 https://omarchyplugins.com/plugin.html?id=io.github.jethrojones.tile-manager
-
 https://omarchyplugins.com/plugin.html?id=io.github.janhesters.focus
 https://omarchyplugins.com/plugin.html?id=stefanmara.bookmarks
 https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf
 https://omarchyplugins.com/plugin.html?id=io.github.twiking.omasettings
 https://github.com/matt-shearing/omarchy-persistent-layouts
 https://github.com/DanielLob-o/Omaspaces
-
 https://omarchyplugins.com/plugin.html?id=io.github.chris.share-cloak
 https://github.com/jankeesvw/omarchy-notification-center
-
 https://omarchyplugins.com/plugin.html?id=jesseburlamaque.herald-notification
-
-
 https://github.com/Shavanced/omarchy-notification-center-plugin
 https://omarchyplugins.com/plugin.html?id=nacchofer31.adb-devices
-
 https://omarchyplugins.com/plugin.html?id=ryanyogan.omatop
+https://omarchyplugins.com/plugin.html?id=cucu0628.dashboard
+https://omarchyplugins.com/plugin.html?id=tenzin.auto-workspace
+https://omarchyplugins.com/plugin.html?id=io.github.wbarakat.session-restore
+https://github.com/prudhviy99/omascenes
+https://omarchyplugins.com/plugin.html?id=com.aktivesolutions.bw-vault
+https://omarchyplugins.com/plugin.html?id=white.nights
+https://omarchyplugins.com/plugin.html?id=io.github.chris.window-hints
+https://omarchyplugins.com/plugin.html?id=io.github.weedwhitesandwine.omascratch
+omarchy plugin add https://github.com/weedwhitesandwine/omascratch.git --enablr
+
+
+https://omarchyplugins.com/plugin.html?id=gzaal.desktop-layout
+https://omarchyplugins.com/plugin.html?id=io.github.dominicboettger.prompter
+
+
+https://omarchyplugins.com/plugin.html?id=io.github.fernandomenolli.encore
+omarchy plugin add https://github.com/fernandomenolli/omarchy-encore.git --enable
+
+https://omarchyplugins.com/plugin.html?id=jankeesvw.notification-center
+omarchy plugin add https://github.com/jankeesvw/omarchy-notification-center.git --enable
+
+https://omarchyplugins.com/plugin.html?id=io.github.maiosx.preview
+
+https://omarchyplugins.com/plugin.html?id=hancore.keyboard-center
+
+https://omarchyplugins.com/plugin.html?id=pedrodrocha.purrpaper
+
+https://omarchyplugins.com/plugin.html?id=omarchy-window-opacity
+omarchy plugin add https://github.com/RishabhRD/omarchy-window-opacity.git --enable
+
+https://omarchyplugins.com/plugin.html?id=plugin.hider
+
+https://omarchyplugins.com/plugin.html?id=minimal.dot.workspace
+omarchy plugin add https://github.com/YutaKoyanagi10/Dot-Minimal-Workspaces.git --enable
+
+https://omarchyplugins.com/plugin.html?id=felixzsh.key-visualizer
+omarchy plugin add https://github.com/felixzsh/omarchy-key-visualizer.git --enable
+
+https://omarchyplugins.com/plugin.html?id=io.github.omar-sv88.vlans
+https://omarchyplugins.com/plugin.html?id=gurvindersingh-web.system-stats
+https://omarchyplugins.com/plugin.html?id=mirador
+https://omarchyplugins.com/plugin.html?id=io.github.scttymn.float-snap
+https://omarchyplugins.com/plugin.html?id=sofos.workspaces
+https://omarchyplugins.com/plugin.html?id=io.github.sahzudin.omassh
+https://omarchyplugins.com/plugin.html?id=io.github.rizmi.terminal
+
+https://omarchyplugins.com/plugin.html?id=ncc.yet-another-active-window
+omarchy plugin add https://github.com/ncc001/yet-another-active-window.git --enable
+
+
+https://omarchyplugins.com/plugin.html?id=jonasbove.devices
+omarchy plugin add https://github.com/jonasbove/omarchy-devices.git --enable
+https://omarchyplugins.com/plugin.html?id=io.github.rizmi.services
+omarchy plugin add https://github.com/Rizmi/omarchy-services-plugin.git --enable
+https://omarchyplugins.com/plugin.html?id=caniworknow.status
+https://omarchyplugins.com/plugin.html?id=dlpwaters.thesaurus
+https://omarchyplugins.com/plugin.html?id=io.github.gardnmi.window-shelf
+omarchy plugin add https://github.com/gardnmi/omarchy-minimize.git --enable

@@ -27,17 +27,14 @@
         }
       ],
       "center": [
-        {
-          "id": "io.github.gardnmi.window-shelf"
-        },
-        {
+              {
           "id": "felixzsh.key-visualizer"
         },
         {
-          "id": "io.github.twiking.omasettings"
+          "id": "jesseburlamaque.omarchy-find"
         },
         {
-          "id": "omaplug"
+          "id": "omarchy.weather"
         },
         {
           "id": "omarchy.spacer"
@@ -52,10 +49,13 @@
           "id": "omarchy.spacer"
         },
         {
-          "id": "omarchy.weather"
+          "id": "io.github.twiking.omasettings"
         },
         {
-          "id": "jesseburlamaque.omarchy-find"
+          "id": "omaplug"
+        },
+        {
+          "id": "io.github.gardnmi.window-shelf"
         }
       ],
       "right": [
@@ -87,8 +87,7 @@
           "id": "im0001gt.screens"
         },
         {
-          "id": "vitals",
-          "gpuGraphEnabled": false
+          "id": "vitals"
         },
         {
           "id": "io.github.edgarsilva.power-button"
