@@ -69,21 +69,21 @@ window.relativenumber = true -- Set the relative number
 window.signcolumn = "yes" -- Show information next to the line numbers
 window.wrap = false -- Do not display text over multiple lines
 
-if vim.g.neovide then
-  -- Put anything you want to happen only in Neovide here
-  vim.g.neovide_padding_top = 0
-  vim.g.neovide_padding_bottom = 0
-  vim.g.neovide_padding_right = 0
-  vim.g.neovide_padding_left = 0
-  vim.g.neovide_transparency = 0.0
-  vim.g.transparency = 0.73
-  vim.g.neovide_floating_blur_amount_x = 2.0
-  vim.g.neovide_floating_blur_amount_y = 2.0
-  vim.g.neovide_floating_shadow = true
-  vim.g.neovide_floating_z_height = 10
-  vim.g.neovide_light_angle_degrees = 45
-  vim.g.neovide_light_radius = 5
-end
+-- if vim.g.neovide then
+--   -- Put anything you want to happen only in Neovide here
+--   vim.g.neovide_padding_top = 0
+--   vim.g.neovide_padding_bottom = 0
+--   vim.g.neovide_padding_right = 0
+--   vim.g.neovide_padding_left = 0
+--   vim.g.neovide_transparency = 0.0
+--   vim.g.transparency = 0.73
+--   vim.g.neovide_floating_blur_amount_x = 2.0
+--   vim.g.neovide_floating_blur_amount_y = 2.0
+--   vim.g.neovide_floating_shadow = true
+--   vim.g.neovide_floating_z_height = 10
+--   vim.g.neovide_light_angle_degrees = 45
+--   vim.g.neovide_light_radius = 5
+-- end
 
 -- vim.diagnostic.config({
 --   -- Turn off the cramped side-text entirely

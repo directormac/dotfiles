@@ -1,2 +1,24 @@
+# Refeerence https://github.com/basecamp/omarchy/blob/quattro/default/themed/shell.toml.tpl
+[controls]
+# Accent-tinted cursor/focus, foreground-tinted selected state.
+hover-cursor-color = "accent"
+focus-color        = "accent"
+selected-color     = "foreground"
+focus-border       = "rgba(33ccffee) rgba(00ff99ee) 45deg"
+
+# Keep selected fills but remove selected-state borders.
+selected-border-width = 0
+
+[spacing]
+scale = 1.15
+scale-with-font = true  # grow controls and panels with [font] base-size
+
 [font]
 base-size = 14
+heading       = 21
+display-large = 36
+
+[bar]
+scale-with-font = true
+size-horizontal = 26   # top/bottom bar height at base-size 12
+size-vertical   = 28   # left/right bar width at base-size 12
