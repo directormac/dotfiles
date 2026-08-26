@@ -2,3 +2,33 @@
 -- Every value here was set from the OmaSettings window; delete a line
 -- to hand that setting back to your own config.
 
+hl.config({
+  general = {
+    border_size = 1,
+  },
+})
+
+hl.config({
+  decoration = {
+    dim_around = 0,
+    dim_inactive = true,
+    dim_modal = false,
+    dim_special = 0,
+    dim_strength = 0,
+    rounding_power = 1.05,
+  },
+})
+
+hl.config({
+  group = {
+    groupbar = {
+      font_size = 10,
+      height = 12,
+    },
+  },
+})
+
+
+-- Full opacity: Omarchy tags every window and fades it to 0.985, which
+-- multiplies with the opacity settings, so 100% renders at 98.5%.
+o.window(".*", { opacity = "1.0 1.0" })

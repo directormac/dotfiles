@@ -1,1 +1,8 @@
-{"mode":"all","position":"bottom-right","margin":67,"lingerMs":10000,"historyCount":5,"comboMode":true,"offsetX":0,"offsetY":-6}
+{
+  "mode": "all",
+  "position": "bottom-center",
+  "margin": 67,
+  "lingerMs": 1000,
+  "historyCount": 1,
+  "comboMode": false
+}

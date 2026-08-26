@@ -51,3 +51,5 @@ stow .
 # Unlink
 stow -D .
 ```
+
+[nix + qs](https://github.com/fufexan/dotfiles)

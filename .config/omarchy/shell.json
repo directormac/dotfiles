@@ -7,12 +7,9 @@
   "bar": {
     "position": "top",
     "transparent": true,
-    "centerAnchor": "omarchy.menu",
+    "centerAnchor": "omarchy.clock",
     "layout": {
       "left": [
-        {
-          "id": "agx.screen-time"
-        },
         {
           "id": "im0001gt.screens.workspaces"
         },
@@ -20,24 +17,24 @@
           "id": "omarchy.spacer"
         },
         {
-          "id": "ncc.yet-another-active-window"
+          "id": "agx.screen-time"
         },
         {
           "id": "b.everything"
+        },
+        {
+          "id": "tyrsolution.app-launcher"
+        },
+        {
+          "id": "maduki-tech.omado"
+        },
+        {
+          "id": "sid.scheduled-jobs"
         }
       ],
       "center": [
         {
           "id": "felixzsh.key-visualizer"
-        },
-        {
-          "id": "jesseburlamaque.omarchy-find"
-        },
-        {
-          "id": "omarchy.weather"
-        },
-        {
-          "id": "omarchy.spacer"
         },
         {
           "id": "omarchy.clock",
@@ -49,10 +46,13 @@
           "id": "omarchy.spacer"
         },
         {
-          "id": "io.github.twiking.omasettings"
+          "id": "omarchy.weather"
         },
         {
-          "id": "omaplug"
+          "id": "io.github.monswiklund.recently-closed"
+        },
+        {
+          "id": "jesseburlamaque.omarchy-find"
         },
         {
           "id": "io.github.gardnmi.window-shelf"
@@ -60,31 +60,22 @@
       ],
       "right": [
         {
+          "id": "io.github.lubabs770.gamut"
+        },
+        {
           "id": "omarchy.indicators"
         },
         {
           "id": "omarchy.agents"
         },
         {
-          "id": "io.github.fernandomenolli.encore"
+          "id": "io.github.tomdavenport.cam-stream"
         },
         {
-          "id": "omarchy.network"
-        },
-        {
-          "id": "ssupt.audio-control"
-        },
-        {
-          "id": "jonasbove.devices"
+          "id": "io.github.salemsayed.omawarden"
         },
         {
           "id": "jankeesvw.notification-center"
-        },
-        {
-          "id": "ucmz851.omagpu"
-        },
-        {
-          "id": "im0001gt.screens"
         },
         {
           "id": "vitals",
@@ -92,7 +83,16 @@
           "processListHeight": 217
         },
         {
-          "id": "io.github.edgarsilva.power-button"
+          "id": "jonasbove.devices"
+        },
+        {
+          "id": "ssupt.audio-control"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "im0001gt.screens"
         },
         {
           "id": "omarchy.system-update"
@@ -101,7 +101,16 @@
           "id": "omarchy.menu"
         },
         {
-          "id": "io.github.lubabs770.gamut"
+          "id": "yoyo.system-tidy"
+        },
+        {
+          "id": "io.github.twiking.omasettings"
+        },
+        {
+          "id": "io.github.chernicharo.voxtype-mode"
+        },
+        {
+          "id": "isaact135.network-shares"
         }
       ]
     }
@@ -109,15 +118,6 @@
   "plugins": [
     {
       "id": "b.omahud"
-    },
-    {
-      "id": "io.github.chris.window-hints",
-      "inset": 8,
-      "maxHints": 25,
-      "watchdogMs": 15000,
-      "armMs": 250,
-      "inputPath": "submap",
-      "suggestedBind": "SUPER+H"
     },
     {
       "id": "jkoestinger.vpn"
