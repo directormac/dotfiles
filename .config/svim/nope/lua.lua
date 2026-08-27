@@ -1,0 +1,14 @@
+--- # reference https://github.com/briandipalma/iac/blob/main/dotfiles/nvim/after/ftplugin/lua.lua
+local conform = require("conform")
+-- local install_package = require("my-config/utils").install_package
+--
+-- install_package("lua-language-server")
+-- install_package("stylua")
+--
+-- vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- vim.wo[0][0].foldmethod = "expr"
+--
+-- vim.lsp.enable("lua_ls")
+-- vim.lsp.enable("stylua")
+
+conform.formatters_by_ft.lua = { "stylua" }
