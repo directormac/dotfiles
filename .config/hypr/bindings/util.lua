@@ -53,28 +53,72 @@ if o.cmd_present("voxtype") then
   o.bind("F9", "Stop dictation (push-to-talk)", "voxtype record stop", { release = true })
 end
 
-
 -- Volume, brightness, keyboard backlight, and touchpad controls.
 o.bind("XF86AudioRaiseVolume", "Volume up", "omarchy-audio-output-volume raise", { locked = true, repeating = true })
 o.bind("XF86AudioLowerVolume", "Volume down", "omarchy-audio-output-volume lower", { locked = true, repeating = true })
 o.bind("XF86AudioMute", "Mute", "omarchy-audio-output-volume mute-toggle", { locked = true })
 o.bind("XF86AudioMicMute", "Mute microphone", "omarchy-audio-input-mute", { locked = true })
 o.bind("XF86MonBrightnessUp", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
-o.bind("XF86MonBrightnessDown", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
-o.bind("SHIFT + XF86MonBrightnessUp", "Brightness maximum", "omarchy-brightness-display 100%", { locked = true, repeating = true })
-o.bind("SHIFT + XF86MonBrightnessDown", "Brightness minimum", "omarchy-brightness-display 1%", { locked = true, repeating = true })
-o.bind("XF86KbdBrightnessUp", "Keyboard brightness up", "omarchy-brightness-keyboard up", { locked = true, repeating = true })
-o.bind("XF86KbdBrightnessDown", "Keyboard brightness down", "omarchy-brightness-keyboard down", { locked = true, repeating = true })
+o.bind(
+  "XF86MonBrightnessDown",
+  "Brightness down",
+  "omarchy-brightness-display 5%-",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "SHIFT + XF86MonBrightnessUp",
+  "Brightness maximum",
+  "omarchy-brightness-display 100%",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "SHIFT + XF86MonBrightnessDown",
+  "Brightness minimum",
+  "omarchy-brightness-display 1%",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "XF86KbdBrightnessUp",
+  "Keyboard brightness up",
+  "omarchy-brightness-keyboard up",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "XF86KbdBrightnessDown",
+  "Keyboard brightness down",
+  "omarchy-brightness-keyboard down",
+  { locked = true, repeating = true }
+)
 o.bind("XF86KbdLightOnOff", "Keyboard backlight cycle", "omarchy-brightness-keyboard cycle", { locked = true })
 o.bind_toggle("XF86TouchpadToggle", "Toggle touchpad", "touchpad", { locked = true })
 o.bind("XF86TouchpadOn", "Enable touchpad", "omarchy-toggle-touchpad on", { locked = true })
 o.bind("XF86TouchpadOff", "Disable touchpad", "omarchy-toggle-touchpad off", { locked = true })
 
 -- Precise volume and brightness controls.
-o.bind("ALT + XF86AudioRaiseVolume", "Volume up precise", "omarchy-audio-output-volume +1", { locked = true, repeating = true })
-o.bind("ALT + XF86AudioLowerVolume", "Volume down precise", "omarchy-audio-output-volume -1", { locked = true, repeating = true })
-o.bind("ALT + XF86MonBrightnessUp", "Brightness up precise", "omarchy-brightness-display +1%", { locked = true, repeating = true })
-o.bind("ALT + XF86MonBrightnessDown", "Brightness down precise", "omarchy-brightness-display 1%-", { locked = true, repeating = true })
+o.bind(
+  "ALT + XF86AudioRaiseVolume",
+  "Volume up precise",
+  "omarchy-audio-output-volume +1",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "ALT + XF86AudioLowerVolume",
+  "Volume down precise",
+  "omarchy-audio-output-volume -1",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "ALT + XF86MonBrightnessUp",
+  "Brightness up precise",
+  "omarchy-brightness-display +1%",
+  { locked = true, repeating = true }
+)
+o.bind(
+  "ALT + XF86MonBrightnessDown",
+  "Brightness down precise",
+  "omarchy-brightness-display 1%-",
+  { locked = true, repeating = true }
+)
 
 -- Media controls.
 o.bind("XF86AudioNext", "Next track", "omarchy-shell media next", { locked = true })
@@ -88,16 +132,6 @@ o.bind("XF86Eject", "Eject media", "eject", { locked = true })
 o.bind("SHIFT + XF86AudioMute", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
 o.bind("SHIFT + XF86AudioPause", "Switch media source", "omarchy-audio-source-switch", { locked = true })
 o.bind("SHIFT + XF86AudioPlay", "Switch media source", "omarchy-audio-source-switch", { locked = true })
-
-
-
-
-
-
-
-
-
-
 
 o.bind("SUPER + SPACE", "Omarchy menu", "omarchy-menu toggle")
 o.bind("SUPER + ALT + SPACE", "Apps menu", "omarchy-menu toggle apps")
@@ -119,7 +153,11 @@ o.bind("SUPER + CTRL + SPACE", "Background switcher", "omarchy-menu toggle backg
 o.bind("SUPER + SHIFT + CTRL + SPACE", "Theme menu", "omarchy-menu toggle theme")
 o.bind("SUPER + BACKSPACE", "Toggle window transparency", "omarchy-hyprland-window-transparency-toggle")
 o.bind("SUPER + SHIFT + BACKSPACE", "Toggle window gaps", "omarchy-hyprland-window-gaps-toggle")
-o.bind("SUPER + CTRL + BACKSPACE", "Toggle single-window square aspect", "omarchy-hyprland-window-single-square-aspect-toggle")
+o.bind(
+  "SUPER + CTRL + BACKSPACE",
+  "Toggle single-window square aspect",
+  "omarchy-hyprland-window-single-square-aspect-toggle"
+)
 
 -- xkbcommon names the comma keysym "comma"; the upper-case "COMMA" does not match.
 o.bind("SUPER + comma", "Dismiss last notification", "omarchy-shell notifications dismissOne")
@@ -131,12 +169,20 @@ o.bind("SUPER + SHIFT + ALT + comma", "Open notification history", "omarchy-shel
 o.bind_toggle("SUPER + CTRL + I", "Toggle locking on idle", "idle")
 o.bind_toggle("SUPER + CTRL + N", "Toggle nightlight", "nightlight")
 o.bind("SUPER + CTRL + Delete", "Toggle laptop display", "omarchy-hyprland-monitor-internal toggle")
-o.bind("SUPER + CTRL + ALT + Delete", "Toggle laptop display mirroring", "omarchy-hyprland-monitor-internal-mirror toggle")
+o.bind(
+  "SUPER + CTRL + ALT + Delete",
+  "Toggle laptop display mirroring",
+  "omarchy-hyprland-monitor-internal-mirror toggle"
+)
 o.bind("switch:on:Lid Switch", nil, "omarchy-system-lid-close", { locked = true })
 o.bind("switch:off:Lid Switch", nil, "omarchy-hyprland-monitor-clamshell", { locked = true })
 
 o.bind("PRINT", "Screenshot", "omarchy-capture-screenshot")
-o.bind("ALT + PRINT", "Screenrecording", "omarchy-capture-screenrecording --stop-recording || omarchy-menu toggle trigger.capture.screenrecord")
+o.bind(
+  "ALT + PRINT",
+  "Screenrecording",
+  "omarchy-capture-screenrecording --stop-recording || omarchy-menu toggle trigger.capture.screenrecord"
+)
 o.bind("SUPER + ALT + code:34", "Make webcam overlay smaller", "omarchy-capture-webcam-resize smaller")
 o.bind("SUPER + ALT + code:35", "Make webcam overlay larger", "omarchy-capture-webcam-resize larger")
 o.bind("SUPER + PRINT", "Color picker", "pkill hyprpicker || hyprpicker -a")
@@ -155,15 +201,35 @@ hl.on("layer.opened", function(layer)
     selection_layers = selection_layers + 1
     if selection_layers == 1 then
       selection_binds = {
-        hl.bind("RETURN", hl.dsp.exec_cmd("omarchy-capture-region --take-window"), { description = "Capture highlighted window" }),
-        hl.bind("CTRL + RETURN", hl.dsp.exec_cmd("omarchy-capture-region --take-fullscreen"), { description = "Capture entire screen" }),
-        hl.bind("TAB", hl.dsp.exec_cmd("omarchy-capture-region --select-window next"), { description = "Select next window to capture" }),
-        hl.bind("CTRL + TAB", hl.dsp.exec_cmd("omarchy-capture-region --select-window prev"), { description = "Select previous window to capture" }),
+        hl.bind(
+          "RETURN",
+          hl.dsp.exec_cmd("omarchy-capture-region --take-window"),
+          { description = "Capture highlighted window" }
+        ),
+        hl.bind(
+          "CTRL + RETURN",
+          hl.dsp.exec_cmd("omarchy-capture-region --take-fullscreen"),
+          { description = "Capture entire screen" }
+        ),
+        hl.bind(
+          "TAB",
+          hl.dsp.exec_cmd("omarchy-capture-region --select-window next"),
+          { description = "Select next window to capture" }
+        ),
+        hl.bind(
+          "CTRL + TAB",
+          hl.dsp.exec_cmd("omarchy-capture-region --select-window prev"),
+          { description = "Select previous window to capture" }
+        ),
       }
       for _, direction in ipairs({ "left", "right", "up", "down" }) do
         table.insert(
           selection_binds,
-          hl.bind(direction:upper(), hl.dsp.exec_cmd("omarchy-capture-region --select-window " .. direction), { description = "Select window to capture" })
+          hl.bind(
+            direction:upper(),
+            hl.dsp.exec_cmd("omarchy-capture-region --select-window " .. direction),
+            { description = "Select window to capture" }
+          )
         )
       end
     end
@@ -225,4 +291,3 @@ o.bind("SUPER + CTRL + ALT + Z", "Reset zoom", function()
 end)
 
 o.bind("SUPER + CTRL + L", "Lock system", "omarchy-system-lock")
-
