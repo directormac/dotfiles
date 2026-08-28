@@ -115,8 +115,14 @@ ddcu = "docker-compose -f docker/docker-compose.dev.yaml  up -d"
 dcv = "docker-compose down -v"
 
 # alias mvim="NVIM_APPNAME=mac-nvim nvim"
-mvim = "NVIM_APPNAME=nvimmac nvim"
+mvim = "NVIM_APPNAME=nvim-master nvim"
 pvim = "NVIM_APPNAME=nvimp nvim"
+svim = "NVIM_APPNAME=nvim-super nvim"
+ksvim = 'NVIM_APPNAME="nvim-kickstart" nvim'
+minivim = "NVIM_APPNAME=nvim-minimax nvim"
+
+kickvim = "NVIM_APPNAME=kickstart-nvim nvim"
+
 ws = "windsurf"
 
 # Arch Related
