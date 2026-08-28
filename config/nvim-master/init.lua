@@ -1,7 +1,14 @@
 -- Try to implement later https://github.com/zuqini/zpack.nvim
+
+_G.Config = {}
+
 if vim.loader then vim.loader.enable() end
 
-require('artifex.options')
-require('artifex.autocmds')
-require('artifex.keymaps')
-require('artifex.diagnostics')
+require('options')
+require('keymaps')
+
+require('autocmds')
+
+-- -- Experimental: ui2 message/cmdline redesign (:h ui2)
+-- -- Avoids "Press ENTER" prompts, highlights cmdline, pager as buffer.
+require('vim._core.ui2').enable()

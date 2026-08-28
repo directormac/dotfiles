@@ -1,5 +1,9 @@
 require('mini.bracketed').setup()
-require('mini.pairs').setup()
+
+require('mini.pairs').setup({
+  modes = { insert = true, command = true, terminal = false },
+})
+
 require('mini.surround').setup({
   mappings = {
     add = 'za', -- Add surrounding in Normal and Visual modes
