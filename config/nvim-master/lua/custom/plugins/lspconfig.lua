@@ -32,93 +32,62 @@ require('fidget').setup({})
 --    That is to say, every time a new file is opened that is associated with
 --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
 --    function will be executed to configure the current buffer
+
+local completion = vim.g.completion_mode or 'blink' -- or 'native'
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-  callback = function(event)
-    -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-    -- to define small helper and utility functions so you don't have to repeat yourself.
-    --
-    -- In this case, we create a function that lets us more easily define mappings specific
-    -- for LSP related items. It sets the mode, buffer and description for us each time.
-    local map = function(keys, func, desc, mode)
-      mode = mode or 'n'
-      vim.keymap.set(
-        mode,
-        keys,
-        func,
-        { buffer = event.buf, desc = 'LSP: ' .. desc }
-      )
-    end
+  group = vim.api.nvim_create_augroup('auto-lsp-attach', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local buf = args.buf
 
-    -- Rename the variable under your cursor.
-    --  Most Language Servers support renaming across files, etc.
-    map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+    if client then
+      -- Built-in completion
+      if completion == 'native' and client:supports_method('textDocument/completion') then
+        vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+      end
 
-    -- Execute a code action, usually your cursor needs to be on top of an error
-    -- or a suggestion from your LSP for this to activate.
-    map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+      if client:supports_method('textDocument/inlayHint') then
+        vim.lsp.inlay_hint.enable(false, { bufnr = buf })
+        vim.notify('Inlay hints supported, press <Leader>+uh to toggle.')
+      end
 
-    -- WARN: This is not Goto Definition, this is Goto Declaration.
-    --  For example, in C this would take you to the header.
-    map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+      -- -- On-type formatting, but not from tsserver: it re-indents lines as you
+      -- -- type `;`, `}` or newline using its own style, not the project's.
+      if not client:supports_method('textDocument/onTypeFormatting') then
+        vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
 
-    -- The following two autocommands are used to highlight references of the
-    -- word under your cursor when your cursor rests there for a little while.
-    --    See `:help CursorHold` for information about when this is executed
-    --
-    -- When you move your cursor, the highlights will be cleared (the second autocommand).
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if
-      client
-      and client:supports_method('textDocument/documentHighlight', event.buf)
-    then
-      local highlight_augroup = vim.api.nvim_create_augroup(
-        'kickstart-lsp-highlight',
-        { clear = false }
-      )
-      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-        buffer = event.buf,
-        group = highlight_augroup,
-        callback = vim.lsp.buf.document_highlight,
-      })
+        vim.keymap.set(
+          { 'n', 'v' },
+          '<leader>cF',
+          function() require('conform').format({ async = true, bufnr = buf, lsp_format = 'first' }) end,
+          { desc = 'Format Injected Language.' }
+        )
+      end
 
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-        buffer = event.buf,
-        group = highlight_augroup,
-        callback = vim.lsp.buf.clear_references,
-      })
+      if client:supports_method('textDocument/documentColor') then
+        vim.lsp.document_color.enable(true, { bufnr = buf }, {
+          style = 'virtual',
+        })
+      end
 
-      vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup(
-          'kickstart-lsp-detach',
-          { clear = true }
-        ),
-        callback = function(event2)
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds({
-            group = 'kickstart-lsp-highlight',
-            buffer = event2.buf,
-          })
-        end,
-      })
-    end
+      local default_keymaps = {
+        { keys = '<leader>ca', func = vim.lsp.buf.code_action, desc = 'Code Actions' },
+        { keys = '<leader>cr', func = vim.lsp.buf.rename, desc = 'Code Rename' },
+        { keys = '<leader>k', func = vim.lsp.buf.hover, desc = 'Hover Documentation', has = 'hoverProvider' },
+        { keys = 'K', func = vim.lsp.buf.hover, desc = 'Hover (alt)', has = 'hoverProvider' },
+      }
 
-    -- The following code creates a keymap to toggle inlay hints in your
-    -- code, if the language server you are using supports them
-    --
-    -- This may be unwanted, since they displace some of your code
-    if
-      client and client:supports_method('textDocument/inlayHint', event.buf)
-    then
-      map(
-        '<leader>th',
-        function()
-          vim.lsp.inlay_hint.enable(
-            not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+      for _, km in ipairs(default_keymaps) do
+        -- Only bind if there's no `has` requirement, or the server supports it
+        if not km.has or client.server_capabilities[km.has] then
+          vim.keymap.set(
+            km.mode or 'n',
+            km.keys,
+            km.func,
+            { buffer = buf, desc = 'LSP: ' .. km.desc, nowait = km.nowait }
           )
-        end,
-        '[T]oggle Inlay [H]ints'
-      )
+        end
+      end
     end
   end,
 })
@@ -139,6 +108,8 @@ local servers = {
   -- But for many setups, the LSP (`ts_ls`) will work just fine
   -- ts_ls = {},
 
+  taplo = {},
+
   stylua = {}, -- Used to format Lua code
 
   -- Special Lua Config, as recommended by neovim help docs
@@ -150,34 +121,30 @@ local servers = {
         local path = client.workspace_folders[1].name
         if
           path ~= vim.fn.stdpath('config')
-          and (
-            vim.uv.fs_stat(path .. '/.luarc.json')
-            or vim.uv.fs_stat(path .. '/.luarc.jsonc')
-          )
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
         then
           return
         end
       end
 
       local current_settings = client.config.settings --[[@as lspconfig.settings.lua_ls]]
-      client.config.settings.Lua =
-        vim.tbl_deep_extend('force', current_settings.Lua, {
-          -- Define runtime properties. Use 'LuaJIT', as it is built into Neovim.
-          -- runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
-          runtime = {
-            version = 'LuaJIT',
-            path = { 'lua/?.lua', 'lua/?/init.lua' },
-          },
-          workspace = {
-            -- Don't analyze code from submodules
-            -- ignoreSubmodules = true,
-            checkThirdParty = false,
-            -- library = { vim.env.VIMRUNTIME },
-            -- -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
-            -- --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-            library = vim.api.nvim_get_runtime_file('', true),
-          },
-        })
+      client.config.settings.Lua = vim.tbl_deep_extend('force', current_settings.Lua, {
+        -- Define runtime properties. Use 'LuaJIT', as it is built into Neovim.
+        -- runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
+        runtime = {
+          version = 'LuaJIT',
+          path = { 'lua/?/init.lua' },
+        },
+        workspace = {
+          -- Don't analyze code from submodules
+          ignoreSubmodules = true,
+          checkThirdParty = false,
+          -- library = { vim.env.VIMRUNTIME },
+          -- -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
+          -- --  See https://github.com/neovim/nvim-lspconfig/issues/3189
+          library = vim.api.nvim_get_runtime_file('', true),
+        },
+      })
     end,
     ---@type lspconfig.settings.lua_ls
     settings = {

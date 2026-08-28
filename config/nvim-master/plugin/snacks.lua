@@ -192,74 +192,12 @@ require('snacks').setup({
   },
   terminal = terminal,
   dashboard = customDashboard,
-  --   dashboard = {
-  --     sections = {
-  --       { section = 'header' },
-  --       { section = 'keys', gap = 1, padding = 1 },
-  --       {
-  --         align = 'center',
-  --         padding = 1,
-  --         text = {
-  --           {
-  --             '󱐋 Loaded ' .. tostring(plugin_count()) .. ' plugins via vim.pack',
-  --             hl = 'footer',
-  --           },
-  --         },
-  --       },
-  --     },
-  --     enabled = true,
-  --     preset = {
-  --       header = [[
-  --  █████╗ ██████╗ ████████╗██╗███████╗███████╗██╗  ██╗
-  -- ██╔══██╗██╔══██╗╚══██╔══╝██║██╔════╝██╔════╝╚██╗██╔╝
-  -- ███████║██████╔╝   ██║   ██║█████╗  █████╗   ╚███╔╝
-  -- ██╔══██║██╔══██╗   ██║   ██║██╔══╝  ██╔══╝   ██╔██╗
-  -- ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
-  -- ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
-  -- ɔɐɯɹoʇɔǝɹᴉp
-  --          
-  --       ]],
-  --       keys = {
-  --         {
-  --           icon = '',
-  --           key = 'e',
-  --           desc = 'Explore Files',
-  --           action = ":lua Snacks.dashboard.pick('explorer')",
-  --         },
-  --         {
-  --           icon = '',
-  --           key = 'r',
-  --           desc = 'Recent Files',
-  --           action = ':lua Snacks.picker.recent({filter = {cwd = true}})',
-  --         },
-  --         {
-  --           icon = '',
-  --           key = 'f',
-  --           desc = 'Find Files',
-  --           action = ":lua Snacks.dashboard.pick('files')",
-  --         },
-  --         {
-  --           icon = '',
-  --           key = 'g',
-  --           desc = 'Find Text',
-  --           action = ":lua Snacks.dashboard.pick('live_grep')",
-  --         },
-  --         {
-  --           icon = '󰚰',
-  --           key = 'u',
-  --           desc = 'Update Plugins',
-  --           action = ':lua vim.pack.update()',
-  --         },
-  --         { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
-  --       },
-  --     },
-  --   },
 })
 
 vim.api.nvim_create_autocmd('User', {
   callback = function()
     -- Setup some globals for debugging (lazy-loaded)
-    _G.dd = function(...) Snacks.debug.inspect(...) end
+    _G.dd = function(...) Snacks.debug.inspct(...) end
     _G.bt = function() Snacks.debug.backtrace() end
 
     -- Create some toggle mappings
@@ -311,17 +249,26 @@ map('n', '<leader>fr', function() Snacks.picker.recent({ filter = { cwd = true }
 
 -- LSP
 map('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })
+map('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = 'Goto Definition' })
+map('n', 'gD', function() Snacks.picker.lsp_declarations() end, { desc = 'Goto Declaration' })
+map('n', 'gr', function() Snacks.picker.lsp_references() end, { nowait = true, desc = 'References' })
+map('n', 'gI', function() Snacks.picker.lsp_implementations() end, { desc = 'Goto Implementation' })
+map('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { desc = 'Goto T[y]pe Definition' })
+map('n', 'gai', function() Snacks.picker.lsp_incoming_calls() end, { desc = 'C[a]lls Incoming' })
+map('n', 'gao', function() Snacks.picker.lsp_outgoing_calls() end, { desc = 'C[a]lls Outgoing' })
+map('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = 'LSP Symbols' })
+map('n', '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, { desc = 'LSP Workspace Symbols' })
 
-map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
-map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-map('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
-map('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
-map('n', '<leader>bb', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
-map('n', '<leader>`', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
-map('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
-map('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'Delete Other Buffers' })
-map('n', '<leader>bi', function() Snacks.bufdelete.invisible() end, { desc = 'Delete Invisible Buffers' })
-map('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
+-- map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+-- map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+-- map('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+-- map('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+-- map('n', '<leader>`', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+-- map('n', '<leader>bb', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+-- map('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
+-- map('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'Delete Other Buffers' })
+-- map('n', '<leader>bi', function() Snacks.bufdelete.invisible() end, { desc = 'Delete Invisible Buffers' })
+-- map('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 
 -- TODO: Make this work in vim way
 -- -- Clear search and stop snippet on escape
@@ -408,15 +355,6 @@ map('n', '<leader>st', function()
   end
   Snacks.picker.pick('todo_comments', {})
 end, { desc = 'Search Todos' })
-
--- LSP
-map('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = 'Goto Definition' })
-map('n', 'gD', function() Snacks.picker.lsp_declarations() end, { desc = 'Goto Declaration' })
-map('n', 'gr', function() Snacks.picker.lsp_references() end, { nowait = true, desc = 'References' })
-map('n', 'gI', function() Snacks.picker.lsp_implementations() end, { desc = 'Goto Implementation' })
-map('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { desc = 'Goto T[y]pe Definition' })
-map('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = 'LSP Symbols' })
-map('n', '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, { desc = 'LSP Workspace Symbols' })
 
 -- Other
 map('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen Mode' })

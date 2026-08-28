@@ -35,10 +35,17 @@ require('catppuccin').setup({
     transparent = true,
   },
   integrations = {
-    blink_cmp = true,
+    bufferline = true,
     snacks = true,
+    which_key = true,
+    notify = true,
+    grug_far = false,
+    fidget = false,
+    blink_cmp = {
+      style = 'bordered',
+    },
   },
-  -- auto_integrations = true,
+  auto_integrations = true,
 })
 
 vim.cmd.colorscheme('catppuccin')

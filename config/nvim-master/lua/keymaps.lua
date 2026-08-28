@@ -53,70 +53,10 @@ end
 vim.keymap.set('n', '<leader>cd', copy_all_diagnostics, { desc = 'Copy All Diagnostics' })
 
 -- Center screen after scrolling or searching (from prime)
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down and center' })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll up and center' })
-vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next search result centered' })
-vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result centered' })
 
 -- Navigate wrapped lines with arrow keys (gj/gk moves by visual line)
 vim.keymap.set({ 'n', 'v' }, '<Down>', 'gj', { noremap = true, silent = true, desc = 'Move down by visual line' })
 vim.keymap.set({ 'n', 'v' }, '<Up>', 'gk', { noremap = true, silent = true, desc = 'Move up by visual line' })
-
--- Map Ctrl-h and Ctrl-k to replicate default actions of Ctrl-o and Ctrl-i which are used by harpoon
-vim.keymap.set('n', '<C-h>', '<C-o>', { desc = 'Jump back in jump list (same as Ctrl-o)' })
-vim.keymap.set('n', '<C-k>', '<C-i>', { desc = 'Jump forward in jump list (same as Ctrl-i)' })
-
--- Map Ctrl-a to switch to the last buffer
-vim.keymap.set('n', '<C-a>', '<C-^>', { desc = 'Switch to last buffer' })
-
--- Bind "(" for navigating to the previous error diagnostic using the new API
-vim.keymap.set('n', '(', function()
-  vim.diagnostic.jump({
-    count = -1, -- Negative count moves to the previous diagnostic
-  })
-end, { desc = 'Go to previous error diagnostic' })
-
--- Bind ")" for navigating to the next error diagnostic using the new API
-vim.keymap.set('n', ')', function()
-  vim.diagnostic.jump({
-    count = 1, -- Positive count moves to the next diagnostic
-  })
-end, { desc = 'Go to next error diagnostic' })
-
--- Navigation keymaps for next/previous functionality
-
--- Diagnostic Navigation
-vim.keymap.set('n', '<leader>nd', function() vim.diagnostic.jump({ count = 1 }) end, { desc = 'Next diagnostic' })
-
-vim.keymap.set('n', '<leader>pd', function() vim.diagnostic.jump({ count = -1 }) end, { desc = 'Previous diagnostic' })
-
-vim.keymap.set(
-  'n',
-  '<leader>ne',
-  function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end,
-  { desc = 'Next error' }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>pe',
-  function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR }) end,
-  { desc = 'Previous error' }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>nw',
-  function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN }) end,
-  { desc = 'Next warning' }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>pw',
-  function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN }) end,
-  { desc = 'Previous warning' }
-)
 
 vim.keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
 vim.keymap.set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Down', expr = true, silent = true })
@@ -147,6 +87,8 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true, desc = 'Escape Ins
 -- Beter scrolllssssssss
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll down and center cursor' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = ' up and center cursor' })
+vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next search result centered' })
+vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result centered' })
 
 -- Tabulation in visual mode
 vim.keymap.set('v', '<S-Tab>', '<gv', { desc = 'Unindent line' })

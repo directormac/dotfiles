@@ -1,21 +1,45 @@
 local function augroup(name) return vim.api.nvim_create_augroup('auto_' .. name, { clear = true }) end
 
--- Highlight on yank (your current autocommand)
+-- gighlight on yank (your current autocommand)
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   -- group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   group = augroup('highlight_yank'),
-  callback = function() vim.highlight.on_yank({ timeout = 100 }) end,
+  callback = function() vim.hl.hl_op({ timeout = 100 }) end,
 })
 
 -- Auto-reload files changed outside of Neovim
-local autoread_group = vim.api.nvim_create_augroup('AutoRead', { clear = true })
-
-vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'TermClose', 'TermLeave' }, {
+local _checktime_timer = nil
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = augroup('checktime'),
-  desc = 'Auto check for file changes',
   callback = function()
-    if vim.fn.mode() ~= 'c' then vim.cmd('checktime') end
+    if _checktime_timer then
+      _checktime_timer:stop()
+      _checktime_timer:close()
+      _checktime_timer = nil
+    end
+    _checktime_timer = vim.defer_fn(function()
+      _checktime_timer = nil
+      if vim.o.buftype ~= 'nofile' then vim.cmd('checktime') end
+    end, 200) -- 200ms debounce
+  end,
+})
+
+local _resize_timer = nil
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = augroup('resize_splits'),
+  callback = function()
+    if _resize_timer then
+      _resize_timer:stop()
+      _resize_timer:close()
+      _resize_timer = nil
+    end
+    local current_tab = vim.fn.tabpagenr()
+    _resize_timer = vim.defer_fn(function()
+      _resize_timer = nil
+      vim.cmd('tabdo wincmd =')
+      vim.cmd('tabnext ' .. current_tab)
+    end, 100)
   end,
 })
 
@@ -33,68 +57,35 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end,
 })
 
--- resize splits if window got resized
-vim.api.nvim_create_autocmd({ 'VimResized' }, {
-  group = augroup('resize_splits'),
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('iskeyword_kebab'),
+  pattern = { 'css', 'scss', 'less', 'html', 'htmldjango', 'blade', 'typescriptreact', 'javascriptreact' },
+  callback = function() vim.opt_local.iskeyword:append('-') end,
+})
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+  group = augroup('insert_ui_perf'),
   callback = function()
-    local current_tab = vim.fn.tabpagenr()
-    vim.cmd('tabdo wincmd =')
-    vim.cmd('tabnext ' .. current_tab)
+    vim.wo.cursorline = false
+    vim.wo.relativenumber = false
+    vim.wo.number = true -- keep absolute numbers
   end,
 })
 
--- Notification when file changes on disk
-vim.api.nvim_create_autocmd('FileChangedShellPost', {
-  group = augroup('checktime'),
-  desc = 'Notify when file changed on disk',
-  callback = function() vim.notify('File changed on disk. Buffer reloaded.', vim.log.levels.INFO) end,
+vim.api.nvim_create_autocmd('InsertEnter', {
+  group = augroup('insert_ui_perf'),
+  callback = function()
+    vim.wo.cursorline = false
+    vim.wo.relativenumber = false
+    vim.wo.number = true -- keep absolute numbers
+  end,
 })
 
--- Enable treesitter highlighting when a parser is available
-vim.api.nvim_create_autocmd('FileType', {
-  desc = 'Enable treesitter highlighting',
-  group = vim.api.nvim_create_augroup('treesitter-highlight', { clear = true }),
-  callback = function(args) pcall(vim.treesitter.start, args.buf) end,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  desc = "Don't auto-wrap comments and don't insert comment leader after hitting 'o' ",
-  callback = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end,
-})
-
--- close some filetypes with <q>
-vim.api.nvim_create_autocmd('FileType', {
-  group = augroup('close_with_q'),
-  pattern = {
-    'PlenaryTestPopup',
-    'checkhealth',
-    'dap-float',
-    'dbout',
-    'gitsigns-blame',
-    'grug-far',
-    'help',
-    'lspinfo',
-    'neotest-output',
-    'neotest-output-panel',
-    'neotest-summary',
-    'notify',
-    'qf',
-    'spectre_panel',
-    'startuptime',
-    'tsplayground',
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.schedule(function()
-      vim.keymap.set('n', 'q', function()
-        vim.cmd('close')
-        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-      end, {
-        buffer = event.buf,
-        silent = true,
-        desc = 'Quit buffer',
-      })
-    end)
+vim.api.nvim_create_autocmd('InsertLeave', {
+  group = augroup('insert_ui_perf'),
+  callback = function()
+    vim.wo.cursorline = true
+    vim.wo.relativenumber = true
   end,
 })
 
@@ -105,13 +96,50 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function(event) vim.bo[event.buf].buflisted = false end,
 })
 
--- wrap and check for spell in text filetypes
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup('close_with_q'),
+  pattern = {
+    'PlenaryTestPopup',
+    'checkhealth',
+    'dbout',
+    'gitsigns-blame',
+    'grug-far',
+    'help',
+    'lspinfo',
+    'neotest-output',
+    'neotest-output-panel',
+    'neotest-summary',
+    'notify',
+    'oil',
+    'qf',
+    'spectre_panel',
+    'startuptime',
+    'terminal',
+    'tsplayground',
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set('n', 'q', function()
+        local ok = pcall(vim.cmd.close)
+        if not ok then pcall(vim.api.nvim_buf_delete, event.buf, { force = true }) end
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = 'Quit buffer',
+      })
+    end)
+  end,
+})
+
+-- wrap text filetypes (spell disabled by default, toggle manually with :set spell / :set spelllang=...)
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('wrap_spell'),
   pattern = { 'text', 'plaintex', 'typst', 'gitcommit', 'markdown' },
   callback = function()
     vim.opt_local.wrap = true
-    vim.opt_local.spell = true
+    -- vim.opt_local.spell = true -- toggle manually: :set spell | :set nospell | :set spelllang=fr | :set spelllang=en
   end,
 })
 
@@ -132,7 +160,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
--- [[ Intro to `vim.pack` ]]
+-- [[ Inkro to `vim.pack` ]]
 -- `vim.pack` is a new plugin manager built into Neovim,
 --  which provides a Lua interface for installing and managing plugins.
 --
