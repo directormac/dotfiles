@@ -291,7 +291,6 @@ local function map(mode, lhs, rhs, opts)
 end
 
 -- Top Pickers & Explorer
-map('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })
 map('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers' })
 map('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep' })
 map('n', '<leader>ln', function() Snacks.picker.notifications() end, { desc = 'Notification Picker' })
@@ -309,6 +308,9 @@ map('n', '<leader>ff', function() Snacks.picker.files() end, { desc = 'Find File
 map('n', '<leader>fg', function() Snacks.picker.git_files() end, { desc = 'Find Git Files' })
 map('n', '<leader>fp', function() Snacks.picker.projects() end, { desc = 'Projects' })
 map('n', '<leader>fr', function() Snacks.picker.recent({ filter = { cwd = true } }) end, { desc = 'Recent' })
+
+-- LSP
+map('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })
 
 map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
@@ -329,14 +331,14 @@ map('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
 --   return "<esc>"
 -- end, { expr = true, desc = "Escape and Clear hlsearch" })
 --
--- -- Clear search, diff update and redraw
--- -- taken from runtime/lua/_editor.lua
--- map(
---   "n",
---   "<leader>ur",
---   "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
---   { desc = "Redraw / Clear hlsearch / Diff Update" }
--- )
+-- Clear search, diff update and redraw
+-- taken from runtime/lua/_editor.lua
+map(
+  'n',
+  '<leader>ur',
+  '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>',
+  { desc = 'Redraw / Clear hlsearch / Diff Update' }
+)
 
 -- windows
 map('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
@@ -355,7 +357,7 @@ map('n', '<leader><tab>d', '<cmd>tabclose<cr>', { desc = 'Close Tab' })
 map('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous Tab' })
 
 -- lua
-map({ 'n', 'x' }, '<localleader>r', function() Snacks.debug.run() end, { desc = 'Run Lua', ft = 'lua' })
+map({ 'n', 'x' }, '<localleader>r', function() Snacks.debug.run() end, { desc = 'Run Lua' })
 
 -- git
 map('n', '<leader>gb', function() Snacks.picker.git_branches() end, { desc = 'Git Branches' })
