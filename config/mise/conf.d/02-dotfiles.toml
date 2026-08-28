@@ -46,7 +46,7 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.config/mimeapps.list" = "~/.dotfiles/config/mimeapps.list"
 "~/.config/alacritty" = "~/.dotfiles/config/alacritty"
 "~/.config/bat" = "~/.dotfiles/config/bat"
-"~/.config/btop/btop.conf" = "~/.dotfiles/config/btop/btop.conf"
+"~/.config/btop" = { source = "~/.dotfiles/config/btop", exclude = ["btop.log"] }
 "~/.config/ghostty" = "~/.dotfiles/config/ghostty"
 "~/.config/fuzzel" = "~/.dotfiles/config/fuzzel"
 "~/.config/gtk-3.0" = "~/.dotfiles/config/gtk-3.0"
@@ -59,6 +59,7 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.config/mpd/mpd.conf" = "~/.dotfiles/config/mpd/mpd.conf"
 "~/.config/ncmpcpp" = "~/.dotfiles/config/ncmpcpp"
 "~/.config/nvim" = "~/.dotfiles/config/nvim"
+"~/.config/nvim-master" = "~/.dotfiles/config/nvim-master"
 "~/.config/nvimp" = "~/.dotfiles/config/nvimp"
 "~/.config/picom" = "~/.dotfiles/config/picom"
 "~/.config/rmpc" = "~/.dotfiles/config/rmpc"
