@@ -1,6 +1,9 @@
 -- Try to implement later https://github.com/zuqini/zpack.nvim
 
-_G.Config = {}
+_G.Config = {
+  -- mason = { "mdformat" },
+  -- mason_extra = { "mdformat" },
+}
 
 if vim.loader then vim.loader.enable() end
 

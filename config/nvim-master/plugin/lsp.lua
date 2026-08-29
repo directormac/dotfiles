@@ -1,10 +1,15 @@
 require('lazyload').on_vim_enter(function()
-  vim.pack.add({
-    { src = 'https://github.com/neovim/nvim-lspconfig', version = vim.version.range('*') },
-    { src = 'https://github.com/j-hui/fidget.nvim' },
-  })
+  ------
+
+  local function gh(repo) return 'https://github.com/' .. repo end
+
+  vim.pack.add({ 'https://github.com/j-hui/fidget.nvim' })
 
   require('fidget').setup({})
+
+  -- vim.pack.add({ src = 'https://github.com/j-hui/fidget.nvim' })
+  --
+  -- require('fidget').setup({})
   -- Extend LSP capabilities with blink.cmp completions for all servers.
   -- Guarded because this runs before vim.lsp.enable() below: an error here
   -- would abort the whole callback and silently leave every server disabled,
@@ -16,7 +21,6 @@ require('lazyload').on_vim_enter(function()
     vim.notify('blink.cmp capabilities unavailable: ' .. tostring(capabilities), vim.log.levels.WARN)
   end
 
-  ---@type lsp
   local servers = {
     bash_ls = {},
     -- clangd = {},
@@ -35,55 +39,20 @@ require('lazyload').on_vim_enter(function()
     stylua = {}, -- Used to format Lua code
 
     -- Special Lua Config, as recommended by neovim help docs
-    lua_ls = {
-      on_init = function(client)
-        client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
-
-        if client.workspace_folders then
-          local path = client.workspace_folders[1].name
-          if
-            path ~= vim.fn.stdpath('config')
-            and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
-          then
-            return
-          end
-        end
-
-        local current_settings = client.config.settings --[[@as lspconfig.settings.lua_ls]]
-        client.config.settings.Lua = vim.tbl_deep_extend('force', current_settings.Lua, {
-          -- Define runtime properties. Use 'LuaJIT', as it is built into Neovim.
-          -- runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
-          runtime = {
-            version = 'LuaJIT',
-            path = { 'lua/?/init.lua' },
-          },
-          workspace = {
-            -- Don't analyze code from submodules
-            ignoreSubmodules = true,
-            checkThirdParty = false,
-            -- library = { vim.env.VIMRUNTIME },
-            -- -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
-            -- --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-            library = vim.api.nvim_get_runtime_file('', true),
-          },
-        })
-      end,
-      ---@type lspconfig.settings.lua_ls
-      settings = {
-        Lua = {
-          format = { enable = false }, -- Disable formatting (formatting is done by stylua)
-        },
-      },
-    },
+    lua_ls = {},
   }
 
   for name, server in pairs(servers) do
-    vim.lsp.config(name, server)
+    -- vim.lsp.config(name, server)
     vim.lsp.enable(name)
   end
 
   -- Enable codelens globally
   vim.lsp.codelens.enable(true)
+
+  vim.pack.add({
+    { src = 'https://github.com/neovim/nvim-lspconfig' },
+  })
 
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
@@ -131,6 +100,27 @@ require('lazyload').on_vim_enter(function()
 
       -- Keymaps
       -- LSP keymaps not covered by snacks picker (gd, gD, gr, gI, gt are in snacks.lua)
+
+      vim.keymap.set('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })
+      vim.keymap.set('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = 'Goto Definition' })
+      vim.keymap.set('n', 'gD', function() Snacks.picker.lsp_declarations() end, { desc = 'Goto Declaration' })
+      vim.keymap.set('n', 'gr', function() Snacks.picker.lsp_references() end, { nowait = true, desc = 'References' })
+      vim.keymap.set('n', 'gI', function() Snacks.picker.lsp_implementations() end, { desc = 'Goto Implementation' })
+      vim.keymap.set(
+        'n',
+        'gy',
+        function() Snacks.picker.lsp_type_definitions() end,
+        { desc = 'Goto T[y]pe Definition' }
+      )
+      vim.keymap.set('n', 'gai', function() Snacks.picker.lsp_incoming_calls() end, { desc = 'C[a]lls Incoming' })
+      vim.keymap.set('n', 'gao', function() Snacks.picker.lsp_outgoing_calls() end, { desc = 'C[a]lls Outgoing' })
+      vim.keymap.set('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = 'LSP Symbols' })
+      vim.keymap.set(
+        'n',
+        '<leader>sS',
+        function() Snacks.picker.lsp_workspace_symbols() end,
+        { desc = 'LSP Workspace Symbols' }
+      )
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = buf, desc = 'Hover' })
       vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { buffer = buf, desc = 'Rename' })
       vim.keymap.set('n', '<leader>cR', Snacks.rename.rename_file, { buffer = buf, desc = 'Rename file' })

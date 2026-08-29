@@ -1,13 +1,14 @@
 require('lazyload').on_vim_enter(function()
   vim.pack.add({
-    { src = 'https://github.com/mason-org/mason.nvim', version = vim.version.range('*') },
+    { src = 'https://github.com/mason-org/mason.nvim' },
     { src = 'https://github.com/zapling/mason-lock.nvim' },
+    { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
   })
 
   require('mason').setup({ PATH = 'append' })
 
   require('mason-lock').setup({
-    lockfile_path = vim.env.DOTFILES .. '/config/nvim-super/mason-lock.json',
+    lockfile_path = vim.env.DOTFILES .. 'config/mason-lock.json',
   })
 
   -- Kept alphabetical; the trailing comment is the language/tool that needs it.
@@ -31,6 +32,7 @@ require('lazyload').on_vim_enter(function()
   -- always populated by the time it is read here.
   local extra = Config.mason_extra or {}
   ensure_installed = vim.list_extend(ensure_installed, extra.mason or {})
+  local mason_tools_extra = extra.mason_tools or {}
 
   local mason_registry = require('mason-registry')
 
@@ -55,6 +57,13 @@ require('lazyload').on_vim_enter(function()
         vim.notify(('mason: unknown package %q'):format(pkg_name), vim.log.levels.WARN)
       elseif not pkg:is_installed() then
         pkg:install()
+      end
+    end
+
+    for pkg_name in pairs(mason_tools_extra) do
+      local ok, pkg = pcall(mason_registry.get_package, pkg_name)
+      if ok and pkg:is_installed() then
+        require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
       end
     end
   end)
