@@ -11,4 +11,4 @@ require('autocmds')
 
 -- -- Experimental: ui2 message/cmdline redesign (:h ui2)
 -- -- Avoids "Press ENTER" prompts, highlights cmdline, pager as buffer.
-require('vim._core.ui2').enable()
+-- require('vim._core.ui2').enable()

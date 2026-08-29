@@ -5,16 +5,19 @@ require('lazyload').on_vim_enter(function()
 
   require('bufferline').setup({
     options = {
-      always_show_bufferline = true,
+      close_command = function(n) Snacks.bufdelete(n) end,
+      right_mouse_command = function(n) Snacks.bufdelete(n) end,
+      diagnostics = 'nvim_lsp',
+      always_show_bufferline = false,
       show_buffer_close_icons = false,
       show_duplicate_prefix = true,
       persist_buffer_sort = true,
       show_close_icon = false,
-      diagnostics = 'nvim_lsp',
       indicator = {
         icon = ' ',
         style = 'icon',
       },
+
       highlight = {
         indicator_selected = {
           fg = '#cba6f7',
@@ -28,6 +31,12 @@ require('lazyload').on_vim_enter(function()
           highlight = 'Directory',
           text_align = 'left',
         },
+        {
+          filetype = 'snacks_layout_box',
+        },
+        {
+          filetype = 'snacks_picker_list',
+        },
       },
       name_formatter = function(buf)
         if buf.tabnr then
@@ -36,6 +45,12 @@ require('lazyload').on_vim_enter(function()
         end
       end,
     },
+  })
+
+  vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
+    callback = function()
+      vim.schedule(function() pcall(nvim_bufferline) end)
+    end,
   })
 
   vim.keymap.set('n', '<A-1>', function() require('bufferline').go_to(1, true) end, { desc = 'Go to first buffer' })

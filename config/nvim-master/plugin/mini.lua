@@ -1,17 +1,21 @@
-require('mini.bracketed').setup()
+require('lazyload').on_vim_enter(function()
+  vim.pack.add({ 'https://github.com/nvim-mini/mini.nvim' })
 
-require('mini.pairs').setup({
-  modes = { insert = true, command = true, terminal = false },
-})
+  require('mini.bracketed').setup()
 
-require('mini.surround').setup({
-  mappings = {
-    add = 'za', -- Add surrounding in Normal and Visual modes
-    delete = 'zd', -- Delete surrounding
-    find = 'zf', -- Find surrounding (to the right)
-    find_left = 'zF', -- Find surrounding (to the left)
-    highlight = 'zh', -- Highlight surrounding
-    replace = 'zr', -- Replace surrounding
-    update_n_lines = 'zn', -- Update `n_lines`
-  },
-})
+  require('mini.pairs').setup({
+    modes = { insert = true, command = true, terminal = false },
+  })
+
+  require('mini.surround').setup({
+    mappings = {
+      add = 'za', -- Add surrounding in Normal and Visual modes
+      delete = 'zd', -- Delete surrounding
+      find = 'zf', -- Find surrounding (to the right)
+      find_left = 'zF', -- Find surrounding (to the left)
+      highlight = 'zh', -- Highlight surrounding
+      replace = 'zr', -- Replace surrounding
+      update_n_lines = 'zn', -- Update `n_lines`
+    },
+  })
+end)
