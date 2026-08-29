@@ -118,6 +118,7 @@ dcv = "docker-compose down -v"
 mvim = "NVIM_APPNAME=nvim-master nvim"
 pvim = "NVIM_APPNAME=nvimp nvim"
 svim = "NVIM_APPNAME=nvim-super nvim"
+qvim = "NVIM_APPNAME=nvim-quick nvim"
 ksvim = 'NVIM_APPNAME="nvim-kickstart" nvim'
 minivim = "NVIM_APPNAME=nvim-minimax nvim"
 

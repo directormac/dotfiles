@@ -25,31 +25,31 @@ url = "https://github.com/oxc-project/oxc/releases/download/apps_v1.79.0/oxlint-
 url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/519609969"
 
 [[tools.aube]]
-version = "1.40.0"
+version = "2.2.0"
 backend = "aqua:jdx/aube"
 
 [tools.aube."platforms.linux-x64"]
-checksum = "sha256:fb4ca338cedb1a349abdca2ea57135faa6f63a78d85cf64af60aaf1a645af736"
-url = "https://github.com/jdx/aube/releases/download/v1.40.0/aube-v1.40.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/aube/releases/assets/513090652"
+checksum = "sha256:5d8b91f772712e6f971a2e15a52dcc392acbb21782fbb532124588deb647656b"
+url = "https://github.com/jdx/aube/releases/download/v2.2.0/aube-v2.2.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/aube/releases/assets/529716822"
 provenance = "github-attestations"
 
 [tools.aube."platforms.linux-x64-baseline"]
-checksum = "sha256:fb4ca338cedb1a349abdca2ea57135faa6f63a78d85cf64af60aaf1a645af736"
-url = "https://github.com/jdx/aube/releases/download/v1.40.0/aube-v1.40.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/aube/releases/assets/513090652"
+checksum = "sha256:5d8b91f772712e6f971a2e15a52dcc392acbb21782fbb532124588deb647656b"
+url = "https://github.com/jdx/aube/releases/download/v2.2.0/aube-v2.2.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/aube/releases/assets/529716822"
 provenance = "github-attestations"
 
 [tools.aube."platforms.linux-x64-musl"]
-checksum = "sha256:e95c62fc21ae1e5f169a945f0b50d3b5b276b87e075ff9dc0511020bc51d29ea"
-url = "https://github.com/jdx/aube/releases/download/v1.40.0/aube-v1.40.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/aube/releases/assets/513091441"
+checksum = "sha256:3f01b75136705709cda862ae29c059dedf52341b2bb95359f61c2b72b03f9fc8"
+url = "https://github.com/jdx/aube/releases/download/v2.2.0/aube-v2.2.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/aube/releases/assets/529714460"
 provenance = "github-attestations"
 
 [tools.aube."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:e95c62fc21ae1e5f169a945f0b50d3b5b276b87e075ff9dc0511020bc51d29ea"
-url = "https://github.com/jdx/aube/releases/download/v1.40.0/aube-v1.40.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/aube/releases/assets/513091441"
+checksum = "sha256:3f01b75136705709cda862ae29c059dedf52341b2bb95359f61c2b72b03f9fc8"
+url = "https://github.com/jdx/aube/releases/download/v2.2.0/aube-v2.2.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/aube/releases/assets/529714460"
 provenance = "github-attestations"
 
 [[tools.bazel]]
@@ -145,28 +145,28 @@ url_api = "https://api.github.com/repos/erlang/otp/releases/assets/403501100"
 install = "source"
 
 [[tools.expert]]
-version = "0.1.8"
+version = "0.1.9"
 backend = "aqua:expert-lsp/expert"
 
 [tools.expert."platforms.linux-x64"]
-checksum = "sha256:caf0ded54e83f318cfe659e2ac3dd1f2d2e71a1c1a3c28ab3290475954fd9aee"
-url = "https://github.com/expert-lsp/expert/releases/download/v0.1.8/expert_linux_amd64"
-url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/491340826"
+checksum = "sha256:f7d5905bc3f09b128d4941c7769633f2d108be637f228ee431e9ed137d2c5563"
+url = "https://github.com/expert-lsp/expert/releases/download/v0.1.9/expert_linux_amd64"
+url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074924"
 
 [tools.expert."platforms.linux-x64-baseline"]
-checksum = "sha256:caf0ded54e83f318cfe659e2ac3dd1f2d2e71a1c1a3c28ab3290475954fd9aee"
-url = "https://github.com/expert-lsp/expert/releases/download/v0.1.8/expert_linux_amd64"
-url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/491340826"
+checksum = "sha256:f7d5905bc3f09b128d4941c7769633f2d108be637f228ee431e9ed137d2c5563"
+url = "https://github.com/expert-lsp/expert/releases/download/v0.1.9/expert_linux_amd64"
+url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074924"
 
 [tools.expert."platforms.linux-x64-musl"]
-checksum = "sha256:caf0ded54e83f318cfe659e2ac3dd1f2d2e71a1c1a3c28ab3290475954fd9aee"
-url = "https://github.com/expert-lsp/expert/releases/download/v0.1.8/expert_linux_amd64"
-url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/491340826"
+checksum = "sha256:f7d5905bc3f09b128d4941c7769633f2d108be637f228ee431e9ed137d2c5563"
+url = "https://github.com/expert-lsp/expert/releases/download/v0.1.9/expert_linux_amd64"
+url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074924"
 
 [tools.expert."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:caf0ded54e83f318cfe659e2ac3dd1f2d2e71a1c1a3c28ab3290475954fd9aee"
-url = "https://github.com/expert-lsp/expert/releases/download/v0.1.8/expert_linux_amd64"
-url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/491340826"
+checksum = "sha256:f7d5905bc3f09b128d4941c7769633f2d108be637f228ee431e9ed137d2c5563"
+url = "https://github.com/expert-lsp/expert/releases/download/v0.1.9/expert_linux_amd64"
+url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074924"
 
 [[tools.herdr]]
 version = "0.8.2"
@@ -225,52 +225,72 @@ checksum = "sha256:0022753d0cceecacdd3a795dd4cea2bd7ffdf9dc06e22ffd1be98411742fb
 url = "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz"
 
 [[tools.jq]]
-version = "1.7"
+version = "1.8.2"
 backend = "aqua:jqlang/jq"
 
 [tools.jq."platforms.linux-x64"]
-checksum = "sha256:2f312b9587b1c1eddf3a53f9a0b7d276b9b7b94576c85bda22808ca950569716"
-url = "https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64"
-url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/124890211"
+checksum = "sha256:b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f"
+url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
+url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
+provenance = "github-attestations"
 
 [tools.jq."platforms.linux-x64-baseline"]
-checksum = "sha256:2f312b9587b1c1eddf3a53f9a0b7d276b9b7b94576c85bda22808ca950569716"
-url = "https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64"
-url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/124890211"
+checksum = "sha256:b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f"
+url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
+url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
+provenance = "github-attestations"
 
 [tools.jq."platforms.linux-x64-musl"]
-checksum = "sha256:2f312b9587b1c1eddf3a53f9a0b7d276b9b7b94576c85bda22808ca950569716"
-url = "https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64"
-url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/124890211"
+checksum = "sha256:b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f"
+url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
+url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
+provenance = "github-attestations"
 
 [tools.jq."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:2f312b9587b1c1eddf3a53f9a0b7d276b9b7b94576c85bda22808ca950569716"
-url = "https://github.com/jqlang/jq/releases/download/jq-1.7/jq-linux-amd64"
-url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/124890211"
+checksum = "sha256:b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f"
+url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
+url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
+provenance = "github-attestations"
 
 [[tools.kotlin]]
 version = "2.1.0"
 backend = "asdf:mise-plugins/mise-kotlin"
 
+[[tools.nightlyvim]]
+version = "nightly"
+backend = "vfox:mise-plugins/vfox-neovim"
+
+[tools.nightlyvim."platforms.linux-x64"]
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+
+[tools.nightlyvim."platforms.linux-x64-baseline"]
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+
+[tools.nightlyvim."platforms.linux-x64-musl"]
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+
+[tools.nightlyvim."platforms.linux-x64-musl-baseline"]
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+
 [[tools.node]]
-version = "26.5.0"
+version = "26.8.1"
 backend = "core:node"
 
 [tools.node."platforms.linux-x64"]
-checksum = "sha256:22b5f47ad6ae78837e4c2b846019965ce1a06ba143de176102294a1bf44fc677"
-url = "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.gz"
+checksum = "sha256:b2b76660fa4ded4e0b2a41ee3c0c651cd52ea8170ead91ebac1e147ac3d55643"
+url = "https://nodejs.org/dist/v26.8.1/node-v26.8.1-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-baseline"]
-checksum = "sha256:22b5f47ad6ae78837e4c2b846019965ce1a06ba143de176102294a1bf44fc677"
-url = "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.gz"
+checksum = "sha256:b2b76660fa4ded4e0b2a41ee3c0c651cd52ea8170ead91ebac1e147ac3d55643"
+url = "https://nodejs.org/dist/v26.8.1/node-v26.8.1-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:00f1398411a4216c5a6ecaad3b825a0da5ec00e79ee8c173ab65a094d97b9ad8"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.5.0/node-v26.5.0-linux-x64-musl.tar.gz"
+checksum = "sha256:13135a6a2106f9d111fa9b48c8801ed119ad43e7e1d00de17d77a9c44899aada"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.8.1/node-v26.8.1-linux-x64-musl.tar.gz"
 
 [tools.node."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:00f1398411a4216c5a6ecaad3b825a0da5ec00e79ee8c173ab65a094d97b9ad8"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.5.0/node-v26.5.0-linux-x64-musl.tar.gz"
+checksum = "sha256:13135a6a2106f9d111fa9b48c8801ed119ad43e7e1d00de17d77a9c44899aada"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.8.1/node-v26.8.1-linux-x64-musl.tar.gz"
 
 [[tools."npm:oxlint-tsgolint"]]
 version = "7.0.2001"
@@ -341,49 +361,49 @@ url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/51960996
 provenance = "github-attestations"
 
 [[tools.pitchfork]]
-version = "2.0.0"
+version = "2.23.0"
 backend = "aqua:jdx/pitchfork"
 
 [tools.pitchfork."platforms.linux-x64"]
-checksum = "sha256:6d2def615a908a1b1f93b1a16a0f699defbbe3b1cd86e896b3b0d7465f86ec8d"
-url = "https://github.com/jdx/pitchfork/releases/download/v2.0.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/366798356"
+checksum = "sha256:e2d932de87fbf1faeec38ea2b1534bedaf305938456f92fdd35cabeb17ea79ca"
+url = "https://github.com/jdx/pitchfork/releases/download/v2.23.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/530647237"
 
 [tools.pitchfork."platforms.linux-x64-baseline"]
-checksum = "sha256:6d2def615a908a1b1f93b1a16a0f699defbbe3b1cd86e896b3b0d7465f86ec8d"
-url = "https://github.com/jdx/pitchfork/releases/download/v2.0.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/366798356"
+checksum = "sha256:e2d932de87fbf1faeec38ea2b1534bedaf305938456f92fdd35cabeb17ea79ca"
+url = "https://github.com/jdx/pitchfork/releases/download/v2.23.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/530647237"
 
 [[tools.pnpm]]
-version = "11.22.0"
+version = "11.24.0"
 backend = "aqua:pnpm/pnpm"
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:4c592fa410eb23b69691a9efb9bf21c87c15b3e9d88c6ec8acdd354a0eb8de71"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.22.0/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/515895948"
+checksum = "sha256:0a9b76dedb5fe8cc5e7f3a9fd70854181cfb08a487ebaf0c9cfb044dc860936c"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747059"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-baseline"]
-checksum = "sha256:4c592fa410eb23b69691a9efb9bf21c87c15b3e9d88c6ec8acdd354a0eb8de71"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.22.0/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/515895948"
+checksum = "sha256:0a9b76dedb5fe8cc5e7f3a9fd70854181cfb08a487ebaf0c9cfb044dc860936c"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747059"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:45425b06e747cbcaff4940d7b4a55e694645f15f9339dbf7f2601cfb21400545"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.22.0/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/515895945"
+checksum = "sha256:2fce00e10729d0c1f3836d499b908697fd3cd0832332651fbcee79c0a7442dcb"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747057"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:45425b06e747cbcaff4940d7b4a55e694645f15f9339dbf7f2601cfb21400545"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.22.0/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/515895945"
+checksum = "sha256:2fce00e10729d0c1f3836d499b908697fd3cd0832332651fbcee79c0a7442dcb"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747057"
 provenance = "github-attestations"
 
 [[tools.rust]]
-version = "1.97.1"
+version = "1.98.0"
 backend = "core:rust"
 
 [[tools.sesh]]
@@ -411,55 +431,55 @@ url = "https://github.com/joshmedeski/sesh/releases/download/v2.28.0/sesh_Linux_
 url_api = "https://api.github.com/repos/joshmedeski/sesh/releases/assets/490857157"
 
 [[tools.usage]]
-version = "5.1.0"
+version = "6.4.1"
 backend = "aqua:jdx/usage"
 
 [tools.usage."platforms.linux-x64"]
-checksum = "sha256:788c103416d4ed8e335484a40886c9abf5879dd5394959727d5c0cc9f327902b"
-url = "https://github.com/jdx/usage/releases/download/v5.1.0/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/507607768"
+checksum = "sha256:8f4465f3ee9e8dbb4233367a566612de9e61f9f64685a0b2da60032d0be7eb76"
+url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530174589"
 
 [tools.usage."platforms.linux-x64-baseline"]
-checksum = "sha256:788c103416d4ed8e335484a40886c9abf5879dd5394959727d5c0cc9f327902b"
-url = "https://github.com/jdx/usage/releases/download/v5.1.0/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/507607768"
+checksum = "sha256:8f4465f3ee9e8dbb4233367a566612de9e61f9f64685a0b2da60032d0be7eb76"
+url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530174589"
 
 [tools.usage."platforms.linux-x64-musl"]
-checksum = "sha256:a702c639f8e25d1e10f42ab37e09b8f73634c09b23c7abe2ebd6ab6f9665e99c"
-url = "https://github.com/jdx/usage/releases/download/v5.1.0/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/507608023"
+checksum = "sha256:9d4c186e10b9850084a1a7b111cc2b1331246246dbd2a030eb9319b8e4d47114"
+url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530175839"
 
 [tools.usage."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:a702c639f8e25d1e10f42ab37e09b8f73634c09b23c7abe2ebd6ab6f9665e99c"
-url = "https://github.com/jdx/usage/releases/download/v5.1.0/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/507608023"
+checksum = "sha256:9d4c186e10b9850084a1a7b111cc2b1331246246dbd2a030eb9319b8e4d47114"
+url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530175839"
 
 [[tools.uv]]
-version = "0.12.4"
+version = "0.12.6"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-x64"]
-checksum = "sha256:c8c60f47e6f88d18dbf6f33d7279fb1fbf7ae76631768152cf5578c3d65729b4"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.4/uv-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/513521275"
+checksum = "sha256:8681d8921e7d520fb368991dcf5f9c1905b80f5bf2a265a0ed085c8d8e342477"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690831"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-baseline"]
-checksum = "sha256:c8c60f47e6f88d18dbf6f33d7279fb1fbf7ae76631768152cf5578c3d65729b4"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.4/uv-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/513521275"
+checksum = "sha256:8681d8921e7d520fb368991dcf5f9c1905b80f5bf2a265a0ed085c8d8e342477"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690831"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl"]
-checksum = "sha256:7aef04898775585d636424e52053e5328f2b1779175d5cb47665ff9d7524e8e7"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.4/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/513521278"
+checksum = "sha256:14e4172aace66a475062cebec7ca04f497d5619e95325dfcc9e4447b9c516846"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690844"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:7aef04898775585d636424e52053e5328f2b1779175d5cb47665ff9d7524e8e7"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.4/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/513521278"
+checksum = "sha256:14e4172aace66a475062cebec7ca04f497d5619e95325dfcc9e4447b9c516846"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690844"
 provenance = "github-attestations"
 
 [[tools.vite-plus]]
@@ -495,25 +515,25 @@ url_api = "https://api.github.com/repos/voidzero-dev/vite-plus/releases/assets/5
 provenance = "github-attestations"
 
 [[tools.watchexec]]
-version = "2.5.1"
+version = "2.7.0"
 backend = "aqua:watchexec/watchexec"
 
 [tools.watchexec."platforms.linux-x64"]
-checksum = "sha256:cafc381f74e95f8e93e796ef590c7cbbf3409dda6d56cf3dee6109c10e5188ee"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/384489923"
+checksum = "sha256:ad226e24baa077b9d97d1a0e575a7202ed38da0e1841d4ec3ebb8c6afbf73440"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.0/watchexec-2.7.0-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/527314371"
 
 [tools.watchexec."platforms.linux-x64-baseline"]
-checksum = "sha256:cafc381f74e95f8e93e796ef590c7cbbf3409dda6d56cf3dee6109c10e5188ee"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/384489923"
+checksum = "sha256:ad226e24baa077b9d97d1a0e575a7202ed38da0e1841d4ec3ebb8c6afbf73440"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.0/watchexec-2.7.0-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/527314371"
 
 [tools.watchexec."platforms.linux-x64-musl"]
-checksum = "sha256:9efabd08de720c1ee7e57b487fe11904f0966828e76146e2b5ea5deee90626be"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/384489936"
+checksum = "sha256:480065f4459b9f7fb25927ac43df85ff7f46a9b25d04f90001022b875ab0b1a5"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.0/watchexec-2.7.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/527314330"
 
 [tools.watchexec."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:9efabd08de720c1ee7e57b487fe11904f0966828e76146e2b5ea5deee90626be"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/384489936"
+checksum = "sha256:480065f4459b9f7fb25927ac43df85ff7f46a9b25d04f90001022b875ab0b1a5"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.0/watchexec-2.7.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/527314330"

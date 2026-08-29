@@ -16,6 +16,7 @@ oxlint = "github:oxc-project/oxc"
 oxfmt = "github:oxc-project/oxc"
 vite-plus = "github:voidzero-dev/vite-plus"
 sesh = "github:joshmedeski/sesh"
+nightlyvim = "vfox:mise-plugins/vfox-neovim"
 
 
 [tools]
@@ -54,6 +55,12 @@ watchexec = "latest"
 
 # Build tools
 bazel = "latest"
+
+
+[tools.nightlyvim]
+version = "nightly"
+asset_pattern = "nvim"
+rename_exe = "nightlyvim"
 
 
 [tools.oxlint]

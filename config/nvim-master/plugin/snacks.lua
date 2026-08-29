@@ -153,42 +153,6 @@ require('snacks').setup({
         },
       },
     },
-    sources = {
-      explorer = {
-        auto_close = true,
-        layout = {
-          { preview = true },
-          layout = {
-            box = 'horizontal',
-            width = 0.8,
-            height = 0.8,
-            {
-              box = 'vertical',
-              border = 'rounded',
-              title = '{source} {live} {flags}',
-              title_pos = 'center',
-              { win = 'input', height = 1, border = 'bottom' },
-              { win = 'list', border = 'none' },
-            },
-            {
-              win = 'preview',
-              border = 'rounded',
-              width = 0.6,
-              title = '{preview}',
-            },
-          },
-        },
-        win = {
-          list = {
-            keys = { ['<Right>'] = 'confirm', ['<Left>'] = 'explorer_close' },
-            wo = {
-              number = true,
-              relativenumber = true,
-            },
-          },
-        },
-      },
-    },
   },
   terminal = terminal,
   dashboard = customDashboard,
@@ -232,20 +196,6 @@ end
 map('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers' })
 map('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep' })
 map('n', '<leader>ln', function() Snacks.picker.notifications() end, { desc = 'Notification Picker' })
-map('n', '<leader>e', function() Snacks.explorer() end, { desc = 'File Explorer' })
-
--- find
-map('n', '<leader>fb', function() Snacks.picker.buffers() end, { desc = 'Buffers' })
-map(
-  'n',
-  '<leader>fc',
-  function() Snacks.picker.files({ cwd = vim.fn.stdpath('config') }) end,
-  { desc = 'Find Config File' }
-)
-map('n', '<leader>ff', function() Snacks.picker.files() end, { desc = 'Find Files' })
-map('n', '<leader>fg', function() Snacks.picker.git_files() end, { desc = 'Find Git Files' })
-map('n', '<leader>fp', function() Snacks.picker.projects() end, { desc = 'Projects' })
-map('n', '<leader>fr', function() Snacks.picker.recent({ filter = { cwd = true } }) end, { desc = 'Recent' })
 
 -- LSP
 map('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })

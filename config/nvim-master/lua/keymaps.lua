@@ -117,9 +117,6 @@ vim.keymap.set('i', ';', ';<c-g>u')
 -- save file
 vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
 
---keywordprg
-vim.keymap.set('n', '<leader>K', '<cmd>norm! K<cr>', { desc = 'Keywordprg' })
-
 -- better indenting
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
