@@ -197,29 +197,6 @@ map('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers'
 map('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep' })
 map('n', '<leader>ln', function() Snacks.picker.notifications() end, { desc = 'Notification Picker' })
 
--- LSP
-map('n', '<leader>cl', function() Snacks.picker.lsp_config() end, { desc = 'Active Language Servers' })
-map('n', 'gd', function() Snacks.picker.lsp_definitions() end, { desc = 'Goto Definition' })
-map('n', 'gD', function() Snacks.picker.lsp_declarations() end, { desc = 'Goto Declaration' })
-map('n', 'gr', function() Snacks.picker.lsp_references() end, { nowait = true, desc = 'References' })
-map('n', 'gI', function() Snacks.picker.lsp_implementations() end, { desc = 'Goto Implementation' })
-map('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { desc = 'Goto T[y]pe Definition' })
-map('n', 'gai', function() Snacks.picker.lsp_incoming_calls() end, { desc = 'C[a]lls Incoming' })
-map('n', 'gao', function() Snacks.picker.lsp_outgoing_calls() end, { desc = 'C[a]lls Outgoing' })
-map('n', '<leader>ss', function() Snacks.picker.lsp_symbols() end, { desc = 'LSP Symbols' })
-map('n', '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, { desc = 'LSP Workspace Symbols' })
-
--- map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
--- map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
--- map('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
--- map('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
--- map('n', '<leader>`', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
--- map('n', '<leader>bb', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
--- map('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
--- map('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'Delete Other Buffers' })
--- map('n', '<leader>bi', function() Snacks.bufdelete.invisible() end, { desc = 'Delete Invisible Buffers' })
--- map('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
-
 -- TODO: Make this work in vim way
 -- -- Clear search and stop snippet on escape
 -- map({ "i", "n", "s" }, "<esc>", function()
