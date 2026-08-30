@@ -12,10 +12,16 @@ require('lazyload').on_vim_enter(function()
 
   vim.pack.add({ 'https://github.com/MunifTanjim/nui.nvim' })
 
+  Snacks.notify('Noice Loading')
+
+  -- HACK: noice shows messages from before it was enabled,
+  -- but this is not ideal when Lazy is installing plugins,
+  -- so clear the messages in this case.
+  if vim.o.filetype == "lazy" then
+    vim.cmd([[messages clear]])
+  end
+
   require('noice').setup({
-    cmdline = {
-      view = 'cmdline',
-    },
     lsp = {
       override = {
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,

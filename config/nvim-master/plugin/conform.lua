@@ -65,6 +65,16 @@ require('lazyload').on_vim_enter(function()
     },
   })
 
+  vim.keymap.set(
+    { 'n', 'x' },
+    '<leader>cF',
+    function() require('conform').format({ formatters = { 'injected' }, timeout_ms = 3000 }) end,
+    {
+
+      desc = 'Format Injected Langs',
+    }
+  )
+
   vim.keymap.set('n', '<leader>uf', function()
     vim.g.auto_format = not vim.g.auto_format
     vim.notify('Auto-format: ' .. (vim.g.auto_format and 'on' or 'off'))

@@ -7,11 +7,15 @@ require('lazyload').on_vim_enter(function()
     engine = 'ripgrep',
   })
 
-  vim.keymap.set('n', '<leader>rf', function() require('grug-far').open() end, { desc = 'Replace in files (Grug-far)' })
-  vim.keymap.set(
-    'n',
-    '<leader>rw',
-    function() require('grug-far').open({ prefills = { search = vim.fn.expand('<cword>') } }) end,
-    { desc = 'Replace word in files (Grug-far)' }
-  )
+  vim.keymap.set({ 'n', 'x' }, '<leader>sr', function()
+    local grug = require('grug-far')
+    local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
+
+    grug.open({
+      transient = true,
+      prefills = {
+        filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
+      },
+    })
+  end, { desc = 'Search and Replace' })
 end)

@@ -49,12 +49,12 @@ require('lazyload').on_vim_enter(function()
         -- only show help buffers
         filter = function(buf) return vim.bo[buf].buftype == 'help' end,
       },
-      { ft = 'qf', title = 'QuickFix' },
-      { title = 'Grug Far', ft = 'grug-far' },
+      { ft = 'qf', title = function() return 'QuickFix' end },
+      { title = function() return 'Grug Far' end, ft = 'grug-far' },
       {
         ft = 'snacks_terminal',
         size = { height = 0.4 },
-        title = '%{b:snacks_terminal.id}: %{b:term_title}',
+        title = function() return '%{b:snacks_terminal.id}: %{b:term_title}' end,
         filter = function(_buf, win)
           return vim.w[win].snacks_win
             and vim.w[win].snacks_win.position == pos

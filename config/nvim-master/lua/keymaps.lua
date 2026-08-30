@@ -3,54 +3,26 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = '\\'
 
 -- Clear highlights on search when pressing <Esc> in normal mode
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set({ 'i', 'n', 's' }, '<esc>', function()
+  vim.cmd('noh')
+  if vim.snippet then vim.snippet.stop() end
+  return '<esc>'
+end, {
+  expr = true,
+  desc = 'Escape and Clear hlserach',
+})
 
 -- Quit neovim
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>', { desc = 'Quit All' })
 vim.keymap.set('n', '<leader>qf', '<cmd>noautocmd wqa!<CR>', { desc = 'Force write everything and Quit' })
 vim.keymap.set('n', '<leader>qr', '<cmd>restart<CR>', { desc = 'Restart Neovim' })
 
--- Save without formatting on Ctrl+Shift+S (bypass autocommands)
-vim.keymap.set({ 'n', 'i' }, '<C-S-s>', '<cmd>noautocmd w<CR><Esc>', { desc = 'Save File Without Formatting' })
-
 -- Yank whole text
 vim.keymap.set('n', '<leader>cy', ':%y+<CR>', { desc = 'Yank Entire Buffer' })
 
 -- Select whole text
 vim.keymap.set('n', '<leader>cs', 'ggVG', { desc = 'Select Entire Buffer' })
-
--- Lsp actions
-vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code Action' })
-vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
-
--- Function to copy all diagnostics to the clipboard
-local function copy_all_diagnostics()
-  local diagnostics = vim.diagnostic.get(nil) -- get all diagnostics in current buffer
-  if vim.tbl_isempty(diagnostics) then
-    vim.notify('No diagnostics to copy!', vim.log.levels.INFO)
-    return
-  end
-
-  local lines = {}
-  for _, d in ipairs(diagnostics) do
-    local msg = string.format(
-      '[%s] %s:%d:%d: %s',
-      vim.diagnostic.severity[d.severity]:sub(1, 1),
-      vim.api.nvim_buf_get_name(0),
-      d.lnum + 1,
-      d.col + 1,
-      d.message:gsub('\n', ' ')
-    )
-    table.insert(lines, msg)
-  end
-
-  local text = table.concat(lines, '\n')
-  vim.fn.setreg('+', text) -- copy to system clipboard
-  vim.notify('Diagnostics copied to clipboard!', vim.log.levels.INFO)
-end
-
--- Keymap: <leader>cd to copy all diagnostics
-vim.keymap.set('n', '<leader>cd', copy_all_diagnostics, { desc = 'Copy All Diagnostics' })
 
 -- Center screen after scrolling or searching (from prime)
 
@@ -116,6 +88,9 @@ vim.keymap.set('i', ';', ';<c-g>u')
 
 -- save file
 vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+
+-- Save without formatting on Ctrl+Shift+S (bypass autocommands)
+vim.keymap.set({ 'n', 'i' }, '<C-S-s>', '<cmd>noautocmd w<CR><Esc>', { desc = 'Save File Without Formatting' })
 
 -- better indenting
 vim.keymap.set('x', '<', '<gv')

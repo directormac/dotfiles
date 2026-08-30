@@ -24,8 +24,7 @@ misealias = "nvim ~/.dotfiles/config/mise/conf.d/04-shell-alias.toml"
 miseenv = "nvim ~/.dotfiles/config/mise/conf.d/05-env.toml"
 miseatasks = "nvim ~/.dotfiles/config/mise/conf.d/06-tasks.toml"
 nvimconf = "cd ~/.dotfiles/config/nvim/ && nvim"
-tmuxconf = "nvim ~/.dotfiles/config/tmux/.tmux.conf"
-tmuxkeys = "cat ~/.dotfiles/config/tmux/tmuxkeybinds"
+tmuxconf = "nvim ~/.dotfiles/config/tmux/tmux.conf"
 hxconf = "helix ~/.dotfiles/config/helix/config.toml"
 zshconf = "nvim ~/.dotfiles/config/zsh/.zshrc"
 zshkeys = "cat ~/.dotfiles/config/zsh/zshkeybinds"
@@ -94,8 +93,6 @@ lzg = "lazygit"
 tls = "tmux ls" # tmux session list
 
 tn = 'sesh connect .'
-v = "nvim"
-vi = "nvim"
 
 # Pacman aliases
 in = 'sudo pacman -S' # install package
@@ -115,7 +112,9 @@ ddcu = "docker-compose -f docker/docker-compose.dev.yaml  up -d"
 dcv = "docker-compose down -v"
 
 # alias mvim="NVIM_APPNAME=mac-nvim nvim"
-mvim = "NVIM_APPNAME=nvim-master nvim"
+v = "nvim"
+vi = "neovim"
+mvim = "NVIM_APPNAME=nvim-master neovim"
 pvim = "NVIM_APPNAME=nvimp nvim"
 svim = "NVIM_APPNAME=nvim-super nvim"
 qvim = "NVIM_APPNAME=nvim-quick nvim"

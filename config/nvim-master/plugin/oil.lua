@@ -19,7 +19,7 @@ require('lazyload').on_vim_enter(function()
     },
   })
 
-  vim.keymap.set('n', '<leader>fo', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+  vim.keymap.set('n', '<leader>fo', '<CMD>Oil<CR>', { desc = 'Open cwd.' })
   vim.keymap.set('n', '<leader>fO', '<CMD>Oil .<CR>', { desc = 'Open parent directory' })
 
   -- find
@@ -31,7 +31,17 @@ require('lazyload').on_vim_enter(function()
     function() Snacks.picker.files({ cwd = vim.fn.stdpath('config') }) end,
     { desc = 'Find Config File' }
   )
-  vim.keymap.set('n', '<leader>ff', function() Snacks.picker.files() end, { desc = 'Find Files' })
+  vim.keymap.set(
+    'n',
+    '<leader>ff',
+    function()
+      Snacks.picker.files({
+        layout = { hidden = { 'preview' } },
+      }
+)
+    end,
+    { desc = 'Find Files' }
+  )
   vim.keymap.set('n', '<leader>fg', function() Snacks.picker.git_files() end, { desc = 'Find Git Files' })
   vim.keymap.set('n', '<leader>fp', function() Snacks.picker.projects() end, { desc = 'Projects' })
   vim.keymap.set(
