@@ -1,7 +1,6 @@
 require('lazyload').on_vim_enter(function()
+  local shellcheck = require('lint.linters.shellcheck')
   ------
-
-  local function gh(repo) return 'https://github.com/' .. repo end
 
   vim.pack.add({ 'https://github.com/j-hui/fidget.nvim' })
 
@@ -23,6 +22,9 @@ require('lazyload').on_vim_enter(function()
 
   local servers = {
     bash_ls = {},
+    shellcheck = {},
+
+    copilot_language_server = {},
     -- clangd = {},
     -- gopls = {},
     -- pyright = {},

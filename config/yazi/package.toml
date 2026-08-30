@@ -1,0 +1,12 @@
+[[plugin.deps]]
+use = "barbanevosa/autosession"
+rev = "7a12b20"
+hash = "f9b76184511c983db7c6f719eea1e14d"
+
+[[plugin.deps]]
+use = "WhoSowSee/mdv-previewer"
+rev = "099ebba"
+hash = "ec9577e04708ad33a1d4ed6ffe8983fb"
+
+[flavor]
+deps = []

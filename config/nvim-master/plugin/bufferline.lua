@@ -3,11 +3,19 @@ require('lazyload').on_vim_enter(function()
     { src = 'https://github.com/akinsho/bufferline.nvim', version = vim.version.range('*') },
   })
 
+  -- Reference https://github.com/catppuccin/nvim#configuration
   require('bufferline').setup({
     options = {
       close_command = function(n) Snacks.bufdelete(n) end,
       right_mouse_command = function(n) Snacks.bufdelete(n) end,
       diagnostics = 'nvim_lsp',
+
+      diagnostics_indicator = function(_, _, diag)
+        local icons = require('icons').diagnostics
+        local ret = (diag.error and icons.Error .. diag.error .. ' ' or '')
+          .. (diag.warning and icons.Warn .. diag.warning or '')
+        return vim.trim(ret)
+      end,
       always_show_bufferline = false,
       show_buffer_close_icons = false,
       show_duplicate_prefix = true,
@@ -17,19 +25,9 @@ require('lazyload').on_vim_enter(function()
         icon = ' ',
         style = 'icon',
       },
-
-      highlight = {
-        indicator_selected = {
-          fg = '#cba6f7',
-        },
-      },
-
       offsets = {
         {
           filetype = 'oil',
-          text = 'file explorer',
-          highlight = 'Directory',
-          text_align = 'left',
         },
         {
           filetype = 'snacks_layout_box',
@@ -44,6 +42,11 @@ require('lazyload').on_vim_enter(function()
           if ok and name then return name end
         end
       end,
+    },
+    highlights = {
+      indicator_selected = {
+        fg = '#cba6f7',
+      },
     },
   })
 

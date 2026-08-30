@@ -6,6 +6,38 @@
 -- INIT BLOCK
 vim.g.snacks_animate = false
 
+local M = {}
+
+---@param opts? snacks.picker.Config
+function M.neovim_logs(opts)
+  local log_dir = vim.fn.stdpath('log')
+  if vim.fn.isdirectory(log_dir) == 0 then
+    vim.notify('Neovim log directory not found at: ' .. log_dir, vim.log.levels.WARN)
+    return
+  end
+
+  return Snacks.picker.files(vim.tbl_deep_extend('keep', opts or {}, {
+    title = 'Neovim Log Files',
+    cwd = log_dir,
+    confirm = function(picker, item)
+      local selected = picker:selected({ fallback = true })
+      picker:close()
+      for i, selected_item in ipairs(selected) do
+        local full_path = picker:cwd() .. '/' .. selected_item.file
+        if i == 1 then
+          vim.cmd('split ' .. vim.fn.fnameescape(full_path))
+        else
+          vim.cmd('vsplit ' .. vim.fn.fnameescape(full_path))
+        end
+        vim.cmd('set ft=log')
+        vim.cmd('normal! G')
+      end
+    end,
+  }))
+end
+
+Snacks.notify('Snacks booting up. . . ')
+
 -- Count plugins from vim.pack lockfile
 local function plugin_count()
   local lockfile = vim.fs.joinpath(vim.fn.stdpath('config'), 'nvim-pack-lock.json')
@@ -17,12 +49,17 @@ end
 -- ===========
 -- Terminal Configuration
 
--- ---@field win? snacks.win.Config|{}
--- ---@field shell? string|string[] The shell to use. Defaults to `vim.o.shell`
--- ---@field override? fun(cmd?: string|string[], opts?: snacks.terminal.Opts) Use this to use a different terminal implementation
-
 ---@type snacks.terminal.Opts
 local terminal = {}
+
+require('pack')
+
+local function term_nav(dir)
+  ---@param self snacks.terminal
+  return function(self)
+    return self:is_floating() and '<c-' .. dir .. '>' or vim.schedule(function() vim.cmd.wincmd(dir) end)
+  end
+end
 
 ---@type snacks.dashboard.Config
 local customDashboard = {
@@ -47,10 +84,7 @@ local customDashboard = {
         key = 'u',
         desc = 'Update Plugins',
         -- action = ':lua vim.pack.update()',
-        action = function()
-          local plugins = vim.pack.get()
-          vim.pack.update(plugins, { force = true })
-        end,
+        action = function() vim.pack.update(nil, { force = true }) end,
       },
       { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
     },
@@ -107,84 +141,74 @@ local customDashboard = {
       },
     },
   },
+  win = {
+    keys = {
+      nav_h = { '<C-h>', term_nav('h'), desc = 'Go to Left Window', expr = true, mode = 't' },
+      nav_j = { '<C-j>', term_nav('j'), desc = 'Go to Lower Window', expr = true, mode = 't' },
+      nav_k = { '<C-k>', term_nav('k'), desc = 'Go to Upper Window', expr = true, mode = 't' },
+      nav_l = { '<C-l>', term_nav('l'), desc = 'Go to Right Window', expr = true, mode = 't' },
+      hide_slash = { '<C-/>', 'hide', desc = 'Hide Terminal', mode = 't' },
+      hide_underscore = { '<c-_>', 'hide', desc = 'which_key_ignore', mode = 't' },
+    },
+  },
 }
 
 ---@type snacks.Config
 require('snacks').setup({
-  input = {
-    enabled = true,
-    expand = true, -- Enable dynamic width expansion
-    win = {
-      relative = 'cursor',
-      row = -3,
-      col = 0,
-      width = 30, -- Minimum width: starts small
-      max_width = 100, -- Maximum width: caps expansion
-    },
-  },
-  -- bigfile = { enabled = true },
-  -- lazygit = { enabled = true },
+  input = { enabled = true },
+  bigfile = { enabled = true },
+  dashboard = customDashboard,
+  explorer = { enabled = true },
   git = { enabled = true },
   gitbrowse = { enabled = true },
   health = { enabled = true },
   image = { enabled = false, inline = false },
-  explorer = { enabled = true },
-  scratch = { enabled = true },
   indent = { enabled = true },
+  lazygit = { enabled = true },
   notifier = { enabled = true },
   quickfile = { enabled = true },
   scope = { enabled = true },
+  scratch = { enabled = true },
   scroll = { enabled = true },
   statuscolumn = { enabled = true },
+  styles = { float = { backdrop = 60 } },
   words = { enabled = true },
-  styles = { float = { backdrop = false } },
-  picker = {
-    enabled = true,
-    win = {
-      input = {
-        keys = {
-          -- Remap conflicting tmux keybinds
-          ['<C-w>w'] = { 'cycle_win', mode = { 'i', 'n' } },
-          ['<C-r>r'] = { 'toggle_regex', mode = { 'i', 'n' } },
-          -- Disable the conflicting ones
-          ['<a-w>'] = false,
-          ['<a-r>'] = false,
-          ['<a-p>'] = false,
-        },
-      },
-    },
-  },
+  picker = { enabled = true },
   terminal = terminal,
-  dashboard = customDashboard,
 })
 
-vim.api.nvim_create_autocmd('User', {
-  callback = function()
-    -- Setup some globals for debugging (lazy-loaded)
-    _G.dd = function(...) Snacks.debug.inspct(...) end
-    _G.bt = function() Snacks.debug.backtrace() end
+-- Setup some globals for debugging (lazy-loaded)
+_G.dd = function(...) Snacks.debug.inspect(...) end
+_G.bt = function() Snacks.debug.backtrace() end
 
-    -- Create some toggle mappings
-    Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
-    Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
-    Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map('<leader>uL')
-    Snacks.toggle.diagnostics():map('<leader>ud')
-    Snacks.toggle.line_number():map('<leader>ul')
-    Snacks.toggle
-      .option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-      :map('<leader>uc')
-    Snacks.toggle.treesitter():map('<leader>uT')
-    Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ub')
-    Snacks.toggle.inlay_hints():map('<leader>uh')
-    Snacks.toggle.indent():map('<leader>ug')
-    Snacks.toggle.dim():map('<leader>uD')
+-- Create some toggle mappings
+Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
+Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
+Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map('<leader>uL')
+Snacks.toggle.diagnostics():map('<leader>ud')
+Snacks.toggle.line_number():map('<leader>ul')
+Snacks.toggle
+  .option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+  :map('<leader>uc')
+Snacks.toggle.treesitter():map('<leader>uT')
+Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ub')
+Snacks.toggle.inlay_hints():map('<leader>uh')
+Snacks.toggle.indent():map('<leader>ug')
+Snacks.toggle.dim():map('<leader>uD')
 
-    vim.keymap.set('n', '<leader>ur', function()
-      vim.cmd('lsp restart')
-      vim.notify('LSP restarted', vim.log.levels.INFO, { title = 'LSP' })
-    end, { desc = 'Restart Language Server Attached' })
-  end,
-})
+Snacks.toggle.profiler():map('<leader>dpp')
+Snacks.toggle.profiler_highlights():map('<leader>dph')
+
+Snacks.toggle.zoom():map('<leader>wm'):map('<leader>uZ')
+Snacks.toggle.zen():map('<leader>uz')
+
+-- map('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen Mode' })
+-- map('n', '<leader>uZ', function() Snacks.zen.zoom() end, { desc = 'Toggle Zoom' })
+
+vim.keymap.set('n', '<leader>ur', function()
+  vim.cmd('lsp restart')
+  vim.notify('LSP restarted', vim.log.levels.INFO, { title = 'LSP' })
+end, { desc = 'Restart Language Server Attached' })
 
 -- KEYS BLOCK
 local function map(mode, lhs, rhs, opts)
@@ -192,24 +216,55 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
--- Top Pickers & Explorer
-map('n', '<leader>,', function() Snacks.picker.buffers() end, { desc = 'Buffers' })
-map('n', '<leader>/', function() Snacks.picker.grep() end, { desc = 'Grep' })
-map('n', '<leader>ln', function() Snacks.picker.notifications() end, { desc = 'Notification Picker' })
+local exclude = {
+  '**/node_modules',
+}
 
--- TODO: Make this work in vim way
--- -- Clear search and stop snippet on escape
--- map({ "i", "n", "s" }, "<esc>", function()
---   vim.cmd("noh")
---   LazyVim.cmp.actions.snippet_stop()
---   return "<esc>"
--- end, { expr = true, desc = "Escape and Clear hlsearch" })
---
+vim.keymap.set('n', '<leader><leader>', function()
+  Snacks.picker.smart({
+    title = 'Smart File Picker',
+    header = 'Hello',
+    -- prompt = '',
+
+    layout = { hidden = { 'preview' } },
+    multi = { 'recent', 'files' },
+    hidden = true,
+    ignored = true,
+    formatters = { file = { truncate = 100 } },
+  })
+end, { desc = 'Smart file picker.' })
+
+vim.keymap.set(
+  'n',
+  '<leader>/',
+  function()
+    Snacks.picker.grep({
+      layout = { hidden = { 'preview' } },
+      hidden = true,
+      ignored = true,
+      formatters = { file = { truncate = 100 } },
+    })
+  end,
+  { desc = 'Smart file picker.' }
+)
+
+vim.keymap.set('n', '<leader>:', function() Snacks.picker.command_history() end, { desc = 'Command History' })
+
+vim.keymap.set('n', '<leader>?', function() Snacks.picker.search_history() end, { desc = 'Search History' })
+
+vim.keymap.set('n', '<leader>.', function() Snacks.scratch() end, { desc = 'Toggle Scratch Buffer' })
+
+-- Logs
+vim.keymap.set('n', '<leader>ls', function() Snacks.picker.search_history() end, { desc = 'Search History' })
+vim.keymap.set('n', '<leader>lc', function() Snacks.picker.command_history() end, { desc = 'Command History' })
+vim.keymap.set('n', '<leader>lN', function() Snacks.notifier.show_history() end, { desc = 'Notification History' })
+vim.keymap.set('n', '<leader>lna', function() require('noice').cmd('all') end, { desc = 'Noice All' })
+
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
 map(
   'n',
-  '<leader>ur',
+  '<leader>uR',
   '<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>',
   { desc = 'Redraw / Clear hlsearch / Diff Update' }
 )
@@ -218,8 +273,6 @@ map(
 map('n', '<leader>-', '<C-W>s', { desc = 'Split Window Below', remap = true })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split Window Right', remap = true })
 map('n', '<leader>wd', '<C-W>c', { desc = 'Delete Window', remap = true })
-Snacks.toggle.zoom():map('<leader>wm'):map('<leader>uZ')
-Snacks.toggle.zen():map('<leader>uz')
 
 -- tabs
 map('n', '<leader><tab>l', '<cmd>tablast<cr>', { desc = 'Last Tab' })
@@ -252,11 +305,13 @@ map('n', '<leader>gP', function() Snacks.picker.gh_pr({ state = 'all' }) end, { 
 
 -- search
 map('n', '<leader>s"', function() Snacks.picker.registers() end, { desc = 'Registers' })
-map('n', '<leader>ls', function() Snacks.picker.search_history() end, { desc = 'Search History' })
+
+vim.keymap.set('n', '<leader>s.', function() Snacks.scratch.select() end, { desc = 'Select Scratch Buffer' })
+
 map('n', '<leader>sa', function() Snacks.picker.autocmds() end, { desc = 'Autocmds' })
 map('n', '<leader>sb', function() Snacks.picker.lines() end, { desc = 'Buffer Lines' })
-map('n', '<leader>lc', function() Snacks.picker.command_history() end, { desc = 'Command History' })
 map('n', '<leader>sC', function() Snacks.picker.commands() end, { desc = 'Commands' })
+map('n', '<leader>sc', function() Snacks.picker.cliphist() end, { desc = 'Commands' })
 map('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = 'Diagnostics' })
 map('n', '<leader>sD', function() Snacks.picker.diagnostics_buffer() end, { desc = 'Buffer Diagnostics' })
 map('n', '<leader>sh', function() Snacks.picker.help() end, { desc = 'Help Pages' })
@@ -266,7 +321,7 @@ map('n', '<leader>sj', function() Snacks.picker.jumps() end, { desc = 'Jumps' })
 map('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = 'Keymaps' })
 map('n', '<leader>sl', function() Snacks.picker.loclist() end, { desc = 'Location List' })
 map('n', '<leader>sm', function() Snacks.picker.marks() end, { desc = 'Marks' })
-map('n', '<leader>sM', function() Snacks.picker.man() end, { desc = 'Man Pages' })
+map('n', '<leader>sM', function() Snacks.picker.man(require('')) end, { desc = 'Man Pages' })
 map('n', '<leader>sp', function() Snacks.picker.lazy() end, { desc = 'Search for Plugin Spec' })
 map('n', '<leader>sq', function() Snacks.picker.qflist() end, { desc = 'Quickfix List' })
 map('n', '<leader>sR', function() Snacks.picker.resume() end, { desc = 'Resume' })
@@ -283,12 +338,6 @@ map('n', '<leader>st', function()
   Snacks.picker.pick('todo_comments', {})
 end, { desc = 'Search Todos' })
 
--- Other
-map('n', '<leader>uz', function() Snacks.zen() end, { desc = 'Toggle Zen Mode' })
-map('n', '<leader>uZ', function() Snacks.zen.zoom() end, { desc = 'Toggle Zoom' })
-map('n', '<leader>us', function() Snacks.scratch() end, { desc = 'Toggle Scratch Buffer' })
-map('n', '<leader>uS', function() Snacks.scratch.select() end, { desc = 'Select Scratch Buffer' })
-map('n', '<leader>lN', function() Snacks.notifier.show_history() end, { desc = 'Notification History' })
 map('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
 map('n', '<C-x>', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
 map('n', '<leader>cR', function() Snacks.rename.rename_file() end, { desc = 'Rename File' })

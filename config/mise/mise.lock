@@ -96,6 +96,10 @@ url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.0/bun-linux-x64
 checksum = "sha256:618c4bc1f94b02337ee210003c0b7c066f11548a8cdc5109df10db043dc47ca2"
 url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.0/bun-linux-x64-musl-baseline.zip"
 
+[[tools."cargo:mdv"]]
+version = "5.1.0"
+backend = "cargo:mdv"
+
 [[tools.elixir]]
 version = "1.20.2-otp-28"
 backend = "core:elixir"
@@ -167,6 +171,118 @@ url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074
 checksum = "sha256:f7d5905bc3f09b128d4941c7769633f2d108be637f228ee431e9ed137d2c5563"
 url = "https://github.com/expert-lsp/expert/releases/download/v0.1.9/expert_linux_amd64"
 url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/524074924"
+
+[[tools."github:graelo/tmux-backup"]]
+version = "0.6.0"
+backend = "github:graelo/tmux-backup"
+
+[tools."github:graelo/tmux-backup"."platforms.linux-x64"]
+checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
+url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
+provenance = "github-attestations"
+provenance_verified = true
+
+[tools."github:graelo/tmux-backup"."platforms.linux-x64-baseline"]
+checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
+url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
+provenance = "github-attestations"
+
+[tools."github:graelo/tmux-backup"."platforms.linux-x64-musl"]
+checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
+url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
+provenance = "github-attestations"
+
+[tools."github:graelo/tmux-backup"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
+url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
+provenance = "github-attestations"
+
+[[tools."github:neovim/neovim"]]
+version = "nightly"
+backend = "github:neovim/neovim"
+
+[tools."github:neovim/neovim".options]
+asset_pattern = "nvim-linux-x86_64.tar.gz"
+
+[tools."github:neovim/neovim"."platforms.linux-x64"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools."github:neovim/neovim"."platforms.linux-x64-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools."github:neovim/neovim"."platforms.linux-x64-musl"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools."github:neovim/neovim"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[[tools."github:psmux/Tmux-Plugin-Panel"]]
+version = "0.1.1"
+backend = "github:psmux/Tmux-Plugin-Panel"
+
+[tools."github:psmux/Tmux-Plugin-Panel".options]
+asset_pattern = "tmuxpanel-v{{ version }}-linux-x64.tar.gz"
+
+[tools."github:psmux/Tmux-Plugin-Panel"."platforms.linux-x64"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools."github:psmux/Tmux-Plugin-Panel"."platforms.linux-x64-baseline"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools."github:psmux/Tmux-Plugin-Panel"."platforms.linux-x64-musl"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools."github:psmux/Tmux-Plugin-Panel"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[[tools."github:wfxr/tmup"]]
+version = "0.3.0"
+backend = "github:wfxr/tmup"
+
+[tools."github:wfxr/tmup"."platforms.linux-x64"]
+checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
+url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
+provenance = "github-attestations"
+provenance_verified = true
+
+[tools."github:wfxr/tmup"."platforms.linux-x64-baseline"]
+checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
+url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
+provenance = "github-attestations"
+
+[tools."github:wfxr/tmup"."platforms.linux-x64-musl"]
+checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
+url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
+provenance = "github-attestations"
+
+[tools."github:wfxr/tmup"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
+url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
+provenance = "github-attestations"
 
 [[tools.herdr]]
 version = "0.8.2"
@@ -256,21 +372,56 @@ provenance = "github-attestations"
 version = "2.1.0"
 backend = "asdf:mise-plugins/mise-kotlin"
 
+[[tools.neovim]]
+version = "nightly"
+backend = "github:neovim/neovim"
+
+[tools.neovim.options]
+asset_pattern = "nvim-linux-x86_64.tar.gz"
+
+[tools.neovim."platforms.linux-x64"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools.neovim."platforms.linux-x64-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools.neovim."platforms.linux-x64-musl"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
+[tools.neovim."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+
 [[tools.nightlyvim]]
 version = "nightly"
 backend = "vfox:mise-plugins/vfox-neovim"
 
 [tools.nightlyvim."platforms.linux-x64"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
 
 [tools.nightlyvim."platforms.linux-x64-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
 
 [tools.nightlyvim."platforms.linux-x64-musl"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
 
 [tools.nightlyvim."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
 
 [[tools.node]]
 version = "26.8.1"
@@ -375,31 +526,31 @@ url = "https://github.com/jdx/pitchfork/releases/download/v2.23.0/pitchfork-x86_
 url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/530647237"
 
 [[tools.pnpm]]
-version = "11.24.0"
+version = "11.25.0"
 backend = "aqua:pnpm/pnpm"
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:0a9b76dedb5fe8cc5e7f3a9fd70854181cfb08a487ebaf0c9cfb044dc860936c"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747059"
+checksum = "sha256:11caeed8b581d460638f836f10f6ead19cbf08d774a5b8e502628b20ebf3ac43"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.25.0/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/535298945"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-baseline"]
-checksum = "sha256:0a9b76dedb5fe8cc5e7f3a9fd70854181cfb08a487ebaf0c9cfb044dc860936c"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747059"
+checksum = "sha256:11caeed8b581d460638f836f10f6ead19cbf08d774a5b8e502628b20ebf3ac43"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.25.0/pnpm-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/535298945"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:2fce00e10729d0c1f3836d499b908697fd3cd0832332651fbcee79c0a7442dcb"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747057"
+checksum = "sha256:2a25fd5614c89d3e8e7c8cabfe9f5f2aba3c4f997fb69e6934ee257dd8753ca5"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.25.0/pnpm-linux-x64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/535298949"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:2fce00e10729d0c1f3836d499b908697fd3cd0832332651fbcee79c0a7442dcb"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.24.0/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/527747057"
+checksum = "sha256:2a25fd5614c89d3e8e7c8cabfe9f5f2aba3c4f997fb69e6934ee257dd8753ca5"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.25.0/pnpm-linux-x64-musl.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/535298949"
 provenance = "github-attestations"
 
 [[tools.rust]]
@@ -430,56 +581,83 @@ checksum = "sha256:ac4a0b07f0be4cbb13691a197055ac82e00341e77b915d878df8ad2bcc867
 url = "https://github.com/joshmedeski/sesh/releases/download/v2.28.0/sesh_Linux_x86_64.tar.gz"
 url_api = "https://api.github.com/repos/joshmedeski/sesh/releases/assets/490857157"
 
+[[tools.tmuxpanel]]
+version = "0.1.1"
+backend = "github:psmux/Tmux-Plugin-Panel"
+
+[tools.tmuxpanel.options]
+asset_pattern = "tmuxpanel-v{{ version }}-linux-x64.tar.gz"
+
+[tools.tmuxpanel."platforms.linux-x64"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools.tmuxpanel."platforms.linux-x64-baseline"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools.tmuxpanel."platforms.linux-x64-musl"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
+[tools.tmuxpanel."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f46eb"
+url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
+
 [[tools.usage]]
-version = "6.4.1"
+version = "6.5.0"
 backend = "aqua:jdx/usage"
 
 [tools.usage."platforms.linux-x64"]
-checksum = "sha256:8f4465f3ee9e8dbb4233367a566612de9e61f9f64685a0b2da60032d0be7eb76"
-url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530174589"
+checksum = "sha256:0dc1cc55e4f3766f9a61d50c7854541983094faf2bacf769d1f4f9f45b0c1a8a"
+url = "https://github.com/jdx/usage/releases/download/v6.5.0/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/533940901"
 
 [tools.usage."platforms.linux-x64-baseline"]
-checksum = "sha256:8f4465f3ee9e8dbb4233367a566612de9e61f9f64685a0b2da60032d0be7eb76"
-url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530174589"
+checksum = "sha256:0dc1cc55e4f3766f9a61d50c7854541983094faf2bacf769d1f4f9f45b0c1a8a"
+url = "https://github.com/jdx/usage/releases/download/v6.5.0/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/533940901"
 
 [tools.usage."platforms.linux-x64-musl"]
-checksum = "sha256:9d4c186e10b9850084a1a7b111cc2b1331246246dbd2a030eb9319b8e4d47114"
-url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530175839"
+checksum = "sha256:bc5bfe1078c4ce9339ba126670d5ced3eb25d63acbd4b1bbe7b51b04f243cd0c"
+url = "https://github.com/jdx/usage/releases/download/v6.5.0/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/533940976"
 
 [tools.usage."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:9d4c186e10b9850084a1a7b111cc2b1331246246dbd2a030eb9319b8e4d47114"
-url = "https://github.com/jdx/usage/releases/download/v6.4.1/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/530175839"
+checksum = "sha256:bc5bfe1078c4ce9339ba126670d5ced3eb25d63acbd4b1bbe7b51b04f243cd0c"
+url = "https://github.com/jdx/usage/releases/download/v6.5.0/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/533940976"
 
 [[tools.uv]]
-version = "0.12.6"
+version = "0.12.7"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-x64"]
-checksum = "sha256:8681d8921e7d520fb368991dcf5f9c1905b80f5bf2a265a0ed085c8d8e342477"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690831"
+checksum = "sha256:788f18abea7c5f55d6216e4f5613fd89d4d59b631efeec117b2b07fe72f1da21"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.7/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/532935280"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-baseline"]
-checksum = "sha256:8681d8921e7d520fb368991dcf5f9c1905b80f5bf2a265a0ed085c8d8e342477"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690831"
+checksum = "sha256:788f18abea7c5f55d6216e4f5613fd89d4d59b631efeec117b2b07fe72f1da21"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.7/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/532935280"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl"]
-checksum = "sha256:14e4172aace66a475062cebec7ca04f497d5619e95325dfcc9e4447b9c516846"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690844"
+checksum = "sha256:3d64d44ed67da7908dc7f5c4d64ebb44bad326fa17f8a0a52fc9a7793017bbe1"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.7/uv-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/532935287"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:14e4172aace66a475062cebec7ca04f497d5619e95325dfcc9e4447b9c516846"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.6/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/529690844"
+checksum = "sha256:3d64d44ed67da7908dc7f5c4d64ebb44bad326fa17f8a0a52fc9a7793017bbe1"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.7/uv-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/532935287"
 provenance = "github-attestations"
 
 [[tools.vite-plus]]
@@ -537,3 +715,30 @@ url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/5273
 checksum = "sha256:480065f4459b9f7fb25927ac43df85ff7f46a9b25d04f90001022b875ab0b1a5"
 url = "https://github.com/watchexec/watchexec/releases/download/v2.7.0/watchexec-2.7.0-x86_64-unknown-linux-musl.tar.xz"
 url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/527314330"
+
+[[tools.ztmux]]
+version = "3.7.45"
+backend = "github:MenkeTechnologies/ztmux"
+
+[tools.ztmux.options]
+asset_pattern = "ztmux-v{{ version }}-x86_64-unknown-linux-gnu.tar.gz"
+
+[tools.ztmux."platforms.linux-x64"]
+checksum = "sha256:9da548a82c534f2e0b6a736e56fc11809165f46a664e01745e612dfa71aab084"
+url = "https://github.com/MenkeTechnologies/ztmux/releases/download/v3.7.45/ztmux-v3.7.45-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/MenkeTechnologies/ztmux/releases/assets/528000102"
+
+[tools.ztmux."platforms.linux-x64-baseline"]
+checksum = "sha256:9da548a82c534f2e0b6a736e56fc11809165f46a664e01745e612dfa71aab084"
+url = "https://github.com/MenkeTechnologies/ztmux/releases/download/v3.7.45/ztmux-v3.7.45-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/MenkeTechnologies/ztmux/releases/assets/528000102"
+
+[tools.ztmux."platforms.linux-x64-musl"]
+checksum = "sha256:9da548a82c534f2e0b6a736e56fc11809165f46a664e01745e612dfa71aab084"
+url = "https://github.com/MenkeTechnologies/ztmux/releases/download/v3.7.45/ztmux-v3.7.45-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/MenkeTechnologies/ztmux/releases/assets/528000102"
+
+[tools.ztmux."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:9da548a82c534f2e0b6a736e56fc11809165f46a664e01745e612dfa71aab084"
+url = "https://github.com/MenkeTechnologies/ztmux/releases/download/v3.7.45/ztmux-v3.7.45-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/MenkeTechnologies/ztmux/releases/assets/528000102"

@@ -62,11 +62,6 @@ vim.opt.linebreak = true
 -- Disable swapfile
 vim.opt.swapfile = false
 
--- Built-in completion
--- vim.o.complete = '.,w,b,kspell' -- Use less sources
--- vim.o.completeopt = 'menuone,noselect,fuzzy,nosort' -- Use custom behavior
--- vim.o.completetimeout = 100 -- Limit sources delay
-
 -- Hide the built-in statusline/ruler until lualine loads.
 vim.opt.laststatus = 0
 vim.opt.ruler = false

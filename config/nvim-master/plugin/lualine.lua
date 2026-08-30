@@ -1,3 +1,8 @@
+-- Try this in the future
+-- https://github.com/igorlfs/dotfiles/blob/main/nvim/.config/nvim/lua/ui/tabline.lua
+-- https://www.rahuljuliato.com/posts/nvim-tabline
+--
+
 local init = function()
   vim.g.lualine_laststatus = vim.o.laststatus
   if vim.fn.argc(-1) > 0 then
@@ -15,6 +20,23 @@ require('lazyload').on_vim_enter(function()
   vim.pack.add({
     { src = 'https://github.com/nvim-lualine/lualine.nvim' },
   })
+
+  --- @param trunc_width number trunctates component when screen width is less then trunc_width
+  --- @param trunc_len number truncates component to trunc_len number of chars
+  --- @param hide_width number hides component when window width is smaller then hide_width
+  --- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
+  --- return function that can format the component accordingly
+  local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+    return function(str)
+      local win_width = vim.fn.winwidth(0)
+      if hide_width and win_width < hide_width then
+        return ''
+      elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+        return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+      end
+      return str
+    end
+  end
 
   local lualine_require = require('lualine_require')
   lualine_require.require = require
@@ -34,9 +56,22 @@ require('lazyload').on_vim_enter(function()
     },
     sections = {
       lualine_a = { 'mode' },
-      lualine_b = { 'branch', 'diagnostics' },
-      lualine_c = { 'filename' },
+      lualine_b = { 'branch' },
+      lualine_c = {
+        {
+          'diagnostics',
+          symbols = {
+            error = icons.diagnostics.Error,
+            warn = icons.diagnostics.Warn,
+            info = icons.diagnostics.Info,
+            hint = icons.diagnostics.Hint,
+          },
+        },
+
+        'filename',
+      },
       lualine_x = {
+        Snacks.profiler.status(),
         -- stylua: ignore
         {
           function() return require("noice").api.status.command.get() end,

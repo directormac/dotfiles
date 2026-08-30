@@ -33,7 +33,9 @@ require('catppuccin').setup({
   transparent_background = true,
   float = {
     transparent = true,
+    solid = false,
   },
+
   integrations = {
     bufferline = true,
     snacks = true,

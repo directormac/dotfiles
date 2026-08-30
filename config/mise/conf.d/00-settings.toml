@@ -28,6 +28,13 @@ idiomatic_version_file_enable_tools = []
 npm = { package_manager = "bun" }
 
 #minimum_release_age = "0"
-minimum_release_age_excludes = ["bun", "node", "expert", "pnpm"]
+minimum_release_age_excludes = [
+  "bun",
+  "node",
+  "expert",
+  "pnpm",
+  "github:neovim/neovim",
+  "github:wfxr/tmup",
+]
 
 task.output = "prefix"

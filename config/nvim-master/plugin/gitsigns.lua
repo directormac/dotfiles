@@ -3,42 +3,61 @@ require('lazyload').on_vim_enter(function()
     { src = 'https://github.com/lewis6991/gitsigns.nvim' }, -- calls setup() internally
   })
 
-  -- Hunk navigation
-  vim.keymap.set('n', ']h', function()
-    if vim.wo.diff then return ']c' end
-    vim.schedule(function() require('gitsigns').nav_hunk('next') end)
-    return '<Ignore>'
-  end, { expr = true, desc = 'Next hunk' })
+  require('gitsigns').setup({
+    signs = {
+      add = { text = '▎' },
+      change = { text = '▎' },
+      delete = { text = '' },
+      topdelete = { text = '' },
+      changedelete = { text = '▎' },
+      untracked = { text = '▎' },
+    },
+    signs_staged = {
+      add = { text = '▎' },
+      change = { text = '▎' },
+      delete = { text = '' },
+      topdelete = { text = '' },
+      changedelete = { text = '▎' },
+    },
+    on_attach = function(buffer)
+      local gs = package.loaded.gitsigns
 
-  vim.keymap.set('n', '[h', function()
-    if vim.wo.diff then return '[c' end
-    vim.schedule(function() require('gitsigns').nav_hunk('prev') end)
-    return '<Ignore>'
-  end, { expr = true, desc = 'Prev hunk' })
+      local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc, silent = true }) end
 
-  -- Hunk actions
-  vim.keymap.set({ 'n', 'v' }, '<leader>ghs', function() require('gitsigns').stage_hunk() end, { desc = 'Stage hunk' })
+        -- stylua: ignore start
+        map("n", "]h", function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "]c", bang = true })
+          else
+            gs.nav_hunk("next")
+          end
+        end, "Next Hunk")
+        map("n", "[h", function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "[c", bang = true })
+          else
+            gs.nav_hunk("prev")
+          end
+        end, "Prev Hunk")
+        map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
+        map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
+        map({ "n", "x" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        map({ "n", "x" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
+        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+        map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
+        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<leader>ghB", function() gs.blame() end, "Blame Buffer")
+        map("n", "<leader>ghd", gs.diffthis, "Diff This")
+        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+    end,
+  })
 
-  vim.keymap.set(
-    { 'n', 'v' },
-    '<leader>ghS',
-    function() require('gitsigns').stage_buffer() end,
-    { desc = 'Stage buffer' }
-  )
-
-  vim.keymap.set('n', '<leader>ghr', function() require('gitsigns').reset_hunk() end, { desc = 'Reset hunk' })
-
-  vim.keymap.set({ 'n', 'v' }, '<leader>ghb', function()
-    local default_branch = require('git').get_default_branch()
-    require('gitsigns').change_base(default_branch, true)
-  end, { desc = 'Change base to default branch' })
-
-  vim.keymap.set('n', '<leader>ght', function()
-    require('gitsigns').toggle_deleted()
-    require('gitsigns').toggle_linehl()
-    require('gitsigns').toggle_word_diff()
-  end, { desc = 'Toggle inline diff' })
-
-  -- Blame
-  vim.keymap.set('n', '<leader>gbb', function() require('gitsigns').blame() end, { desc = 'Blame on the side' })
+  Snacks.toggle({
+    name = 'Git Signs',
+    get = function() return require('gitsigns.config').config.signcolumn end,
+    set = function(state) require('gitsigns').toggle_signs(state) end,
+  }):map('<leader>uG')
 end)
