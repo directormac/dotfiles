@@ -13,55 +13,32 @@ require('lazyload').on_vim_enter(function()
     formatters_by_ft = {
       elixir = { 'mix' },
       lua = { 'stylua' },
-      proto = { 'buf' },
+      fish = { 'fish_indent' },
       sh = { 'shfmt' },
     },
-    formatters = {
-      biome = {
-        args = { 'format', '--indent-style', 'space', '--stdin-file-path', '$FILENAME' },
-      },
-      gci = {
-        args = { 'write', '--skip-generated', '-s', 'standard', '-s', 'default', '--skip-vendor', '$FILENAME' },
-      },
-      goimports = {
-        args = { '-srcdir', '$FILENAME' },
-      },
-      golines = {
-        -- golines runs gofumpt prior to running itself
-        prepend_args = { '--base-formatter=gofumpt -extra', '--ignore-generated', '--tab-len=1', '--max-len=120' },
-      },
-      prettier = {
-        prepend_args = { '--prose-wrap', 'always', '--print-width', '80', '--tab-width', '2' },
-      },
-      rumdl = {
-        -- rumdl discovers rumdl.toml by walking up from the cwd, and matches
-        -- per-file settings (e.g. per-file-flavor) against the file path. The
-        -- default `rumdl fmt -` gives it neither, so a project's config is
-        -- silently ignored -- which mangles e.g. mkdocs admonitions.
-        cwd = function(_, ctx) return ctx.dirname end,
-        prepend_args = {
 
-          -- Fallback defaults for projects without a rumdl.toml of their own.
-          -- MD034: leave bare URLs/emails untouched (no <...> wrapping).
-          -- MD036: don't rewrite bold-only paragraphs (e.g. **Example:**) into
-          -- level-2 headings.
-          -- MD040: don't require or auto-fill fenced code block languages.
-          '--config',
-          'global.disable = ["MD034", "MD036", "MD040"]',
-          '--config',
-          'MD013.line-length = 80',
-          '--config',
-          'MD013.reflow = true',
-        },
-      },
-      yamlfmt = {
-        prepend_args = {
-          '-formatter',
-          'retain_line_breaks_single=true',
-          '-formatter',
-          'pad_line_comments=2',
-        },
-      },
+    -- The options you set here will be merged with the builtin formatters.
+    -- You can also define any custom formatters here.
+    ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
+    formatters = {
+      injected = { options = { ignore_errors = true } },
+      -- # Example of using dprint only when a dprint.json file is present
+      -- dprint = {
+      --   condition = function(ctx)
+      --     return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+      --   end,
+      -- },
+      --
+      -- # Example of using shfmt with extra args
+      -- shfmt = {
+      --   prepend_args = { "-i", "2", "-ci" },
+      -- },
+    },
+    default_format_opts = {
+      timeout_ms = 3000,
+      async = false,
+      quiet = false,
+      lsp_format = 'fallback',
     },
   })
 

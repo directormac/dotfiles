@@ -1,8 +1,9 @@
 # https://github.com/hackrmomo/ghostty-shaders
 custom-shader = shaders/matrix-hallway.glsl
+custom-shader-animation = always
 
 font-family = "FiraCode Nerd Font"
-font-size = 13
+font-size = 14
 
 # font-family = "Iosevka Nerd Font"
 # font-size = 12
@@ -10,18 +11,20 @@ font-size = 13
 window-decoration = false
 window-padding-x = 0
 window-padding-y = 0
+# window-theme = ghostty
 theme = Catppuccin Mocha
 gtk-tabs-location = bottom
-# gtk-adwaita = false
-gtk-wide-tabs = false
+gtk-wide-tabs = true
 adw-toolbar-style = flat
 gtk-single-instance=false
 copy-on-select = clipboard
 
+# shell-integration = zsh
 shell-integration-features = no-cursor,sudo,no-title
 # cursor-style = block
 # adjust-cell-height = 5%
-background-opacity = 0.96
+background-opacity = 0.95
+# background-opacity = 0.1
 
 mouse-hide-while-typing = true
 #mouse-scroll-multiplier = 2
@@ -29,12 +32,15 @@ mouse-hide-while-typing = true
 window-padding-balance = true 
 window-save-state = always
 
-# Unbind all
 
+quick-terminal-size = 50%,1500px
+
+# Unbind all
 keybind=clear 
 
-
 # Keybindings
+
+keybind = global:ctrl+alt+grave_accent=toggle_quick_terminal
 
 # General
 keybind = ctrl+grave_accent>r=reload_config
@@ -48,7 +54,7 @@ keybind = ctrl+shift+c=copy_to_clipboard
 # keybind = ctrl+grave_accent>minus=decrease_font_size
 
 keybind = ctrl+equal=increase_font_size:1
-keybind = ctrl+minus=decrease_font_size:2
+keybind = ctrl+minus=decrease_font_size:1
 keybind = ctrl+zero=reset_font_size
 
 
@@ -99,4 +105,4 @@ keybind = ctrl+grave_accent>7=goto_tab:7
 keybind = ctrl+grave_accent>8=goto_tab:8
 keybind = ctrl+grave_accent>9=goto_tab:9
 
-keybind = shift+enter=text:\x1b\r
+# keybind = shift+enter=text:\x1b\r

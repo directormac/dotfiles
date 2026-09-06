@@ -7,7 +7,7 @@
 " ========         ||   KICKSTART.VIM    ||   |-----|          ========
 " ========         ||                    ||   | === |          ========
 " ========         ||                    ||   |-----|          ========
-" ========         ||:Tutor              ||   |:::::|          ========
+" ========         ||:!vimtutor          ||   |:::::|          ========
 " ========         |'-..................-'|   |____o|          ========
 " ========         `"")----------------(""`   ___________      ========
 " ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
@@ -39,13 +39,12 @@ let maplocalleader = ' '
 " These are some of the options enabled by default in Neovim
 " These are options believed by many Vim users to be essential.
 " For more information, see `:h vim_diff.txt` in Neovim
-" I will skip the 
 filetype on
 syntax on
 set autoindent autoread background=dark
 set backspace=indent,eol,start belloff=all
 set display=lastline encoding=utf-8 hidden
-set history=10000 hlsearch incsearch
+set history=10000 incsearch
 set nojoinspaces laststatus=2 ruler
 set showcmd smarttab nostartofline
 set switchbuf=uselast wildmenu "wildoptions=pum,tagfile
@@ -67,7 +66,7 @@ set mouse=a
 " Don't show the mode, since it's already in the status line
 set noshowmode
 
-" Sync clipboard between OS and Neovim.
+" Sync clipboard between OS and Vim.
 "  Remove this option if you want your OS clipboard to remain independent.
 "  See `:help 'clipboard'`
 set clipboard=unnamedplus
@@ -108,7 +107,7 @@ set timeoutlen=300
 set splitright
 set splitbelow
 
-" Sets how vim will display certain whitespace characters in the editor.
+" Sets how Vim will display certain whitespace characters in the editor.
 set list
 set listchars=tab:»\ ,trail:·,nbsp:␣
 " Use the following settings if you do not want unicode characters
@@ -119,6 +118,11 @@ set cursorline
 
 " Minimal number of screen lines to keep above and below the cursor
 set scrolloff=10
+
+" if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+" instead raise a dialog asking if you wish to save the current file(s)
+" See `:help 'confirm'`
+set confirm
 
 
 " [[ Basic Keymaps ]]
@@ -194,12 +198,10 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " Autocompletion
-"Plug 'prabirshrestha/asyncomplete.vim'
-" Use <Tab> to auto complete
-Plug 'ervandew/supertab'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Colorscheme
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'ghifarit53/tokyonight-vim'
 
 " Set airline as statusline
@@ -209,16 +211,10 @@ call plug#end()
 
 " [[ Configure plugins ]]
 " Set colorscheme
-set termguicolors
-
-" Tokyonight colorscheme
-" let g:tokyonight_style = 'storm' " available: night, storm
-" let g:tokyonight_enable_italic = 0
-" colorscheme tokyonight
-
-"Catppuccin colorscheme
-let g:catppuccin_flavour = "mocha" " latte, frappe, macchiato, mocha
-colorscheme catppuccin_mocha
+set termguicolors                   " Enable RGB colors
+let g:tokyonight_style = 'night'    " available: night, storm
+let g:tokyonight_enable_italic = 0  " Disable italics in comments
+colorscheme tokyonight
 
 
 " [[ Configure vim-which-key ]]
@@ -228,29 +224,23 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 
 " Document existing key chains
 let g:which_key_map =  {}
-let g:which_key_map.c = { 'name' : '[C]ode' }
-let g:which_key_map.d = { 'name' : '[D]ocument' }
-let g:which_key_map.r = { 'name' : '[R]ename' }
 let g:which_key_map.s = { 'name' : '[S]earch' }
-let g:which_key_map.f = { 'name' : '[S]earch' }
-let g:which_key_map.w = { 'name' : '[W]orkspace' }
-let g:which_key_map.t = { 'name' : '[T]oggle' }
 let g:which_key_map.h = { 'name' : 'Git [H]unk' }
 
 
 " [[ Configure fzf.vim ]]
 " See `:help fzf-vim`
 
-nmap <leader>fh :Helptags<CR>
-let g:which_key_map.f.h = '[S]earch [H]elp'
-nmap <leader>fk :Maps<CR>
-let g:which_key_map.f.k = '[S]earch [K]eymaps'
-nmap <leader>ff :Files<CR>
-let g:which_key_map.f.f = '[S]earch [F]iles'
-nmap <leader>fg :Rg<CR>
-let g:which_key_map.f.g = '[S]earch by [G]rep'
-nmap <leader>f. :History<CR>
-let g:which_key_map.f['.'] = '[S]earch Recent Files ("." for repeat)'
+nmap <leader>sh :Helptags<CR>
+let g:which_key_map.s.h = '[S]earch [H]elp'
+nmap <leader>sk :Maps<CR>
+let g:which_key_map.s.k = '[S]earch [K]eymaps'
+nmap <leader>sf :Files<CR>
+let g:which_key_map.s.f = '[S]earch [F]iles'
+nmap <leader>sg :Rg<CR>
+let g:which_key_map.s.g = '[S]earch by [G]rep'
+nmap <leader>s. :History<CR>
+let g:which_key_map.s['.'] = '[S]earch Recent Files ("." for repeat)'
 nmap <leader><leader> :Buffers<CR>
 let g:which_key_map[' '] = '[ ] Find existing buffers'
 
@@ -266,50 +256,36 @@ let g:which_key_map['/'] = '[/] Fuzzily search in current buffer'
 
 " Performance related settings, requires Vim 8.2+
 let g:lsp_use_native_client = 1
-let g:lsp_semantic_enabled = 0
-let g:lsp_format_sync_timeout = 1000
+let g:lsp_semantic_enabled = 1
 
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 
   " Keymaps
-  " Go to previous diagnostic message
-  nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-  " Go to next diagnostic message
-  nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-
-  nmap <buffer> <leader>rn <plug>(lsp-rename)
-  let g:which_key_map.r.n = '[R]e[n]ame'
-  nmap <buffer> <leader>ca <plug>(lsp-code-action-float)
-  let g:which_key_map.c.a = '[C]ode [A]ction'
-
-  " [G]oto [D]efinition
-  nmap <buffer> gd <plug>(lsp-definition)
-  " [G]oto [R]eferences
-  nmap <buffer> gr <plug>(lsp-references)
-  " [G]oto [I]mplementation
-  nmap <buffer> gI <plug>(lsp-implementation)
-
-  nmap <buffer> <leader>D <plug>(lsp-peek-type-definition)
-  let g:which_key_map.D = 'Type [D]efinition'
-  nmap <buffer> <leader>ds <plug>(lsp-document-symbol-search)
-  let g:which_key_map.d.s = '[D]ocument [S]ymbols'
-  nmap <buffer> <leader>ws <plug>(lsp-workspace-symbol-search)
-  let g:which_key_map.w.s = '[W]orkspace [S]ymbols'
-
+  " These keybindings are default in Neovim
+  nnoremap <buffer> [d <plug>(lsp-previous-diagnostic)
+  nnoremap <buffer> ]d <plug>(lsp-next-diagnostic)
   " See `:help K` for why this keymap
-  " Hover Documentation
-  nmap <buffer> K <plug>(lsp-hover)
-  " Signature Documentation
-  nmap <buffer> <C-k> <plug>(lsp-signature-help)
+  nnoremap <buffer> K <plug>(lsp-hover)
+  nnoremap <buffer> grn <plug>(lsp-rename)
+  nnoremap <buffer> gra <plug>(lsp-code-action-float)
+  nnoremap <buffer> grr <plug>(lsp-references)
+  nnoremap <buffer> gri <plug>(lsp-implementation)
+  nnoremap <buffer> gO <plug>(lsp-document-symbol-search)
+  nnoremap <buffer> <C-s> <plug>(lsp-signature-help)
 
-  " Lesser used LSP functionality
-  " [G]oto [D]eclaration
-  nmap <buffer> gD <plug>(lsp-declaration)
+  " Other useful functions
+  nnoremap <buffer> grd <plug>(lsp-definition)
+  " In C, this would take you to the header file
+  nnoremap <buffer> grD <plug>(lsp-declaration)
+  nnoremap <buffer> grt <plug>(lsp-peek-type-definition)
+  nnoremap <buffer> gW <plug>(lsp-workspace-symbol-search)
 
-  " Create a command `:Format` local to the LSP buffer
-  command Format LspDocumentFormatSync
+  " Formatting
+  let g:lsp_format_sync_timeout = 1000
+  nnoremap <buffer> <leader>f <plug>(lsp-document-format)
+  let g:which_key_map.f = '[F]ormat buffer'
 endfunction
 
 augroup lsp_install
@@ -320,16 +296,12 @@ augroup END
 
 
 " [[ Configure completion ]]
-" Set Omni Completion
-"  See `:help compl-omni` and `:help omnifunc`
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<CR>""
 
-" Enter key confirms the current selection when completion is open
-inoremap <expr> <CR> pumvisible() ? '<C-y>' : '<CR>'
-
-" <Tab> triggers Omni completion (<C-x><C-o>) in a coding context
-let g:SuperTabDefaultCompletionType = "context"
+let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert,noselect,preview
 
 
 " The line beneath this is called `modeline`. See `:help modeline`

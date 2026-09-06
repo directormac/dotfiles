@@ -12,14 +12,12 @@ require('lazyload').on_vim_enter(function()
 
   vim.pack.add({ 'https://github.com/MunifTanjim/nui.nvim' })
 
-  Snacks.notify('Noice Loading')
-
   -- HACK: noice shows messages from before it was enabled,
   -- but this is not ideal when Lazy is installing plugins,
   -- so clear the messages in this case.
-  if vim.o.filetype == "lazy" then
-    vim.cmd([[messages clear]])
-  end
+  if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
+
+  Snacks.notify('Noice Loading')
 
   require('noice').setup({
     lsp = {
@@ -48,10 +46,42 @@ require('lazyload').on_vim_enter(function()
         view = 'notify',
       },
     },
+    views = {
+      cmdline_popup = {
+        position = {
+          row = 5,
+          col = '50%',
+        },
+        size = {
+          width = 60,
+          height = 'auto',
+        },
+      },
+      popupmenu = {
+        relative = 'editor',
+        position = {
+          row = 8,
+          col = '50%',
+        },
+        size = {
+          width = 60,
+          height = 10,
+        },
+        border = {
+          style = 'rounded',
+          padding = { 0, 1 },
+        },
+        win_options = {
+          winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+        },
+      },
+    },
     presets = {
       bottom_search = true,
       command_palette = true,
       long_message_to_split = true,
+      inc_rename = false, -- enables an input dialog for inc-rename.nvim
+      lsp_doc_border = false, -- add a border to hover docs and signature help
     },
   })
 
