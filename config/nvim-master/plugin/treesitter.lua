@@ -1,15 +1,140 @@
-require('lazyload').on_vim_enter(function()
-  -- [[ Configure Treesitter ]]
-  --  Used to highlight, edit, and navigate code
-  --
-  --  See `:help nvim-treesitter-intro`
+-- [[ Configure Treesitter ]]
+--  Used to highlight, edit, and navigate code
+--
+--  See `:help nvim-treesitter-intro`
 
+require('lazyload').on_vim_enter(function()
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add({
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
   })
+
+  local H = {}
+
+  H._installed = nil ---@type table<string,boolean>?
+  H._queries = {} ---@type table<string,boolean>
+
+  ---@param update boolean?
+  function H.get_installed(update)
+    if update then
+      H._installed, H._queries = {}, {}
+      for _, lang in ipairs(require('nvim-treesitter').get_installed('parsers')) do
+        H._installed[lang] = true
+      end
+    end
+    return H._installed or {}
+  end
+
+  function H.foldexpr() return H.have(nil, 'folds') and vim.treesitter.foldexpr() or '0' end
+
+  function H.indentexpr() return H.have(nil, 'indents') and require('nvim-treesitter').indentexpr() or -1 end
+
+  ---@return string?
+  local function win_find_cl()
+    local path = 'C:/Program Files (x86)/Microsoft Visual Studio'
+    local pattern = '*/*/VC/Tools/MSVC/*/bin/Hostx64/x64/cl.exe'
+    return vim.fn.globpath(path, pattern, true, true)[1]
+  end
+
+  ---@return boolean ok, lazyvim.util.treesitter.Health health
+  function H.check()
+    local is_win = vim.fn.has('win32') == 1
+    ---@param tool string
+    ---@param win boolean?
+    local function have(tool, win) return (win == nil or is_win == win) and vim.fn.executable(tool) == 1 end
+
+    local have_cc = vim.env.CC ~= nil or have('cc', false) or have('cl', true) or (is_win and win_find_cl() ~= nil)
+
+    if not have_cc and is_win and vim.fn.executable('gcc') == 1 then
+      vim.env.CC = 'gcc'
+      have_cc = true
+    end
+
+    ---@class lazyvim.util.treesitter.Health: table<string,boolean>
+    local ret = {
+      ['tree-sitter (CLI)'] = have('tree-sitter'),
+      ['C compiler'] = have_cc,
+      tar = have('tar'),
+      curl = have('curl'),
+    }
+    local ok = true
+    for _, v in pairs(ret) do
+      ok = ok and v
+    end
+    return ok, ret
+  end
+
+  ---@param cb fun()
+  function H.build(cb)
+    H.ensure_treesitter_cli(function(_, err)
+      local ok, health = H.check()
+      if ok then
+        return cb()
+      else
+        local lines = { 'Unmet requirements for **nvim-treesitter** `main`:' }
+        local keys = vim.tbl_keys(health) ---@type string[]
+        table.sort(keys)
+        for _, k in pairs(keys) do
+          lines[#lines + 1] = ('- %s `%s`'):format(health[k] and '✅' or '❌', k)
+        end
+        vim.list_extend(lines, {
+          '',
+          'See the requirements at [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/tree/main?tab=readme-ov-file#requirements)',
+          'Run `:checkhealth nvim-treesitter` for more information.',
+        })
+        if vim.fn.has('win32') == 1 and not health['C compiler'] then
+          lines[#lines + 1] = 'Install a C compiler with `winget install --id=BrechtSanders.WinLibs.POSIX.UCRT -e`'
+        end
+        vim.list_extend(lines, err and { '', err } or {})
+        Snacks.notify.error(lines, { title = 'LazyVim Treesitter' })
+      end
+    end)
+  end
+
+  ---@param cb fun(ok:boolean, err?:string)
+  function H.ensure_treesitter_cli(cb)
+    if vim.fn.executable('tree-sitter') == 1 then return cb(true) end
+
+    -- try installing with mason
+    if not pcall(require, 'mason') then
+      return cb(false, '`mason.nvim` is disabled in your config, so we cannot install it automatically.')
+    end
+
+    -- check again since we might have installed it already
+    if vim.fn.executable('tree-sitter') == 1 then return cb(true) end
+
+    local mr = require('mason-registry')
+    mr.refresh(function()
+      local p = mr.get_package('tree-sitter-cli')
+      if not p:is_installed() then
+        Snacks.notify.info('Installing `tree-sitter-cli` with `mason.nvim`...')
+        p:install(
+          nil,
+          vim.schedule_wrap(function(success)
+            if success then
+              Snacks.notify.info('Installed `tree-sitter-cli` with `mason.nvim`.')
+              cb(true)
+            else
+              cb(false, 'Failed to install `tree-sitter-cli` with `mason.nvim`.')
+            end
+          end)
+        )
+      end
+    end)
+  end
+
+  do
+    local TS = require('nvim-treesitter')
+
+    if not H.get_installed then
+      Snacks.notify.warn('Treesitter not found, trying to install with mason. . . .')
+      return
+    end
+
+    H.build(function() TS.update(nil, { summary = true }) end)
+  end
 
   -- Define languages which will have parsers installed and auto enabled
   -- After changing this, restart Neovim once to install necessary parsers. Wait
@@ -83,6 +208,7 @@ require('lazyload').on_vim_enter(function()
   end
 
   local available_parsers = require('nvim-treesitter').get_available()
+
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
       local buf, filetype = args.buf, args.match

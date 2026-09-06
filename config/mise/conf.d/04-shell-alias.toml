@@ -112,7 +112,7 @@ ddcu = "docker-compose -f docker/docker-compose.dev.yaml  up -d"
 dcv = "docker-compose down -v"
 
 # alias mvim="NVIM_APPNAME=mac-nvim nvim"
-v = "nvim"
+v = "NVIM_APPNAME=nvim-master neovim"
 vi = "neovim"
 mvim = "NVIM_APPNAME=nvim-master neovim"
 pvim = "NVIM_APPNAME=nvimp nvim"
@@ -122,6 +122,8 @@ ksvim = 'NVIM_APPNAME="nvim-kickstart" nvim'
 minivim = "NVIM_APPNAME=nvim-minimax nvim"
 
 kickvim = "NVIM_APPNAME=kickstart-nvim nvim"
+
+# tree-sitter = "2"
 
 ws = "windsurf"
 

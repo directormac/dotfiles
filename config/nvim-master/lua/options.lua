@@ -104,6 +104,7 @@ vim.opt.signcolumn = 'yes' -- Keep signcolumn on by default
 vim.opt.smartcase = true -- Don't ignore case with capitals
 vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.smoothscroll = true
+vim.opt.title = true
 vim.opt.spelllang = { 'en' }
 -- Default splitting will cause your main splits to jump when opening an edgebar.
 -- To prevent this, set `splitkeep` to either `screen` or `topline`.
@@ -126,4 +127,4 @@ vim.g.markdown_recommended_style = 0
 
 vim.g.force_auto_format = false
 
-require('terminal')
+-- require('terminal')

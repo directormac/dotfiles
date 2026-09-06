@@ -1,4 +1,5 @@
 require('lazyload').on_vim_enter(function()
+  -- Reference https://github.com/fredrikaverpil/dotfiles/tree/main/nvim-fredrik
   -- native diagnostics
   do
     local icons = require('icons').diagnostics
@@ -83,6 +84,7 @@ require('lazyload').on_vim_enter(function()
 
     require('tiny-inline-diagnostic').setup({
       options = {
+        transparent_cursorline = true,
         show_all_diags_on_cursorline = true,
         multilines = {
           enabled = true,
@@ -91,12 +93,25 @@ require('lazyload').on_vim_enter(function()
         show_source = {
           enabled = true,
         },
+        signs = {
+          left = '',
+          right = '',
+          diag = '●',
+          arrow = '    ',
+          up_arrow = '    ',
+          vertical = ' │',
+          vertical_end = ' └',
+        },
+        blend = {
+          factor = 0.22,
+        },
         -- Default {"LspAttach"} skips buffers without an LSP (e.g. .proto
         -- files linted only via nvim-lint). DiagnosticChanged attaches the
         -- moment any source produces results, regardless of LSP presence.
         -- See https://github.com/rachartier/tiny-inline-diagnostic.nvim/issues/40
         overwrite_events = { 'DiagnosticChanged' },
       },
+      -- preset = '',
     })
   end
 end)

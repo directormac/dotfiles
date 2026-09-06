@@ -61,6 +61,10 @@ local function term_nav(dir)
   end
 end
 
+-- Snacks.dashboard.pick('files', {
+--   layout = { hidden = { 'preview' } },
+-- })
+
 ---@type snacks.dashboard.Config
 local customDashboard = {
   enabled = true,
@@ -70,9 +74,24 @@ local customDashboard = {
   preset = {
     ---@type snacks.dashboard.Item[]
     keys = {
-      { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
-      { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
-      { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+      {
+        icon = ' ',
+        key = 'f',
+        desc = 'Find File',
+        action = ":lua Snacks.dashboard.pick('files', { layout = { hidden = { 'preview' } } })",
+      },
+      {
+        icon = ' ',
+        key = 'g',
+        desc = 'Find Text',
+        action = ":lua Snacks.dashboard.pick('live_grep', { layout = { hidden = { 'preview' } } })",
+      },
+      {
+        icon = ' ',
+        key = 'r',
+        desc = 'Recent Files',
+        action = ":lua Snacks.dashboard.pick('oldfiles', { layout = { hidden = { 'preview' } } })",
+      },
       {
         icon = ' ',
         key = 's',
@@ -258,7 +277,7 @@ vim.keymap.set('n', '<leader>.', function() Snacks.scratch() end, { desc = 'Togg
 vim.keymap.set('n', '<leader>ls', function() Snacks.picker.search_history() end, { desc = 'Search History' })
 vim.keymap.set('n', '<leader>lc', function() Snacks.picker.command_history() end, { desc = 'Command History' })
 vim.keymap.set('n', '<leader>lN', function() Snacks.notifier.show_history() end, { desc = 'Notification History' })
-vim.keymap.set('n', '<leader>lna', function() require('noice').cmd('all') end, { desc = 'Noice All' })
+vim.keymap.set('n', '<leader>ln', function() require('noice').cmd('all') end, { desc = 'Noice All' })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
