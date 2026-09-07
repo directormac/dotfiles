@@ -7,6 +7,7 @@
       self.nixosModules.lazygit
       self.nixosModules.sddm
       self.nixosModules.git
+      self.nixosModules.starship
       self.nixosModules.zsh
     ];
 
@@ -98,7 +99,6 @@
       };
 
       shellAliases = {
-        lzg = "lazygit";
         # nrsf = "sudo nixos-rebuild switch --flake /etc/nixos";
         # nixconf = "sudoedit /etc/nixos/configuration.nix";
       };
