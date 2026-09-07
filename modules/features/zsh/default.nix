@@ -60,6 +60,7 @@
             self'.packages.lazygit
           ];
 
+          # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/zsh.html#zshaliases
           zshAliases = {
             l = "${lib.getExe pkgs.lsd} -a";
             la = "${lib.getExe pkgs.lsd} -la";
@@ -81,6 +82,7 @@
             cdq = "zoxide query";
             cdr = "zoxide remove";
           };
+
           zshrc.content = ''
             export LS_COLORS="$(${lib.getExe pkgs.vivid} generate catppuccin-mocha)"
             export EDITOR=nvim
