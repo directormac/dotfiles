@@ -3,8 +3,7 @@
 
     imports = [
       self.nixosModules.vmachineHardware
-      self.nixosModules.niri
-      self.nixosModules.lazygit
+      self.nixosModules.nocturnal-niri
       self.nixosModules.sddm
       self.nixosModules.git
       self.nixosModules.zsh
@@ -37,34 +36,20 @@
 
     ];
 
-    # programs.lazyvim = {
-    #   enable = true;
-    #
-    #   extras = {
-    #     lang.nix.enable = true;
-    #     lang.svelte.enable = true;
-    #   };
-    #
-    #   # extraPackages = with pkgs; [
-    #   #
-    #   # ];
-    #
-    #   # treeSitterParsers = with pkgs.vimPlugins.nvim-treesitter-parsers; [
-    #   # ];
-    #
-    # };
-
     programs.firefox.enable = true;
 
-    # programs.zsh = {
-    #   enable = true;
-    #   enableCompletion = true;
-    #   enableBashCompletion = true;
-    #   autosuggestions.enable = true;
-    #   syntaxHighlighting.enable = true;
-    #   histSize = 100000;
-    # };
-    # users.defaultUserShell = pkgs.zsh;
+    programs.dconf = {
+      enable = true;
+      profiles.user.databases = [
+        {
+          settings = {
+            "org/gnome/desktop/interface" = {
+              color-scheme = "prefer-dark";
+            };
+          };
+        }
+      ];
+    };
 
     services.displayManager = {
       autoLogin = {

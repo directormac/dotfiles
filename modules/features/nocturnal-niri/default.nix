@@ -1,8 +1,8 @@
 { self, inputs, ... }: {
-  flake.nixosModules.niri = { pkgs, lib, ... }: {
+  flake.nixosModules.nocturnal-niri = { pkgs, lib, ... }: {
     programs.niri = {
       enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.nocturnal-niri;
     };
   };
 
@@ -14,8 +14,9 @@
       ...
     }:
     {
-      packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
+      packages.nocturnal-niri = inputs.wrapper-modules.wrappers.niri.wrap {
         inherit pkgs;
+
         settings = {
           spawn-at-startup = [
             (lib.getExe self'.packages.noctalia)
@@ -25,7 +26,23 @@
 
           input.keyboard.xkb.layout = "us";
 
-          layout.gaps = 5;
+          layout = {
+            gaps = 3;
+            center-focused-column = "never";
+            always-center-single-column = [ ];
+            focus-ring = {
+              width = 1;
+            };
+            border = {
+              off = [ ];
+              width = 0;
+            };
+          };
+
+          outputs."Virtual-1" = {
+            # Use your actual VM display name here
+            mode = "1920x1080@60.0";
+          };
 
           binds = {
             "Mod+Return".spawn-sh = lib.getExe pkgs.ghostty;
