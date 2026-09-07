@@ -2,6 +2,8 @@
   description = "
     Dendritic nixos configuration.
     [Wiki](https://github.com/Doc-Steve/dendritic-design-with-flake-parts/wiki)
+    [flake.parts](https://flake.parts/index.html)
+    [ ]()
     ";
 
   inputs = {

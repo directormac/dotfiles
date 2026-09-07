@@ -62,25 +62,26 @@
 
           # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/zsh.html#zshaliases
           zshAliases = {
-            l = "${lib.getExe pkgs.lsd} -a";
-            la = "${lib.getExe pkgs.lsd} -la";
-            ls = "${lib.getExe pkgs.lsd} -l";
-            lt = "${lib.getExe pkgs.lsd} --tree";
-            cd = "z";
-            ci = "zi";
             cat = lib.getExe pkgs.bat;
-            lg = lib.getExe self'.packages.lazygit;
-            man = "man -P \"${lib.getExe pkgs.bat} -p\"";
-            nsh = "nix-shell -p";
-            wh = "which";
-            du = lib.getExe pkgs.dust;
-            top = lib.getExe pkgs.btop;
-            grep = lib.getExe pkgs.ripgrep;
-            y = lib.getExe pkgs.yazi;
-            find = lib.getExe pkgs.fd;
+            cd = "z";
             cda = "zoxide add";
             cdq = "zoxide query";
             cdr = "zoxide remove";
+            ci = "zi";
+            du = lib.getExe pkgs.dust;
+            find = lib.getExe pkgs.fd;
+            grep = lib.getExe pkgs.ripgrep;
+            l = "${lib.getExe pkgs.lsd} -a";
+            la = "${lib.getExe pkgs.lsd} -la";
+            lg = lib.getExe self'.packages.lazygit;
+            ls = "${lib.getExe pkgs.lsd} -l";
+            lt = "${lib.getExe pkgs.lsd} --tree";
+            man = "man -P \"${lib.getExe pkgs.bat} -p\"";
+            nsh = "nix-shell -p";
+            nrsf = "sudo nixos-rebuild switch --flake ~/.dotfiles";
+            top = lib.getExe pkgs.btop;
+            wh = "which";
+            y = lib.getExe pkgs.yazi;
           };
 
           zshrc.content = ''
@@ -161,6 +162,8 @@
             eval "$(${lib.getExe pkgs.devenv} hook zsh)"
             eval "$(${lib.getExe self'.packages.starship} init zsh)"
             eval "$(${lib.getExe pkgs.zoxide} init zsh)"
+
+            bindkey '^ ' autosuggest-accept
 
             source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
           '';
