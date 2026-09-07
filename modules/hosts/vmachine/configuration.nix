@@ -69,7 +69,6 @@
         neovim
         lua-language-server
         stylua
-        zoxide
         ghostty
         tmux
         nil
@@ -90,6 +89,12 @@
 
     fileSystems."/home/artifex/Public/vshared" = {
       device = "vshare";
+      fsType = "virtiofs";
+      options = [ "defaults" ];
+    };
+
+    fileSystems."/home/artifex/.dotfiles" = {
+      device = "vdotfiles";
       fsType = "virtiofs";
       options = [ "defaults" ];
     };
