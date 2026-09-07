@@ -37,7 +37,7 @@ du = "dust"
 find = "fd"
 ripgrep = "rg"
 y = "yazi"
-top = "btop" # top/htop alternative
+top = "btop"                                                       # top/htop alternative
 
 cd = "z"
 ci = "zi"
@@ -81,8 +81,8 @@ pfui = "pitchfork tui"
 
 # alias hx="helix"
 inv = 'nvim $(fd --type=f --hidden | fzf -m --preview="bat --color=always {}")'
+# less = "moar"
 l = "ls -a"
-less = "moar"
 la = "ls -la"
 ls = "lsd"
 lt = "ls --tree"
@@ -95,14 +95,14 @@ tls = "tmux ls" # tmux session list
 tn = 'sesh connect .'
 
 # Pacman aliases
-in = 'sudo pacman -S' # install package
+in = 'sudo pacman -S'   # install package
 un = 'sudo pacman -Rns' # uninstall package
 # up='sudo pacman -Syu' # update system/package/aur
-pl = 'pacman -Qs' # list installed package
-pa = 'pacman -Ss' # list availabe package
-pc = 'sudo pacman -Sc' # remove unused cache
+pl = 'pacman -Qs'                            # list installed package
+pa = 'pacman -Ss'                            # list availabe package
+pc = 'sudo pacman -Sc'                       # remove unused cache
 paclean = 'sudo pacman -Rns $(pacman -Qdtq)'
-po = 'pacman -Qtdq | sudo pacman -Rns -' # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
+po = 'pacman -Qtdq | sudo pacman -Rns -'     # remove unused packages, also try > pacman -Qqd | pacman -Rsu --print -
 
 kubectl = 'minikube kubectl --'
 mc = "mcli"
@@ -129,4 +129,3 @@ ws = "windsurf"
 
 # Arch Related
 winbox = "WinBox | NUL"
-
