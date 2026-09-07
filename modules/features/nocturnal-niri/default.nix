@@ -14,7 +14,7 @@
       ...
     }:
     {
-      packages.nocturnal-niri = inputs.wrapper-modules.wrappers.niri.wrap {
+      packages.nocturnal-niri = inputs.wrappers.wrappers.niri.wrap {
         inherit pkgs;
 
         settings = {

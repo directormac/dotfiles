@@ -37,7 +37,7 @@
     }:
     {
       packages = {
-        zsh = inputs.wrapper-modules.wrappers.zsh.wrap {
+        zsh = inputs.wrappers.wrappers.zsh.wrap {
           inherit pkgs;
           runtimePkgs = [
             pkgs.devenv

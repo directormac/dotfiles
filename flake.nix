@@ -3,17 +3,18 @@
     Dendritic nixos configuration.
     [Wiki](https://github.com/Doc-Steve/dendritic-design-with-flake-parts/wiki)
     [flake.parts](https://flake.parts/index.html)
-    [ ]()
+    [wrapper-modules](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html)
     ";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
-    # Flake parts
+    # [Wrapper flake-parts](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html#flake-parts)
+    wrappers.url = "github:nix-community/nix-wrapper-modules";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
-    wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
+
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
     home-manager = {
