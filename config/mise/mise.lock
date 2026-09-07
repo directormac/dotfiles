@@ -101,51 +101,51 @@ version = "5.1.0"
 backend = "cargo:mdv"
 
 [[tools.elixir]]
-version = "1.20.2-otp-28"
+version = "1.20.4-otp-29"
 backend = "core:elixir"
 
 [tools.elixir."platforms.linux-x64"]
-checksum = "sha256:5559e5c496ad959bde0bab4dd2b7e92757a0bd45fba6fc58d35584a8337d0ad1"
-url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-28.zip"
+checksum = "blake3:cfddef5f170efc103420c845ee627c6eb80f9b61c25691d50bc99fec0738b560"
+url = "https://builds.hex.pm/builds/elixir/v1.20.4-otp-29.zip"
 
 [tools.elixir."platforms.linux-x64-baseline"]
-checksum = "sha256:5559e5c496ad959bde0bab4dd2b7e92757a0bd45fba6fc58d35584a8337d0ad1"
-url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-28.zip"
+checksum = "sha256:7863c546cda13fecc949e562e326042451dacf8fd8698a36783cb71eeb223b46"
+url = "https://builds.hex.pm/builds/elixir/v1.20.4-otp-29.zip"
 
 [tools.elixir."platforms.linux-x64-musl"]
-checksum = "sha256:5559e5c496ad959bde0bab4dd2b7e92757a0bd45fba6fc58d35584a8337d0ad1"
-url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-28.zip"
+checksum = "sha256:7863c546cda13fecc949e562e326042451dacf8fd8698a36783cb71eeb223b46"
+url = "https://builds.hex.pm/builds/elixir/v1.20.4-otp-29.zip"
 
 [tools.elixir."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5559e5c496ad959bde0bab4dd2b7e92757a0bd45fba6fc58d35584a8337d0ad1"
-url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-28.zip"
+checksum = "sha256:7863c546cda13fecc949e562e326042451dacf8fd8698a36783cb71eeb223b46"
+url = "https://builds.hex.pm/builds/elixir/v1.20.4-otp-29.zip"
 
 [[tools.erlang]]
-version = "28.5"
+version = "29.0.6"
 backend = "core:erlang"
 
 [tools.erlang."platforms.linux-x64"]
-checksum = "sha256:2c7e8ca23e6864eb20eff5d44738bfa123aed8cd21ed6d98e533d751eee28d9c"
-url = "https://github.com/erlang/otp/releases/download/OTP-28.5/otp_src_28.5.tar.gz"
-url_api = "https://api.github.com/repos/erlang/otp/releases/assets/403501100"
+checksum = "sha256:36c89ffdac9d7531c19be0cee34355b167ea95188625d32bee61ebf49ac82afa"
+url = "https://github.com/erlang/otp/releases/download/OTP-29.0.6/otp_src_29.0.6.tar.gz"
+url_api = "https://api.github.com/repos/erlang/otp/releases/assets/539623111"
 install = "source"
 
 [tools.erlang."platforms.linux-x64-baseline"]
-checksum = "sha256:2c7e8ca23e6864eb20eff5d44738bfa123aed8cd21ed6d98e533d751eee28d9c"
-url = "https://github.com/erlang/otp/releases/download/OTP-28.5/otp_src_28.5.tar.gz"
-url_api = "https://api.github.com/repos/erlang/otp/releases/assets/403501100"
+checksum = "sha256:36c89ffdac9d7531c19be0cee34355b167ea95188625d32bee61ebf49ac82afa"
+url = "https://github.com/erlang/otp/releases/download/OTP-29.0.6/otp_src_29.0.6.tar.gz"
+url_api = "https://api.github.com/repos/erlang/otp/releases/assets/539623111"
 install = "source"
 
 [tools.erlang."platforms.linux-x64-musl"]
-checksum = "sha256:2c7e8ca23e6864eb20eff5d44738bfa123aed8cd21ed6d98e533d751eee28d9c"
-url = "https://github.com/erlang/otp/releases/download/OTP-28.5/otp_src_28.5.tar.gz"
-url_api = "https://api.github.com/repos/erlang/otp/releases/assets/403501100"
+checksum = "sha256:36c89ffdac9d7531c19be0cee34355b167ea95188625d32bee61ebf49ac82afa"
+url = "https://github.com/erlang/otp/releases/download/OTP-29.0.6/otp_src_29.0.6.tar.gz"
+url_api = "https://api.github.com/repos/erlang/otp/releases/assets/539623111"
 install = "source"
 
 [tools.erlang."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:2c7e8ca23e6864eb20eff5d44738bfa123aed8cd21ed6d98e533d751eee28d9c"
-url = "https://github.com/erlang/otp/releases/download/OTP-28.5/otp_src_28.5.tar.gz"
-url_api = "https://api.github.com/repos/erlang/otp/releases/assets/403501100"
+checksum = "sha256:36c89ffdac9d7531c19be0cee34355b167ea95188625d32bee61ebf49ac82afa"
+url = "https://github.com/erlang/otp/releases/download/OTP-29.0.6/otp_src_29.0.6.tar.gz"
+url_api = "https://api.github.com/repos/erlang/otp/releases/assets/539623111"
 install = "source"
 
 [[tools.expert]]
@@ -379,26 +379,6 @@ backend = "github:neovim/neovim"
 [tools.neovim.options]
 asset_pattern = "nvim-linux-x86_64.tar.gz"
 
-[tools.neovim."platforms.linux-x64"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.neovim."platforms.linux-x64-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.neovim."platforms.linux-x64-musl"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.neovim."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
 [[tools.nightlyvim]]
 version = "nightly"
 backend = "vfox:mise-plugins/vfox-neovim"
@@ -512,18 +492,18 @@ url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/51960996
 provenance = "github-attestations"
 
 [[tools.pitchfork]]
-version = "2.24.0"
+version = "2.24.2"
 backend = "aqua:jdx/pitchfork"
 
 [tools.pitchfork."platforms.linux-x64"]
-checksum = "sha256:6327de8420867526d07964f41bb9c45bca0e3bbca4a828bab1cb8fbe130f9b18"
-url = "https://github.com/jdx/pitchfork/releases/download/v2.24.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/541013139"
+checksum = "sha256:e1196b2d347299651b53cafb45f30d8fa62ba3fee680e8c954b9cd578f461177"
+url = "https://github.com/jdx/pitchfork/releases/download/v2.24.2/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/546296761"
 
 [tools.pitchfork."platforms.linux-x64-baseline"]
-checksum = "sha256:6327de8420867526d07964f41bb9c45bca0e3bbca4a828bab1cb8fbe130f9b18"
-url = "https://github.com/jdx/pitchfork/releases/download/v2.24.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/541013139"
+checksum = "sha256:e1196b2d347299651b53cafb45f30d8fa62ba3fee680e8c954b9cd578f461177"
+url = "https://github.com/jdx/pitchfork/releases/download/v2.24.2/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/546296761"
 
 [[tools.pnpm]]
 version = "12.3.4"
@@ -609,28 +589,28 @@ url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxp
 url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
 
 [[tools.usage]]
-version = "6.6.1"
+version = "6.8.0"
 backend = "aqua:jdx/usage"
 
 [tools.usage."platforms.linux-x64"]
-checksum = "sha256:f159816540a3b813d51458ff25344a888e772d9e03d13006140ec5b42023a06e"
-url = "https://github.com/jdx/usage/releases/download/v6.6.1/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/539822350"
+checksum = "sha256:468c27b16302250cf74f2bddb0d0539b958ae3a391d226acc73bdd714c2a18cb"
+url = "https://github.com/jdx/usage/releases/download/v6.8.0/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/547479229"
 
 [tools.usage."platforms.linux-x64-baseline"]
-checksum = "sha256:f159816540a3b813d51458ff25344a888e772d9e03d13006140ec5b42023a06e"
-url = "https://github.com/jdx/usage/releases/download/v6.6.1/usage-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/539822350"
+checksum = "sha256:468c27b16302250cf74f2bddb0d0539b958ae3a391d226acc73bdd714c2a18cb"
+url = "https://github.com/jdx/usage/releases/download/v6.8.0/usage-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/547479229"
 
 [tools.usage."platforms.linux-x64-musl"]
-checksum = "sha256:6a40c132fdc33a3ac738f5f488ace9945f387e945e2a9dc423006e7288d46dab"
-url = "https://github.com/jdx/usage/releases/download/v6.6.1/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/539823684"
+checksum = "sha256:62b44e6d10e636e4ff1e5f56366d84475d8282990a5882499cae658e95b99f32"
+url = "https://github.com/jdx/usage/releases/download/v6.8.0/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/547479563"
 
 [tools.usage."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:6a40c132fdc33a3ac738f5f488ace9945f387e945e2a9dc423006e7288d46dab"
-url = "https://github.com/jdx/usage/releases/download/v6.6.1/usage-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/jdx/usage/releases/assets/539823684"
+checksum = "sha256:62b44e6d10e636e4ff1e5f56366d84475d8282990a5882499cae658e95b99f32"
+url = "https://github.com/jdx/usage/releases/download/v6.8.0/usage-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/usage/releases/assets/547479563"
 
 [[tools.uv]]
 version = "0.12.10"
@@ -693,28 +673,28 @@ url_api = "https://api.github.com/repos/voidzero-dev/vite-plus/releases/assets/5
 provenance = "github-attestations"
 
 [[tools.watchexec]]
-version = "2.7.1"
+version = "2.7.2"
 backend = "aqua:watchexec/watchexec"
 
 [tools.watchexec."platforms.linux-x64"]
-checksum = "sha256:0b0946cdb8c9151d1db5a2c552b6229724960a58b0417fb2a20f810c2135abd2"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.1/watchexec-2.7.1-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/542557708"
+checksum = "sha256:b5b3cf6fd45ce2503bae90ba4017f85d62314b427b91c06818ff39a4c46930c4"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730436"
 
 [tools.watchexec."platforms.linux-x64-baseline"]
-checksum = "sha256:0b0946cdb8c9151d1db5a2c552b6229724960a58b0417fb2a20f810c2135abd2"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.1/watchexec-2.7.1-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/542557708"
+checksum = "sha256:b5b3cf6fd45ce2503bae90ba4017f85d62314b427b91c06818ff39a4c46930c4"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730436"
 
 [tools.watchexec."platforms.linux-x64-musl"]
-checksum = "sha256:816b51381e328468258d9c687052a57f6f587bb1702dc69e4ebc449518a82c44"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.1/watchexec-2.7.1-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/542557682"
+checksum = "sha256:a2c01f82fb4cdafca1fa12cb88e4a1145dec63364dbdf92664efbaac3bb44dd2"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730471"
 
 [tools.watchexec."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:816b51381e328468258d9c687052a57f6f587bb1702dc69e4ebc449518a82c44"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.1/watchexec-2.7.1-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/542557682"
+checksum = "sha256:a2c01f82fb4cdafca1fa12cb88e4a1145dec63364dbdf92664efbaac3bb44dd2"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730471"
 
 [[tools.ztmux]]
 version = "3.7.45"
