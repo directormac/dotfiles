@@ -42,7 +42,6 @@
           runtimePkgs = [
             pkgs.devenv
             pkgs.fzf
-            pkgs.starship
           ];
           zshAliases = {
             l = "${lib.getExe pkgs.lsd} -a";
@@ -52,7 +51,7 @@
             cd = "z";
             ci = "zi";
             cat = lib.getExe pkgs.bat;
-            lg = lib.getExe pkgs.lazygit;
+            lg = lib.getExe self'.packages.lazygit;
             man = "man -P \"${lib.getExe pkgs.bat} -p\"";
             nsh = "nix-shell -p";
             wh = "which";
@@ -65,7 +64,6 @@
             cdq = "zoxide query";
             cdr = "zoxide remove";
           };
-
           zshrc.content = ''
 
             export LS_COLORS="$(${lib.getExe pkgs.vivid} generate catppuccin-mocha)"
@@ -73,7 +71,7 @@
             export TERMINAL=ghostty
 
             eval "$(${lib.getExe pkgs.devenv} hook zsh)"
-            eval "$(${lib.getExe pkgs.starship} init zsh)"
+            eval "$(${lib.getExe self'.packages.starship} init zsh)"
             eval "$(${lib.getExe pkgs.zoxide} init zsh)"
           '';
         };
