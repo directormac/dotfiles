@@ -14,7 +14,7 @@
       ...
     }:
     {
-      packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
+      packages.myNiri = inputs.wrappers-modules.wrappers.niri.wrap {
         inherit pkgs;
         settings = {
           spawn-at-startup = [
