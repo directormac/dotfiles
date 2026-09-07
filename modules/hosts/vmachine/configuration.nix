@@ -54,6 +54,7 @@
 
     environment = {
       systemPackages = with pkgs; [
+        git
         quickshell
         inputs.zen-browser.packages."${system}".default
         vim
