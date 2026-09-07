@@ -1,0 +1,15 @@
+[user]
+    name = Mark Asena
+    email = mac@mkra.dev
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[push]
+  default = upstream
+  autoSetupRemote = true
+  
+[credential "https://github.com"]
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/usr/bin/gh auth git-credential
