@@ -12,7 +12,7 @@
       ...
     }:
     {
-      packages.starship = inputs.wrapper-modules.lib.wrapPackage (
+      packages.starship = inputs.wrappers.lib.wrapPackage (
         {
           config,
           wlib,

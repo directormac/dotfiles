@@ -28,7 +28,7 @@
       ...
     }:
     {
-      packages.git = inputs.wrapper-modules.wrappers.git.wrap {
+      packages.git = inputs.wrappers.wrappers.git.wrap {
         inherit pkgs;
         runtimePkgs = with pkgs; [
           git-secret
