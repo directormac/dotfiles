@@ -3,9 +3,11 @@
   "json-lsp": "4.10.0",
   "lua-language-server": "3.19.1",
   "markdownlint": "0.49.1",
+  "nil": "2025-06-13",
+  "nixfmt": "v1.4.0",
   "shellcheck": "v0.11.0",
-  "shfmt": "v3.13.1",
+  "shfmt": "v3.14.0",
   "stylua": "v2.5.2",
   "taplo": "0.10.0",
-  "tree-sitter-cli": "v0.26.13"
+  "tree-sitter-cli": "v0.27.0"
 }

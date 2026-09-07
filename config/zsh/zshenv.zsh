@@ -89,17 +89,17 @@ export WEBKIT_DISABLE_COMPOSITING_MODE=1
 export WEBKIT_DISABLE_DMABUF_RENDERER=1
 
 ## Setting environment variables for wayland session
-export XDG_SESSION_TYPE=wayland
-export XDG_SESSION_DESKTOP=sway
-export XDG_CURRENT_DESKTOP=sway
-export XDG_CURRENT_SESSION=sway
+# export XDG_SESSION_TYPE=wayland
+# export XDG_SESSION_DESKTOP=sway
+# export XDG_CURRENT_DESKTOP=sway
+# export XDG_CURRENT_SESSION=sway
 
 ## GTK environment
-export TDESKTOP_DISABLE_GTK_INTEGRATION=1
-export CLUTTER_BACKEND=wayland
-export GDK_BACKEND="wayland,x11"
-export NO_AT_BRIDGE=1
-export WINIT_UNIX_BACKEND=wayland
+# export TDESKTOP_DISABLE_GTK_INTEGRATION=1
+# export CLUTTER_BACKEND=wayland
+# export GDK_BACKEND="wayland,x11"
+# export NO_AT_BRIDGE=1
+# export WINIT_UNIX_BACKEND=wayland
 # export DBUS_SESSION_BUS_ADDRESS
 # export DBUS_SESSION_BUS_PID
 
@@ -109,30 +109,30 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Resources/*:$HOME/Downloads/*:$HOME/Music:$
 export MOZ_ENABLE_WAYLAND=1
 
 ## Qt environment
-export QT_QPA_PLATFORM=xcb
-export QT_QPA_PLATFORMTHEME=qt5ct
-export QT_AUTO_SCREEN_SCALE_FACTOR=1
+# export QT_QPA_PLATFORM=xcb
+# export QT_QPA_PLATFORMTHEME=qt5ct
+# export QT_AUTO_SCREEN_SCALE_FACTOR=1
 # export QT_QPA_PLATFORM=wayland-egl #error with apps xcb
 #export QT_WAYLAND_FORCE_DPI=physical #uncomment this to use monitor's DPI
-export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+# export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 
 ## Elementary environment
-export ELM_DISPLAY=wl
-export ECORE_EVAS_ENGINE=wayland_egl
-export ELM_ENGINE=wayland_egl
-export ELM_ACCEL=opengl
+# export ELM_DISPLAY=wl
+# export ECORE_EVAS_ENGINE=wayland_egl
+# export ELM_ENGINE=wayland_egl
+# export ELM_ACCEL=opengl
 # export ELM_SCALE=1
 
-export MISE_EXPERIMENTAL=1
+# export MISE_EXPERIMENTAL=1
 
 ## SDL environment
-export SDL_VIDEODRIVER=wayland
+# export SDL_VIDEODRIVER=wayland
 
 ## Java environment
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # LibreOffice
-export SAL_USE_VCLPLUGIN=gtk3
+# export SAL_USE_VCLPLUGIN=gtk3
 
 export LIBVIRT_DEFAULT_URI="qemu:///system"
 

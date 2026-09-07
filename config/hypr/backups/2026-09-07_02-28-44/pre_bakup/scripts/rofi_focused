@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if pgrep -x "rofi" >/dev/null; then
+  # Rofi is running, kill it
+  pkill -x rofi
+  exit 0
+fi
+
+# Get focused output from hyprctl
+focused_output=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
+
+# Forward all arguments to rofi with focused monitor
+# Use -monitor for rofi-wayland
+exec rofi -monitor "$focused_output" "$@"

@@ -3,11 +3,6 @@
 #:schema https://yazi-rs.github.io/schemas/keymap.json
 
 [mgr]
-prepend_keymap = [
-  { on = [
-    "q",
-  ], run = "plugin autosession -- save-and-quit", desc = "Save session and quit" },
-]
 
 keymap = [
   # Goto

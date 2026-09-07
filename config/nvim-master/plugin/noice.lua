@@ -17,7 +17,7 @@ require('lazyload').on_vim_enter(function()
   -- so clear the messages in this case.
   if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
 
-  Snacks.notify('Noice Loading')
+  -- Snacks.notify('Noice Loading')
 
   require('noice').setup({
     lsp = {
