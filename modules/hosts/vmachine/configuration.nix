@@ -7,6 +7,7 @@
       self.nixosModules.lazygit
       self.nixosModules.sddm
       self.nixosModules.git
+      self.nixosModules.zsh
     ];
 
     boot = {
@@ -55,14 +56,15 @@
 
     programs.firefox.enable = true;
 
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableBashCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      histSize = 100000;
-    };
+    # programs.zsh = {
+    #   enable = true;
+    #   enableCompletion = true;
+    #   enableBashCompletion = true;
+    #   autosuggestions.enable = true;
+    #   syntaxHighlighting.enable = true;
+    #   histSize = 100000;
+    # };
+    # users.defaultUserShell = pkgs.zsh;
 
     services.displayManager = {
       autoLogin = {
@@ -79,19 +81,11 @@
         vim
         wget
         foot
-        waybar
-        kitty
         neovim
-        ripgrep
-        fd
-        fzf
         lua-language-server
         stylua
-        bat
-        lsd
         zoxide
         ghostty
-        yazi
         tmux
         nil
         nixfmt
@@ -160,8 +154,6 @@
 
     # Set your time zone.
     time.timeZone = "Asia/Manila";
-
-    users.defaultUserShell = pkgs.zsh;
 
     users.users."artifex" = {
       isNormalUser = true;
