@@ -42,7 +42,24 @@
           runtimePkgs = [
             pkgs.devenv
             pkgs.fzf
+            pkgs.zplug
+            pkgs.zsh-fzf-tab
+            pkgs.zsh-vi-mode
+            pkgs.zsh-autosuggestions
+
+            # List shell related packages here, so zshAliases wont overrite its original bin names.
+            pkgs.lsd
+            pkgs.bat
+            pkgs.dust
+            pkgs.btop
+            pkgs.ripgrep
+            pkgs.yazi
+            pkgs.fd
+            pkgs.vivid
+            pkgs.zoxide
+            self'.packages.lazygit
           ];
+
           zshAliases = {
             l = "${lib.getExe pkgs.lsd} -a";
             la = "${lib.getExe pkgs.lsd} -la";
@@ -65,14 +82,85 @@
             cdr = "zoxide remove";
           };
           zshrc.content = ''
-
             export LS_COLORS="$(${lib.getExe pkgs.vivid} generate catppuccin-mocha)"
             export EDITOR=nvim
             export TERMINAL=ghostty
 
+                      
+            # [fzf getting started](https://junegunn.github.io/fzf/getting-started/)
+            # [fzf reference](https://junegunn.github.io/fzf/reference/)
+            # [fzf shell-integration](https://junegunn.github.io/fzf/shell-integration/)
+            FZF_COMPLETION_TRIGGER='**'
+            FZF_COMPLETION_OPTS='--border --info=inline'
+            FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
+            FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+
+            # [Generated](https://junegunn.github.io/fzf/color-themes/?s=XY8xDsIwEAS_Ei2tUxilckGTCgkqXuA4J_uUYFuWA0WUli_wP16CTCIkaGdud3UzMhRanWOcjGFfnYNxGgIGakZnobCTjWz2DRaBUGDUfc_eHn2cSlZCIMRcx8A-U4LC6_nY2FWn4YMOG7BTXm8qCDi2bmTr8ok9tY7MACUFupB6ShcayZR-HzxtaS6T9eqhMPLXxEQ3pvufWwTy7wtv)
+            export FZF_DEFAULT_OPTS=$'
+              --prompt="> " 
+              --marker=">" 
+              --pointer="◆" 
+              --scrollbar="│" 
+              --gutter=" " 
+              --preview-border="line"
+              --border="none"
+              --separator="─"
+              --padding="1"
+              --highlight-line
+              --color=fg:#CDD6F4,fg+:#CDD6F4,bg:-1,bg+:-1
+              --color=hl:#F38BA8,hl+:#F38BA8,info:#CBA6F7,marker:#B4BEFE
+              --color=prompt:#CBA6F7,spinner:#F5E0DC,pointer:#CBA6F7,header:#F38BA8
+              --color=border:#6C7086,label:#CDD6F4,query:#F5E0DC'
+
+            FZF_DEFAULT_FD_PARAMS="--strip-cwd-prefix --hidden --no-ignore --follow --exclude .git"
+            # FZF_DEFAULT_COMMAND="fd --type f $FZF_DEFAULT_FD_PARAMS"
+
+            FZF_ALT_C_COMMAND="fd --type d $FZF_DEFAULT_FD_PARAMS"
+            FZF_CTRL_T_COMMAND="fd --type f $FZF_DEFAULT_FD_PARAMS"
+
+            FZF_TAB_GROUP_COLORS=(
+              $'\033[94m' $'\033[32m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m'
+              $'\033[38;5;100m' $'\033[38;5;98m' $'\033[91m' $'\033[38;5;80m' $'\033[92m'
+              $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
+            )
+            # [shell-key-bindings](https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings)
+            FZF_CTRL_T_OPTS="
+              --walker-skip .git,node_modules,target
+              --preview 'bat -n --color=always {}'
+              --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+            FZF_ALT_C_OPTS="
+              --walker-skip .git,node_modules,target
+              --preview 'tree -C {}'"
+
+            # FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+
+            FZF_CTRL_R_OPTS="
+              --layout=reverse
+              --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+              --color header:italic
+              --header 'Press CTRL-Y to copy command into clipboard'"
+
+
+            zstyle ':completion:*:descriptions' format '[%d]'
+
+            zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
+            zstyle ':fzf-tab:*' switch-group '<' '>'
+            zstyle ':fzf-tab:*' use-fzf-default-opts yes
+            zstyle ':fzf-tab:complete:_zlua:*' query-string input
+            # zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color=always $realpath'
+            # zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+            zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview '${lib.getExe pkgs.lsd} -la --color=always $realpath'
+            zstyle ':fzf-tab:complete:cd:*' fzf-preview '${lib.getExe pkgs.lsd} -la --color=always $realpath'
+            zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
+
+            source <(${lib.getExe pkgs.fzf} --zsh)
+
             eval "$(${lib.getExe pkgs.devenv} hook zsh)"
             eval "$(${lib.getExe self'.packages.starship} init zsh)"
             eval "$(${lib.getExe pkgs.zoxide} init zsh)"
+
+            source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
           '';
         };
       };
