@@ -8,16 +8,16 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
+    # Flake parts
     flake-parts.url = "github:hercules-ci/flake-parts";
-
     import-tree.url = "github:vic/import-tree";
+    wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
+    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
     noctalia.url = "github:noctalia-dev/noctalia";
 
