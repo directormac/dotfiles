@@ -95,7 +95,7 @@
           inherit pkgs;
           package = pkgs.lazygit;
           flags = {
-            "--use-config-file" = config-file;
+            "--use-config-file" = ./lazygit.yml;
           };
         }
       );

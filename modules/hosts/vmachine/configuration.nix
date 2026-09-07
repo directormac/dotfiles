@@ -7,7 +7,6 @@
       self.nixosModules.lazygit
       self.nixosModules.sddm
       self.nixosModules.git
-      self.nixosModules.starship
       self.nixosModules.zsh
     ];
 
