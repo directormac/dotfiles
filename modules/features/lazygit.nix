@@ -84,7 +84,7 @@
       '';
     in
     {
-      packages.lazygit = inputs.wrappers.lib.wrapPackage (
+      packages.lazygit = inputs.wrapper-modules.lib.wrapPackage (
         {
           config,
           wlib,

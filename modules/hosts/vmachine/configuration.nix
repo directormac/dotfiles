@@ -5,6 +5,8 @@
       self.nixosModules.vmachineHardware
       self.nixosModules.niri
       self.nixosModules.lazygit
+      self.nixosModules.sddm
+      self.nixosModules.git
     ];
 
     boot = {
@@ -62,9 +64,15 @@
       histSize = 100000;
     };
 
+    services.displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "artifex";
+      };
+    };
+
     environment = {
       systemPackages = with pkgs; [
-        git
         github-cli
         quickshell
         inputs.zen-browser.packages."${system}".default
@@ -114,7 +122,7 @@
     services = {
 
       # Enable the GNOME Desktop Environment.
-      displayManager.gdm.enable = true;
+      # displayManager.gdm.enable = true;
       # desktopManager.gnome.enable = true;
 
       openssh = {
