@@ -4,6 +4,7 @@
     imports = [
       self.nixosModules.vmachineHardware
       self.nixosModules.niri
+      self.nixosModules.lazygit
     ];
 
     boot = {
@@ -52,9 +53,19 @@
 
     programs.firefox.enable = true;
 
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      enableBashCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      histSize = 100000;
+    };
+
     environment = {
       systemPackages = with pkgs; [
         git
+        github-cli
         quickshell
         inputs.zen-browser.packages."${system}".default
         vim
@@ -66,7 +77,6 @@
         ripgrep
         fd
         fzf
-        lazygit
         lua-language-server
         stylua
         bat
@@ -86,6 +96,7 @@
       };
 
       shellAliases = {
+        lzg = "lazygit";
         # nrsf = "sudo nixos-rebuild switch --flake /etc/nixos";
         # nixconf = "sudoedit /etc/nixos/configuration.nix";
       };
@@ -105,6 +116,13 @@
       # Enable the GNOME Desktop Environment.
       displayManager.gdm.enable = true;
       # desktopManager.gnome.enable = true;
+
+      openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = true;
+        };
+      };
 
       # Configure keymap in X11
       xserver.xkb = {
@@ -135,10 +153,13 @@
     # Set your time zone.
     time.timeZone = "Asia/Manila";
 
+    users.defaultUserShell = pkgs.zsh;
+
     users.users."artifex" = {
       isNormalUser = true;
       description = "artifex";
       extraGroups = [
+        "root"
         "networkmanager"
         "wheel"
       ];
