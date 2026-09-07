@@ -69,7 +69,5 @@ hl.env('HYPRCURSOR_SIZE', '24')
 -- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 
 -- DMS Include Configs
-require('dms.binds')
-require('dms.binds-user')
-require('dms.layout')
-require('dms.windowrules')
+require("dms.binds")
+require("dms.binds-user")

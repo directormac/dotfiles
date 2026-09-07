@@ -9,6 +9,7 @@
 # [Settings](https://mise.jdx.dev/configuration/settings.html#settings)
 [settings]
 
+auto_update = true
 experimental = true
 lockfile = true
 

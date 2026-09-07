@@ -1,5 +1,5 @@
 require('lazyload').on_vim_enter(function()
-  local shellcheck = require('lint.linters.shellcheck')
+  -- local shellcheck = require('lint.linters.shellcheck')
   ------
 
   vim.pack.add({ 'https://github.com/j-hui/fidget.nvim' })
