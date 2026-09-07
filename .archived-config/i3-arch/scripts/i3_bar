@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# i3 directory
-DIR="$HOME/.config/i3"
-
-# launch polybar
-bash "$DIR"/themes/polybar.sh
