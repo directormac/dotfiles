@@ -74,6 +74,7 @@
         nil
         nixfmt
         wl-clipboard
+        self.packages."${pkgs.system}".kittyfish
       ];
 
       sessionVariables = {
