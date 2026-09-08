@@ -28,3 +28,6 @@ image/tiff=feh.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/antigravity=antigravity.desktop
 x-scheme-handler/tolaria=tolaria-handler.desktop
+
+[Added Associations]
+application/json=nvim-float.desktop;

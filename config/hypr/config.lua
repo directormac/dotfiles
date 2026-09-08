@@ -1,6 +1,17 @@
 --- This module shall server as source of thruth.
 
+local function get_hostname()
+  local f = io.open("/etc/hostname", "r")
+  if f then
+    local name = f:read("*l")
+    f:close()
+    return name
+  end
+  return ""
+end
+
 _G.cfg = cfg or {}
+_G.cfg.hostname = get_hostname()
 
 _G.modkey = 'SUPER'
 

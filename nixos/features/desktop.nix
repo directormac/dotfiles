@@ -7,17 +7,21 @@
     {
       imports = [
         self.nixosModules.gtk
-
         self.nixosModules.lazyvim
         self.nixosModules.wshowkeys
         self.nixosModules.sddm
         self.nixosModules.cosmic
+        self.nixosModules.dms
       ];
 
       programs.niri.enable = true;
       programs.niri.package = selfpkgs.niri;
 
+      programs.hyprland.enable = true;
+      programs.hyprland.package = selfpkgs.hyprland;
+
       preferences.lazyvim.enable = true;
+
       # preferences.autostart = [selfpkgs.quickshellWrapped];
       # preferences.autostart = [ selfpkgs.noctalia-shell ];
 

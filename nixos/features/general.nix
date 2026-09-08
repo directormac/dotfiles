@@ -131,6 +131,19 @@
             ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
 
             ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
+            ".config/cosmic".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/cosmic";
+            ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/hypr";
+
+            # DankMaterialShell Config
+            #
+            ".config/DankMaterialShell/themes".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/themes";
+
+            ".config/DankMaterialShell/plugin_settings.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/plugin_settings.json";
+
+            ".config/DankMaterialShell/settings.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/settings.json";
 
             ".config/wallpapers".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/wallpapers";
           };

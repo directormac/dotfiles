@@ -10,6 +10,13 @@
 
     ];
 
+    environment = {
+      sessionVariables = {
+        WLR_NO_HARDWARE_CURSORS = "1";
+        #	WLR_RENDERER = "pixman";
+      };
+    };
+
     boot = {
       loader = {
         # Use the systemd-boot EFI boot loader.
