@@ -5,6 +5,9 @@
 { inputs, lib, ... }: {
 
   imports = [
+    # Hjem maybe. . .
+    # inputs.hjem.nixosModules.default
+
     inputs.home-manager.flakeModules.home-manager
     inputs.wrappers.flakeModules.wrappers
   ];

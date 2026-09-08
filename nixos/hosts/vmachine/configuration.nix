@@ -60,22 +60,15 @@
 
     environment = {
       systemPackages = with pkgs; [
-        github-cli
+        # Desktop
         quickshell
         inputs.zen-browser.packages."${system}".default
-        vim
-        wget
         foot
-        neovim
-        lua-language-server
-        stylua
         ghostty
-        tmux
-        nil
-        nixfmt
         wl-clipboard
+
+        # Wrapped
         self.packages."${pkgs.system}".kittyfish
-        # self.packages."${pkgs.system}".kittyfishDynamic
       ];
 
       sessionVariables = {
@@ -157,6 +150,14 @@
         "libvirt-qemu"
         "kvm"
       ];
+    };
+
+    home-manager.users.artifex = { config, lib, ... }: {
+      home.stateVersion = "24.05"; # Make sure this matches your home-manager version
+      home.file = {
+        ".config/kitty/kitty.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/kitty/kitty.conf";
+        ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/ghostty";
+      };
     };
 
     # Select internationalisation properties.
