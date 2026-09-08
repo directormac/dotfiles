@@ -23,7 +23,7 @@
         };
         dynamicConfigPath = lib.mkOption {
           type = lib.types.str;
-          default = "$HOME/.dotfiles/config/kitty/kitty.conf";
+          default = "$HOME/.config/kitty/kitty.conf";
         };
       };
 

@@ -6,6 +6,7 @@
         # Nix related
         nil
         nix-inspect
+        nixfmt
         nixd
         manix
         statix
@@ -20,6 +21,12 @@
 
         # Language tools
         tree-sitter
+        lua-language-server
+        stylua
+
+        github-cli
+        neovim
+        vim
 
         # CLI Goodies
         bat
@@ -37,6 +44,8 @@
         wget
         yazi
         zoxide
+
+        tmux
 
         # wrapped
         self'.packages.qalc
