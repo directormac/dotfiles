@@ -101,7 +101,7 @@ community_ids = ["zen-browser"]
 
 [wallpaper]
 directory = "~/.config/wallpapers"
-fill_mode = "center"
+fill_mode = "crop"
 
 [wallpaper.automation]
 enabled = true
