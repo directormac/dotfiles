@@ -1,34 +1,3 @@
-"
-" =====================================================================
-" ========                                    .-----.          ========
-" ========         .----------------------.   | === |          ========
-" ========         |.-""""""""""""""""""-.|   |-----|          ========
-" ========         ||                    ||   | === |          ========
-" ========         ||   KICKSTART.VIM    ||   |-----|          ========
-" ========         ||                    ||   | === |          ========
-" ========         ||                    ||   |-----|          ========
-" ========         ||:!vimtutor          ||   |:::::|          ========
-" ========         |'-..................-'|   |____o|          ========
-" ========         `"")----------------(""`   ___________      ========
-" ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-" ========       /:::========|  |==hjkl==:::\  \ required \    ========
-" ========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-" ========                                                     ========
-" =====================================================================
-"
-" Kickstart.vim is a starting point for your Vim configuration,
-" heavily inspired by Kickstart.nvim.
-"
-" If you are using Neovim, you should use Kickstart.nvim instead:
-" https://github.com/nvim-lua/kickstart.nvim
-" (use `gx` keybinding to open the link)
-"
-" If you have any question while reading the .vimrc,
-" you should use Vim's built-in help, triggered by `:help X`.
-" We also provide a keymap "<space>sh" [s]earch [h]elp documentation.
-"
-
-
 " Set <space> as the leader key
 " See `:help mapleader`
 let mapleader=' '
@@ -158,63 +127,65 @@ nnoremap <C-l> <C-w><C-l>
 nnoremap <C-j> <C-w><C-j>
 nnoremap <C-k> <C-w><C-k>
 
+" Check if we are NOT running from the Nix wrapper
+if !exists('g:is_nix')
 
-" [[ Install `vim-plug` plugin manager ]]
-"    See https://github.com/junegunn/vim-plug/ for more info
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  " [[ Install `vim-plug` plugin manager ]]
+  "    See https://github.com/junegunn/vim-plug/ for more info
+  let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+  if empty(glob(data_dir . '/autoload/plug.vim'))
+    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+
+  " [[ Install plugins ]]
+  "  To check the current status of your plugins, run
+  "    :PlugStatus
+  "
+  "  To update plugins you can run
+  "    :PlugUpdate
+  "
+  " Note: Here is where you install your plugins.
+  call plug#begin()
+  " Detect tabstop and shiftwidth automatically
+  Plug 'tpope/vim-sleuth'
+
+  " "gc" to comment visual regions/lines
+  Plug 'tpope/vim-commentary'
+
+  " Adds git related signs to the gutter
+  Plug 'airblade/vim-gitgutter'
+
+  " Useful plugin to show you pending keybinds.
+  Plug 'liuchengxu/vim-which-key'
+
+  " Fuzzy Finder
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+
+  " Enable LSP
+  Plug 'prabirshrestha/vim-lsp'
+  " Install language servers and configure them for vim-lsp
+  Plug 'mattn/vim-lsp-settings'
+
+  " Autocompletion
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+  " Colorscheme
+  Plug 'catppuccin/vim', { 'as': 'catppuccin', 'branch': 'main' }
+
+  " Set airline as statusline
+  Plug 'vim-airline/vim-airline'
+  call plug#end()
+
 endif
-
-" [[ Install plugins ]]
-"  To check the current status of your plugins, run
-"    :PlugStatus
-"
-"  To update plugins you can run
-"    :PlugUpdate
-"
-" Note: Here is where you install your plugins.
-call plug#begin()
-" Detect tabstop and shiftwidth automatically
-Plug 'tpope/vim-sleuth'
-
-" "gc" to comment visual regions/lines
-Plug 'tpope/vim-commentary'
-
-" Adds git related signs to the gutter
-Plug 'airblade/vim-gitgutter'
-
-" Useful plugin to show you pending keybinds.
-Plug 'liuchengxu/vim-which-key'
-
-" Fuzzy Finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Enable LSP
-Plug 'prabirshrestha/vim-lsp'
-" Install language servers and configure them for vim-lsp
-Plug 'mattn/vim-lsp-settings'
-
-" Autocompletion
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-" Colorscheme
-Plug 'ghifarit53/tokyonight-vim'
-
-" Set airline as statusline
-Plug 'vim-airline/vim-airline'
-call plug#end()
-
 
 " [[ Configure plugins ]]
 " Set colorscheme
 set termguicolors                   " Enable RGB colors
-let g:tokyonight_style = 'night'    " available: night, storm
-let g:tokyonight_enable_italic = 0  " Disable italics in comments
-colorscheme tokyonight
+let g:airline_theme = 'catppuccin_mocha'
+colorscheme catppuccin_mocha
 
 
 " [[ Configure vim-which-key ]]

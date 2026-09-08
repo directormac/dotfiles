@@ -67,9 +67,11 @@
         foot
         ghostty
         wl-clipboard
+        pavucontrol
 
         # Wrapped
         self.packages."${pkgs.system}".kittyfish
+        self.packages."${pkgs.system}".my-vim
       ];
 
       sessionVariables = {
@@ -154,10 +156,17 @@
     };
 
     home-manager.users.artifex = { config, lib, ... }: {
-      home.stateVersion = "24.05"; # Make sure this matches your home-manager version
+      home.stateVersion = "26.05"; # Make sure this matches your home-manager version
       home.file = {
-        ".config/kitty/kitty.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/kitty/kitty.conf";
-        ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/ghostty";
+
+        ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink self + "/config/ghostty";
+
+        ".config/kitty/kitty.conf".source =
+          config.lib.file.mkOutOfStoreSymlink self + "/config/kitty/kitty.conf";
+
+        ".config/vim".source = config.lib.file.mkOutOfStoreSymlink self + "/config/vim";
+
+        ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink self + "/config/yazi";
       };
     };
 
