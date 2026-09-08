@@ -127,6 +127,8 @@ nnoremap <C-l> <C-w><C-l>
 nnoremap <C-j> <C-w><C-j>
 nnoremap <C-k> <C-w><C-k>
 
+
+
 " Check if we are NOT running from the Nix wrapper
 if !exists('g:is_nix')
 
@@ -167,6 +169,8 @@ if !exists('g:is_nix')
   Plug 'prabirshrestha/vim-lsp'
   " Install language servers and configure them for vim-lsp
   Plug 'mattn/vim-lsp-settings'
+
+  " Plug 'sbdchd/neoformat'
 
   " Autocompletion
   Plug 'prabirshrestha/asyncomplete.vim'
@@ -224,6 +228,19 @@ let g:which_key_map['/'] = '[/] Fuzzily search in current buffer'
 " you are trying to install LSP for.
 " For example, if you want LSP server for C/C++, type
 " `:LspInstallServer clangd` in a C/C++ buffer.
+ let g:lsp_settings = {
+    \  'nil': {
+    \    'workspace_config': {
+    \      'nil': {
+    \        'nix': {
+    \          'flake': {
+    \            'autoArchive': v:true
+    \          }
+    \        }
+    \      }
+    \    }
+    \  }
+    \}
 
 " Performance related settings, requires Vim 8.2+
 let g:lsp_use_native_client = 1
@@ -244,7 +261,12 @@ function! s:on_lsp_buffer_enabled() abort
   nnoremap <buffer> grr <plug>(lsp-references)
   nnoremap <buffer> gri <plug>(lsp-implementation)
   nnoremap <buffer> gO <plug>(lsp-document-symbol-search)
-  nnoremap <buffer> <C-s> <plug>(lsp-signature-help)
+  nnoremap <buffer> <C-k> <plug>(lsp-signature-help)
+  " Map <C-s> to Format Sync and Save (Normal Mode)
+  nnoremap <buffer> <C-s> :LspDocumentFormatSync<CR>:w<CR>
+
+  " Map <C-s> to Format Sync and Save (Insert Mode)
+  inoremap <buffer> <C-s> <Esc>:LspDocumentFormatSync<CR>:w<CR>a
 
   " Other useful functions
   nnoremap <buffer> grd <plug>(lsp-definition)
@@ -255,9 +277,10 @@ function! s:on_lsp_buffer_enabled() abort
 
   " Formatting
   let g:lsp_format_sync_timeout = 1000
-  nnoremap <buffer> <leader>f <plug>(lsp-document-format)
-  let g:which_key_map.f = '[F]ormat buffer'
+  nnoremap <buffer> <leader>cf <plug>(lsp-document-format)
+  let g:which_key_map.cf = 'LSP [F]ormat buffer'
 endfunction
+
 
 augroup lsp_install
   au!
@@ -270,6 +293,18 @@ augroup END
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<CR>""
+
+
+" " Neoformat settings
+" " Map <C-s> to run neoformat and save
+" nnoremap <C-s> :Neoformat<CR>:w<CR>
+" inoremap <C-s> <Esc>:Neoformat<CR>:w<CR>a
+"
+" " Optional: Run Neoformat automatically on save without pressing Ctrl+s
+" augroup fmt
+"  autocmd!
+"  autocmd BufWritePre * undojoin | Neoformat
+" augroup END
 
 let g:asyncomplete_auto_completeopt = 0
 set completeopt=menuone,noinsert,noselect,preview
