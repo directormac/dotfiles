@@ -25,6 +25,7 @@
 
           cursor_text_color = "background";
 
+          hide_window_decorations = "yes";
           allow_remote_control = "yes";
           shell_integration = "enabled";
 

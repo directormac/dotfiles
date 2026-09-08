@@ -39,25 +39,13 @@
       packages = {
         zsh = inputs.wrappers.wrappers.zsh.wrap {
           inherit pkgs;
-          runtimePkgs = [
+          runtimePkgs = (inputs.self.commonShellPkgs pkgs self') ++ [
             pkgs.devenv
             pkgs.fzf
             pkgs.zplug
             pkgs.zsh-fzf-tab
             pkgs.zsh-vi-mode
             pkgs.zsh-autosuggestions
-
-            # List shell related packages here, so zshAliases wont overrite its original bin names.
-            pkgs.lsd
-            pkgs.bat
-            pkgs.dust
-            pkgs.btop
-            pkgs.ripgrep
-            pkgs.yazi
-            pkgs.fd
-            pkgs.vivid
-            pkgs.zoxide
-            self'.packages.lazygit
           ];
 
           # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/zsh.html#zshaliases
