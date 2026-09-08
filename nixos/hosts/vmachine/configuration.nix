@@ -5,6 +5,8 @@
       self.nixosModules.vmachineHardware
       # self.nixosModules.nocturnal-niri
       self.nixosModules.niri
+      self.nixosModules.gtk
+      self.nixosModules.wshowkeys
       self.nixosModules.sddm
       self.nixosModules.git
       self.nixosModules.zsh
