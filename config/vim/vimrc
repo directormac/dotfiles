@@ -43,6 +43,25 @@ set clipboard=unnamedplus
 " Enable break indent
 set breakindent
 
+" Automatically create state directories if they don't exist
+let s:state_dir = expand('~/.local/state/vim')
+for s:dir in ['swap', 'backup', 'undo']
+  let s:full_path = s:state_dir . '/' . s:dir
+  if !isdirectory(s:full_path)
+    call mkdir(s:full_path, 'p')
+  endif
+endfor
+
+
+" Put all swap files in a centralized directory instead of the current working directory
+" The // at the end tells Vim to use the file's full path to name the swap file,
+" which prevents name collisions if you edit two files named 'flake.nix' in different places.
+set directory=~/.local/state/vim/swap//
+
+" " Disable swap files completely
+" set noswapfile
+
+
 " Save undo history
 "  By default, undo files (.file.txt.un~) are saved in the current directory.
 "  This makes the file system very messy, so undofile is disabled by default.
@@ -57,6 +76,12 @@ set breakindent
 "    You may change the undodir to another directory you prefer
 "set undodir=~/.local/state/vim/undo//
 "set undofile
+"
+set directory=~/.local/state/vim/swap//
+set backupdir=~/.local/state/vim/backup//
+set undodir=~/.local/state/vim/undo//
+set undofile " Enable persistent undo across sessions
+
 
 " Case-insensitive searching UNLESS \C or capital in search
 set ignorecase
@@ -200,6 +225,7 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 " Document existing key chains
 let g:which_key_map =  {}
 let g:which_key_map.s = { 'name' : '[S]earch' }
+let g:which_key_map.f = { 'name' : '[F]ind' }
 let g:which_key_map.h = { 'name' : 'Git [H]unk' }
 
 
@@ -216,6 +242,19 @@ nmap <leader>sg :Rg<CR>
 let g:which_key_map.s.g = '[S]earch by [G]rep'
 nmap <leader>s. :History<CR>
 let g:which_key_map.s['.'] = '[S]earch Recent Files ("." for repeat)'
+
+
+nmap <leader>fh :Helptags<CR>
+let g:which_key_map.f.h = '[F]ind  [H]elp'
+nmap <leader>fk :Maps<CR>
+let g:which_key_map.f.k = '[F]ind  [K]eymaps'
+nmap <leader>ff :Files<CR>
+let g:which_key_map.f.f = '[F]ind  [F]iles'
+nmap <leader>fg :Rg<CR>
+let g:which_key_map.f.g = '[F]ind by [G]rep'
+nmap <leader>f. :History<CR>
+let g:which_key_map.s['.'] = '[F]ind  Recent Files ("." for repeat)'
+
 nmap <leader><leader> :Buffers<CR>
 let g:which_key_map[' '] = '[ ] Find existing buffers'
 
@@ -278,7 +317,8 @@ function! s:on_lsp_buffer_enabled() abort
   " Formatting
   let g:lsp_format_sync_timeout = 1000
   nnoremap <buffer> <leader>cf <plug>(lsp-document-format)
-  let g:which_key_map.cf = 'LSP [F]ormat buffer'
+
+  let g:which_key_map.c.f = 'LSP [F]ormat buffer'
 endfunction
 
 

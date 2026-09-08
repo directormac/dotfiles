@@ -39,10 +39,14 @@
               start = my-plugins;
             };
 
-            # Inject a global variable before reading your vimrc!
+            # Inject the flag and source the LIVE file from your home directory
             customRC = ''
               		  let g:is_nix = 1
-              		  source ${self}/config/vim/vimrc
+              		
+              		  " Check if the symlink exists before sourcing, so it doesn't error if missing
+              		  if filereadable(expand("$HOME/.config/vim/vimrc"))
+                              source $HOME/.config/vim/vimrc
+              		  endif
             '';
           };
         };

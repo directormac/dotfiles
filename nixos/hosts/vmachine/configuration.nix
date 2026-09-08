@@ -3,11 +3,11 @@
 
     imports = [
       self.nixosModules.vmachineHardware
-      self.nixosModules.nocturnal-niri
+      # self.nixosModules.nocturnal-niri
+      self.nixosModules.niri
       self.nixosModules.sddm
       self.nixosModules.git
       self.nixosModules.zsh
-      self.nixosModules.gtk
     ];
 
     boot = {
@@ -51,56 +51,16 @@
         }
       ];
     };
-
-    services.displayManager = {
-      autoLogin = {
-        enable = true;
-        user = "artifex";
-      };
-    };
-
-    environment = {
-      systemPackages = with pkgs; [
-        # Desktop
-        quickshell
-        inputs.zen-browser.packages."${system}".default
-        foot
-        ghostty
-        wl-clipboard
-        pavucontrol
-
-        # Wrapped
-        self.packages."${pkgs.system}".kittyfish
-        self.packages."${pkgs.system}".my-vim
-      ];
-
-      sessionVariables = {
-        EDITOR = "nvim";
-        WLR_NO_HARDWARE_CURSORS = "1";
-      };
-
-      shellAliases = {
-        # nrsf = "sudo nixos-rebuild switch --flake /etc/nixos";
-        # nixconf = "sudoedit /etc/nixos/configuration.nix";
-      };
-    };
-
-    fileSystems."/home/artifex/Public/vshared" = {
-      device = "vshare";
-      fsType = "virtiofs";
-      options = [ "defaults" ];
-    };
-
-    fileSystems."/home/artifex/.dotfiles" = {
-      device = "vdotfiles";
-      fsType = "virtiofs";
-      options = [ "defaults" ];
-    };
-
-    # Allow unfree packages
-    nixpkgs.config.allowUnfree = true;
-
     services = {
+
+      displayManager = {
+        autoLogin = {
+          enable = true;
+          user = "artifex";
+        };
+      };
+
+      spice-vdagentd.enable = true;
 
       # Enable the GNOME Desktop Environment.
       # displayManager.gdm.enable = true;
@@ -132,7 +92,49 @@
         # Use the WirePlumber session manager
         #wireplumber.enable = true;
       };
+
     };
+
+    environment = {
+      systemPackages = with pkgs; [
+        # Desktop
+        quickshell
+        inputs.zen-browser.packages."${system}".default
+        foot
+        ghostty
+        wl-clipboard
+        pavucontrol
+
+        # Wrapped
+        self.packages."${pkgs.system}".kittyfish
+        self.packages."${pkgs.system}".my-vim
+      ];
+
+      sessionVariables = {
+        EDITOR = "nvim";
+        WLR_NO_HARDWARE_CURSORS = "1";
+      };
+
+      shellAliases = {
+        # nrsf = "sudo nixos-rebuild switch --flake /etc/nixos";
+        # nixconf = "sudoedit /etc/nixos/configuration.nix";
+      };
+    };
+
+    fileSystems."/home/artifex/Public" = {
+      device = "vshare";
+      fsType = "virtiofs";
+      options = [ "defaults" ];
+    };
+
+    fileSystems."/home/artifex/.dotfiles" = {
+      device = "vdotfiles";
+      fsType = "virtiofs";
+      options = [ "defaults" ];
+    };
+
+    # Allow unfree packages
+    nixpkgs.config.allowUnfree = true;
 
     networking.hostName = "vmachine"; # Define your hostname.
 
@@ -155,20 +157,30 @@
       ];
     };
 
-    home-manager.users.artifex = { config, lib, ... }: {
-      home.stateVersion = "26.05"; # Make sure this matches your home-manager version
-      home.file = {
+    home-manager.users.artifex =
+      { config, lib, ... }:
+      let
+        # Define where your flake lives on the live filesystem
+        flakePath = "${config.home.homeDirectory}/.dotfiles";
+      in
+      {
+        home.stateVersion = "26.05";
+        home.file = {
 
-        ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink self + "/config/ghostty";
+          ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/ghostty";
 
-        ".config/kitty/kitty.conf".source =
-          config.lib.file.mkOutOfStoreSymlink self + "/config/kitty/kitty.conf";
+          ".config/kitty/kitty.conf".source =
+            config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/kitty/kitty.conf";
 
-        ".config/vim".source = config.lib.file.mkOutOfStoreSymlink self + "/config/vim";
+          ".config/bat".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/bat";
 
-        ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink self + "/config/yazi";
+          ".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/vim";
+
+          ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/yazi";
+
+          ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
+        };
       };
-    };
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_PH.UTF-8";
