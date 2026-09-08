@@ -15,6 +15,7 @@
           asyncomplete-lsp-vim
           catppuccin-vim
           vim-airline
+          # neoformat
         ];
 
         # 2. Add external dependencies (fzf, rg) and Language Servers
@@ -24,6 +25,10 @@
           # LSPs:
           nil # Nix LSP
           clang-tools # C/C++ LSP
+          lua-language-server
+
+          nixfmt # Formatter for nix
+          stylua # Formatter for Lua
         ];
 
         # 3. Create the customized Vim (this builds a vim with native packpath plugins)
