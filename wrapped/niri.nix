@@ -4,6 +4,13 @@
   ...
 }:
 {
+  # flake.nixosModules.niri = { pkgs, lib, ... }: {
+  #   programs.niri = {
+  #     enable = true;
+  #     package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+  #   };
+  # };
+
   flake.nixosModules.niri = { pkgs, lib, ... }: {
     programs.niri = {
       enable = true;
@@ -20,11 +27,27 @@
       ...
     }:
     {
-      options.terminal = lib.mkOption {
-        type = lib.types.str;
-        default = "ghostty";
+      options = {
+        terminal = lib.mkOption {
+          type = lib.types.str;
+          default = "ghostty";
+        };
+        dynamicMode = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "If true, use an impure config file from the home directory for hot-reloading.";
+        };
+        dynamicConfigPath = lib.mkOption {
+          type = lib.types.str;
+          default = "$HOME/.config/niri/config.kdl";
+        };
       };
+
       config = {
+        "config.kdl".path = lib.mkIf config.dynamicMode config.dynamicConfigPath;
+        disableConfigValidation = lib.mkIf config.dynamicMode true;
+        disableConfigHotReload = lib.mkIf config.dynamicMode true;
+
         settings =
           let
             # startNoctaliaExe = lib.getExe self.packages.${config.pkgs.stdenv.hostPlatform.system}.start-noctalia-shell;
@@ -38,9 +61,11 @@
               focus-follows-mouse = [ ];
 
               keyboard = {
+                numlock = [ ];
                 xkb = {
                   layout = "us";
-                  # options = "caps:hyper";
+
+                  options = "caps:hyper";
                 };
                 repeat-rate = 40;
                 repeat-delay = 250;
@@ -57,13 +82,28 @@
             };
 
             binds = {
+              "Mod+Shift+Slash".show-hotkey-overlay = [ ];
               "Mod+Return".spawn = config.terminal;
 
+              "Mod+Shift+Escape".quit = [ ];
+              "Mod+Escape".toggle-overview = [ ];
+              # "Mod+Hyper".toggle-overview = [ ];
               "Mod+Q".close-window = [ ];
               "Mod+F".maximize-column = [ ];
               "Mod+G".fullscreen-window = [ ];
-              "Mod+Shift+F".toggle-window-floating = [ ];
+              "Mod+V".toggle-window-floating = [ ];
+              "Mod+Shift+V".switch-focus-between-floating-and-tiling = [ ];
               "Mod+C".center-column = [ ];
+              "Mod+R".switch-preset-column-width = [ ];
+              "Mod+BracketLeft".consume-or-expel-window-left = [ ];
+              "Mod+BracketRight".consume-or-expel-window-right = [ ];
+
+              "Mod+Ctrl+D".focus-workspace-down = [ ];
+              "Mod+Ctrl+U".focus-workspace-up = [ ];
+
+              # Or if you prefer pure Vim home-row keys for workspaces:
+              "Mod+Ctrl+N".focus-workspace-down = [ ];
+              "Mod+Ctrl+P".focus-workspace-up = [ ];
 
               "Mod+H".focus-column-left = [ ];
               "Mod+L".focus-column-right = [ ];
@@ -111,19 +151,24 @@
               "Mod+WheelScrollUp".focus-column-right = [ ];
               "Mod+Ctrl+WheelScrollDown".focus-workspace-down = [ ];
               "Mod+Ctrl+WheelScrollUp".focus-workspace-up = [ ];
+              "Mod+Ctrl+Page_Down".move-column-to-workspace-down = [ ];
+              "Mod+Ctrl+Page_Up".move-column-to-workspace-up = [ ];
 
               "Mod+Space".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
               "Mod+D".spawn-sh = "${lib.getExe self'.packages.menu1}";
               "Mod+S".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle control-center";
               "Mod+Comma".spawn-sh = "${lib.getExe pkgs.noctalia} msg settings-toggle";
+
+              "Mod+grave".focus-workspace-previous = [ ];
               "Alt+Tab".spawn-sh = "${lib.getExe pkgs.noctalia} msg window-switcher";
 
               "XF86AudioRaiseVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
               "XF86AudioLowerVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
+              "XF86AudioMute".spawn-sh = "wpctl set-mute -l  @DEFAULT_AUDIO_SINK@";
 
               # "XF86AudioRaiseVolume".spawn-sh = "${lib.getExe pkgs.noctalia}  msg volume-up";
               # "XF86AudioLowerVolume".spawn-sh = "${lib.getExe pkgs.noctalia}  msg volume-down";
-              "XF86AudioMute".spawn-sh = "${lib.getExe pkgs.noctalia}  msg volume-mute";
+              # "XF86AudioMute".spawn-sh = "${lib.getExe pkgs.noctalia}  msg volume-mute";
 
               "Mod+Ctrl+S".spawn-sh =
                 "${lib.getExe config.pkgs.grim} -l 0 - | ${config.pkgs.wl-clipboard}/bin/wl-copy";
@@ -188,8 +233,16 @@
     };
 
   perSystem = { pkgs, self', ... }: {
+    # packages.niri = inputs.wrappers.wrappers.niri.wrap {
+    #   inherit pkgs;
+    #   imports = [
+    #     self.wrappersModules.niri
+    #     { _module.args.self' = self'; }
+    #   ];
+    # };
     packages.niri = inputs.wrappers.wrappers.niri.wrap {
       inherit pkgs;
+      # dynamicMode = false;
       imports = [
         self.wrappersModules.niri
         { _module.args.self' = self'; }
