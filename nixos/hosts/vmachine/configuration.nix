@@ -160,6 +160,13 @@
       ];
     };
 
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      backupFileExtension = "backup";
+    };
+
     home-manager.users.artifex =
       { config, lib, ... }:
       let
@@ -167,15 +174,97 @@
         flakePath = "${config.home.homeDirectory}/.dotfiles";
       in
       {
+
+        # 1. Import the lazyvim-nix home-manager module
+        imports = [ inputs.lazyvim.homeManagerModules.default ];
+
+        # 2. Configure lazyvim-nix
+        programs.lazyvim = {
+          enable = true;
+          appName = "lvim";
+
+          extras = {
+            lang = {
+              nix.enable = true;
+              elixir.enable = true;
+              svelte.enable = true;
+              # typescript.enable = true;
+              # typescript.vtsls.enable = true;
+              # typescript.oxc.enable = true;
+
+              json.enable = true;
+              toml.enable = true;
+              markdown.enable = true;
+
+              typescript = {
+                vtsls.enable = true;
+                oxc.enable = true;
+              };
+
+            };
+          };
+
+          extraPackages = with pkgs; [
+            taplo
+            marksman
+            markdownlint-cli2
+
+            svelte-language-server
+            svelte-check
+
+            elixir-ls
+            beam29Packages.expert
+
+            typescript
+            oxlint
+            tsgolint
+            oxfmt
+            # prettier
+
+            nil
+            nixd
+
+          ];
+
+          # Optional: Only needed for non-LazyVim languages
+          treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+            elixir
+            json
+            toml
+            lua
+            nix
+            svelte
+            typescript
+          ];
+
+          # 3. Point to your config/lvim directory using a relative Nix path literal.
+          # This allows Nix to read the files at build time to parse your plugins.
+          configFiles = ../../../config/lvim;
+
+          # Optional: you can enable extra languages here too
+          # extras.lang.nix.enable = true;
+        };
+
+        # 4. Create the global `lvim` binary
+        home.packages = [
+          (pkgs.writeShellScriptBin "lvim" ''
+            exec env NVIM_APPNAME=lvim nvim "$@"
+          '')
+        ];
+
         home.stateVersion = "26.05";
         home.file = {
 
           ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/ghostty";
 
+          ".face".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/.face";
+
           ".config/kitty/kitty.conf".source =
             config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/kitty/kitty.conf";
 
           ".config/bat".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/bat";
+
+          # ".config/lvim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/lvim";
 
           ".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/vim";
 
