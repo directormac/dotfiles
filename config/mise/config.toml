@@ -69,6 +69,7 @@ bazel = "latest"
 "cargo:mdv" = "latest" # https://github.com/WhoSowSee/mdv
 
 herdr = "latest"
+agy = "latest"
 
 # [tools."github:neovim/neovim"]
 # prerelease = true

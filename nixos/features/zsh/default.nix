@@ -62,6 +62,7 @@
 
           # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/zsh.html#zshaliases
           zshAliases = {
+            c = "clear";
             cat = lib.getExe pkgs.bat;
             cd = "z";
             cda = "zoxide add";
@@ -157,14 +158,27 @@
             zstyle ':fzf-tab:complete:cd:*' fzf-preview '${lib.getExe pkgs.lsd} -la --color=always $realpath'
             zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 
+            # Source zsh-vi-mode first so it doesn't stomp over our bindings
+            source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
             source <(${lib.getExe pkgs.fzf} --zsh)
 
             eval "$(${lib.getExe pkgs.devenv} hook zsh)"
             eval "$(${lib.getExe self'.packages.starship} init zsh)"
             eval "$(${lib.getExe pkgs.zoxide} init zsh)"
 
-            bindkey '^ ' autosuggest-accept
+            function zvm_after_init() {
+              # Bind Space (Ctrl + Space)
+              zvm_bindkey viins '^ ' autosuggest-accept
+              
+              # Bind Ctrl + Tab sequence
+              zvm_bindkey viins '\e[27;5;9~' autosuggest-accept
+            }
 
+            bindkey '^ ' autosuggest-accept
+            bindkey '\e[27;5;9~' autosuggest-accept
+
+            # Source fzf-tab last to ensure compatibility
             source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
           '';
         };
