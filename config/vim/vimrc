@@ -206,6 +206,11 @@ if !exists('g:is_nix')
 
   " Set airline as statusline
   Plug 'vim-airline/vim-airline'
+
+
+  " Set vinegar alternate for netrw
+  Plug 'tpope/vim-vinegar'
+
   call plug#end()
 
 endif

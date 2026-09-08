@@ -47,11 +47,6 @@
           cmd = "zen-beta";
         }
         {
-          key = "z";
-          desc = "Zen Browser";
-          cmd = "zen-beta";
-        }
-        {
           key = "k";
           desc = "Kitty";
           cmd = "kitty";
@@ -61,25 +56,22 @@
           desc = "Ghostty";
           cmd = "ghostty";
         }
-        # {
-        #   key = "d";
-        #   desc = "Discord";
-        #   cmd = "vesktop";
-        # }
-        # {
-        #   key = "D";
-        #   desc = "Discord (alt)";
-        #   cmd = "vesktop-alt";
-        # }
-        # {
-        #   key = "m";
-        #   desc = "Youtube Music";
-        #   cmd = "pear-desktop";
-        # }
+        {
+          key = "w";
+          desc = "Toggle Show Keys";
+          cmd = "${lib.getExe (
+            pkgs.writeShellScriptBin "toggle-wshowkeys" ''
+              if pgrep -x wshowkeys > /dev/null; then
+                pkill -x wshowkeys
+              else
+                wshowkeys -a bottom -m 10 -F "Fira Mono Nerd Font 24" -s "#cba6f7ff" -f "#cdd6f4ff" -b "#1e1e2eff" -l 600 -t 2000 -U -M -S &
+              fi
+            ''
+          )}";
+        }
         {
           key = "s";
           desc = "Pavucontrol";
-          # cmd = "${lib.getExe pkgs.pavucontrol}";
           cmd = "pavucontrol";
         }
       ];

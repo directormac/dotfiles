@@ -8,13 +8,14 @@
           vim-commentary
           vim-gitgutter
           vim-which-key
+          vim-vinegar
           fzf-vim
           vim-lsp
           vim-lsp-settings
+          vim-airline
           asyncomplete-vim
           asyncomplete-lsp-vim
           catppuccin-vim
-          vim-airline
           # neoformat
         ];
 

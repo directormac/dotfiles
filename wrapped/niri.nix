@@ -201,6 +201,7 @@
                 }
               );
 
+
             };
 
             layout = {
@@ -242,11 +243,10 @@
 
             spawn-at-startup = [
               noctaliaExe
-              "zen-browser"
-              "ghostty --class=startup-fastfetch -e sh -c 'fastfetch; exec $SHELL'"
-              # (lib.getExe (
-              #   pkgs.writeShellScriptBin "wallpaper" "${lib.getExe pkgs.swaybg} -i ${self.wallpaper} -m fill"
-              # ))
+              (lib.getExe (config.pkgs.writeShellScriptBin "start-zen" "exec zen-browser"))
+              (lib.getExe (config.pkgs.writeShellScriptBin "startup-ghostty" ''
+                exec ghostty --class=startup-fastfetch -e sh -c 'fastfetch; exec $SHELL'
+              ''))
             ];
 
             window-rules = [
