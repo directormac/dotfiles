@@ -34,12 +34,20 @@
         pkgs.writeText "fishy-fishy"
           # fish
           ''
+            #Set SHELL to fish so fzf uses it for previews (fixes 'string: command not found' in fzf-fish)
+            set -gx SHELL (command -v fish)
+
             function fish_prompt
                 string join "" -- (set_color red) "[" (set_color yellow) $USER (set_color green) "@" (set_color blue) $hostname (set_color magenta) " " $(prompt_pwd) (set_color red) ']' (set_color normal) "\$ "
             end
 
+
             set fish_greeting
             fish_vi_key_bindings
+
+            # Bind Ctrl+Space to accept autosuggestion
+            bind -M insert ctrl-space accept-autosuggestion
+            bind -M default ctrl-space accept-autosuggestion
 
             set -gx FZF_COMPLETION_TRIGGER '**'
             set -gx FZF_COMPLETION_OPTS '--border --info=inline'
@@ -66,11 +74,6 @@
 
             set -gx FZF_ALT_C_COMMAND "fd --type d \$FZF_DEFAULT_FD_PARAMS"
             set -gx FZF_CTRL_T_COMMAND "fd --type f \$FZF_DEFAULT_FD_PARAMS"
-
-            set -gx FZF_TAB_GROUP_COLORS \
-              \033\[94m \033\[32m \033\[33m \033\[35m \033\[31m \033\[38;5;27m \033\[36m \
-              \033\[38;5;100m \033\[38;5;98m \033\[91m \033\[38;5;80m \033\[92m \
-              \033\[38;5;214m \033\[38;5;165m \033\[38;5;124m \033\[38;5;120m
 
             set -gx FZF_CTRL_T_OPTS "
               --walker-skip .git,node_modules,target
@@ -99,7 +102,8 @@
         package = pkgs.fish;
         runtimeInputs = [
           pkgs.zoxide
-        ] ++ plugins;
+        ]
+        ++ plugins;
         flags = {
           "-C" = "source ${fishConf}";
         };
