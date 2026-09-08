@@ -35,7 +35,7 @@
           nautilus
 
           # Multimedia
-          # mpd
+          mpd
           rmpc
           mpv
           feh
