@@ -87,7 +87,7 @@
           # "root"
           "wheel"
         ];
-        # shell = self.packages.${pkgs.system}.environment;
+        shell = selfpkgs.environment;
 
         # hashedPasswordFile = "/persist/passwd";
         initialPassword = "12345";

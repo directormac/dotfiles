@@ -24,6 +24,7 @@
         systemPackages = with pkgs; [
           # Desktop
           quickshell
+          kdePackages.qtmultimedia
           inputs.zen-browser.packages."${system}".default
           foot
           ghostty
