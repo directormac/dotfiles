@@ -1,7 +1,7 @@
 { self, ... }: {
   flake.wrappers.which-key = { ... }: {
     settings = {
-      font = "Fira Mono Nerd Font 14";
+      font = "Fira Mono Nerd Font 16";
       background = self.theme.base00;
       color = self.theme.base06;
       border = self.theme.base0F;
@@ -54,7 +54,7 @@
         {
           key = "k";
           desc = "Kitty";
-          cmd = "kitty";
+          cmd = "kitty --session";
         }
         {
           key = "t";

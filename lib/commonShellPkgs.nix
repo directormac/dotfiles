@@ -40,7 +40,6 @@
 
         # wrapped
         self'.packages.qalc
-        self'.packages.lf
         self'.packages.nix-check-bin
         self'.packages.nh
         self'.packages.lazygit
