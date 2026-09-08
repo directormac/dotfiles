@@ -32,6 +32,10 @@
           type = lib.types.str;
           default = "ghostty";
         };
+        fileManager = lib.mkOption {
+          type = lib.types.str;
+          default = "yazi";
+        };
         dynamicMode = lib.mkOption {
           type = lib.types.bool;
           default = false;
@@ -83,7 +87,18 @@
 
             binds = {
               "Mod+Shift+Slash".show-hotkey-overlay = [ ];
+
               "Mod+Return".spawn = config.terminal;
+              "Mod+Shift+Return".spawn = [
+                config.terminal
+                "--class=floating-ghostty"
+              ];
+              "Mod+E".spawn = [
+                config.terminal
+                "--class=floating-yazi"
+                "-e"
+                config.fileManager
+              ];
 
               "Mod+Shift+Escape".quit = [ ];
               "Mod+Escape".toggle-overview = [ ];
@@ -190,8 +205,11 @@
 
             layout = {
               gaps = 3;
+              # default-column-width = {
+              #   proportion = 1.0;
+              # };
               center-focused-column = "never";
-              always-center-single-column = [ ];
+              # always-center-single-column = [ ];
               focus-ring = {
                 width = 1;
               };
@@ -224,9 +242,21 @@
 
             spawn-at-startup = [
               noctaliaExe
+              "zen-browser"
+              "ghostty --class=startup-fastfetch -e sh -c 'fastfetch; exec $SHELL'"
               # (lib.getExe (
               #   pkgs.writeShellScriptBin "wallpaper" "${lib.getExe pkgs.swaybg} -i ${self.wallpaper} -m fill"
               # ))
+            ];
+
+            window-rules = [
+              {
+                matches = [
+                  { app-id = ".*fastfetch.*"; }
+                  { app-id = ".*floating.*"; }
+                ];
+                open-floating = true;
+              }
             ];
           };
       };
