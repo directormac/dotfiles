@@ -91,11 +91,11 @@
               "Mod+Return".spawn = config.terminal;
               "Mod+Shift+Return".spawn = [
                 config.terminal
-                "--class=floating-ghostty"
+                "--class=floating.ghostty"
               ];
               "Mod+E".spawn = [
                 config.terminal
-                "--class=floating-yazi"
+                "--class=floating.yazi"
                 "-e"
                 config.fileManager
               ];
@@ -201,7 +201,20 @@
                 }
               );
 
+            };
 
+            # hotkey-overlay-title = "Artifex's Niri Hotkeys";
+
+            hotkey-overlay = {
+              skip-at-startup = [ ];
+              hide-not-bound = [ ];
+            };
+
+            screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+
+            cursor = {
+              hide-when-typing = [ ];
+              hide-after-inactive-ms = 1000;
             };
 
             layout = {
@@ -244,18 +257,45 @@
             spawn-at-startup = [
               noctaliaExe
               (lib.getExe (config.pkgs.writeShellScriptBin "start-zen" "exec zen-browser"))
-              (lib.getExe (config.pkgs.writeShellScriptBin "startup-ghostty" ''
-                exec ghostty --class=startup-fastfetch -e sh -c 'fastfetch; exec $SHELL'
-              ''))
+              (lib.getExe (
+                config.pkgs.writeShellScriptBin "startup-ghostty" ''
+                  exec ghostty --class=startup.fastfetch -e sh -c 'fastfetch; exec $SHELL'
+                ''
+              ))
             ];
 
             window-rules = [
               {
                 matches = [
-                  { app-id = ".*fastfetch.*"; }
+                  { app-id = "startup.fastfetch"; }
                   { app-id = ".*floating.*"; }
                 ];
                 open-floating = true;
+              }
+              {
+                matches = [
+                  { app-id = "zen$"; }
+                ];
+                open-maximized = true;
+              }
+              {
+                matches = [
+                  {
+                    app-id = "firefox$";
+                    title = "^Picture-in-Picture$";
+                  }
+                ];
+                open-floating = true;
+              }
+              {
+                matches = [
+                  {
+                    is-floating = true;
+                  }
+                ];
+                shadow = {
+                  on = [ ];
+                };
               }
             ];
           };

@@ -23,6 +23,16 @@
 
     lwrappers.url = "github:lassulus/wrappers";
 
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     noctalia.url = "github:noctalia-dev/noctalia";
 
@@ -44,11 +54,6 @@
     nixpkgs-multiverse.url = "github:fzakaria/nixpkgs-multiverse";
 
     workmux.url = "github:raine/workmux";
-
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager";

@@ -1,15 +1,13 @@
-{ self, inputs, ... }: {
+{ self, ... }: {
   flake.nixosModules.vmachineConfiguration = { pkgs, lib, ... }: {
 
     imports = [
       self.nixosModules.vmachineHardware
-      # self.nixosModules.nocturnal-niri
-      self.nixosModules.niri
-      self.nixosModules.gtk
-      self.nixosModules.wshowkeys
-      self.nixosModules.sddm
-      self.nixosModules.git
-      self.nixosModules.zsh
+
+      self.nixosModules.base
+      self.nixosModules.general
+      self.nixosModules.desktop
+
     ];
 
     boot = {
@@ -24,35 +22,6 @@
       kernelPackages = pkgs.linuxPackages_latest;
     };
 
-    nix.settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-
-    fonts.packages = with pkgs; [
-      nerd-fonts.fira-code
-      nerd-fonts.symbols-only
-      nerd-fonts.noto
-      nerd-fonts.fira-mono
-
-    ];
-
-    programs.firefox.enable = true;
-
-    programs.dconf = {
-      enable = true;
-      profiles.user.databases = [
-        {
-          settings = {
-            "org/gnome/desktop/interface" = {
-              color-scheme = "prefer-dark";
-            };
-          };
-        }
-      ];
-    };
     services = {
 
       displayManager = {
@@ -97,32 +66,7 @@
 
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        # Desktop
-        quickshell
-        inputs.zen-browser.packages."${system}".default
-        foot
-        ghostty
-        wl-clipboard
-        pavucontrol
-
-        # Wrapped
-        self.packages."${pkgs.system}".kittyfish
-        self.packages."${pkgs.system}".my-vim
-        self.packages."${pkgs.system}".noctalia
-      ];
-
-      sessionVariables = {
-        EDITOR = "nvim";
-        WLR_NO_HARDWARE_CURSORS = "1";
-      };
-
-      shellAliases = {
-        # nrsf = "sudo nixos-rebuild switch --flake /etc/nixos";
-        # nixconf = "sudoedit /etc/nixos/configuration.nix";
-      };
-    };
+    security.rtkit.enable = true;
 
     fileSystems."/home/artifex/Public" = {
       device = "vshare";
@@ -144,156 +88,7 @@
     # Enable networking
     networking.networkmanager.enable = true;
 
-    # Set your time zone.
-    time.timeZone = "Asia/Manila";
-
-    users.users."artifex" = {
-      isNormalUser = true;
-      description = "artifex";
-      extraGroups = [
-        "root"
-        "networkmanager"
-        "wheel"
-        "libvirt"
-        "libvirt-qemu"
-        "kvm"
-      ];
-    };
-
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      extraSpecialArgs = { inherit inputs; };
-      backupFileExtension = "backup";
-    };
-
-    home-manager.users.artifex =
-      { config, lib, ... }:
-      let
-        # Define where your flake lives on the live filesystem
-        flakePath = "${config.home.homeDirectory}/.dotfiles";
-      in
-      {
-
-        # 1. Import the lazyvim-nix home-manager module
-        imports = [ inputs.lazyvim.homeManagerModules.default ];
-
-        # 2. Configure lazyvim-nix
-        programs.lazyvim = {
-          enable = true;
-          appName = "lvim";
-
-          extras = {
-            lang = {
-              nix.enable = true;
-              elixir.enable = true;
-              svelte.enable = true;
-              # typescript.enable = true;
-              # typescript.vtsls.enable = true;
-              # typescript.oxc.enable = true;
-
-              json.enable = true;
-              toml.enable = true;
-              markdown.enable = true;
-
-              typescript = {
-                vtsls.enable = true;
-                oxc.enable = true;
-              };
-
-            };
-          };
-
-          extraPackages = with pkgs; [
-            taplo
-            marksman
-            markdownlint-cli2
-
-            svelte-language-server
-            svelte-check
-
-            elixir-ls
-            beam29Packages.expert
-
-            typescript
-            oxlint
-            tsgolint
-            oxfmt
-            # prettier
-
-            nil
-            nixd
-
-          ];
-
-          # Optional: Only needed for non-LazyVim languages
-          treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
-            elixir
-            json
-            toml
-            lua
-            nix
-            svelte
-            typescript
-          ];
-
-          # 3. Point to your config/lvim directory using a relative Nix path literal.
-          # This allows Nix to read the files at build time to parse your plugins.
-          configFiles = ../../../config/lvim;
-
-          # Optional: you can enable extra languages here too
-          # extras.lang.nix.enable = true;
-        };
-
-        # 4. Create the global `lvim` binary
-        home.packages = [
-          (pkgs.writeShellScriptBin "lvim" ''
-            exec env NVIM_APPNAME=lvim nvim "$@"
-          '')
-        ];
-
-        home.stateVersion = "26.05";
-        home.file = {
-
-          ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/ghostty";
-
-          ".face".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/.face";
-
-          ".config/kitty/kitty.conf".source =
-            config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/kitty/kitty.conf";
-
-          ".config/bat".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/bat";
-
-          # ".config/lvim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/lvim";
-
-          ".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/vim";
-
-          ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/yazi";
-
-          ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
-
-          ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
-
-          ".config/wallpapers".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/wallpapers";
-        };
-
-        systemd.user.services.spice-vdagent = {
-          Unit = {
-            Description = "Spice guest desktop agent";
-            PartOf = [ "graphical-session.target" ];
-          };
-          Install = {
-            WantedBy = [ "graphical-session.target" ];
-          };
-          Service = {
-            ExecStart = "${pkgs.spice-vdagent}/bin/spice-vdagent -x";
-          };
-        };
-      };
-
-    # Select internationalisation properties.
     i18n.defaultLocale = "en_PH.UTF-8";
-    security.rtkit.enable = true;
 
     system.stateVersion = "26.05";
   };

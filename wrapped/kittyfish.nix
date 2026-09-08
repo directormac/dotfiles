@@ -17,7 +17,7 @@
         fishell = inputs.lwrappers.lib.wrapPackage {
           inherit pkgs;
           package = self'.packages.fish;
-          runtimeInputs = (inputs.self.commonShellPkgs pkgs self') ++ [
+          runtimeInputs = [
             pkgs.kitty-img
           ];
           env = {
