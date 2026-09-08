@@ -39,7 +39,7 @@
       packages = {
         zsh = inputs.wrappers.wrappers.zsh.wrap {
           inherit pkgs;
-          runtimePkgs = (inputs.self.commonShellPkgs pkgs self') ++ [
+          runtimePkgs = [
             pkgs.devenv
             pkgs.fzf
             pkgs.zplug
