@@ -623,7 +623,7 @@ source = "builtin"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "alacritty", "btop", "ghostty", "niri" ]
+    builtin_ids = [ "niri" ]
     community_ids = [ "zen-browser", "yazi" ]
     enable_builtin_templates = true
     enable_community_templates = true

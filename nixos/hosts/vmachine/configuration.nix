@@ -7,6 +7,7 @@
       self.nixosModules.sddm
       self.nixosModules.git
       self.nixosModules.zsh
+      self.nixosModules.gtk
     ];
 
     boot = {
