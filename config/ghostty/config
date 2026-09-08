@@ -31,6 +31,7 @@ mouse-hide-while-typing = true
 
 window-padding-balance = true 
 window-save-state = always
+confirm-close-surface = false
 
 
 quick-terminal-size = 50%,1500px
