@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "plugins": {
+    "dankGifSearch": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankGifSearch",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankLauncherKeys": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankLauncherKeys",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    }
+  }
+}

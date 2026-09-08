@@ -22,16 +22,6 @@
       inherit pkgs;
       package = pkgs.cosmic-session;
 
-      # Create a symlink to our dotfiles for COSMIC configuration before launching
-      preHook = ''
-        mkdir -p "$HOME/.config"
-        if [ ! -L "$HOME/.config/cosmic" ]; then
-          if [ -d "$HOME/.config/cosmic" ]; then
-            mv "$HOME/.config/cosmic" "$HOME/.config/cosmic.bak"
-          fi
-          ln -sfn "$HOME/.dotfiles/config/cosmic" "$HOME/.config/cosmic"
-        fi
-      '';
     };
   };
 }
