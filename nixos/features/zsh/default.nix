@@ -67,6 +67,7 @@
             lt = "${lib.getExe pkgs.lsd} --tree";
             man = "man -P \"${lib.getExe pkgs.bat} -p\"";
             nsh = "nix-shell -p";
+            flakecheck = "nix flake check ~/.dotfiles";
             nrsf = "sudo nixos-rebuild switch --flake ~/.dotfiles";
             top = lib.getExe pkgs.btop;
             wh = "which";
