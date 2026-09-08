@@ -6,7 +6,6 @@
 }:
 {
 
-
   perSystem =
     {
       pkgs,
@@ -15,15 +14,7 @@
     }:
     {
       packages = {
-
-        kittyfish =
-          (inputs.lwrappers.wrapperModules.kitty.apply {
-            inherit pkgs;
-            imports = [ self.wrappersModules.kitty ];
-            shell = lib.getExe self'.packages.environment;
-          }).wrapper;
-
-        environment = inputs.lwrappers.lib.wrapPackage {
+        fishell = inputs.lwrappers.lib.wrapPackage {
           inherit pkgs;
           package = self'.packages.fish;
           runtimeInputs = (inputs.self.commonShellPkgs pkgs self') ++ [
@@ -62,7 +53,12 @@
           };
         };
 
-
+        kittyfish =
+          (inputs.lwrappers.wrapperModules.kitty.apply {
+            inherit pkgs;
+            imports = [ self.wrappersModules.kitty ];
+            shell = lib.getExe self'.packages.fishell;
+          }).wrapper;
 
         nix-check-bin = pkgs.writeShellApplication {
           name = "nix-check-bin";
