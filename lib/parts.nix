@@ -18,6 +18,12 @@
     description = "Helpers shared between modules in this flake";
   };
 
+  options.flake.wrappersModules = lib.mkOption {
+    type = lib.types.lazyAttrsOf lib.types.raw;
+    default = { };
+    description = "Wrapper modules for wrapper-modules";
+  };
+
   config = {
     perSystem = { pkgs, ... }: {
       wrappers.control_type = "exclude"; # | "build" (default: "exclude")

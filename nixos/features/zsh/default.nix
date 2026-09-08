@@ -57,6 +57,7 @@
             cdq = "zoxide query";
             cdr = "zoxide remove";
             ci = "zi";
+            dotfiles = "cd ~/.dotfiles";
             du = lib.getExe pkgs.dust;
             find = lib.getExe pkgs.fd;
             grep = lib.getExe pkgs.ripgrep;
