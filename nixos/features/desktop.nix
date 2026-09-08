@@ -11,6 +11,7 @@
         self.nixosModules.lazyvim
         self.nixosModules.wshowkeys
         self.nixosModules.sddm
+        self.nixosModules.cosmic
       ];
 
       programs.niri.enable = true;
