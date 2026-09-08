@@ -54,7 +54,7 @@
         {
           key = "k";
           desc = "Kitty";
-          cmd = "kitty --session";
+          cmd = "kitty";
         }
         {
           key = "t";

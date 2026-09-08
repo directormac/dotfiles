@@ -75,6 +75,7 @@
         nixfmt
         wl-clipboard
         self.packages."${pkgs.system}".kittyfish
+        # self.packages."${pkgs.system}".kittyfishDynamic
       ];
 
       sessionVariables = {
@@ -152,20 +153,11 @@
         "root"
         "networkmanager"
         "wheel"
+        "libvirt"
+        "libvirt-qemu"
+        "kvm"
       ];
-
-      # dconf.settings = {
-      #   "org/gnome/desktop/interface" = {
-      #     color-scheme = "prefer-dark";
-      #   };
-      # };
-
-      # packages = with pkgs; [
-      #   #  thunderbird
-      # ];
     };
-
-    # home-manager.users."artifex" = self.homeModules.artifex;
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_PH.UTF-8";

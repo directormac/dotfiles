@@ -25,9 +25,17 @@
           };
         };
 
+        # kittyfish =
+        #   (inputs.lwrappers.wrapperModules.kitty.apply {
+        #     inherit pkgs;
+        #     imports = [ self.wrappersModules.kitty ];
+        #     shell = lib.getExe self'.packages.fishell;
+        #   }).wrapper;
+
         kittyfish =
           (inputs.lwrappers.wrapperModules.kitty.apply {
             inherit pkgs;
+            dynamicMode = true;
             imports = [ self.wrappersModules.kitty ];
             shell = lib.getExe self'.packages.fishell;
           }).wrapper;

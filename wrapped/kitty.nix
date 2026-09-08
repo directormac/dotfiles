@@ -11,28 +11,42 @@
       ...
     }:
     {
-      options.shell = lib.mkOption {
-        type = lib.types.str;
-        default = "";
+      options = {
+        shell = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+        };
+        dynamicMode = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "If true, use an impure config file from the home directory for hot-reloading.";
+        };
+        dynamicConfigPath = lib.mkOption {
+          type = lib.types.str;
+          default = "$HOME/.dotfiles/config/kitty/kitty.conf";
+        };
       };
+
       config = {
-        args = lib.mkAfter (lib.optionals (config.shell != "") [ config.shell ]);
+        args = lib.mkAfter (
+          lib.optionals config.dynamicMode [
+            "--config"
+            config.dynamicConfigPath
+          ]
+          ++ lib.optionals (config.shell != "") [ config.shell ]
+        );
+
         settings = {
           enable_audio_bell = "no";
-
           font_size = 15;
           font_family = "Fira Mono Nerd Font";
-
           cursor_text_color = "background";
-
-          hide_window_decorations = "yes";
+          # hide_window_decorations = "yes";
           allow_remote_control = "yes";
           shell_integration = "enabled";
-
           cursor_trail = 3;
           cursor_trail_decay = "0.1 0.4";
           cursor_trail_color = "#94e2d5";
-
           map = [
             "alt+1 goto_tab 1"
             "alt+2 goto_tab 2"
@@ -47,19 +61,14 @@
             "ctrl+t new_tab_with_cwd"
             "ctrl+shift+t new_tab"
           ];
-
           background = self.theme.base00;
           foreground = self.theme.base07;
-
           cursor = self.theme.base07;
-
           selection_foreground = self.theme.base02;
           selection_background = self.theme.base01;
-
           active_tab_foreground = self.theme.base0B;
           active_tab_background = self.theme.base03;
           inactive_tab_background = self.theme.base01;
-
           color0 = self.theme.base00;
           color8 = self.theme.base02;
           color1 = self.theme.base08;
@@ -80,6 +89,7 @@
         // lib.optionalAttrs (config.shell != "") {
           inherit (config) shell;
         };
+
       };
     };
 
@@ -87,6 +97,13 @@
     packages.kitty =
       (inputs.lwrappers.wrapperModules.kitty.apply {
         inherit pkgs;
+        imports = [ self.wrappersModules.kitty ];
+      }).wrapper;
+
+    packages.kittyDynamic =
+      (inputs.lwrappers.wrapperModules.kitty.apply {
+        inherit pkgs;
+        dynamicMode = true;
         imports = [ self.wrappersModules.kitty ];
       }).wrapper;
   };
