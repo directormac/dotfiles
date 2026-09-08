@@ -18,6 +18,7 @@
       [Settings]
       gtk-icon-theme-name = ${icon-theme-name}
       gtk-theme-name = ${theme-name}
+      gtk-application-prefer-dark-theme = 1
     '';
   in {
     environment = {
@@ -27,9 +28,6 @@
       };
     };
 
-    environment.variables = {
-      GTK_THEME = theme-name;
-    };
 
     programs = {
       dconf = {
@@ -51,6 +49,12 @@
           };
         };
       };
+    };
+
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      config.common.default = "*";
     };
 
     environment.systemPackages = [

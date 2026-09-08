@@ -13,6 +13,10 @@ end
 _G.cfg = cfg or {}
 _G.cfg.hostname = get_hostname()
 
+-- Check if we are running under UWSM to properly prefix autostart commands
+_G.cfg.is_uwsm = os.getenv("UWSM_SESSION_ID") ~= nil
+_G.cfg.uwsm_prefix = _G.cfg.is_uwsm and "uwsm app -- " or ""
+
 _G.modkey = 'SUPER'
 
 -- APPLICATIONS --

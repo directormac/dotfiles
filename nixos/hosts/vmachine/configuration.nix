@@ -31,12 +31,12 @@
 
     services = {
 
-      displayManager = {
-        autoLogin = {
-          enable = true;
-          user = "artifex";
-        };
-      };
+      # displayManager = {
+      #   autoLogin = {
+      #     enable = true;
+      #     user = "artifex";
+      #   };
+      # };
 
       spice-vdagentd.enable = true;
 

@@ -20,6 +20,8 @@
       programs.hyprland.enable = true;
       programs.hyprland.package = selfpkgs.hyprland;
 
+      # services.displayManager.defaultSession = "hyprland";
+
       preferences.lazyvim.enable = true;
 
       # preferences.autostart = [selfpkgs.quickshellWrapped];
@@ -58,6 +60,10 @@
         sessionVariables = {
           EDITOR = "nvim";
           WLR_NO_HARDWARE_CURSORS = "1";
+          # Force Electron/Chromium apps to use Wayland
+          NIXOS_OZONE_WL = "1";
+          # Force Firefox/Zen to use Wayland natively
+          MOZ_ENABLE_WAYLAND = "1";
         };
 
         shellAliases = {
