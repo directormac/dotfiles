@@ -33,6 +33,7 @@ zshrc = { enabled = true, mode = "activate" }
 
 # [dotfiles](https://mise.jdx.dev/dotfiles.html)
 [dotfiles]
+"~/.face" = "~/.dotfiles/config/.face"
 "~/.zshrc" = "~/.dotfiles/config/zsh/zshrc.zsh"
 "~/.gnupg/gpg-agent.conf" = "~/.dotfiles/config/gnupg/gpg-agent.conf"
 "~/.config/nix/nix.conf" = "~/.dotfiles/config/nix/nix.conf"
