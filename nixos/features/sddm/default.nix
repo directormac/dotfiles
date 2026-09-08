@@ -13,7 +13,6 @@
     }:
 
     let
-
       current = "anime_girl_holding_tea_1080p.mp4";
 
       sddm-astronaut =
@@ -41,6 +40,17 @@
         gst_all_1.gst-plugins-bad
         gst_all_1.gst-plugins-ugly
         gst_all_1.gst-libav
+
+        # Script to easily randomize the wallpaper!
+        (writeShellApplication {
+          name = "random-sddm-wallpaper";
+          text = ''
+            WALLPAPER=$(find ~/.dotfiles/config/wallpapers | sort -R | head -n 1)
+            sed -i "s|current = \".*\";|current = \"$WALLPAPER\";|g" ~/.dotfiles/nixos/features/sddm/default.nix
+            echo "Set SDDM wallpaper to $WALLPAPER"
+            echo "Run your flake rebuild alias to apply!"
+          '';
+        })
       ];
 
       services.displayManager.sddm = {
