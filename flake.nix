@@ -1,9 +1,15 @@
 {
   description = "
     Dendritic nixos configuration.
+
     [Wiki](https://github.com/Doc-Steve/dendritic-design-with-flake-parts/wiki)
+
     [flake.parts](https://flake.parts/index.html)
+
     [wrapper-modules](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html)
+     Uses flake-parts to set up the flake outputs:
+
+    `wrappers`, `wrapperModules` and `packages.*.*`
     ";
 
   inputs = {
@@ -15,13 +21,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
 
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    lwrappers.url = "github:lassulus/wrappers";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    # Extras
     noctalia.url = "github:noctalia-dev/noctalia";
 
     zen-browser = {
@@ -32,7 +34,44 @@
       };
     };
 
+    wshowkeys.url = "github:DreamMaoMao/wshowkeys";
+
+    hjem = {
+      url = "github:feel-co/hjem";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixpkgs-multiverse.url = "github:fzakaria/nixpkgs-multiverse";
+
+    workmux.url = "github:raine/workmux";
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lazyvim.url = "github:pfassina/lazyvim-nix";
   };
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  # outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+
+  # Import all .nix files from current directory except flake.nix recursively
+  outputs =
+    inputs:
+    let
+      inherit (inputs.nixpkgs) lib;
+      inherit (lib.fileset) toList fileFilter;
+
+      isNixModule = file: file.hasExt "nix" && file.name != "flake.nix" && !lib.hasPrefix "_" file.name;
+
+      importTree = path: toList (fileFilter isNixModule path);
+
+      mkFlake = inputs.flake-parts.lib.mkFlake { inherit inputs; };
+    in
+    mkFlake { imports = importTree ./.; };
+
 }
