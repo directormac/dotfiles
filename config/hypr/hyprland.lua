@@ -29,9 +29,7 @@ local apps = cfg.applications
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
-if cfg.hostname == 'super' then
-  hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
-end
+if cfg.hostname == 'super' then hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1') end
 hl.on('hyprland.start', function()
   hl.exec_cmd('dms run')
   -- hl.exec_cmd('waybar -c ~/.config/waybar/config-hypr.jsonc')

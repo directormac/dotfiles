@@ -96,10 +96,20 @@
       "name": "Main Bar",
       "enabled": true,
       "position": 0,
-      "screenPreferences": ["all"],
+      "screenPreferences": [
+        "all"
+      ],
       "showOnLastDisplay": true,
-      "leftWidgets": ["launcherButton", "workspaceSwitcher", "focusedWindow"],
-      "centerWidgets": ["clock", "music", "weather"],
+      "leftWidgets": [
+        "launcherButton",
+        "workspaceSwitcher",
+        "focusedWindow"
+      ],
+      "centerWidgets": [
+        "clock",
+        "music",
+        "weather"
+      ],
       "rightWidgets": [
         "systemTray",
         "clipboard",
