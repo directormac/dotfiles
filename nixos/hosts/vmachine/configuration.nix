@@ -108,6 +108,7 @@
         # Wrapped
         self.packages."${pkgs.system}".kittyfish
         self.packages."${pkgs.system}".my-vim
+        self.packages."${pkgs.system}".noctalia
       ];
 
       sessionVariables = {
@@ -179,6 +180,23 @@
           ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/yazi";
 
           ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
+
+          ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
+
+          ".config/wallpapers".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/wallpapers";
+        };
+
+        systemd.user.services.spice-vdagent = {
+          Unit = {
+            Description = "Spice guest desktop agent";
+            PartOf = [ "graphical-session.target" ];
+          };
+          Install = {
+            WantedBy = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart = "${pkgs.spice-vdagent}/bin/spice-vdagent -x";
+          };
         };
       };
 
