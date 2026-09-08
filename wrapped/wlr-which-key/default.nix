@@ -46,6 +46,21 @@
           desc = "Zen Browser";
           cmd = "zen-beta";
         }
+        {
+          key = "z";
+          desc = "Zen Browser";
+          cmd = "zen-beta";
+        }
+        {
+          key = "k";
+          desc = "Kitty";
+          cmd = "kitty";
+        }
+        {
+          key = "t";
+          desc = "Ghostty";
+          cmd = "ghostty";
+        }
         # {
         #   key = "d";
         #   desc = "Discord";

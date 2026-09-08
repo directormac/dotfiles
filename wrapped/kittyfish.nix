@@ -5,6 +5,8 @@
   ...
 }:
 {
+
+
   perSystem =
     {
       pkgs,
@@ -13,7 +15,7 @@
     }:
     {
       packages = {
-        # My primary flake terminal
+
         kittyfish =
           (inputs.lwrappers.wrapperModules.kitty.apply {
             inherit pkgs;
@@ -21,7 +23,6 @@
             shell = lib.getExe self'.packages.environment;
           }).wrapper;
 
-        # Fish kitty
         environment = inputs.lwrappers.lib.wrapPackage {
           inherit pkgs;
           package = self'.packages.fish;
@@ -60,6 +61,8 @@
             EDITOR = lib.getExe pkgs.neovim;
           };
         };
+
+
 
         nix-check-bin = pkgs.writeShellApplication {
           name = "nix-check-bin";
