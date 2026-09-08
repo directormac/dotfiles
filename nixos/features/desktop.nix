@@ -28,7 +28,21 @@
           foot
           ghostty
           wl-clipboard
+
+          # General apps
           pavucontrol
+          nautilus
+
+          # Multimedia
+          # mpd
+          rmpc
+          mpv
+          feh
+          evince
+          galculator
+          foliate
+          file-roller
+          vlc
 
           # Wrapped
           selfpkgs.kittyfish
@@ -55,7 +69,7 @@
       ];
 
       fonts.fontconfig.defaultFonts = {
-        serif = [ "Noto Sans" ];
+        serif = [ "Noto Serif" ];
         sansSerif = [ "Noto Sans" ];
         monospace = [ "Fira Mono Nerd Font" ];
       };
