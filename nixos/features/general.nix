@@ -62,6 +62,10 @@
         yazi
         zoxide
 
+        television
+        tealdeer
+        sesh
+
         tmux
 
         # wrapped

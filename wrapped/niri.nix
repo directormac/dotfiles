@@ -268,13 +268,18 @@
               {
                 matches = [
                   { app-id = "startup.fastfetch"; }
+                ];
+                open-maximized = true;
+              }
+              {
+                matches = [
                   { app-id = ".*floating.*"; }
                 ];
                 open-floating = true;
               }
               {
                 matches = [
-                  { app-id = "zen$"; }
+                  { app-id = "zen-$"; }
                 ];
                 open-maximized = true;
               }
