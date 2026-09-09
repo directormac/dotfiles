@@ -189,6 +189,8 @@ hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
 hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
 hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
 
+hl.bind(modkey .. ' + Escape', hl.dsp.exec_cmd('dms ipc call hypr toggleOverview'))
+
 -- https://danklinux.com/docs/dankmaterialshell/cli-keybinds-cheatsheets
 hl.bind(modkey .. ' + SHIFT + SLASH', hl.dsp.exec_cmd('dms ipc call keybinds toggle hyprland'))
 hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc powermenu toggle'))

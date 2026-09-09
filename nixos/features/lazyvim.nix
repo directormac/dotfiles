@@ -1,76 +1,128 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.lazyvim = { pkgs, config, lib, ... }: {
-    options.preferences.lazyvim = {
-      enable = lib.mkEnableOption "LazyVim configuration";
-    };
+{ inputs, ... }: {
+  flake.nixosModules.lazyvim =
+    {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
+    {
+      options.preferences.lazyvim = {
+        enable = lib.mkEnableOption "LazyVim configuration";
+      };
 
-    config = lib.mkIf config.preferences.lazyvim.enable {
-      home-manager.users.${config.preferences.user.name} = {
-        imports = [ inputs.lazyvim.homeManagerModules.default ];
+      config = lib.mkIf config.preferences.lazyvim.enable {
+        home-manager.users.${config.preferences.user.name} = {
+          imports = [ inputs.lazyvim.homeManagerModules.default ];
 
-        # 2. Configure lazyvim-nix
-        programs.lazyvim = {
-          enable = true;
-          appName = "lvim";
+          # See  https://github.com/pfassina/lazyvim-nix/wiki/Troubleshooting
+          programs.lazyvim = {
+            enable = true;
+            appName = "lvim";
 
-          extras = {
-            lang = {
-              nix.enable = true;
-              elixir.enable = true;
-              svelte.enable = true;
+            # See https://github.com/pfassina/lazyvim-nix/wiki/Plugin-Sourcing-Strategy#plugin-sourcing-strategy
+            pluginSource = "nixpkgs";
+            ignoreBuildNotifications = true; # Suppress build-time warnings
 
-              json.enable = true;
-              toml.enable = true;
-              markdown.enable = true;
+            # See https://github.com/pfassina/lazyvim-nix/blob/main/data/extras.json
+            extras = {
 
-              typescript = {
-                vtsls.enable = true;
-                oxc.enable = true;
+              coding = {
+                blink = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+                };
+              };
+
+              lang = {
+                # nix.enable = true;
+
+                elixir = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+
+                };
+
+                svelte = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+
+                };
+
+                json = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+
+                };
+
+                toml = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+
+                };
+
+                markdown = {
+                  enable = true;
+                  installDependencies = true;
+                  installRuntimeDependencies = true;
+
+                };
+
+                typescript = {
+                  vtsls.enable = true;
+                  oxc = {
+                    enable = true;
+                    installDependencies = true;
+                    installRuntimeDependencies = true;
+                  };
+                };
               };
             };
+
+            extraPackages = with pkgs; [
+              vimPlugins.blink-cmp-git
+
+              # git
+              ripgrep
+              fd
+              fzf
+              # lazygit
+              # curl
+
+              svelte-language-server
+              svelte-check
+
+              typescript
+
+              nil
+              nixd
+            ];
+
+            # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
+            treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+              elixir
+              json
+              toml
+              lua
+              nix
+              svelte
+              typescript
+            ];
+
+            configFiles = ../../config/lvim;
           };
 
-          extraPackages = with pkgs; [
-            taplo
-            marksman
-            markdownlint-cli2
-
-            svelte-language-server
-            svelte-check
-
-            elixir-ls
-            beam29Packages.expert
-
-            typescript
-            oxlint
-            tsgolint
-            oxfmt
-
-            nil
-            nixd
+          home.packages = [
+            (pkgs.writeShellScriptBin "lvim" ''
+              exec env NVIM_APPNAME=lvim nvim "$@"
+            '')
           ];
-
-          treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
-            elixir
-            json
-            toml
-            lua
-            nix
-            svelte
-            typescript
-          ];
-
-          # 3. Point to your config/lvim directory using a relative Nix path literal.
-          configFiles = ../../config/lvim;
         };
-
-        # 4. Create the global `lvim` binary
-        home.packages = [
-          (pkgs.writeShellScriptBin "lvim" ''
-            exec env NVIM_APPNAME=lvim nvim "$@"
-          '')
-        ];
       };
     };
-  };
 }

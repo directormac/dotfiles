@@ -18,6 +18,12 @@
   "dankHooks": {
     "enabled": true
   },
+  "dankPomodoroTimer": {
+    "enabled": true
+  },
+  "dankActions": {
+    "enabled": true
+  },
   "quickCapture": {
     "enabled": true
   },
@@ -55,11 +61,6 @@
       }
     ],
     "audioBackend": "auto"
-  },
-  "dankPomodoroTimer": {
-    "enabled": true
-  },
-  "dankActions": {
-    "enabled": true
   }
 }
+

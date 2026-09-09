@@ -7,7 +7,6 @@
   flake.nixosModules.git =
     {
       pkgs,
-      lib,
       ...
     }:
     {
@@ -23,8 +22,6 @@
   perSystem =
     {
       pkgs,
-      lib,
-      self',
       ...
     }:
     {

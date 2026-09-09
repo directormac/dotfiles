@@ -104,7 +104,7 @@
       };
 
       home-manager.users.${config.preferences.user.name} =
-        { config, lib, ... }:
+        { config, ... }:
         let
           # Define where your flake lives on the live filesystem
           flakePath = "${config.home.homeDirectory}/.dotfiles";

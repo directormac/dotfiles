@@ -39,7 +39,6 @@
       packages.environment = inputs.wrappers.wrappers.zsh.wrap {
         inherit pkgs;
         runtimePkgs = [
-          pkgs.devenv
           pkgs.fzf
           pkgs.zplug
           pkgs.zsh-fzf-tab
