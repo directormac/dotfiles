@@ -84,7 +84,7 @@
           "libvirt"
           "libvirt-qemu"
           "networkmanager"
-          # "root"
+          "root"
           "wheel"
         ];
         shell = selfpkgs.environment;
@@ -107,58 +107,11 @@
           flakePath = "${config.home.homeDirectory}/.dotfiles";
         in
         {
-
-          # Removed lazyvim configuration, now in its own module.
-
-          home.stateVersion = "26.05";
+          # Keep general for cli that can work without displays.
           home.file = {
-
-            ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/ghostty";
-
-            ".face".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/.face";
-
-            ".config/kitty/kitty.conf".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/kitty/kitty.conf";
-
             ".config/bat".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/bat";
-
-            # ".config/lvim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/lvim";
-
             ".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/vim";
-
             ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/yazi";
-
-            ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
-
-            ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
-            ".config/cosmic".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/cosmic";
-            ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/hypr";
-
-            # DankMaterialShell Config
-            #
-            ".config/DankMaterialShell/themes".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/themes";
-
-            ".config/DankMaterialShell/plugin_settings.json".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/plugin_settings.json";
-
-            ".config/DankMaterialShell/settings.json".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/settings.json";
-
-            ".config/wallpapers".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/wallpapers";
-          };
-
-          systemd.user.services.spice-vdagent = {
-            Unit = {
-              Description = "Spice guest desktop agent";
-              PartOf = [ "graphical-session.target" ];
-            };
-            Install = {
-              WantedBy = [ "graphical-session.target" ];
-            };
-            Service = {
-              ExecStart = "${pkgs.spice-vdagent}/bin/spice-vdagent -x";
-            };
           };
         };
 

@@ -6,6 +6,7 @@
     in
     {
       imports = [
+        inputs.home-manager.nixosModules.default
         self.nixosModules.gtk
         self.nixosModules.lazyvim
         self.nixosModules.wshowkeys
@@ -109,18 +110,40 @@
 
       programs.firefox.enable = true;
 
-      programs.dconf = {
-        enable = true;
-        profiles.user.databases = [
-          {
-            settings = {
-              "org/gnome/desktop/interface" = {
-                color-scheme = "prefer-dark";
-              };
-            };
-          }
-        ];
-      };
+      home-manager.users.${config.preferences.user.name} =
+        { config, lib, ... }:
+        let
+          # Define where your flake lives on the live filesystem
+          flakePath = "${config.home.homeDirectory}/.dotfiles";
+        in
+        {
+
+          wayland.windowManager.hyprland.systemd.enable = false;
+
+          # Dotfiles here for desktop related apps
+          home.file = {
+            ".face".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/.face";
+            ".config/wallpapers".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/wallpapers";
+
+            # Apps
+            ".config/ghostty".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/ghostty";
+            ".config/kitty/kitty.conf".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/kitty/kitty.conf";
+
+            # --- Wayland things ---
+            ".config/noctalia".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
+            ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
+            ".config/cosmic".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/cosmic";
+            ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/hypr";
+            ".config/DankMaterialShell/themes".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/themes";
+            ".config/DankMaterialShell/plugin_settings.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/plugin_settings.json";
+            ".config/DankMaterialShell/settings.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/settings.json";
+
+          };
+        };
 
       # hardware = {
       #   enableAllFirmware = true;
