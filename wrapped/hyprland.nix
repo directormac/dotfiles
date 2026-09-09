@@ -9,6 +9,9 @@
       self.nixosModules.dms
     ];
 
+    # Enable UWSM globally or via the compositor option
+    programs.uwsm.enable = true;
+
     programs.hyprland = {
       enable = true;
       withUWSM = true;

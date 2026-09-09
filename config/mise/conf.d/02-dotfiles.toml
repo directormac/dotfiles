@@ -50,6 +50,9 @@ zshrc = { enabled = true, mode = "activate" }
 "~/.config/alacritty" = "~/.dotfiles/config/alacritty"
 "~/.config/bat" = "~/.dotfiles/config/bat"
 "~/.config/btop" = { source = "~/.dotfiles/config/btop", exclude = ["btop.log"] }
+"~/.config/DankMaterialShell" = { source = "~/.dotfiles/config/DankMaterialShell", exclude = [
+  "plugins",
+] }
 "~/.config/ghostty" = "~/.dotfiles/config/ghostty"
 "~/.config/fuzzel" = "~/.dotfiles/config/fuzzel"
 "~/.config/gtk-3.0" = "~/.dotfiles/config/gtk-3.0"
