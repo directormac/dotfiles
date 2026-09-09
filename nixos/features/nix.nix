@@ -36,6 +36,7 @@
       devenv
     ];
 
+    # https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md#configuration
     nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   };
 }

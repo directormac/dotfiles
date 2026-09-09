@@ -1,4 +1,5 @@
 {
+
   description = "
     Dendritic nixos configuration.
 
@@ -17,10 +18,12 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # [Wrapper flake-parts](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html#flake-parts)
+    #
     wrappers.url = "github:nix-community/nix-wrapper-modules";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
 
+    # https://viperml.codeberg.page/wrapper-manager/cookbook.html
     lwrappers.url = "github:lassulus/wrappers";
 
     nix-index-database = {
