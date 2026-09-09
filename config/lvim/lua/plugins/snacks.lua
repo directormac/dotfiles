@@ -114,6 +114,16 @@ return {
         end,
         desc = 'Smart picker',
       },
+      {
+        '<leader>ff',
+        function()
+          Snacks.picker.files({
+            title = 'File Picker',
+            layout = { hidden = { 'preview' } },
+          })
+        end,
+        desc = 'Find Files',
+      },
       { '<leader>z', function() Snacks.zen() end, desc = 'Toggle Zen Mode' },
       { '<leader>Z', function() Snacks.zen.zoom() end, desc = 'Toggle Zoom' },
       { '<leader>.', function() Snacks.scratch() end, desc = 'Toggle Scratch Buffer' },

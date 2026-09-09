@@ -4,5 +4,62 @@
   },
   "dankGifSearch": {
     "enabled": true
+  },
+  "dankKDEConnect": {
+    "enabled": true,
+    "selectedDeviceId": ""
+  },
+  "dankHyprlandWindows": {
+    "enabled": true
+  },
+  "dankStickerSearch": {
+    "enabled": true
+  },
+  "dankHooks": {
+    "enabled": true
+  },
+  "quickCapture": {
+    "enabled": true
+  },
+  "amdGpuMonitor": {
+    "enabled": true,
+    "popoutStyle": "default",
+    "processSort": "gfx"
+  },
+  "nixPackageRunner": {
+    "enabled": true
+  },
+  "colorPickerDms": {
+    "enabled": true
+  },
+  "enderPulse": {
+    "enabled": true,
+    "variants": [
+      {
+        "id": "builtin_output",
+        "name": "System output",
+        "audioTarget": "system",
+        "audioBackend": "auto",
+        "customAudioSource": "",
+        "icon": "volume_up",
+        "description": "EnderPulse audio source: System output"
+      },
+      {
+        "id": "builtin_microphone",
+        "name": "Microphone input",
+        "audioTarget": "microphone",
+        "audioBackend": "auto",
+        "customAudioSource": "",
+        "icon": "mic",
+        "description": "EnderPulse audio source: Microphone input"
+      }
+    ],
+    "audioBackend": "auto"
+  },
+  "dankPomodoroTimer": {
+    "enabled": true
+  },
+  "dankActions": {
+    "enabled": true
   }
 }

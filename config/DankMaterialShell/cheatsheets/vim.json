@@ -1,0 +1,45 @@
+{
+  "title": "Vim Keybinds",
+  "provider": "vim",
+  "binds": {
+    "Mode": [
+      {
+        "key": "i",
+        "desc": "Enter insert mode",
+        "subcat": "Insert"
+      },
+      {
+        "key": "Esc",
+        "desc": "Exit insert mode",
+        "subcat": "Normal"
+      }
+    ],
+    "Editing": [
+      {
+        "key": "dd",
+        "desc": "Delete current line",
+        "subcat": "Delete"
+      },
+      {
+        "key": "yy",
+        "desc": "Copy current line",
+        "subcat": "Yank"
+      },
+      {
+        "key": "p",
+        "desc": "Paste after cursor",
+        "subcat": "Paste"
+      }
+    ],
+    "Navigation": [
+      {
+        "key": "gg",
+        "desc": "Go to first line"
+      },
+      {
+        "key": "G",
+        "desc": "Go to last line"
+      }
+    ]
+  }
+}

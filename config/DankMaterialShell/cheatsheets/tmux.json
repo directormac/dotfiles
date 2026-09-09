@@ -1,0 +1,51 @@
+{
+  "title": "tmux Keybinds",
+  "provider": "tmux",
+  "binds": {
+    "Sessions": [
+      {
+        "key": "Ctrl+A, $",
+        "desc": "Rename session"
+      },
+      {
+        "key": "Ctrl+A, d",
+        "desc": "Detach from session"
+      }
+    ],
+    "Windows": [
+      {
+        "key": "Ctrl+A, c",
+        "desc": "Create new window"
+      },
+      {
+        "key": "Ctrl+A, ,",
+        "desc": "Rename window"
+      },
+      {
+        "key": "Ctrl+A, n",
+        "desc": "Next window"
+      },
+      {
+        "key": "Ctrl+A, p",
+        "desc": "Previous window"
+      }
+    ],
+    "Panes": [
+      {
+        "key": "Ctrl+A, %",
+        "desc": "Split vertically",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+A, \"",
+        "desc": "Split horizontally",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+A, x",
+        "desc": "Close pane",
+        "subcat": "Management"
+      }
+    ]
+  }
+}

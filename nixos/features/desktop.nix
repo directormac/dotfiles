@@ -110,6 +110,16 @@
         let
           # Define where your flake lives on the live filesystem
           flakePath = "${config.home.homeDirectory}/.dotfiles";
+
+          linkDank =
+            name: type:
+            if name == "plugins" then
+              { }
+            else
+              {
+                ".config/DankMaterialShell/${name}".source =
+                  config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/${name}";
+              };
         in
         {
 
@@ -130,14 +140,17 @@
             ".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/niri";
             ".config/cosmic".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/cosmic";
             ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/hypr";
-            ".config/DankMaterialShell/themes".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/themes";
-            ".config/DankMaterialShell/plugin_settings.json".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/plugin_settings.json";
-            ".config/DankMaterialShell/settings.json".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/settings.json";
 
-          };
+            # ".config/DankMaterialShell/themes".source =
+            #   config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/themes";
+            # ".config/DankMaterialShell/plugin_settings.json".source =
+            #   config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/plugin_settings.json";
+            # ".config/DankMaterialShell/settings.json".source =
+            #   config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/settings.json";
+
+          }
+          # This merges the filtered directory directly into your home.file
+          // lib.concatMapAttrs linkDank (builtins.readDir ../../config/DankMaterialShell);
         };
 
       # hardware = {
