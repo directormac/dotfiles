@@ -12,10 +12,21 @@
 -- https://wiki.hypr.land/configuring/code-snippets/
 
 require('config')
-require('monitors')
-require('bindings')
-require('lookandfeel')
-require('rules')
+
+-------------------------------
+---- ENVIRONMENT VARIABLES ----
+-------------------------------
+
+-- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
+
+hl.env('XCURSOR_SIZE', '24')
+hl.env('HYPRCURSOR_SIZE', '24')
+hl.env('QT_QPA_PLATFORMTHEME', 'qt6ct')
+hl.env('XDG_MENU_PREFIX', 'hyprland-')
+if cfg.hostname == 'super' then
+  -- https://wiki.hypr.land/configuring/extra/multi-gpu/
+  hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
+end
 
 -- Set programs that you use
 local apps = cfg.applications
@@ -29,8 +40,10 @@ local apps = cfg.applications
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
-if cfg.hostname == 'super' then hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1') end
+
 hl.on('hyprland.start', function()
+  hl.exec_cmd('dbus-update-activation-environment --systemd --all')
+  hl.exec_cmd('systemctl --user start hyprland-session.target')
   hl.exec_cmd('dms run')
   -- hl.exec_cmd('waybar -c ~/.config/waybar/config-hypr.jsonc')
   -- hl.exec_cmd('hyprpaper & hyprpm reload -n')
@@ -42,34 +55,17 @@ hl.on('hyprland.start', function()
 end)
 
 -------------------------------
----- ENVIRONMENT VARIABLES ----
+---- IMPORT MODULES ----
 -------------------------------
 
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
-
-hl.env('XCURSOR_SIZE', '24')
-hl.env('HYPRCURSOR_SIZE', '24')
-
------------------------
------ PERMISSIONS -----
------------------------
-
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Permissions/
--- Please note permission changes here require a Hyprland restart and are not applied on-the-fly
--- for security reasons
-
--- hl.config({
---   ecosystem = {
---     enforce_permissions = true,
---   },
--- })
-
--- hl.permission("/usr/(bin|local/bin)/grim", "screencopy", "allow")
--- hl.permission("/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", "screencopy", "allow")
--- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
+require('monitors')
+require('bindings')
+require('lookandfeel')
+require('rules')
 
 -- DMS Include Configs
 require('dms.binds')
 require('dms.binds-user')
 require('dms.layout')
 require('dms.windowrules')
+require('dms.outputs')

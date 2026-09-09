@@ -1,6 +1,21 @@
 {
+  "currentThemeName": "custom",
   "currentThemeCategory": "registry",
   "customThemeFile": "/home/artifex/.config/DankMaterialShell/themes/catppuccin/theme.json",
+  "registryThemeVariants": {
+    "catppuccin": {
+      "dark": {
+        "flavor": "mocha",
+        "accent": "blue"
+      }
+    }
+  },
+  "popupTransparency": 0.96,
+  "floatingWindowSyncGlobal": false,
+  "floatingWindowTransparency": 0.96,
+  "widgetBackgroundColor": "custom",
+  "widgetBackgroundCustomColor": "#00ffffff",
+  "widgetBackgroundCustomStrength": 1,
   "widgetColorMode": "colorful",
   "cornerRadius": 12,
   "hyprlandLayoutGapsOverride": -2,
@@ -60,15 +75,17 @@
       "width": 50
     }
   ],
-  "showWorkspaceIndex": true,
+  "showWorkspaceName": true,
   "showWorkspaceApps": true,
-  "workspaceAppIconSizeOffset": 2,
+  "workspaceAppIconSizeOffset": 5,
   "groupActiveWorkspaceApps": true,
+  "workspaceFocusedBorderEnabled": true,
   "clockDateFormat": "dddd, MMMM d",
   "spotlightSectionViewModes": {
     "apps": "list"
   },
   "launcherUseOverlayLayer": true,
+  "networkPreference": "ethernet",
   "cursorSettings": {
     "theme": "System Default",
     "size": 24,
@@ -86,10 +103,14 @@
     }
   },
   "notificationOverlayEnabled": true,
+  "lockPamExternallyManaged": true,
+  "lockScreenNotificationMode": 2,
+  "lockScreenFontFamily": "FiraCode Nerd Font",
   "notificationCompactMode": true,
   "osdPosition": 3,
   "osdMediaPlaybackEnabled": true,
   "osdPowerProfileEnabled": true,
+  "updaterCheckOnStart": true,
   "barConfigs": [
     {
       "id": "default",
@@ -101,11 +122,14 @@
       ],
       "showOnLastDisplay": true,
       "leftWidgets": [
-        "launcherButton",
         "workspaceSwitcher",
         "focusedWindow"
       ],
       "centerWidgets": [
+        {
+          "id": "enderPulse:builtin_output",
+          "enabled": true
+        },
         "clock",
         "music",
         "weather"
@@ -116,6 +140,10 @@
         "notificationButton",
         {
           "id": "network_speed_monitor",
+          "enabled": true
+        },
+        {
+          "id": "amdGpuMonitor",
           "enabled": true
         },
         "cpuUsage",
@@ -136,7 +164,11 @@
           "id": "battery",
           "enabled": false
         },
-        "controlCenterButton"
+        "controlCenterButton",
+        {
+          "id": "dankKDEConnect",
+          "enabled": true
+        }
       ],
       "spacing": 0,
       "innerPadding": -8,
@@ -158,7 +190,7 @@
       "gothCornerRadiusValue": 12,
       "borderEnabled": false,
       "borderColor": "surfaceText",
-      "borderOpacity": 1,
+      "borderOpacity": 0.14,
       "borderThickness": 1,
       "widgetOutlineEnabled": false,
       "widgetOutlineColor": "surfaceText",
@@ -178,14 +210,14 @@
       "useOverlayLayer": false,
       "scrollEnabled": true,
       "scrollXBehavior": "column",
-      "scrollYBehavior": "none",
+      "scrollYBehavior": "workspace",
       "shadowIntensity": 0,
       "shadowOpacity": 60,
       "shadowColorMode": "default",
       "shadowCustomColor": "#000000",
       "clickThrough": false,
       "hoverPopouts": true,
-      "hoverPopoutDelay": 150
+      "hoverPopoutDelay": 100
     }
   ],
   "desktopClockCustomColor": {
@@ -228,6 +260,13 @@
       "trigger": "qrg"
     }
   },
+  "clipboardVisibleEntryActions": [
+    "pin",
+    "edit",
+    "delete",
+    "copy",
+    "paste"
+  ],
   "launcherPluginVisibility": {
     "dms_settings_search": {
       "allowWithoutTrigger": true

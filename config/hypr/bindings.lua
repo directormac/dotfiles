@@ -83,17 +83,10 @@ closeWindowBind:set_enabled(false)
 hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close())
 hl.bind(modkey .. ' + C', hl.dsp.window.center())
 hl.bind(modkey .. ' + P', hl.dsp.window.pseudo())
+
 hl.bind(modkey .. ' + R', hl.dsp.window.float())
-
--- hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized' }))
--- hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen' }))
-
-hl.bind(modkey .. ' + CTRL + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'set' }))
-hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }))
-hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }))
-
 hl.bind(
-  modkey .. ' + SPACE',
+  modkey .. ' + SHIFT + R',
   function()
     hl.dispatch(hl.dsp.window.cycle_next({
       floating = not hl.get_active_window().floating,
@@ -101,6 +94,13 @@ hl.bind(
   end,
   { description = 'Switch focus between tiled and floating windows' }
 )
+
+-- hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized' }))
+-- hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen' }))
+
+hl.bind(modkey .. ' + CTRL + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'set' }))
+hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }))
+hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }))
 
 -- Scroll through existing workspaces with modkey + scroll
 hl.bind(modkey .. ' + mouse_down', hl.dsp.focus({ workspace = 'e+1' }))
@@ -189,6 +189,8 @@ hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
 hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
 hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
 
+-- https://danklinux.com/docs/dankmaterialshell/cli-keybinds-cheatsheets
+hl.bind(modkey .. ' + SHIFT + SLASH', hl.dsp.exec_cmd('dms ipc call keybinds toggle hyprland'))
 hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc powermenu toggle'))
 
 -- === Screenshots ===

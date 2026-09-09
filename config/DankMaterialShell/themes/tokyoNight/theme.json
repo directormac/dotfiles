@@ -1,0 +1,129 @@
+{
+  "id": "tokyoNight",
+  "name": "Tokyo Night",
+  "version": "1.0.0",
+  "author": "Avenge Media",
+  "description": "Popular Tokyo Night color scheme with vibrant blues and purples",
+  "dark": {
+    "primary": "#7aa2f7",
+    "primaryText": "#16161e",
+    "primaryContainer": "#7dcfff",
+    "secondary": "#bb9af7",
+    "surface": "#1a1b26",
+    "surfaceText": "#73daca",
+    "surfaceVariant": "#2f3549",
+    "surfaceVariantText": "#cbccd1",
+    "surfaceTint": "#7aa2f7",
+    "background": "#16161e",
+    "backgroundText": "#d5d6db",
+    "outline": "#787c99",
+    "surfaceContainer": "#2f3549",
+    "surfaceContainerHigh": "#444b6a",
+    "error": "#f7768e",
+    "warning": "#ff9e64",
+    "info": "#7dcfff"
+  },
+  "light": {
+    "primary": "#2e7de9",
+    "primaryText": "#d0d5e3",
+    "primaryContainer": "#007197",
+    "secondary": "#9854f1",
+    "surface": "#e1e2e7",
+    "surfaceText": "#387068",
+    "surfaceVariant": "#c4c8da",
+    "surfaceVariantText": "#1a1b26",
+    "surfaceTint": "#2e7de9",
+    "background": "#cbccd1",
+    "backgroundText": "#1a1b26",
+    "outline": "#4c505e",
+    "surfaceContainer": "#dfe0e5",
+    "surfaceContainerHigh": "#9699a3",
+    "error": "#f52a65",
+    "warning": "#b15c00",
+    "info": "#007197"
+  },
+  "wcag": {
+    "level": "fail",
+    "dark": {
+      "level": "AA",
+      "minRatio": 4.83,
+      "worstPair": [
+        "primary",
+        "surfaceContainer"
+      ],
+      "body": {
+        "level": "AA",
+        "minRatio": 5.13,
+        "worstPair": [
+          "surfaceText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "AA",
+        "minRatio": 4.83,
+        "worstPair": [
+          "primary",
+          "surfaceContainer"
+        ]
+      },
+      "nonText": {
+        "level": "AA",
+        "minRatio": 4.6,
+        "worstPair": [
+          "error",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Dark",
+          "mode": "dark",
+          "level": "AA",
+          "bodyLevel": "AA"
+        }
+      ]
+    },
+    "light": {
+      "level": "fail",
+      "minRatio": 2,
+      "worstPair": [
+        "surfaceText",
+        "surfaceContainerHigh"
+      ],
+      "body": {
+        "level": "fail",
+        "minRatio": 2,
+        "worstPair": [
+          "surfaceText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "fail",
+        "minRatio": 2.74,
+        "worstPair": [
+          "primaryText",
+          "primary"
+        ]
+      },
+      "nonText": {
+        "level": "fail",
+        "minRatio": 2.95,
+        "worstPair": [
+          "error",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Light",
+          "mode": "light",
+          "level": "fail",
+          "bodyLevel": "fail"
+        }
+      ]
+    }
+  },
+  "sourceDir": "tokyonight"
+}

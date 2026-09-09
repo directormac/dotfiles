@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "configurations": [
+    {
+      "id": "auto_7cd4494c",
+      "name": "",
+      "outputs": {
+        "DP-2": {
+          "mode": "2560x1440@164.958",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "scale": 1,
+          "transform": "Normal",
+          "vrr": true,
+          "disabled": false,
+          "hyprland": {
+            "vrrFullscreenOnly": true
+          }
+        },
+        "DP-3": {
+          "mode": "2560x1440@143.972",
+          "position": {
+            "x": 2560,
+            "y": 0
+          },
+          "scale": 1,
+          "transform": "Normal",
+          "vrr": true,
+          "disabled": false,
+          "hyprland": {
+            "vrrFullscreenOnly": true
+          }
+        }
+      }
+    }
+  ]
+}

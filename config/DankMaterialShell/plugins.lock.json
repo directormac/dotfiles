@@ -1,15 +1,65 @@
 {
   "lockfileVersion": 1,
   "plugins": {
+    "amdGpuMonitor": {
+      "repo": "https://github.com/navidagz/dms-amd-gpu-monitor",
+      "commit": "d0f87efb534b86dc07107288c5f86cfeb7ad9cd2"
+    },
+    "colorPickerDms": {
+      "repo": "https://github.com/bernardopg/color-picker-dms",
+      "commit": "71b99e446de0e4a37ac7fcae1dc8cb571da3d7d6"
+    },
+    "dankActions": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankActions",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
     "dankGifSearch": {
       "repo": "https://github.com/AvengeMedia/dms-plugins",
       "path": "DankGifSearch",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankHooks": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankHooks",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankHyprlandWindows": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankHyprlandWindows",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankKDEConnect": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankKDEConnect",
       "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
     },
     "dankLauncherKeys": {
       "repo": "https://github.com/AvengeMedia/dms-plugins",
       "path": "DankLauncherKeys",
       "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankPomodoroTimer": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankPomodoroTimer",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankStickerSearch": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankStickerSearch",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "enderPulse": {
+      "repo": "https://github.com/iquantecho/enderpulse",
+      "commit": "7b908fa130a2d3c5cd43e2bfdcb067ee77735c42"
+    },
+    "nixPackageRunner": {
+      "repo": "https://github.com/iahccc/NixPackageRunner",
+      "commit": "829ad93c15b7c0ec82a6d7483728029037442601"
+    },
+    "quickCapture": {
+      "repo": "https://github.com/hthienloc/dms-quick-capture",
+      "commit": "f908845cb949be182257f77d88f21c53c3c38bce"
     }
   }
 }
