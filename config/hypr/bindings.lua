@@ -82,8 +82,8 @@ closeWindowBind:set_enabled(false)
 -- hl.bind(modkey .. ' + ALT + Q', closeWindowBind:set_enabled(true))
 hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close())
 hl.bind(modkey .. ' + C', hl.dsp.window.center())
--- hl.bind(modkey .. ' + P', hl.dsp.window.pseudo())
-hl.bind(modkey .. ' + SPACE', hl.dsp.window.float())
+hl.bind(modkey .. ' + P', hl.dsp.window.pseudo())
+hl.bind(modkey .. ' + R', hl.dsp.window.float())
 
 -- hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized' }))
 -- hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen' }))
@@ -186,7 +186,10 @@ hl.bind(modkey .. ' + RETURN', hl.dsp.exec_cmd(terminal))
 hl.bind(modkey .. ' + SHIFT + RETURN', hl.dsp.exec_cmd(terminal, cfg.floating_centered_wr))
 hl.bind(modkey .. ' + E', hl.dsp.exec_cmd(fileManager, cfg.floating_centered_wr))
 hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
-hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
+hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
+hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
+
+hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc powermenu toggle'))
 
 -- === Screenshots ===
 hl.bind('Print', hl.dsp.exec_cmd('dms screenshot'))
@@ -194,7 +197,7 @@ hl.bind('CTRL + Print', hl.dsp.exec_cmd('dms screenshot full'))
 hl.bind('ALT + Print', hl.dsp.exec_cmd('dms screenshot window'))
 
 -- === Display Profiles ===
-hl.bind('SUPER + P', hl.dsp.exec_cmd('dms ipc outputs cycleProfile'))
+-- hl.bind('SUPER + P', hl.dsp.exec_cmd('dms ipc outputs cycleProfile'))
 
 -- === System Controls ===
 -- hl.bind('SUPER + SHIFT + P', hl.dsp.dpms({ action = 'toggle' }))

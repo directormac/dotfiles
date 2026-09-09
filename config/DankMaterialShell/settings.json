@@ -87,7 +87,7 @@
   },
   "notificationOverlayEnabled": true,
   "notificationCompactMode": true,
-  "osdPosition": 0,
+  "osdPosition": 3,
   "osdMediaPlaybackEnabled": true,
   "osdPowerProfileEnabled": true,
   "barConfigs": [

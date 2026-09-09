@@ -76,8 +76,8 @@
         zshrc.content = ''
           export LS_COLORS="$(${lib.getExe pkgs.vivid} generate catppuccin-mocha)"
           export EDITOR=nvim
-          export TERMINAL=ghostty
-          
+          export TERMINAL="${lib.getExe self'.packages.terminal}"
+
           # fzf config...
           FZF_COMPLETION_TRIGGER='**'
           FZF_COMPLETION_OPTS='--border --info=inline'

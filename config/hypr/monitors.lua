@@ -40,4 +40,14 @@ if cfg.hostname == 'super' then
       layout = 'dwindle',
     })
   end
+else
+  for i = 1, 10 do
+    local is_default = true
+    hl.workspace_rule({
+      workspace = i .. '',
+      persistent = true,
+      default = is_default and (i == 1),
+      layout = 'dwindle',
+    })
+  end
 end

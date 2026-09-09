@@ -170,7 +170,7 @@
               "Mod+Ctrl+Page_Up".move-column-to-workspace-up = [ ];
 
               "Mod+Space".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
-              "Mod+D".spawn-sh = "${lib.getExe self'.packages.menu1}";
+              "Mod+D".spawn-sh = "${lib.getExe self'.packages.which-key}";
               "Mod+S".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle control-center";
               "Mod+Comma".spawn-sh = "${lib.getExe pkgs.noctalia} msg settings-toggle";
 

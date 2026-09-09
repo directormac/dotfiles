@@ -30,7 +30,7 @@
       wrappers.packages = {
         # Set to true to exclude these from the `packages.*.*` flake output
         dynamic = true;
-        which-key = true;
+        which-key-cli = true;
       };
     };
 
