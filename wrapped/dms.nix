@@ -1,37 +1,87 @@
 {
   inputs,
-  self,
   ...
 }:
 {
-  flake.nixosModules.dms = { pkgs, lib, ... }: {
+  flake.nixosModules.dms = { pkgs, ... }: {
     imports = [
       inputs.dms.nixosModules.dank-material-shell
       inputs.dms-plugin-registry.nixosModules.default
+      inputs.dankcalendar.nixosModules.default
     ];
-    programs.dank-material-shell = {
-      enable = true;
+    programs = {
 
-      # systemd = {
-      #   enable = true; # Systemd service for auto-start
-      #   restartIfChanged = true; # Auto-restart dms.service when dank-material-shell changes
-      # };
+      dsearch = {
+        enable = true;
 
-      # Core features
-      # enableSystemMonitoring = true; # System monitoring widgets (dgop)
-      # enableVPN = true; # VPN management widget
-      # enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-      # enableAudioWavelength = true; # Audio visualizer (cava)
-      # enableCalendarEvents = true; # Calendar integration (khal)
-
-      plugins = {
-        #   # Simply enable plugins by their ID (from the registry)
-        #   # dankBatteryAlerts.enable = true;
-        #   # dockerManager.enable = true;
-        dankLauncherKeys.enable = true;
-        dankGifSearch.enable = true;
-        #
+        # Systemd service configuration
+        systemd = {
+          enable = true; # Enable systemd user service
+          target = "default.target"; # Start with user session
+        };
       };
+
+      dank-calendar = {
+        enable = true;
+        systemd = {
+          enable = true;
+          target = "default.target";
+        };
+      };
+
+      # https://github.com/NixOS/nixpkgs/blob/nixos-26.05/nixos/modules/programs/wayland/dms-shell.nix
+      dank-material-shell = {
+        enable = true;
+
+        # systemd = {
+        #   enable = true; # Systemd service for auto-start
+        #   restartIfChanged = true; # Auto-restart dms.service when dank-material-shell changes
+        # };
+
+        # Core features
+        enableSystemMonitoring = true;
+        enableVPN = true; # VPN management widget
+        enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+        enableAudioWavelength = true; # Audio visualizer (cava)
+        enableCalendarEvents = true; # Calendar integration (khal)
+
+        # See https://danklinux.com/docs/dankmaterialshell/nixos-flake#plugins
+        plugins = {
+          #   # Simply enable plugins by their ID (from the registry)
+          dankActions.enable = true;
+          dankGifSearch.enable = true;
+          dankHooks.enable = true;
+          dankHyprlandWindows.enable = true;
+          dankKDEConnect.enable = true;
+          dankLauncherKeys.enable = true;
+          dankPomodoroTimer.enable = true;
+          dankStickerSearch.enable = true;
+          quickCapture.enable = true;
+          amdGpuMonitor.enable = true;
+          nixPackageRunner.enable = true;
+          colorPickerDms.enable = true;
+          #
+        };
+      };
+    };
+
+    environment.systemPackages = [
+
+      inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
+  };
+
+  perSystem = { pkgs, ... }: {
+    packages.dms = inputs.lwrappers.lib.wrapPackage {
+      inherit pkgs;
+
+      runtimePkgs = [
+        pkgs.matugen
+        pkgs.xwayland-satellite
+      ];
+
+      package = pkgs.dms;
+
     };
   };
 }

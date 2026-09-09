@@ -6,10 +6,6 @@
     programs = {
       nix-index-database.comma.enable = true;
 
-      # devenv = {
-      #   enabled = true;
-      # };
-
       # direnv = {
       #   enable = true;
       #   silent = false;
@@ -34,9 +30,12 @@
       nixd
       statix
       alejandra
+      nixfmt
       manix
       nix-inspect
       devenv
     ];
+
+    nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   };
 }

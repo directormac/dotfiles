@@ -28,7 +28,7 @@
           # Desktop
           quickshell
           kdePackages.qtmultimedia
-
+          cliphist
           wl-clipboard
           # uwsm
 
@@ -37,6 +37,7 @@
           nautilus
 
           # Multimedia
+          cava
           mpd
           rmpc
           mpv

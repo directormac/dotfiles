@@ -1,6 +1,4 @@
 {
-  self,
-  inputs,
   ...
 }:
 
@@ -8,7 +6,6 @@
   flake.nixosModules.sddm =
     {
       pkgs,
-      lib,
       ...
     }:
 

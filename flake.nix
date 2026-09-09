@@ -38,21 +38,11 @@
 
     # DankMaterialShell Inputs
 
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      # url = "github:AvengeMedia/DankMaterialShell/stable";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dms-plugin-registry = {
-      url = "github:AvengeMedia/dms-plugin-registry";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    dms.url = "github:AvengeMedia/DankMaterialShell";
+    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
+    dgop.url = "github:AvengeMedia/dgop";
+    danksearch.url = "github:AvengeMedia/danksearch";
+    dankcalendar.url = "github:AvengeMedia/dankcalendar";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
