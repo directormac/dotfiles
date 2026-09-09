@@ -17,7 +17,7 @@
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
   "widgetColorMode": "colorful",
-  "cornerRadius": 12,
+  "cornerRadius": 6,
   "hyprlandLayoutGapsOverride": -2,
   "hyprlandLayoutRadiusOverride": 0,
   "hyprlandLayoutBorderSize": 1,
@@ -171,16 +171,16 @@
         }
       ],
       "spacing": 0,
-      "innerPadding": -8,
+      "innerPadding": -4,
       "barInsetPadding": 4,
       "barLengthPadding": 0,
       "bottomGap": 0,
       "attachToScreenEdge": false,
-      "transparency": 0,
+      "transparency": 0.95,
       "widgetTransparency": 1,
       "squareCorners": true,
       "noBackground": false,
-      "maximizeWidgetIcons": false,
+      "maximizeWidgetIcons": true,
       "maximizeWidgetText": false,
       "removeWidgetPadding": false,
       "widgetPadding": 8,
@@ -246,6 +246,26 @@
     "hslLightness": 1,
     "valid": true
   },
+  "desktopWidgetInstances": [
+    {
+      "id": "dw_1788975751246_cdv9mbilh",
+      "widgetType": "pureLyrics",
+      "name": "Pure Lyrics",
+      "enabled": true,
+      "config": {
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "fontSize": 32,
+        "borderOpacity": 0,
+        "showOnOverlay": false,
+        "musixmatchToken": "00000000000000000000000000000000000000000000000000000000"
+      }
+    }
+  ],
   "builtInPluginSettings": {
     "dms_settings_search": {
       "trigger": "?"
@@ -270,8 +290,11 @@
   "launcherPluginVisibility": {
     "dms_settings_search": {
       "allowWithoutTrigger": true
+    },
+    "dankVault": {
+      "allowWithoutTrigger": false
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 18
+  "configVersion": 17
 }

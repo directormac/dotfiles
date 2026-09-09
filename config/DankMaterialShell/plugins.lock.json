@@ -5,6 +5,10 @@
       "repo": "https://github.com/navidagz/dms-amd-gpu-monitor",
       "commit": "d0f87efb534b86dc07107288c5f86cfeb7ad9cd2"
     },
+    "cavaVisualizer": {
+      "repo": "https://github.com/ernestowgg/cava-visualizer",
+      "commit": "2d08bef95bc7cd170ad5730a27791c9af6d80a52"
+    },
     "colorPickerDms": {
       "repo": "https://github.com/bernardopg/color-picker-dms",
       "commit": "71b99e446de0e4a37ac7fcae1dc8cb571da3d7d6"
@@ -44,10 +48,18 @@
       "path": "DankPomodoroTimer",
       "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
     },
+    "dankRssWidget": {
+      "repo": "https://github.com/BrendonJL/dms-rss-widget",
+      "commit": "3022120bfe6b6e80ec8d72523d51fb0c8995168c"
+    },
     "dankStickerSearch": {
       "repo": "https://github.com/AvengeMedia/dms-plugins",
       "path": "DankStickerSearch",
       "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankVault": {
+      "repo": "https://github.com/alcxyz/DankVault",
+      "commit": "a0314dfa323f13d33bd710e731c8b5fcabf18f94"
     },
     "enderPulse": {
       "repo": "https://github.com/iquantecho/enderpulse",
@@ -56,6 +68,10 @@
     "nixPackageRunner": {
       "repo": "https://github.com/iahccc/NixPackageRunner",
       "commit": "829ad93c15b7c0ec82a6d7483728029037442601"
+    },
+    "pureLyrics": {
+      "repo": "https://github.com/lildengzi/pureLyrics",
+      "commit": "6a803e11110a858779da0be20eeb2f724ed28441"
     },
     "quickCapture": {
       "repo": "https://github.com/hthienloc/dms-quick-capture",

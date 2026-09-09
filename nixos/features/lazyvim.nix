@@ -9,6 +9,7 @@
     {
       options.preferences.lazyvim = {
         enable = lib.mkEnableOption "LazyVim configuration";
+
       };
 
       config = lib.mkIf config.preferences.lazyvim.enable {
@@ -27,16 +28,13 @@
             # See https://github.com/pfassina/lazyvim-nix/blob/main/data/extras.json
             extras = {
 
-              coding = {
-                blink = {
+              lang = {
+                nix = {
                   enable = true;
                   installDependencies = true;
                   installRuntimeDependencies = true;
-                };
-              };
 
-              lang = {
-                # nix.enable = true;
+                };
 
                 elixir = {
                   enable = true;
@@ -74,7 +72,11 @@
                 };
 
                 typescript = {
-                  vtsls.enable = true;
+                  enable = true;
+                  installDependencies = false;
+                  tsc = {
+                    enable = true;
+                  };
                   oxc = {
                     enable = true;
                     installDependencies = true;
@@ -85,22 +87,12 @@
             };
 
             extraPackages = with pkgs; [
-              vimPlugins.blink-cmp-git
-
-              # git
-              ripgrep
-              fd
-              fzf
-              # lazygit
-              # curl
-
               svelte-language-server
               svelte-check
-
               typescript
 
-              nil
               nixd
+              nixfmt
             ];
 
             # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
