@@ -9,6 +9,12 @@
     # services.displayManager.cosmic-greeter.enable = true;
     services.displayManager.sddm.enable = true;
 
+    environment.cosmic.excludePackages = with pkgs; [
+      cosmic-edit
+      cosmic-term
+      cosmic-files
+    ];
+
     # Override the cosmic-session package with our wrapped version
     nixpkgs.overlays = [
       (final: prev: {

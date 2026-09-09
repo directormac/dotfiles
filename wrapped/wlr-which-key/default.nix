@@ -1,5 +1,18 @@
 { self, ... }: {
-  flake.wrappers.which-key = { ... }: {
+  perSystem =
+    {
+      pkgs,
+      self',
+      lib,
+      ...
+    }:
+    {
+      packages.which-key = pkgs.writeShellScriptBin "which-key" ''
+        exec ${lib.getExe self'.packages.which-key-wrapper} "$@"
+      '';
+    };
+
+  flake.wrappers.which-key-cli = { ... }: {
     settings = {
       font = "Fira Mono Nerd Font 16";
       background = self.theme.base00;
@@ -20,7 +33,7 @@
     };
   };
 
-  flake.wrappers.menu1 =
+  flake.wrappers.which-key-wrapper =
     {
       wlib,
       pkgs,
@@ -31,7 +44,7 @@
     {
       imports = [
         wlib.wrapperModules.wlr-which-key
-        self.wrapperModules.which-key
+        self.wrapperModules.which-key-cli
         self.wrapperModules.dynamic
       ];
 
@@ -77,8 +90,8 @@
       ];
     };
 
-  flake.wrappers.menu1Dynamic = { ... }: {
-    imports = [ self.wrapperModules.menu1 ];
+  flake.wrappers.which-keyDynamic = { ... }: {
+    imports = [ self.wrapperModules.which-key-wrapper ];
     dynamicMode = true;
   };
 }

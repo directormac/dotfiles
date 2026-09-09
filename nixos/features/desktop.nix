@@ -8,22 +8,17 @@
       imports = [
         inputs.home-manager.nixosModules.default
         self.nixosModules.gtk
-        self.nixosModules.lazyvim
         self.nixosModules.wshowkeys
         self.nixosModules.sddm
-        self.nixosModules.cosmic
-        self.nixosModules.dms
+
+        # Wrapped packages
+        self.nixosModules.hyprland # This includes dms
+        self.nixosModules.niri # This includes noctalia
+        # self.nixosModules.cosmic # Gnome alternative
+        self.nixosModules.zen
       ];
 
-      programs.niri.enable = true;
-      programs.niri.package = selfpkgs.niri;
-
-      programs.hyprland.enable = true;
-      programs.hyprland.package = selfpkgs.hyprland;
-
       # services.displayManager.defaultSession = "hyprland";
-
-      preferences.lazyvim.enable = true;
 
       # preferences.autostart = [selfpkgs.quickshellWrapped];
       # preferences.autostart = [ selfpkgs.noctalia-shell ];
@@ -33,10 +28,9 @@
           # Desktop
           quickshell
           kdePackages.qtmultimedia
-          inputs.zen-browser.packages."${system}".default
-          foot
-          ghostty
+
           wl-clipboard
+          # uwsm
 
           # General apps
           pavucontrol
@@ -54,8 +48,9 @@
           vlc
 
           # Wrapped
+          selfpkgs.which-key
           selfpkgs.kittyfish
-          selfpkgs.noctalia
+          selfpkgs.terminal
         ];
 
         sessionVariables = {

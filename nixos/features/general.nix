@@ -11,11 +11,14 @@
     {
       imports = [
         inputs.home-manager.nixosModules.default
+
         self.nixosModules.nix
         self.nixosModules.git
         self.nixosModules.zsh
-
+        self.nixosModules.lazyvim
       ];
+
+      preferences.lazyvim.enable = true;
 
       fonts.packages = with pkgs; [
         nerd-fonts.symbols-only
