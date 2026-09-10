@@ -25,9 +25,17 @@
         nerd-fonts.fira-mono
 
         noto-fonts
-        cm_unicode
         corefonts
         unifont
+
+        cm_unicode
+        inotify-tools
+
+        lshw
+        pciutils
+        cifs-utils
+        nfs-utils
+        ntfs3g
       ];
 
       environment.systemPackages = with pkgs; [

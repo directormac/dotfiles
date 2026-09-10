@@ -3,8 +3,8 @@
   inputs,
   ...
 }:
-{
-  flake.wrappersModules.kitty =
+  let
+  kittyModule =
     {
       config,
       lib,
@@ -28,13 +28,28 @@
       };
 
       config = {
-        args = lib.mkAfter (
+        appendFlag = lib.mkAfter (
           lib.optionals config.dynamicMode [
             "--config"
             config.dynamicConfigPath
           ]
           ++ lib.optionals (config.shell != "") [ config.shell ]
         );
+
+        keybindings = {
+          "alt+1" = "goto_tab 1";
+          "alt+2" = "goto_tab 2";
+          "alt+3" = "goto_tab 3";
+          "alt+4" = "goto_tab 4";
+          "alt+5" = "goto_tab 5";
+          "alt+6" = "goto_tab 6";
+          "alt+7" = "goto_tab 7";
+          "alt+8" = "goto_tab 8";
+          "alt+9" = "goto_tab 9";
+          "ctrl+shift+w" = "close_tab";
+          "ctrl+t" = "new_tab_with_cwd";
+          "ctrl+shift+t" = "new_tab";
+        };
 
         settings = {
           enable_audio_bell = "no";
@@ -47,20 +62,6 @@
           cursor_trail = 3;
           cursor_trail_decay = "0.1 0.4";
           cursor_trail_color = "#94e2d5";
-          map = [
-            "alt+1 goto_tab 1"
-            "alt+2 goto_tab 2"
-            "alt+3 goto_tab 3"
-            "alt+4 goto_tab 4"
-            "alt+5 goto_tab 5"
-            "alt+6 goto_tab 6"
-            "alt+7 goto_tab 7"
-            "alt+8 goto_tab 8"
-            "alt+9 goto_tab 9"
-            "ctrl+shift+w close_tab"
-            "ctrl+t new_tab_with_cwd"
-            "ctrl+shift+t new_tab"
-          ];
           background = self.theme.base00;
           foreground = self.theme.base07;
           cursor = self.theme.base07;
@@ -93,18 +94,23 @@
       };
     };
 
+in
+{
+  flake.wrappersModules.kitty = kittyModule;
+
   perSystem = { pkgs, ... }: {
+
     packages.kitty =
-      (inputs.lwrappers.wrapperModules.kitty.apply {
+      inputs.wrappers.wrappers.kitty.wrap {
         inherit pkgs;
-        imports = [ self.wrappersModules.kitty ];
-      }).wrapper;
+        imports = [ kittyModule ];
+      };
 
     packages.kittyDynamic =
-      (inputs.lwrappers.wrapperModules.kitty.apply {
+      inputs.wrappers.wrappers.kitty.wrap {
         inherit pkgs;
         dynamicMode = true;
-        imports = [ self.wrappersModules.kitty ];
-      }).wrapper;
+        imports = [ kittyModule ];
+      };
   };
 }

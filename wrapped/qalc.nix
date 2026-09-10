@@ -1,9 +1,9 @@
 { inputs, ... }: {
   perSystem = { pkgs, ... }: {
-    packages.qalc = inputs.lwrappers.lib.wrapPackage {
+    packages.qalc = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
       package = pkgs.libqalculate;
-      args = [
+      appendFlag = [
         "-s"
         "autocalc"
         "-s"

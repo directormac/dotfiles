@@ -12,7 +12,7 @@
       ...
     }:
     {
-      packages.noctalia = inputs.lwrappers.lib.wrapPackage {
+      packages.noctalia = inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
         package = pkgs.noctalia;
         env = {

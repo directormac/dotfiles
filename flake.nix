@@ -3,6 +3,7 @@
   description = "
     Dendritic nixos configuration.
 
+    [Dendritic](https://dendrix.denful.dev/index.html)
     [Wiki](https://github.com/Doc-Steve/dendritic-design-with-flake-parts/wiki)
 
     [flake.parts](https://flake.parts/index.html)
@@ -23,8 +24,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
 
-    # https://viperml.codeberg.page/wrapper-manager/cookbook.html
-    lwrappers.url = "github:lassulus/wrappers";
+    # wrapper-manager.url = "git+https://codeberg.org/viperML/wrapper-manager";
 
     nix-index-database = {
       url = "github:Mic92/nix-index-database";

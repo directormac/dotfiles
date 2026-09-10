@@ -12,7 +12,7 @@
       ...
     }:
     {
-      packages.terminal = inputs.lwrappers.lib.wrapPackage {
+      packages.terminal = inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
         package = pkgs.ghostty;
         # flags = {

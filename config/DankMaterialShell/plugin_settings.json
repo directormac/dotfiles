@@ -1,13 +1,15 @@
 {
   "dankLauncherKeys": {
-    "enabled": true
+    "enabled": true,
+    "noTrigger": false,
+    "providers": []
   },
   "dankGifSearch": {
     "enabled": true
   },
   "dankKDEConnect": {
     "enabled": true,
-    "selectedDeviceId": ""
+    "selectedDeviceId": "047094e50a2c402a9ade83d15ac02e08"
   },
   "dankHyprlandWindows": {
     "enabled": true
@@ -24,7 +26,18 @@
   "amdGpuMonitor": {
     "enabled": true,
     "popoutStyle": "default",
-    "processSort": "gfx"
+    "processSort": "gfx",
+    "variants": [
+      {
+        "gpuPci": "0000:03:00.0",
+        "gpuType": "dGPU",
+        "originalName": "AMD Radeon RX 7800 XT",
+        "description": "Monitor your discrete AMD Radeon RX 7800 XT",
+        "icon": "memory",
+        "id": "variant_1788992854088",
+        "name": "AMD Radeon RX 7800 XT"
+      }
+    ]
   },
   "nixPackageRunner": {
     "enabled": true
@@ -54,7 +67,8 @@
         "description": "EnderPulse audio source: Microphone input"
       }
     ],
-    "audioBackend": "auto"
+    "audioBackend": "auto",
+    "audioTarget": "system"
   },
   "dankPomodoroTimer": {
     "enabled": true
@@ -65,6 +79,7 @@
   "dankVault": {
     "enabled": true,
     "backend": "rbw",
-    "triggerOnlyVisibilityDefaultApplied": true
+    "triggerOnlyVisibilityDefaultApplied": true,
+    "defaultAction": "totp"
   }
 }

@@ -97,10 +97,10 @@
           '';
     in
     {
-      packages.fish = inputs.lwrappers.lib.wrapPackage {
+      packages.fish = inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
         package = pkgs.fish;
-        runtimeInputs = [
+        runtimePkgs = [
           pkgs.zoxide
         ]
         ++ plugins;
