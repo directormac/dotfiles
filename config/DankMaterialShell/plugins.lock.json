@@ -28,11 +28,6 @@
       "path": "DankHooks",
       "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
     },
-    "dankHyprlandWindows": {
-      "repo": "https://github.com/AvengeMedia/dms-plugins",
-      "path": "DankHyprlandWindows",
-      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
-    },
     "dankKDEConnect": {
       "repo": "https://github.com/AvengeMedia/dms-plugins",
       "path": "DankKDEConnect",
@@ -60,10 +55,6 @@
     "dankVault": {
       "repo": "https://github.com/alcxyz/DankVault",
       "commit": "a0314dfa323f13d33bd710e731c8b5fcabf18f94"
-    },
-    "enderPulse": {
-      "repo": "https://github.com/iquantecho/enderpulse",
-      "commit": "7b908fa130a2d3c5cd43e2bfdcb067ee77735c42"
     },
     "nixPackageRunner": {
       "repo": "https://github.com/iahccc/NixPackageRunner",

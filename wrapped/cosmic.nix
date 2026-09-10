@@ -24,7 +24,7 @@
   };
 
   perSystem = { pkgs, self', ... }: {
-    packages.cosmic = inputs.lwrappers.lib.wrapPackage {
+    packages.cosmic = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
       package = pkgs.cosmic-session;
 

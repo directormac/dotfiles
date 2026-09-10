@@ -3,29 +3,8 @@
   self,
   ...
 }:
-{
-  # flake.nixosModules.niri = { pkgs, lib, ... }: {
-  #   programs.niri = {
-  #     enable = true;
-  #     package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-  #   };
-  # };
-
-  flake.nixosModules.niri = { pkgs, ... }: {
-    programs.niri = {
-      enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-    };
-  };
-
-  flake.wrappersModules.niri =
-    {
-      config,
-      lib,
-      pkgs,
-      self',
-      ...
-    }:
+let
+  niriModule = { config, lib, pkgs, ... }:
     {
       options = {
         terminal = lib.mkOption {
@@ -40,6 +19,14 @@
           type = lib.types.bool;
           default = false;
           description = "If true, use an impure config file from the home directory for hot-reloading.";
+        };
+                noctaliaPackage = lib.mkOption {
+          type = lib.types.package;
+          description = "Package to use for noctalia";
+        };
+        whichKeyPackage = lib.mkOption {
+          type = lib.types.package;
+          description = "Package to use for which-key";
         };
         dynamicConfigPath = lib.mkOption {
           type = lib.types.str;
@@ -56,7 +43,7 @@
           let
             # startNoctaliaExe = lib.getExe self.packages.${config.pkgs.stdenv.hostPlatform.system}.start-noctalia-shell;
             # noctaliaExe = lib.getExe self.packages.${config.pkgs.stdenv.hostPlatform.system}.noctalia-shell;
-            noctaliaExe = lib.getExe self'.packages.noctalia;
+            noctaliaExe = lib.getExe config.noctaliaPackage;
           in
           {
             prefer-no-csd = [ ];
@@ -170,7 +157,7 @@
               "Mod+Ctrl+Page_Up".move-column-to-workspace-up = [ ];
 
               "Mod+Space".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
-              "Mod+D".spawn-sh = "${lib.getExe self'.packages.which-key}";
+              "Mod+D".spawn-sh = "${lib.getExe config.whichKeyPackage}";
               "Mod+S".spawn-sh = "${lib.getExe pkgs.noctalia} msg panel-toggle control-center";
               "Mod+Comma".spawn-sh = "${lib.getExe pkgs.noctalia} msg settings-toggle";
 
@@ -307,7 +294,19 @@
       };
     };
 
+in
+{
+  flake.nixosModules.niri = { pkgs, ... }: {
+    programs.niri = {
+      enable = true;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+    };
+  };
+
+  flake.wrappersModules.niri = niriModule;
+
   perSystem = { pkgs, self', ... }: {
+
     # packages.niri = inputs.wrappers.wrappers.niri.wrap {
     #   inherit pkgs;
     #   imports = [
@@ -319,9 +318,10 @@
       inherit pkgs;
       # dynamicMode = false;
       imports = [
-        self.wrappersModules.niri
-        { _module.args.self' = self'; }
+        niriModule
       ];
+      noctaliaPackage = self'.packages.noctalia;
+      whichKeyPackage = self'.packages.which-key;
     };
   };
 }

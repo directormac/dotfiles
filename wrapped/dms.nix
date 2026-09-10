@@ -72,12 +72,14 @@
   };
 
   perSystem = { pkgs, ... }: {
-    packages.dms = inputs.lwrappers.lib.wrapPackage {
+    packages.dms = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
 
       runtimePkgs = [
         pkgs.matugen
         pkgs.xwayland-satellite
+
+        # pkgs.amd_gputop
       ];
 
       package = pkgs.dms;

@@ -14,10 +14,10 @@
     }:
     {
       packages = {
-        fishell = inputs.lwrappers.lib.wrapPackage {
+        fishell = inputs.wrappers.lib.wrapPackage {
           inherit pkgs;
           package = self'.packages.fish;
-          runtimeInputs = [
+          runtimePkgs = [
             pkgs.kitty-img
           ];
           env = {
@@ -26,19 +26,19 @@
         };
 
         # kittyfish =
-        #   (inputs.lwrappers.wrapperModules.kitty.apply {
+        #   (inputs.wrappers.wrapperModules.kitty.apply {
         #     inherit pkgs;
         #     imports = [ self.wrappersModules.kitty ];
         #     shell = lib.getExe self'.packages.fishell;
         #   }).wrapper;
 
         kittyfish =
-          (inputs.lwrappers.wrapperModules.kitty.apply {
+          inputs.wrappers.wrappers.kitty.wrap {
             inherit pkgs;
             dynamicMode = true;
             imports = [ self.wrappersModules.kitty ];
             shell = lib.getExe self'.packages.fishell;
-          }).wrapper;
+          };
 
         nix-check-bin = pkgs.writeShellApplication {
           name = "nix-check-bin";

@@ -95,11 +95,22 @@ hl.bind(
   { description = 'Switch focus between tiled and floating windows' }
 )
 
--- hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized' }))
--- hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen' }))
+hl.bind(modkey .. ' + CTRL + F', function(w)
+  local win = hl.get_active_window()
 
-hl.bind(modkey .. ' + CTRL + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'set' }))
+  if not win then return end
+
+  if win.fullscreen_client == 2 then
+    -- Turn off tiled fullscreen (switch back to 0)
+    hl.dispatch(hl.dsp.window.fullscreen_state({ internal = 0, client = 0 }))
+  else
+    -- Turn on tiled fullscreen (switch to 2)
+    hl.dispatch(hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
+  end
+end)
+
 hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }))
+
 hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }))
 
 -- Scroll through existing workspaces with modkey + scroll
@@ -199,6 +210,36 @@ hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc powermenu toggle
 hl.bind('Print', hl.dsp.exec_cmd('dms screenshot'))
 hl.bind('CTRL + Print', hl.dsp.exec_cmd('dms screenshot full'))
 hl.bind('ALT + Print', hl.dsp.exec_cmd('dms screenshot window'))
+
+-- === Multimedia Controls ===
+hl.bind(
+  'XF86AudioRaiseVolume',
+  hl.dsp.exec_cmd('wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+'),
+  { locked = true, repeating = true }
+)
+hl.bind(
+  'XF86AudioLowerVolume',
+  hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'),
+  { locked = true, repeating = true }
+)
+hl.bind(
+  'XF86AudioMute',
+  hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'),
+  { locked = true, repeating = true }
+)
+hl.bind(
+  'XF86AudioMicMute',
+  hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'),
+  { locked = true, repeating = true }
+)
+-- Requires playerctl
+hl.bind('XF86AudioPlay', hl.dsp.exec_cmd('playerctl play-pause'), { locked = true })
+hl.bind('XF86AudioPrev', hl.dsp.exec_cmd('playerctl previous'), { locked = true })
+hl.bind('XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { locked = true })
+
+-- Skip player on long press and only skip 5s on normal press
+hl.bind('SUPER + XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { long_press = true })
+hl.bind('SUPER + XF86AudioNext', hl.dsp.exec_cmd('playerctl position +5'))
 
 -- === Display Profiles ===
 -- hl.bind('SUPER + P', hl.dsp.exec_cmd('dms ipc outputs cycleProfile'))

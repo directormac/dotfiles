@@ -16,12 +16,11 @@
       enable = true;
       withUWSM = true;
       xwayland.enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     };
   };
 
   perSystem = { pkgs, self', ... }: {
-    packages.hyprland = inputs.lwrappers.lib.wrapPackage {
+    packages.hyprland = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
       package = pkgs.hyprland;
 
