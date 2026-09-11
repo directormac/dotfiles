@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.base = { lib, ... }: {
+  flake.nixosModules.base = {lib, ...}: {
     options.preferences.monitors = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
@@ -35,7 +35,7 @@
           };
         }
       );
-      default = { };
+      default = {};
     };
   };
 }

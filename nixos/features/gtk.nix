@@ -6,7 +6,7 @@
   }: let
     theme-name = "catppuccin-mocha-mauve-standard+default";
     theme-package = pkgs.catppuccin-gtk.override {
-      accents = [ "mauve" ];
+      accents = ["mauve"];
       size = "standard";
       variant = "mocha";
     };
@@ -27,7 +27,6 @@
         "xdg/gtk-4.0/settings.ini".text = gtksettings;
       };
     };
-
 
     programs = {
       dconf = {
@@ -53,7 +52,7 @@
 
     xdg.portal = {
       enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
       config.common.default = "*";
     };
 

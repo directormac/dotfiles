@@ -4,24 +4,34 @@
 
     [Dendritic](https://dendrix.denful.dev/index.html)
     [Wiki](https://github.com/Doc-Steve/dendritic-design-with-flake-parts/wiki)
-
     [flake.parts](https://flake.parts/index.html)
-
     [wrapper-modules](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html)
-     Uses flake-parts to set up the flake outputs:
-
-    `wrappers`, `wrapperModules` and `packages.*.*`
     ";
+
+  # outputs = inputs: let
+  #   inherit (inputs.nixpkgs) lib;
+  #   inherit (lib.fileset) toList fileFilter;
+  #
+  #   isNixModule = file: file.hasExt "nix" && file.name != "flake.nix" && !lib.hasPrefix "_" file.name;
+  #
+  #   importTree = path: toList (fileFilter isNixModule path);
+  #
+  #   mkFlake = inputs.flake-parts.lib.mkFlake {inherit inputs;};
+  # in
+  #   mkFlake {imports = importTree ./.;};
+
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree [./lib ./nixos ./wrapped]);
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
-    # [Wrapper flake-parts](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html#flake-parts)
-    #
-    wrappers.url = "github:nix-community/nix-wrapper-modules";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # [import-tree dendritic pattern](https://import-tree.denful.dev/guides/dendritic/)
     import-tree.url = "github:vic/import-tree";
+    # [flake.parts](https://flake.parts/best-practices-for-module-writing.html)
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    # [Wrapper flake-parts](https://nix-community.github.io/nix-wrapper-modules/md/getting-started.html#flake-parts)
+    wrappers.url = "github:nix-community/nix-wrapper-modules";
 
     # wrapper-manager.url = "git+https://codeberg.org/viperML/wrapper-manager";
 
@@ -75,18 +85,4 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  # outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
-
-  # Import all .nix files from current directory except flake.nix recursively
-  outputs = inputs: let
-    inherit (inputs.nixpkgs) lib;
-    inherit (lib.fileset) toList fileFilter;
-
-    isNixModule = file: file.hasExt "nix" && file.name != "flake.nix" && !lib.hasPrefix "_" file.name;
-
-    importTree = path: toList (fileFilter isNixModule path);
-
-    mkFlake = inputs.flake-parts.lib.mkFlake {inherit inputs;};
-  in
-    mkFlake {imports = importTree ./.;};
 }
