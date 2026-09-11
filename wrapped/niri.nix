@@ -290,19 +290,19 @@
     };
   };
 
-  # perSystem = {
-  #   pkgs,
-  #   self',
-  #   ...
-  # }: {
-  #   packages.niri = inputs.wrappers.wrappers.niri.wrap {
-  #     inherit pkgs;
-  #     # dynamicMode = false;
-  #     imports = [
-  #       self.wrapperModules.niri
-  #     ];
-  #     noctaliaPackage = pkgs.noctalia;
-  #     # whichKeyPackage = pkgs.which-key;
-  #   };
-  # };
+  perSystem = {
+    pkgs,
+    self',
+    ...
+  }: {
+    packages.niri = inputs.wrappers.wrappers.niri.wrap {
+      inherit pkgs;
+      # dynamicMode = false;
+      imports = [
+        self.wrapperModules.niri
+      ];
+      # noctaliaPackage = pkgs.noctalia;
+      # whichKeyPackage = pkgs.which-key;
+    };
+  };
 }

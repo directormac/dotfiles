@@ -129,7 +129,7 @@
   "lockScreenNotificationMode": 2,
   "lockScreenFontFamily": "FiraCode Nerd Font",
   "notificationCompactMode": true,
-  "osdPosition": 2,
+  "osdPosition": 1,
   "osdMediaPlaybackEnabled": true,
   "osdPowerProfileEnabled": true,
   "updaterCheckOnStart": true,

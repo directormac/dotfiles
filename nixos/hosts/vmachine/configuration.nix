@@ -3,9 +3,14 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.vmachineConfiguration = {
+  flake.nixosConfigurations.vmachine = inputs.nixpkgs.lib.nixosSystem {
+    modules = [
+      self.nixosModules.vmachine
+    ];
+  };
+
+  flake.nixosModules.vmachine = {
     pkgs,
-    lib,
     config,
     ...
   }: {
@@ -16,6 +21,9 @@
       self.nixosModules.base
       self.nixosModules.general
       self.nixosModules.desktop
+
+      inputs.disko.nixosModules.disko
+      self.diskoConfigurations.vmachine
     ];
 
     networking.hostName = "vmachine"; # Define your hostname.
@@ -101,12 +109,6 @@
 
     fileSystems."/home/artifex/Public" = {
       device = "vshare";
-      fsType = "virtiofs";
-      options = ["defaults"];
-    };
-
-    fileSystems."/home/artifex/.dotfiles" = {
-      device = "vdotfiles";
       fsType = "virtiofs";
       options = ["defaults"];
     };

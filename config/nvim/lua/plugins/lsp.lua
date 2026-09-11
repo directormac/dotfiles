@@ -111,6 +111,7 @@ return {
           root_markers = { ".git" },
         },
         nil_ls = {
+          enabled = false,
           settings = {
             formatting = {
               command = { "alejandra" },
