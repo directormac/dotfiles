@@ -6,6 +6,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "ansible-language-server",
         "ansible-lint",
+        "alejandra",
         "astro-language-server",
         "clang-format",
         "clangd",
@@ -108,6 +109,20 @@ return {
           cmd = { "qmlls6" },
           filetypes = { "qml", "qmljs" },
           root_markers = { ".git" },
+        },
+        nil_ls = {
+          settings = {
+            formatting = {
+              command = { "alejandra" },
+            },
+          },
+        },
+        nixd = {
+          settings = {
+            formatting = {
+              command = { "alejandra" },
+            },
+          },
         },
       },
       inlay_hints = { enabled = false },

@@ -74,7 +74,6 @@
     }
   ],
   "showWorkspaceName": true,
-  "showWorkspaceApps": true,
   "workspaceAppIconSizeOffset": 5,
   "groupActiveWorkspaceApps": true,
   "workspaceFocusedBorderEnabled": true,
@@ -450,5 +449,5 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 18
+  "configVersion": 17
 }

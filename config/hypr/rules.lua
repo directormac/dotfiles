@@ -36,25 +36,27 @@ hl.window_rule({
   stay_focused = true,
 })
 
--- hl.window_rule({
---   name = 'float-virt-manager',
---   match = {
---     class = 'virt-manager',
---   },
---   border_size = 10,
--- })
+hl.window_rule({
+  name = 'float-virt-manager',
+  match = {
+    class = 'virt-manager',
+  },
+  float = true,
+  center = true,
+  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+})
 
-hl.on('window.open', function(w)
-  if w.class == 'virt-manager' then
-    hl.dispatch(hl.dsp.window.move({
-      workspace = 5,
-      window = w,
-      float = true,
-      center = true,
-      size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
-    }))
-  end
-end)
+-- hl.on('window.open', function(w)
+--   if w.class == 'virt-manager' then
+--     hl.dispatch(hl.dsp.window.move({
+--       workspace = 5,
+--       window = w,
+--       float = true,
+--       -- center = true,
+--       -- size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+--     }))
+--   end
+-- end)
 
 hl.on('window.open', function(w)
   if w.class ~= 'firefox' then return end

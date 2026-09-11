@@ -1,16 +1,11 @@
-{
-  inputs,
-  ...
-}:
-{
-  flake.nixosModules.dms = { pkgs, ... }: {
+{inputs, ...}: {
+  flake.nixosModules.dms = {pkgs, ...}: {
     imports = [
       inputs.dms.nixosModules.dank-material-shell
       inputs.dms-plugin-registry.nixosModules.default
       inputs.dankcalendar.nixosModules.default
     ];
     programs = {
-
       dsearch = {
         enable = true;
 
@@ -51,27 +46,23 @@
           dankActions.enable = true;
           dankGifSearch.enable = true;
           dankHooks.enable = true;
-          dankHyprlandWindows.enable = true;
           dankKDEConnect.enable = true;
           dankLauncherKeys.enable = true;
           dankPomodoroTimer.enable = true;
           dankStickerSearch.enable = true;
           quickCapture.enable = true;
           amdGpuMonitor.enable = true;
-          nixPackageRunner.enable = true;
-          colorPickerDms.enable = true;
           #
         };
       };
     };
 
     environment.systemPackages = [
-
       inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 
-  perSystem = { pkgs, ... }: {
+  perSystem = {pkgs, ...}: {
     packages.dms = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
 
@@ -83,7 +74,6 @@
       ];
 
       package = pkgs.dms;
-
     };
   };
 }
