@@ -92,6 +92,7 @@
 
     wrappers.control_type = "exclude"; # | "build" (default: "exclude")
     wrappers.packages = {
+      # dynamic = true;
       which-key-cli = true;
     };
   };

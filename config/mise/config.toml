@@ -70,6 +70,7 @@ bazel = "latest"
 
 herdr = "latest"
 agy = "latest"
+"cargo:ytkew" = "latest"
 
 # [tools."github:neovim/neovim"]
 # prerelease = true

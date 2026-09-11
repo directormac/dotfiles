@@ -124,6 +124,10 @@ url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-linux-x64
 version = "5.1.0"
 backend = "cargo:mdv"
 
+[[tools."cargo:ytkew"]]
+version = "0.1.0"
+backend = "cargo:ytkew"
+
 [[tools.elixir]]
 version = "1.20.4-otp-29"
 backend = "core:elixir"

@@ -1,0 +1,19 @@
+# EditorConfig is awesome: https://editorconfig.org
+# [FAQ](https://github.com/editorconfig/editorconfig/wiki/FAQ)
+# [Config Properties](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties)
+
+root = true
+
+["*"]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+indent_style = "space";
+indent_size = 2;
+charset = utf-8
+
+
+["*.nix"]
+indent_size = 2;
+
