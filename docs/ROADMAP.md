@@ -92,6 +92,11 @@ Now its looking `dendritic`! time to remove boilerplates!!
 └──  statix.toml
 ```
 
+Read [this](https://github.com/nix-community/nixdoc)
+Find more useful [nixes](https://github.com/nix-community) here
+[awsome-nix](https://github.com/nix-community/awesome-nix)
+[nix-installer](https://github.com/DeterminateSystems/nix-installer)
+
 1. Use [import-tree](https://github.com/denful/import-tree) so we dont need to import manually
 2. Use [flake-file](https://github.com/denful/flake-file) to generate `flake.nix`
 3. Use [flake-parts](https://flake.parts/getting-started.html) cuz modulessss.

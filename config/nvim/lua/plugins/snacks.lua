@@ -12,6 +12,7 @@ return {
         timeout = 3000,
       },
       quickfile = { enabled = true },
+      bigfile = { enabled = true },
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },

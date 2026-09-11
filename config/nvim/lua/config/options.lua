@@ -17,10 +17,12 @@ global.lazyvim_eslint_auto_format = false
 -- Motivation: Less clutter in completion windows and a more direct usage of snippets
 global.lazyvim_mini_snippets_in_completion = true
 global.lazyvim_blink_main = true
+
 -- global.root_spec = { "cwd", "lsp", { ".git", "lua" } }
 global.lazyvim_picker = "snacks"
 global.lazydev_enabled = true
-global.lazyvim_ts_lsp = "vtsls"
+global.lazyvim_ts_lsp = "tsc"
+-- require('snacks').toggle.option
 -- global.vscode = true
 
 set.clipboard = "unnamedplus"
