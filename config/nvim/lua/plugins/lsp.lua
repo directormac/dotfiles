@@ -55,6 +55,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
+    dependencies = { "saghen/blink.cmp" },
     opts = {
       servers = {
         -- Note: vtsls and tsserver are managed by LazyVim extras.
@@ -118,10 +119,55 @@ return {
             },
           },
         },
+        -- https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md#configuration-overview
         nixd = {
+          cmd = { "nixd" },
           settings = {
+            nixpkgs = {
+              expr = 'import "${flake.inputs.nixpkgs}" { }',
+              -- For flake.
+              -- expr = 'import (builtins.getFlake "/home/artifex/.dotfiles").inputs.nixpkgs { }   ',
+              --   This expression will be interpreted as "nixpkgs" toplevel
+              --   Nixd provides package, lib completion/information from it.
+              --   Resource Usage: Entries are lazily evaluated, entire nixpkgs takes 200~300MB for just "names".
+              --   Package documentation, versions, are evaluated by-need.
+              -- expr = "import <nixpkgs> { }",
+              -- expr = "import (builtins.getFlake(toString ./.)).inputs.nixpkgs { }",
+            },
             formatting = {
               command = { "alejandra" },
+            },
+            -- Tell the language server your desired option set, for completion
+            --  This is lazily evaluated.
+            options = {
+              nixos = {
+                expr = '(let pkgs = import "${inputs.nixpkgs}" { }; in (pkgs.lib.evalModules { modules =  (import "${inputs.nixpkgs}/nixos/modules/module-list.nix") ++ [ ({...}: { nixpkgs.hostPlatform = builtins.currentSystem;} ) ] ; })).options',
+                --  Map of eval information
+                --  By default, this entriy will be read from `import <nixpkgs> { }`
+                --  You can write arbitary nix expression here, to produce valid "options" declaration result.
+                -- *NOTE*: Replace "<name>" below with your actual configuration name.
+                --  If you're unsure what to use, you can verify with `nix repl` by evaluating
+                --  the expression directly.
+                -- expr = "let flake = builtins.getFlake(toString ./.); in flake.nixosConfigurations.vmachine.options",
+              },
+              -- Before configuring Home Manager options, consider your setup:
+              -- Which command do you use for home-manager switching?
+              --
+              -- A. home-manager switch --flake .#... (standalone Home Manager)
+              -- B. nixos-rebuild switch --flake .#... (NixOS with integrated Home Manager)
+              --
+              -- Configuration examples for both approaches are shown below.
+
+              home_manager = {
+                expr = '(let pkgs = import "${inputs.nixpkgs}" { }; lib = import "${inputs.home-manager}/modules/lib/stdlib-extended.nix" pkgs.lib; in (lib.evalModules { modules =  (import "${inputs.home-manager}/modules/modules.nix") { inherit lib pkgs; check = false; }; })).options',
+                -- A:
+                -- expr: "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.artifex.options"
+
+                -- B:
+                -- expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.artifex.options.home-manager.users.type.getSubOptions []",
+
+                -- expr = "let flake = builtins.getFlake(toString ./.); in flake.homeConfigurations.artifex@vmachine.options",
+              },
             },
           },
         },

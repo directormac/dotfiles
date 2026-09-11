@@ -396,6 +396,30 @@ url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
 url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
 provenance = "github-attestations"
 
+[[tools.just]]
+version = "1.58.0"
+backend = "aqua:casey/just"
+
+[tools.just."platforms.linux-x64"]
+checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
+url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+
+[tools.just."platforms.linux-x64-baseline"]
+checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
+url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+
+[tools.just."platforms.linux-x64-musl"]
+checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
+url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+
+[tools.just."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
+url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+
 [[tools.kotlin]]
 version = "2.1.0"
 backend = "asdf:mise-plugins/mise-kotlin"

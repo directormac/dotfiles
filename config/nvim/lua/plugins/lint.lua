@@ -26,16 +26,17 @@ return {
           args = { "--disable", "MD013", "--" },
         },
       },
-      -- linters_by_ft = {
-      --   javascript = { "oxlint", "biomejs", stop_after_first = true },
-      --   javascriptreact = { "oxlint", "biomejs", stop_after_first = true },
-      --   typescript = { "oxlint", "biomejs", stop_after_first = true },
-      --   typescriptreact = { "oxlint", "biomejs", stop_after_first = true },
-      --   json = { "oxlint", "biomejs", stop_after_first = true },
-      --   vue = { "oxlint", "biomejs", stop_after_first = true },
-      --   svelte = { "oxlint", "biomejs", stop_after_first = true },
-      --   astro = { "oxlint", "biomejs", stop_after_first = true },
-      -- },
+      linters_by_ft = {
+        nix = { "statix" },
+        -- javascript = { "oxlint", "biomejs", stop_after_first = true },
+        -- javascriptreact = { "oxlint", "biomejs", stop_after_first = true },
+        -- typescript = { "oxlint", "biomejs", stop_after_first = true },
+        -- typescriptreact = { "oxlint", "biomejs", stop_after_first = true },
+        -- json = { "oxlint", "biomejs", stop_after_first = true },
+        -- vue = { "oxlint", "biomejs", stop_after_first = true },
+        -- svelte = { "oxlint", "biomejs", stop_after_first = true },
+        -- astro = { "oxlint", "biomejs", stop_after_first = true },
+      },
     },
 
     --   {
