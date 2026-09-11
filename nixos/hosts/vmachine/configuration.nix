@@ -107,11 +107,11 @@
       };
     };
 
-    fileSystems."/home/artifex/Public" = {
-      device = "vshare";
-      fsType = "virtiofs";
-      options = ["defaults"];
-    };
+    # fileSystems."/home/artifex/Public" = {
+    #   device = "vshare";
+    #   fsType = "virtiofs";
+    #   options = ["defaults"];
+    # };
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
