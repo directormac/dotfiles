@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.base = { lib, ... }: {
+  flake.nixosModules.base = {lib, ...}: {
     options.persistance = {
       enable = lib.mkEnableOption "enable persistance";
 
@@ -20,42 +20,42 @@
       };
 
       directories = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           directories to persist
         '';
       };
 
       files = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           files to persist
         '';
       };
 
       data.directories = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           directories to persist
         '';
       };
 
       data.files = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           files to persist
         '';
       };
 
       cache.directories = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           directories to persist
         '';
       };
 
       cache.files = lib.mkOption {
-        default = [ ];
+        default = [];
         description = ''
           files to persist
         '';

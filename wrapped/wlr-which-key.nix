@@ -24,7 +24,6 @@
     wlib,
     pkgs,
     lib,
-    config,
     ...
   }: {
     imports = [

@@ -1,5 +1,4 @@
 {
-  inputs,
   self,
   lib,
   ...
@@ -30,19 +29,6 @@
         type = lib.types.str;
         default = "yazi";
       };
-      # dynamicMode = lib.mkOption {
-      #   type = lib.types.bool;
-      #   default = false;
-      #   description = "If true, use an impure config file from the home directory for hot-reloading.";
-      # };
-      # noctaliaPackage = lib.mkOption {
-      #   type = lib.types.package;
-      #   description = "Package to use for noctalia";
-      # };
-      # whichKeyPackage = lib.mkOption {
-      #   type = lib.types.package;
-      #   description = "Package to use for which-key";
-      # };
     };
 
     config = {
@@ -289,20 +275,4 @@
       };
     };
   };
-
-  # perSystem = {
-  #   pkgs,
-  #   self',
-  #   ...
-  # }: {
-  #   packages.niri = inputs.wrappers.wrappers.niri.wrap {
-  #     inherit pkgs;
-  #     # dynamicMode = false;
-  #     imports = [
-  #       self.wrapperModules.niri
-  #     ];
-  #     # noctaliaPackage = pkgs.noctalia;
-  #     # whichKeyPackage = pkgs.which-key;
-  #   };
-  # };
 }

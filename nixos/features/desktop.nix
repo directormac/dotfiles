@@ -54,7 +54,7 @@
         vlc
 
         # Wrapped
-        # selfpkgs.which-key
+        selfpkgs.which-key
         selfpkgs.kittyfish
         selfpkgs.terminal
       ];
