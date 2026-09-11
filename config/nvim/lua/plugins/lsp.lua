@@ -112,10 +112,46 @@ return {
           root_markers = { ".git" },
         },
         nil_ls = {
-          enabled = false,
           settings = {
             formatting = {
               command = { "alejandra" },
+            },
+            nix = {
+              -- The heap memory limit in MiB for `nix` evaluation. // Currently it only applies to flake evaluation when `autoEvalInputs` is
+              -- enabled, and only works for Linux. Other `nix` invocations may be also
+              -- applied in the future. `null` means no limit.
+              -- As a reference, `nix flake show --legacy nixpkgs` usually requires
+              -- about 2GiB memory.
+              -- Type: number | null
+              -- Example: 1024
+              maxMemory = 4086,
+
+              flake = {
+                -- Auto-archiving behavior which may use network.
+                -- Ask every time.
+                -- flake archive` when necessary.
+                -- : Do not archive. Only load inputs that are already on disk.
+                -- null | boolean
+                -- true
+                autoArchive = true,
+                -- // Whether to auto-eval flake inputs.
+                -- // The evaluation result is used to improve completion, but may cost
+                -- // lots of time and/or memory.
+                -- //
+                -- // Type: boolean
+                -- // Example: true
+                autoEvalInputs = true,
+                -- // The input name of nixpkgs for NixOS options evaluation.
+                -- //
+                -- // The options hierarchy is used to improve completion, but may cost
+                -- // lots of time and/or memory.
+                -- // If this value is `null` or is not found in the workspace flake's
+                -- // inputs, NixOS options are not evaluated.
+                -- //
+                -- // Type: null | string
+                -- // Example: "nixos"
+                nixpkgsInputName = "nixpkgs",
+              },
             },
           },
         },
@@ -173,6 +209,20 @@ return {
         },
       },
       inlay_hints = { enabled = false },
+    },
+  },
+
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = "snacks.nvim", words = { "Snacks" } },
+        { path = "nvim-lspconfig", words = { "lspconfig.settings" } },
+      },
     },
   },
 

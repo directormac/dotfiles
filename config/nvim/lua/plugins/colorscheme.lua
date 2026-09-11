@@ -2,6 +2,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    ---@type CatppuccinOptions
     opts = {
       falvour = "mocha",
       background = { -- :h background
@@ -13,24 +14,14 @@ return {
         transparent = true,
         -- solid = true,
       },
+      auto_integrations = true,
+      term_colors = true,
       color_overrides = {
         all = {
           -- base = "#11111B",
           -- mantle = "#11111B",
         },
       },
-      custom_highlights = function(colors)
-        return {
-          -- Comment = { fg = colors.flamingo },
-          RenderMarkdownCode = { bg = colors.mantle },
-        }
-      end,
-      term_colors = true,
-      -- highlight_overrides = {
-      --   all = function(colors)
-      --     return {}
-      --   end,
-      -- },
     },
   },
   {
