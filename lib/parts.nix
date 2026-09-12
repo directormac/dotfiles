@@ -5,7 +5,8 @@
   inputs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     inputs.home-manager.flakeModules.home-manager
     inputs.wrappers.flakeModules.wrappers
@@ -13,12 +14,12 @@
 
   options.flake.wrappersModules = lib.mkOption {
     type = lib.types.lazyAttrsOf lib.types.raw;
-    default = {};
+    default = { };
     description = "Wrapper modules for wrapper-modules";
   };
 
   config = {
-    perSystem = {system, ...}: {
+    perSystem = { system, ... }: {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
         config.allowUnfree = true;
