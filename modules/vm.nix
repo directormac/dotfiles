@@ -3,11 +3,11 @@
 # instead of having to reboot each time.
 {
   inputs,
-  eg,
+  artifex,
   ...
 }: {
   den.aspects.igloo.includes = [
-    eg.vm.gui
+    artifex.vm.gui
     # eg.vm.tui
   ];
 
@@ -15,7 +15,7 @@
     packages.vm = pkgs.writeShellApplication {
       name = "vm";
       text = ''
-        ${inputs.self.nixosConfigurations.igloo.config.system.build.vm}/bin/run-igloo-vm "$@"
+        ${inputs.self.nixosConfigurations.mini.config.system.build.vm}/bin/run-mini-vm "$@"
       '';
     };
   };
