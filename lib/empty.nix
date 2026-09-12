@@ -2,19 +2,16 @@
   self,
   moduleWithSystem,
   ...
-}:
-{
+}: {
   flake.nixosModules.name = moduleWithSystem (
     {
       pkgs,
       self',
       inputs',
       ...
-    }:
-    let
-      modules = with self.nixosModules; [ ];
-    in
-    {
+    }: let
+      modules = with self.nixosModules; [];
+    in {
       imports = modules;
       programs.name = {
         enable = true;
@@ -22,14 +19,12 @@
       };
     }
   );
-  perSystem =
-    {
-      pkgs,
-      lib,
-      self',
-      ...
-    }:
-    {
-      packages.hello = pkgs.hello;
-    };
+  perSystem = {
+    pkgs,
+    lib,
+    self',
+    ...
+  }: {
+    packages.hello = pkgs.hello;
+  };
 }

@@ -25,22 +25,6 @@
 
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
 
-    files.url = "github:mightyiam/files";
-    files.flake = false;
-
-    devshell.url = "github:numtide/devshell";
-
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
-
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-unit.url = "github:nix-community/nix-unit";
-    nix-unit.inputs = {
-      nixpkgs.follows = "nixpkgs";
-      nix-github-actions.follows = "";
-    };
-
     ## these stable inputs are for wsl
     #nixpkgs-stable.url = "github:nixos/nixpkgs/release-25.05";
     #home-manager-stable.url = "github:nix-community/home-manager/release-25.05";

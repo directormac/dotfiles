@@ -5,7 +5,16 @@
 }: let
   inherit (den.lib.policy) route;
 in {
-  imports = ["${inputs.files}/flake-module.nix"];
+  flake-file.inputs = {
+    files = {
+      url = "github:sini/files";
+    };
+  };
+
+  imports = [
+    inputs.files.flakeModule
+  ];
+
   den.classes.files = {};
   den.policies.files-to-flake-parts = _: [
     (route {

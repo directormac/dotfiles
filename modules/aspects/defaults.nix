@@ -5,11 +5,19 @@
   den,
   ...
 }: {
+  den.schema.aspect = {lib, ...}: {
+    options.repoConfigDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Global variable pointing to the repository config directory";
+    };
+    config.repoConfigDir = ../../config;
+  };
+
   # Lets also configure some defaults using aspects.
   # These are global static settings.
   den.default = {
-    nixos.system.stateVersion = "25.05";
-    homeManager.home.stateVersion = "25.05";
+    nixos.system.stateVersion = "26.11";
+    homeManager.home.stateVersion = "26.11";
   };
 
   # These are functions that produce configs
