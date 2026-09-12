@@ -1,14 +1,20 @@
 # [nix.settings](https://search.nixos.org/options?channel=unstable&query=nix.settings&type=options)
-{pkgs}: {
-  den.default.nixos.nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    use-xdg-base-directories = true;
-    accept-flake-config = true;
-  };
-  den.default.nixos = {
+{
+  # den.default.nixos.nix.settings = {
+  #   experimental-features = [
+  #     "nix-command"
+  #     "flakes"
+  #   ];
+  #   use-xdg-base-directories = true;
+  #   accept-flake-config = true;
+  # };
+
+  den.default.nixos = {pkgs, ...}: {
+    nix = {
+      settings = {
+      };
+    };
+
     environment.systemPackages = with pkgs; [
       # Nix tooling
       nixd
