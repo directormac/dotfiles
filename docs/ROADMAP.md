@@ -100,3 +100,22 @@ Find more useful [nixes](https://github.com/nix-community) here
 1. Use [import-tree](https://github.com/denful/import-tree) so we dont need to import manually
 2. Use [flake-file](https://github.com/denful/flake-file) to generate `flake.nix`
 3. Use [flake-parts](https://flake.parts/getting-started.html) cuz modulessss.
+
+---
+
+Den has four core concepts. Each has one job:
+
+| Concept                                     | What it is                                                 | Where it lives                         |
+| ------------------------------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| **[Entity](/explanation/entities/)**        | A typed data record — a host, user, or home                | `den.hosts`, `den.homes`, `den.schema` |
+| **[Aspect](/explanation/aspects/)**         | A composable unit of configuration that spans Nix classes  | `den.aspects`                          |
+| **[Policy](/explanation/policies/)**        | A function that defines how entities relate and route data | `den.policies`                         |
+| **[Quirk](/explanation/quirks-and-pipes/)** | Structured data emitted by aspects, aggregated via pipes   | `den.quirks`                           |
+
+Entities declare _what exists_. Aspects declare _what it does_. Policies
+declare _how things relate_. Quirks let aspects share structured data
+without coupling.
+
+These four concepts compose to support NixOS, nix-Darwin, home-manager,
+WSL, MicroVM, flake-parts perSystem modules, machine fleets, and anything
+else configurable through Nix modules.

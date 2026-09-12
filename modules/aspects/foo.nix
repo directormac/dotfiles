@@ -12,7 +12,7 @@
   den.aspects.foo = {
     includes = [den.aspects.bar];
 
-    treefmt.settings.on-unmatched = "warn";
+    treefmt.settings.on-unmatched = "info";
 
     devshell.commands = [{package = "cowsay";}];
 

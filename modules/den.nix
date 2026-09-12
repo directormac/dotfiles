@@ -8,8 +8,8 @@
   den.homes.x86_64-linux.alice = {};
 
   den.hosts.x86_64-linux.igloo.users.tux = {};
+  den.homes.x86_64-linux.tux = {};
 
-  # enable hm for all users
   den.schema.user.classes = lib.mkDefault ["homeManager"];
 
   # --- Pipeline wiring ---

@@ -2,9 +2,12 @@
   inputs,
   self,
   ...
-}:
-{
-  flake.nixosModules.hyprland = { pkgs, lib, ... }: {
+}: {
+  flake.nixosModules.hyprland = {
+    pkgs,
+    lib,
+    ...
+  }: {
     imports = [
       self.nixosModules.dms
     ];
@@ -19,11 +22,14 @@
     };
   };
 
-  perSystem = { pkgs, self', ... }: {
+  perSystem = {
+    pkgs,
+    self',
+    ...
+  }: {
     packages.hyprland = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
       package = pkgs.hyprland;
-
     };
   };
 }

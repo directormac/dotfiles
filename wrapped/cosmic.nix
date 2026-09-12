@@ -2,9 +2,12 @@
   inputs,
   self,
   ...
-}:
-{
-  flake.nixosModules.cosmic = { pkgs, lib, ... }: {
+}: {
+  flake.nixosModules.cosmic = {
+    pkgs,
+    lib,
+    ...
+  }: {
     services.desktopManager.cosmic.enable = true;
     # services.displayManager.cosmic-greeter.enable = true;
     services.displayManager.sddm.enable = true;
@@ -23,11 +26,14 @@
     ];
   };
 
-  perSystem = { pkgs, self', ... }: {
+  perSystem = {
+    pkgs,
+    self',
+    ...
+  }: {
     packages.cosmic = inputs.wrappers.lib.wrapPackage {
       inherit pkgs;
       package = pkgs.cosmic-session;
-
     };
   };
 }

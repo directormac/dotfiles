@@ -2,56 +2,54 @@
   self,
   inputs,
   ...
-}:
-  let
-  kittyModule =
-    {
-      config,
-      lib,
-      ...
-    }:
-    {
-      options = {
-        shell = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-        };
-        dynamicMode = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "If true, use an impure config file from the home directory for hot-reloading.";
-        };
-        dynamicConfigPath = lib.mkOption {
-          type = lib.types.str;
-          default = "$HOME/.config/kitty/kitty.conf";
-        };
+}: let
+  kittyModule = {
+    config,
+    lib,
+    ...
+  }: {
+    options = {
+      shell = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+      dynamicMode = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "If true, use an impure config file from the home directory for hot-reloading.";
+      };
+      dynamicConfigPath = lib.mkOption {
+        type = lib.types.str;
+        default = "$HOME/.config/kitty/kitty.conf";
+      };
+    };
+
+    config = {
+      appendFlag = lib.mkAfter (
+        lib.optionals config.dynamicMode [
+          "--config"
+          config.dynamicConfigPath
+        ]
+        ++ lib.optionals (config.shell != "") [config.shell]
+      );
+
+      keybindings = {
+        "alt+1" = "goto_tab 1";
+        "alt+2" = "goto_tab 2";
+        "alt+3" = "goto_tab 3";
+        "alt+4" = "goto_tab 4";
+        "alt+5" = "goto_tab 5";
+        "alt+6" = "goto_tab 6";
+        "alt+7" = "goto_tab 7";
+        "alt+8" = "goto_tab 8";
+        "alt+9" = "goto_tab 9";
+        "ctrl+shift+w" = "close_tab";
+        "ctrl+t" = "new_tab_with_cwd";
+        "ctrl+shift+t" = "new_tab";
       };
 
-      config = {
-        appendFlag = lib.mkAfter (
-          lib.optionals config.dynamicMode [
-            "--config"
-            config.dynamicConfigPath
-          ]
-          ++ lib.optionals (config.shell != "") [ config.shell ]
-        );
-
-        keybindings = {
-          "alt+1" = "goto_tab 1";
-          "alt+2" = "goto_tab 2";
-          "alt+3" = "goto_tab 3";
-          "alt+4" = "goto_tab 4";
-          "alt+5" = "goto_tab 5";
-          "alt+6" = "goto_tab 6";
-          "alt+7" = "goto_tab 7";
-          "alt+8" = "goto_tab 8";
-          "alt+9" = "goto_tab 9";
-          "ctrl+shift+w" = "close_tab";
-          "ctrl+t" = "new_tab_with_cwd";
-          "ctrl+shift+t" = "new_tab";
-        };
-
-        settings = {
+      settings =
+        {
           enable_audio_bell = "no";
           font_size = 15;
           font_family = "Fira Mono Nerd Font";
@@ -90,27 +88,21 @@
         // lib.optionalAttrs (config.shell != "") {
           inherit (config) shell;
         };
-
-      };
     };
-
-in
-{
+  };
+in {
   flake.wrappersModules.kitty = kittyModule;
 
-  perSystem = { pkgs, ... }: {
+  perSystem = {pkgs, ...}: {
+    packages.kitty = inputs.wrappers.wrappers.kitty.wrap {
+      inherit pkgs;
+      imports = [kittyModule];
+    };
 
-    packages.kitty =
-      inputs.wrappers.wrappers.kitty.wrap {
-        inherit pkgs;
-        imports = [ kittyModule ];
-      };
-
-    packages.kittyDynamic =
-      inputs.wrappers.wrappers.kitty.wrap {
-        inherit pkgs;
-        dynamicMode = true;
-        imports = [ kittyModule ];
-      };
+    packages.kittyDynamic = inputs.wrappers.wrappers.kitty.wrap {
+      inherit pkgs;
+      dynamicMode = true;
+      imports = [kittyModule];
+    };
   };
 }

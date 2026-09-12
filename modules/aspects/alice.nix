@@ -16,7 +16,7 @@
 
       customEmacs.homeManager = {pkgs, ...}: {
         programs.emacs.enable = true;
-        programs.emacs.package = pkgs.emacs30-nox;
+        programs.emacs.package = pkgs.emacs-nox;
       };
     in [
       # from local bindings.
