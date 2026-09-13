@@ -1,5 +1,5 @@
 {
-  den.aspects.drives = {
+  den.aspects.zero = {
     nixos = {
       disko.devices = {
         disk = {
