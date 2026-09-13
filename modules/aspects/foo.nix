@@ -12,9 +12,11 @@
   den.aspects.foo = {
     includes = [den.aspects.bar];
 
-    treefmt.settings.on-unmatched = "info";
-
-    devshell.commands = [{package = "cowsay";}];
+    devshell.commands = [
+      {package = "age";}
+      {package = "just";}
+      {package = "sops";}
+    ];
 
     packages = {pkgs, ...}: {
       inherit (pkgs) htop;

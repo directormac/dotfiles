@@ -3,7 +3,8 @@
 
   den.aspects.bar = {
     treefmt.programs.alejandra.enable = true;
-    treefmt.settings.global.excludes = ["flake.nix"];
+    treefmt.settings.global.excludes = ["flake.nix" "config/**"];
+    treefmt.settings.on-unmatched = "info";
 
     tests.test-math-works = {
       expr = 22 * 2;
