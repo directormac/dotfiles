@@ -1,4 +1,4 @@
-{eg, ...}: {
+{eg, lib, ...}: {
   eg.vm = {
     gui.includes = [
       eg.vm
@@ -10,5 +10,11 @@
       eg.vm
       eg.vm-bootable.tui
     ];
+    
+    nixos = {
+      virtualisation.vmVariant = {
+        virtualisation.qemu.enableSharedMemory = true;
+      };
+    };
   };
 }

@@ -13,6 +13,10 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     files.url = "github:sini/files";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
@@ -35,6 +39,7 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     treefmt-nix = {
