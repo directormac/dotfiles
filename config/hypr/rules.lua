@@ -46,6 +46,16 @@ hl.window_rule({
   size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
 })
 
+hl.window_rule({
+  name = 'float-qemu',
+  match = {
+    class = 'qemu',
+  },
+  float = true,
+  center = true,
+  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+})
+
 -- hl.on('window.open', function(w)
 --   if w.class == 'virt-manager' then
 --     hl.dispatch(hl.dsp.window.move({
