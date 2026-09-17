@@ -7,7 +7,9 @@
     gui.includes = [
       runner.vm
       runner.vm-bootable.gui
-      runner.xfce-desktop
+
+      runner.hyprland-wm
+      # runner.xfce-desktop
       # runner.kde-desktop
     ];
 
