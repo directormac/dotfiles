@@ -4,7 +4,10 @@
   ...
 }: {
   # create an `eg` (example!) namespace. (flake exposed)
-  imports = [(inputs.den.namespace "eg" true)];
+  imports = [
+    (inputs.den.namespace "eg" true)
+    (inputs.den.namespace "runner" true)
+  ];
 
   # you can have more than one namespace (false = not flake exposed)
   # imports = [ (inputs.den.namespace "my" false) ];

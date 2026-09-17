@@ -1,18 +1,19 @@
 {
-  eg,
+  runner,
   lib,
   ...
 }: {
-  eg.vm = {
+  runner.vm = {
     gui.includes = [
-      eg.vm
-      eg.vm-bootable.gui
-      eg.xfce-desktop
+      runner.vm
+      runner.vm-bootable.gui
+      runner.xfce-desktop
+      # runner.kde-desktop
     ];
 
     tui.includes = [
-      eg.vm
-      eg.vm-bootable.tui
+      runner.vm
+      runner.vm-bootable.tui
     ];
 
     nixos = {

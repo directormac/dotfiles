@@ -3,17 +3,17 @@
 # instead of having to reboot each time.
 {
   inputs,
-  eg,
+  runner,
   ...
 }: {
   den.aspects.igloo.includes = [
-    # eg.vm.gui
+    runner.vm.gui
     # eg.vm.tui
   ];
 
   perSystem = {pkgs, ...}: {
-    packages.vm = pkgs.writeShellApplication {
-      name = "vm";
+    packages.run-igloo = pkgs.writeShellApplication {
+      name = "run-igloo";
       text = ''
         ${inputs.self.nixosConfigurations.igloo.config.system.build.vm}/bin/run-igloo-vm "$@"
       '';

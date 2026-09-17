@@ -25,7 +25,7 @@ in {
     };
     aspects.${hostname} = {
       includes = with den.aspects; [
-        # zero
+        zero
       ];
       nixos = {modulesPath, ...}: {
         imports = [
