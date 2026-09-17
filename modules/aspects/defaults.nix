@@ -17,6 +17,7 @@
   # These are global static settings.
   den.default = {
     nixos.system.stateVersion = "26.11";
+    nixos.nix.settings.experimental-features = ["nix-command" "flakes"];
     homeManager.home.stateVersion = "26.11";
   };
 
@@ -34,7 +35,7 @@
     # Disable booting when running on CI on all NixOS hosts.
     (
       if config ? _module.args.CI
-      then <eg/ci-no-boot>
+      then <runner/ci-no-boot>
       else {}
     )
 
