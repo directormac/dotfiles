@@ -1,6 +1,13 @@
-{den, ...}: {
+{
+  den,
+  runner,
+  ...
+}: {
   den.aspects.tux = {
-    includes = [den.batteries.define-user];
+    includes = [
+      den.batteries.define-user
+      # runner.autologin
+    ];
     user.description = "Bird";
 
     packages = {pkgs, ...}: {

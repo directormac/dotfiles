@@ -1,7 +1,7 @@
 {
   den,
   lib,
-  eg,
+  runner,
   ...
 }: {
   den.aspects.alice = {
@@ -24,8 +24,10 @@
       # from the aspect tree, cooper example is defined bellow
       den.aspects.cooper
       den.aspects.setHost
-      # from the `eg` namespace.
-      eg.autologin
+      # remove eg.autologin to prevent alice from autologging in
+      runner.autologin
+      # and include helix editor
+      den.aspects.editor.helix
       # den included batteries that provide common configs.
       <den/primary-user> # alice is admin always.
       (<den/user-shell> "fish") # default user shell

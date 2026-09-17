@@ -7,18 +7,18 @@ source "${DOTSZSH}/zinit.zsh"
 
 # [command-not-found](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/command-not-found/command-not-found.plugin.zsh)
 command-not-found() {
-  local last_status=$?
+	local last_status=$?
 
-  case $last_status in
-  # 126: Permission denied (e.g., trying to run a directory)
-  # 127: Command not found (e.g., typos like 'gti commit')
-  126 | 127)
-    hist -fs delete -1
-    ;;
-  *)
-    # Do nothing for other codes, including 130 (Ctrl+C)
-    ;;
-  esac
+	case $last_status in
+	# 126: Permission denied (e.g., trying to run a directory)
+	# 127: Command not found (e.g., typos like 'gti commit')
+	126 | 127)
+		hist -fs delete -1
+		;;
+	*)
+		# Do nothing for other codes, including 130 (Ctrl+C)
+		;;
+	esac
 }
 
 add-zsh-hook precmd command-not-found
@@ -27,12 +27,12 @@ add-zsh-hook precmd command-not-found
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  fd --hidden --exclude .git . "$1"
+	fd --hidden --exclude .git . "$1"
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-  fd --type=d --hidden --exclude .git . "$1"
+	fd --type=d --hidden --exclude .git . "$1"
 }
 
 # # # https://dev.to/martin_oehlert/from-14s-to-53ms-optimizing-zsh-startup-on-macos-5f09
@@ -167,3 +167,5 @@ eval "$(starship init zsh)"
 # >>> mise:activate >>> managed by mise - do not edit between markers
 eval "$(mise activate zsh)"
 # <<< mise:activate <<<
+
+direnv allow

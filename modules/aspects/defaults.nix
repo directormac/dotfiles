@@ -28,6 +28,9 @@
     # Automatically create the user on host.
     <den/define-user>
 
+    # Configure home-manager defaults (useUserPackages, useGlobalPkgs, etc)
+    den.aspects.home-manager
+
     # Disable booting when running on CI on all NixOS hosts.
     (
       if config ? _module.args.CI
