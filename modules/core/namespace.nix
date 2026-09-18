@@ -1,9 +1,19 @@
+/**
+* Namespaces & Imports
+*
+* This module sets up custom Den namespaces which group related aspects together.
+* It also enables the angle-brackets import syntax for your config files.
+*
+* Use Cases:
+* 1. The `runner` namespace allows us to reference `runner.vm.gui` elsewhere.
+* 2. The `__findFile` injection enables `<aspect/path>` shorthand for module imports.
+*/
 {
   inputs,
   den,
   ...
 }: {
-  # create an `eg` (example!) namespace. (flake exposed)
+  # create a namespace (flake exposed)
   imports = [
     (inputs.den.namespace "runner" true)
   ];
