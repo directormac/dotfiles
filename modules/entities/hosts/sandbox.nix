@@ -1,11 +1,11 @@
 /**
-* Host: igloo
+* Host: sandbox
 *
-* This file declares the 'igloo' host and configures it.
+* This file declares the 'sandbox' host and configures it.
 *
 * HOW TO ADD A NEW HOST:
-* 1. Duplicate this file (e.g. `cp igloo.nix newhost.nix`).
-* 2. Change all occurrences of `igloo` to `newhost`.
+* 1. Duplicate this file (e.g. `cp sandbox.nix newhost.nix`).
+* 2. Change all occurrences of `sandbox` to `newhost`.
 * 3. Assign any users that belong to this new host in the `den.hosts` block below.
 */
 {
@@ -14,15 +14,16 @@
   ...
 }: {
   # --- Host & User Registration ---
-  den.hosts.x86_64-linux.igloo.users.alice = {};
-  den.hosts.x86_64-linux.igloo.users.tux = {};
+  den.hosts.x86_64-linux.sandbox.users.artifex = {};
+  # den.hosts.x86_64-linux.sandbox.users.alice = {};
+  # den.hosts.x86_64-linux.sandbox.users.tux = {};
 
   # --- Host Configuration Aspect ---
-  den.aspects.igloo = {
-    # igloo host provides some home-manager defaults to its users.
+  den.aspects.sandbox = {
+    # sandbox host provides some home-manager defaults to its users.
     homeManager.programs.direnv.enable = true;
 
-    # NixOS configuration for igloo.
+    # NixOS configuration for sandbox.
     nixos = {pkgs, ...}: {
       environment.systemPackages = [pkgs.hello];
     };
@@ -40,7 +41,7 @@
       );
 
     includes = [
-      den.aspects.igloo.policies.to-alice
+      den.aspects.sandbox.policies.to-alice
     ];
   };
 }

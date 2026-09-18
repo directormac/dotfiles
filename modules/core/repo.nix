@@ -1,11 +1,11 @@
 /**
- * Repository Environment & Tooling Config
- *
- * This file configures the global flake-level outputs for the repository,
- * such as the formatting rules and the development shell (`nix develop`).
- * 
- * (Previously split across the poorly-named `foo.nix` and `bar.nix`).
- */
+* Repository Environment & Tooling Config
+*
+* This file configures the global flake-level outputs for the repository,
+* such as the formatting rules and the development shell (`nix develop`).
+*
+* (Previously split across the poorly-named `foo.nix` and `bar.nix`).
+*/
 {
   inputs,
   den,
@@ -24,18 +24,26 @@
 
     # --- Devshell Configuration ---
     # These packages are available when you run `nix develop` or use direnv.
-    devshell = { pkgs, self', ... }: {
+    devshell = {
+      pkgs,
+      self',
+      ...
+    }: {
       commands = [
-        { package = "age"; }
-        { package = "just"; }
-        { package = "sops"; }
-        { package = self'.packages.write-files; }
+        {package = "age";}
+        {package = "just";}
+        {package = "sops";}
+        {package = self'.packages.write-files;}
       ];
-      packages = [ pkgs.hello ];
+      packages = [pkgs.hello];
     };
 
     # --- Global Packages & Helpers ---
-    packages = { pkgs, config, ... }: {
+    packages = {
+      pkgs,
+      config,
+      ...
+    }: {
       inherit (pkgs) htop;
       write-files = config.files.writer.drv;
     };

@@ -4,20 +4,19 @@
 * This module consolidates all external tooling integrations, custom framework classes,
 * and command-line runners into a single place.
 *
-* It provides:
-* 1. `treefmt`: The standard formatter (run via `nix fmt`).
-* 2. `devshell`: Environments for development (run via `nix develop`).
-* 3. `tests`: Unit testing framework via `nix-unit` (run via `nix build .#checks.x86_64-linux.nix-unit`).
-* 4. `files`: File generation tooling.
-* 5. `nh` (Nix Helper): Automatically generates fast, user-friendly wrapper apps to build your hosts.
-* 6. Custom Runner Scripts: Scripts like `run-igloo` to spin up a VM of your host.
+* --- NAMING PACKAGES vs APPS IN DEN ---
+* Den automatically generates a package for each host you define (e.g., `packages.x86_64-linux.sandbox`).
+* These packages are used by tools like `nh` to build your system configuration.
 *
-* HOW TO ADD A NEW SCRIPT:
-* Just add a new attribute to `perSystem.packages` below. For example:
-* run-vmzero = pkgs.writeShellApplication {
-*   name = "run-vmzero";
-*   text = ''${inputs.self.nixosConfigurations.vmzero.config.system.build.vm}/bin/run-vmzero-vm "$@"'';
-* };
+* CRITICAL RULE: Never name a custom script in `perSystem.packages` the same name as one of your hosts!
+* If you write `packages.sandbox = ...`, you will accidentally overwrite the system builder package that
+* Den relies on. This creates a circular dependency, resulting in an "infinite recursion" error.
+*
+* HOW TO CREATE CLEAN CLI COMMANDS (e.g., `nix run .#sandbox`):
+* 1. Name the actual package something unique (like `sandbox-vm` or `run-sandbox`).
+* 2. Expose it via the `apps` output (e.g., `apps.sandbox = ...`).
+* `nix run` prefers apps over packages! By mapping `apps.sandbox` to `packages.sandbox-vm`,
+* you get the clean command `nix run .#sandbox` without colliding with Den's host packages!
 */
 {
   den,
@@ -83,10 +82,10 @@ in {
       collectSubtree = true;
       path = ["nix-unit" "tests"];
       adaptArgs = args: let
-        igloo = config.flake.nixosConfigurations.igloo.config;
-        tux = igloo.users.users.tux;
+        sandbox = config.flake.nixosConfigurations.sandbox.config;
+        inherit (sandbox.users.users) artifex;
       in
-        args.config.allModuleArgs // {inherit igloo tux;};
+        args.config.allModuleArgs // {inherit sandbox artifex;};
     })
   ];
 
@@ -107,26 +106,37 @@ in {
   ];
 
   # --- Tooling Configurations ---
-  # Add the VM gui to the igloo host
-  den.aspects.igloo.includes = [
+  # Add the VM gui to the sandbox host
+  den.aspects.sandbox.includes = [
     runner.vm.gui
   ];
 
-  perSystem = {pkgs, ...}: {
+  perSystem = {
+    pkgs,
+    config,
+    ...
+  }: {
     nix-unit = {
       allowNetwork = true;
-      inputs = inputs;
+      inherit inputs;
     };
 
     packages =
       (den.lib.nh.denPackages {fromFlake = true;} pkgs)
       // {
-        run-igloo = pkgs.writeShellApplication {
-          name = "run-igloo";
+        sandbox-vm = pkgs.writeShellApplication {
+          name = "sandbox-vm";
           text = ''
-            ${inputs.self.nixosConfigurations.igloo.config.system.build.vm}/bin/run-igloo-vm "$@"
+            ${inputs.self.nixosConfigurations.sandbox.config.system.build.vm}/bin/run-sandbox-vm "$@"
           '';
         };
       };
+
+    # By mapping apps.sandbox -> packages.sandbox-vm, we get the clean `nix run .#sandbox`
+    # CLI command without colliding with the framework's `packages.sandbox` host builder!
+    apps.sandbox = {
+      type = "app";
+      program = "${config.packages.sandbox-vm}/bin/sandbox-vm";
+    };
   };
 }

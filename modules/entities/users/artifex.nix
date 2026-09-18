@@ -1,11 +1,11 @@
 /**
-* User: alice
+* User: artifex
 *
-* This file declares the 'alice' user and configures their environments.
+* This file declares the 'artifex' user and configures their environments.
 *
 * HOW TO ADD A NEW USER:
-* 1. Duplicate this file (e.g. `cp alice.nix newuser.nix`).
-* 2. Change all occurrences of `alice` to `newuser`.
+* 1. Duplicate this file (e.g. `cp artifex.nix newuser.nix`).
+* 2. Change all occurrences of `artifex` to `newuser`.
 * 3. Don't forget to attach this user to a host in the host's entity file!
 */
 {
@@ -15,10 +15,10 @@
   ...
 }: {
   # --- User Registration ---
-  den.homes.x86_64-linux.alice = {};
+  den.homes.x86_64-linux.artifex = {};
 
   # --- User Configuration Aspect ---
-  den.aspects.alice = {
+  den.aspects.artifex = {
     # Alice can include other aspects.
     # For small, private one-shot aspects, use let-bindings like here.
     # for more complex or re-usable ones, define on their own modules,
@@ -35,33 +35,34 @@
     in [
       # from local bindings.
       customEmacs
-      # from the aspect tree, cooper example is defined bellow
-      den.aspects.cooper
+
       den.aspects.setHost
-      # remove eg.autologin to prevent alice from autologging in
-      # runner.autologin
-      # and include helix editor
-      den.aspects.editor.helix
+
+      runner.autologin
+
+      <editor/helix>
+
+      # den.aspects.editor.helix
       # den included batteries that provide common configs.
-      <den/primary-user> # alice is admin always.
-      (<den/user-shell> "fish") # default user shell
+      <den/primary-user> # artifex is admin always.
+
+      (<den/user-shell> "zsh") # default user shell
       # explicit policy activation
-      den.aspects.alice.policies.to-sandbox
+      den.aspects.artifex.policies.to-igloo
     ];
 
-    # Alice configures NixOS hosts it lives on.
     nixos = {pkgs, ...}: {
-      users.users.alice.packages = [pkgs.vim];
+      users.users.artifex.packages = [pkgs.vim];
+      users.users.artifex.description = "Artifex";
     };
 
-    # Alice home-manager.
     homeManager = {pkgs, ...}: {
       home.packages = [pkgs.htop];
     };
 
     # <user>.policies.<name>, aspect-included policy
     # Delivers NixOS config to the host (cross-scope via policy.provide).
-    policies.to-sandbox = {
+    policies.to-igloo = {
       host,
       user,
       ...
@@ -72,13 +73,6 @@
           module.programs.nh.enable = true;
         }
       );
-  };
-
-  # This is a context-aware aspect, that emits configurations
-  # **anytime** at least the `user` data is in context.
-  # read more at https://den.denful.dev/explanation/parametric/
-  den.aspects.cooper = {user, ...}: {
-    nixos.users.users.${user.userName}.description = "Alice Cooper";
   };
 
   den.aspects.setHost = {host, ...}: {
