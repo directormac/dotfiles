@@ -17,14 +17,13 @@
   # Lets also configure some defaults using aspects.
   # These are global static settings.
   den.default = {
-    homeManager.home.stateVersion = "26.11";
-
     nixos = {
       pkgs,
       config,
       ...
     }: {
       system.stateVersion = "26.11";
+      security.polkit.enable = true;
 
       imports = [
         inputs.nix-index-database.nixosModules.nix-index
@@ -60,16 +59,13 @@
       nixpkgs.config.allowUnfree = true;
 
       environment.systemPackages = with pkgs; [
-        nil
-        nixd
-        statix
-        alejandra
-        nixfmt-rfc-style
         manix
         nix-inspect
         devenv
       ];
     };
+
+    homeManager.home.stateVersion = "26.11";
   };
 
   # These are functions that produce configs

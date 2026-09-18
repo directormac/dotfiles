@@ -119,3 +119,9 @@ without coupling.
 These four concepts compose to support NixOS, nix-Darwin, home-manager,
 WSL, MicroVM, flake-parts perSystem modules, machine fleets, and anything
 else configurable through Nix modules.
+
+```sh
+sh <(curl -L https://nixos.org/nix/install) --daemon
+nix profile add nixpkgs#nix-direnv
+nix profile add nixpkgs#devenv
+```

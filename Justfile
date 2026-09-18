@@ -6,6 +6,9 @@ default:
     @just --list
     nix flake show
 
+show:
+    nix flake show
+
 # Apply the configuration to the current system (persists across reboots)
 switch:
     sudo nixos-rebuild --flake . switch
@@ -20,10 +23,8 @@ update:
     nix flake update
     nix fmt
 
-# Run the fast formatting checks and unit tests
 check:
-    nix build .#checks.x86_64-linux.treefmt
-    nix build .#checks.x86_64-linux.nix-unit
+  nix flake check
 
 # Format the codebase
 fmt:
@@ -32,3 +33,13 @@ fmt:
 # Run the sandbox VM
 sandbox:
     nix run .#sandbox
+
+# Clean 
+clean:
+  -rm -rf ./result
+  -rm *.qcow2
+
+# Enter shell
+# https://devenv.sh/guides/using-with-flake-parts/
+shell:
+  nix develop --no-pure-eval -c $SHELL
