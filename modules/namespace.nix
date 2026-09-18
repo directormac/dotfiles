@@ -5,7 +5,6 @@
 }: {
   # create an `eg` (example!) namespace. (flake exposed)
   imports = [
-    (inputs.den.namespace "eg" true)
     (inputs.den.namespace "runner" true)
   ];
 
