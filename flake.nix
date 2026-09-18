@@ -69,6 +69,7 @@
       url = "github:pfassina/lazyvim-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    make-shell.url = "github:nicknovitski/make-shell";
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
