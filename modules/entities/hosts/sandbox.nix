@@ -11,6 +11,8 @@
 {
   den,
   lib,
+  inputs,
+  runner,
   ...
 }: {
   # --- Host & User Registration ---
@@ -61,6 +63,29 @@
 
     includes = [
       den.aspects.sandbox.policies.to-alice
+      runner.vm.gui
     ];
+  };
+
+  perSystem = {
+    pkgs,
+    config,
+    ...
+  }: {
+    packages =
+      (den.lib.nh.denPackages {fromFlake = true;} pkgs)
+      // {
+        sandbox-vm = pkgs.writeShellApplication {
+          name = "sandbox-vm";
+          text = ''
+            ${inputs.self.nixosConfigurations.sandbox.config.system.build.vm}/bin/run-sandbox-vm "$@"
+          '';
+        };
+      };
+
+    # apps.sandbox = {
+    #   type = "app";
+    #   program = "${config.packages.sandbox-vm}/bin/sandbox-vm";
+    # };
   };
 }

@@ -40,6 +40,7 @@
           [
             "generated/**"
             "config/**"
+            # "flake.nix"
             ".secrets/**"
             "*.editorconfig"
             "*.envrc"

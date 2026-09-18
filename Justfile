@@ -35,7 +35,7 @@ fmt:
 
 # Run the sandbox VM
 sandbox:
-    nix run .#sandbox
+    nix run .#sandbox-vm
 
 # Clean 
 clean:

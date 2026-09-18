@@ -33,10 +33,27 @@
   perSystem = {
     config,
     pkgs,
+    self',
+    inputs',
+    system,
     lib,
     ...
   }: {
+    # Per-system attributes can be defined here. The self' and inputs'
+    # module parameters provide easy access to attributes of the same
+    # system.
     devenv.shells.default = {
+      # devenv.root = let
+      #   flakeRoot = builtins.toString inputs.self;
+      # in
+      #   flakeRoot;
+
+      languages = {
+        # lua.lsp.enable = true;
+        nix.lsp.enable = true;
+      };
+
+      # https://devenv.sh/reference/options/
       packages =
         [
           pkgs.age
@@ -58,6 +75,10 @@
         ++ lib.optionals pkgs.stdenv.buildPlatform.isDarwin [
           pkgs.coreutils-full # Include GNU coreutils for darwin systems
         ];
+
+      # Suppress devenv's deprecated package warnings in `nix flake show`
+      # packages.devenv-up = lib.mkForce (pkgs.emptyDirectory // {meta.description = "Deprecated by devenv";});
+      # packages.devenv-test = lib.mkForce (pkgs.emptyDirectory // {meta.description = "Deprecated by devenv";});
 
       # `devenv shell scripts`'s commands map to `devenv`'s scripts.
       # By specifying the `exec` and `description`, these will show up nicely when you run `devenv info`.
