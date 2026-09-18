@@ -29,6 +29,6 @@ check:
 fmt:
     nix fmt
 
-# Run the igloo VM tester
-vm:
-    nix run .#run-igloo
+# Run the sandbox VM
+sandbox:
+    nix run .#sandbox

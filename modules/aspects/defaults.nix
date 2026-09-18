@@ -3,6 +3,7 @@
   # deadnix: skip # enable <den/brackets> syntax for demo.
   __findFile ? __findFile,
   den,
+  inputs,
   ...
 }: {
   den.schema.aspect = {lib, ...}: {
@@ -16,9 +17,59 @@
   # Lets also configure some defaults using aspects.
   # These are global static settings.
   den.default = {
-    nixos.system.stateVersion = "26.11";
-    nixos.nix.settings.experimental-features = ["nix-command" "flakes"];
     homeManager.home.stateVersion = "26.11";
+
+    nixos = {
+      pkgs,
+      config,
+      ...
+    }: {
+      system.stateVersion = "26.11";
+
+      imports = [
+        inputs.nix-index-database.nixosModules.nix-index
+      ];
+
+      programs = {
+        nix-index-database.comma.enable = true;
+        nix-ld.enable = true;
+      };
+
+      nix = {
+        settings = {
+          # Use @wheel for trusted users instead of trying to resolve user name which might be absent
+          trusted-users = ["root" "@wheel"];
+          use-xdg-base-directories = true;
+          keep-derivations = true;
+          auto-optimise-store = true;
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+          accept-flake-config = true;
+        };
+        nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+        optimise.automatic = false;
+        gc = {
+          automatic = true;
+          dates = "daily";
+          options = "--delete-older-than 5d";
+        };
+      };
+
+      nixpkgs.config.allowUnfree = true;
+
+      environment.systemPackages = with pkgs; [
+        nil
+        nixd
+        statix
+        alejandra
+        nixfmt-rfc-style
+        manix
+        nix-inspect
+        devenv
+      ];
+    };
   };
 
   # These are functions that produce configs
