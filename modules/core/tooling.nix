@@ -27,23 +27,39 @@
 }: let
   inherit (den.lib.policy) route;
 in {
-  flake-file.inputs = {
-    devenv-root = {
-      url = "file+file:///dev/null";
-      flake = false;
-    };
-    devenv.url = "github:cachix/devenv";
-
-    files.url = "github:sini/files";
-
-    nix-unit.url = "github:nix-community/nix-unit";
-    nix-unit.inputs = {
-      nixpkgs.follows = "nixpkgs";
-      nix-github-actions.follows = "";
+  flake-file = {
+    nixConfig = {
+      extra-substituters = [
+        "https://devenv.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      ];
     };
 
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    inputs = {
+      devenv-root = {
+        url = "file+file:///dev/null";
+        flake = false;
+      };
+      devenv.url = "github:cachix/devenv";
+      nix2container = {
+        url = "github:nlewo/nix2container";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+
+      files.url = "github:sini/files";
+
+      nix-unit.url = "github:nix-community/nix-unit";
+      nix-unit.inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nix-github-actions.follows = "";
+      };
+
+      treefmt-nix.url = "github:numtide/treefmt-nix";
+      treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   imports = [
@@ -121,7 +137,7 @@ in {
   }: {
     nix-unit = {
       allowNetwork = true;
-      inherit inputs;
+      inputs = builtins.removeAttrs inputs ["devenv-root"];
     };
 
     packages =

@@ -14,34 +14,65 @@
     (inputs.den.flakeModules.dendritic or {})
   ];
 
-  flake-file.inputs = {
-    den.url = "github:denful/den";
-    import-tree.url = "github:vic/import-tree";
-    flake-file.url = "github:vic/flake-file";
+  flake-file = {
+    prune-lock.enable = true;
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nixConfig = {
+      abort-on-warn = false;
+      accept-flake-config = true;
+      allow-import-from-derivation = true;
+      auto-optimise-store = true;
+      lazy-trees = true;
+      submodules = true;
+      use-xdg-base-directories = true;
+
+      warn-dirty = false;
+
+      extra-experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
+
+      trusted-users = ["root" "artifex" "@wheel"];
+
+      extra-substituters = [
+        "https://nix-community.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nix-index-database.url = "github:nix-community/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    inputs = {
+      den.url = "github:denful/den";
+      import-tree.url = "github:vic/import-tree";
+      flake-file.url = "github:vic/flake-file";
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
 
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+      nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+      nix-index-database.url = "github:nix-community/nix-index-database";
+      nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # wrappers.url = "github:nix-community/nix-wrapper-modules";
-    # zen-browser = {
-    #   url = "github:0xc000022070/zen-browser-flake";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #     home-manager.follows = "home-manager";
-    #   };
-    # };
+      flake-parts.url = "github:hercules-ci/flake-parts";
+      flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-    # workmux.url = "github:raine/workmux";
+      pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+
+      # wrappers.url = "github:nix-community/nix-wrapper-modules";
+      # zen-browser = {
+      #   url = "github:0xc000022070/zen-browser-flake";
+      #   inputs = {
+      #     nixpkgs.follows = "nixpkgs";
+      #     home-manager.follows = "home-manager";
+      #   };
+      # };
+
+      # workmux.url = "github:raine/workmux";
+    };
   };
 }

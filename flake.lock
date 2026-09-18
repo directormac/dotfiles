@@ -488,6 +488,21 @@
         "type": "github"
       }
     },
+    "mk-shell-bin": {
+      "locked": {
+        "lastModified": 1677004959,
+        "narHash": "sha256-/uEkr1UkJrh11vD02aqufCxtbF5YnhRTIKlx5kyvf+I=",
+        "owner": "rrbutani",
+        "repo": "nix-mk-shell-bin",
+        "rev": "ff5d8bd4d68a347be5042e2f16caee391cd75887",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rrbutani",
+        "repo": "nix-mk-shell-bin",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-compat": [
@@ -567,6 +582,26 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-unit",
+        "type": "github"
+      }
+    },
+    "nix2container": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788758950,
+        "narHash": "sha256-b3zONUcYXZHeoeYwDZdSDCzMj0s6ubmD6NT3D7sS+jU=",
+        "owner": "nlewo",
+        "repo": "nix2container",
+        "rev": "b6ac40ef110c12ab1651fce5ea563f7837236439",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nlewo",
+        "repo": "nix2container",
         "type": "github"
       }
     },
@@ -790,8 +825,10 @@
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "lazyvim-nix": "lazyvim-nix",
+        "mk-shell-bin": "mk-shell-bin",
         "nix-index-database": "nix-index-database",
         "nix-unit": "nix-unit",
+        "nix2container": "nix2container",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_8",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",

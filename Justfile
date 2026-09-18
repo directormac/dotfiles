@@ -23,6 +23,10 @@ update:
     nix flake update
     nix fmt
 
+flake:
+  nix run .#write-flake
+  nix fmt
+
 check:
   nix flake check
 
