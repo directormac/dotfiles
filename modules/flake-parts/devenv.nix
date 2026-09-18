@@ -12,15 +12,23 @@
     };
 
     inputs = {
+      # devenv needs the project directory. Without this it falls back to `builtins.getEnv "PWD"`, which is empty under pure
+      #  evaluation.
+      # /dev/null` keeps the declaration host-independent (since `.devenv/root` is gitignored); `.envrc` overrides it
+      #  per-checkout.
       devenv-root = {
         url = "file+file:///dev/null";
         flake = false;
       };
+
       devenv.url = "github:cachix/devenv";
+
       nix2container = {
         url = "github:nlewo/nix2container";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+
+      make-shell.url = "github:nicknovitski/make-shell";
 
       mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
     };
@@ -28,6 +36,7 @@
 
   imports = [
     inputs.devenv.flakeModule
+    # inputs.make-shell.flakeModules.default
   ];
 
   perSystem = {
@@ -39,14 +48,39 @@
     lib,
     ...
   }: {
+    # devShells.default = pkgs.mkShell {
+    #   buildInputs = with pkgs; [
+    #   ];
+    # };
+
+    # devShells.x86_64-linux.default = devenv.lib.mkShell {
+    #   inherit inputs pkgs;
+    #   modules = [
+    #     ({
+    #       pkgs,
+    #       config,
+    #       ...
+    #     }: {
+    #       # This is your devenv configuration
+    #       packages = [pkgs.hello];
+    #
+    #       enterShell = ''
+    #         hello
+    #       '';
+    #
+    #       processes.run.exec = "hello";
+    #     })
+    #   ];
+    # };
+
     # Per-system attributes can be defined here. The self' and inputs'
     # module parameters provide easy access to attributes of the same
     # system.
     devenv.shells.default = {
-      # devenv.root = let
-      #   flakeRoot = builtins.toString inputs.self;
-      # in
-      #   flakeRoot;
+      devenv.root = let
+        flakeRoot = builtins.toString inputs.self;
+      in
+        flakeRoot;
 
       languages = {
         # lua.lsp.enable = true;
