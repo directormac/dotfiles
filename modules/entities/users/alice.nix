@@ -1,9 +1,23 @@
+/**
+* User: alice
+*
+* This file declares the 'alice' user and configures their environments.
+*
+* HOW TO ADD A NEW USER:
+* 1. Duplicate this file (e.g. `cp alice.nix newuser.nix`).
+* 2. Change all occurrences of `alice` to `newuser`.
+* 3. Don't forget to attach this user to a host in the host's entity file!
+*/
 {
   den,
   lib,
   runner,
   ...
 }: {
+  # --- User Registration ---
+  den.homes.x86_64-linux.alice = {};
+
+  # --- User Configuration Aspect ---
   den.aspects.alice = {
     # Alice can include other aspects.
     # For small, private one-shot aspects, use let-bindings like here.

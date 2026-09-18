@@ -30,7 +30,16 @@
     <den/define-user>
 
     # Configure home-manager defaults (useUserPackages, useGlobalPkgs, etc)
-    den.aspects.home-manager
+    {
+      os = {
+        home-manager = {
+          useUserPackages = true;
+          useGlobalPkgs = true;
+          backupFileExtension = "backup";
+          overwriteBackup = true;
+        };
+      };
+    }
 
     # Disable booting when running on CI on all NixOS hosts.
     (
