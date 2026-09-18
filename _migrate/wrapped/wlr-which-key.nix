@@ -1,5 +1,5 @@
 {self, ...}: {
-  flake.wrappers.which-key-cli = {...}: {
+  flake.wrappers.which-key-cli = _: {
     settings = {
       font = "Fira Mono Nerd Font 16";
       background = self.theme.base00;

@@ -25,7 +25,6 @@ update:
 
 flake:
   nix run .#write-flake
-  nix fmt
 
 check:
   nix flake check
