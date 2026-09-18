@@ -38,9 +38,9 @@
 
         global.excludes =
           [
-            "generated/**"
             "config/**"
             "flake.nix"
+            "generated/**"
             ".secrets/**"
             "*.editorconfig"
             "*.envrc"
@@ -78,7 +78,7 @@
           ++ config.files.paths;
 
         # statix.options = [ "explain" ];
-        # mdformat.options = ["--number"];
+        mdformat.options = ["--number"];
         shellcheck.options = [
           "--shell=bash"
           "--check-sourced"
@@ -110,7 +110,7 @@
 
         toml-sort.enable = true;
 
-        # mdformat.enable = true;
+        mdformat.enable = true;
 
         shellcheck.enable = true;
       };

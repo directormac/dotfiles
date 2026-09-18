@@ -1,10 +1,26 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   flake-file.inputs.lazyvim-nix = {
     url = "github:pfassina/lazyvim-nix";
-    inputs.nixpkgs.follows = "nixpkgs";
+    # inputs.nixpkgs.follows = "nixpkgs";
   };
 
   den.aspects.editor.lazyvim = {
+    nixos.nixpkgs.overlays = [
+      (final: prev: {
+        vimPlugins = prev.vimPlugins.extend (vfinal: vprev: {
+          typescript-nvim = prev.vimUtils.buildVimPlugin {
+            pname = "typescript-nvim";
+            version = "nixpkgs-stable";
+            src = prev.emptyDirectory;
+          };
+        });
+      })
+    ];
+
     homeManager = {
       imports = [inputs.lazyvim-nix.homeManagerModules.default];
 
@@ -15,24 +31,27 @@
 
       programs.lazyvim = {
         enable = true;
+
+        # See https://github.com/pfassina/lazyvim-nix/wiki/Plugin-Sourcing-Strategy#plugin-sourcing-strategy
         pluginSource = "nixpkgs";
+        ignoreBuildNotifications = true; # Suppress build-time warnings
+
         extras = {
-          ai.copilot.enable = true;
+          # ai.copilot.enable = true;
           coding = {
             mini-surround.enable = true;
             yanky.enable = true;
           };
           editor = {
-            dial.enable = true;
             inc-rename.enable = true;
           };
           lang = {
             nix.enable = true;
-            python.enable = true;
             markdown.enable = true;
           };
           util.mini-hipatterns.enable = true;
         };
+
         plugins = {
           colorscheme = ''
             return {
@@ -43,6 +62,18 @@
             }
           '';
         };
+
+        extraPackages = with pkgs; [
+          # nixd
+          # alejandra
+        ];
+
+        # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
+        treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+          # toml
+          # lua
+          # nix
+        ];
       };
     };
   };
