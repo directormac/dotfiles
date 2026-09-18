@@ -20,9 +20,7 @@
         allowDeprecatedx86_64Darwin = true;
       };
       overlays =
-        builtins.attrValues (import (rootPath + "/pkgs/overlays.nix") {inherit inputs;})
-        ++ [
-        ];
+        builtins.attrValues (import (rootPath + "/pkgs/overlays.nix") {inherit inputs;});
     };
     pkgsDirectory = rootPath + "/pkgs/by-name";
   };
