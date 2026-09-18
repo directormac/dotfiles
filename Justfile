@@ -4,10 +4,9 @@
 # List available commands
 default:
     @just --list
-    nix flake show
 
 show:
-    nix flake show
+    nix flake show --impure
 
 # Apply the configuration to the current system (persists across reboots)
 switch:
@@ -19,15 +18,13 @@ test:
 
 # Update all flake inputs to their latest versions
 update:
-    nix run .#write-flake
     nix flake update
-    nix fmt
 
 flake:
   nix run .#write-flake
 
 check:
-  nix flake check
+  nix flake check --impure
 
 # Format the codebase
 fmt:

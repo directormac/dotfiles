@@ -42,52 +42,25 @@
   perSystem = {
     config,
     pkgs,
-    self',
-    inputs',
-    system,
     lib,
     ...
   }: {
-    # devShells.default = pkgs.mkShell {
-    #   buildInputs = with pkgs; [
-    #   ];
-    # };
-
-    # devShells.x86_64-linux.default = devenv.lib.mkShell {
-    #   inherit inputs pkgs;
-    #   modules = [
-    #     ({
-    #       pkgs,
-    #       config,
-    #       ...
-    #     }: {
-    #       # This is your devenv configuration
-    #       packages = [pkgs.hello];
-    #
-    #       enterShell = ''
-    #         hello
-    #       '';
-    #
-    #       processes.run.exec = "hello";
-    #     })
-    #   ];
-    # };
-
     # Per-system attributes can be defined here. The self' and inputs'
     # module parameters provide easy access to attributes of the same
     # system.
+    # https://devenv.sh/reference/options/
     devenv.shells.default = {
-      devenv.root = let
-        flakeRoot = builtins.toString inputs.self;
-      in
-        flakeRoot;
+      # devenv.root = let
+      #   flakeRoot = builtins.toString inputs.self;
+      # in
+      #   flakeRoot;
 
       languages = {
-        # lua.lsp.enable = true;
-        nix.lsp.enable = true;
+        nix.enable = true;
+        lua.enable = true;
       };
 
-      # https://devenv.sh/reference/options/
+      # https://devenv.sh/packages/
       packages =
         [
           pkgs.age
@@ -110,12 +83,22 @@
           pkgs.coreutils-full # Include GNU coreutils for darwin systems
         ];
 
-      # Suppress devenv's deprecated package warnings in `nix flake show`
-      # packages.devenv-up = lib.mkForce (pkgs.emptyDirectory // {meta.description = "Deprecated by devenv";});
-      # packages.devenv-test = lib.mkForce (pkgs.emptyDirectory // {meta.description = "Deprecated by devenv";});
+      # https://devenv.sh/basics/
+      enterShell = ''
+        hello         # Run scripts directly
+        git --version # Use packages
+      '';
 
-      # `devenv shell scripts`'s commands map to `devenv`'s scripts.
-      # By specifying the `exec` and `description`, these will show up nicely when you run `devenv info`.
+      # https://devenv.sh/tests/
+      enterTest = ''
+        echo "Running tests"
+        git --version | grep --color=auto "${pkgs.git.version}"
+      '';
+
+      # https://devenv.sh/git-hooks/
+      # git-hooks.hooks.shellcheck.enable = true;
+
+      # https://devenv.sh/scripts/
       scripts = {
         # --- GUIDE: How to create custom scripts in devenv ---
         #
