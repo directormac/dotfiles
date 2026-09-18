@@ -24,18 +24,31 @@
 
     # --- Devshell Configuration ---
     # These packages are available when you run `nix develop` or use direnv.
-    devshell = {
+    devenv = {
       pkgs,
-      self',
+      config,
       ...
     }: {
-      commands = [
-        {package = "age";}
-        {package = "just";}
-        {package = "sops";}
-        {package = self'.packages.write-files;}
+      devenv.root = let
+        cwd = builtins.getEnv "PWD";
+      in
+        pkgs.lib.mkOverride 500 (
+          if cwd != ""
+          then cwd
+          else "/"
+        );
+      packages = [
+        pkgs.nil
+        pkgs.nixd
+        pkgs.statix
+        pkgs.alejandra
+
+        pkgs.age
+        pkgs.just
+        pkgs.sops
+        config.packages.write-files
+        pkgs.hello
       ];
-      packages = [pkgs.hello];
     };
 
     # --- Global Packages & Helpers ---

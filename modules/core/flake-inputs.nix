@@ -32,5 +32,16 @@
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+
+    # wrappers.url = "github:nix-community/nix-wrapper-modules";
+    # zen-browser = {
+    #   url = "github:0xc000022070/zen-browser-flake";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #     home-manager.follows = "home-manager";
+    #   };
+    # };
+
+    # workmux.url = "github:raine/workmux";
   };
 }

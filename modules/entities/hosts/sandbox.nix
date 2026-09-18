@@ -26,6 +26,25 @@
     # NixOS configuration for sandbox.
     nixos = {pkgs, ...}: {
       environment.systemPackages = [pkgs.hello];
+
+      # Enable SSH for easier debugging
+      services.openssh = {
+        enable = true;
+        settings.PermitRootLogin = "yes";
+      };
+
+      # Use ly as the default display manager for the sandbox
+      services.displayManager.ly.enable = true;
+
+      virtualisation.vmVariant = {
+        virtualisation.forwardPorts = [
+          {
+            from = "host";
+            host.port = 2222;
+            guest.port = 22;
+          }
+        ];
+      };
     };
 
     # <host>.policies.<name>, aspect-included policy

@@ -25,6 +25,9 @@
   # keep in mind a namespace is defined only once, so give it an array:
   # imports = [ (inputs.den.namespace "ours" [inputs.ours inputs.theirs]) ];
 
-  # this line enables den angle brackets syntax in modules.
+  # Enable the den dendritic module framework with angle-bracket import syntax.
+  # <desktop/niri> resolves to modules/aspects/editors/helix.nix via __findFile.
+  # The flake-file + import-tree integration allows the modules/ directory
+  # structure to drive all imports and host definitions automatically.
   _module.args.__findFile = den.lib.__findFile;
 }

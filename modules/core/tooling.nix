@@ -28,8 +28,11 @@
   inherit (den.lib.policy) route;
 in {
   flake-file.inputs = {
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
+    devenv-root = {
+      url = "file+file:///dev/null";
+      flake = false;
+    };
+    devenv.url = "github:cachix/devenv";
 
     files.url = "github:sini/files";
 
@@ -44,24 +47,24 @@ in {
   };
 
   imports = [
-    inputs.devshell.flakeModule
+    inputs.devenv.flakeModule
     inputs.files.flakeModule
     inputs.nix-unit.modules.flake.default
     inputs.treefmt-nix.flakeModule
   ];
 
   # --- Den Classes Declaration ---
-  den.classes.devshell = {};
+  den.classes.devenv = {};
   den.classes.files = {};
   den.classes.tests = {};
   den.classes.treefmt = {};
 
   # --- Policies (Routing to flake-parts) ---
-  den.policies.devshell-to-flake-parts = _: [
+  den.policies.devenv-to-flake-parts = _: [
     (route {
-      fromClass = "devshell";
+      fromClass = "devenv";
       intoClass = "flake-parts";
-      path = ["devshells" "default"];
+      path = ["devenv" "shells" "default"];
       adaptArgs = {config, ...}: config.allModuleArgs;
     })
   ];
@@ -99,7 +102,7 @@ in {
   ];
 
   den.schema.flake-parts.includes = [
-    den.policies.devshell-to-flake-parts
+    den.policies.devenv-to-flake-parts
     den.policies.files-to-flake-parts
     den.policies.tests-to-flake-parts
     den.policies.treefmt-to-flake-parts

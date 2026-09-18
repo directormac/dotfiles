@@ -8,7 +8,7 @@
       runner.vm
       runner.vm-bootable.gui
 
-      runner.hyprland-wm
+      # runner.hyprland-wm
       # runner.xfce-desktop
       # runner.kde-desktop
     ];

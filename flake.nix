@@ -8,15 +8,21 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dankcalendar.url = "github:AvengeMedia/dankcalendar";
+    danksearch.url = "github:AvengeMedia/danksearch";
     den.url = "github:denful/den";
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
+    devenv.url = "github:cachix/devenv";
+    devenv-root = {
+      url = "file+file:///dev/null";
+      flake = false;
     };
+    dgop.url = "github:AvengeMedia/dgop";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dms.url = "github:AvengeMedia/DankMaterialShell";
+    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
     files.url = "github:sini/files";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
