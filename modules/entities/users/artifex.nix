@@ -11,7 +11,6 @@
 {
   den,
   lib,
-  runner,
   ...
 }: {
   # --- User Registration ---
@@ -22,13 +21,20 @@
     includes = let
       # hack for nixf linter to keep findFile :/
       # this hack enables the <aspect/subaspect> below
-      unused = den.lib.take.unused __findFile;
-      __findFile = unused den.lib.__findFile;
+      # deadnix: skip
+      # unused = den.lib.take.unused __findFile;
+      # __findFile = unused den.lib.__findFile;
+      # not required, showcasing angle-brackets syntax.
+      # deadnix: skip
+      inherit (den.lib) __findFile;
     in [
+      # Projects user-relevant classes (like homeManager) from the host’s aspect tree onto users who opt in.
+      # Any homeManager key defined in the host aspect is forwarded to the user’s home-manager evaluation.
+      den.batteries.host-aspects
+
       den.provides.define-user
       den.provides.primary-user
       den.aspects.tools.provides.nix-trusted-user
-      den.batteries.host-aspects
 
       den.aspects.setHost
 
@@ -44,8 +50,6 @@
 
       # explicit policy activation
       den.aspects.artifex.policies.to-sandbox
-
-      # runner.autologin
     ];
 
     nixos = {pkgs, ...}: {

@@ -15,6 +15,18 @@
 }: {
   # create a namespace (flake exposed)
   imports = [
+    # You can have several namespaces,
+    # - true: exposes flake.denful.yours
+    # - false: Not flake exposed.
+
+    # You can also mixin from several inputs.
+    # Just keep in mind that a namespace can be defined only once, use an array as argument:
+    # (inputs.den.namespace "ours" [
+    #   true
+    #   inputs.mine
+    #   inputs.theirs
+    # ])
+
     (inputs.den.namespace "runner" true)
   ];
 

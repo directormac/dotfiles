@@ -14,7 +14,32 @@
   den,
   ...
 }: {
-  imports = [inputs.pkgs-by-name-for-flake-parts.flakeModule];
+  imports = [
+    inputs.pkgs-by-name-for-flake-parts.flakeModule
+  ];
+
+  # perSystem = {system, ...}: {
+  #   _module.args.pkgs = import inputs.nixpkgs {
+  #     inherit system;
+  #     overlays = [
+  #       inputs.self.overlays.default
+  #     ];
+  #   };
+  #   pkgsDirectory = ../../packages;
+  # };
+
   perSystem.pkgsDirectory = ../../packages;
-  den.schema.flake-parts.includes = [den.policies.packages-to-flake-parts];
+
+  # flake = {
+  #   overlays.default = _final: prev:
+  #     withSystem prev.stdenv.hostPlatform.system (
+  #       {config, ...}: {
+  #         local = config.packages;
+  #       }
+  #     );
+  # };
+
+  den.schema.flake-parts.includes = [
+    den.policies.packages-to-flake-parts
+  ];
 }

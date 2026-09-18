@@ -11,7 +11,10 @@
   den,
   ...
 }: {
-  imports = [inputs.den.flakeModule];
+  imports = [
+    inputs.den.flakeModule
+    # inputs.nix-index-database.nixosModules.nix-index
+  ];
 
   # Route this configuration directly into the global flake-parts output
   den.schema.flake-parts.includes = [den.aspects.repo-env];
@@ -37,11 +40,20 @@
           then cwd
           else "/"
         );
+
+      # programs = {
+      #   nix-index-database.comma.enable = true;
+      #   nix-ld.enable = true;
+      # };
+
       packages = [
         pkgs.nil
         pkgs.nixd
         pkgs.statix
         pkgs.alejandra
+
+        pkgs.nix-inspect
+        pkgs.nix-ld
 
         pkgs.age
         pkgs.just
