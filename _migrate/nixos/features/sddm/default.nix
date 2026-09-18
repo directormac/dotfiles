@@ -1,4 +1,4 @@
-{...}: {
+_: {
   flake.nixosModules.sddm = {pkgs, ...}: let
     current = "anime_girl_holding_tea_1080p.mp4";
 

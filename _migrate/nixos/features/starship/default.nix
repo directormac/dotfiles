@@ -2,7 +2,7 @@
   perSystem = {pkgs, ...}: {
     packages = {
       starship = inputs.wrappers.lib.wrapPackage (
-        {...}: {
+        _: {
           inherit pkgs;
           package = pkgs.starship;
           env = {

@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  perSystem = {...}: {
+  perSystem = _: {
     _module.args = {
       # Make flakeLocation universally addressable
       flakeLocation = builtins.getEnv "PWD";

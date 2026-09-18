@@ -28,27 +28,7 @@
   inherit (den.lib.policy) route;
 in {
   flake-file = {
-    nixConfig = {
-      extra-substituters = [
-        "https://devenv.cachix.org"
-      ];
-      extra-trusted-public-keys = [
-        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      ];
-    };
-
     inputs = {
-      devenv-root = {
-        url = "file+file:///dev/null";
-        flake = false;
-      };
-      devenv.url = "github:cachix/devenv";
-      nix2container = {
-        url = "github:nlewo/nix2container";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
-
       files.url = "github:sini/files";
 
       nix-unit.url = "github:nix-community/nix-unit";
@@ -56,24 +36,18 @@ in {
         nixpkgs.follows = "nixpkgs";
         nix-github-actions.follows = "";
       };
-
-      treefmt-nix.url = "github:numtide/treefmt-nix";
-      treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   imports = [
-    inputs.devenv.flakeModule
     inputs.files.flakeModule
     inputs.nix-unit.modules.flake.default
-    inputs.treefmt-nix.flakeModule
   ];
 
   # --- Den Classes Declaration ---
   den.classes.devenv = {};
   den.classes.files = {};
   den.classes.tests = {};
-  den.classes.treefmt = {};
 
   # --- Policies (Routing to flake-parts) ---
   den.policies.devenv-to-flake-parts = _: [
@@ -108,20 +82,10 @@ in {
     })
   ];
 
-  den.policies.treefmt-to-flake-parts = _: [
-    (route {
-      fromClass = "treefmt";
-      intoClass = "flake-parts";
-      path = ["treefmt"];
-      adaptArgs = {config, ...}: config.allModuleArgs;
-    })
-  ];
-
   den.schema.flake-parts.includes = [
     den.policies.devenv-to-flake-parts
     den.policies.files-to-flake-parts
     den.policies.tests-to-flake-parts
-    den.policies.treefmt-to-flake-parts
   ];
 
   # --- Tooling Configurations ---
