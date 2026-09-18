@@ -168,4 +168,8 @@ eval "$(starship init zsh)"
 eval "$(mise activate zsh)"
 # <<< mise:activate <<<
 
-direnv allow
+eval "$(devenv hook zsh)"
+
+export DIRENV_LOG_FORMAT=""
+
+eval "$(direnv hook zsh)"

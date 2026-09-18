@@ -13,14 +13,11 @@ command_timeout = 5000
 
 format = """$all\
 $line_break\
-$directory\
+$directory$fill$cmd_duration$jobs$time\
 $line_break\
 $character"""
 
-right_format = """
-$cmd_duration $jobs $time
-"""
-
+# right_format = """$cmd_duration $jobs $time"""
 
 [nodejs]
 format = "[$symbol($version )]($style)"
@@ -32,8 +29,16 @@ symbol = " "
 style = "fg:mauve"
 read_only = " "
 truncation_length = 4
-truncate_to_repo = true
-truncation_symbol = "~/"
+truncate_to_repo = false
+# truncation_symbol = "~/"
+truncation_symbol = "../"
+
+# [directory]
+# style = "fg:mauve"
+# read_only = " "
+# truncation_length = 4
+# truncate_to_repo = true
+# truncation_symbol = "~/"
 
 [character]
 success_symbol = '[❯](mauve)'
