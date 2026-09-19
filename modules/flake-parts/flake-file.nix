@@ -39,17 +39,39 @@
       import-tree.url = "github:vic/import-tree";
       flake-file.url = "github:vic/flake-file";
 
+      nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
       home-manager = {
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
       nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
+
+      home-manager-stable = {
+        url = "github:nix-community/home-manager/release-26.05";
+        inputs.nixpkgs.follows = "nixpkgs-stable";
+      };
+
+      disko = {
+        url = "github:nix-community/disko";
+      };
+
+      nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+
+      nixos-hardware.url = "github:nixos/nixos-hardware";
+
+      firefox-addons = {
+        url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      gen-schema.url = "github:sini/gen-schema";
 
       nix-index-database.url = "github:nix-community/nix-index-database";
       nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+      impermanence.url = "github:nix-community/impermanence";
 
       flake-parts.url = "github:hercules-ci/flake-parts";
       flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -89,6 +111,17 @@
       # };
 
       # workmux.url = "github:raine/workmux";
+
+      agenix = {
+        url = "github:ryantm/agenix";
+        inputs.home-manager.follows = "home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      agenix-rekey = {
+        url = "github:sini/agenix-rekey/feat/settings";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 }

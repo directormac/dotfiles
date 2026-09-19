@@ -12,12 +12,16 @@
     inputs.pkgs-by-name-for-flake-parts.flakeModule
   ];
 
-  perSystem = {system, ...}: {
+  perSystem = {
+    inputs',
+    system,
+    ...
+  }: {
     _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
       config = {
         allowUnfree = true;
-        allowDeprecatedx86_64Darwin = true;
+        # allowDeprecatedx86_64Darwin = true;
       };
       overlays =
         builtins.attrValues (import (rootPath + "/pkgs/overlays.nix") {inherit inputs;});
