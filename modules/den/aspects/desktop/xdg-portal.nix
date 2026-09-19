@@ -6,11 +6,11 @@
       ...
     }: {
       security.pam.services = {
-        gdm.enableGnomeKeyring = true;
-        gdm-password.enableGnomeKeyring = true;
-        login.enableGnomeKeyring = true;
-        hyprlock.text = "auth include login";
-        swaylock.text = "auth include login";
+        # gdm.enableGnomeKeyring = true;
+        # gdm-password.enableGnomeKeyring = true;
+        # login.enableGnomeKeyring = true;
+        # hyprlock.text = "auth include login";
+        # swaylock.text = "auth include login";
       };
 
       xdg.portal = {
@@ -42,7 +42,7 @@
           #   "org.freedesktop.portal.OpenURI" = ["kde"];
           # };
           niri = {
-            default = [
+            default = pkgs.lib.mkForce [
               "gtk"
               "gnome"
             ];
@@ -63,8 +63,8 @@
         extraPortals = [
           pkgs.xdg-desktop-portal-gtk
           pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-hyprland
           pkgs.kdePackages.xdg-desktop-portal-kde
+          pkgs.xdg-desktop-portal-hyprland
           pkgs.xdg-desktop-portal-wlr
         ];
       };

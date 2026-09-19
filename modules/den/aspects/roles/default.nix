@@ -11,8 +11,10 @@
       base.core
       base.system.firmware
       base.security
+
       # base.system.facter
       # base.users.home-manager-shared
+
       base.users.deterministic-uids
       # #core.nix.remote-build-client
       # core.security.sudo
@@ -22,7 +24,7 @@
       base.system.linux-kernel
       base.users
 
-      # base.impermanence
+      base.impermanence
 
       applications.shell.zsh
 

@@ -1,12 +1,12 @@
 {lib, ...}: {
-  den.aspects.editor.nvf = {
+  den.aspects.applications.dev.editor.nvf = {
     homeManager = {
       programs.nvf = {
         enable = true;
         defaultEditor = true;
         settings.vim = {
           viAlias = true;
-          withNodeJs = true;
+          # withNodeJs = true;
           theme = {
             enable = true;
             name = "catppuccin";

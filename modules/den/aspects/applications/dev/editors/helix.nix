@@ -8,7 +8,7 @@
     packages.helix = pkgs.helix;
   };
 
-  den.aspects.editor.helix = {
+  den.aspects.applications.dev.editor.helix = {
     homeManager = {
       pkgs,
       lib,

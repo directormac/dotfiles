@@ -1,5 +1,5 @@
 {lib, ...}: {
-  den.aspects.editor.zed-editor = {
+  den.aspects.applications.dev.editor.zed-editor = {
     homeManager = {
       programs.zed-editor = {
         enable = true;

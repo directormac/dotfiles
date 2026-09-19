@@ -61,11 +61,11 @@
       # so tailnet SSH works with the firewall closed. Also allow the host's LAN
       # CIDR so uplink can ProxyJump to targets over the LAN when the tailnet
       # control plane is down (the break-glass path).
-      networking.firewall.extraInputRules =
-        lib.mkIf (host.settings.base.security.openssh.exposure == "tailnet")
-        ''
-          ip saddr ${environment.networks.default.cidr} tcp dport 22 accept
-        '';
+      # networking.firewall.extraInputRules =
+      #   lib.mkIf (host.settings.base.security.openssh.exposure == "tailnet")
+      #   ''
+      #     ip saddr ${environment.networks.default.cidr} tcp dport 22 accept
+      #   '';
     };
 
     persist = {

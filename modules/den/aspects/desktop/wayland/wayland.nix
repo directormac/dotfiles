@@ -23,13 +23,13 @@
     };
 
     # services.displayManager.sddm.enable = true;
-    #
-    # services.displayManager = {
-    #   enable = true;
-    # };
+
+    services.displayManager = {
+      enable = true;
+    };
   };
 
-  den.aspects.wayland.includes = [
+  den.aspects.desktop.wayland.includes = [
     den.aspects.desktop.uwsm
     den.aspects.desktop.hyprland
     den.aspects.desktop.niri

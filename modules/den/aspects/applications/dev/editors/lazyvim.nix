@@ -8,7 +8,7 @@
     # inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  den.aspects.editor.lazyvim = {
+  den.aspects.applications.dev.editor.lazyvim = {
     nixos.nixpkgs.overlays = [
       (final: prev: {
         vimPlugins = prev.vimPlugins.extend (vfinal: vprev: {

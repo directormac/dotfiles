@@ -5,7 +5,7 @@
 }: {
   den.hosts.x86_64-linux.sandbox = {
     # channel = "nixpkgs";
-    environment = "dev";
+    # environment = "dev";
     system-owner = "mac";
     system-access-groups = ["workstation-access"];
 
@@ -24,16 +24,14 @@
   den.aspects.sandbox = {
     includes = with den.aspects; [
       roles.default
+      roles.dev
+      roles.workstation
 
       hardware.cpu.intel
       hardware.performance
 
-      # desktop.hyprland
       desktop.wayland
-
-      desktop.xdg
-      desktop.xdg-portal
-      desktop.xwayland
+      desktop.ly
 
       base.network.manager
       # core.network.tailscale
@@ -73,25 +71,5 @@
         # applications.media.spotify-player
       ];
     };
-  };
-
-  perSystem = {
-    pkgs,
-    config,
-    ...
-  }: {
-    packages = {
-      sandbox-vm = pkgs.writeShellApplication {
-        name = "sandbox-vm";
-        text = ''
-          ${inputs.self.nixosConfigurations.sandbox.config.system.build.vm}/bin/run-sandbox-vm "$@"
-        '';
-      };
-    };
-
-    # apps.sandbox = {
-    #   type = "app";
-    #   program = "${config.packages.sandbox-vm}/bin/sandbox-vm";
-    # };
   };
 }

@@ -8,7 +8,6 @@
     includes = [
       den.aspects.base.impermanence.persist-collector
       den.aspects.base.impermanence.persist-home-collector
-      den.aspects.base.impermanence.tmpfs
       den.aspects.base.impermanence.btrfs
     ];
 

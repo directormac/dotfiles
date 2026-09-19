@@ -18,11 +18,6 @@
       #   LC_TELEPHONE = "en_US.UTF-8";
       #   LC_TIME = "en_US.UTF-8";
       # };
-
-      # console = {
-      #   keyMap = "us";
-      #   font = lib.mkDefault "Lat2-Terminus16";
-      # };
     };
 
     includes = with den.aspects.base.localization; [
