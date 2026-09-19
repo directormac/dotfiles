@@ -14,7 +14,9 @@
       '';
     };
 
-    os = {
+    os = {};
+
+    nixos = {
       host,
       inputs',
       self',
@@ -30,23 +32,28 @@
       };
 
       home-manager.sharedModules = [
-        {
-          programs.home-manager.enable = true;
-          home.enableNixpkgsReleaseCheck = false;
-        }
-      ];
-    };
-
-    nixos = {
-      home-manager.sharedModules = [
         (
           {osConfig, ...}: {
             home.stateVersion = osConfig.system.stateVersion;
             systemd.user.startServices = "sd-switch";
+
+            programs.home-manager.enable = true;
+            home.enableNixpkgsReleaseCheck = false;
           }
         )
       ];
     };
+
+    # nixos = {
+    #   home-manager.sharedModules = [
+    #     (
+    #       {osConfig, ...}: {
+    #         home.stateVersion = osConfig.system.stateVersion;
+    #         systemd.user.startServices = "sd-switch";
+    #       }
+    #     )
+    #   ];
+    # };
 
     homeManager = {homeManagerModules, ...}: {
       imports = homeManagerModules;

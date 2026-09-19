@@ -102,13 +102,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-unit = {
-      url = "github:nix-community/nix-unit";
-      inputs = {
-        nix-github-actions.follows = "";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
     nix2container = {
       url = "github:nlewo/nix2container";
       inputs.nixpkgs.follows = "nixpkgs";

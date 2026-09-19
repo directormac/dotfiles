@@ -1,8 +1,18 @@
-{inputs, ...}: {
+{
+  den,
+  lib,
+  inputs,
+  ...
+}: {
+  debug = true;
+
   imports = [
     (inputs.flake-file.flakeModules.dendritic or {})
     (inputs.den.flakeModules.dendritic or {})
   ];
+
+  # Allow all aspects to contribute to the top-level flake outputs.
+  den.schema.flake-system.into.host = {system}: map (host: {inherit host;}) (lib.attrValues den.hosts.${system});
 
   flake-file = {
     prune-lock.enable = true;

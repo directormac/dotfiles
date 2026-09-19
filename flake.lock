@@ -1177,28 +1177,6 @@
         "type": "github"
       }
     },
-    "nix-unit": {
-      "inputs": {
-        "nix-github-actions": [],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt-nix": "treefmt-nix_3"
-      },
-      "locked": {
-        "lastModified": 1784925540,
-        "narHash": "sha256-11IOL5tyJbB3vMQzzhIULuPtoHJpkLFz4BaKApm6t0Q=",
-        "owner": "nix-community",
-        "repo": "nix-unit",
-        "rev": "b3d16367c54621fd073aa8c1dd510042f771f624",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-unit",
-        "type": "github"
-      }
-    },
     "nix2container": {
       "inputs": {
         "nixpkgs": [
@@ -1570,7 +1548,6 @@
         "make-shell": "make-shell",
         "mk-shell-bin": "mk-shell-bin",
         "nix-index-database": "nix-index-database",
-        "nix-unit": "nix-unit",
         "nix2container": "nix2container",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixos-hardware": "nixos-hardware",
@@ -1578,7 +1555,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "systems": "systems_3",
-        "treefmt-nix": "treefmt-nix_4"
+        "treefmt-nix": "treefmt-nix_3"
       }
     },
     "rust-overlay": {
@@ -1692,27 +1669,6 @@
       }
     },
     "treefmt-nix_3": {
-      "inputs": {
-        "nixpkgs": [
-          "nix-unit",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1784369104,
-        "narHash": "sha256-47cxbcZODibHv3rELFQ9vZly0vUNkND/atn/U7HLeb0=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "df3c0640565d04a0261253cdd89fce78ec50168a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "treefmt-nix_4": {
       "inputs": {
         "nixpkgs": "nixpkgs_12"
       },

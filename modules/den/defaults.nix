@@ -196,8 +196,16 @@ in {
   # home-manager and os-class are support modules (not battery aspects) —
   # they auto-load via den's flakeModule and wire their own schema/policies.
   den.default.includes = [
-    den.batteries.define-user
+    # https://den.denful.dev/reference/batteries/#denbatteriesos-class
+
+    # https://den.denful.dev/reference/batteries/#denbatteriesos-class
+    den.batteries.os-class
+
+    # Automatically set hostname
     den.batteries.hostname
+
+    den.batteries.define-user
+
     # primary-user is NOT a blanket default: it grants wheel, so it is applied
     # per system-owner via the "primary-user-for-owner" policy above.
     den.batteries.inputs'

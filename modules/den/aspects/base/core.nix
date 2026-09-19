@@ -1,6 +1,11 @@
 {
   den.aspects.base.core = {
-    os = {pkgs, ...}: {
+    nixos = {
+      config,
+      pkgs,
+      lib,
+      ...
+    }: {
       environment.systemPackages = [
         # pkgs.git
         # pkgs.devenv
@@ -17,16 +22,7 @@
         pkgs.wget
         pkgs.netcat
         pkgs.tcpdump
-      ];
-    };
 
-    nixos = {
-      config,
-      pkgs,
-      lib,
-      ...
-    }: {
-      environment.systemPackages = [
         pkgs.lm_sensors
         pkgs.lsof
         pkgs.killall

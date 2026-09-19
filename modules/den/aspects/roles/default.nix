@@ -13,7 +13,7 @@
       base.security
 
       # base.system.facter
-      # base.users.home-manager-shared
+      base.users.home-manager-shared
 
       base.users.deterministic-uids
       # #core.nix.remote-build-client
