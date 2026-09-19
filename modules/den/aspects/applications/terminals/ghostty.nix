@@ -29,13 +29,13 @@
         # };
       };
 
-      home.file = {
-        ".config/ghostty" = {
-          recursive = true;
-          # source = ../../../config/ghostty;
-          source = ../../../../../config/ghostty;
-        };
-      };
+      # home.file = {
+      #   ".config/ghostty" = {
+      #     recursive = true;
+      #     # source = ../../../config/ghostty;
+      #     source = ../../../../../config/ghostty;
+      #   };
+      # };
     };
   };
 }

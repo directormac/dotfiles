@@ -12,11 +12,11 @@
     system.linger = true; # always-on per-user Syncthing daemon (replicateHome)
     groups = [
       "admins"
-      # "users"
-      "workstationc-access"
       "system-access"
       "libvirtd"
       "kvm"
+      # "users"
+      # "workstation-access"
     ];
 
     settings.git.signing.method = "ssh";

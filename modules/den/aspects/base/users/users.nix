@@ -51,6 +51,7 @@
 
       users.users.${userName} =
         {
+          isNormalUser = true;
           openssh.authorizedKeys.keys = map (k: k.key) (user.identity.sshKeys or []);
           extraGroups = aclUser.systemGroups;
           linger = user.system.linger or false;

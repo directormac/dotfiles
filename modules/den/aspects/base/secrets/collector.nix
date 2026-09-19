@@ -24,13 +24,7 @@
       lib.optionalAttrs (merged != {}) {age.secrets = merged;};
   in {
     nixos = {
-      age-secrets ? [],
-      lib,
-      ...
-    }:
-      collect lib age-secrets;
-    darwin = {
-      age-secrets ? [],
+      age-secrets,
       lib,
       ...
     }:

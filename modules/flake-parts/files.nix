@@ -4,7 +4,7 @@
     inputs.flake-parts.flakeModules.modules
   ];
 
-  _module.args.dag = inputs.dag.lib {lib = inputs.nixpkgs.lib;};
+  _module.args.dag = inputs.dag.lib {inherit (inputs.nixpkgs) lib;};
 
   flake-file.inputs.dag.url = "github:denful/dag";
 

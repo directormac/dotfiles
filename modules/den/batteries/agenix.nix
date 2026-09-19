@@ -187,16 +187,22 @@ in {
     ...
   }: {
     agenix-rekey = {
-      nixosConfigurations = inputs.self.outputs.nixosConfigurations;
+      nixosConfigurations = lib.filterAttrs (n: v: v.config ? age) inputs.self.outputs.nixosConfigurations;
       collectHomeManagerConfigurations = true;
-      extraConfigurations = inputs.self.nixidyEnvs.${system} or {};
+      # extraConfigurations = inputs.self.nixidyEnvs.${system} or {};
     };
 
     devenv.shells.default = {
       packages = [
         pkgs.age
-        config.agenix-rekey.package
+        # config.agenix-rekey-sops
       ];
+      scripts = {
+        sops-rekey = {
+          exec = "${config.agenix-rekey-sops.package}/bin/agenix-rekey-sops";
+          description = "Edit, generate, rekey secrets, and generate SOPS files";
+        };
+      };
       env = {
         AGENIX_REKEY_ADD_TO_GIT = "true";
       };

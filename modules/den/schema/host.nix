@@ -90,7 +90,7 @@ in {
           # `self` self-cycles (registry → self → flake outputs → registry).
           # Same git-tracked source as `self`; mirrors `user.secretPath`.
           secretPath = lib.mkDefault (rootPath + "/.secrets/hosts/${config.name}");
-          facts = lib.mkDefault (rootPath + "/hosts/${config.name}/facter.json");
+          # facts = lib.mkDefault (rootPath + "/hosts/${config.name}/facter.json");
           public_key = lib.mkDefault (
             if config.secretPath != null
             then config.secretPath + "/ssh_host_ed25519_key.pub"

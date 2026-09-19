@@ -36,7 +36,7 @@ in {
   perSystem = _: {
     nix-unit = {
       allowNetwork = true;
-      inputs = builtins.removeAttrs inputs ["devenv-root"];
+      inputs = removeAttrs inputs ["devenv-root"];
     };
   };
 }
