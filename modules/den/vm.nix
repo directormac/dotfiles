@@ -3,11 +3,14 @@
 {
   den,
   inputs,
+  runner,
   ...
 }: {
   den.aspects.sandbox.includes = [
-    # runner.vm.gui
+    runner.vm.gui
     # runner.vm.tui
+
+    (den.batteries.tty-autologin "mac")
   ];
 
   perSystem = {pkgs, ...}: let

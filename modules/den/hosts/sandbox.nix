@@ -4,14 +4,8 @@
   ...
 }: {
   den.hosts.x86_64-linux.sandbox = {
-    # channel = "nixpkgs";
-    # environment = "dev";
     system-owner = "mac";
     system-access-groups = ["workstation-access"];
-
-    # networking.interfaces.wlp0s20f3 = {
-    #   dhcp = "yes";
-    # };
 
     settings = {
       # base.impermanence = {
@@ -20,6 +14,8 @@
       # };
     };
   };
+
+  den.hosts.x86_64-linux.sandbox.users.mac = {};
 
   den.aspects.sandbox = {
     includes = with den.aspects; [

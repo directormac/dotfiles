@@ -26,17 +26,29 @@ in {
       intoClass = "flake-parts";
       collectSubtree = true;
       path = ["nix-unit" "tests"];
-      adaptArgs = args:
-        args.config.allModuleArgs;
+      # Test helpers.
+      adaptArgs = args: let
+        sandbox = config.flake.nixosConfigurations.fulgur.config;
+        inherit (sandbox.users.users) mac;
+      in
+        args.config.allModuleArgs // {inherit sandbox mac;};
+
+      # adaptArgs = args:
+      #   args.config.allModuleArgs;
     })
   ];
 
   den.schema.flake-parts.includes = [den.policies.tests-to-flake-parts];
 
-  perSystem = _: {
-    nix-unit = {
-      allowNetwork = true;
-      inputs = removeAttrs inputs ["devenv-root"];
-    };
+  perSystem.nix-unit = {
+    allowNetwork = true;
+    inherit inputs;
   };
+
+  # perSystem = _: {
+  #   nix-unit = {
+  #     allowNetwork = true;
+  #     inputs = removeAttrs inputs ["devenv-root"];
+  #   };
+  # };
 }

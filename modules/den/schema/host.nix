@@ -31,6 +31,12 @@ in {
           #   description = "Environment name that this host belongs to";
           # };
 
+          isWorkstation = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether this host is a workstation or not (e.g, a server).";
+          };
+
           system-owner = mkOption {
             type = types.nullOr types.str;
             default = null;
