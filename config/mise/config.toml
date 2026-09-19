@@ -24,7 +24,6 @@ oxlint = "github:oxc-project/oxc"
 oxfmt = "github:oxc-project/oxc"
 vite-plus = "github:voidzero-dev/vite-plus"
 sesh = "github:joshmedeski/sesh"
-neovim = "github:neovim/neovim"
 ztmux = "github:MenkeTechnologies/ztmux"
 tmuxpanel = "github:psmux/Tmux-Plugin-Panel"
 
@@ -73,19 +72,23 @@ agy = "latest"
 "cargo:ytkew" = "latest"
 # just = "latest"
 
-# [tools."github:neovim/neovim"]
-# prerelease = true
-# asset_pattern = "nvim-linux-x86_64.tar.gz"
-# bin_path = "nvim-linux-x86_64/bin/nvim"
-# version = "nightly"
-# rename_exe = "neovim"
 
-[tools.neovim]
+# neovim = "nightly"
+
+[tools."github:neovim/neovim"]
+version = "nightly"
 prerelease = true
 asset_pattern = "nvim-linux-x86_64.tar.gz"
-# bin_path = "nvim-linux-x86_64/bin/nvim"
-version = "nightly"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 rename_exe = "neovim"
+
+# [tools."github:neovim/neovim-releases"]
+# # prerelease = true
+# asset_pattern = "nvim-linux-x86_64.tar.gz"
+# checksum = "sha256:ded36995cef67822f967680ce6bed8f7613e23c8c8861bade243d0ef03f8a7be"
+# version = "latest"
+# prerelease = true
+# rename_exe = "neovim"
 
 [tools."github:psmux/Tmux-Plugin-Panel"]
 # asset_pattern = "tmuxpanel-v0.1.1-linux-x64.tar.gz"
@@ -126,7 +129,7 @@ rename_exe = "vp"
 version = "v2.28.0"
 
 [tools."http:winbox"]
-version = "4.3"
+version = "4.4"
 url = "https://download.mikrotik.com/routeros/winbox/{{ version }}/WinBox_Linux.zip"
 checksum_url = "https://download.mikrotik.com/routeros/winbox/{{ version }}/WinBox_Linux.zip.sha256"
 

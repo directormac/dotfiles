@@ -24,30 +24,6 @@ checksum = "sha256:dcd3e4d8c8afb1902d59c1ae52812458d2ddab67a5d2db44810c512910d91
 url = "https://github.com/google-antigravity/antigravity-cli/releases/download/1.2.4/agy_cli_linux_x64.tar.gz"
 url_api = "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/assets/567120982"
 
-[[tools."aqua:oxc-project/oxc/oxlint"]]
-version = "1.79.0"
-backend = "aqua:oxc-project/oxc/oxlint"
-
-[tools."aqua:oxc-project/oxc/oxlint"."platforms.linux-x64"]
-checksum = "sha256:c7ddeff22c8d5ebd23648ff0917dd67a85178d86937acc3300ff4e974faaa042"
-url = "https://github.com/oxc-project/oxc/releases/download/apps_v1.79.0/oxlint-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/519609967"
-
-[tools."aqua:oxc-project/oxc/oxlint"."platforms.linux-x64-baseline"]
-checksum = "sha256:c7ddeff22c8d5ebd23648ff0917dd67a85178d86937acc3300ff4e974faaa042"
-url = "https://github.com/oxc-project/oxc/releases/download/apps_v1.79.0/oxlint-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/519609967"
-
-[tools."aqua:oxc-project/oxc/oxlint"."platforms.linux-x64-musl"]
-checksum = "sha256:cdecc9297885c2e88c510c52d32f880cdd3e7372041d654fde2525be5235492a"
-url = "https://github.com/oxc-project/oxc/releases/download/apps_v1.79.0/oxlint-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/519609969"
-
-[tools."aqua:oxc-project/oxc/oxlint"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:cdecc9297885c2e88c510c52d32f880cdd3e7372041d654fde2525be5235492a"
-url = "https://github.com/oxc-project/oxc/releases/download/apps_v1.79.0/oxlint-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/oxc-project/oxc/releases/assets/519609969"
-
 [[tools.aube]]
 version = "2.2.17"
 backend = "aqua:jdx/aube"
@@ -57,24 +33,28 @@ checksum = "sha256:ee4f05a2989e6cbe55b306097cbb53da9f908789acb027e62c430de2f7e22
 url = "https://github.com/aubepkg/aube/releases/download/v2.2.17/aube-v2.2.17-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/aubepkg/aube/releases/assets/566068152"
 provenance = "github-attestations"
+signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-x64-baseline"]
 checksum = "sha256:ee4f05a2989e6cbe55b306097cbb53da9f908789acb027e62c430de2f7e22c2f"
 url = "https://github.com/aubepkg/aube/releases/download/v2.2.17/aube-v2.2.17-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/aubepkg/aube/releases/assets/566068152"
 provenance = "github-attestations"
+signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-x64-musl"]
 checksum = "sha256:6ec5a6bb93ded45db61445bd4b730b63be002cde442af8eecfc02a84a27dd221"
 url = "https://github.com/aubepkg/aube/releases/download/v2.2.17/aube-v2.2.17-x86_64-unknown-linux-musl.tar.gz"
 url_api = "https://api.github.com/repos/aubepkg/aube/releases/assets/566065871"
 provenance = "github-attestations"
+signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [tools.aube."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:6ec5a6bb93ded45db61445bd4b730b63be002cde442af8eecfc02a84a27dd221"
 url = "https://github.com/aubepkg/aube/releases/download/v2.2.17/aube-v2.2.17-x86_64-unknown-linux-musl.tar.gz"
 url_api = "https://api.github.com/repos/aubepkg/aube/releases/assets/566065871"
 provenance = "github-attestations"
+signer = "sigstore-oidc:https://github.com/aubepkg/aube/.github/workflows/release-plz.yml"
 
 [[tools.bazel]]
 version = "9.2.0"
@@ -128,36 +108,12 @@ backend = "cargo:mdv"
 version = "0.1.0"
 backend = "cargo:ytkew"
 
-[[tools.direnv]]
-version = "2.37.1"
-backend = "aqua:direnv/direnv"
-
-[tools.direnv."platforms.linux-x64"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
-
-[tools.direnv."platforms.linux-x64-baseline"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
-
-[tools.direnv."platforms.linux-x64-musl"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
-
-[tools.direnv."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
-
 [[tools.elixir]]
 version = "1.20.4-otp-29"
 backend = "core:elixir"
 
 [tools.elixir."platforms.linux-x64"]
-checksum = "blake3:cfddef5f170efc103420c845ee627c6eb80f9b61c25691d50bc99fec0738b560"
+checksum = "sha256:7863c546cda13fecc949e562e326042451dacf8fd8698a36783cb71eeb223b46"
 url = "https://builds.hex.pm/builds/elixir/v1.20.4-otp-29.zip"
 
 [tools.elixir."platforms.linux-x64-baseline"]
@@ -224,35 +180,6 @@ checksum = "sha256:af29d5270503263139f10fccb597430feb0c510da48386821b176fbfdfe33
 url = "https://github.com/expert-lsp/expert/releases/download/v0.1.10/expert_linux_amd64"
 url_api = "https://api.github.com/repos/expert-lsp/expert/releases/assets/550638685"
 
-[[tools."github:graelo/tmux-backup"]]
-version = "0.6.0"
-backend = "github:graelo/tmux-backup"
-
-[tools."github:graelo/tmux-backup"."platforms.linux-x64"]
-checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
-url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
-provenance = "github-attestations"
-provenance_verified = true
-
-[tools."github:graelo/tmux-backup"."platforms.linux-x64-baseline"]
-checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
-url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
-provenance = "github-attestations"
-
-[tools."github:graelo/tmux-backup"."platforms.linux-x64-musl"]
-checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
-url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
-provenance = "github-attestations"
-
-[tools."github:graelo/tmux-backup"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5609bf979abc1405fb6b9b4c297b7ff6c1be5113957a1b6a3e02f3ae9dbee975"
-url = "https://github.com/graelo/tmux-backup/releases/download/v0.6.0/tmux-backup-v0.6.0-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/graelo/tmux-backup/releases/assets/507640423"
-provenance = "github-attestations"
-
 [[tools."github:neovim/neovim"]]
 version = "nightly"
 backend = "github:neovim/neovim"
@@ -261,24 +188,24 @@ backend = "github:neovim/neovim"
 asset_pattern = "nvim-linux-x86_64.tar.gz"
 
 [tools."github:neovim/neovim"."platforms.linux-x64"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools."github:neovim/neovim"."platforms.linux-x64-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools."github:neovim/neovim"."platforms.linux-x64-musl"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools."github:neovim/neovim"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [[tools."github:psmux/Tmux-Plugin-Panel"]]
 version = "0.1.1"
@@ -307,35 +234,6 @@ checksum = "sha256:c040ebdc96991b218297fc2a714a4a151dd900a7bf6ff125155ba254867f4
 url = "https://github.com/psmux/Tmux-Plugin-Panel/releases/download/v0.1.1/tmuxpanel-v0.1.1-linux-x64.tar.gz"
 url_api = "https://api.github.com/repos/psmux/Tmux-Plugin-Panel/releases/assets/366857421"
 
-[[tools."github:wfxr/tmup"]]
-version = "0.3.0"
-backend = "github:wfxr/tmup"
-
-[tools."github:wfxr/tmup"."platforms.linux-x64"]
-checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
-url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
-provenance = "github-attestations"
-provenance_verified = true
-
-[tools."github:wfxr/tmup"."platforms.linux-x64-baseline"]
-checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
-url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
-provenance = "github-attestations"
-
-[tools."github:wfxr/tmup"."platforms.linux-x64-musl"]
-checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
-url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
-provenance = "github-attestations"
-
-[tools."github:wfxr/tmup"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:7a6f0e87440bc87840c7398c90afcc5b0c28d30b1675fa5b3564389b24a8f3d3"
-url = "https://github.com/wfxr/tmup/releases/download/v0.3.0/tmup-v0.3.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/wfxr/tmup/releases/assets/534654067"
-provenance = "github-attestations"
-
 [[tools.herdr]]
 version = "0.9.0"
 backend = "aqua:herdrdev/herdr"
@@ -361,24 +259,24 @@ url = "https://github.com/herdrdev/herdr/releases/download/v0.9.0/herdr-linux-x8
 url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/549270163"
 
 [[tools."http:winbox"]]
-version = "4.3"
+version = "4.4"
 backend = "http:winbox"
 
 [tools."http:winbox"."platforms.linux-x64"]
-checksum = "blake3:8096902acd8a45a954335ddf05bcdc727d303c08f9bffc6a4f129e26a10bf7e8"
-url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip"
+checksum = "sha256:49b1faabab55804c491aa2947efbade967815d53df7698cc7876a0c1d636cdc1"
+url = "https://download.mikrotik.com/routeros/winbox/4.4/WinBox_Linux.zip"
 
 [tools."http:winbox"."platforms.linux-x64-baseline"]
-checksum = "sha256:573600ac24df38a7a06ea4318b12754247eec4b54c6c90b0a57100d676787a4c"
-url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip"
+checksum = "sha256:49b1faabab55804c491aa2947efbade967815d53df7698cc7876a0c1d636cdc1"
+url = "https://download.mikrotik.com/routeros/winbox/4.4/WinBox_Linux.zip"
 
 [tools."http:winbox"."platforms.linux-x64-musl"]
-checksum = "sha256:573600ac24df38a7a06ea4318b12754247eec4b54c6c90b0a57100d676787a4c"
-url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip"
+checksum = "sha256:49b1faabab55804c491aa2947efbade967815d53df7698cc7876a0c1d636cdc1"
+url = "https://download.mikrotik.com/routeros/winbox/4.4/WinBox_Linux.zip"
 
 [tools."http:winbox"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:573600ac24df38a7a06ea4318b12754247eec4b54c6c90b0a57100d676787a4c"
-url = "https://download.mikrotik.com/routeros/winbox/4.3/WinBox_Linux.zip"
+checksum = "sha256:49b1faabab55804c491aa2947efbade967815d53df7698cc7876a0c1d636cdc1"
+url = "https://download.mikrotik.com/routeros/winbox/4.4/WinBox_Linux.zip"
 
 [[tools.java]]
 version = "openjdk-17.0.2"
@@ -420,30 +318,6 @@ url = "https://github.com/jqlang/jq/releases/download/jq-1.8.2/jq-linux-amd64"
 url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012752"
 provenance = "github-attestations"
 
-[[tools.just]]
-version = "1.58.0"
-backend = "aqua:casey/just"
-
-[tools.just."platforms.linux-x64"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
-
-[tools.just."platforms.linux-x64-baseline"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
-
-[tools.just."platforms.linux-x64-musl"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
-
-[tools.just."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
-
 [[tools.kotlin]]
 version = "2.1.0"
 backend = "asdf:mise-plugins/mise-kotlin"
@@ -452,52 +326,25 @@ backend = "asdf:mise-plugins/mise-kotlin"
 version = "nightly"
 backend = "github:neovim/neovim"
 
-[tools.neovim.options]
-asset_pattern = "nvim-linux-x86_64.tar.gz"
-
 [tools.neovim."platforms.linux-x64"]
-checksum = "sha256:bacf8628a851082df10796bd6cd853a51e6d3a64c18d5d6cdd887dc6d9b6d5a4"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/548220669"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools.neovim."platforms.linux-x64-baseline"]
-checksum = "sha256:bacf8628a851082df10796bd6cd853a51e6d3a64c18d5d6cdd887dc6d9b6d5a4"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/548220669"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools.neovim."platforms.linux-x64-musl"]
-checksum = "sha256:bacf8628a851082df10796bd6cd853a51e6d3a64c18d5d6cdd887dc6d9b6d5a4"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/548220669"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [tools.neovim."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:bacf8628a851082df10796bd6cd853a51e6d3a64c18d5d6cdd887dc6d9b6d5a4"
+checksum = "sha256:531c8270e0c408561c7dbaf3f1be942631afc46fd75a65037a42a6eb75f8768f"
 url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/548220669"
-
-[[tools.nightlyvim]]
-version = "nightly"
-backend = "vfox:mise-plugins/vfox-neovim"
-
-[tools.nightlyvim."platforms.linux-x64"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.nightlyvim."platforms.linux-x64-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.nightlyvim."platforms.linux-x64-musl"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
-
-[tools.nightlyvim."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5e1fe695178bcf1738a93c9896855ddf4e4b9894995beaa5f51c3a7386cb572e"
-url = "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
-url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/534802044"
+url_api = "https://api.github.com/repos/neovim/neovim/releases/assets/574142525"
 
 [[tools.node]]
 version = "26.9.0"
@@ -595,11 +442,13 @@ backend = "aqua:jdx/pitchfork"
 checksum = "sha256:7ce68158201430d3f5bb5b6c96778e3f638abfa209147713b0392f54bfadef4a"
 url = "https://github.com/jdx/pitchfork/releases/download/v2.25.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/557424504"
+signer = "sigstore-oidc:https://github.com/jdx/pitchfork/.github/workflows/release.yml"
 
 [tools.pitchfork."platforms.linux-x64-baseline"]
 checksum = "sha256:7ce68158201430d3f5bb5b6c96778e3f638abfa209147713b0392f54bfadef4a"
 url = "https://github.com/jdx/pitchfork/releases/download/v2.25.0/pitchfork-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/jdx/pitchfork/releases/assets/557424504"
+signer = "sigstore-oidc:https://github.com/jdx/pitchfork/.github/workflows/release.yml"
 
 [[tools.pnpm]]
 version = "12.4.2"
@@ -692,21 +541,25 @@ backend = "aqua:jdx/usage"
 checksum = "sha256:8e1cafb10fe2ddee8c18076c09dea4c89ee2d25ac2c0ec5158fda5b8d4e02222"
 url = "https://github.com/jdx/usage/releases/download/v6.9.1/usage-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/jdx/usage/releases/assets/563244013"
+signer = "sigstore-oidc:https://github.com/jdx/usage/.github/workflows/publish-cli.yml"
 
 [tools.usage."platforms.linux-x64-baseline"]
 checksum = "sha256:8e1cafb10fe2ddee8c18076c09dea4c89ee2d25ac2c0ec5158fda5b8d4e02222"
 url = "https://github.com/jdx/usage/releases/download/v6.9.1/usage-x86_64-unknown-linux-gnu.tar.gz"
 url_api = "https://api.github.com/repos/jdx/usage/releases/assets/563244013"
+signer = "sigstore-oidc:https://github.com/jdx/usage/.github/workflows/publish-cli.yml"
 
 [tools.usage."platforms.linux-x64-musl"]
 checksum = "sha256:3132b763f01e3cd346ebfedeff2e4e78f9a098eec1f3754b6db4ccfcda79aaf2"
 url = "https://github.com/jdx/usage/releases/download/v6.9.1/usage-x86_64-unknown-linux-musl.tar.gz"
 url_api = "https://api.github.com/repos/jdx/usage/releases/assets/563244740"
+signer = "sigstore-oidc:https://github.com/jdx/usage/.github/workflows/publish-cli.yml"
 
 [tools.usage."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:3132b763f01e3cd346ebfedeff2e4e78f9a098eec1f3754b6db4ccfcda79aaf2"
 url = "https://github.com/jdx/usage/releases/download/v6.9.1/usage-x86_64-unknown-linux-musl.tar.gz"
 url_api = "https://api.github.com/repos/jdx/usage/releases/assets/563244740"
+signer = "sigstore-oidc:https://github.com/jdx/usage/.github/workflows/publish-cli.yml"
 
 [[tools.uv]]
 version = "0.12.15"

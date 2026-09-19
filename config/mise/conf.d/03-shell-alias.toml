@@ -130,4 +130,5 @@ kickvim = "NVIM_APPNAME=kickstart-nvim nvim"
 ws = "windsurf"
 
 # Arch Related
-winbox = "WinBox | NUL"
+winbox = "QT_QPA_PLATFORM=xcb WinBox | NUL"
+
