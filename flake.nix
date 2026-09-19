@@ -44,6 +44,13 @@
       url = "github:sini/agenix-rekey/feat/settings";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix-rekey-to-sops = {
+      url = "github:sini/agenix-rekey-to-sops";
+      inputs = {
+        agenix-rekey.follows = "agenix-rekey";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,12 +73,17 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-compat.url = "github:edolstra/flake-compat";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     flake-root.url = "github:srid/flake-root";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
     gen-schema.url = "github:sini/gen-schema";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -106,6 +118,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    systems.url = "github:nix-systems/default/future-26.11";
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 }

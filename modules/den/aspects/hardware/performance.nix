@@ -15,18 +15,18 @@
 
       services = {
         irqbalance.enable = true;
-        scx = lib.mkIf (!isLaptop) {
-          enable = true;
-          package = lib.mkDefault pkgs.scx.full;
-          scheduler = "scx_bpfland";
-          extraArgs = [
-            "-m"
-            "performance"
-            "-f"
-            "-k"
-            "-p"
-          ];
-        };
+        # scx = lib.mkIf (!isLaptop) {
+        #   enable = true;
+        #   package = lib.mkDefault pkgs.scx.full;
+        #   scheduler = "scx_bpfland";
+        #   extraArgs = [
+        #     "-m"
+        #     "performance"
+        #     "-f"
+        #     "-k"
+        #     "-p"
+        #   ];
+        # };
       };
 
       services.udev.extraRules = ''

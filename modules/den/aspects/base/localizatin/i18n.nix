@@ -23,7 +23,6 @@
       #   keyMap = "us";
       #   font = lib.mkDefault "Lat2-Terminus16";
       # };
-
     };
 
     includes = with den.aspects.base.localization; [

@@ -6,7 +6,7 @@
   inputs,
   ...
 }: let
-  mergeInputs = inputs'': inputs'';
+  mergeInputs = inputs'': lib.mapAttrs (name: input: input // (inputs''.${name} or {})) inputs;
 
   mkAspectInputs = class: system:
     withSystem system (
@@ -137,20 +137,70 @@ in {
     ];
   };
 
+  # Default host includes — aggregator aspects for quirk collection
   den.schema.host.includes = [
-    # den.aspects.base.network.firewall-collector
-    # den.aspects.base.secrets.collector
+    den.aspects.base.network.firewall-collector
+    den.aspects.base.secrets.collector
   ];
 
+  # Default user includes — per-user data emission + entity-named aspect auto-include
   den.schema.user.includes = [
-    # den.aspects.base.users.resolved-user-emitter
+    den.aspects.base.users.resolved-user-emitter
+
+    # Include den.aspects.<hostname>.<username> if it exists
+    #
+    # Written as a literal policy record rather than `mkPolicy`, which takes only a name and
+    # a body and so has no field to declare a codomain on. The include is value-conditional
+    # on the aspect registry holding an entry under this host and user, and a sentinel
+    # context names neither — so the body takes the false branch, emits nothing, and the
+    # `edge` an include really produces would abort against the recovered empty head.
+    {
+      __isPolicy = true;
+      name = "user-aspect-auto-include";
+      emits = ["edge"];
+      fn = {
+        host,
+        user,
+        ...
+      }:
+        lib.optional (den.aspects ? ${host.name} && den.aspects.${host.name} ? ${user.name}) (
+          den.lib.policy.include den.aspects.${host.name}.${user.name}
+        );
+    }
+
+    # primary-user grants wheel (+ networkmanager; darwin primaryUser; wsl
+    # defaultUser). It must apply ONLY to the host's declared system-owner, not
+    # to every login user — otherwise login on a workstation implies sudo.
+    # Non-owners still get networkmanager via the acl (workstation-access);
+    # wheel stays admin-only via den.groups.wheel.members.
+    #
+    # A literal policy record for the same reason as the one above: the ownership test is
+    # value-conditional, it is false at a sentinel that supplies no system-owner, and the
+    # include's `edge` has to be stated rather than fired for.
+    {
+      __isPolicy = true;
+      name = "primary-user-for-owner";
+      emits = ["edge"];
+      fn = {
+        host,
+        user,
+        ...
+      }:
+        lib.optional (user.name == (host.system-owner or null)) (
+          den.lib.policy.include den.batteries.primary-user
+        );
+    }
   ];
 
   # Wire den batteries that every host/user should have
+  # home-manager and os-class are support modules (not battery aspects) —
+  # they auto-load via den's flakeModule and wire their own schema/policies.
   den.default.includes = [
     den.batteries.define-user
     den.batteries.hostname
-    # den.batteries.inputs'
-    # den.batteries.self'
+    # primary-user is NOT a blanket default: it grants wheel, so it is applied
+    # per system-owner via the "primary-user-for-owner" policy above.
+    den.batteries.inputs'
+    den.batteries.self'
   ];
 }

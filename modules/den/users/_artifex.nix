@@ -66,11 +66,11 @@
         pkgs.btop
       ];
 
-      home.file = {
-        ".face" = {
-          source = ../../../config/.face;
-        };
-      };
+      # home.file = {
+      #   ".face" = {
+      #     source = ../../../../../config/.face;
+      #   };
+      # };
     };
 
     user = {

@@ -1,9 +1,5 @@
 {
   den.aspects.base.nix.stateVersion = {
-    darwin = {
-      system.stateVersion = 6;
-    };
-
     nixos = {
       system.stateVersion = "26.11";
     };

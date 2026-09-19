@@ -23,5 +23,10 @@ in {
     })
   ];
 
-  den.schema.flake-parts.includes = [den.policies.devenv-to-flake-parts];
+  # Enter flake-parts scope from flake-system
+  den.schema.flake-system.includes = [den.policies.system-to-flake-parts];
+
+  den.schema.flake-parts.includes = [
+    den.policies.devenv-to-flake-parts
+  ];
 }

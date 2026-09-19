@@ -54,7 +54,7 @@
       # sshd is public only on the break-glass jumpbox (exposure = "public");
       # every other host is reachable over tailnet/LAN only.
       services.openssh.openFirewall = lib.mkForce (
-        host.settings.core.security.openssh.exposure == "public"
+        host.settings.base.security.openssh.exposure == "public"
       );
 
       # tailscale0 is already a trusted interface (set by the tailscale aspect),
@@ -62,7 +62,7 @@
       # CIDR so uplink can ProxyJump to targets over the LAN when the tailnet
       # control plane is down (the break-glass path).
       networking.firewall.extraInputRules =
-        lib.mkIf (host.settings.core.security.openssh.exposure == "tailnet")
+        lib.mkIf (host.settings.base.security.openssh.exposure == "tailnet")
         ''
           ip saddr ${environment.networks.default.cidr} tcp dport 22 accept
         '';

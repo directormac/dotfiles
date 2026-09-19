@@ -26,7 +26,7 @@ in {
       intoClass = "flake-parts";
       collectSubtree = true;
       path = ["nix-unit" "tests"];
-      adaptArgs = args: 
+      adaptArgs = args:
         args.config.allModuleArgs;
     })
   ];
@@ -36,7 +36,7 @@ in {
   perSystem = _: {
     nix-unit = {
       allowNetwork = true;
-      # inputs = builtins.removeAttrs inputs ["devenv-root"];
+      inputs = builtins.removeAttrs inputs ["devenv-root"];
     };
   };
 }

@@ -17,6 +17,7 @@
     apps.write-files = {
       type = "app";
       program = "${config.files.writer.drv}/bin/write-files";
+      # description = "Generate files";
     };
   };
 }

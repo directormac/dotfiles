@@ -3,8 +3,7 @@
   lib,
   inputs,
   ...
-}:
-{
+}: {
   den.aspects.base.impermanence = {
     includes = [
       den.aspects.base.impermanence.persist-collector
@@ -33,7 +32,7 @@
 
       options.impermanence.ignorePaths = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [ ];
+        default = [];
         description = "Paths ignored by persistence diff tooling.";
       };
 
@@ -87,7 +86,7 @@
           "/persist" = {
             enable = true;
             hideMounts = true;
-            directories = [ ];
+            directories = [];
             files = [
               "/etc/machine-id"
               "/etc/adjtime"
