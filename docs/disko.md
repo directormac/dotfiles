@@ -7,7 +7,7 @@ Here is the ideal strategy for disko in your architecture:
 
 1. Add the Input:
    Add disko to your flake.nix inputs.
-2. Make the Module Globally Available:
+1. Make the Module Globally Available:
    Create a baseline aspect for all your NixOS hosts that includes the disko NixOS module so the system knows how
    to read disko.devices: # modules/aspects/host-baseline.nix
 

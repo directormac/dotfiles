@@ -16,9 +16,9 @@
   ...
 }: {
   # --- Host & User Registration ---
-  den.hosts.x86_64-linux.sandbox.users.artifex = {};
+  # den.hosts.x86_64-linux.sandbox.users.artifex = {};
   # den.hosts.x86_64-linux.sandbox.users.alice = {};
-  # den.hosts.x86_64-linux.sandbox.users.tux = {};
+  den.hosts.x86_64-linux.sandbox.users.tux = {};
 
   # --- Host Configuration Aspect ---
   den.aspects.sandbox = {
@@ -61,12 +61,17 @@
         }
       );
 
-    includes = [
-      den.aspects.roles.default
-      den.aspects.sandbox.policies.to-alice
-      runner.vm.gui
-    ];
+    # includes = [
+    #   den.aspects.roles.default
+    #   den.aspects.sandbox.policies.to-alice
+    #   runner.vm.gui
+    # ];
   };
+
+  den.aspects.sandbox.includes = [
+    # den.aspects.roles.default
+    runner.vm.gui
+  ];
 
   perSystem = {
     pkgs,
@@ -74,13 +79,13 @@
     ...
   }: {
     packages = {
-        sandbox-vm = pkgs.writeShellApplication {
-          name = "sandbox-vm";
-          text = ''
-            echo "Disabled"
-          '';
-        };
+      sandbox-vm = pkgs.writeShellApplication {
+        name = "sandbox-vm";
+        text = ''
+          echo "Disabled"
+        '';
       };
+    };
 
     # apps.sandbox = {
     #   type = "app";

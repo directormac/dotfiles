@@ -45,7 +45,7 @@ in {
       lib,
       ...
     }:
-      lib.mkIf (!host.settings.core.users.home-manager-shared.useGlobalPkgs) {
+      lib.mkIf (!host.settings.base.users.home-manager-shared.useGlobalPkgs) {
         nixpkgs = {
           inherit config;
           overlays = lib.unique nixpkgs-overlays;

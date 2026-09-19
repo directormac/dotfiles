@@ -16,11 +16,18 @@
 
     os = {
       host,
+      inputs',
+      self',
       ...
     }: {
+      # home-manager.useGlobalPkgs = host.settings.base.users.home-manager-shared.useGlobalPkgs;
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.backupFileExtension = ".hm-backup";
+
+      home-manager.extraSpecialArgs = {
+        inherit inputs' self';
+      };
 
       home-manager.sharedModules = [
         {
@@ -41,7 +48,7 @@
       ];
     };
 
-    homeManager = {homeManagerModules ? [], ...}: {
+    homeManager = {homeManagerModules, ...}: {
       imports = homeManagerModules;
     };
   };

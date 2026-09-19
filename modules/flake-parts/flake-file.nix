@@ -39,6 +39,16 @@
       import-tree.url = "github:vic/import-tree";
       flake-file.url = "github:vic/flake-file";
 
+      flake-parts.url = "github:hercules-ci/flake-parts";
+
+      flake-compat = {
+        url = "github:edolstra/flake-compat";
+      };
+      flake-utils = {
+        url = "github:numtide/flake-utils";
+        inputs.systems.follows = "systems";
+      };
+
       nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
       home-manager = {
@@ -52,6 +62,16 @@
         url = "github:nix-community/home-manager/release-26.05";
         inputs.nixpkgs.follows = "nixpkgs-stable";
       };
+
+      # hm-wrapper-modules = {
+      #   # Fork: custom features
+      #   url = "github:sini/hm-wrapper-modules";
+      #   inputs = {
+      #     nixpkgs.follows = "nixpkgs";
+      #     nix-wrapper-modules.follows = "nix-wrapper-modules";
+      #     home-manager.follows = "home-manager";
+      #   };
+      # };
 
       disko = {
         url = "github:nix-community/disko";
@@ -72,9 +92,6 @@
       nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
       impermanence.url = "github:nix-community/impermanence";
-
-      flake-parts.url = "github:hercules-ci/flake-parts";
-      flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
       # nixcord = {
       #   url = "github:kaylorben/nixcord";
@@ -111,17 +128,6 @@
       # };
 
       # workmux.url = "github:raine/workmux";
-
-      agenix = {
-        url = "github:ryantm/agenix";
-        inputs.home-manager.follows = "home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-
-      agenix-rekey = {
-        url = "github:sini/agenix-rekey/feat/settings";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
     };
   };
 }

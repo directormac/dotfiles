@@ -23,6 +23,8 @@
       # runner.autologin
     ];
     user.description = "Bird";
+    
+    homeManager.home.stateVersion = "26.11";
 
     packages = {pkgs, ...}: {
       inherit (pkgs) cowsay;

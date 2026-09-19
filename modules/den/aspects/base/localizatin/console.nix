@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  den,
+  lib,
+  ...
+}: {
   den.aspects.base.localization.console = {
-    nixos = _: {
+    nixos = {pkgs, ...}: {
       console = {
         font = "ter-114n";
         keyMap = "us";

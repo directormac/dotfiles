@@ -1,20 +1,36 @@
+# Agenix battery: imports agenix + agenix-rekey modules per host class,
+# configures age.rekey from scope context, handles HM agenix wiring,
+# and imports custom generators.
+#
+# Fires at host scope via den.schema.host.includes. Receives secretsConfig
+# from fleet scope context (propagated through scope inheritance).
 {
   den,
   inputs,
   rootPath,
   lib,
-  config,
   ...
 }: let
   agenixGeneratorsModule = import ../aspects/secrets/_generators-module.nix;
 
+  # agenix ships nixos/darwin/homeManager modules only; there is no
+  # droidModules. nix-on-droid has no system-level agenix integration, so the
+  # droid branch skips the system agenix module and system age config, but still
+  # imports the agenix homeManager modules into home-manager.sharedModules so the
+  # bridged home-manager.config gains the `age` option (the per-user agenix
+  # config emitted by agenixUserAspect rides there).
   agenixHostAspect = {
     host,
-    secretsConfig ? config.den.secretsConfig,
+    secretsConfig,
     ...
   }: let
+    # Only real (NixOS) impermanence relocates the host key under /persist; the
+    # darwin impermanence branch is a dummy (no wipe, no /persist), so a darwin
+    # host must read its identity from the plain /etc/ssh path. Without this
+    # guard the darwin host got `/persist/etc/ssh/...`, which doesn't exist, so
+    # system agenix had no identity to decrypt the per-user secrets with.
     hasImpermanence = host.hasAspect den.aspects.base.impermanence;
-    persistPrefix = lib.optionalString hasImpermanence "/persist";
+    persistPrefix = lib.optionalString (hasImpermanence && host.class == "nixos") "/persist";
   in {
     name = "agenix/${host.name}";
     ${host.class} =
@@ -33,6 +49,7 @@
           ];
 
           age = {
+            # Agenix decrypts before impermanence creates mounts
             identityPaths = [
               "${persistPrefix}/etc/ssh/ssh_host_ed25519_key"
             ];
@@ -44,13 +61,17 @@
               generatedSecretsDir = host.secretPath + "/generated";
               localStorageDir = host.secretPath + "/rekeyed";
             };
+
+            # Per-user identity secrets are emitted by agenixUserAspect at user scope
           };
 
+          # Remove agenix directory before switching if it's a dir instead of link
           system.activationScripts = lib.mkIf (host.class == "nixos" && config.age.secrets != {}) {
             removeAgenixLink.text = "[[ ! -L /run/agenix ]] && [[ -d /run/agenix ]] && rm -rf /run/agenix";
             agenixNewGeneration.deps = ["removeAgenixLink"];
           };
 
+          # Make secrets paths available as module arg
           _module.args.secrets = lib.mapAttrs (_: v: v.path) config.age.secrets;
         };
   };
@@ -58,7 +79,7 @@
   agenixUserAspect = {
     user,
     host,
-    secretsConfig ? config.den.secretsConfig,
+    secretsConfig,
     ...
   }: {
     name = "agenix-identity/${user.name}@${host.name}";
@@ -78,6 +99,8 @@
       )
     ];
 
+    # droid has no system agenix module (see agenixHostAspect note), so the
+    # per-user system identity secret is skipped there.
     ${host.class} =
       if host.class == "droid"
       then (_: {})
@@ -86,12 +109,25 @@
           age.secrets."user-identity-${user.name}" = {
             rekeyFile = rootPath + "/.secrets/users/${user.name}/id_agenix.age";
             owner = user.name;
-            group = user.name;
+            # macOS has no per-user primary group named after the user (it's
+            # `staff`), so `chown <user>:<user>` fails as a unit and agenix
+            # leaves the identity root-owned — unreadable by the user's
+            # home-manager agenix, which then finds "no readable identities".
+            # NixOS does create a same-named group, so keep that there.
+            group =
+              if host.class == "darwin"
+              then "staff"
+              else user.name;
             mode = "600";
             generator.script = "age-identity";
           };
         };
     homeManager = {osConfig, ...}: let
+      # On droid osConfig (nix-on-droid) has no `age` option; there is no
+      # system identity secret and no provisioned host SSH key, so fall back
+      # to the per-user agenix pubkey path. agenix-rekey reads hostPubkey
+      # lazily (only when secrets actually need rekeying), so passing a path
+      # that may not yet exist is safe for a secret-less tablet.
       hasOsAge = osConfig ? age;
       hasUserIdentity = hasOsAge && osConfig.age.secrets ? "user-identity-${user.name}";
       userPubkeyPath = rootPath + "/.secrets/users/${user.name}/id_agenix.pub";
@@ -117,10 +153,28 @@
     };
   };
 in {
-  # The inputs are defined in flake-file.nix as per our previous step.
-  # So we only import the flake modules and set up the battery here.
+  flake-file.inputs = {
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix-rekey = {
+      url = "github:sini/agenix-rekey/feat/settings";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    agenix-rekey-to-sops = {
+      url = "github:sini/agenix-rekey-to-sops";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.agenix-rekey.follows = "agenix-rekey";
+    };
+  };
+
   imports = [
     inputs.agenix-rekey.flakeModule
+    inputs.agenix-rekey-to-sops.flakeModule
   ];
 
   den.schema.host.includes = [agenixHostAspect];
@@ -129,11 +183,13 @@ in {
   perSystem = {
     config,
     pkgs,
+    system,
     ...
   }: {
     agenix-rekey = {
-      # nixosConfigurations = inputs.self.outputs.nixosConfigurations;
-      # collectHomeManagerConfigurations = true;
+      nixosConfigurations = inputs.self.outputs.nixosConfigurations;
+      collectHomeManagerConfigurations = true;
+      extraConfigurations = inputs.self.nixidyEnvs.${system} or {};
     };
 
     devenv.shells.default = {

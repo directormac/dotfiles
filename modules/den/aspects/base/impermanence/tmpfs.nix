@@ -1,5 +1,4 @@
-{ den, ... }:
-{
+{den, ...}: {
   den.aspects.base.impermanence.tmpfs = {
     nixos = {
       boot.tmp = {
