@@ -6,8 +6,8 @@
   ...
 }: {
   den.aspects.sandbox.includes = [
-    # addax.vm.gui
-    # addax.vm.tui
+    # runner.vm.gui
+    # runner.vm.tui
   ];
 
   perSystem = {pkgs, ...}: let
