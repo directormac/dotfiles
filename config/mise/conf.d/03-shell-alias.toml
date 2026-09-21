@@ -125,6 +125,8 @@ minivim = "NVIM_APPNAME=nvim-minimax nvim"
 
 kickvim = "NVIM_APPNAME=kickstart-nvim nvim"
 
+grab = "ghgrab --cwd"
+
 # tree-sitter = "2"
 
 ws = "windsurf"
