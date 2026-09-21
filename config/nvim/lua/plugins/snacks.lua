@@ -19,6 +19,8 @@ return {
       picker = {
         sources = {
           files = {
+
+            layout = { hidden = { "preview" } },
             hidden = true, -- Show dotfiles like .config
             ignored = false, -- Respect .gitignore (skips node_modules, etc.)
             exclude = {
@@ -32,9 +34,12 @@ return {
               ".expert",
               ".elixir_ls",
               ".vscode",
+              "docs/repos",
             },
           },
           grep = {
+
+            layout = { hidden = { "preview" } },
             hidden = true,
             ignored = false,
             exclude = {
@@ -48,6 +53,7 @@ return {
               ".expert",
               ".elixir_ls",
               ".vscode",
+              "docs/repos",
             },
           },
         },

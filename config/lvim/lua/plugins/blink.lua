@@ -1,4 +1,5 @@
 return {
+
   {
     'saghen/blink.cmp',
     ---@module 'blink.cmp'

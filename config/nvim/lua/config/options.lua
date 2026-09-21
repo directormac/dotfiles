@@ -7,6 +7,9 @@ local set = vim.opt
 local window = vim.w
 local Util = require("config.util")
 
+vim.opt.exrc = true
+vim.go.loadplugins = false
+
 global.loaded_netrw = 1 -- Override for oil explorer
 global.loaded_netrwPlugin = 1 -- Override for oil explorer
 global.neoterm_autoinsert = 0 -- Do not start terminal in insert mode
@@ -15,7 +18,9 @@ global.markdown_recommended_style = 0 -- Fix markdown indentation settings
 global.lazyvim_prettier_needs_config = true
 global.lazyvim_eslint_auto_format = false
 -- Motivation: Less clutter in completion windows and a more direct usage of snippets
-global.lazyvim_mini_snippets_in_completion = true
+
+global.lazyvim_mini_snippets_in_completion = false
+
 global.lazyvim_blink_main = true
 
 -- global.root_spec = { "cwd", "lsp", { ".git", "lua" } }
@@ -40,19 +45,19 @@ set.clipboard = "unnamedplus"
 -- end
 
 -- set.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-set.foldcolumn = "0" -- Show the fold column
-set.foldenable = true
-set.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-set.foldlevelstart = 99
-set.signcolumn = "yes"
-set.termguicolors = true
-set.pumblend = 0
-set.pumheight = 0
-set.winblend = 0
+vim.opt.foldcolumn = "0" -- Show the fold column
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.opt.foldlevelstart = 99
+vim.opt.signcolumn = "yes"
+vim.opt.termguicolors = true
+vim.opt.pumblend = 0
+vim.opt.pumheight = 0
+vim.opt.winblend = 0
 --stylua: ignore
-set.fillchars = { fold = " ", foldopen = "", foldclose = "", foldsep = " ", diff = "╱", eob = " ",}
+vim.opt.fillchars = { fold = " ", foldopen = "", foldclose = "", foldsep = " ", diff = "╱", eob = " ",}
 --stylua: ignore
-set.listchars = { space = ".", eol = "↲", nbsp = "␣", trail = "·", precedes = "←", extends = "→", tab = "¬ ", conceal = "※", }
+vim.opt.listchars = { space = ".", eol = "↲", nbsp = "␣", trail = "·", precedes = "←", extends = "→", tab = "¬ ", conceal = "※", }
 set.shortmess = {
   A = true, -- ignore annoying swap file messages
   c = true, -- Do not show completion messages in command line

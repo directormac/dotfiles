@@ -1,7 +1,7 @@
 return {
   {
     "saghen/blink.cmp",
-    dependencies = { "saghen/blink.lib", "rafamadriz/friendly-snippets" }, -- Ensure it's marked as a dependency
+    dependencies = { "saghen/blink.lib", "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" }, -- Ensure it's marked as a dependency
     version = "*", -- Or your preferred version/branch
 
     ---@module 'blink.cmp'
@@ -27,6 +27,22 @@ return {
       enabled = function()
         return vim.bo.filetype ~= "oil" and vim.bo.buftype ~= "prompt" and vim.b.completion ~= false
       end,
+    },
+  },
+
+  {
+    "saghen/blink.compat",
+    optional = true, -- make optional so it's only enabled if any extras need it
+    opts = {},
+    version = not vim.g.lazyvim_blink_main and "*",
+  },
+  {
+    "saghen/blink.cmp",
+    optional = true,
+    opts = {
+      snippets = {
+        preset = "luasnip",
+      },
     },
   },
 }
