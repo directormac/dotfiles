@@ -6,6 +6,7 @@
       self.nixosModules.nixosModule
       self.nixosModules.homeManagerModule
       self.nixosModules.lazyvim
+      self.nixosModules.hardware
     ];
   };
 
@@ -13,10 +14,10 @@
   # You can place it in a separate file.
   flake.nixosModules.nixosModule = { config, pkgs, ... }: {
 
-    imports = [
-      # Include the results of the hardware scan.
-      ./_hardware.nix
-    ];
+    # imports = [
+    #   # Include the results of the hardware scan.
+    #   ./_hardware.nix
+    # ];
 
     # Bootloader.
     boot.loader.systemd-boot.enable = true;
