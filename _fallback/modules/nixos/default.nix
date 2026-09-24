@@ -1,16 +1,16 @@
-{inputs, ...}:{
- 
-    perSystem = { pkgs, ... }: {
+{ inputs, ... }: {
 
-      packages.default = pkgs.vim;
+  perSystem = { pkgs, ... }: {
 
-      devShells.default = pkgs.mkShell {
-        packages = with pkgs; [
-          git
-          vim
-          yazi
-        ];
-      };
+    devShells.default = pkgs.mkShell {
+      packages = with pkgs; [
+        git
+        vim
+        yazi
 
+        nixfmt
+      ];
     };
+
+  };
 }
