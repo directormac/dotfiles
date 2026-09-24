@@ -1,4 +1,5 @@
 {inputs, ...}:{
+ 
     perSystem = { pkgs, ... }: {
 
       packages.default = pkgs.vim;
@@ -7,6 +8,7 @@
         packages = with pkgs; [
           git
           vim
+          yazi
         ];
       };
 
