@@ -126,6 +126,7 @@ minivim = "NVIM_APPNAME=nvim-minimax nvim"
 kickvim = "NVIM_APPNAME=kickstart-nvim nvim"
 
 grab = "ghgrab --cwd"
+flake = "nix flake"
 
 # tree-sitter = "2"
 
