@@ -5,6 +5,7 @@
     modules = [
       self.nixosModules.nixosModule
       self.nixosModules.homeManagerModule
+      self.nixosModules.lazyvim
     ];
   };
 
