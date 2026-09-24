@@ -99,13 +99,45 @@
     xwayland.enable = true;
   };
 
+  # https://nixos.wiki/wiki/Vim
+  # programs.vim = {
+  # enable = true;
+  # defaultEditor = true;
+  # package = pkgs.vim-full;
+  # };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    # vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     ((vim-full.override {  }).customize{
+      name = "vim";
+      # Install plugins for example for syntax highlighting of nix files
+      vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
+        start = [ vim-nix vim-lastplace ];
+        opt = [];
+      };
+      vimrcConfig.customRC = ''
+        " your custom vimrc
+	filetype plugin indent on
+	set expandtab
+	set shiftwidth=4
+	set softtabstop=4
+	set tabstop=4
+	set number
+	set relativenumber
+	set smartindent
+	set showmatch
+	set backspace=indent,eol,start
+	syntax on        
+	" ...
+      '';
+    })
+  
+
     wget
     git
     neovim
