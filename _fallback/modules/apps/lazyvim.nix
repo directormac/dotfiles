@@ -14,7 +14,7 @@
         # See  https://github.com/pfassina/lazyvim-nix/wiki/Troubleshooting
         programs.lazyvim = {
           enable = true;
-          # appName = "lvim";
+          appName = "lvim";
 
           # See https://github.com/pfassina/lazyvim-nix/wiki/Plugin-Sourcing-Strategy#plugin-sourcing-strategy
           pluginSource = "nixpkgs";
@@ -65,8 +65,14 @@
             nix
           ];
 
-          # configFiles = ../../config/lvim;
+          configFiles = ../../../config/lvim;
         };
+
+        home.packages = [
+          (pkgs.writeShellScriptBin "lvim" ''
+            exec env NVIM_APPNAME=lvim nvim "$@"
+          '')
+        ];
 
       };
     };
