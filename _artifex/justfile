@@ -1,0 +1,91 @@
+#!/usr/bin/env just --justfile
+
+# NixOS configuration management shortcuts.
+# Run `just` without arguments to see all available commands.
+
+set dotenv-load
+set lazy
+set positional-arguments
+set unstable
+
+host := `hostname`
+
+mod flake
+alias check := flake::check
+alias c := flake::check
+
+# update:
+#   system-update
+
+# Clean 
+clean:
+  -rm -rf ./result
+  -rm *.qcow2
+
+mod host
+
+alias s := switch
+[default]
+switch:
+  nh os switch
+
+alias b := boot
+boot:
+  nh os boot
+
+alias bd := build
+build:
+  nh os build
+
+alias t := test
+test:
+  nh os test
+
+alias f := fmt
+fmt:
+  nix fmt
+
+alias g := generate
+generate:
+  nix run .#generate-files
+
+alias sou := sops-update
+sops-update FILE=".secrets/*":
+    sops updatekeys --yes {{FILE}}
+
+alias su := system-update
+system-update: generate flake::update switch
+
+alias ge := generations
+generations:
+  nh os info
+
+alias r := repl
+repl:
+  # nh os repl
+  nix repl
+
+fwupd:
+  fwupdmgr refresh
+  fwupdmgr update
+  @echo You should reboot now: sudo reboot
+
+# List available commands
+default:
+    @just --list
+
+
+# Enter shell
+# https://devenv.sh/guides/using-with-flake-parts/
+shell:
+  nix develop --no-pure-eval -c $SHELL
+
+sandbox:
+    nix run .#vm-sandbox
+
+run *ARGS:
+  nix run .#{{ARGS}}
+
+
+vm *ARGS:
+  nix run .#vm-{{ARGS}}
