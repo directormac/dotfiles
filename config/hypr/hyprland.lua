@@ -24,6 +24,7 @@ hl.env('HYPRCURSOR_SIZE', '24')
 hl.env('QT_QPA_PLATFORMTHEME', 'qt6ct')
 hl.env('QT_QPA_PLATFORM', 'wayland')
 hl.env('XDG_MENU_PREFIX', 'hyprland-')
+
 if cfg.hostname == 'super' then
   -- https://wiki.hypr.land/configuring/extra/multi-gpu/
   hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
@@ -70,3 +71,4 @@ require('dms.binds-user')
 require('dms.layout')
 require('dms.windowrules')
 require('dms.outputs')
+require("dms.cursor")
