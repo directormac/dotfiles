@@ -92,9 +92,20 @@
           dankLauncherKeys.enable = true;
           dankPomodoroTimer.enable = true;
           dankStickerSearch.enable = true;
+          dankNotepadModule.enable = true;
+
+          # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/index.md
           quickCapture.enable = true;
+          emojiLauncher.enable = true;
+          ambientSound.enable = true;
+          screenkey.enable = true;
+
           amdGpuMonitor.enable = true;
-          #
+
+          # Desktop
+          dankRssWidget.enable = true;
+          pureLyrics.enable = true;
+          cavaVisualizer.enable = true;
         };
       };
 
@@ -111,6 +122,9 @@
       xwayland-satellite
       valent
 
+      gpu-screen-recorder
+
+      amdgpu_top
     ];
   };
 }

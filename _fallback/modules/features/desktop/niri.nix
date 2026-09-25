@@ -4,6 +4,5 @@
     programs.niri = {
       enable = true;
     };
-
   };
 }

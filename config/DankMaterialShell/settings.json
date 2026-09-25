@@ -15,6 +15,7 @@
   "padHours12Hour": true,
   "fontFamily": "FiraCode Nerd Font",
   "monoFontFamily": "FiraCode Nerd Font Mono",
+  "displayFontFamily": "Noto Serif Display",
   "lockScreenFontFamily": "FiraCode Nerd Font",
   "dockConfigs": [
     {
@@ -86,6 +87,10 @@
   ],
   "currentThemeCategory": "registry",
   "floatingWindowSyncGlobal": false,
+  "dmsWindowsFloatingSeeded": [
+    "hyprland",
+    "hyprland"
+  ],
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
@@ -152,12 +157,17 @@
       "h": 1
     }
   ],
+  "bluetoothMprisEnabled": true,
   "centeringMode": "geometric",
   "clockDateFormat": "dddd, MMMM d",
   "spotlightSectionViewModes": {
     "apps": "list"
   },
+  "dankLauncherV2Size": "micro",
+  "dankLauncherV2BorderEnabled": true,
+  "dankLauncherV2IncludeFoldersInAll": true,
   "launcherUseOverlayLayer": true,
+  "launcherStyle": "island",
   "dashTabs": [
     {
       "id": "overview",
@@ -168,18 +178,29 @@
       "enabled": true
     },
     {
-      "id": "wallpaper",
-      "enabled": false
-    },
-    {
       "id": "weather",
       "enabled": true
     },
     {
-      "id": "settings",
+      "id": "notifications",
+      "enabled": true
+    },
+    {
+      "id": "wallpaper",
       "enabled": true
     }
   ],
+  "dashOptions": {
+    "media": {
+      "titleFont": "ui",
+      "artStyle": "square",
+      "albumArtBackdrop": false,
+      "albumArtAccent": false
+    },
+    "wallpaper": {
+      "layout": "carousel"
+    }
+  },
   "networkPreference": "ethernet",
   "cursorSettings": {
     "theme": "System Default",
@@ -202,7 +223,16 @@
   "lockScreenNotificationMode": 2,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,
+  "osdWorkspaceEnabled": true,
   "updaterCheckOnStart": true,
+  "screenPreferences": {
+    "notifications": [],
+    "osd": []
+  },
+  "showOnLastDisplay": {
+    "notifications": true,
+    "osd": true
+  },
   "barConfigs": [
     {
       "id": "default",
@@ -340,7 +370,12 @@
       "name": "Dank RSS Widget",
       "enabled": true,
       "config": {
-        "displayPreferences": [],
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
         "syncPositionAcrossScreens": true,
         "feeds": [
           {
@@ -436,7 +471,10 @@
       "enabled": true,
       "config": {
         "displayPreferences": [
-          "all"
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
         ],
         "fontSize": 35,
         "borderOpacity": 0,
@@ -454,11 +492,14 @@
       "enabled": true,
       "config": {
         "displayPreferences": [
-          "all"
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
         ],
         "showOnOverlay": false,
         "clickThrough": false,
-        "syncPositionAcrossScreens": false,
+        "syncPositionAcrossScreens": true,
         "barCount": 73,
         "bgOpacity": 0,
         "channels": "mono",
@@ -498,5 +539,5 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 29
+  "configVersion": 30
 }

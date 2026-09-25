@@ -207,9 +207,9 @@ hl.bind(modkey .. ' + SHIFT + SLASH', hl.dsp.exec_cmd('dms ipc call keybinds tog
 hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc powermenu toggle'))
 
 -- === Screenshots ===
-hl.bind('Print', hl.dsp.exec_cmd('dms screenshot'))
-hl.bind('CTRL + Print', hl.dsp.exec_cmd('dms screenshot full'))
-hl.bind('ALT + Print', hl.dsp.exec_cmd('dms screenshot window'))
+hl.bind('Print', hl.dsp.exec_cmd('dms ipc call quickCapture screenshot region edit'))
+hl.bind('CTRL + Print', hl.dsp.exec_cmd('dms ipc call quickCapture screenshot full edit'))
+hl.bind('ALT + Print', hl.dsp.exec_cmd('dms ipc call quickCapture screenshot window edit'))
 
 -- === Multimedia Controls ===
 hl.bind(
