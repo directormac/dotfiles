@@ -31,9 +31,16 @@ hl.window_rule({
   no_focus = true,
 })
 
+
+hl.window_rule({ match = { class = "feh" }, float = true, center = true })
+
+hl.window_rule({ match = { class = "com.danklinux.dankcalendar" }, float = true, center = true })
+
+
 hl.window_rule({
   match = { class = '(pinentry-)(.*)' },
   stay_focused = true,
+  float = true,
 })
 
 hl.window_rule({

@@ -6,7 +6,7 @@
       ...
     }:
     let
-      selfpkgs = self.packages."${pkgs.system}";
+      selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
     in
     {
 
@@ -18,7 +18,15 @@
         self.nixosModules.hyprland
 
         self.nixosModules.zen
+        self.nixosModules.niri
+        self.nixosModules.mangowc
       ];
+
+      home-manager.users.${config.preferences.user.name} = {
+        imports = [
+          self.homeModules.vesktop
+        ];
+      };
 
       programs.firefox.enable = true;
 
@@ -63,7 +71,7 @@
         kitty
         ghostty
 
-        self.packages."${pkgs.system}".nh
+        self.packages."${pkgs.stdenv.hostPlatform.system}".nh
       ];
     };
 }

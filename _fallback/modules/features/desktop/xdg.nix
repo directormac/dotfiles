@@ -65,10 +65,10 @@
           "org.freedesktop.portal.OpenURI" = [ "kde" ];
         };
         niri = {
-          default = [
-            "gtk"
-            "gnome"
-          ];
+          # default = [
+          #   "gtk"
+          #   "gnome"
+          # ];
           "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
           "org.freedesktop.impl.portal.Access" = [ "gtk" ];
           "org.freedesktop.impl.portal.Notification" = [ "gtk" ];

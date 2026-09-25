@@ -22,10 +22,17 @@
     "enabled": true
   },
   "quickCapture": {
-    "enabled": true
+    "enabled": true,
+    "skipConfirm": false,
+    "includeCursor": false,
+    "resetLastRegion": true,
+    "recordingFormat": "mp4",
+    "recordingFramerate": "60",
+    "recordingQuality": "very_high",
+    "recordingScreenTarget": "focused"
   },
   "amdGpuMonitor": {
-    "enabled": true,
+    "enabled": false,
     "popoutStyle": "default",
     "processSort": "gfx",
     "variants": [
@@ -82,5 +89,8 @@
     "backend": "rbw",
     "triggerOnlyVisibilityDefaultApplied": true,
     "defaultAction": "totp"
+  },
+  "emojiLauncher": {
+    "enabled": true
   }
 }
