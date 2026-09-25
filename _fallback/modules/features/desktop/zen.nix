@@ -4,23 +4,17 @@
   ...
 }:
 {
-  flake.homeModules.zen =
-    {
-      pkgs,
-      config,
-      lib,
-      ...
-    }:
-    {
-      imports = [
-        inputs.zen-browser.homeModules.beta
-      ];
+  flake.homeModules.zen = {
+    imports = [
+      inputs.zen-browser.homeModules.beta
+    ];
 
-      programs.zen-browser = {
-        enable = true;
-        setAsDefaultBrowser = true;
+    programs.zen-browser = {
+      enable = true;
+      setAsDefaultBrowser = true;
 
-        profiles.default = {
+      profiles = {
+        default = {
           # Catppuccin theme integration
           presets.catppuccin = {
             enable = true;
@@ -34,8 +28,9 @@
         };
       };
     };
+  };
 
-  flake.nixosModules.zen = { config, pkgs, ... }: {
+  flake.nixosModules.zen = { config, ... }: {
     home-manager.users.${config.preferences.user.name} = {
       imports = [
         self.homeModules.zen

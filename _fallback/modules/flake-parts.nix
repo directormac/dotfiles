@@ -21,9 +21,14 @@
       self.nixosModules.hardware
       self.nixosModules.nixosModule
 
+      # Defined in nixos
       self.nixosModules.base
-      self.nixosModules.core
+
+      # Features
+      self.nixosModules.general
       self.nixosModules.desktop
+
+      inputs.stylix.nixosModules.stylix
     ];
   };
 

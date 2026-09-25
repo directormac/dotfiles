@@ -4,16 +4,27 @@
   ...
 }:
 {
-  flake.nixosModules.core =
+  flake.nixosModules.general =
     {
       pkgs,
       config,
       ...
     }:
     let
-      selfpkgs = self.packages."${pkgs.system}";
+      selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
     in
     {
+
+      imports = [
+
+        self.nixosModules.yazi
+        self.nixosModules.zsh
+
+      ];
+
+      users.users.${config.preferences.user.name} = {
+        shell = selfpkgs.zshell;
+      };
 
       fonts.packages = with pkgs; [
         nerd-fonts.symbols-only
@@ -22,10 +33,11 @@
         noto-fonts
         corefonts
         unifont
+        cm_unicode
       ];
 
       environment.sessionVariables = {
-        EDITOR = "vim";
+        EDITOR = "lvim";
       };
 
       environment.systemPackages = with pkgs; [
@@ -33,8 +45,6 @@
         # Common
         wget
         cifs-utils
-        cm_unicode
-
         inotify-tools
         lshw
         nfs-utils
@@ -45,15 +55,19 @@
         unzip
         zip
 
-        # Language tools
+        # Dev tools
         tree-sitter
-
         git
-        neovim
-        lazygit
         github-cli
 
+        vim
+        neovim
+
+        devenv
+        secretspec
+
         # CLI Goodies
+
         bat
         btop
         dust
@@ -67,13 +81,20 @@
         lsd
         ripgrep
         sesh
+        starship
         tealdeer
         television
         tmux
         vivid
         wget
-        yazi
         zoxide
+
+        # self.packages."${pkgs.stdenv.hostPlatform.system}".nh
+        # self.packages."${pkgs.stdenv.hostPlatform.system}".yazi
+
+        selfpkgs.nh
+        selfpkgs.yazi
+        selfpkgs.lazygit
       ];
 
     };

@@ -23,6 +23,9 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
 
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+
     dms.url = "github:AvengeMedia/DankMaterialShell";
     dgop.url = "github:AvengeMedia/dgop";
     dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
