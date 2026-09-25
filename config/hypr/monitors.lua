@@ -17,7 +17,8 @@ local workspaces = {
   { id = '10', default_name = '十' },
 }
 
-if cfg.hostname == 'super' then
+if cfg.hostname == 'nixos' then
+
   -- "urgent": "",
   -- "focused": "",
   -- "default": ""

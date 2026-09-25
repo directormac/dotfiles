@@ -1,6 +1,5 @@
 {
   "currentThemeName": "custom",
-  "currentThemeCategory": "registry",
   "customThemeFile": "/home/artifex/.config/DankMaterialShell/themes/catppuccin/theme.json",
   "registryThemeVariants": {
     "catppuccin": {
@@ -10,73 +9,149 @@
       }
     }
   },
+  "radiusStrength": 19,
+  "clockFormat": "24h",
+  "showSeconds": true,
+  "padHours12Hour": true,
+  "fontFamily": "FiraCode Nerd Font",
+  "monoFontFamily": "FiraCode Nerd Font Mono",
+  "lockScreenFontFamily": "FiraCode Nerd Font",
+  "dockConfigs": [
+    {
+      "id": "dock",
+      "name": "Dock",
+      "enabled": false,
+      "screenPreferences": [
+        "all"
+      ],
+      "showOnLastDisplay": true,
+      "position": 1,
+      "mode": "compact",
+      "taskbarAlign": "center",
+      "widgetExpansion": "popout",
+      "iconSize": 40,
+      "spacing": 4,
+      "itemSpacing": 4,
+      "margin": 0,
+      "bottomGap": 0,
+      "transparency": 1,
+      "followInterfaceStyle": true,
+      "autoHide": false,
+      "smartAutoHide": false,
+      "useOverlayLayer": false,
+      "editOnRightClick": false,
+      "showOnFullscreen": false,
+      "openOnOverview": false,
+      "groupByApp": false,
+      "separatePinnedAndRunningApps": false,
+      "restoreSpecialWorkspaceOnClick": false,
+      "isolateDisplays": false,
+      "indicatorStyle": "circle",
+      "borderEnabled": false,
+      "borderColor": "surfaceText",
+      "borderOpacity": 1,
+      "borderThickness": 1,
+      "launcherEnabled": false,
+      "launcherLogoMode": "apps",
+      "launcherLogoCustomPath": "",
+      "launcherLogoColorOverride": "",
+      "launcherLogoSizeOffset": 0,
+      "launcherLogoBrightness": 0.5,
+      "launcherLogoContrast": 1,
+      "maxVisibleApps": 0,
+      "maxVisibleRunningApps": 0,
+      "showOverflowBadge": true,
+      "showTrash": false,
+      "trashFileManager": "default",
+      "trashCustomCommand": "",
+      "order": [],
+      "widgets": [
+        {
+          "id": "dock_launcher",
+          "widgetId": "dockLauncher",
+          "enabled": true
+        },
+        {
+          "id": "dock_apps",
+          "widgetId": "appsDock",
+          "enabled": true
+        },
+        {
+          "id": "dock_trash",
+          "widgetId": "dockTrash",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "currentThemeCategory": "registry",
   "floatingWindowSyncGlobal": false,
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
   "widgetColorMode": "colorful",
-  "cornerRadius": 6,
   "hyprlandLayoutGapsOverride": -2,
   "hyprlandLayoutRadiusOverride": 0,
   "hyprlandLayoutBorderSize": 1,
   "showWeekNumber": true,
-  "clockFormat": "24h",
-  "showSeconds": true,
-  "padHours12Hour": true,
   "windSpeedUnit": "ms",
   "systemTrayIconTintMode": "primary",
-  "controlCenterShowMicPercent": true,
   "controlCenterWidgets": [
     {
       "id": "volumeSlider",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "inputVolumeSlider",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "audioOutput",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "audioInput",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "wifi",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "bluetooth",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "nightMode",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "darkMode",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     },
     {
       "id": "doNotDisturb",
       "enabled": true,
-      "width": 50
+      "w": 4,
+      "h": 1
     }
   ],
-  "showWorkspaceName": true,
-  "workspaceAppIconSizeOffset": 5,
-  "groupActiveWorkspaceApps": true,
-  "workspaceFocusedBorderEnabled": true,
   "centeringMode": "geometric",
   "clockDateFormat": "dddd, MMMM d",
   "spotlightSectionViewModes": {
@@ -122,21 +197,12 @@
       "cursorHideTimeout": 0
     }
   },
-  "fontFamily": "FiraCode Nerd Font",
-  "monoFontFamily": "FiraCode Nerd Font Mono",
   "notificationOverlayEnabled": true,
   "lockPamExternallyManaged": true,
   "lockScreenNotificationMode": 2,
-  "lockScreenFontFamily": "FiraCode Nerd Font",
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,
   "updaterCheckOnStart": true,
-  "screenPreferences": {
-    "dock": []
-  },
-  "showOnLastDisplay": {
-    "dock": true
-  },
   "barConfigs": [
     {
       "id": "default",
@@ -148,7 +214,14 @@
       ],
       "showOnLastDisplay": true,
       "leftWidgets": [
-        "workspaceSwitcher",
+        {
+          "id": "workspaceSwitcher",
+          "enabled": true,
+          "showWorkspaceName": true,
+          "workspaceAppIconSizeOffset": 5,
+          "groupActiveWorkspaceApps": true,
+          "workspaceFocusedBorderEnabled": true
+        },
         {
           "id": "dankKDEConnect",
           "enabled": true
@@ -204,7 +277,11 @@
           "id": "idleInhibitor",
           "enabled": true
         },
-        "controlCenterButton"
+        {
+          "id": "controlCenterButton",
+          "enabled": true,
+          "showMicPercent": true
+        }
       ],
       "spacing": 0,
       "innerPadding": -4,
@@ -218,7 +295,6 @@
       "noBackground": false,
       "maximizeWidgetIcons": true,
       "maximizeWidgetText": false,
-      "removeWidgetPadding": false,
       "widgetPadding": 8,
       "batteryColorMode": "theme",
       "gothCornersEnabled": false,
@@ -253,35 +329,10 @@
       "shadowCustomColor": "#000000",
       "clickThrough": false,
       "hoverPopouts": true,
-      "hoverPopoutDelay": 100
+      "hoverPopoutDelay": 100,
+      "followInterfaceStyle": false
     }
   ],
-  "desktopClockCustomColor": {
-    "r": 1,
-    "g": 1,
-    "b": 1,
-    "a": 1,
-    "hsvHue": -1,
-    "hsvSaturation": 0,
-    "hsvValue": 1,
-    "hslHue": -1,
-    "hslSaturation": 0,
-    "hslLightness": 1,
-    "valid": true
-  },
-  "systemMonitorCustomColor": {
-    "r": 1,
-    "g": 1,
-    "b": 1,
-    "a": 1,
-    "hsvHue": -1,
-    "hsvSaturation": 0,
-    "hsvValue": 1,
-    "hslHue": -1,
-    "hslSaturation": 0,
-    "hslLightness": 1,
-    "valid": true
-  },
   "desktopWidgetInstances": [
     {
       "id": "dw_1789003152114_9nb0kxtk7",
@@ -447,5 +498,5 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 18
+  "configVersion": 29
 }
