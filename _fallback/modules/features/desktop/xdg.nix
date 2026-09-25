@@ -1,25 +1,24 @@
-{ self, ... }: {
-  flake.homeModules.xdg = { pkgs, config, ... }: {
+{ self, ... }:
+{
+  flake.homeModules.xdg =
+    { config, ... }:
+    {
 
-    # home-packages = [
-    #   pkgs.xdg-utils
-    # ];
+      xdg = {
+        enable = true;
+        userDirs.enable = true;
+      };
 
-    xdg = {
-      enable = true;
-      userDirs.enable = true;
+      home.file = {
+
+        ".face".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/.face";
+
+        ".config/wallpapers".source =
+          config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/wallpapers";
+
+      };
+
     };
-
-    home.file = {
-
-      ".face".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/.face";
-
-      ".config/wallpapers".source =
-        config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/wallpapers";
-
-    };
-
-  };
 
   flake.nixosModules.xdg = { config, pkgs, ... }: {
 
@@ -99,4 +98,5 @@
     ];
 
   };
+
 }

@@ -47,6 +47,11 @@ hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
   hl.exec_cmd('systemctl --user start hyprland-session.target')
   hl.exec_cmd('dms run')
+
+
+  -- Optional: Clipboard history
+  hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')
+  hl.exec_cmd('sh -c "wl-paste --watch cliphist store &"')
   -- hl.exec_cmd('waybar -c ~/.config/waybar/config-hypr.jsonc')
   -- hl.exec_cmd('hyprpaper & hyprpm reload -n')
   hl.exec_cmd(apps.terminal, cfg.floating_centered_wr)

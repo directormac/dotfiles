@@ -1,10 +1,35 @@
 {
-  flake.nixosModules.base = {
+  flake.nixosModules.base = { config, ... }: {
 
-    nix.settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    nix = {
+      settings = {
+
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+
+        trusted-users = [
+          "root"
+          "@wheel"
+          config.preferences.user.name
+        ];
+
+        use-xdg-base-directories = true;
+        keep-derivations = true;
+        auto-optimise-store = true;
+        accept-flake-config = true;
+
+      };
+
+      # nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+      optimise.automatic = false;
+      gc = {
+        automatic = true;
+        dates = "daily";
+        options = "--delete-older-than 5d";
+      };
+    };
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;

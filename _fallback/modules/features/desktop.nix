@@ -10,21 +10,23 @@
     in
     {
 
-      imports = [
-        self.nixosModules.xdg
-        self.nixosModules.greeter
+      imports = with self.nixosModules; [
+        xdg
+        gtk
+        stylix
+        greeter
 
-        self.nixosModules.dms
-        self.nixosModules.hyprland
+        dms
+        hyprland
 
-        self.nixosModules.zen
-        self.nixosModules.niri
-        self.nixosModules.mangowc
+        zen
+        niri
+        mangowc
       ];
 
       home-manager.users.${config.preferences.user.name} = {
-        imports = [
-          self.homeModules.vesktop
+        imports = with self.homeModules; [
+          vesktop
         ];
       };
 
@@ -48,6 +50,7 @@
         quickshell
         cliphist
         wl-clipboard
+        wl-clip-persist
 
         # General apps
         pavucontrol
@@ -68,10 +71,12 @@
         ffmpeg-full
         yt-dlp
 
-        kitty
-        ghostty
+        # kitty
+        # (kitty.overrideAttrs (old: {
+        #   doCheck = false;
+        # }))
 
-        self.packages."${pkgs.stdenv.hostPlatform.system}".nh
+        ghostty
       ];
     };
 }

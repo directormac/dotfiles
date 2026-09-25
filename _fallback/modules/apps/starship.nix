@@ -6,9 +6,10 @@
         package = pkgs.starship;
 
         env = {
-          STARSHIP_CONFIG = toString ./starship.toml;
+          STARSHIP_CONFIG = toString ../../../config/starship/starship.toml;
         };
       });
     };
+
   };
 }

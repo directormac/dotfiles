@@ -23,7 +23,12 @@
     };
 
     environment.systemPackages = with pkgs; [
+      # Used for default config SUPER+R
       hyprlauncher
+      hyprpolkitagent
+
+      qt5.qtwayland
+      qt6.qtwayland
     ];
 
   };
