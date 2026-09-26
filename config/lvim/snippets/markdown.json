@@ -1,0 +1,64 @@
+{
+  "Code Block": {
+    "prefix": "cb",
+    "body": [
+      "```${1:language}",
+      "$0",
+      "```"
+    ],
+    "description": "Triple backtick code block"
+  },
+  "Svelte Code Block": {
+    "prefix": "cbsv",
+    "body": [
+      "```svelte",
+      "$0",
+      "```"
+    ],
+    "description": "Svelte code block"
+  },
+  "Elixir Code Block": {
+    "prefix": "cbex",
+    "body": [
+      "```elixir",
+      "$0",
+      "```"
+    ],
+    "description": "Elixir code block"
+  },
+  "Link": {
+    "prefix": "link",
+    "body": "[${1:text}](${2:url})",
+    "description": "Markdown link"
+  },
+  "Image": {
+    "prefix": "img",
+    "body": "![${1:alt}](${2:url})",
+    "description": "Markdown image"
+  },
+  "Bold": {
+    "prefix": "bold",
+    "body": "**$1**$0",
+    "description": "Bold text"
+  },
+  "Italic": {
+    "prefix": "ital",
+    "body": "*$1*$0",
+    "description": "Italic text"
+  },
+  "Table": {
+    "prefix": "table",
+    "body": [
+      "| ${1:Header 1} | ${2:Header 2} |",
+      "| --- | --- |",
+      "| ${3:Cell 1} | ${4:Cell 2} |",
+      "| ${5:Cell 3} | ${6:Cell 4} |"
+    ],
+    "description": "Markdown table"
+  },
+  "Task List": {
+    "prefix": "task",
+    "body": "- [ ] $0",
+    "description": "Markdown task list item"
+  }
+}

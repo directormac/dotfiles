@@ -69,8 +69,9 @@
         google-chrome
         vscode
 
-        # Editors
+        # Dev Apps
         zed-editor
+        sqlitebrowser
 
         # Multimedia
         cava
