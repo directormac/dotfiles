@@ -28,6 +28,7 @@
       self.nixosModules.general
       self.nixosModules.desktop
 
+      inputs.nur.modules.nixos.default
       inputs.stylix.nixosModules.stylix
     ];
   };

@@ -50,6 +50,9 @@
           nixd
           nixfmt
           statix
+
+          lua-language-server
+          stylua
         ];
 
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
