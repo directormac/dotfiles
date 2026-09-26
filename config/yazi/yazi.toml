@@ -32,7 +32,7 @@ ueberzug_offset = [0, 0, 0, 0]
 
 [opener]
 edit = [
-  { run = "${EDITOR:-vi} %s", desc = "$EDITOR", for = "unix", block = true },
+  { run = "${EDITOR:-lvim} %s", desc = "$EDITOR", for = "unix", block = true },
   { run = "code %s", desc = "code", for = "windows", orphan = true },
   { run = "code -w %s", desc = "code (block)", for = "windows", block = true },
 ]
@@ -44,7 +44,9 @@ play = [
   { run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
   { run = "mediainfo %s1 & pause", block = true, desc = "Show media info", for = "windows" },
 ]
-vlc = [{ run = "vlc --one-instance %S", desc = "Play with VLC", for = "linux", orphan = true }]
+vlc = [
+  { run = "vlc --one-instance %S", desc = "Play with VLC", for = "linux", orphan = true },
+]
 vlc_queue = [
   { run = "vlc --one-instance %S", desc = "Add to VLC queue", for = "linux", orphan = true },
 ]
@@ -127,7 +129,7 @@ fetch_workers = 5
 preload_workers = 2
 process_workers = 5
 bizarre_retry = 3
-image_alloc = 536870912 # 512MB
+image_alloc = 536870912      # 512MB
 image_bound = [10000, 10000]
 suppress_preload = false
 

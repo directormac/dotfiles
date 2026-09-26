@@ -1,7 +1,7 @@
 return {
   {
     'catppuccin/nvim',
-    name = 'catppuccin',
+    name = 'catppuccin-nvim',
     opts = {
 
       terminal_colors = true,
@@ -10,7 +10,9 @@ return {
         light = 'latte',
         dark = 'mocha',
       },
+
       transparent_background = true,
+
       float = {
         transparent = true,
         solid = false,

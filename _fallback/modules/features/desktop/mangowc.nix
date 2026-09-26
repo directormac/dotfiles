@@ -5,5 +5,6 @@
       inputs.mangowm.nixosModules.mango
     ];
     programs.mango.enable = true;
+
   };
 }

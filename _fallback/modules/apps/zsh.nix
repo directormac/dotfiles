@@ -66,7 +66,7 @@
           man = "man -P \"${lib.getExe pkgs.bat} -p\"";
           nsh = "nix-shell -p";
           flakecheck = "nix flake check ~/.dotfiles";
-          nrsf = "sudo nixos-rebuild switch --flake ~/.dotfiles";
+          nrsf = "sudo nixos-rebuild switch --flake ~/.dotfiles/_fallback";
           top = lib.getExe pkgs.btop;
           wh = "which";
           y = lib.getExe pkgs.yazi;

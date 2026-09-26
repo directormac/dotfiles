@@ -75,6 +75,15 @@
           "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
           "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
         };
+        mangowc = {
+          default = [
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+          "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
+        };
         sway = {
           default = [
             "gtk"

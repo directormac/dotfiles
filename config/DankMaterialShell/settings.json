@@ -360,7 +360,8 @@
       "clickThrough": false,
       "hoverPopouts": true,
       "hoverPopoutDelay": 100,
-      "followInterfaceStyle": false
+      "followInterfaceStyle": false,
+      "widgetFollowInterfaceStyle": true
     }
   ],
   "desktopWidgetInstances": [
@@ -539,5 +540,5 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 30
+  "configVersion": 31
 }

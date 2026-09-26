@@ -607,6 +607,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_11": {
+      "locked": {
+        "lastModified": 1787900134,
+        "narHash": "sha256-VYXO0XZlgj06dxJZRhrD3WoSsvq/c7+/Akyoa22pefw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "83199d0d373dd3ac2b9a1996b1d0263f76ab7a4c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1771369470,
@@ -773,6 +789,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_10",
         "stylix": "stylix",
+        "workmux": "workmux",
         "wrappers": "wrappers",
         "zen-browser": "zen-browser"
       }
@@ -940,6 +957,24 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "workmux": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_11"
+      },
+      "locked": {
+        "lastModified": 1790103712,
+        "narHash": "sha256-esfHnMipv0yJ0/5hH8855CaZj5L1qZ3i5bZHZQ7fMWg=",
+        "owner": "raine",
+        "repo": "workmux",
+        "rev": "267bfc44ffc15e60acf1bd4c4b8cad5b56a7a2ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raine",
+        "repo": "workmux",
         "type": "github"
       }
     },
