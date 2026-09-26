@@ -26,6 +26,8 @@
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
+    workmux.url = "github:raine/workmux";
+
     dms.url = "github:AvengeMedia/DankMaterialShell";
     dgop.url = "github:AvengeMedia/dgop";
     dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";

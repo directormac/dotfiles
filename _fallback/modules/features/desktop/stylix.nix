@@ -1,39 +1,99 @@
-{
-  flake.nixosModules.stylix = { pkgs, ... }: {
+{ self, ... }: {
+
+  flake.homeModules.stylix = {
+
     stylix = {
-      enable = true;
-      polarity = "dark";
-
-      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-
       targets = {
+
+        gtk = {
+          enable = true;
+        };
+
+        qt = {
+          enable = true;
+        };
+
         zen-browser = {
           enable = false;
           profileNames = [ ];
         };
+
+        feh.enable = true;
+
+        btop = {
+          enable = true;
+
+        };
+
+        mangohud = {
+          enable = true;
+        };
+
+        x11.enable = true;
       };
 
-      # colors = {
-      #   #scheme: "Catppuccin Mocha"
-      #   # author: "https://github.com/catppuccin/catppuccin"
-      #   base00 = "#1e1e2e"; # base
-      #   base01 = "#181825"; # mantle
-      #   base02 = "#313244"; # surface0
-      #   base03 = "#45475a"; # surface1
-      #   base04 = "#585b70"; # surface2
-      #   base05 = "#cdd6f4"; # text
-      #   base06 = "#f5e0dc"; # fg
-      #   base07 = "#b4befe"; # light fg
-      #   base08 = "#f38ba8"; # red
-      #   base09 = "#fab387"; # orange
-      #   base0A = "#f9e2af"; # yellow
-      #   base0B = "#a6e3a1"; # green
-      #   base0C = "#94e2d5"; # cyan
-      #   base0D = "#89b4fa"; # blue
-      #   base0E = "#cba6f7"; # magenta
-      #   base0F = "#f2cdcd"; # orange
+    };
+
+  };
+
+  flake.nixosModules.stylix = { pkgs, config, ... }: {
+
+    home-manager.users.${config.preferences.user.name} = {
+      imports = with self.homeModules; [
+        stylix
+      ];
+    };
+
+    stylix = {
+      enable = true;
+      polarity = "dark";
+
+      autoEnable = false;
+
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+
+      # fonts.fontconfig.defaultFonts = {
+      #   serif = [ "Noto Serif" ];
+      #   sansSerif = [ "Noto Sans" ];
+      #   monospace = [ "Fira Mono Nerd Font" ];
       # };
 
+      cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 16;
+      };
+
+      icons = {
+        package = pkgs.adwaita-icon-theme;
+        # name = "Adwaita";
+      };
+
+      fonts = {
+        serif = {
+          package = pkgs.noto-fonts;
+          name = "Noto Serif";
+        };
+
+        sansSerif = {
+          package = pkgs.noto-fonts;
+          name = "Noto Sans";
+        };
+
+        monospace = {
+          package = pkgs.nerd-fonts.fira-mono;
+          name = "Fira Mono Nerd Font";
+        };
+
+        emoji = {
+          package = pkgs.noto-fonts-color-emoji;
+          name = "Noto Color Emoji";
+        };
+      };
+
+      targets = {
+        console.colors.enable = true;
+      };
     };
   };
 }

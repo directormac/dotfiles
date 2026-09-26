@@ -11,8 +11,10 @@
     {
 
       imports = with self.nixosModules; [
+
+        plymouth
         xdg
-        gtk
+
         stylix
         greeter
 
@@ -38,6 +40,7 @@
         nerd-fonts.jetbrains-mono
         nerd-fonts.noto
         nerd-fonts.symbols-only
+        noto-fonts-color-emoji
       ];
 
       fonts.fontconfig.defaultFonts = {
@@ -47,6 +50,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+
         quickshell
         cliphist
         wl-clipboard
@@ -55,6 +59,18 @@
         # General apps
         pavucontrol
         nautilus
+        evince
+        foliate
+        galculator
+        file-roller
+
+        # Maybe
+        chromium
+        google-chrome
+        vscode
+
+        # Editors
+        zed-editor
 
         # Multimedia
         cava
@@ -62,19 +78,12 @@
         rmpc
         mpv
         feh
-        evince
-        galculator
-        foliate
-        file-roller
         vlc
 
         ffmpeg-full
         yt-dlp
 
-        # kitty
-        # (kitty.overrideAttrs (old: {
-        #   doCheck = false;
-        # }))
+        # kitty-bin
 
         ghostty
       ];

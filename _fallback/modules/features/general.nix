@@ -17,6 +17,8 @@
 
       imports = [
 
+        self.nixosModules.multiplexer
+
         self.nixosModules.yazi
         self.nixosModules.zsh
 
@@ -84,13 +86,9 @@
         starship
         tealdeer
         television
-        tmux
         vivid
         wget
         zoxide
-
-        # self.packages."${pkgs.stdenv.hostPlatform.system}".nh
-        # self.packages."${pkgs.stdenv.hostPlatform.system}".yazi
 
         selfpkgs.nh
         selfpkgs.yazi

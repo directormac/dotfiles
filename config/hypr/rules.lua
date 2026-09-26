@@ -31,10 +31,23 @@ hl.window_rule({
   no_focus = true,
 })
 
+local floating_apps = {
+  "feh",
+  "com.danklinux.dankcalendar",
+  "galculator",
+  "org.pulseaudio.pavucontrol",
+  "org.gnome.Nautilus",
+}
 
-hl.window_rule({ match = { class = "feh" }, float = true, center = true })
+for _, app in ipairs(floating_apps) do
 
-hl.window_rule({ match = { class = "com.danklinux.dankcalendar" }, float = true, center = true })
+  hl.window_rule({ match = { class = app }, 
+    float = true, 
+    center = true,
+    size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+  })
+
+end
 
 
 hl.window_rule({
