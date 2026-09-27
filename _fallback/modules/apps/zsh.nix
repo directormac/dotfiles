@@ -1,5 +1,6 @@
 {
   lib,
+  self,
   ...
 }:
 {
@@ -9,7 +10,7 @@
     programs.zsh = {
       enable = true;
 
-      shellAliases = {
+      shellGlobalAliases = {
         "c" = "clear";
         "cat" = "bat";
         "cd " = "z";
@@ -21,10 +22,11 @@
         "du" = "dust";
         "find" = "fd";
         "grep" = "ripgrep";
-        "l" = "-a";
-        "la" = "-la";
+        "l" = "lsd -a";
+        "ll" = "lsd -l";
+        "la" = "lsd -la";
         "lg" = "lazygit";
-        "ls" = "lsd -l";
+        "ls" = "lsd";
         "lt" = "lsd --tree";
         "man" = "man -P bat -p";
         "nsh" = "nix-shell -p";
@@ -33,6 +35,8 @@
         "top" = "btop";
         "wh" = "which";
         "y" = "yazi";
+        "zen" = "zen-beta";
+        "wm" = "workmux";
       };
 
       sessionVariables = {
@@ -254,9 +258,16 @@
   flake.nixosModules.zsh =
     {
       pkgs,
+      config,
       ...
     }:
     {
+
+      home-manager.users.${config.preferences.user.name} = {
+        imports = [
+          self.homeModules.zsh
+        ];
+      };
 
       programs.zsh = {
         enable = true;
@@ -270,6 +281,7 @@
 
       environment.systemPackages = with pkgs; [
         zinit
+        tree
         zsh-fzf-tab
         zsh-vi-mode
         zsh-autosuggestions

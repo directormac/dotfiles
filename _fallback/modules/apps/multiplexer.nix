@@ -8,6 +8,10 @@
       # yaml
       ''
         merge_strategy: rebase
+        nerdfont: true
+        merge_keep: true 
+        auto_update_check: false
+
         # agent: claude
         # panes:
         #   - command: <agent>
@@ -53,10 +57,11 @@
           #Set Refresh every Second
           set-option -g status-interval 1
           # Dont exit from tmux when closing session
+
           # Sesh Recommendation
           set -g detach-on-destroy off
 
-
+          # Required by tmux-nerd-font-window-name
           set -g allow-rename off
 
           # Tell tmux that the *outside* terminal (Ghostty/Alacritty/etc.) supports True Color (RGB)
