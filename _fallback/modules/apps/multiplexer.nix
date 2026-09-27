@@ -19,11 +19,6 @@
         #   - split: horizontal
       '';
 
-    programs.fzf = {
-      enable = true;
-      tmux.enableShellIntegration = true;
-    };
-
     # [sesh.nix](https://github.com/nix-community/home-manager/blob/master/modules/programs/sesh.nix)
     programs.sesh = {
       enable = true;

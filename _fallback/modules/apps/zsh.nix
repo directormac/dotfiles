@@ -198,6 +198,8 @@
       enableBashIntegration = true;
       enableZshIntegration = true;
 
+      tmux.enableShellIntegration = true;
+
       defaultOptions = [
         "--prompt='> '"
         "--marker='>'"
