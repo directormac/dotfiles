@@ -2,6 +2,7 @@ return {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
+    priority = 1000,
     ---@type CatppuccinOptions
     opts = {
       falvour = 'mocha',

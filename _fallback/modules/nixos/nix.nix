@@ -15,11 +15,21 @@
           config.preferences.user.name
         ];
 
+        # Flake-specific substituters and trusted-public-keys, not affecting the system configuration.
+        extra-substituters = [
+          # Nix community cache server.
+          "https://nix-community.cachix.org"
+        ];
+
+        extra-trusted-public-keys = [
+          # Nix community cache server public key.
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
+
         use-xdg-base-directories = true;
         keep-derivations = true;
         auto-optimise-store = true;
         accept-flake-config = true;
-
       };
 
       # nixPath = ["nixpkgs=${inputs.nixpkgs}"];

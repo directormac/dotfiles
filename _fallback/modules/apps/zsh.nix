@@ -7,13 +7,15 @@
 
   flake.homeModules.zsh = { pkgs, ... }: {
 
+    # home.file.".config/nwet/pallete".source = "/home/artifex/.dotfiles/config/newt/pallete";
+
     programs.zsh = {
       enable = true;
 
       shellAliases = {
         "c" = "clear";
         "cat" = "bat";
-        "cd " = "z";
+        "cd" = "z";
         "cda" = "zoxide add";
         "cdq" = "zoxide query";
         "cdr" = "zoxide remove";
@@ -47,6 +49,9 @@
         FZF_COMPLETION_OPTS = "--border --info=inline";
         FZF_COMPLETION_PATH_OPTS = "--walker file,dir,follow,hidden";
         FZF_COMPLETION_DIR_OPTS = "--walker dir,follow";
+
+        # https://stacker.news/items/948469
+        NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
 
         QT_QPA_PLATFORM = "xcb";
       };

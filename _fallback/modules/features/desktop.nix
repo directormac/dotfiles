@@ -5,9 +5,9 @@
       config,
       ...
     }:
-    let
-      selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
-    in
+    # let
+    #   selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
+    # in
     {
 
       imports = with self.nixosModules; [
@@ -17,6 +17,8 @@
 
         stylix
         greeter
+
+        kitty
 
         dms
         hyprland
@@ -59,6 +61,7 @@
         wl-clip-persist
 
         # General apps
+        networkmanagerapplet
         pavucontrol
         nautilus
         evince

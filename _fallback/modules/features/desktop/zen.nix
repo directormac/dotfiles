@@ -217,11 +217,11 @@
           # carry the `-browser-action` suffix; those are accepted verbatim).
           extensionButtons = {
             "nav-bar" = [
-
+              "addon@darkreader.org"
             ];
 
             "unified-extensions-area" = [
-              "addon@darkreader.org"
+              # "addon@darkreader.org"
             ];
 
             # The placements are merged into the layout Zen saved last, so anything you
@@ -369,6 +369,7 @@
           mods = [
             "e122b5d9-d385-4bf8-9971-e137809097d0" # No Top Sites
             "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
+            "c6813222-6571-4ba6-8faf-58f3343324f6" # Disable Rounded Corners
           ];
 
         };

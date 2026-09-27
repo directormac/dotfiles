@@ -5,7 +5,7 @@
     "catppuccin": {
       "dark": {
         "flavor": "mocha",
-        "accent": "blue"
+        "accent": "mauve"
       }
     }
   },
@@ -218,6 +218,19 @@
       "cursorHideTimeout": 0
     }
   },
+  "matugenTemplateNiri": false,
+  "matugenTemplateHyprland": false,
+  "matugenTemplateMangowc": false,
+  "matugenTemplateFirefox": false,
+  "matugenTemplateZenBrowser": false,
+  "matugenTemplateGhostty": false,
+  "matugenTemplateKitty": false,
+  "matugenTemplateFoot": false,
+  "matugenTemplateAlacritty": false,
+  "matugenTemplateWezterm": false,
+  "matugenTemplateVscode": false,
+  "matugenTemplateEmacs": false,
+  "matugenTemplateZed": false,
   "notificationOverlayEnabled": true,
   "lockPamExternallyManaged": true,
   "lockScreenNotificationMode": 2,
@@ -251,17 +264,13 @@
           "workspaceAppIconSizeOffset": 5,
           "groupActiveWorkspaceApps": true,
           "workspaceFocusedBorderEnabled": true
-        },
+        }
+      ],
+      "centerWidgets": [
         {
           "id": "dankKDEConnect",
           "enabled": true
         },
-        {
-          "id": "dankPomodoroTimer",
-          "enabled": true
-        }
-      ],
-      "centerWidgets": [
         {
           "id": "clock",
           "enabled": true,
@@ -273,7 +282,11 @@
           "enabled": true,
           "mediaSize": 2
         },
-        "weather"
+        "weather",
+        {
+          "id": "dankPomodoroTimer",
+          "enabled": true
+        }
       ],
       "rightWidgets": [
         "systemTray",

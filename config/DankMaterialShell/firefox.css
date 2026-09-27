@@ -29,7 +29,7 @@
     --md-sys-color-scrim: #000000;
     --md-sys-color-inverse-surface: #181825;
     --md-sys-color-inverse-on-surface: #cdd6f4;
-    --md-sys-color-inverse-primary: #89b4fa;
+    --md-sys-color-inverse-primary: #cba6f7;
     --md-sys-color-primary-fixed: #eadcff;
     --md-sys-color-on-primary-fixed: #eff1f5;
     --md-sys-color-primary-fixed-dim: #8839ef;
@@ -71,10 +71,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --md-sys-color-primary: #89b4fa;
-    --md-sys-color-surface-tint: #89b4fa;
+    --md-sys-color-primary: #cba6f7;
+    --md-sys-color-surface-tint: #cba6f7;
     --md-sys-color-on-primary: #1e1e2e;
-    --md-sys-color-primary-container: #243f75;
+    --md-sys-color-primary-container: #55307f;
     --md-sys-color-on-primary-container: #cdd6f4;
     --md-sys-color-secondary: #b4befe;
     --md-sys-color-on-secondary: #1e1e2e;
@@ -101,9 +101,9 @@
     --md-sys-color-inverse-surface: #e6e9ef;
     --md-sys-color-inverse-on-surface: #4c4f69;
     --md-sys-color-inverse-primary: #8839ef;
-    --md-sys-color-primary-fixed: #243f75;
+    --md-sys-color-primary-fixed: #55307f;
     --md-sys-color-on-primary-fixed: #1e1e2e;
-    --md-sys-color-primary-fixed-dim: #89b4fa;
+    --md-sys-color-primary-fixed-dim: #cba6f7;
     --md-sys-color-on-primary-fixed-variant: #1e1e2e;
     --md-sys-color-secondary-fixed: #b4befe;
     --md-sys-color-on-secondary-fixed: #1e1e2e;

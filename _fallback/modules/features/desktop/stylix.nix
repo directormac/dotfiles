@@ -20,6 +20,8 @@
         };
 
         feh.enable = true;
+        foliate.enable = true;
+        mpv.enable = true;
 
         btop = {
           enable = true;
@@ -43,6 +45,16 @@
         stylix
       ];
     };
+
+    # config.stylix = {
+    #   testbed = {
+    #     enable = true;
+    #   };
+    #
+    #   home-manager.sharedModules = lib.singleton {
+    #     # Write Home Manager options here
+    #   };
+    # };
 
     stylix = {
       enable = true;
