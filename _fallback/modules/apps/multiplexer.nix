@@ -16,7 +16,10 @@
         default_session: default
         # Match naming formats cleanly so sesh can index them easily
         # Drops special prefixes that cause sesh attachment failure
+        # worktree_name_format: "{project}-{branch}"
         target_name_format: "{project}-{branch}"
+
+        # window_prefix: "{project}-"
 
         panes:
           - command: clear
@@ -29,8 +32,13 @@
       enableAlias = true;
 
       settings = {
-
+        # Strip Nerdfont prefixes automatically on selection matching
+        # Pins raw tmux names out of icon lists securely
+        fzf_command = "sesh list --icons | fzf --ansi | awk '{print $2}'";
       };
+      # settings = {
+      #
+      # };
     };
 
     programs.tmux = {
