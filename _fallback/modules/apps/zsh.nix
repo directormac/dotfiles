@@ -27,18 +27,20 @@
         "l" = "lsd -a";
         "ll" = "lsd -l";
         "la" = "lsd -la";
-        "lg" = "lazygit";
         "ls" = "lsd";
         "lt" = "lsd --tree";
+        "lzg" = "lazygit";
         "man" = "man -P bat -p";
         "nsh" = "nix-shell -p";
         "flakecheck" = "nix flake check ~/.dotfiles/_fallback";
         "nrsf" = "sudo nixos-rebuild switch --flake ~/.dotfiles/_fallback";
         "top" = "btop";
         "wh" = "which";
+        "v" = "lvim";
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";
+        "wmd" = "workmux dashboard";
       };
 
       sessionVariables = {

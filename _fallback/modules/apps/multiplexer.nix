@@ -13,16 +13,14 @@
         auto_update_check: false
 
         mode: session
+        default_session: default
         # Match naming formats cleanly so sesh can index them easily
         # Drops special prefixes that cause sesh attachment failure
         target_name_format: "{project}-{branch}"
 
-
-        # agent: claude
-        # panes:
-        #   - command: <agent>
-        #     focus: true
-        #   - split: horizontal
+        panes:
+          - command: clear
+            focus: true
       '';
 
     # [sesh.nix](https://github.com/nix-community/home-manager/blob/master/modules/programs/sesh.nix)
@@ -181,7 +179,11 @@
       Service = {
         Type = "forking";
         # ExecStart spins up the server socket in the background without opening a terminal window
-        ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+        # ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+        # -d spawns it completely detached in the background
+        # -s names the session 'default'
+        # -c specifies the starting directory ($HOME)
+        ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default -c %h";
         ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
         Restart = "always";
       };

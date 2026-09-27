@@ -139,12 +139,6 @@
       "h": 1
     },
     {
-      "id": "nightMode",
-      "enabled": true,
-      "w": 4,
-      "h": 1
-    },
-    {
       "id": "darkMode",
       "enabled": true,
       "w": 4,
@@ -374,7 +368,9 @@
       "hoverPopouts": true,
       "hoverPopoutDelay": 100,
       "followInterfaceStyle": false,
-      "widgetFollowInterfaceStyle": true
+      "widgetFollowInterfaceStyle": true,
+      "island": false,
+      "dot": false
     }
   ],
   "desktopWidgetInstances": [
