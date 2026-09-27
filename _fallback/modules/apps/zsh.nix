@@ -10,7 +10,7 @@
     programs.zsh = {
       enable = true;
 
-      shellGlobalAliases = {
+      shellAliases = {
         "c" = "clear";
         "cat" = "bat";
         "cd " = "z";
@@ -21,7 +21,7 @@
         "dotfiles" = "cd ~/.dotfiles";
         "du" = "dust";
         "find" = "fd";
-        "grep" = "ripgrep";
+        "grep" = "rg";
         "l" = "lsd -a";
         "ll" = "lsd -l";
         "la" = "lsd -la";
@@ -48,6 +48,7 @@
         FZF_COMPLETION_PATH_OPTS = "--walker file,dir,follow,hidden";
         FZF_COMPLETION_DIR_OPTS = "--walker dir,follow";
 
+        QT_QPA_PLATFORM = "xcb";
       };
 
       initContent = ''

@@ -36,8 +36,10 @@
       keyMode = "vi";
       newSession = true;
       mouse = true;
+      escapeTime = 100;
       historyLimit = 1000000;
 
+      # Pieces of config from our config/tmux.conf
       extraConfig =
         # conf
         ''
@@ -59,16 +61,43 @@
           # Required by tmux-nerd-font-window-name
           set -g allow-rename off
 
+          set -g default-terminal "tmux-256color"
+
+          # Linux Wayland (wl-clipboard)
+          bind-key -T copy-mode-vi v send-keys -X begin-selection
+          bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+          bind -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
+
           # Tell tmux that the *outside* terminal (Ghostty/Alacritty/etc.) supports True Color (RGB)
           # This works for Ghostty (which uses xterm-ghostty) and others using xterm-256color
           set -as terminal-features ",xterm-ghostty:RGB"
           set -as terminal-features ",xterm-256color:RGB"
+
+
+          # Key bind section all key assignments below must use Prefix-key
+          # Prefix key is default <C-a>
+          #Vim style pane selection <Prefix-key>
+          unbind h
+          bind h select-pane -L
+          unbind j
+          bind j select-pane -D
+          unbind k
+          bind k select-pane -U
+          unbind l
+          bind l select-pane -R
+
+          bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
+          # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
+
+          bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
+          # bind -N "Split pane horizontally" -n M-S-Enter split-window -h -c "#{pane_current_path}"
         '';
       plugins = [
         # https://github.com/joshmedeski/tmux-nerd-font-window-name#nix-flakes
         inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default
         # TODO: Install later
         # https://github.com/alberti42/tmux-fzf-links
+        # https://github.com/jaclu/tmux-menus
       ]
       ++ (with pkgs.tmuxPlugins; [
         # catppuccin
@@ -104,7 +133,6 @@
               set -ag status-right "#{E:@catppuccin_status_session}"
               set -ag status-right "#{E:@catppuccin_status_date_time}"
               set -g @catppuccin_status_background "none"
-
             '';
         }
         {
@@ -115,9 +143,25 @@
 
         }
 
-        sensible
+        # sensible
 
-        tmux-which-key
+        {
+          # https://github.com/alexwforsythe/tmux-which-key#nix-with-home-manager-flake-installation
+          plugin = tmux-which-key;
+
+          extraConfig = ''
+            # Enables XDG user directory support for the plugin.
+            set -g @tmux-which-key-xdg-enable 1;
+
+            # Disables building the tmux configuration from YAML everytime the plugin starts.
+            # The home manager module calls `plugin/build.py` on each generation.
+            set -g @tmux-which-key-disable-autobuild 1
+
+            # Follows nixpkgs prefered path for plugins instead of the default
+            # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
+            set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
+          '';
+        }
       ]);
     };
 
@@ -133,6 +177,7 @@
 
     nixpkgs.overlays = [
       inputs.tmux-nerd-font-window-name.overlays.default
+      # inputs.tmux-which-key.overlays.default
     ];
 
     environment.systemPackages = with pkgs; [

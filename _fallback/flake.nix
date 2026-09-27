@@ -28,6 +28,10 @@
 
     workmux.url = "github:raine/workmux";
     tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
+    tmux-which-key = {
+      url = "github:alexwforsythe/tmux-which-key";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dms.url = "github:AvengeMedia/DankMaterialShell";
     dgop.url = "github:AvengeMedia/dgop";
@@ -49,6 +53,11 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-alien.url = "github:thiagokokada/nix-alien";
+
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";

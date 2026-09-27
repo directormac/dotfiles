@@ -30,6 +30,7 @@
 
       inputs.nur.modules.nixos.default
       inputs.stylix.nixosModules.stylix
+      inputs.nix-index-database.nixosModules.default
     ];
   };
 

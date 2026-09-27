@@ -127,11 +127,11 @@
                 name = "NixOS Packages";
                 urls = [
                   {
-                    template = "https://search.nixos.org/packages?channel=unstable&query={query}";
+                    template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
                     programs = [
                       {
                         name = "query";
-                        value = "query";
+                        value = "searchTerms";
                       }
                     ];
                   }
@@ -143,11 +143,11 @@
                 name = "NixOS Options";
                 urls = [
                   {
-                    template = "https://search.nixos.org/options?channel=unstable&query={query}";
+                    template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
                     programs = [
                       {
                         name = "query";
-                        value = "query";
+                        value = "searchTerms";
                       }
                     ];
                   }
@@ -160,11 +160,11 @@
                 name = "Home Manager Options";
                 urls = [
                   {
-                    template = "https://home-manager-options.extranix.com/?query={query}&release=master";
+                    template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master";
                     programs = [
                       {
                         name = "query";
-                        value = "query";
+                        value = "searchTerms";
                       }
                     ];
                   }
