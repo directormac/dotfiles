@@ -3,6 +3,7 @@
 
     users.users.${config.preferences.user.name} = {
       isNormalUser = true;
+      linger = true;
       description = "${config.preferences.user.name}'s account";
       extraGroups = [
         "kvm"

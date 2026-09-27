@@ -61,7 +61,7 @@ merge_keep: true
 # Prefix for tmux window and session names. Supports `{project}` for the main
 # worktree's directory name, e.g. `{project} ` to scope session names by repo.
 # Default: "wm-"
-# window_prefix: "wm-"
+window_prefix: "dotfiles-"
 
 #-------------------------------------------------------------------------------
 # Tmux

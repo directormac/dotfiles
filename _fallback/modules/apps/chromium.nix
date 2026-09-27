@@ -32,6 +32,7 @@
   };
 
   flake.nixosModules.chromium = { pkgs, ... }: {
+    # https://github.com/luisnquin/nixos-config/blob/9f641d16c74cf9a90fdf5b654376a1d6c8cc1f86/system/modules/programs/browser/chromium.nix
     # https://search.nixos.org/options?channel=unstable&query=programs.chromium&type=options
     programs.chromium = {
       enable = true;

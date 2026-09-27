@@ -16,7 +16,9 @@ end
 
 map({ 'n', 'v' }, '<C-x>', '"+y<esc>dd', { noremap = true, desc = 'Copy and delete line' })
 map({ 'n', 'v' }, '<C-y>', '"+yy<esc>', { noremap = true, desc = 'Copy' })
-map({ 'n' }, '<C-p>', '"+p<esc>', { noremap = true, desc = 'Paste' })
+
+map({ 'i' }, '<C-p>', '"+p<esc>', { noremap = true, desc = 'Paste' })
+
 map('v', 'x', '"_x', { noremap = true, silent = true, desc = 'Delete character without yanking' })
 
 map(

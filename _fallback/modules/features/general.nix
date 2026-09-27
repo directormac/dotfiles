@@ -17,6 +17,7 @@
 
       imports = with self.nixosModules; [
 
+        nightly-neovim
         nix-ld
         multiplexer
         opencode

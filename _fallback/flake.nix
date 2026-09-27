@@ -20,6 +20,7 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
 

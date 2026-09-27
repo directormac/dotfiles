@@ -14,12 +14,9 @@
 
         mode: session
         default_session: default
-        # Match naming formats cleanly so sesh can index them easily
-        # Drops special prefixes that cause sesh attachment failure
-        # worktree_name_format: "{project}-{branch}"
-        target_name_format: "{project}-{branch}"
+        window_prefix: "{project}-"
 
-        # window_prefix: "{project}-"
+        agent: opencode
 
         panes:
           - command: clear
@@ -44,10 +41,11 @@
     programs.tmux = {
       enable = true;
       prefix = "C-a";
+      shortcut = "a";
       clock24 = true;
       baseIndex = 1;
       keyMode = "vi";
-      newSession = true;
+      # newSession = true;
       mouse = true;
       escapeTime = 100;
       historyLimit = 1000000;
@@ -59,15 +57,18 @@
           # Must not overide with neovim and terminal emulator keys
           # Reference https://github.com/tmux/tmux/wiki/Modifier-Keys
           unbind C-b
+
           set -g base-index 1 # index of tabs starts at 1
           set -g pane-base-index 1 # inex of pane must also start at 1
           set-window-option -g pane-base-index 1 # Base window number?
           set-option -g renumber-windows on # Renumber windows on remove
+
           set -g history-limit 100000
           #Set Refresh every Second
           set-option -g status-interval 1
-          # Dont exit from tmux when closing session
 
+
+          # Dont exit from tmux when closing session
           # Sesh Recommendation
           set -g detach-on-destroy off
 
@@ -77,9 +78,9 @@
           set -g default-terminal "tmux-256color"
 
           # Linux Wayland (wl-clipboard)
-          bind-key -T copy-mode-vi v send-keys -X begin-selection
-          bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-          bind -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
+          bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
+          bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+          bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
 
           # Tell tmux that the *outside* terminal (Ghostty/Alacritty/etc.) supports True Color (RGB)
           # This works for Ghostty (which uses xterm-ghostty) and others using xterm-256color
@@ -87,17 +88,40 @@
           set -as terminal-features ",xterm-256color:RGB"
 
 
+          bind -N "Create window" c new-window -c "#{pane_current_path}"
+          bind -N "Create window cwd" C new-window
+
+          # Prefix key + T
+          unbind t
+          bind T clock-mode
+
           # Key bind section all key assignments below must use Prefix-key
           # Prefix key is default <C-a>
           #Vim style pane selection <Prefix-key>
-          unbind h
-          bind h select-pane -L
-          unbind j
-          bind j select-pane -D
-          unbind k
-          bind k select-pane -U
-          unbind l
-          bind l select-pane -R
+          bind -N "Focus pane left" h select-pane -L
+          bind -N "Focus pane down" j select-pane -D
+          bind -N "Focus pane up" k select-pane -U
+          bind -N "Focus pane right" l select-pane -R
+
+          # Vim style pane resizing (No Prefix-key needed)
+          bind -N "Resize pane left"  -n C-M-S-h resize-pane -L 5
+          bind -N "Resize pane down"  -n C-M-S-j resize-pane -D 5
+          bind -N "Resize pane up"    -n C-M-S-k resize-pane -U 5
+          bind -N "Resize pane right" -n C-M-S-l resize-pane -R 5
+
+          bind -N "Resize pane left" -n C-M-S-Left resize-pane -L 5
+          bind -N "Resize pane down" -n C-M-S-Down resize-pane -D 5
+          bind -N "Resize pane up" -n C-M-S-Up resize-pane -U 5
+          bind -N "Resize pane right" -n C-M-S-Right resize-pane -R 5
+
+          # bind -N "Kill pane" x confirm-before -p "Kill pane #P? (y/n)" kill-pane
+          unbind x
+          bind -N "Kill pane" x kill-pane
+          bind -N "Kill window" q confirm-before -p "Kill window #W? (y/n)" kill-window
+          bind -N "Kill session" X confirm-before -p "Kill session #S? (y/n)" kill-session
+
+          # Quick reload shortcut
+          bind R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
 
           bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
           # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
@@ -155,7 +179,25 @@
           extraConfig = ''
             set -g @fzf-url-bind 'o'
           '';
+        }
+        {
+          plugin = resurrect;
+          extraConfig = ''
+            set -g @resurrect-save 'S'
+            set -g @resurrect-restore 'C-r'
+          '';
+        }
 
+        {
+          plugin = continuum;
+          extraConfig = ''
+            set -g @continuum-save-interval '5'
+            set -g @continuum-restore 'on'
+
+            # set -g @continuum-boot 'on'
+            # Prevent continuum from generating its own conflicting systemd file
+            # set -g @continuum-systemd-start-cmd 'start-server' 
+          '';
         }
 
         # sensible
@@ -177,6 +219,7 @@
             set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
           '';
         }
+
       ]);
     };
 
@@ -189,11 +232,11 @@
       Service = {
         Type = "forking";
         # ExecStart spins up the server socket in the background without opening a terminal window
-        # ExecStart = "${pkgs.tmux}/bin/tmux start-server";
         # -d spawns it completely detached in the background
         # -s names the session 'default'
         # -c specifies the starting directory ($HOME)
-        ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default -c %h";
+        # ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default";
+        ExecStart = "${pkgs.tmux}/bin/tmux start-server";
         ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
         Restart = "always";
       };
