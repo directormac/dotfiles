@@ -98,14 +98,16 @@ window_placement: rightmost
 # Each window can have its own pane layout. Unnamed windows get tmux's
 # automatic naming based on the running command.
 windows:
-  - panes:
+  - 
+    panes:
       - command: nvim
         focus: true
-  - panes:
-      - command: clear
+  - 
     panes:
       - command: clear
-  - panes: 
+
+  - 
+    panes: 
       - command: lazygit
     
 
