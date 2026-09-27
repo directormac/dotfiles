@@ -4,6 +4,7 @@
 
     stylix = {
       targets = {
+        dank-calendar.enable = true;
 
         gtk = {
           enable = true;
@@ -22,7 +23,6 @@
 
         btop = {
           enable = true;
-
         };
 
         mangohud = {
@@ -51,12 +51,6 @@
       autoEnable = false;
 
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-
-      # fonts.fontconfig.defaultFonts = {
-      #   serif = [ "Noto Serif" ];
-      #   sansSerif = [ "Noto Sans" ];
-      #   monospace = [ "Fira Mono Nerd Font" ];
-      # };
 
       cursor = {
         package = pkgs.bibata-cursors;
@@ -92,7 +86,8 @@
       };
 
       targets = {
-        console.colors.enable = true;
+        console.enable = true;
+        chromium.enable = true;
       };
     };
   };

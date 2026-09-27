@@ -21,9 +21,11 @@
         dms
         hyprland
 
-        zen
         niri
         mangowc
+
+        zen
+        chromium
       ];
 
       home-manager.users.${config.preferences.user.name} = {
@@ -65,7 +67,6 @@
         file-roller
 
         # Maybe
-        chromium
         google-chrome
         vscode
 

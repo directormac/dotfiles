@@ -1,7 +1,4 @@
 {
-  ...
-}:
-{
   flake.homeModules.git = { pkgs, ... }: {
 
     # GPG

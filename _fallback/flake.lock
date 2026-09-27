@@ -652,6 +652,22 @@
     },
     "nixpkgs_11": {
       "locked": {
+        "lastModified": 1790323409,
+        "narHash": "sha256-VVTPf+Hyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e94cb152ed51bd6e24eb4a41f1460252beb52cd2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_12": {
+      "locked": {
         "lastModified": 1787900134,
         "narHash": "sha256-VYXO0XZlgj06dxJZRhrD3WoSsvq/c7+/Akyoa22pefw=",
         "owner": "NixOS",
@@ -855,6 +871,7 @@
         "nixpkgs": "nixpkgs_10",
         "nur": "nur",
         "stylix": "stylix",
+        "tmux-nerd-font-window-name": "tmux-nerd-font-window-name",
         "workmux": "workmux",
         "wrappers": "wrappers",
         "zen-browser": "zen-browser"
@@ -1026,9 +1043,27 @@
         "type": "github"
       }
     },
-    "workmux": {
+    "tmux-nerd-font-window-name": {
       "inputs": {
         "nixpkgs": "nixpkgs_11"
+      },
+      "locked": {
+        "lastModified": 1790006388,
+        "narHash": "sha256-9bLwV3Z3RYFqqlwy6WpKbyYs52bw4IFtmynkp7Hmzlo=",
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
+        "rev": "c4a8baf3dc35707aa568eb2a69e270fc16728b71",
+        "type": "github"
+      },
+      "original": {
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
+        "type": "github"
+      }
+    },
+    "workmux": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_12"
       },
       "locked": {
         "lastModified": 1790103712,

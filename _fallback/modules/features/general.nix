@@ -25,7 +25,7 @@
       ];
 
       users.users.${config.preferences.user.name} = {
-        shell = selfpkgs.zshell;
+        shell = pkgs.zsh;
       };
 
       fonts.packages = with pkgs; [
@@ -82,7 +82,6 @@
         killall
         lsd
         ripgrep
-        sesh
         starship
         tealdeer
         television

@@ -27,6 +27,7 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
     workmux.url = "github:raine/workmux";
+    tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
 
     dms.url = "github:AvengeMedia/DankMaterialShell";
     dgop.url = "github:AvengeMedia/dgop";

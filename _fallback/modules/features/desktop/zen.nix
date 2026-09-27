@@ -1,19 +1,5 @@
-# Firefox extensions via rycee's NUR repository
-# Reference: https://nur.nix-community.org/repos/rycee/
-# Add to flake.nix inputs:
-# firefox-addons = {
-#   url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-#   inputs.nixpkgs.follows = "nixpkgs";
-# };
-#
-# `settings` writes browser-extension-data/<id>/storage.js. Keys are the
-# extension's own storage.local schema, so read its source; declare every key
-# you care about, omitted ones revert to the extension's defaults on each
-# switch. Requires `force`, and sets ExtensionStorageIDB.enabled=false for the
-# whole profile, which drops every extension to the legacy JSON backend and
-# hides what they had in IndexedDB (nix-community/home-manager#9211).
-#
-# Prefer the managed-storage route in 04-extensions.nix where supported.
+# Options https://zen-browser-flake.nshard.com/
+# References https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/zen/policies-config.nix
 {
   inputs,
   self,
@@ -52,15 +38,40 @@
           pkgs.firefoxpwa
         ];
 
-        policies = { };
+        policies =
+          let
+            mkExtensionSettings = builtins.mapAttrs (
+              _: pluginId: {
+                install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
+                installation_mode = "force_installed";
+              }
+            );
+          in
+          {
+            ExtensionSettings = mkExtensionSettings {
+              "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
+              "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
+              "{0fb8975d-7539-4a2a-b439-f3254ef02571}" = "sponsorblock";
+            };
+          };
 
         env = { };
 
         globalExtensions =
           [ ]
           ++ (with rycee-firefox-addons; [
-            darkreader
-            vimium
+            {
+              package = darkreader;
+              settings = {
+                private_browsing = true;
+              };
+            }
+            {
+              package = vimium;
+              settings = {
+                private_browsing = true;
+              };
+            }
             {
               package = ublock-origin;
               settings = {
@@ -112,21 +123,55 @@
             default = "ddg";
             # Extra Engines
             engines = {
-              mynixos = {
-                name = "My NixOS";
+              nixpkgs = {
+                name = "NixOS Packages";
                 urls = [
                   {
-                    template = "https://mynixos.com/search?q={searchTerms}";
-                    params = [
+                    template = "https://search.nixos.org/packages?channel=unstable&query={query}";
+                    programs = [
                       {
                         name = "query";
-                        value = "searchTerms";
+                        value = "query";
                       }
                     ];
                   }
                 ];
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                definedAliases = [ "@nx" ];
+                definedAliases = [ "@nix" ];
+              };
+              nixoptions = {
+                name = "NixOS Options";
+                urls = [
+                  {
+                    template = "https://search.nixos.org/options?channel=unstable&query={query}";
+                    programs = [
+                      {
+                        name = "query";
+                        value = "query";
+                      }
+                    ];
+                  }
+                ];
+
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [ "@nixops" ];
+              };
+              hmoptions = {
+                name = "Home Manager Options";
+                urls = [
+                  {
+                    template = "https://home-manager-options.extranix.com/?query={query}&release=master";
+                    programs = [
+                      {
+                        name = "query";
+                        value = "query";
+                      }
+                    ];
+                  }
+                ];
+
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [ "@hm" ];
               };
               github = {
                 name = "GitHub Search";
@@ -137,6 +182,22 @@
                 ];
                 definedAliases = [ "@gh" ];
               };
+              # mynixos = {
+              #   name = "My NixOS";
+              #   urls = [
+              #     {
+              #       template = "https://mynixos.com/search?q={searchTerms}";
+              #       params = [
+              #         {
+              #           name = "query";
+              #           value = "searchTerms";
+              #         }
+              #       ];
+              #     }
+              #   ];
+              #   icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              #   definedAliases = [ "@nx" ];
+              # };
             };
           };
 
@@ -223,7 +284,7 @@
             "Dev" = {
               id = spaces.dev;
               position = 2000;
-              icon = "";
+              icon = "👨‍💻";
             };
 
           };
