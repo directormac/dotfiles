@@ -12,6 +12,12 @@
         merge_keep: true 
         auto_update_check: false
 
+        mode: session
+        # Match naming formats cleanly so sesh can index them easily
+        # Drops special prefixes that cause sesh attachment failure
+        target_name_format: "{project}-{branch}"
+
+
         # agent: claude
         # panes:
         #   - command: <agent>
@@ -23,6 +29,7 @@
     programs.sesh = {
       enable = true;
       enableAlias = true;
+
       settings = {
 
       };
@@ -163,6 +170,25 @@
           '';
         }
       ]);
+    };
+
+    systemd.user.services.tmux-server = {
+      Unit = {
+        Description = "Persistent Tmux Server Background Process";
+        Documentation = "man:tmux(1)";
+      };
+
+      Service = {
+        Type = "forking";
+        # ExecStart spins up the server socket in the background without opening a terminal window
+        ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+        ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
+        Restart = "always";
+      };
+
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
     };
 
   };

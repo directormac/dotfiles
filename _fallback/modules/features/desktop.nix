@@ -61,6 +61,7 @@
         wl-clip-persist
 
         # General apps
+        anydesk
         networkmanagerapplet
         pavucontrol
         nautilus
