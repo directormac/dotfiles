@@ -40,7 +40,7 @@
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";
-        "wmd" = "workmux dashboard";
+        "wmd" = "workmux dashboard -t worktrees";
       };
 
       sessionVariables = {

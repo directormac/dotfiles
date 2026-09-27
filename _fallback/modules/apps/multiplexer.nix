@@ -96,6 +96,8 @@
 
           bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
           # bind -N "Split pane horizontally" -n M-S-Enter split-window -h -c "#{pane_current_path}"
+
+          bind C-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
         '';
       plugins = [
         # https://github.com/joshmedeski/tmux-nerd-font-window-name#nix-flakes
