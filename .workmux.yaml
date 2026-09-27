@@ -23,22 +23,22 @@
 
 # The primary branch to merge into.
 # Default: Auto-detected from remote HEAD, falls back to main/master.
-# main_branch: main
+main_branch: main
 
 # Default base branch/commit to branch from when creating new worktrees.
 # Use "auto" to branch from main_branch or the locally detected main/master branch.
 # The --base CLI flag always overrides this.
 # Default: The currently checked out branch.
-# base_branch: auto
+base_branch: auto
 
 # Default merge strategy for `workmux merge`.
 # Options: merge (default), rebase, squash
 # CLI flags (--rebase, --squash) always override this.
-# merge_strategy: rebase
+merge_strategy: rebase
 
 # Keep the worktree, window, and branch after `workmux merge` by default.
 # Keep and cleanup CLI flags always override this.
-# merge_keep: true
+merge_keep: true
 
 #-------------------------------------------------------------------------------
 # Naming & Paths
@@ -70,16 +70,16 @@
 # Mode for tmux operations: window (default) or session.
 # - window: Create windows within the current tmux session
 # - session: Create tmux sessions for each worktree
-# mode: session
+mode: session
 
 # Session mode only. Session to return to when a workmux session is closed or
 # removed, instead of whichever session the client was in previously.
 # Not prefixed with window_prefix. Default: the client's previous session.
-# default_session: main
+default_session: main
 
 # Placement for new tmux windows in window mode.
 # Options: after_current (default), rightmost
-# window_placement: rightmost
+window_placement: rightmost
 
 # Custom tmux pane layout (mutually exclusive with 'windows').
 # Default: Two-pane layout with shell and clear command.
@@ -97,28 +97,27 @@
 # Multiple windows per session (session mode only, mutually exclusive with 'panes').
 # Each window can have its own pane layout. Unnamed windows get tmux's
 # automatic naming based on the running command.
-# windows:
-#   - name: editor
-#     panes:
-#       - command: <agent>
-#         focus: true
-#       - split: horizontal
-#         size: 20
-#   - name: tests
-#     panes:
-#       - command: just test --watch
-#   - panes:
-#       - command: tail -f app.log
+windows:
+  - panes:
+      - command: nvim
+        focus: true
+  - panes:
+      - command: clear
+    panes:
+      - command: clear
+  - panes: 
+      - command: lazygit
+    
 
 # Auto-apply agent status icons to tmux window format.
 # Default: true
-# status_format: true
+status_format: true
 
 # Custom icons for agent status display.
-# status_icons:
-#   working: "🤖"
-#   waiting: "💬"
-#   done: "✅"
+status_icons:
+  working: "🤖"
+  waiting: "💬"
+  done: "✅"
 
 #-------------------------------------------------------------------------------
 # Agent & AI
