@@ -1,5 +1,8 @@
 # https://github.com/hackrmomo/ghostty-shaders
-custom-shader = shaders/matrix-hallway.glsl
+# https://github.com/0xhckr/ghostty-shaders
+# custom-shader = shaders/inside-the-matrix.glsl
+# custom-shader = ./shaders/cursor_blaze.glsl
+custom-shader = ./shaders/cursor_lightning.glsl
 custom-shader-animation = always
 
 font-family = "FiraCode Nerd Font"
@@ -15,8 +18,7 @@ window-padding-y = 0
 theme = Catppuccin Mocha
 gtk-tabs-location = bottom
 gtk-wide-tabs = true
-adw-toolbar-style = flat
-gtk-single-instance=false
+gtk-single-instance=true
 copy-on-select = clipboard
 
 # shell-integration = zsh

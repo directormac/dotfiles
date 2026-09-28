@@ -45,7 +45,6 @@ local apps = cfg.applications
 
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
-  hl.exec_cmd('systemctl --user start tmux-server.service')
   hl.exec_cmd('dms run')
 
   -- Optional: Clipboard history

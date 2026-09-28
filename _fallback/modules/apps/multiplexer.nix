@@ -227,10 +227,10 @@
             bind R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
 
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
-            bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
+            # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
 
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
-            bind -N "Split pane horizontally" -n C-S-Enter split-window -h -c "#{pane_current_path}"
+            # bind -N "Split pane horizontally" -n C-M-S-Enter split-window -h -c "#{pane_current_path}"
 
             bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
             bind-key "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
@@ -342,16 +342,39 @@
         Unit = {
           Description = "tmux server (continuum auto-restore)";
           Documentation = "man:tmux(1)";
+          # graphical-session.target is started by the display manager for any
+          # session, so this stays independent of which compositor/WM is used.
+          After = [ "graphical-session.target" ];
         };
         Service = {
           Type = "forking";
           Environment = [ "TMUX_TMPDIR=%t" ]; # %t = $XDG_RUNTIME_DIR -> matches your shell
-          ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+          # systemd user units get no WAYLAND_DISPLAY/DISPLAY, and which
+          # compositor is running varies. Discover the display socket at start
+          # time rather than relying on each WM's session-env import, so this
+          # works unchanged under sway, niri, mango, hyprland, etc.
+          ExecStart = "${pkgs.writeShellScript "tmux-server" ''
+            if [ -z "''${WAYLAND_DISPLAY:-}" ]; then
+              i=0
+              while [ $i -lt 20 ]; do
+                sock=$(ls -t "''${XDG_RUNTIME_DIR:-/tmp}"/wayland-* 2>/dev/null | head -1)
+                if [ -n "$sock" ]; then
+                  export WAYLAND_DISPLAY="''${sock##*/}"
+                  break
+                fi
+                i=$((i + 1))
+                sleep 0.5
+              done
+            fi
+            if [ -z "''${DISPLAY:-}" ]; then
+              sock=$(ls -t /tmp/.X11-unix/X* 2>/dev/null | head -1)
+              [ -n "$sock" ] && export DISPLAY=":''${sock##*X}"
+            fi
+            exec ${pkgs.tmux}/bin/tmux start-server
+          ''}";
           KillMode = "mixed";
         };
-        # Started explicitly from hyprland.lua (hyprland.start) so the graphical
-        # environment is already imported by dbus-update-activation-environment.
-        # WantedBy would race it at login and leave the server without WAYLAND_DISPLAY.
+        Install.WantedBy = [ "graphical-session.target" ];
       };
 
     };

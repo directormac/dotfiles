@@ -70,6 +70,7 @@
         stylix
         greeter
 
+        ghostty
         kitty
 
         dms
@@ -178,10 +179,6 @@
 
         ffmpeg-full
         yt-dlp
-
-        # kitty-bin
-
-        ghostty
       ];
     };
 }
