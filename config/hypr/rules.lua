@@ -32,23 +32,23 @@ hl.window_rule({
 })
 
 local floating_apps = {
-  "feh",
-  "com.danklinux.dankcalendar",
-  "galculator",
-  "org.pulseaudio.pavucontrol",
-  "org.gnome.Nautilus",
+  'feh',
+  'com.danklinux.dankcalendar',
+  'galculator',
+  'org.pulseaudio.pavucontrol',
+  'org.gnome.Nautilus',
+  'mpv',
+  'nm-connection-editor',
 }
 
 for _, app in ipairs(floating_apps) do
-
-  hl.window_rule({ match = { class = app }, 
-    float = true, 
+  hl.window_rule({
+    match = { class = app },
+    float = true,
     center = true,
     size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
   })
-
 end
-
 
 hl.window_rule({
   match = { class = '(pinentry-)(.*)' },
