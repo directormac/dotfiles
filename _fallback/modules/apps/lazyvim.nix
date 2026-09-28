@@ -20,6 +20,15 @@
 
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/extras.json
         extras = {
+          ui = {
+            edgy.enable = true;
+          };
+          coding = {
+            luasnip.enable = true;
+            mini-surround.enable = true;
+            mini-comment.enable = true;
+            yanky.enable = true;
+          };
           lang = {
             nix = {
               enable = true;

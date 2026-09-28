@@ -18,6 +18,7 @@ return {
       picker = {
         sources = {
           files = {
+            layout = { hidden = { 'preview' } },
             hidden = true, -- Show dotfiles like .config
             ignored = false, -- Respect .gitignore (skips node_modules, etc.)
             exclude = {
@@ -34,6 +35,7 @@ return {
             },
           },
           grep = {
+            layout = { hidden = { 'preview' } },
             hidden = true,
             ignored = false,
             exclude = {
