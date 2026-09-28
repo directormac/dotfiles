@@ -116,18 +116,31 @@
       programs.winbox = {
         enable = true;
         openFirewall = true;
+
+        # Inject the environment variable using makeWrapper instead of altering a desktop file
+        package = pkgs.winbox.overrideAttrs (oldAttrs: {
+          nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+
+          postInstall = (oldAttrs.postInstall or "") + ''
+            wrapProgram $out/bin/WinBox \
+              --set QT_QPA_PLATFORM xcb
+          '';
+        });
       };
 
       environment.pathsToLink = [ "share/thumbnailers" ];
 
-      environment.sessionVariables = {
-        # https://stacker.news/items/948469
-        NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
-        QT_QPA_PLATFORM = "xcb";
-      };
+      # environment.sessionVariables = {
+      #   # https://stacker.news/items/948469
+      #   NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
+      #   QT_QPA_PLATFORM = "xcb";
+      # };
 
       environment.systemPackages = with pkgs; [
 
+        bibata-cursors-translucent
+        bibata-cursors
+        papirus-icon-theme
         quickshell
         cliphist
         wl-clipboard

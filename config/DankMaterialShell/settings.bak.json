@@ -202,6 +202,7 @@
     }
   },
   "networkPreference": "ethernet",
+  "iconThemeDark": "Papirus-Dark",
   "cursorSettings": {
     "theme": "System Default",
     "size": 24,
@@ -218,7 +219,6 @@
       "cursorHideTimeout": 0
     }
   },
-  "muxUseCustomCommand": true,
   "matugenTemplateNiri": false,
   "matugenTemplateHyprland": false,
   "matugenTemplateMangowc": false,

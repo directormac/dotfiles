@@ -45,9 +45,8 @@ local apps = cfg.applications
 
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
-  hl.exec_cmd('systemctl --user start hyprland-session.target')
+  hl.exec_cmd('systemctl --user start tmux-server.service')
   hl.exec_cmd('dms run')
-
 
   -- Optional: Clipboard history
   hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')
@@ -76,4 +75,4 @@ require('dms.binds-user')
 require('dms.layout')
 require('dms.windowrules')
 require('dms.outputs')
-require("dms.cursor")
+require('dms.cursor')

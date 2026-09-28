@@ -6,7 +6,12 @@
 {
 
   flake.homeModules.dms =
-    { lib, config, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
 
       # Define where your flake lives on the live filesystem
@@ -14,22 +19,25 @@
 
       linkDank =
         name: type:
-        if name == "plugins" then
+        if
+          builtins.elem name [
+            "plugins"
+            "plugin_settings.json"
+          ]
+        then
           { }
         else
           {
             ".config/DankMaterialShell/${name}".source =
               config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/${name}";
           };
-
     in
 
     {
-      # home.file = {
-      #
-      # }
-      # # This merges the filtered directory directly into your home.file
-      # // lib.concatMapAttrs linkDank (builtins.readDir ../../../../config/DankMaterialShell);
+      home.file =
+        { }
+        # This merges the filtered directory directly into your home.file
+        // lib.concatMapAttrs linkDank (builtins.readDir ../../../../config/DankMaterialShell);
 
       imports = [
         inputs.dms.homeModules.dank-material-shell
@@ -40,6 +48,12 @@
         enable = true;
 
         managePluginSettings = true;
+
+        enableSystemMonitoring = true;
+        enableVPN = true; # VPN management widget
+        enableDynamicTheming = true; # Wallpaper-based theming (matugen)
+        enableAudioWavelength = true; # Audio visualizer (cava)
+        enableCalendarEvents = true; # Calendar integration (khal)
 
         plugins = {
           # Example
@@ -58,6 +72,40 @@
           #   enable = true;
           #   src = pkgs.another-plugin;
           # };
+
+          dankActions.enable = true;
+          dankGifSearch.enable = true;
+          dankHooks.enable = true;
+          dankKDEConnect = {
+            enable = true;
+            settings = {
+              deviceImageMap = { }; # ported from repo plugin_settings.json
+            };
+          };
+          dankLauncherKeys = {
+            enable = true;
+            settings = {
+              noTrigger = false;
+              providers = [ ];
+            };
+          };
+          dankPomodoroTimer.enable = true;
+          dankStickerSearch.enable = true;
+          dankNotepadModule.enable = true;
+
+          emojiLauncher = {
+            enable = true;
+            settings = {
+              recentEmojis = "";
+            };
+          };
+
+          ambientSound.enable = true;
+          screenkey.enable = true;
+          amdGpuMonitor.enable = true;
+          dankRssWidget.enable = true;
+          pureLyrics.enable = true;
+          cavaVisualizer.enable = true;
 
           # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/index.md
           # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/ipc-and-settings.md
@@ -125,35 +173,30 @@
         # };
 
         # Core features
-        enableSystemMonitoring = true;
-        enableVPN = true; # VPN management widget
-        enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-        enableAudioWavelength = true; # Audio visualizer (cava)
-        enableCalendarEvents = true; # Calendar integration (khal)
 
         # See https://danklinux.com/docs/dankmaterialshell/nixos-flake#plugins
-        plugins = {
-          #   # Simply enable plugins by their ID (from the registry)
-          dankActions.enable = true;
-          dankGifSearch.enable = true;
-          dankHooks.enable = true;
-          dankKDEConnect.enable = true;
-          dankLauncherKeys.enable = true;
-          dankPomodoroTimer.enable = true;
-          dankStickerSearch.enable = true;
-          dankNotepadModule.enable = true;
-
-          emojiLauncher.enable = true;
-          ambientSound.enable = true;
-          screenkey.enable = true;
-
-          amdGpuMonitor.enable = true;
-
-          # Desktop
-          dankRssWidget.enable = true;
-          pureLyrics.enable = true;
-          cavaVisualizer.enable = true;
-        };
+        # plugins = {
+        #   #   # Simply enable plugins by their ID (from the registry)
+        #   dankActions.enable = true;
+        #   dankGifSearch.enable = true;
+        #   dankHooks.enable = true;
+        #   dankKDEConnect.enable = true;
+        #   dankLauncherKeys.enable = true;
+        #   dankPomodoroTimer.enable = true;
+        #   dankStickerSearch.enable = true;
+        #   dankNotepadModule.enable = true;
+        #
+        #   emojiLauncher.enable = true;
+        #   ambientSound.enable = true;
+        #   screenkey.enable = true;
+        #
+        #   amdGpuMonitor.enable = true;
+        #
+        #   # Desktop
+        #   dankRssWidget.enable = true;
+        #   pureLyrics.enable = true;
+        #   cavaVisualizer.enable = true;
+        # };
       };
 
       kdeconnect = {

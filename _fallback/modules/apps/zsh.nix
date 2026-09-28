@@ -55,13 +55,14 @@
         "zen" = "zen-beta";
         "wm" = "workmux";
         "tls" = "tmux ls";
+        "t" = "tmux a";
         "tn" = "sesh connect .";
         "grab" = "ghgrab --cwd";
         "flake" = "nix flake";
-
         "nixdev" = "nix develop -c $SHELL";
         "oc" = "opencode";
         "wmd" = "workmux dashboard -t worktrees";
+        "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
       };
 
       sessionVariables = {

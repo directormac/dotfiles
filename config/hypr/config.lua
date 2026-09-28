@@ -33,7 +33,7 @@ _G.modkey = 'SUPER'
 -- APPLICATIONS --
 local applications = {
   terminal = 'ghostty',
-  browser = 'zen-browser',
+  browser = 'zen-beta',
   fileManager = 'nautilus',
   menu = 'hyprlauncher',
 }

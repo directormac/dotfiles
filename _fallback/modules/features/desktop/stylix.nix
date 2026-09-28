@@ -3,6 +3,8 @@
   flake.homeModules.stylix = {
 
     stylix = {
+      enable = true;
+
       targets = {
         dank-calendar.enable = true;
 
@@ -80,6 +82,7 @@
       };
 
       icons = {
+        enable = true;
         # package = pkgs.adwaita-icon-theme;
         package = pkgs.papirus-icon-theme;
         dark = "Papirus-Dark";
@@ -111,6 +114,7 @@
       targets = {
         console.enable = true;
         chromium.enable = true;
+        gtk.enable = true;
       };
     };
   };

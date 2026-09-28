@@ -178,6 +178,8 @@
 
             set -g default-terminal "tmux-256color"
 
+            set -s set-clipboard on
+
             # Linux Wayland (wl-clipboard)
             bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
             bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
@@ -225,12 +227,12 @@
             bind R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
 
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
-            # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
+            bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
 
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
-            # bind -N "Split pane horizontally" -n M-S-Enter split-window -h -c "#{pane_current_path}"
+            bind -N "Split pane horizontally" -n C-S-Enter split-window -h -c "#{pane_current_path}"
 
-            bind C-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
+            bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
             bind-key "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
 
 
@@ -295,8 +297,11 @@
             extraConfig = ''
               set -g @resurrect-strategy-vim 'session'
               set -g @resurrect-strategy-nvim 'session'
-              set -g @resurrect-capture-pane-contents 'on'
-              set -g @resurrect-save 'S'
+              # set -g @resurrect-capture-pane-contents 'on'
+              resurrect_dir=$HOME/.local/state/tmux/resurrect/
+              set -g @resurrect-dir $resurrect_dir
+              set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
+              set -g @resurrect-save 'C-s'
               set -g @resurrect-restore 'C-r'
             '';
           }
@@ -306,7 +311,7 @@
             extraConfig = ''
               set -g @continuum-save-interval '5'
               set -g @continuum-restore 'on'
-              set -g @continuum-boot 'on'
+              # set -g @continuum-boot 'off'
             '';
           }
 
@@ -333,29 +338,21 @@
         ]);
       };
 
-      # Let continuum do this
-      # systemd.user.services.tmux-server = {
-      #   Unit = {
-      #     Description = "Persistent Tmux Server Background Process";
-      #     Documentation = "man:tmux(1)";
-      #   };
-      #
-      #   Service = {
-      #     Type = "forking";
-      #     # ExecStart spins up the server socket in the background without opening a terminal window
-      #     # -d spawns it completely detached in the background
-      #     # -s names the session 'default'
-      #     # -c specifies the starting directory ($HOME)
-      #     # ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default";
-      #     ExecStart = "${pkgs.tmux}/bin/tmux start-server";
-      #     ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
-      #     Restart = "always";
-      #   };
-      #
-      #   Install = {
-      #     WantedBy = [ "default.target" ];
-      #   };
-      # };
+      systemd.user.services.tmux-server = {
+        Unit = {
+          Description = "tmux server (continuum auto-restore)";
+          Documentation = "man:tmux(1)";
+        };
+        Service = {
+          Type = "forking";
+          Environment = [ "TMUX_TMPDIR=%t" ]; # %t = $XDG_RUNTIME_DIR -> matches your shell
+          ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+          KillMode = "mixed";
+        };
+        # Started explicitly from hyprland.lua (hyprland.start) so the graphical
+        # environment is already imported by dbus-update-activation-environment.
+        # WantedBy would race it at login and leave the server without WAYLAND_DISPLAY.
+      };
 
     };
 
