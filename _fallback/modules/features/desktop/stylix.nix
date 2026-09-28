@@ -23,6 +23,10 @@
         foliate.enable = true;
         mpv.enable = true;
 
+        opencode.enable = true;
+        bat.enable = true;
+        vivid.enable = true;
+
         btop = {
           enable = true;
         };
