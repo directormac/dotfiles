@@ -16,6 +16,10 @@
       spaces = {
         personal = "1fb46130-1153-4ad8-9715-747ec005d132";
         dev = "9ace6c68-8e8f-49f0-ab2f-3825b9bb0a5a";
+        media = "e239600a-4876-4713-a10c-715c570afdc5";
+        read = "e2214a3b-4fef-4d0c-ae56-decae3f63bee";
+        scratchpad_one = "4ef320b6-0d78-4d8e-86d7-b503e4eece7b";
+        scratchpad_two = "a38ef7bc-93aa-44ba-a6b6-474e83b71687";
       };
 
       pins = {
@@ -254,6 +258,64 @@
             };
           };
 
+          spaceRouting = {
+            # Link previews / external opens with no matching rule land here.
+            defaultExternalRoute = spaces.scratchpad_one;
+
+            routes = {
+              "github" = {
+                reference = "github.com";
+                matchType = "contains"; # default
+                openIn = spaces.dev;
+              };
+
+              # Exact host match, protocol/www/trailing-slash normalized.
+              "reddit" = {
+                reference = "reddit.com";
+                matchType = "equal-to";
+                openIn = spaces.personal;
+              };
+
+              "medium" = {
+                reference = "mediuam.com";
+                matchType = "equal-to";
+                openIn = spaces.personal;
+              };
+
+              "dev.to" = {
+                reference = "dev.to";
+                matchType = "equal-to";
+                openIn = spaces.personal;
+              };
+
+              "google" = {
+                reference = "google.com";
+                matchType = "equal-to";
+                openIn = spaces.scratchpad_one;
+              };
+
+              "nixos" = {
+                reference = "https?://.*\\.nixos\\.org";
+                matchType = "regex";
+                openIn = spaces.scratchpad_two;
+              };
+
+              "youtube" = {
+                reference = "https?://.*\\.youtube\\.com";
+                matchType = "regex";
+                openIn = spaces.media;
+              };
+
+              # Any *.google.com URL
+              "google-account" = {
+                reference = "https?://.*\\.google\\.com";
+                matchType = "regex";
+                openIn = spaces.personal;
+              };
+
+            };
+          };
+
           # Zen Spaces with custom gradient themes
           # Spaces are workspaces for organizing tabs across different contexts.
           # ⚠ Only if using spaces or spacesForce: close Zen before home-manager switch
@@ -285,6 +347,24 @@
               id = spaces.dev;
               position = 2000;
               icon = "👨‍💻";
+            };
+
+            "Media" = {
+              id = spaces.media;
+              position = 3000;
+              icon = "📺";
+            };
+
+            "Scratchpand 1" = {
+              id = spaces.scratchpad_one;
+              position = 4000;
+              icon = "📝";
+            };
+
+            "Scratchpand 2" = {
+              id = spaces.scratchpad_two;
+              position = 5000;
+              icon = "🗒️";
             };
 
           };
