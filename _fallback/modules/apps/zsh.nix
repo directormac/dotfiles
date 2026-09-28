@@ -36,7 +36,7 @@
         "nrsf" = "sudo nixos-rebuild switch --flake ~/.dotfiles/_fallback";
         "top" = "btop";
         "wh" = "which";
-        "v" = "lvim";
+        "v" = "lazyvim";
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";
@@ -44,7 +44,7 @@
       };
 
       sessionVariables = {
-        EDITOR = "lvim";
+        EDITOR = "lazyvim";
         LS_COLORS = "$(vivid generate catppuccin-mocha)";
         BROWSER = "zen-beta";
         FZF_COMPLETION_TRIGGER = "**";

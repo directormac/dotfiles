@@ -4,18 +4,41 @@
     { config, ... }:
     {
 
+      # https://home-manager-options.extranix.com/?query=xdg&release=master
       xdg = {
         enable = true;
-        userDirs.enable = true;
+        userDirs = {
+          enable = true;
+          createDirectories = true;
+        };
+
+        mimeApps = {
+          enable = true;
+          # Find Applications appropriately
+          # ls /etc/profiles/per-user/$(id -n -u)/share/applications
+          # ls /run/current-system/sw/share/applications/
+          defaultApplications = {
+            "image/*" = [ "feh.desktop" ];
+            "video/*" = "vlc.desktop";
+            "video/*,.mkv" = "vlc.desktop";
+
+            "text/plain" = "nvim.desktop";
+            "inode/directory" = "org.gnome.Nautilus.desktop";
+            "application/epub+zip" = "com.github.johnfactotum.Foliate.desktop";
+            "application/pdf" = "org.gnome.Evince.desktop";
+
+            "x-scheme-handler/http" = "zen-beta.desktop";
+            "x-scheme-handler/https" = "zen-beta.desktop";
+            "x-scheme-handler/discord" = "vesktop.desktop";
+          };
+        };
+
       };
 
       home.file = {
-
         ".face".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/.face";
-
         ".config/wallpapers".source =
           config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/wallpapers";
-
       };
 
     };
@@ -35,6 +58,7 @@
       login.enableGnomeKeyring = true;
     };
 
+    # Move to home manager???
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;

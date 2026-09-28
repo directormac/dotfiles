@@ -10,7 +10,7 @@
       # See  https://github.com/pfassina/lazyvim-nix/wiki/Troubleshooting
       programs.lazyvim = {
         enable = true;
-        appName = "lvim";
+        appName = "lazyvim";
 
         # package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
