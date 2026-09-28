@@ -73,9 +73,6 @@
         vim
         neovim
 
-        devenv
-        secretspec
-
         # CLI Goodies
 
         bat

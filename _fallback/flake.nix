@@ -42,6 +42,8 @@
 
     ghostty.url = "github:ghostty-org/ghostty";
 
+    mise-nix.url = "github:wadackel/mise-nix";
+
     catppuccin.url = "github:catppuccin/nix";
 
     # https://github.com/0xc000022070/zen-browser-flake#installation

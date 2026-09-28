@@ -82,6 +82,7 @@
         zen
         chromium
 
+        devtools
       ];
 
       home-manager.users.${config.preferences.user.name} = {

@@ -1,5 +1,6 @@
 # Shaders
 # https://github.com/0xhckr/ghostty-shaders/blob/main/shader.sh
+# https://catskull.net/fun-with-ghostty-shaders.html
 { inputs, self, ... }: {
 
   flake.homeModules.ghostty = { pkgs, config, ... }: {
@@ -7,6 +8,14 @@
     home.file.".config/ghostty" = {
       source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/ghostty";
       recursive = true;
+    };
+
+    home.file.".local/bin/gshader" = {
+      text = ''
+        #!/usr/bin/env bash
+        exec /home/artifex/.dotfiles/config/ghostty/shader.sh "$@"
+      '';
+      executable = true;
     };
 
     home.packages = with pkgs; [

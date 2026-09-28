@@ -5,18 +5,21 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Ghostty config path — override with GHOSTTY_CONFIG env var if needed
-GHOSTTY_CONFIG="${GHOSTTY_CONFIG:-$HOME/.config/ghostty/config}"
+# Config file is config.ghostty in the symlinked directory
+GHOSTTY_CONFIG="${GHOSTTY_CONFIG:-$HOME/.dotfiles/config/ghostty/config.ghostty}"
 
 # ---------- Shader discovery ----------
 
+SHADERS_DIR="$SCRIPT_DIR/shaders"
+
 discover_shaders() {
     local shaders=()
-    # .glsl files
-    for f in "$SCRIPT_DIR"/*.glsl; do
+    # .glsl files in shaders directory
+    for f in "$SHADERS_DIR"/*.glsl; do
         [[ -f "$f" ]] && shaders+=("$(basename "$f")")
     done
     # Extensionless files containing mainImage (e.g. auto-tracking-spotlight)
-    for f in "$SCRIPT_DIR"/*; do
+    for f in "$SHADERS_DIR"/*; do
         [[ -f "$f" ]] || continue
         local name
         name="$(basename "$f")"
@@ -47,7 +50,7 @@ get_current_shaders() {
     if [[ ! -f "$GHOSTTY_CONFIG" ]]; then
         return
     fi
-    grep '^custom-shader' "$GHOSTTY_CONFIG" | sed 's/^custom-shader[[:space:]]*=[[:space:]]*//' || true
+    grep '^custom-shader[[:space:]]*=' "$GHOSTTY_CONFIG" | sed 's/^custom-shader[[:space:]]*=[[:space:]]*//' || true
 }
 
 # Return only the last custom-shader path (backward compat wrapper).
@@ -165,8 +168,8 @@ preview_path() {
     local shader_name="$1"
     local base="${shader_name%.glsl}"
     for ext in png jpg gif; do
-        if [[ -f "$SCRIPT_DIR/theme/${base}.${ext}" ]]; then
-            echo "$SCRIPT_DIR/theme/${base}.${ext}"
+        if [[ -f "$SHADERS_DIR/theme/${base}.${ext}" ]]; then
+            echo "$SHADERS_DIR/theme/${base}.${ext}"
             return
         fi
     done
@@ -230,7 +233,7 @@ fzf_pick_shaders() {
     selections="$(echo "$fzf_input" | fzf \
         --multi \
         --no-sort \
-        --preview "head -30 '$SCRIPT_DIR/{1}' 2>/dev/null || echo 'No preview available'" \
+        --preview "head -30 '$SHADERS_DIR/{1}' 2>/dev/null || echo 'No preview available'" \
         --header 'Tab: select/deselect  Ctrl-A: all  Ctrl-D: deselect all  Enter: confirm  Esc: cancel' \
         --layout=reverse \
         --border \
@@ -384,7 +387,7 @@ cmd_set() {
         local names=()
         while IFS= read -r name; do
             [[ -z "$name" ]] && continue
-            local abs_path="$SCRIPT_DIR/$name"
+            local abs_path="$SHADERS_DIR/$name"
             if [[ ! -f "$abs_path" ]]; then
                 echo "Warning: Shader file not found: $abs_path — skipping" >&2
                 continue
@@ -412,7 +415,7 @@ cmd_set() {
             done
         fi
         echo ""
-        echo "Press Cmd+Shift+, in Ghostty to reload config."
+        echo "Press Ctrl+\`+r, in Ghostty to reload config."
         return
     fi
 
@@ -422,7 +425,7 @@ cmd_set() {
     for arg in "$@"; do
         local resolved
         resolved="$(resolve_shader "$arg")" || return 1
-        local abs_path="$SCRIPT_DIR/$resolved"
+        local abs_path="$SHADERS_DIR/$resolved"
         if [[ ! -f "$abs_path" ]]; then
             echo "Error: Shader file not found: $abs_path" >&2
             return 1
@@ -450,7 +453,7 @@ cmd_set() {
         done
     fi
     echo ""
-    echo "Press Cmd+Shift+, in Ghostty to reload config."
+    echo "Press Ctrl+\`+r, in Ghostty to reload config."
 }
 
 cmd_add() {
@@ -486,7 +489,7 @@ cmd_add() {
             echo "$resolved is already active — skipping"
             continue
         fi
-        local abs_path="$SCRIPT_DIR/$resolved"
+        local abs_path="$SHADERS_DIR/$resolved"
         if [[ ! -f "$abs_path" ]]; then
             echo "Error: Shader file not found: $abs_path" >&2
             return 1
@@ -519,14 +522,14 @@ cmd_add() {
         ((i++))
     done
     echo ""
-    echo "Press Cmd+Shift+, in Ghostty to reload config."
+    echo "Press Ctrl+\`+r, in Ghostty to reload config."
 }
 
 cmd_off() {
     update_config
     echo "Shader disabled (all custom-shader lines removed)."
     echo ""
-    echo "Press Cmd+Shift+, in Ghostty to reload config."
+    echo "Press Ctrl+\`+r, in Ghostty to reload config."
 }
 
 cmd_current() {
@@ -566,10 +569,10 @@ cmd_current() {
 
 cmd_help() {
     cat <<'EOF'
-shader.sh — Ghostty shader switcher (multi-shader support)
+gshader — Ghostty shader switcher (multi-shader support)
 
 Usage:
-  shader.sh <command> [args]
+  gshader <command> [args]
 
 Commands:
   list, ls                 List available shaders (active marked with *N)
@@ -581,13 +584,13 @@ Commands:
   help, --help, -h         Show this help
 
 Examples:
-  shader.sh set                      # interactive picker (fzf or fallback)
-  shader.sh set crt                  # single shader (matches crt.glsl)
-  shader.sh set crt bloom            # multi-shader pipeline
-  shader.sh add drunkard             # append to existing pipeline
-  shader.sh list                     # show all, active marked *1) *2)
-  shader.sh current                  # show active pipeline
-  shader.sh off                      # remove all shaders
+  gshader set                      # interactive picker (fzf or fallback)
+  gshader set crt                  # single shader (matches crt.glsl)
+  gshader set crt bloom            # multi-shader pipeline
+  gshader add drunkard             # append to existing pipeline
+  gshader list                     # show all, active marked *1) *2)
+  gshader current                  # show active pipeline
+  gshader off                      # remove all shaders
 
 Interactive picker (fzf):
   Tab          Select/deselect shader
@@ -597,12 +600,12 @@ Interactive picker (fzf):
   Esc          Cancel
 
   Note: fzf outputs selections in alphabetical order, not selection order.
-  Use CLI args for precise ordering: shader.sh set bloom crt drunkard
+  Use CLI args for precise ordering: gshader set bloom crt drunkard
 
 Environment:
-  GHOSTTY_CONFIG    Override config path (default: ~/.config/ghostty/config)
+  GHOSTTY_CONFIG    Override config path (default: ~/.config/ghostty/config.ghostty)
 
-After any change, press Cmd+Shift+, in Ghostty to reload config.
+After any change, press Ctrl+`+r, in Ghostty to reload config.
 EOF
 }
 
