@@ -29,22 +29,22 @@ return {
     'ziontee113/icon-picker.nvim',
     keys = {
       {
-        '<leader>fh',
+        '<leader>sH',
         '<cmd>IconPickerInsert html_colors<cr>',
         { desc = 'HTML Color Picker' },
       },
       {
-        '<leader>..',
+        '<leader>s.',
         '<cmd>IconPickerInsert emoji<cr>',
         { desc = 'Emoji Picker' },
       },
       {
-        '<leader>. ',
+        '<leader>se',
         '<cmd>IconPickerInsert emoji<cr>',
         { desc = 'Emoji Picker' },
       },
       {
-        '<leader>./',
+        '<leader>sE',
         '<cmd>IconPickerInsert symbols nerd_font_v3<cr>',
         { desc = 'Icon Picker - symbols and fonts' },
       },

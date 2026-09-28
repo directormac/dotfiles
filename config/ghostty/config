@@ -8,7 +8,7 @@ font-size = 14
 # font-family = "Iosevka Nerd Font"
 # font-size = 12
 
-window-decoration = false
+window-decoration = true
 window-padding-x = 0
 window-padding-y = 0
 # window-theme = ghostty
@@ -41,22 +41,29 @@ keybind=clear
 
 # Keybindings
 
+
 keybind = global:ctrl+alt+grave_accent=toggle_quick_terminal
 
 # General
+
 keybind = ctrl+grave_accent>r=reload_config
 
 keybind = ctrl+shift+a=select_all
 keybind = ctrl+shift+v=paste_from_clipboard
 keybind = ctrl+shift+c=copy_to_clipboard
 
-# Font Sizing
-# keybind = ctrl+grave_accent>equal=increase_font_size
-# keybind = ctrl+grave_accent>minus=decrease_font_size
 
-keybind = ctrl+equal=increase_font_size:1
-keybind = ctrl+minus=decrease_font_size:1
-keybind = ctrl+zero=reset_font_size
+keybind = shift+enter=text:\x1b\r
+# keybind = shift+enter=text:\\\n\r
+
+# Font Sizing
+keybind = ctrl+grave_accent>equal=increase_font_size:1
+keybind = ctrl+grave_accent>minus=decrease_font_size:1
+keybind = ctrl+grave_accent>zero=reset_font_size
+
+# keybind = ctrl+equal=increase_font_size:1
+# keybind = ctrl+minus=decrease_font_size:1
+# keybind = ctrl+zero=reset_font_size
 
 
 keybind = ctrl+grave_accent>backslash=new_split:right
@@ -106,4 +113,3 @@ keybind = ctrl+grave_accent>7=goto_tab:7
 keybind = ctrl+grave_accent>8=goto_tab:8
 keybind = ctrl+grave_accent>9=goto_tab:9
 
-# keybind = shift+enter=text:\x1b\r

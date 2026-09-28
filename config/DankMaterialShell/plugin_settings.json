@@ -23,7 +23,7 @@
   },
   "quickCapture": {
     "enabled": true,
-    "skipConfirm": false,
+    "skipConfirm": true,
     "includeCursor": false,
     "resetLastRegion": true,
     "recordingFormat": "mp4",
@@ -32,20 +32,7 @@
     "recordingScreenTarget": "focused"
   },
   "amdGpuMonitor": {
-    "enabled": false,
-    "popoutStyle": "default",
-    "processSort": "gfx",
-    "variants": [
-      {
-        "gpuPci": "0000:03:00.0",
-        "gpuType": "dGPU",
-        "originalName": "AMD Radeon RX 7800 XT",
-        "description": "Monitor your discrete AMD Radeon RX 7800 XT",
-        "icon": "memory",
-        "id": "variant_1788992854088",
-        "name": "AMD Radeon RX 7800 XT"
-      }
-    ]
+    "enabled": true
   },
   "nixPackageRunner": {
     "enabled": true
@@ -53,42 +40,11 @@
   "colorPickerDms": {
     "enabled": true
   },
-  "enderPulse": {
-    "enabled": true,
-    "variants": [
-      {
-        "id": "builtin_output",
-        "name": "System output",
-        "audioTarget": "system",
-        "audioBackend": "auto",
-        "customAudioSource": "",
-        "icon": "volume_up",
-        "description": "EnderPulse audio source: System output"
-      },
-      {
-        "id": "builtin_microphone",
-        "name": "Microphone input",
-        "audioTarget": "microphone",
-        "audioBackend": "auto",
-        "customAudioSource": "",
-        "icon": "mic",
-        "description": "EnderPulse audio source: Microphone input"
-      }
-    ],
-    "audioBackend": "auto",
-    "audioTarget": "system"
-  },
   "dankPomodoroTimer": {
     "enabled": true
   },
   "dankActions": {
     "enabled": true
-  },
-  "dankVault": {
-    "enabled": true,
-    "backend": "rbw",
-    "triggerOnlyVisibilityDefaultApplied": true,
-    "defaultAction": "totp"
   },
   "emojiLauncher": {
     "enabled": true,

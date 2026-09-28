@@ -25,11 +25,60 @@
     in
 
     {
-      home.file = {
+      # home.file = {
+      #
+      # }
+      # # This merges the filtered directory directly into your home.file
+      # // lib.concatMapAttrs linkDank (builtins.readDir ../../../../config/DankMaterialShell);
 
-      }
-      # This merges the filtered directory directly into your home.file
-      // lib.concatMapAttrs linkDank (builtins.readDir ../../../../config/DankMaterialShell);
+      imports = [
+        inputs.dms.homeModules.dank-material-shell
+        inputs.dms-plugin-registry.nixosModules.default
+      ];
+
+      programs.dank-material-shell = {
+        enable = true;
+
+        managePluginSettings = true;
+
+        plugins = {
+          # Example
+          # DockerManager = {
+          #   src = pkgs.fetchFromGitHub {
+          #     owner = "LuckShiba";
+          #     repo = "DmsDockerManager";
+          #     rev = "v1.2.0";
+          #     sha256 = "sha256-VoJCaygWnKpv0s0pqTOmzZnPM922qPDMHk4EPcgVnaU=";
+          #   };
+          #   settings = {
+          #     someOption = "value";
+          #   };
+          # };
+          # AnotherPlugin = {
+          #   enable = true;
+          #   src = pkgs.another-plugin;
+          # };
+
+          # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/index.md
+          # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/ipc-and-settings.md
+          quickCapture = {
+            enable = true;
+            settings = {
+              "delete_screenshots_on_close" = false;
+              "export_compress" = true;
+              "export_format" = "png"; # options: png, webp, jpg, pdf, ppm
+              "includeCursor" = false;
+              "recordingFormat" = "mp4";
+              "recordingFramerate" = "60";
+              "recordingQuality" = "very_high";
+              "recordingScreenTarget" = "focused";
+              "resetLastRegion" = true;
+              "skipConfirm" = true;
+            };
+          };
+
+        };
+      };
 
     };
 
@@ -94,8 +143,6 @@
           dankStickerSearch.enable = true;
           dankNotepadModule.enable = true;
 
-          # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/index.md
-          quickCapture.enable = true;
           emojiLauncher.enable = true;
           ambientSound.enable = true;
           screenkey.enable = true;

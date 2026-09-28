@@ -40,6 +40,8 @@
     dankcalendar.url = "github:AvengeMedia/dankcalendar";
     danksearch.url = "github:AvengeMedia/danksearch";
 
+    catppuccin.url = "github:catppuccin/nix";
+
     # https://github.com/0xc000022070/zen-browser-flake#installation
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

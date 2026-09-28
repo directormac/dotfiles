@@ -64,6 +64,11 @@
 
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
+      # Forces Stylix's main accent (base0D) to use the Catppuccin Mauve hex code
+      override = {
+        base0D = "cba6f7"; # Standard Catppuccin Mocha Mauve hex
+      };
+
       cursor = {
         package = pkgs.bibata-cursors;
         name = "Bibata-Modern-Classic";
@@ -71,8 +76,10 @@
       };
 
       icons = {
-        package = pkgs.adwaita-icon-theme;
-        # name = "Adwaita";
+        # package = pkgs.adwaita-icon-theme;
+        package = pkgs.papirus-icon-theme;
+        dark = "Papirus-Dark";
+        light = "Papirus-Light";
       };
 
       fonts = {

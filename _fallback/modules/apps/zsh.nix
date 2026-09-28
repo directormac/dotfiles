@@ -3,6 +3,7 @@
   self,
   ...
 }:
+
 {
 
   flake.homeModules.zsh = { pkgs, ... }: {
@@ -11,6 +12,19 @@
 
     programs.zsh = {
       enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      history = {
+        size = 100000;
+        ignoreAllDups = true;
+        path = "$HOME/.zsh_history";
+        ignorePatterns = [
+          "rm *"
+          "pkill *"
+          "cp *"
+        ];
+      };
 
       shellAliases = {
         "c" = "clear";
@@ -40,6 +54,13 @@
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";
+        "tls" = "tmux ls";
+        "tn" = "sesh connect .";
+        "grab" = "ghgrab --cwd";
+        "flake" = "nix flake";
+
+        "nixdev" = "nix develop -c $SHELL";
+        "oc" = "opencode";
         "wmd" = "workmux dashboard -t worktrees";
       };
 
@@ -108,6 +129,10 @@
 
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       '';
+
+      plugins = [
+
+      ];
 
       fastSyntaxHighlighting = {
         # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/master/THEME_GUIDE.md
@@ -296,6 +321,31 @@
         zsh-vi-mode
         zsh-autosuggestions
       ];
+
+      environment.pathsToLink = [ "/share/zsh" ];
     };
 
 }
+
+# flake.homeModules.zsh =
+#   { pkgs, ... }:
+#   let
+#     # Generate a zsh completion once at build time (no per-shell cost)
+#     mkZshCompletion =
+#       { name, package, args ? [ "completion" "zsh" ] }:
+#       pkgs.runCommand "${name}-zsh-completion" { } ''
+#         mkdir -p $out/share/zsh/site-functions
+#         ${lib.getExe package} ${lib.escapeShellArgs args} > $out/share/zsh/site-functions/_${name}
+#       '';
+#   in
+#   {
+#     home.packages = [
+#       (mkZshCompletion {
+#         name = "sesh";
+#         package = pkgs.sesh;
+#       })
+#     ];
+#
+#     programs.zsh = { /* unchanged */ };
+#     programs.fzf = { /* unchanged */ };
+#   };

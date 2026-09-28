@@ -333,28 +333,29 @@
         ]);
       };
 
-      systemd.user.services.tmux-server = {
-        Unit = {
-          Description = "Persistent Tmux Server Background Process";
-          Documentation = "man:tmux(1)";
-        };
-
-        Service = {
-          Type = "forking";
-          # ExecStart spins up the server socket in the background without opening a terminal window
-          # -d spawns it completely detached in the background
-          # -s names the session 'default'
-          # -c specifies the starting directory ($HOME)
-          # ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default";
-          ExecStart = "${pkgs.tmux}/bin/tmux start-server";
-          ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
-          Restart = "always";
-        };
-
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-      };
+      # Let continuum do this
+      # systemd.user.services.tmux-server = {
+      #   Unit = {
+      #     Description = "Persistent Tmux Server Background Process";
+      #     Documentation = "man:tmux(1)";
+      #   };
+      #
+      #   Service = {
+      #     Type = "forking";
+      #     # ExecStart spins up the server socket in the background without opening a terminal window
+      #     # -d spawns it completely detached in the background
+      #     # -s names the session 'default'
+      #     # -c specifies the starting directory ($HOME)
+      #     # ExecStart = "${pkgs.tmux}/bin/tmux new-session -d -s default";
+      #     ExecStart = "${pkgs.tmux}/bin/tmux start-server";
+      #     ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
+      #     Restart = "always";
+      #   };
+      #
+      #   Install = {
+      #     WantedBy = [ "default.target" ];
+      #   };
+      # };
 
     };
 

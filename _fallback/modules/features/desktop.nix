@@ -1,4 +1,56 @@
 { self, ... }: {
+  flake.homeModules.desktop-services = { pkgs, ... }: {
+
+    # services.tailscale-systray = {
+    #   enable = true;
+    # };
+
+    services.udiskie = {
+      enable = true;
+      settings = {
+        icon_names = {
+          media = [
+            "drive-removable-media-usb"
+            "drive-removable-media"
+            "media-flash"
+            "media-optical"
+          ];
+        };
+        program_options = {
+          tray = true;
+          udisks_version = 2;
+          # file_manager = "${pkgs.nautilus}/bin/nautilus";
+        };
+
+      };
+    };
+
+    services.mpd = {
+      enable = true;
+    };
+
+    systemd.user.services.update-cli-caches = {
+      Unit.Description = "Update tldr pages and television channels";
+      Service = {
+        Type = "oneshot";
+        ExecStart = [
+          "${pkgs.tealdeer}/bin/tldr --update"
+          "${pkgs.television}/bin/tv update-channels"
+        ];
+      };
+    };
+
+    systemd.user.timers.update-cli-caches = {
+      Unit.Description = "Weekly tldr/television cache update";
+      Install.WantedBy = [ "timers.target" ];
+      Timer = {
+        OnCalendar = "weekly";
+        Persistent = true; # run on boot if the slot was missed
+        RandomizedDelaySec = "1h";
+      };
+    };
+  };
+
   flake.nixosModules.desktop =
     {
       pkgs,
@@ -28,15 +80,15 @@
 
         zen
         chromium
+
       ];
 
       home-manager.users.${config.preferences.user.name} = {
         imports = with self.homeModules; [
+          desktop-services
           vesktop
         ];
       };
-
-      programs.firefox.enable = true;
 
       fonts.packages = with pkgs; [
         nerd-fonts.fira-code
@@ -53,6 +105,27 @@
         monospace = [ "Fira Mono Nerd Font" ];
       };
 
+      services = {
+        gvfs.enable = true;
+        udisks2.enable = true;
+        tailscale.enable = true;
+      };
+
+      programs.firefox.enable = true;
+
+      programs.winbox = {
+        enable = true;
+        openFirewall = true;
+      };
+
+      environment.pathsToLink = [ "share/thumbnailers" ];
+
+      environment.sessionVariables = {
+        # https://stacker.news/items/948469
+        NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
+        QT_QPA_PLATFORM = "xcb";
+      };
+
       environment.systemPackages = with pkgs; [
 
         quickshell
@@ -62,13 +135,17 @@
 
         # General apps
         anydesk
-        networkmanagerapplet
-        pavucontrol
-        nautilus
         evince
+        file-roller
         foliate
         galculator
-        file-roller
+        nautilus
+        networkmanagerapplet
+        pavucontrol
+        tailscale
+        udiskie
+        udisks2
+        wireguard-tools
 
         # Maybe
         google-chrome
