@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.plymouth = {
+  flake.nixosModules.plymouth = { pkgs, ... }: {
 
     boot = {
       plymouth = {
@@ -25,7 +25,14 @@
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        libva-vdpau-driver
+        mesa
+      ];
     };
+
+    boot.initrd.kernelModules = [ "amdgpu" ];
+    services.xserver.videoDrivers = [ "amdgpu" ];
 
     stylix.targets.plymouth = {
       enable = true;

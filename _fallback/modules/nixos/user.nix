@@ -6,14 +6,24 @@
       linger = true;
       description = "${config.preferences.user.name}'s account";
       extraGroups = [
+        "adbusers"
+        "audio"
+        "disk"
+        "docker"
+        "input"
         "kvm"
         "libvirt"
         "libvirt-qemu"
+        "libvirtd"
+        "lp"
         "networkmanager"
-        "root"
-        "wheel"
         "podman"
-        "docker"
+        "root"
+        "scanner"
+        "vboxusers"
+        "video"
+        "waydroid"
+        "wheel"
       ];
       initialPassword = "12345";
     };

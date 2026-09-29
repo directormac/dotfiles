@@ -10,7 +10,7 @@
 
         firefox = {
           enable = true;
-          profiles = [ "default" ];
+          profileNames = [ "default" ];
         };
 
         gtk = {
@@ -21,16 +21,16 @@
           enable = true;
         };
 
-        zen-browser = {
-          enable = false;
-          profileNames = [ ];
-        };
+        # zen-browser = {
+        #   enable = true;
+        #   profileNames = [ "default" ];
+        # };
 
         feh.enable = true;
         foliate.enable = true;
         mpv.enable = true;
         cava.enable = true;
-        discord.enable = true;
+        nixcord.enable = true;
 
         opencode.enable = true;
         bat.enable = true;
@@ -83,15 +83,18 @@
       };
 
       cursor = {
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Classic";
-        size = 16;
+        # The package provides pre-compiled variants like 'mochaMauve'
+        package = pkgs.catppuccin-cursors.mochaMauve;
+
+        # The internal Xcursor theme name matching this variant
+        name = "catppuccin-mocha-mauve-cursors";
+        size = 24;
       };
 
       icons = {
         enable = true;
         # package = pkgs.adwaita-icon-theme;
-        package = pkgs.papirus-icon-theme;
+        package = pkgs.papirus-icon-theme.override { color = "violet"; };
         dark = "Papirus-Dark";
         light = "Papirus-Light";
       };

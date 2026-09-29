@@ -15,6 +15,11 @@
       systemPackages = with pkgs; [
         waydroid-helper
         dnsmasq
+        virt-viewer
+        spice
+        spice-gtk
+        spice-protocol
+        lazydocker
       ];
     };
 
@@ -52,6 +57,9 @@
 
       qemu = {
         vhostUserPackages = with pkgs; [ virtiofsd ];
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true;
       };
     };
 
