@@ -53,6 +53,18 @@ for _, app in ipairs(floating_apps) do
 end
 
 hl.window_rule({
+  match = {
+    -- Matches contacts, calculators, and any app starting with waydroid.com
+    class = [[waydroid\.com\..*]],
+    -- Optional: If some apps have an empty class initially, you can catch them here too
+    initial_class = [[waydroid\.com\..*]],
+  },
+  float = true,
+  center = true,
+  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+})
+
+hl.window_rule({
   match = { class = '(pinentry-)(.*)' },
   stay_focused = true,
   float = true,

@@ -6,18 +6,20 @@
         Description = "Waydroid User Session";
         After = [ "waydroid-container.service" ];
         # Requires = [ "waydroid-container.service" ];
+
+        # Ensures that if this session is no longer actively tied to
+        # a running waydroid client/process, it winds itself down.
+        StopWhenUnneeded = true;
       };
       Install = {
-        WantedBy = [ "default.target" ];
+        # WantedBy = [ "default.target" ];
+        WantedBy = [ ];
       };
       Service = {
         Type = "simple";
 
-        # Inject the active user path environment
-        # Environment = [
-        #   "PATH=${pkgs.waydroid}/bin:${pkgs.coreutils}/bin"
-        #   "DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus"
-        # ];
+        # Wake up the root container service if it isn't running
+        ExecStartPre = "${pkgs.systemd}/bin/systemctl start waydroid-container.service";
 
         ExecStart = "${pkgs.waydroid}/bin/waydroid session start";
         ExecStop = "${pkgs.waydroid}/bin/waydroid session stop";
@@ -25,8 +27,9 @@
         # Clean up processes on exit
         KillMode = "mixed";
 
-        # Resource limits: 4GB Max, 3GB cache threshold
+        # Excellent resource boundary strategies preserved
         MemoryMax = "8G";
+        MemoryMin = "256M";
         MemoryHigh = "6G";
 
         TimeoutStopSec = "15s";
@@ -46,7 +49,6 @@
     #https://nixos.org/wiki/Podman
     environment = {
       systemPackages = with pkgs; [
-        waydroid
         waydroid-helper
 
         podman-compose
@@ -66,8 +68,6 @@
 
     boot.kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
-      "net.ipv4.conf.all.forwarding" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
     };
 
     # networking.nftables.enable = true;
@@ -79,7 +79,6 @@
 
     programs.virt-manager = {
       enable = true;
-
     };
 
     virtualisation.podman = {
@@ -88,9 +87,9 @@
         enable = true;
         dates = "weekly";
       };
-      defaultNetwork.settings.dns_enabled = true;
+      # defaultNetwork.settings.dns_enabled = true;
       dockerCompat = true;
-      dockerSocket.enable = true;
+      dockerSocket.enable = true; # Handled gracefully by Podman's default netavark backend now
 
       # https://github.com/ghostunnel/ghostunnel
       # dockerSocket.enable = true;
@@ -103,9 +102,7 @@
 
     virtualisation.waydroid = {
       enable = true;
-      # package = pkgs.waydroid-nftables;
       package = pkgs.waydroid.override {
-        # If your host is using nftables (NixOS default for newer versions), make sure waydroid targets it
         withNftables = true;
       };
     };
@@ -118,7 +115,6 @@
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-
         # Enable QEMU graphics support to allow shared iGPU contexts via Spice/VirGL
         verbatimConfig = ''
           graphics_provider = "spice"
