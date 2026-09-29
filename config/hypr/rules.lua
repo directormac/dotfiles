@@ -39,6 +39,8 @@ local floating_apps = {
   'org.gnome.Nautilus',
   'mpv',
   'nm-connection-editor',
+  'Waydroid',
+  'com.jaoushingan.WaydroidHelper',
 }
 
 for _, app in ipairs(floating_apps) do
