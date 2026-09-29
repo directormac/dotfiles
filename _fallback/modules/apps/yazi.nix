@@ -4,6 +4,7 @@
     home.file = {
       ".config/yazi".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/yazi";
     };
+
   };
 
   flake.nixosModules.yazi = { pkgs, config, ... }: {
@@ -19,6 +20,13 @@
       plugins = with pkgs.yaziPlugins; {
         inherit git;
         inherit starship;
+        inherit ouch;
+        inherit sudo;
+        inherit drag;
+        inherit mount;
+        inherit gvfs;
+        inherit sshfs;
+        inherit bookmarks;
       };
     };
   };

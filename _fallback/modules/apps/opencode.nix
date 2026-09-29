@@ -4,7 +4,34 @@
 
     programs.opencode = {
       enable = true;
+      settings = {
+        autoshare = false;
+        autoupdate = true;
+        permission = {
+          external_directory = {
+            # Allows OpenCode to access and read the Nix store
+            "/nix/store/**" = "allow";
+            "/tmp/**" = "allow";
+          };
+
+          # Optional: Explicitly guarantee read access, while blocking write/edit access
+          read = {
+            "$HOME/.dotfiles" = "allow";
+            "$HOME/.config" = "allow";
+            "/nix/store/**" = "allow";
+            "*.env" = "deny";
+          };
+
+          edit = {
+            "/nix/store/**" = "deny";
+          };
+        };
+      };
     };
+
+    # programs.opencode = {
+    #   enable = true;
+    # };
 
   };
 

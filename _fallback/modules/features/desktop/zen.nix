@@ -57,6 +57,30 @@
               "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
               "{0fb8975d-7539-4a2a-b439-f3254ef02571}" = "sponsorblock";
             };
+
+            EnableTrackingProtection = {
+              Value = true;
+              Locked = false;
+              Cryptomining = true;
+              Fingerprinting = true;
+            };
+
+            # SanitizeOnShutdown = {
+            #   Cache = true;
+            #   Cookies = true;
+            #   Downloads = true;
+            #   FormData = true;
+            #   History = true;
+            #   Locked = true;
+            #   OfflineApps = true;
+            #   Sessions = true;
+            #   SiteSettings = true;
+            #   Exceptions = [
+            #     "https://github.com"
+            #     "http://github.com"
+            #   ];
+            # };
+
           };
 
         env = { };

@@ -41,7 +41,7 @@
     modules = [
       self.homeModules.homeModule
       self.homeModules.git
-      self.homeModules.lazyvim
+      # self.homeModules.lazyvim
 
       {
         home.username = config.preferences.user.name;

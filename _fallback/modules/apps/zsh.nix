@@ -51,6 +51,8 @@
         "top" = "btop";
         "wh" = "which";
         "v" = "lazyvim";
+        "vi" = "neovim";
+        "nvim" = "lazyvim";
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";

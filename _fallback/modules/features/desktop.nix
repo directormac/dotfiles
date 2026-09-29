@@ -83,10 +83,14 @@
         chromium
 
         devtools
+        opencode
       ];
 
       home-manager.users.${config.preferences.user.name} = {
         imports = with self.homeModules; [
+          git
+          lazyvim
+
           desktop-services
           vesktop
         ];

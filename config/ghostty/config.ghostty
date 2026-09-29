@@ -1,9 +1,6 @@
 # vim:ft=ghostty
 
-# https://github.com/hackrmomo/ghostty-shaders
-# https://github.com/0xhckr/ghostty-shaders
-# custom-shader = shaders/inside-the-matrix.glsl
-# custom-shader = ./shaders/cursor_blaze.glsl
+
 
 font-family = "FiraCode Nerd Font"
 font-size = 14
@@ -114,5 +111,12 @@ keybind = ctrl+grave_accent>6=goto_tab:6
 keybind = ctrl+grave_accent>7=goto_tab:7
 keybind = ctrl+grave_accent>8=goto_tab:8
 keybind = ctrl+grave_accent>9=goto_tab:9
+
+# https://github.com/hackrmomo/ghostty-shaders
+# https://github.com/0xhckr/ghostty-shaders
+# custom-shader = shaders/inside-the-matrix.glsl
+# custom-shader = ./shaders/cursor_blaze.glsl
+custom-shader-animation = always
+
 
 custom-shader = /home/artifex/.dotfiles/config/ghostty/shaders/cursor_lightning.glsl

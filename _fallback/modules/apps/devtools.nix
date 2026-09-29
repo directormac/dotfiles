@@ -5,9 +5,10 @@
     home.packages = with pkgs; [
 
       bun
+      cargo
+      deno
       mise
       pitchfork
-      deno
 
     ];
   };

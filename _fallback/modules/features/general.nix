@@ -16,15 +16,14 @@
     {
 
       imports = with self.nixosModules; [
-
-        nightly-neovim
-        nix-ld
-        multiplexer
-        opencode
-
         yazi
         zsh
+        multiplexer
+        editor
 
+        # nightly-neovim
+
+        nix-ld
       ];
 
       users.users.${config.preferences.user.name} = {
@@ -66,12 +65,8 @@
         zip
 
         # Dev tools
-        tree-sitter
         git
         github-cli
-
-        vim
-        neovim
 
         # CLI Goodies
 

@@ -1,7 +1,8 @@
-{ inputs, ... }: {
+{ inputs, lib, ... }: {
   flake.homeModules.lazyvim =
     {
       pkgs,
+      config,
       ...
     }:
     {
@@ -11,8 +12,6 @@
       programs.lazyvim = {
         enable = true;
         appName = "lazyvim";
-
-        # package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         # See https://github.com/pfassina/lazyvim-nix/wiki/Plugin-Sourcing-Strategy#plugin-sourcing-strategy
         pluginSource = "nixpkgs";
@@ -80,7 +79,14 @@
       home.packages = [
         (pkgs.writeShellScriptBin "lazyvim" ''
           exec env NVIM_APPNAME=lazyvim nvim "$@"
+          # exec env NVIM_APPNAME=lazyvim ${pkgs.neovim-unwrapped}/bin/nvim "$@"
         '')
+
+        # (lib.mkOverride 50 (
+        #   pkgs.writeShellScriptBin "nvim" ''
+        #     exec env NVIM_APPNAME=lazyvim ${config.programs.neovim.finalPackage}/bin/nvim "$@"
+        #   ''
+        # ))
       ];
 
     };

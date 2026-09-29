@@ -16,8 +16,6 @@
     home-manager.users.${config.preferences.user.name} = {
       imports = [
         self.homeModules.homeModule
-        self.homeModules.git
-        self.homeModules.lazyvim
       ];
     };
 
