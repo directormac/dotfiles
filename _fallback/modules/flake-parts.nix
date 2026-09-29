@@ -17,16 +17,17 @@
 
   # This is your system configuration entry-point
   flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
-    modules = [
-      self.nixosModules.hardware
-      self.nixosModules.nixosModule
+    modules = with self.nixosModules; [
+      hardware
+      nixosModule
 
       # Defined in nixos
-      self.nixosModules.base
+      base
 
       # Features
-      self.nixosModules.general
-      self.nixosModules.desktop
+      general
+      desktop
+      virtualisation
 
       inputs.nur.modules.nixos.default
       inputs.stylix.nixosModules.stylix
@@ -38,11 +39,9 @@
   # with the home-manager command
   flake.homeConfigurations.home = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-    modules = [
-      self.homeModules.homeModule
-      self.homeModules.git
-      # self.homeModules.lazyvim
-
+    modules = with self.homeModules; [
+      homeModule
+      git
       {
         home.username = config.preferences.user.name;
         home.homeDirectory = "/home/${config.preferences.user.name}";
@@ -54,40 +53,7 @@
 
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [
-        # vim
 
-        ((vim-full.override { }).customize {
-          name = "vim";
-          # Install plugins for example for syntax highlighting of nix files
-          vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
-            start = [
-              vim-nix
-              vim-lastplace
-            ];
-            opt = [ ];
-          };
-          vimrcConfig.customRC =
-            # vim
-            ''
-              " your custom vimrc
-              filetype plugin indent on
-              set expandtab
-              set shiftwidth=4
-              set softtabstop=4
-              set tabstop=4
-              set number
-              set relativenumber
-              set smartindent
-              set showmatch
-              set backspace=indent,eol,start
-              syntax on
-              " ...
-            '';
-        })
-
-        yazi
-
-        nixfmt
       ];
     };
 

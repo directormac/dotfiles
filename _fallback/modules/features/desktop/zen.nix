@@ -56,6 +56,7 @@
               "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
               "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
               "{0fb8975d-7539-4a2a-b439-f3254ef02571}" = "sponsorblock";
+              "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = "vimium-new-tab-page";
             };
 
             EnableTrackingProtection = {
@@ -148,7 +149,8 @@
           # Reference: https://github.com/nix-community/home-manager/blob/master/modules/programs/firefox/profiles/search.nix
           search = {
             force = true;
-            default = "ddg";
+            # default = "ddg";
+            default = "google";
             # Extra Engines
             engines = {
               nixpkgs = {
@@ -303,13 +305,13 @@
               "medium" = {
                 reference = "mediuam.com";
                 matchType = "equal-to";
-                openIn = spaces.personal;
+                openIn = spaces.read;
               };
 
               "dev.to" = {
                 reference = "dev.to";
                 matchType = "equal-to";
-                openIn = spaces.personal;
+                openIn = spaces.read;
               };
 
               "google" = {

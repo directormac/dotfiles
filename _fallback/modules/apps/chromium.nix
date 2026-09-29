@@ -40,6 +40,7 @@
       extensions = [
         "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
         "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+        "leohhkagdnmgbpfbnflhjmnpcjpcjmgm" # Vimium New Tab Page
         "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
         "ficfmibkjjnpogdcfhfokmihanoldbfe" # File Icons for GitHub and GitLab
       ];

@@ -22,6 +22,11 @@
 
     };
 
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
     stylix.targets.plymouth = {
       enable = true;
     };

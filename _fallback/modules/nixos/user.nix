@@ -12,6 +12,8 @@
         "networkmanager"
         "root"
         "wheel"
+        "podman"
+        "docker"
       ];
       initialPassword = "12345";
     };

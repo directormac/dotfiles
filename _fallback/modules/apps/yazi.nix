@@ -27,6 +27,7 @@
         inherit gvfs;
         inherit sshfs;
         inherit bookmarks;
+        inherit split-tabs;
       };
     };
   };
