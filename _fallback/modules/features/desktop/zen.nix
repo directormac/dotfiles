@@ -56,7 +56,7 @@
               "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
               "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
               "{0fb8975d-7539-4a2a-b439-f3254ef02571}" = "sponsorblock";
-              "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = "vimium-new-tab-page";
+              # "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = "vimium-new-tab-page";
             };
 
             EnableTrackingProtection = {
@@ -142,7 +142,8 @@
               ++ (with rycee-firefox-addons; [
                 bitwarden
               ]);
-            settings = { };
+            settings = {
+            };
           };
 
           # Search engine configuration with custom shortcuts
@@ -303,7 +304,7 @@
               };
 
               "medium" = {
-                reference = "mediuam.com";
+                reference = "medium.com";
                 matchType = "equal-to";
                 openIn = spaces.read;
               };
@@ -314,11 +315,11 @@
                 openIn = spaces.read;
               };
 
-              "google" = {
-                reference = "google.com";
-                matchType = "equal-to";
-                openIn = spaces.scratchpad_one;
-              };
+              # "google" = {
+              #   reference = "google.com";
+              #   matchType = "equal-to";
+              #   openIn = spaces.scratchpad_one;
+              # };
 
               "nixos" = {
                 reference = "https?://.*\\.nixos\\.org";
@@ -375,22 +376,28 @@
               icon = "👨‍💻";
             };
 
-            "Media" = {
-              id = spaces.media;
-              position = 3000;
-              icon = "📺";
-            };
-
-            "Scratchpand 1" = {
+            "Scratchpad 1" = {
               id = spaces.scratchpad_one;
-              position = 4000;
+              position = 3000;
               icon = "📝";
             };
 
-            "Scratchpand 2" = {
+            "Scratchpad 2" = {
               id = spaces.scratchpad_two;
-              position = 5000;
+              position = 4000;
               icon = "🗒️";
+            };
+
+            "Read" = {
+              id = spaces.read;
+              position = 5000;
+              icon = "📖";
+            };
+
+            "Media" = {
+              id = spaces.media;
+              position = 6000;
+              icon = "📺";
             };
 
           };
@@ -426,6 +433,80 @@
           # (activation script modifies zen-keyboard-shortcuts.json, which is locked while browser runs)
           # Version check prevents silent breakage if Zen updates change the shortcuts schema.
           keyboardShortcuts = [
+            # Workspace nav
+            {
+              id = "zen-workspace-switch-1";
+              key = "1";
+              modifiers = {
+                alt = true;
+              };
+            }
+            {
+              id = "zen-workspace-switch-2";
+              key = "2";
+              modifiers = {
+                alt = true;
+              };
+            }
+            {
+              id = "zen-workspace-switch-3";
+              key = "3";
+              modifiers = {
+                alt = true;
+              };
+            }
+            {
+              id = "zen-workspace-switch-4";
+              key = "4";
+              modifiers = {
+                alt = true;
+              };
+            }
+            {
+              id = "zen-workspace-switch-5";
+              key = "5";
+              modifiers = {
+                alt = true;
+              };
+            }
+            {
+              id = "zen-workspace-switch-6";
+              key = "6";
+              modifiers = {
+                alt = true;
+              };
+            }
+
+            {
+              id = "key_selectTab1";
+              disabled = true;
+            }
+
+            {
+              id = "key_selectTab2";
+              disabled = true;
+            }
+
+            {
+              id = "key_selectTab3";
+              disabled = true;
+            }
+
+            {
+              id = "key_selectTab4";
+              disabled = true;
+            }
+
+            {
+              id = "key_selectTab5";
+              disabled = true;
+            }
+
+            {
+              id = "key_selectTab6";
+              disabled = true;
+            }
+
             {
               id = "zen-compact-mode-toggle";
               key = "c";
@@ -435,8 +516,8 @@
               };
             }
             {
-              id = "zen-toggle-sidebar";
-              key = "x";
+              id = "zen-compact-mode-show-sidebar";
+              key = "s";
               modifiers = {
                 control = true;
                 alt = true;
@@ -486,7 +567,7 @@
         profiles.default.presets.betterfox.enable = true;
 
         # arkenfox for Zen (arkenfox/user.js)
-        profiles.default.presets.arkenfox.enable = true;
+        # profiles.default.presets.arkenfox.enable = true;
 
       };
     };

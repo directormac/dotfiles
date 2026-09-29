@@ -8,6 +8,11 @@
       targets = {
         dank-calendar.enable = true;
 
+        firefox = {
+          enable = true;
+          profiles = [ "default" ];
+        };
+
         gtk = {
           enable = true;
         };
@@ -24,6 +29,8 @@
         feh.enable = true;
         foliate.enable = true;
         mpv.enable = true;
+        cava.enable = true;
+        discord.enable = true;
 
         opencode.enable = true;
         bat.enable = true;

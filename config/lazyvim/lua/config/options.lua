@@ -20,6 +20,12 @@ global.lazyvim_ts_lsp = 'tsc'
 set.clipboard = 'unnamedplus'
 set.exrc = true
 
+-- Undo management
+set.swapfile = false
+set.backup = false
+-- set.undodir = os.getenv('HOME') .. '/.local/nvim/undodir'
+set.undofile = true
+
 set.foldcolumn = '0' -- Show the fold column
 set.foldenable = true
 set.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
