@@ -7,7 +7,7 @@
       };
 
       # Enable "Silent boot"
-      consoleLogLevel = 3;
+      consoleLogLevel = 0;
       initrd.verbose = false;
       kernelParams = [
         "quiet"
@@ -20,19 +20,29 @@
       # It will just not appear on screen unless a key is pressed
       loader.timeout = 3;
 
+      initrd.kernelModules = [
+        "amdgpu"
+        "i915"
+      ];
     };
 
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        libva-vdpau-driver
-        mesa
+        # Intel Video Acceleration (VA-API) for 13th Gen UHD 770
+        intel-media-driver
+        # Intel QuickSync Video runtime for encoding/decoding
+        vpl-gpu-rt
+        # libva-vdpau-driver
+        # mesa
       ];
     };
 
-    boot.initrd.kernelModules = [ "amdgpu" ];
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services.xserver.videoDrivers = [
+      "amdgpu"
+      "modesetting"
+    ];
 
     stylix.targets.plymouth = {
       enable = true;

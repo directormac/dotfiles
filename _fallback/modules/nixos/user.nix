@@ -18,6 +18,7 @@
         "lp"
         "networkmanager"
         "podman"
+        "render"
         "root"
         "scanner"
         "vboxusers"

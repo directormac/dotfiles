@@ -13,17 +13,33 @@
     #https://nixos.org/wiki/Podman
     environment = {
       systemPackages = with pkgs; [
+        waydroid
         waydroid-helper
+
+        podman-compose
+
+        lsof
         dnsmasq
         virt-viewer
         spice
         spice-gtk
         spice-protocol
         lazydocker
+
+        clinfo
+        libva-utils
       ];
     };
 
-    networking.firewall.trustedInterfaces = [ "virbr0" ];
+    boot.kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+      "net.ipv6.conf.all.forwarding" = 1;
+    };
+
+    networking.firewall.trustedInterfaces = [
+      "virbr0"
+      "waydroid0"
+    ];
 
     programs.virt-manager = {
       enable = true;
@@ -38,6 +54,7 @@
       };
       defaultNetwork.settings.dns_enabled = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
 
       # https://github.com/ghostunnel/ghostunnel
       # dockerSocket.enable = true;
@@ -60,6 +77,11 @@
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
+
+        # Enable QEMU graphics support to allow shared iGPU contexts via Spice/VirGL
+        verbatimConfig = ''
+          graphics_provider = "spice"
+        '';
       };
     };
 
