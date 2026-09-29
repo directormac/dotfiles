@@ -330,18 +330,18 @@
                 openIn = spaces.scratchpad_two;
               };
 
-              "youtube" = {
-                reference = "https?://.+\\.youtube\\.com";
-                matchType = "regex";
-                openIn = spaces.media;
-              };
-
-              # Any *.google.com URL
-              "google-account" = {
-                reference = "https?://.+\\.google\\.com";
-                matchType = "regex";
-                openIn = spaces.personal;
-              };
+              # "youtube" = {
+              #   reference = "https?://.+\\.youtube\\.com";
+              #   matchType = "regex";
+              #   openIn = spaces.media;
+              # };
+              #
+              # # Any *.google.com URL
+              # "google-account" = {
+              #   reference = "https?://.+\\.google\\.com";
+              #   matchType = "regex";
+              #   openIn = spaces.personal;
+              # };
 
             };
           };

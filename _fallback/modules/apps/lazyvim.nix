@@ -19,16 +19,36 @@
 
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/extras.json
         extras = {
+
+          ai = {
+            codeium.enable = true;
+          };
+
+          editor = {
+            aerial.enable = true;
+            harpoon2.enable = true;
+            snacks-explorer.enable = true;
+            snacks-picker.enable = true;
+          };
+
+          dap = {
+            core.enable = true;
+          };
+
           ui = {
             edgy.enable = true;
           };
+
           coding = {
+            # Blink is added by default
             luasnip.enable = true;
             mini-surround.enable = true;
             mini-comment.enable = true;
             yanky.enable = true;
           };
+
           lang = {
+
             nix = {
               enable = true;
               installDependencies = true;
@@ -47,13 +67,81 @@
               installRuntimeDependencies = true;
             };
 
-            markdown = {
+            rust = {
               enable = true;
               installDependencies = true;
               installRuntimeDependencies = true;
             };
 
+            elixir = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            git = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            sql = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            yaml = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            svelte = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            astro = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            tailwind = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
+
+            typescript = {
+              enable = true;
+              installDependencies = false;
+              tsc = {
+                enable = true;
+              };
+              oxc = {
+                enable = true;
+                installDependencies = true;
+                installRuntimeDependencies = true;
+              };
+            };
+
+            markdown = {
+              enable = true;
+              installDependencies = true;
+              installRuntimeDependencies = true;
+            };
           };
+
+          test.core.enable = true;
+
+          util = {
+            mini-hipatterns.enable = true;
+            dot.enable = true;
+          };
+
         };
 
         extraPackages = with pkgs; [
@@ -61,6 +149,8 @@
           nixfmt
           statix
 
+          astro-language-server
+          svelte-language-server
           lua-language-server
           stylua
         ];

@@ -6,6 +6,11 @@
         default = "artifex";
       };
 
+      user.email = lib.mkOption {
+        type = lib.types.str;
+        default = "markasena@gmail.com";
+      };
+
       autostart = lib.mkOption {
         type = lib.types.listOf (lib.types.either lib.types.str lib.types.package);
         default = [ ];
