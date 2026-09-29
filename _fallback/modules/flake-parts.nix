@@ -32,10 +32,6 @@
 
     };
 
-    # You can define agenix-rekey.nixosConfigurations / agenix-rekey.darwinConfigurations if you want to change which
-    # hosts are considered for rekeying.
-    # Refer to the flake.parts section on agenix-rekey to see all available options.
-    agenix-rekey.nixosConfigurations = inputs.self.nixosConfigurations; # (not technically needed, as it is already the default)
   };
 
   # This is your system configuration entry-point
@@ -52,11 +48,8 @@
       desktop
       virtualisation
 
-      # inputs.agenix.nixosModules.default
-      # inputs.agenix-rekey.nixosModules.default
       inputs.nur.modules.nixos.default
       inputs.stylix.nixosModules.stylix
-      inputs.nix-index-database.nixosModules.default
     ];
   };
 
@@ -68,8 +61,10 @@
       homeModule
       git
       {
-        home.username = config.preferences.user.name;
-        home.homeDirectory = "/home/${config.preferences.user.name}";
+        # home.username = config.preferences.user.name;
+        # home.homeDirectory = "/home/${config.preferences.user.name}";
+        home.username = "artifex";
+        home.homeDirectory = "/home/artifex";
       }
     ];
   };

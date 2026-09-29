@@ -52,12 +52,6 @@
       ];
     };
 
-    security.pam.services = {
-      gdm.enableGnomeKeyring = true;
-      gdm-password.enableGnomeKeyring = true;
-      login.enableGnomeKeyring = true;
-    };
-
     # Move to home manager???
     xdg.portal = {
       enable = true;

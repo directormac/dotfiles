@@ -44,7 +44,9 @@
     ghostty.url = "github:ghostty-org/ghostty";
 
     agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
+    agenix-rekey.inputs.nixpkgs.follows = "nixpkgs";
 
     mise-nix.url = "github:wadackel/mise-nix";
 

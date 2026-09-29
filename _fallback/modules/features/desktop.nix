@@ -66,6 +66,7 @@
 
         plymouth
         xdg
+        agenix
 
         sddm
         stylix
