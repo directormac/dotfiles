@@ -239,6 +239,7 @@
   "osdPowerProfileEnabled": true,
   "osdWorkspaceEnabled": true,
   "updaterCheckOnStart": true,
+  "displayNameMode": "model",
   "screenPreferences": {
     "notifications": [],
     "osd": []
