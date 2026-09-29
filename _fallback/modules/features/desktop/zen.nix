@@ -125,8 +125,11 @@
             "zen.view.sidebar-expanded" = false;
             "zen.view.use-single-toolbar" = false;
 
+            "browser.tabs.insertAfterCurrent" = true;
+            "browser.tabs.insertAfterCurrentExceptPinned" = true;
             "zen.urlbar.behavior" = "float";
             "zen.welcome-screen.seen" = true;
+
           };
 
           # Catppuccin theme integration

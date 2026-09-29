@@ -45,6 +45,11 @@
 
     mise-nix.url = "github:wadackel/mise-nix";
 
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     catppuccin.url = "github:catppuccin/nix";
 
     # https://github.com/0xc000022070/zen-browser-flake#installation

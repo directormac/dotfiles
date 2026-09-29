@@ -67,8 +67,8 @@
         plymouth
         xdg
 
+        sddm
         stylix
-        greeter
 
         ghostty
         kitty
