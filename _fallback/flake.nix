@@ -43,6 +43,9 @@
 
     ghostty.url = "github:ghostty-org/ghostty";
 
+    agenix.url = "github:ryantm/agenix";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
+
     mise-nix.url = "github:wadackel/mise-nix";
 
     silentSDDM = {

@@ -38,6 +38,7 @@
         "du" = "dust";
         "find" = "fd";
         "grep" = "rg";
+        "age" = "rage";
         "l" = "lsd -a";
         "ll" = "lsd -l";
         "la" = "lsd -la";
@@ -78,8 +79,6 @@
 
         # https://stacker.news/items/948469
         NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
-
-        QT_QPA_PLATFORM = "xcb";
       };
 
       initContent = ''

@@ -81,6 +81,7 @@
 
         zen
         chromium
+        bitwarden
 
         devtools
         opencode
