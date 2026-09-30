@@ -303,7 +303,7 @@
               "reddit" = {
                 reference = "reddit.com";
                 matchType = "equal-to";
-                openIn = spaces.personal;
+                openIn = spaces.read;
               };
 
               "medium" = {
@@ -324,11 +324,11 @@
               #   openIn = spaces.scratchpad_one;
               # };
 
-              "nixos" = {
-                reference = "https?://.*\\.nixos\\.org";
-                matchType = "regex";
-                openIn = spaces.scratchpad_two;
-              };
+              # "nixos" = {
+              #   reference = "https?://.*\\.nixos\\.org";
+              #   matchType = "regex";
+              #   openIn = spaces.scratchpad_one;
+              # };
 
               # "youtube" = {
               #   reference = "https?://.+\\.youtube\\.com";

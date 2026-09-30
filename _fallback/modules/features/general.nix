@@ -52,6 +52,7 @@
         inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
 
         # Common
+        aria2
         wget
         cifs-utils
         inotify-tools
@@ -62,18 +63,24 @@
         pciutils
         sshfs
         unzip
+        unrar
         zip
+        doggo
 
         # Dev tools
+        jq
         git
         github-cli
 
         # CLI Goodies
-
+        nix-prefetch-scripts
+        nix-tree
         bat
+        ncdu
         btop
         dust
         fastfetch
+        microfetch
         fd
         file
         fzf

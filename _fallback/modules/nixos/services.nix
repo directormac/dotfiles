@@ -42,10 +42,11 @@
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
-    # programs.mtr.enable = true;
     programs = {
       xfconf.enable = true;
       nix-index-database.comma.enable = true;
+      fuse.userAllowOther = true;
+      mtr.enable = true;
       gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
@@ -53,15 +54,6 @@
     };
 
     # List services that you want to enable:
-
-    # Enable the OpenSSH daemon.
-    services.openssh.enable = true;
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
 
     security = {
       rtkit.enable = true;
@@ -80,6 +72,22 @@
       # };
 
     };
+
+    # zramSwap = {
+    #   enable = true;
+    #   memoryPercent = 50;
+    #   algorithm = "zstd";
+    # };
+    #
+    # systemd.oomd = {
+    #   enable = true;
+    #   enableUserSlices = true;
+    # };
+    #
+    # systemd.slices."user".sliceConfig = {
+    #   ManagedOOMMemoryPressure = "kill";
+    #   ManagedOOMMemoryPressureLimit = "90%";
+    # };
 
   };
 }

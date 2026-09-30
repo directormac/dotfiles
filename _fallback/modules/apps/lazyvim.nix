@@ -24,8 +24,12 @@
             codeium.enable = true;
           };
 
+          ui = {
+            edgy.enable = true;
+          };
+
           editor = {
-            aerial.enable = true;
+            # aerial.enable = true;
             harpoon2.enable = true;
             snacks-explorer.enable = true;
             snacks-picker.enable = true;
@@ -33,10 +37,6 @@
 
           dap = {
             core.enable = true;
-          };
-
-          ui = {
-            edgy.enable = true;
           };
 
           coding = {
@@ -161,6 +161,7 @@
           toml
           lua
           nix
+          hyprlang
         ];
 
         configFiles = ../../../config/lazyvim;

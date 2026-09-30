@@ -4,6 +4,8 @@
 
     home.packages = with pkgs; [
 
+      # nodejs_26
+      nodejs-slim_26
       bun
       cargo
       deno

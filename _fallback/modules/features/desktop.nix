@@ -145,23 +145,37 @@
       # };
 
       environment.systemPackages = with pkgs; [
+        # gnumake
+        # gcc
+        # binutils
+        # pkg-config
 
-        bibata-cursors-translucent
-        bibata-cursors
-        papirus-icon-theme
+        libinput
+        libjxl
+        wev
         quickshell
         cliphist
         wl-clipboard
+        localsend
         wl-clip-persist
 
+        android-tools
+        vulkan-tools
+
+        tor-browser
+
         # General apps
+        # imagemagickBig
+        # novelwriter
+        xdg-utils
+        seahorse
+        gnome-disk-utility
         anydesk
         evince
         file-roller
         foliate
         galculator
         nautilus
-        networkmanagerapplet
         pavucontrol
         tailscale
         udiskie
@@ -177,6 +191,10 @@
         sqlitebrowser
 
         # Multimedia
+        # sox
+        # sox_ng
+        # spek
+        # losslessaudiochecker
         cava
         mpd
         rmpc

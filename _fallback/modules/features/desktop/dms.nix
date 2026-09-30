@@ -93,6 +93,8 @@
           dankStickerSearch.enable = true;
           dankNotepadModule.enable = true;
 
+          dankVault.enable = true;
+
           emojiLauncher = {
             enable = true;
             settings = {

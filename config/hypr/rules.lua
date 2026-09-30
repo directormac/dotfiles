@@ -32,6 +32,7 @@ hl.window_rule({
 })
 
 local floating_apps = {
+  'bitwarden',
   'feh',
   'com.danklinux.dankcalendar',
   'galculator',
