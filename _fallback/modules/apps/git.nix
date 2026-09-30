@@ -4,6 +4,22 @@
     # GPG
     programs.gpg.enable = true;
 
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false; # Mutes the second evaluation warning
+
+      matchBlocks = {
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+          # Point directly to your Agenix symlinked private key
+          identityFile = "/home/artifex/.ssh/mac_mkra_dev";
+          # Disables querying the empty gpg-agent keyring for this host
+          identitiesOnly = false;
+        };
+      };
+    };
+
     services.gpg-agent = {
       enable = true;
       pinentry.package = pkgs.pinentry-all;
@@ -14,7 +30,9 @@
       enableSshSupport = true;
       defaultCacheTtlSsh = 10800;
       maxCacheTtlSsh = 10800;
-      sshKeys = [ ];
+      sshKeys = [
+        "E9A28495202EB6723965F5C42E0855AA109CF7D1"
+      ];
 
       enableZshIntegration = true;
       enableBashIntegration = true;

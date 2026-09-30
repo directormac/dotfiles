@@ -95,6 +95,7 @@
         vivid
         wget
         zoxide
+        superfile
 
         selfpkgs.nh
         selfpkgs.yazi

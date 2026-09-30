@@ -46,7 +46,7 @@
     environment.systemPackages = [ pkgs.networkmanagerapplet ];
 
     # ── SMB/CIFS mount — template: fill in device + credentials, uncomment ──
-    fileSystems."/mnt/share" = {
+    fileSystems."/mnt/network/fileserver" = {
       device = "//fileserver/data";
       fsType = "cifs";
       options =
@@ -61,7 +61,7 @@
         ];
     };
 
-    fileSystems."/home/artifex/Resources" = {
+    fileSystems."/mnt/local/resources" = {
       device = "/dev/disk/by-uuid/50AAE2C51C074C8E";
       fsType = "ntfs3"; # Modern, fast kernel driver (or "ntfs-3g" if using legacy user-space driver)
       options = [

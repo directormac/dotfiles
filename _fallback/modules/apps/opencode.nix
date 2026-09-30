@@ -2,6 +2,20 @@
 
   flake.homeModules.opencode = {
 
+    programs.antigravity-cli = {
+      enable = true;
+
+      # Configuration
+      settings = {
+        defaultMode = "plan";
+
+        # Optional: You can also lock down the tool review policies for plan mode safety
+        permissions = {
+          toolExecution = "request-review";
+        };
+      };
+    };
+
     programs.opencode = {
       enable = true;
       settings = {
