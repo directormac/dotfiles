@@ -25,10 +25,6 @@
       };
     };
 
-    services.mpd = {
-      enable = true;
-    };
-
     systemd.user.services.update-cli-caches = {
       Unit.Description = "Update tldr pages and television channels";
       Service = {
@@ -86,6 +82,7 @@
 
         devtools
         opencode
+        rmpd
       ];
 
       home-manager.users.${config.preferences.user.name} = {
@@ -114,9 +111,92 @@
       };
 
       services = {
+        libinput.enable = true;
+        fstrim.enable = true;
+        devmon.enable = true;
         gvfs.enable = true;
         udisks2.enable = true;
+        dbus.enable = true;
+        blueman.enable = true;
+        tumbler.enable = true;
+        gnome.gnome-keyring.enable = true;
         tailscale.enable = true;
+        printing.enable = true;
+        pulseaudio.enable = false;
+        pipewire = {
+          enable = true;
+          alsa.enable = true;
+          alsa.support32Bit = true;
+          pulse.enable = true;
+          # If you want to use JACK applications, uncomment this
+          jack.enable = true;
+
+          extraConfig.pipewire."92-low-latency" = {
+            "context.properties" = {
+              "default.clock.rate" = 44100;
+              "default.clock.allowed-rates" = [
+                44100
+                48000
+                88200
+                96000
+                176400
+                192000
+                352800
+                384000
+              ];
+              "default.clock.quantum" = 512;
+              "default.clock.min-quantum" = 32;
+              "default.clock.max-quantum" = 2048;
+            };
+          };
+          extraConfig.pipewire-pulse."92-low-latency" = {
+            context.modules = [
+              {
+                name = "libpipewire-module-protocol-pulse";
+                args = {
+                  "pulse.min.req" = "32/44100";
+                  "pulse.default.req" = "512/44100";
+                  "pulse.max.req" = "2048/44100";
+                  "pulse.min.quantum" = "32/44100";
+                  "pulse.max.quantum" = "2048/44100";
+                };
+              }
+            ];
+          };
+
+          # use the example session manager (no others are packaged yet so this is enabled by default,
+          # no need to redefine it in your config for now)
+          #media-session.enable = true;
+        };
+      };
+
+      # Enable the X11 windowing system.
+      services.xserver = {
+        enable = true;
+
+        exportConfiguration = true;
+
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+
+      };
+
+      # Enable the GNOME Desktop Environment.
+      # services.displayManager.gdm.enable = true;
+      # services.desktopManager.gnome.enable = true;
+
+      # Some programs need SUID wrappers, can be configured further or are
+      # started in user sessions.
+      programs = {
+        xfconf.enable = true;
+        fuse.userAllowOther = true;
+        mtr.enable = true;
+        gnupg.agent = {
+          enable = true;
+          enableSSHSupport = true;
+        };
       };
 
       programs.firefox.enable = true;
@@ -196,7 +276,7 @@
         # spek
         # losslessaudiochecker
         cava
-        mpd
+        self.packages.${pkgs.stdenv.hostPlatform.system}.rmpd
         rmpc
         mpv
         feh

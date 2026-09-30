@@ -2,9 +2,58 @@
 
   flake.homeModules.editor = { pkgs, config, ... }: {
 
-    home.file.".config/helix".source = config.lib.file.mkOutOfStoreSymlink ../../../config/helix;
+    home = {
+      file = {
+        ".config/helix" = {
+          source = config.lib.file.mkOutOfStoreSymlink ../../../config/helix;
+        };
+        ".config/vim" = {
+          source = config.lib.file.mkOutOfStoreSymlink ../../../config/vim;
+        };
+      };
+      packages = with pkgs; [
+        (pkgs.writeShellScriptBin "neovim" ''
+          exec env NVIM_APPNAME=nvim ${nvim-pkg}/bin/nvim "$@"
+        '')
+      ];
+    };
 
-    home.file.".config/vim".source = config.lib.file.mkOutOfStoreSymlink ../../../config/vim;
+    xdg.desktopEntries = {
+      neovim = {
+        name = "Neovim";
+        genericName = "Text Editor";
+        comment = "Manage text files";
+        exec = "kitty -e neovim %F";
+        terminal = false; # Handled by the terminal execution string above
+        type = "Application";
+        icon = "nvim";
+        categories = [
+          "Utility"
+          "TextEditor"
+          "Development"
+        ];
+        mimeType = [
+          "text/plain"
+          "text/x-chdr"
+          "text/x-csrc"
+          "text/x-c++hdr"
+          "text/x-c++src"
+          "text/csv"
+          "application/json"
+          "application/x-zerosize"
+        ];
+      };
+
+      nvim = {
+        name = "Neovim";
+        exec = "nvim %F";
+        type = "Application";
+        settings = {
+          NoDisplay = "true"; # This forces launchers to ignore this entry entirely
+        };
+      };
+
+    };
 
     programs.vim = {
       enable = true;
@@ -31,11 +80,7 @@
 
     };
 
-    home.packages = with pkgs; [
-      (pkgs.writeShellScriptBin "neovim" ''
-        exec env NVIM_APPNAME=nvim ${nvim-pkg}/bin/nvim "$@"
-      '')
-    ];
+    programs.helix.enable = true;
 
   };
 
@@ -50,7 +95,6 @@
     nixpkgs.overlays = [ inputs.kickstart-nix-nvim.overlays.default ];
 
     environment.systemPackages = with pkgs; [
-      helix
 
       # Editor tools
       tree-sitter

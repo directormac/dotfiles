@@ -22,7 +22,7 @@
             "video/*" = "vlc.desktop";
             "video/*,.mkv" = "vlc.desktop";
 
-            "text/plain" = "nvim.desktop";
+            "text/plain" = "neovim.desktop";
             "inode/directory" = "org.gnome.Nautilus.desktop";
             "application/epub+zip" = "com.github.johnfactotum.Foliate.desktop";
             "application/pdf" = "org.gnome.Evince.desktop";
@@ -31,6 +31,11 @@
             "x-scheme-handler/https" = "zen-beta.desktop";
             "x-scheme-handler/discord" = "vesktop.desktop";
           };
+
+          associations.added = {
+            "text/plain" = [ "neovim.desktop" ];
+          };
+
         };
 
       };

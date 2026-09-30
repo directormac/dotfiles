@@ -94,9 +94,29 @@
       icons = {
         enable = true;
         # package = pkgs.adwaita-icon-theme;
-        package = pkgs.papirus-icon-theme.override { color = "violet"; };
+        # package = pkgs.papirus-icon-theme.override { color = "violet"; };
         dark = "Papirus-Dark";
         light = "Papirus-Light";
+
+        package = (pkgs.papirus-icon-theme.override { color = "violet"; }).overrideAttrs (oldAttrs: {
+          postInstall = (oldAttrs.postInstall or "") + ''
+            # Define the path to your downloaded dark logo
+            DARK_ZEN_SVG="${../../../../config/zen-dark.svg}"
+
+            # Overwrite the standard zen icons in the relevant Papirus sizes
+            for size in 16x16 22x22 24x24 32x32 48x48 64x64 128x128 scalable; do
+              if [ -d "$out/share/icons/Papirus/$size/apps" ]; then
+                cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-browser.svg"
+                cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-icon.svg"
+              fi
+              if [ -d "$out/share/icons/Papirus-Dark/$size/apps" ]; then
+                cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-browser.svg"
+                cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-icon.svg"
+              fi
+            done
+          '';
+        });
+
       };
 
       fonts = {

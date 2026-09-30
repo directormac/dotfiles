@@ -41,7 +41,32 @@
     };
 
     # Enable the OpenSSH daemon.
-    services.openssh.enable = true;
+    services.openssh = {
+      enable = true;
+      ports = [ 22 ];
+      settings = {
+        PasswordAuthentication = true;
+        KbdInteractiveAuthentication = true;
+        AllowGroups = null;
+        UseDns = true;
+        X11Forwarding = false;
+        PermitRootLogin = "prohibit-password";
+      };
+    };
+
+    services.gvfs.enable = true;
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true;
+      browseDomains = [ ];
+    };
+
+    programs.ssh.extraConfig = ''
+      Host github.com
+        Hostname ssh.github.com
+        Port 443
+        User git
+    '';
 
     environment.systemPackages = [ pkgs.networkmanagerapplet ];
 

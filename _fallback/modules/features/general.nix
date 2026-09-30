@@ -16,6 +16,8 @@
     {
 
       imports = with self.nixosModules; [
+        inputs.nix-index-database.nixosModules.nix-index
+
         yazi
         zsh
         multiplexer
@@ -43,7 +45,11 @@
       ];
 
       environment.sessionVariables = {
-        EDITOR = "lvim";
+        EDITOR = "neovim";
+      };
+
+      programs = {
+        nix-index-database.comma.enable = true;
       };
 
       environment.systemPackages = with pkgs; [

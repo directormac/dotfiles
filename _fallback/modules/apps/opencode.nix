@@ -13,58 +13,39 @@
     }:
     {
 
-      home.file.".gemini/antigravity-cli/settings.json".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/antigravity-cli/settings.json";
+      home.file.".gemini/antigravity-cli/settings.json" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/antigravity-cli/settings.json";
+        force = true;
+      };
 
-      # home.file.".gemini/antigravity-cli/settings.json" =
-      #   # json
-      #   ''
-      #     {
-      #       "defaultMode" : "plan",
-      #       "altScreenMode": "always",
-      #       "notifications":true,
-      #       "enableTerminalSandbox": true,
-      #       "toolPermission" : "request-review";
-      #       "trustedWorkspaces": [
-      #         "${config.home.homeDirectory}/.dotfiles"
-      #         "${config.home.homeDirectory}/Projects"
-      #       ],
-      #       "permissions" :{
-      #         "allow": [
-      #           "command(git)",
-      #         ]
-      #       }
+      # home.file.".gemini/antigravity-cli/settings.json" = {
+      #   text =
+      #     # json
+      #     ''
+      #       {
+      #         "defaultMode" : "plan",
+      #         "altScreenMode": "always",
+      #         "notifications":true,
+      #         "enableTerminalSandbox": true,
+      #         "toolPermission" : "request-review";
+      #         "trustedWorkspaces": [
+      #           "${config.home.homeDirectory}/.dotfiles"
+      #           "${config.home.homeDirectory}/Projects"
+      #         ],
+      #         "permissions" :{
+      #           "allow": [
+      #             "command(git)",
+      #           ]
+      #         }
       #
-      #     }
-      #   '';
+      #       }
+      #     '';
+      #   force = true;
+      # };
 
       programs.antigravity-cli = {
         enable = true;
         package = pkgs.llm-agents.antigravity-cli;
-
-        # Configuration written directly to ~/.gemini/antigravity-cli/settings.json
-        # settings = {
-        #   "agentMode" = "plan"; # Sets the default launch to Planning Mode
-        #   "altScreenMode" = "always";
-        #   "notifications" = true;
-        #   "enableTerminalSandbox" = true; # Keeps the secure bubblewrap runtime active
-        #   "toolPermission" = "request-review";
-        #
-        #   "trustedWorkspaces" = [
-        #     "${config.home.homeDirectory}/.dotfiles"
-        #     "${config.home.homeDirectory}/Projects"
-        #   ];
-        #
-        #   "permissions" = {
-        #     "allow" = [
-        #       "command(git)"
-        #       "command(curl)"
-        #       "command(ls)"
-        #       "command(cat)"
-        #       "read_file(/nix/store/*)" # Globally wildcards file readability across the Nix store
-        #     ];
-        #   };
-        # };
       };
 
       programs.opencode = {
@@ -103,12 +84,11 @@
       home.packages = [
         pkgs.llm-agents.omo-ai
         pkgs.opencode-desktop
-
       ];
 
     };
 
-  flake.nixosModules.opencode = { pkgs, config, ... }: {
+  flake.nixosModules.opencode = { config, ... }: {
 
     home-manager.users.${config.preferences.user.name} = {
       imports = with self.homeModules; [
