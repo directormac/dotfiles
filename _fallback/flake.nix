@@ -67,6 +67,8 @@
       };
     };
 
+    llm-agents.url = "github:numtide/llm-agents.nix";
+
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";

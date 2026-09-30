@@ -1,0 +1,18 @@
+{
+  "agentMode": "plan",
+  "altScreenMode": "always",
+  "enableTerminalSandbox": true,
+  "notifications": true,
+  "permissions": {
+    "allow": [
+      "command(git)",
+      "command(curl)",
+      "command(ls)",
+      "command(cat)",
+      "command(grep)",
+      "command(find)",
+      "read_file(/nix/store/*)"
+    ]
+  },
+  "trustedWorkspaces": ["/home/artifex/.dotfiles", "/home/artifex/Projects"]
+}

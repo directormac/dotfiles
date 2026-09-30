@@ -17,7 +17,7 @@
 
         # Primary system binary caches (combines NixOS defaults with nix-community)
         substituters = [
-          "https://nixos.org"
+          "https://cache.nixos.org"
           "https://nix-community.cachix.org"
         ];
 
@@ -26,16 +26,10 @@
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
 
-        # # Flake-specific substituters and trusted-public-keys, not affecting the system configuration.
-        # extra-substituters = [
-        #   # Nix community cache server.
-        #   "https://nix-community.cachix.org"
-        # ];
-        #
-        # extra-trusted-public-keys = [
-        #   # Nix community cache server public key.
-        #   "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        # ];
+        extra-substituters = [ "https://cache.numtide.com" ];
+        extra-trusted-public-keys = [
+          "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+        ];
 
         use-xdg-base-directories = true;
         keep-derivations = true;

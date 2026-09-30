@@ -16,12 +16,23 @@ return {
       statuscolumn = { enabled = true },
       words = { enabled = true },
       picker = {
+        -- exclude = {
+        --   '**/.secrets/**', -- Excludes everything inside .secrets directories
+        --   '**/.secrets', -- Excludes the directory itself
+        --   '*.age', -- Excludes all .age files in the immediate root
+        --   '**/*.age', -- Excludes all .age files recursively
+        -- },
         sources = {
           files = {
             layout = { hidden = { 'preview' } },
             hidden = true, -- Show dotfiles like .config
             ignored = false, -- Respect .gitignore (skips node_modules, etc.)
+            include = { '**/.secrets/**/*.pub' },
             exclude = {
+              '**/.secrets/**', -- Excludes everything inside .secrets directories
+              '**/.secrets', -- Excludes the directory itself
+              '*.age', -- Excludes all .age files in the immediate root
+              '**/*.age', -- Excludes all .age files recursively
               '.git',
               'node_modules',
               '.svelte-kit',

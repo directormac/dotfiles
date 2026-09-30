@@ -19,7 +19,8 @@
         Type = "simple";
 
         # Wake up the root container service if it isn't running
-        ExecStartPre = "${pkgs.systemd}/bin/systemctl start waydroid-container.service";
+        #
+        # ExecStartPre = "${pkgs.systemd}/bin/systemctl start waydroid-container.service";
 
         ExecStart = "${pkgs.waydroid}/bin/waydroid session start";
         ExecStop = "${pkgs.waydroid}/bin/waydroid session stop";

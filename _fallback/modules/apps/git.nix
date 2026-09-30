@@ -8,12 +8,12 @@
       enable = true;
       enableDefaultConfig = false; # Mutes the second evaluation warning
 
-      matchBlocks = {
+      settings = {
         "github.com" = {
           hostname = "github.com";
           user = "git";
           # Point directly to your Agenix symlinked private key
-          identityFile = "/home/artifex/.ssh/mac_mkra_dev";
+          identityFile = "${config.home.homeDirectory}/.ssh/mac_mkra_dev";
           # Disables querying the empty gpg-agent keyring for this host
           identitiesOnly = false;
         };
