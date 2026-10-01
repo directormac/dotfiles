@@ -1,4 +1,4 @@
-{ self, ... }: {
+{ inputs, self, ... }: {
 
   flake.homeModules.stylix = {
 
@@ -16,6 +16,8 @@
         mpv.enable = true;
         cava.enable = true;
         nixcord.enable = true;
+        vencord.enable = true;
+        vesktop.enable = true;
         opencode.enable = true;
         bat.enable = true;
         vivid.enable = true;
@@ -40,6 +42,9 @@
   };
 
   flake.nixosModules.stylix = { pkgs, config, ... }: {
+    imports = [
+      inputs.stylix.nixosModules.stylix
+    ];
 
     home-manager.users.${config.preferences.user.name} = {
       imports = with self.homeModules; [

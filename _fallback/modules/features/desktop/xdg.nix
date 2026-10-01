@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.homeModules.xdg =
-    { config, ... }:
+    { pkgs, config, ... }:
     {
 
       # https://home-manager-options.extranix.com/?query=xdg&release=master
@@ -72,39 +72,33 @@
             terminal = false;
             type = "Application";
             icon = "system-file-manager";
+
             categories = [
+              "X-Terminal"
               "Utility"
               "Core"
             ];
 
-            actions = [ "open-in-superfile" ];
-
-            settings = {
-              "Desktop Action open-terminal" = {
+            actions = {
+              "open-in-superfile" = {
                 name = "Open Terminal Here";
                 exec = "ghostty --class=com.superfile.fm -e superfile %f";
+
               };
             };
 
           };
 
           gsmartcontrol = {
-            name = "GSmartControl (Stylix Fix)";
-            genericName = "Hard Disk Health Monitor";
-            comment = "Query and control SMART data on storage systems";
+            name = "GSmartControl";
+            exec = "gsmartcontrol"; # Explicitly use the non-root binary
             icon = "gsmartcontrol";
-
-            # Wrap the execution sequence in a shell string to bypass validation checks
-            # exec = "sh -c 'sudo env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_CONFIG_HOME=$HOME/.config gsmartcontrol'";
-            exec = ''
-              sudo env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_CONFIG_HOME="$HOME/.config" GTK_THEME=$(gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'") gsmartcontrol
-            '';
-
-            terminal = true;
+            terminal = false;
             categories = [
               "System"
-              "Monitor"
+              "Utility"
             ];
+            type = "Application";
           };
 
         };
@@ -176,61 +170,61 @@
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
-      config = {
-        common = {
-          default = [ "gtk" ];
-          # Force every app outside native DEs to use the GTK fallback dialog
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-        };
-        gnome = {
-          default = [
-            "gnome"
-            "gtk"
-          ];
-        };
-        hyprland = {
-          default = [
-            "hyprland"
-            "gtk"
-          ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-        };
-        kde = {
-          default = [
-            "kde"
-            "gtk"
-          ];
-          "org.freedesktop.portal.FileChooser" = [ "kde" ];
-          "org.freedesktop.portal.OpenURI" = [ "kde" ];
-        };
-        niri = {
-          # default = [
-          #   "gtk"
-          #   "gnome"
-          # ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Access" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
-        };
-        mangowc = {
-          default = [
-            "gtk"
-          ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-          "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
-        };
-        sway = {
-          default = [
-            "gtk"
-            "wlr"
-          ];
-        };
-      };
+      # config = {
+      #   common = {
+      #     default = [ "gtk" ];
+      #     # Force every app outside native DEs to use the GTK fallback dialog
+      #     "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      #   };
+      #   gnome = {
+      #     default = [
+      #       "gnome"
+      #       "gtk"
+      #     ];
+      #   };
+      #   hyprland = {
+      #     default = [
+      #       "hyprland"
+      #       "gtk"
+      #     ];
+      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      #   };
+      #   kde = {
+      #     default = [
+      #       "kde"
+      #       "gtk"
+      #     ];
+      #     "org.freedesktop.portal.FileChooser" = [ "kde" ];
+      #     "org.freedesktop.portal.OpenURI" = [ "kde" ];
+      #   };
+      #   niri = {
+      #     # default = [
+      #     #   "gtk"
+      #     #   "gnome"
+      #     # ];
+      #     "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      #     "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+      #     "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      #     "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+      #     "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+      #   };
+      #   mangowc = {
+      #     default = [
+      #       "gtk"
+      #     ];
+      #     "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+      #     "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      #     "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
+      #   };
+      #   sway = {
+      #     default = [
+      #       "gtk"
+      #       "wlr"
+      #     ];
+      #   };
+      # };
       extraPortals = [
         pkgs.xdg-desktop-portal-gtk
         pkgs.xdg-desktop-portal-gnome

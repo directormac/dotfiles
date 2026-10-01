@@ -29,6 +29,8 @@
         inherit bookmarks;
         inherit split-tabs;
       };
+
+      # theme = fromTOML (builtins.readFile ./theme.toml);
     };
   };
 

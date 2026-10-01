@@ -8,7 +8,7 @@ _G.modkey = 'SUPER'
 local applications = {
   terminal = 'ghostty',
   browser = 'zen-browser',
-  fileManager = 'nautilus',
+  fileManager = 'nautilus --new-window', -- This flag is perfectly placed here!
   menu = 'hyprlauncher',
 }
 

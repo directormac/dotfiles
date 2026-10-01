@@ -371,19 +371,11 @@
           "enabled": true
         },
         {
-          "id": "diskUsage",
-          "enabled": true,
-          "mountPath": "/",
-          "diskUsageMode": 0,
-          "showMountPath": true,
-          "minimumWidth": true
-        },
-        {
           "id": "cpuUsage",
           "enabled": true
         },
         {
-          "id": "amdGpuMonitor:variant_1788992854088",
+          "id": "amdGpuMonitor",
           "enabled": true
         },
         {

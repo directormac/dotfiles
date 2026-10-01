@@ -11,11 +11,12 @@
       "command(cat)",
       "command(grep)",
       "command(find)",
+      "command(echo)",
       "command(strings)",
       "command(which)",
       "command(tail)",
       "read_file(/nix/store/*)"
     ]
   },
-  "trustedWorkspaces": ["/home/artifex/.dotfiles", "/home/artifex/Projects"]
+  "trustedWorkspaces": ["/home/artifex/.dotfiles", "/home/artifex/Projects", "/home/artifex/Code"]
 }

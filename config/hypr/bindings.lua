@@ -45,7 +45,7 @@ hl.gesture({
 local apps = cfg.applications
 
 local terminal = apps.terminal
-local fileManager = apps.fileManager
+local fileManager = 'nautilus --new-window'
 -- local menu = apps.menu
 local browser = apps.browser
 
@@ -195,8 +195,8 @@ hl.bind(modkey .. ' + SHIFT + Backslash', Utils.layout.prev())
 
 -- Essential application bindings.
 hl.bind(modkey .. ' + RETURN', hl.dsp.exec_cmd(terminal))
-hl.bind(modkey .. ' + SHIFT + RETURN', hl.dsp.exec_cmd(terminal, cfg.floating_centered_wr))
-hl.bind(modkey .. ' + E', hl.dsp.exec_cmd(fileManager, cfg.floating_centered_wr))
+hl.bind(modkey .. ' + SHIFT + RETURN', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float', cfg.floating_centered_wr))
+hl.bind(modkey .. ' + E', hl.dsp.exec_cmd(fileManager))
 hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
 hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
 hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))

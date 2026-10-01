@@ -39,12 +39,12 @@ local floating_apps = {
   'com.danklinux.dankcalendar',
   'galculator',
   'org.pulseaudio.pavucontrol',
+  'ghostty --class=com.ghostty.float',
   'org.gnome.Nautilus',
   'mpv',
   'nm-connection-editor',
   'Waydroid',
   'com.jaoushingan.WaydroidHelper',
-
   'com.neovim.editor',
   'com.superfile.fm',
 }
@@ -57,6 +57,15 @@ for _, app in ipairs(floating_apps) do
     size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
   })
 end
+
+hl.window_rule({
+  match = {
+    initial_title = 'Select what to share',
+  },
+  float = true,
+  center = true,
+  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
+})
 
 hl.window_rule({
   match = {

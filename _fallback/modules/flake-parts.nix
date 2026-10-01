@@ -49,7 +49,6 @@
       virtualisation
 
       inputs.nur.modules.nixos.default
-      inputs.stylix.nixosModules.stylix
     ];
   };
 
