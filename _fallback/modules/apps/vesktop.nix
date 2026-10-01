@@ -9,11 +9,16 @@
       };
       vesktop.enable = true;
       config.plugins = {
+        betterFolders.enable = true;
+        biggerStreamPreview.enable = true;
+        fakeNitro.enable = true;
         hideMedia.enable = true;
-        ignoreActivities = {
-          enable = true;
-          ignorePlaying = false;
-        };
+        pictureInPicture.enable = true;
+        showHiddenChannels.enable = true;
+        # showMeYourName.enabled = true;
+        # webContextMenus.enabled = true;
+        # webKeybinds.enabled = true;
+        # webScreenShareFixes.enabled = true;
       };
       quickCss = "body { --font-primary: monospace; }";
       config.useQuickCss = true;
