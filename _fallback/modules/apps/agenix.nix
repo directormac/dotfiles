@@ -125,6 +125,8 @@ in
       mode = "0600"; # → /run/agenix/fileserver-smb-secrets (agenix default)
     };
 
+    age.secrets.github_api_key.rekeyFile = ../../../.secrets/github_api_key.age;
+
     home-manager.users.${config.preferences.user.name}.imports = [ self.homeModules.agenix ];
   };
 

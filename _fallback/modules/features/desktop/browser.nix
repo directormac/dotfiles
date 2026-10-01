@@ -73,12 +73,43 @@
             };
 
           DontCheckDefaultBrowser = true;
+          HardwareAcceleration = true;
+          ManualAppUpdateOnly = true;
+          NoDefaultBookmarks = false;
+          OfferToSaveLogins = false;
+          PasswordManagerEnabled = false;
+          OfferToSaveLoginsDefault = false;
+
+          PictureInPicture = {
+            Enabled = true;
+          };
+
+          EncryptedMediaExtensions = {
+            Enabled = true;
+          };
+
+          FirefoxHome = {
+            Search = false;
+            TopSites = false;
+            SponsoredTopSites = false;
+            Highlights = false;
+            Pocket = false;
+            SponsoredPocket = false;
+            Snippets = false;
+            Locked = false;
+          };
 
           EnableTrackingProtection = {
             Value = true;
             Locked = false;
             Cryptomining = true;
             Fingerprinting = true;
+          };
+
+          Preferences = {
+            "browser.tabs.warnOnClose" = {
+              Value = false;
+            };
           };
         };
 
@@ -153,21 +184,21 @@
         };
       };
 
-      sharedBookmarks = {
-        force = true;
-        settings = [
-          {
-            name = "Quick Links";
-            toolbar = true;
-            bookmarks = [
-              {
-                name = "GitHub";
-                url = "https://github.com";
-              }
-            ];
-          }
-        ];
-      };
+      # sharedBookmarks = {
+      #   force = true;
+      #   settings = [
+      #     {
+      #       name = "Quick Links";
+      #       toolbar = true;
+      #       bookmarks = [
+      #         {
+      #           name = "GitHub";
+      #           url = "https://github.com";
+      #         }
+      #       ];
+      #     }
+      #   ];
+      # };
 
     in
     {
@@ -189,7 +220,7 @@
             settings = { };
           };
           search = sharedSearch;
-          bookmarks = sharedBookmarks;
+          # bookmarks = sharedBookmarks;
         };
       };
 
@@ -240,7 +271,7 @@
           };
 
           search = sharedSearch;
-          bookmarks = sharedBookmarks;
+          # bookmarks = sharedBookmarks;
 
           extensionButtons = {
             "nav-bar" = [
