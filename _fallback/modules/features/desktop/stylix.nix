@@ -24,6 +24,8 @@
         mangohud.enable = true;
         x11.enable = true;
 
+        noctalia.enable = true;
+
         vesktop = {
           enable = true;
           colors = {

@@ -151,6 +151,8 @@
         tailscale.enable = true;
         printing.enable = true;
         pulseaudio.enable = false;
+        tuned.enable = true;
+        upower.enable = true;
         pipewire = {
           enable = true;
           alsa.enable = true;

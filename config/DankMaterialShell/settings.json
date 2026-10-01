@@ -92,7 +92,9 @@
   "floatingWindowSyncGlobal": false,
   "dmsWindowsFloatingSeeded": [
     "hyprland",
-    "hyprland"
+    "hyprland",
+    "niri",
+    "mango"
   ],
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",

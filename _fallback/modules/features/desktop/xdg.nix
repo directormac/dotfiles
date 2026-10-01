@@ -44,26 +44,6 @@
         };
 
         desktopEntries = {
-          # yazi = {
-          #   name = "Yazi";
-          #   genericName = "Terminal File Manager";
-          #   exec = "ghostty --class=com.yazi.fm -e yazi";
-          #   terminal = false;
-          #   type = "Application";
-          #   icon = "yazi";
-          #   categories = [
-          #     "Utility"
-          #     "Core"
-          #   ];
-          #
-          #   # Define custom right-click context menu actions
-          #   actions = {
-          #     "open-terminal" = {
-          #       name = "Open Terminal Here";
-          #       exec = "ghostty --working-directory=%f";
-          #     };
-          #   };
-          # };
 
           superfile = {
             name = "Superfile";
@@ -101,6 +81,74 @@
             type = "Application";
           };
 
+        };
+
+        portal = {
+          enable = true;
+          xdgOpenUsePortal = true;
+          config = {
+            common = {
+              default = [ "gtk" ];
+              # Force every app outside native DEs to use the GTK fallback dialog
+              "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+            };
+            gnome = {
+              default = [
+                "gnome"
+                "gtk"
+              ];
+            };
+            hyprland = {
+              default = [
+                "hyprland"
+                "gtk"
+              ];
+              "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+            };
+            kde = {
+              default = [
+                "kde"
+                "gtk"
+              ];
+              "org.freedesktop.portal.FileChooser" = [ "kde" ];
+              "org.freedesktop.portal.OpenURI" = [ "kde" ];
+            };
+            niri = {
+              # default = [
+              #   "gtk"
+              #   "gnome"
+              # ];
+              "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+              "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+              "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+              "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+              "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+              "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+            };
+            mango = {
+              default = [
+                "gtk"
+              ];
+              "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+              "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+              "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+              "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
+            };
+            sway = {
+              default = [
+                "gtk"
+                "wlr"
+              ];
+            };
+          };
+          extraPortals = [
+            pkgs.xdg-desktop-portal
+            pkgs.xdg-desktop-portal-gtk
+            pkgs.xdg-desktop-portal-gnome
+            pkgs.xdg-desktop-portal-hyprland
+            pkgs.kdePackages.xdg-desktop-portal-kde
+            pkgs.xdg-desktop-portal-wlr
+          ];
         };
 
       };
@@ -167,72 +215,6 @@
     };
 
     # Move to home manager???
-    xdg.portal = {
-      enable = true;
-      xdgOpenUsePortal = true;
-      config = {
-        common = {
-          default = [ "gtk" ];
-          # Force every app outside native DEs to use the GTK fallback dialog
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-        };
-        gnome = {
-          default = [
-            "gnome"
-            "gtk"
-          ];
-        };
-        hyprland = {
-          default = [
-            "hyprland"
-            "gtk"
-          ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-        };
-        kde = {
-          default = [
-            "kde"
-            "gtk"
-          ];
-          "org.freedesktop.portal.FileChooser" = [ "kde" ];
-          "org.freedesktop.portal.OpenURI" = [ "kde" ];
-        };
-        niri = {
-          # default = [
-          #   "gtk"
-          #   "gnome"
-          # ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Access" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
-        };
-        mangowc = {
-          default = [
-            "gtk"
-          ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-          "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
-        };
-        sway = {
-          default = [
-            "gtk"
-            "wlr"
-          ];
-        };
-      };
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal-gnome
-        pkgs.xdg-desktop-portal-hyprland
-        pkgs.kdePackages.xdg-desktop-portal-kde
-        pkgs.xdg-desktop-portal-wlr
-      ];
-    };
 
     # Necessary for xdg-portal home-manager module to work with useUserPackages
     environment.pathsToLink = [
