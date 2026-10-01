@@ -143,17 +143,17 @@
     {
       "id": "volumeSlider",
       "enabled": true,
-      "w": 5,
+      "w": 4,
       "h": 1,
-      "col": 3,
-      "row": 1
+      "col": 0,
+      "row": 2
     },
     {
       "id": "inputVolumeSlider",
       "enabled": true,
       "w": 4,
       "h": 1,
-      "col": 0,
+      "col": 4,
       "row": 2
     },
     {
@@ -161,15 +161,15 @@
       "enabled": true,
       "w": 4,
       "h": 1,
-      "col": 4,
-      "row": 2
+      "col": 0,
+      "row": 3
     },
     {
       "id": "audioInput",
       "enabled": true,
       "w": 4,
       "h": 1,
-      "col": 0,
+      "col": 4,
       "row": 3
     },
     {
@@ -177,15 +177,15 @@
       "enabled": true,
       "w": 4,
       "h": 1,
-      "col": 4,
-      "row": 3
+      "col": 0,
+      "row": 4
     },
     {
       "id": "bluetooth",
       "enabled": true,
       "w": 4,
       "h": 1,
-      "col": 0,
+      "col": 4,
       "row": 4
     },
     {
@@ -194,7 +194,7 @@
       "w": 4,
       "h": 1,
       "col": 4,
-      "row": 4
+      "row": 5
     },
     {
       "id": "doNotDisturb",
@@ -207,10 +207,11 @@
     {
       "id": "runningApps",
       "enabled": true,
-      "w": 4,
+      "w": 5,
       "h": 1,
-      "footer": true,
-      "footerW": 5
+      "footerW": 5,
+      "col": 3,
+      "row": 1
     },
     {
       "id": "diskUsage",
@@ -220,8 +221,14 @@
       "instanceId": "mupdqoz9qwc38ii3wlnrgjccj2kxzu",
       "mountPath": "/",
       "showMountPath": true,
-      "col": 4,
-      "row": 5
+      "col": 0,
+      "row": 6
+    },
+    {
+      "id": "plugin_quickCapture",
+      "enabled": true,
+      "w": 4,
+      "h": 1
     }
   ],
   "bluetoothMprisEnabled": true,

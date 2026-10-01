@@ -13,8 +13,6 @@
       # https://nur.nix-community.org/repos/rycee/
       rycee-firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 
-      banditthedoge-firefoxAddons = pkgs.nur.repos.bandithedoge.firefoxAddons;
-
       spaces = {
         personal = "1fb46130-1153-4ad8-9715-747ec005d132";
         dev = "9ace6c68-8e8f-49f0-ab2f-3825b9bb0a5a";
@@ -41,13 +39,18 @@
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
               installation_mode = "force_installed";
               private_browsing = true;
+              # Explicitly declare it's allowed to be a theme
+              allowed_types = [
+                "extension"
+                "theme"
+              ];
             }
           );
         in
         {
           ExtensionSettings =
             mkExtensionSettings {
-              "{8c2dc69c-297e-49b8-b80c-e2f7547c1f07}" = "catppuccin-mocha-mauve-git";
+              "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}" = "catppuccin-mocha-mauve-git";
               "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
               "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
             }
@@ -61,15 +64,12 @@
                 private_browsing = true;
               };
               "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
-                default_area = "navbar";
                 private_browsing = true;
               };
               "uBlock0@raymondhill.net" = {
-                default_area = "navbar";
                 private_browsing = true;
               };
               "sponsorBlocker@ajay.app" = {
-                default_area = "navbar";
                 private_browsing = true;
               };
             };
@@ -115,16 +115,14 @@
           };
         };
 
-      sharedExtensionsPackages = [
-
-        banditthedoge-firefoxAddons.sponsorblock
-      ]
-      ++ (with rycee-firefox-addons; [
+      sharedExtensionsPackages = with rycee-firefox-addons; [
         bitwarden
+        clearurls
         darkreader
-        vimium
+        sponsorblock
         ublock-origin
-      ]);
+        vimium
+      ];
 
       sharedSearch = {
         force = true;
@@ -222,6 +220,16 @@
             settings = { };
           };
           search = sharedSearch;
+          userChrome =
+            # css
+            ''
+              :root {
+                --tab-border-radius: 0px !important;
+                --border-radius-small: 0px !important;
+                --border-radius-medium: 0px !important;
+              }
+            '';
+
           # bookmarks = sharedBookmarks;
         };
       };
@@ -231,9 +239,6 @@
         setAsDefaultBrowser = true;
 
         nativeMessagingHosts = sharedNativeMessagingHosts;
-        package = inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
-          nativeMessagingHosts = sharedNativeMessagingHosts;
-        };
 
         policies = sharedPolicies;
 
@@ -244,6 +249,7 @@
         profiles.default = {
 
           settings = {
+            "browser.tabs.warnOnClose" = false;
             "extensions.allowPrivateBrowsingByDefault" = true;
             "zen.theme.hide-unified-extensions-button" = false;
             "zen.theme.content-element-seperation" = 0;
@@ -277,9 +283,13 @@
 
           extensionButtons = {
             "nav-bar" = [
+              "{446900e4-71c2-419f-a6a7-df9c091e268b}"
               "addon@darkreader.org"
             ];
             "unified-extensions-area" = [
+              "uBlock0@raymondhill.net"
+              "sponsorBlocker@ajay.app"
+              "{d7742d87-e61d-4b78-b8a1-b469842139fa}"
             ];
           };
 
@@ -293,6 +303,7 @@
           };
 
           spaceRouting = {
+            force = true;
             defaultExternalRoute = spaces.scratchpad_one;
             routes = {
               "github" = {
@@ -314,6 +325,16 @@
                 reference = "dev.to";
                 matchType = "equal-to";
                 openIn = spaces.read;
+              };
+              "google-services" = {
+                reference = "^https?://(?!www\\.)([a-zA-Z0-9_-]+\\.)+google\\.[a-z.]+";
+                matchType = "regex";
+                openIn = spaces.personal;
+              };
+              "google-search" = {
+                reference = "^https?://(www\\.)?google\\.[a-z.]+(/|$|search|\\?)";
+                matchType = "regex";
+                openIn = "most-recent-space";
               };
             };
           };
@@ -362,107 +383,53 @@
             };
           };
 
-          keyboardShortcuts = [
-            {
-              id = "zen-workspace-switch-1";
-              key = "1";
+          keyboardShortcuts =
+            (map (i: {
+              id = "zen-workspace-switch-${toString i}";
+              key = toString i;
               modifiers = {
                 alt = true;
               };
-            }
-            {
-              id = "zen-workspace-switch-2";
-              key = "2";
-              modifiers = {
-                alt = true;
-              };
-            }
-            {
-              id = "zen-workspace-switch-3";
-              key = "3";
-              modifiers = {
-                alt = true;
-              };
-            }
-            {
-              id = "zen-workspace-switch-4";
-              key = "4";
-              modifiers = {
-                alt = true;
-              };
-            }
-            {
-              id = "zen-workspace-switch-5";
-              key = "5";
-              modifiers = {
-                alt = true;
-              };
-            }
-            {
-              id = "zen-workspace-switch-6";
-              key = "6";
-              modifiers = {
-                alt = true;
-              };
-            }
-            {
-              id = "key_selectTab1";
+            }) (pkgs.lib.range 1 6))
+            ++ (map (i: {
+              id = "key_selectTab${toString i}";
               disabled = true;
-            }
-            {
-              id = "key_selectTab2";
-              disabled = true;
-            }
-            {
-              id = "key_selectTab3";
-              disabled = true;
-            }
-            {
-              id = "key_selectTab4";
-              disabled = true;
-            }
-            {
-              id = "key_selectTab5";
-              disabled = true;
-            }
-            {
-              id = "key_selectTab6";
-              disabled = true;
-            }
-            {
-              id = "zen-compact-mode-toggle";
-              key = "c";
-              modifiers = {
-                control = true;
-                alt = true;
-              };
-            }
-            {
-              id = "zen-compact-mode-show-sidebar";
-              key = "s";
-              modifiers = {
-                control = true;
-                alt = true;
-              };
-            }
-            {
-              id = "key_quitApplication";
-              disabled = true;
-            }
-            {
-              id = "key_reload";
-              key = "r";
-              modifiers.control = true;
-            }
-            {
-              id = "key_reload_skip_cache";
-              key = "r";
-              modifiers = {
-                control = true;
-                shift = true;
-              };
-            }
-          ];
+            }) (pkgs.lib.range 1 6))
+            ++ [
+              {
+                id = "zen-compact-mode-toggle";
+                key = "c";
+                modifiers = {
+                  control = true;
+                  alt = true;
+                };
+              }
+              {
+                id = "zen-compact-mode-show-sidebar";
+                key = "s";
+                modifiers = {
+                  control = true;
+                  alt = true;
+                };
+              }
+              {
+                id = "key_quitApplication";
+                disabled = true;
+              }
+              {
+                id = "key_reload";
+                key = "r";
+                modifiers.control = true;
+              }
+              {
+                id = "key_reload_skip_cache";
+                key = "r";
+                modifiers = {
+                  control = true;
+                  shift = true;
+                };
+              }
+            ];
           keyboardShortcutsVersion = 20;
 
           mods = [
@@ -474,7 +441,7 @@
           userContent =
             # css
             ''
-              @import "catppuccin/userChrome.css";
+              @import "catppuccin/userContent.css";
             '';
 
           userChrome =
@@ -488,7 +455,9 @@
               /* } */
 
 
-              --zen-webview-border-radius: 0;
+              :root {
+                --zen-webview-border-radius: 0 !important;
+              }
               #tabbrowser-tabpanels:not([zen-split-view="true"]) {
                 padding-left: 0px !important;
                 padding-right: 0px !important;

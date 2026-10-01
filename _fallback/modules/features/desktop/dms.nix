@@ -126,18 +126,18 @@
           # https://github.com/hthienloc/dms-plugins/blob/main/quickCapture/docs/ipc-and-settings.md
           quickCapture = {
             enable = true;
-            # settings = {
-            #   "delete_screenshots_on_close" = false;
-            #   "export_compress" = true;
-            #   "export_format" = "png"; # options: png, webp, jpg, pdf, ppm
-            #   "includeCursor" = false;
-            #   "recordingFormat" = "mp4";
-            #   "recordingFramerate" = "60";
-            #   "recordingQuality" = "very_high";
-            #   "recordingScreenTarget" = "focused";
-            #   "resetLastRegion" = true;
-            #   "skipConfirm" = true;
-            # };
+            settings = {
+              "delete_screenshots_on_close" = false;
+              "export_compress" = true;
+              "export_format" = "png"; # options: png, webp, jpg, pdf, ppm
+              "includeCursor" = false;
+              "recordingFormat" = "mp4";
+              "recordingFramerate" = "60";
+              "recordingQuality" = "very_high";
+              "recordingScreenTarget" = "focused";
+              "resetLastRegion" = true;
+              "skipConfirm" = true;
+            };
           };
 
         };

@@ -17,13 +17,21 @@
         cava.enable = true;
         nixcord.enable = true;
         vencord.enable = true;
-        vesktop.enable = true;
         opencode.enable = true;
         bat.enable = true;
         vivid.enable = true;
         btop.enable = true;
         mangohud.enable = true;
         x11.enable = true;
+
+        vesktop = {
+          enable = true;
+          colors = {
+            override = {
+              base0B = "cba6f7";
+            };
+          };
+        };
 
         zen-browser = {
           enable = false;
@@ -126,6 +134,7 @@
 
       targets = {
         console.enable = true;
+        plymouth.enable = true;
         chromium.enable = true;
       };
 

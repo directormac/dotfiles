@@ -81,7 +81,6 @@
 
       imports = with self.nixosModules; [
 
-        plymouth
         xdg
         agenix
 
@@ -104,6 +103,8 @@
         devtools
         opencode
         rmpd
+
+        gaming
       ];
 
       home-manager.users.${config.preferences.user.name} = {
