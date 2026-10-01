@@ -22,10 +22,10 @@
           enable = true;
         };
 
-        # zen-browser = {
-        #   enable = true;
-        #   profileNames = [ "default" ];
-        # };
+        zen-browser = {
+          enable = false;
+          profileNames = [ "default" ];
+        };
 
         feh.enable = true;
         foliate.enable = true;
@@ -64,7 +64,7 @@
       enable = true;
       polarity = "dark";
 
-      autoEnable = true;
+      autoEnable = false;
 
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 

@@ -40,12 +40,14 @@
             _: pluginId: {
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
               installation_mode = "force_installed";
+              private_browsing = true;
             }
           );
         in
         {
           ExtensionSettings =
             mkExtensionSettings {
+              "{8c2dc69c-297e-49b8-b80c-e2f7547c1f07}" = "catppuccin-mocha-mauve-git";
               "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
               "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
             }
