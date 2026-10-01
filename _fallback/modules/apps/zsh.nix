@@ -59,7 +59,8 @@
         "zen" = "zen-beta";
         "wm" = "workmux";
         "tls" = "tmux ls";
-        "t" = "tmux a";
+        "ts" = "sesh last";
+        "t" = "tv channels";
         "tn" = "sesh connect .";
         "logs" = "journalctl --user -f -n 50";
         "grab" = "ghgrab --cwd";
