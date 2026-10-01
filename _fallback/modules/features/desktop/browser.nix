@@ -198,7 +198,7 @@
         setAsDefaultBrowser = true;
 
         nativeMessagingHosts = sharedNativeMessagingHosts;
-        package = inputs.zen-browser.packages."${pkgs.system}".default.override {
+        package = inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default.override {
           nativeMessagingHosts = sharedNativeMessagingHosts;
         };
 
@@ -213,7 +213,7 @@
           settings = {
             "extensions.allowPrivateBrowsingByDefault" = true;
             "zen.theme.hide-unified-extensions-button" = false;
-            "zen.theme.content-element-separation" = 0;
+            "zen.theme.content-element-seperation" = 0;
             "zen.theme.border-radius" = 0;
             "zen.workspaces.continue-where-left-off" = true;
 
@@ -438,13 +438,21 @@
             #   "c6813222-6571-4ba6-8faf-58f3343324f6"
           ];
 
+          userContent =
+            # css
+            ''
+              @import "catppuccin/userChrome.css";
+            '';
+
           userChrome =
             # css
             ''
-              .tab-icon-image {
-                width: 16px;
-                height: 16px;
-              }
+              @import "catppuccin/userChrome.css";
+
+              /* .tab-icon-image { */
+              /*   width: 16px; */
+              /*   height: 16px; */
+              /* } */
 
 
               --zen-webview-border-radius: 0;

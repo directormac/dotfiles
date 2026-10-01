@@ -63,7 +63,7 @@ in
 
     home.packages = [
       # inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.agenix-rekey.packages.${pkgs.system}.default
+      inputs.agenix-rekey.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     home.sessionVariablesExtra = ''
