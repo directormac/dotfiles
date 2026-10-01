@@ -84,59 +84,111 @@
         NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
       };
 
-      initContent = ''
+      initContent =
+        # sh
+        ''
+          autoload -Uz url-quote-magic
+          zle -N self-insert url-quote-magic
 
-        FZF_TAB_GROUP_COLORS=(
-          $'\033[94m' $'\033[32m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m'
-          $'\033[38;5;100m' $'\033[38;5;98m' $'\033[91m' $'\033[38;5;80m' $'\033[92m'
-          $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
-        )
-        FZF_CTRL_T_OPTS="
-          --walker-skip .git,node_modules,target
-          --preview 'bat -n --color=always {}'
-          --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+          # Force double quotes around any video URL for MP3 conversion
+          yt-mp3() {
+              yt-dlp -x --audio-format mp3 "$1"
+          }
 
-        FZF_ALT_C_OPTS="
-          --walker-skip .git,node_modules,target
-          --preview 'tree -C {}'"
+          # Force double quotes around any video URL for FLAC conversion
+          yt-flac() {
+              yt-dlp -x --audio-format flac --audio-quality 0 "$1"
+          }
 
-        FZF_CTRL_R_OPTS="
-          --layout=reverse
-          --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
-          --color header:italic
-          --header 'Press CTRL-Y to copy command into clipboard'"
+          # Download playlist as sequential tracks wrapped in a folder
+          yt-album() {
+              yt-dlp -x --audio-format mp3 -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" "$1"
+          }
 
-        zstyle ':completion:*:descriptions' format '[%d]'
+          # Absolute highest video quality combined as MKV
+          yt-best() {
+              yt-dlp -f bestvideo+bestaudio --merge-output-format mkv "$1"
+          }
 
-        zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
-        zstyle ':fzf-tab:*' switch-group '<' '>'
-        zstyle ':fzf-tab:*' use-fzf-default-opts yes
-        zstyle ':fzf-tab:complete:_zlua:*' query-string input
-        zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd -la --color=always $realpath'
-        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -la --color=always $realpath'
-        zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
+          # Download subtitles only without the underlying video stream
+          yt-subs() {
+              yt-dlp --write-subs --write-auto-subs --skip-download "$1"
+          }
 
-        source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+          FZF_TAB_GROUP_COLORS=(
+            $'\033[94m' $'\033[32m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m'
+            $'\033[38;5;100m' $'\033[38;5;98m' $'\033[91m' $'\033[38;5;80m' $'\033[92m'
+            $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
+          )
+          FZF_CTRL_T_OPTS="
+            --walker-skip .git,node_modules,target
+            --preview 'bat -n --color=always {}'
+            --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
-        source <(${lib.getExe pkgs.fzf} --zsh)
+          FZF_ALT_C_OPTS="
+            --walker-skip .git,node_modules,target
+            --preview 'tree -C {}'"
 
-        eval "$(devenv hook zsh)"
-        eval "$(starship init zsh)"
-        eval "$(zoxide init zsh)"
+          FZF_CTRL_R_OPTS="
+            --layout=reverse
+            --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+            --color header:italic
+            --header 'Press CTRL-Y to copy command into clipboard'"
 
-        function zvm_after_init() {
-          zvm_bindkey viins '^ ' autosuggest-accept
-          zvm_bindkey viins '\e[27;5;9~' autosuggest-accept
-        }
+          zstyle ':completion:*:descriptions' format '[%d]'
 
-        bindkey '^ ' autosuggest-accept
-        bindkey '\e[27;5;9~' autosuggest-accept
+          zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
+          zstyle ':fzf-tab:*' switch-group '<' '>'
+          zstyle ':fzf-tab:*' use-fzf-default-opts yes
+          zstyle ':fzf-tab:complete:_zlua:*' query-string input
+          zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd -la --color=always $realpath'
+          zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -la --color=always $realpath'
+          zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 
-        source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
-      '';
+          # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+          source <(${lib.getExe pkgs.fzf} --zsh)
+
+          eval "$(devenv hook zsh)"
+          eval "$(starship init zsh)"
+          eval "$(zoxide init zsh)"
+
+          function zvm_after_init() {
+            # Bind history search via FZF to Ctrl+R in both Insert and Normal/Command Modes
+            zvm_bindkey viins '^R' fzf-history-widget
+            zvm_bindkey vicmd '^R' fzf-history-widget
+
+            zvm_bindkey viins '^ ' autosuggest-accept
+            zvm_bindkey viins '\e[27;5;9~' autosuggest-accept
+            zvm_bindkey viins '^[[1;5I' autosuggest-accept     # Modern Ghostty sequence
+            zvm_bindkey viins '\e[1;5I' autosuggest-accept     # Alternative Ghostty representation
+          }
+
+          bindkey '^ ' autosuggest-accept
+          bindkey '\e[27;5;9~' autosuggest-accept
+          bindkey '^[[27;5;9~' autosuggest-accept
+          bindkey '^[[1;5I' autosuggest-accept
+          bindkey '\e[1;5I' autosuggest-accept
+
+          # source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+        '';
 
       plugins = [
-
+        {
+          name = "zsh-vi-mode";
+          src = pkgs.zsh-vi-mode;
+          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+        }
+        {
+          name = "fzf-tab";
+          src = pkgs.zsh-fzf-tab;
+          file = "share/fzf-tab/fzf-tab.plugin.zsh";
+        }
+        {
+          name = "zsh-autosuggestions";
+          src = pkgs.zsh-autosuggestions;
+          file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+        }
       ];
 
       fastSyntaxHighlighting = {
@@ -320,37 +372,12 @@
       users.defaultUserShell = pkgs.zsh;
 
       environment.systemPackages = with pkgs; [
-        zinit
         tree
-        zsh-fzf-tab
-        zsh-vi-mode
-        zsh-autosuggestions
+        # https://github.com/zdharma-continuum/zinit#nixos
+        # zinit
       ];
 
       environment.pathsToLink = [ "/share/zsh" ];
     };
 
 }
-
-# flake.homeModules.zsh =
-#   { pkgs, ... }:
-#   let
-#     # Generate a zsh completion once at build time (no per-shell cost)
-#     mkZshCompletion =
-#       { name, package, args ? [ "completion" "zsh" ] }:
-#       pkgs.runCommand "${name}-zsh-completion" { } ''
-#         mkdir -p $out/share/zsh/site-functions
-#         ${lib.getExe package} ${lib.escapeShellArgs args} > $out/share/zsh/site-functions/_${name}
-#       '';
-#   in
-#   {
-#     home.packages = [
-#       (mkZshCompletion {
-#         name = "sesh";
-#         package = pkgs.sesh;
-#       })
-#     ];
-#
-#     programs.zsh = { /* unchanged */ };
-#     programs.fzf = { /* unchanged */ };
-#   };

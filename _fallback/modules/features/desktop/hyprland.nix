@@ -12,6 +12,7 @@
       home.packages = with pkgs; [
         hyprlauncher
         hyprland-qt-support
+        hyprland-preview-share-picker
       ];
 
       # wayland.windowManager.hyprland = {

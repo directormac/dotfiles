@@ -70,10 +70,7 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
 
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nur.url = "github:nix-community/NUR";
 
     nix-alien.url = "github:thiagokokada/nix-alien";
 
@@ -87,10 +84,8 @@
 
     nixcord.url = "github:4evy/nixcord";
 
-    mangowm = {
-      url = "github:mangowm/mango";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    mangowm.url = "github:mangowm/mango";
+    noctalia.url = "github:noctalia-dev/noctalia";
 
   };
 

@@ -170,61 +170,61 @@
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
-      # config = {
-      #   common = {
-      #     default = [ "gtk" ];
-      #     # Force every app outside native DEs to use the GTK fallback dialog
-      #     "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-      #   };
-      #   gnome = {
-      #     default = [
-      #       "gnome"
-      #       "gtk"
-      #     ];
-      #   };
-      #   hyprland = {
-      #     default = [
-      #       "hyprland"
-      #       "gtk"
-      #     ];
-      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      #   };
-      #   kde = {
-      #     default = [
-      #       "kde"
-      #       "gtk"
-      #     ];
-      #     "org.freedesktop.portal.FileChooser" = [ "kde" ];
-      #     "org.freedesktop.portal.OpenURI" = [ "kde" ];
-      #   };
-      #   niri = {
-      #     # default = [
-      #     #   "gtk"
-      #     #   "gnome"
-      #     # ];
-      #     "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-      #     "org.freedesktop.impl.portal.Access" = [ "gtk" ];
-      #     "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
-      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      #     "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-      #     "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
-      #   };
-      #   mangowc = {
-      #     default = [
-      #       "gtk"
-      #     ];
-      #     "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
-      #     "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-      #     "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      #     "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
-      #   };
-      #   sway = {
-      #     default = [
-      #       "gtk"
-      #       "wlr"
-      #     ];
-      #   };
-      # };
+      config = {
+        common = {
+          default = [ "gtk" ];
+          # Force every app outside native DEs to use the GTK fallback dialog
+          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+        };
+        gnome = {
+          default = [
+            "gnome"
+            "gtk"
+          ];
+        };
+        hyprland = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+        };
+        kde = {
+          default = [
+            "kde"
+            "gtk"
+          ];
+          "org.freedesktop.portal.FileChooser" = [ "kde" ];
+          "org.freedesktop.portal.OpenURI" = [ "kde" ];
+        };
+        niri = {
+          # default = [
+          #   "gtk"
+          #   "gnome"
+          # ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+          "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+          "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+        };
+        mangowc = {
+          default = [
+            "gtk"
+          ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+          "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+          "org.freedesktop.impl.portal.Inhibit" = [ "none" ];
+        };
+        sway = {
+          default = [
+            "gtk"
+            "wlr"
+          ];
+        };
+      };
       extraPortals = [
         pkgs.xdg-desktop-portal-gtk
         pkgs.xdg-desktop-portal-gnome
