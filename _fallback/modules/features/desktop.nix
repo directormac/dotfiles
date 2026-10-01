@@ -107,11 +107,6 @@
         gaming
       ];
 
-      preferences.autostart = [
-        "wl-clip-persist --clipboard regular --reconnect-tries 0"
-        "wl-paste --watch cliphist store"
-      ];
-
       home-manager.users.${config.preferences.user.name} = {
         imports = with self.homeModules; [
           git

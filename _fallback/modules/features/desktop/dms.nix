@@ -49,7 +49,7 @@
       programs.dank-material-shell = {
         enable = true;
 
-        # managePluginSettings = false;
+        managePluginSettings = true;
 
         enableSystemMonitoring = true;
         enableVPN = true; # VPN management widget
@@ -153,7 +153,7 @@
           enable = true;
           systemd = {
             enable = true;
-            target = "default.target";
+            target = "graphical-session.target";
           };
         };
 

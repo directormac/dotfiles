@@ -18,7 +18,6 @@
             preferences.user.name = lib.mkDefault osConfig.preferences.user.name;
             preferences.user.email = lib.mkDefault osConfig.preferences.user.email;
             preferences.defaultSession = lib.mkDefault osConfig.preferences.defaultSession;
-            preferences.autostart = osConfig.preferences.autostart;
             preferences.keymap = lib.mkDefault osConfig.preferences.keymap;
             preferences.persistence = lib.mkDefault osConfig.preferences.persistence;
           }

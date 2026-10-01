@@ -22,6 +22,19 @@
 
         settings = {
 
+          bar = {
+            background_opacity = 0;
+            font_family = "NotoMono NF";
+            margin_ends = 0;
+            radius_bottom_left = 0;
+            radius_bottom_right = 0;
+          };
+
+          weather = {
+            enabled = true;
+            unit = "metric";
+          };
+
           sysmon = {
             enabled = true;
           };
@@ -29,6 +42,10 @@
           notification = {
             enabled = true;
             position = "top-right";
+          };
+
+          wallpaper = {
+            directory = "${config.home.homeDirectory}/.config/wallpapers";
           };
 
         };

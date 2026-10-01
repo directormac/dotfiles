@@ -46,7 +46,6 @@ local apps = cfg.applications
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
   hl.exec_cmd('dms run')
-  hl.exec_cmd('session-autostart')
 
   -- Optional: Clipboard history
   hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')
