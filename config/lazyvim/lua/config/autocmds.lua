@@ -47,3 +47,15 @@ vim.api.nvim_create_autocmd(
   end,
   desc = 'Proper formatoptions' }
 )
+
+
+-- Reload files changed outside of Neovim
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  desc = "Reload files changed outside of Neovim",
+  group = vim.api.nvim_create_augroup("checktime_extended", { clear = true }),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})

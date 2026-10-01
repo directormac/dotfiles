@@ -21,6 +21,7 @@ set.clipboard = 'unnamedplus'
 set.exrc = true
 
 -- Undo management
+set.autoread = true
 set.swapfile = false
 set.backup = false
 -- set.undodir = os.getenv('HOME') .. '/.local/nvim/undodir'

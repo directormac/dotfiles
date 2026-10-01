@@ -91,7 +91,7 @@
         niri
         mangowc
 
-        zen
+        browser
         chromium
         bitwarden
 

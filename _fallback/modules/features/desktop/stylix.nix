@@ -1,6 +1,7 @@
 { self, ... }: {
 
   flake.homeModules.stylix = {
+    programs.bat.enable = true;
 
     stylix = {
       enable = true;

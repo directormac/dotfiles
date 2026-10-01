@@ -81,7 +81,6 @@
         # CLI Goodies
         nix-prefetch-scripts
         nix-tree
-        bat
         ncdu
         btop
         dust
