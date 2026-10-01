@@ -49,7 +49,7 @@
       programs.dank-material-shell = {
         enable = true;
 
-        managePluginSettings = true;
+        managePluginSettings = false;
 
         enableSystemMonitoring = true;
         enableVPN = true; # VPN management widget
