@@ -1,11 +1,26 @@
 { self, ... }: {
 
-  flake.homeModules.hyprland = { config, ... }: {
-    home.file = {
-      ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/hypr";
-    };
+  flake.homeModules.hyprland =
+    { pkgs, config, ... }:
+    {
+      home.file = {
+        ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/hypr";
+      };
 
-  };
+      services.hyprpolkitagent.enable = true;
+
+      home.packages = with pkgs; [
+        hyprlauncher
+        hyprland-qt-support
+      ];
+
+      # wayland.windowManager.hyprland = {
+      #   enable = true;
+      #   xwayland.enable = true;
+      #   configType = "lua";
+      # };
+
+    };
 
   flake.nixosModules.hyprland = { pkgs, config, ... }: {
 
@@ -16,20 +31,15 @@
       ];
     };
 
+    programs.uwsm = {
+      enable = true;
+    };
+
     programs.hyprland = {
       enable = true;
       withUWSM = true;
       xwayland.enable = true;
     };
-
-    environment.systemPackages = with pkgs; [
-      # Used for default config SUPER+R
-      hyprlauncher
-      hyprpolkitagent
-
-      qt5.qtwayland
-      qt6.qtwayland
-    ];
 
   };
 }

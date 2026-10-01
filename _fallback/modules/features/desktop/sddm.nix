@@ -43,8 +43,12 @@ in
     };
 
     services.displayManager = {
-      sddm.wayland.enable = lib.mkForce true;
+      sddm = {
+        enable = true;
+      };
+      # sddm.enable = lib.mkForce true;
       defaultSession = "hyprland-uwsm";
+      # sddm.wayland.enable = lib.mkForce true;
     };
 
   };

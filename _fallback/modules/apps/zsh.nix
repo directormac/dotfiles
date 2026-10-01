@@ -61,6 +61,7 @@
         "tls" = "tmux ls";
         "t" = "tmux a";
         "tn" = "sesh connect .";
+        "logs" = "journalctl --user -f -n 50";
         "grab" = "ghgrab --cwd";
         "flake" = "nix flake";
         "nixdev" = "nix develop -c $SHELL";

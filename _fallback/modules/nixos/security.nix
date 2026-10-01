@@ -11,6 +11,13 @@
       };
       sudo.extraConfig = "Defaults pwfeedback";
 
+      # wrappers.pkexec = {
+      #   owner = "root";
+      #   group = "root";
+      #   setuid = true;
+      #   source = "${pkgs.polkit.bin}/bin/pkexec";
+      # };
+
       # apparmor = {
       #   enable = true;
       #   killUnconfinedConfinables = true;

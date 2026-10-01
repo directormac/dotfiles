@@ -65,6 +65,9 @@
       "showTrash": false,
       "trashFileManager": "default",
       "trashCustomCommand": "",
+      "magnification": false,
+      "magnificationScale": 130,
+      "magnificationProfile": "parabolic",
       "order": [],
       "widgets": [
         {
@@ -103,10 +106,31 @@
   "systemTrayIconTintMode": "primary",
   "controlCenterWidgets": [
     {
-      "id": "header",
+      "id": "user",
       "enabled": true,
       "w": 8,
       "h": 1
+    },
+    {
+      "id": "settings",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true
+    },
+    {
+      "id": "lock",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true
+    },
+    {
+      "id": "power",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true
     },
     {
       "id": "volumeSlider",
@@ -155,6 +179,22 @@
       "enabled": true,
       "w": 4,
       "h": 1
+    },
+    {
+      "id": "runningApps",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "footer": true
+    },
+    {
+      "id": "diskUsage",
+      "enabled": true,
+      "w": 4,
+      "h": 1,
+      "instanceId": "mupdqoz9qwc38ii3wlnrgjccj2kxzu",
+      "mountPath": "/",
+      "showMountPath": true
     }
   ],
   "bluetoothMprisEnabled": true,
@@ -560,5 +600,5 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 33
+  "configVersion": 36
 }

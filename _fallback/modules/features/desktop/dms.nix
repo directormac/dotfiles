@@ -102,8 +102,14 @@
             };
           };
 
+          screenkey = {
+            enable = true;
+            settings = {
+
+            };
+          };
+
           ambientSound.enable = true;
-          screenkey.enable = true;
           amdGpuMonitor.enable = true;
           dankRssWidget.enable = true;
           pureLyrics.enable = true;
@@ -201,10 +207,6 @@
         # };
       };
 
-      kdeconnect = {
-        enable = true;
-        package = pkgs.valent;
-      };
     };
 
     environment.systemPackages = with pkgs; [

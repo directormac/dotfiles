@@ -254,6 +254,7 @@
         libinput
         libjxl
         localsend
+        foot
         mpv
         nautilus
         pavucontrol
@@ -263,6 +264,7 @@
         seahorse
         selfpkgs.rmpd
         sqlitebrowser
+        gsmartcontrol
         tailscale
         tor-browser
         udiskie
@@ -278,6 +280,9 @@
         xdg-utils
         yt-dlp
         zed-editor
+
+        qt5.qtwayland
+        qt6.qtwayland
 
         # gnumake
         # gcc

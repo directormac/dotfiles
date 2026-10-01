@@ -19,6 +19,7 @@
         "networkmanager"
         "podman"
         "render"
+        "storage"
         "root"
         "scanner"
         "vboxusers"

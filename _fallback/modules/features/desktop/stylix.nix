@@ -60,21 +60,11 @@
       ];
     };
 
-    # config.stylix = {
-    #   testbed = {
-    #     enable = true;
-    #   };
-    #
-    #   home-manager.sharedModules = lib.singleton {
-    #     # Write Home Manager options here
-    #   };
-    # };
-
     stylix = {
       enable = true;
       polarity = "dark";
 
-      autoEnable = false;
+      autoEnable = true;
 
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
@@ -142,11 +132,6 @@
         };
       };
 
-      targets = {
-        console.enable = true;
-        chromium.enable = true;
-        gtk.enable = true;
-      };
     };
   };
 }

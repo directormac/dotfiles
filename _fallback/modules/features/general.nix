@@ -90,6 +90,7 @@
         file
         fzf
         ghgrab
+        smartmontools
         imv
         killall
         lsd
