@@ -12,6 +12,7 @@
   flake.nixosModules.mangowc = { config, ... }: {
     imports = [
       inputs.mangowm.nixosModules.mango
+      self.nixosModules.noctalia
     ];
 
     home-manager.users.${config.preferences.user.name} = {

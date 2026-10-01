@@ -25,6 +25,9 @@
       pins = {
         gmail = "18cef5fd-c657-4c71-9b4c-273056461be9";
         email = "c6d1c67e-f0a7-474d-a558-cccdf7d967fa";
+        messenger = "f39b9438-6cc8-4a23-ad9a-152aed130088";
+        youtube = "5ac3b9d5-deeb-4f48-b28c-e84770910d9f";
+        bluesky = "519bff13-7f32-4725-92a1-628b1620031e";
       };
 
       sharedNativeMessagingHosts = [
@@ -345,15 +348,22 @@
               id = spaces.personal;
               position = 1000;
               icon = "🏠";
-              pins."Email" = {
-                id = pins.email;
-                url = "https://inbox.purelymail.com";
-                position = 100;
-              };
-              pins."Gmail" = {
-                id = pins.gmail;
-                url = "https://mail.google.com";
-                position = 200;
+              pins = {
+                "Email" = {
+                  id = pins.email;
+                  url = "https://inbox.purelymail.com";
+                  position = 100;
+                };
+                "Gmail" = {
+                  id = pins.gmail;
+                  url = "https://mail.google.com";
+                  position = 200;
+                };
+                "Messenger" = {
+                  id = pins.messenger;
+                  url = "https://messenger.com";
+                  position = 300;
+                };
               };
             };
             "Dev" = {
@@ -434,8 +444,6 @@
 
           mods = [
             "253a3a74-0cc4-47b7-8b82-996a64f030d5"
-            #   "e122b5d9-d385-4bf8-9971-e137809097d0"
-            #   "c6813222-6571-4ba6-8faf-58f3343324f6"
           ];
 
           userContent =
@@ -448,12 +456,6 @@
             # css
             ''
               @import "catppuccin/userChrome.css";
-
-              /* .tab-icon-image { */
-              /*   width: 16px; */
-              /*   height: 16px; */
-              /* } */
-
 
               :root {
                 --zen-webview-border-radius: 0 !important;

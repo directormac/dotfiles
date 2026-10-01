@@ -46,9 +46,7 @@ in
       sddm = {
         enable = true;
       };
-      # sddm.enable = lib.mkForce true;
-      defaultSession = "hyprland-uwsm";
-      # sddm.wayland.enable = lib.mkForce true;
+      defaultSession = config.preferences.defaultSession;
     };
 
   };

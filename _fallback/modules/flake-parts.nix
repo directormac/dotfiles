@@ -57,14 +57,16 @@
   flake.homeConfigurations.home = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
     modules = with self.homeModules; [
+      preferences
       homeModule
       git
-      {
-        # home.username = config.preferences.user.name;
-        # home.homeDirectory = "/home/${config.preferences.user.name}";
-        home.username = "artifex";
-        home.homeDirectory = "/home/artifex";
-      }
+      (
+        { config, ... }:
+        {
+          home.username = config.preferences.user.name;
+          home.homeDirectory = "/home/${config.preferences.user.name}";
+        }
+      )
     ];
   };
 

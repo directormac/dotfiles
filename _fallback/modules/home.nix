@@ -10,6 +10,20 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       backupFileExtension = "backup";
+      sharedModules = [
+        self.homeModules.preferences
+        (
+          { osConfig, lib, ... }:
+          {
+            preferences.user.name = lib.mkDefault osConfig.preferences.user.name;
+            preferences.user.email = lib.mkDefault osConfig.preferences.user.email;
+            preferences.defaultSession = lib.mkDefault osConfig.preferences.defaultSession;
+            preferences.autostart = osConfig.preferences.autostart;
+            preferences.keymap = lib.mkDefault osConfig.preferences.keymap;
+            preferences.persistence = lib.mkDefault osConfig.preferences.persistence;
+          }
+        )
+      ];
     };
 
     # This is applied to this host with home-manager
