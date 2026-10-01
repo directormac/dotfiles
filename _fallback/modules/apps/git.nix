@@ -7,17 +7,6 @@
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false; # Mutes the second evaluation warning
-
-      settings = {
-        "github.com" = {
-          hostname = "github.com";
-          user = "git";
-          # Point directly to your Agenix symlinked private key
-          identityFile = "${config.home.homeDirectory}/.ssh/mac_mkra_dev";
-          # Disables querying the empty gpg-agent keyring for this host
-          identitiesOnly = false;
-        };
-      };
     };
 
     services.gpg-agent = {
@@ -30,6 +19,7 @@
       enableSshSupport = true;
       defaultCacheTtlSsh = 10800;
       maxCacheTtlSsh = 10800;
+
       sshKeys = [
         "E9A28495202EB6723965F5C42E0855AA109CF7D1"
       ];
