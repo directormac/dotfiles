@@ -4,6 +4,8 @@
     nix = {
       settings = {
 
+        access-tokens = [ "!include ${config.age.secrets.github_api_key.path}" ];
+
         experimental-features = [
           "nix-command"
           "flakes"
