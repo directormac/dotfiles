@@ -11,6 +11,9 @@
       "command(cat)",
       "command(grep)",
       "command(find)",
+      "command(strings)",
+      "command(which)",
+      "command(tail)",
       "read_file(/nix/store/*)"
     ]
   },

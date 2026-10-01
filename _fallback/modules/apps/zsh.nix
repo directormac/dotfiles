@@ -52,6 +52,7 @@
         "top" = "btop";
         "wh" = "which";
         "v" = "lazyvim";
+        "spf" = "superfile";
         "vi" = "neovim";
         "nvim" = "lazyvim";
         "y" = "yazi";

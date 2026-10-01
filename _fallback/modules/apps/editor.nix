@@ -23,7 +23,8 @@
         name = "Neovim";
         genericName = "Text Editor";
         comment = "Manage text files";
-        exec = "kitty -e neovim %F";
+        # exec = "kitty -e neovim %F";
+        exec = "ghostty --class=com.neovim.editor -e nvim %F";
         terminal = false; # Handled by the terminal execution string above
         type = "Application";
         icon = "nvim";

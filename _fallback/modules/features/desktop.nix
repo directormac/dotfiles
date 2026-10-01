@@ -17,10 +17,25 @@
           ];
         };
         program_options = {
-          tray = true;
+          tray = "auto";
+          automount = true;
+          notify = true;
           udisks_version = 2;
           # file_manager = "${pkgs.nautilus}/bin/nautilus";
         };
+
+        device_config = [
+          {
+            # Match all virtual loop structures (used for mounting ISO/IMG files)
+            match = {
+              device_file = "/dev/loop*";
+            };
+            options = {
+              detach = true; # Tells udiskie to break down the loop device cleanly
+              eject = true; # Erases the phantom block instance from the kernel
+            };
+          }
+        ];
 
       };
     };
@@ -53,9 +68,9 @@
       config,
       ...
     }:
-    # let
-    #   selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
-    # in
+    let
+      selfpkgs = self.packages."${pkgs.stdenv.hostPlatform.system}";
+    in
     {
 
       imports = with self.nixosModules; [
@@ -111,9 +126,10 @@
       };
 
       services = {
+        # devmon.enable = true;
+
         libinput.enable = true;
         fstrim.enable = true;
-        devmon.enable = true;
         gvfs.enable = true;
         udisks2.enable = true;
         dbus.enable = true;
@@ -168,17 +184,20 @@
           # no need to redefine it in your config for now)
           #media-session.enable = true;
         };
-      };
 
-      # Enable the X11 windowing system.
-      services.xserver = {
-        enable = true;
+        # Enable the X11 windowing system.
+        xserver = {
+          enable = true;
 
-        exportConfiguration = true;
+          exportConfiguration = true;
 
-        xkb = {
-          layout = "us";
-          variant = "";
+          excludePackages = [ pkgs.xterm ]; # Erases xterm completely!
+
+          xkb = {
+            layout = "us";
+            variant = "";
+          };
+
         };
 
       };
@@ -199,8 +218,6 @@
         };
       };
 
-      programs.firefox.enable = true;
-
       programs.winbox = {
         enable = true;
         openFirewall = true;
@@ -218,72 +235,60 @@
 
       environment.pathsToLink = [ "share/thumbnailers" ];
 
-      # environment.sessionVariables = {
-      #   # https://stacker.news/items/948469
-      #   NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
-      #   QT_QPA_PLATFORM = "xcb";
-      # };
-
       environment.systemPackages = with pkgs; [
+        android-tools
+        anydesk
+        cava
+        cliphist
+        evince
+        feh
+        ffmpeg-full
+        ffmpegthumbnailer # High-performance video thumbs (MKV, MP4, HEVC, AV1)
+        file-roller
+        foliate
+        galculator
+        gdk-pixbuf # Fixes raw image asset translations
+        gnome-disk-utility
+        google-chrome
+        libgsf # Explodes ODF and open-office document formats
+        libinput
+        libjxl
+        localsend
+        mpv
+        nautilus
+        pavucontrol
+        poppler-utils # Lightning-fast PDF thumbnails
+        quickshell
+        rmpc
+        seahorse
+        selfpkgs.rmpd
+        sqlitebrowser
+        tailscale
+        tor-browser
+        udiskie
+        udisks2
+        vlc
+        vscode
+        vulkan-tools
+        webp-pixbuf-loader # Ensures .webp images show clean previews
+        wev
+        wireguard-tools
+        wl-clip-persist
+        wl-clipboard
+        xdg-utils
+        yt-dlp
+        zed-editor
+
         # gnumake
         # gcc
         # binutils
         # pkg-config
-
-        libinput
-        libjxl
-        wev
-        quickshell
-        cliphist
-        wl-clipboard
-        localsend
-        wl-clip-persist
-
-        android-tools
-        vulkan-tools
-
-        tor-browser
-
-        # General apps
         # imagemagickBig
+        # losslessaudiochecker
         # novelwriter
-        xdg-utils
-        seahorse
-        gnome-disk-utility
-        anydesk
-        evince
-        file-roller
-        foliate
-        galculator
-        nautilus
-        pavucontrol
-        tailscale
-        udiskie
-        udisks2
-        wireguard-tools
-
-        # Maybe
-        google-chrome
-        vscode
-
-        # Dev Apps
-        zed-editor
-        sqlitebrowser
-
-        # Multimedia
         # sox
         # sox_ng
         # spek
-        # losslessaudiochecker
-        cava
-        self.packages.${pkgs.stdenv.hostPlatform.system}.rmpd
-        rmpc
-        mpv
-        feh
-        vlc
-
-        ffmpeg-full
-        yt-dlp
       ];
     };
 }

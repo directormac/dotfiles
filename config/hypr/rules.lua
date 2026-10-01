@@ -42,6 +42,9 @@ local floating_apps = {
   'nm-connection-editor',
   'Waydroid',
   'com.jaoushingan.WaydroidHelper',
+
+  'com.neovim.editor',
+  'com.superfile.fm',
 }
 
 for _, app in ipairs(floating_apps) do

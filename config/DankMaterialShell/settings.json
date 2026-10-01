@@ -218,6 +218,9 @@
       "cursorHideTimeout": 0
     }
   },
+  "acMonitorTimeout": 7200,
+  "acLockTimeout": 1800,
+  "acSuspendTimeout": 10800,
   "muxUseCustomCommand": true,
   "matugenTemplateNiri": false,
   "matugenTemplateHyprland": false,

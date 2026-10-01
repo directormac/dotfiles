@@ -10,6 +10,11 @@
         userDirs = {
           enable = true;
           createDirectories = true;
+
+          extraConfig = {
+            XDG_CODE_DIR = "${config.home.homeDirectory}/Code";
+            XDG_WORK_DIR = "${config.home.homeDirectory}/Work";
+          };
         };
 
         mimeApps = {
@@ -38,12 +43,100 @@
 
         };
 
+        desktopEntries = {
+          yazi = {
+            name = "Yazi";
+            genericName = "Terminal File Manager";
+            exec = "ghostty --class=com.yazi.fm -e yazi %F";
+            terminal = false;
+            type = "Application";
+            icon = "yazi";
+            categories = [
+              "Utility"
+              "Core"
+            ];
+
+            # Define custom right-click context menu actions
+            actions = {
+              "open-terminal" = {
+                name = "Open Terminal Here";
+                exec = "ghostty --working-directory=%f";
+              };
+            };
+          };
+
+          superfile = {
+            name = "Superfile";
+            genericName = "Terminal File Manager";
+            exec = "ghostty --class=com.superfile.fm -e spf %F"; # 'spf' is the binary command for superfile
+            terminal = false;
+            type = "Application";
+            icon = "superfile"; # Ensure you have an icon assigned or change to a generic name
+            categories = [
+              "Utility"
+              "Core"
+            ];
+
+            actions = {
+              "open-terminal" = {
+                name = "Open Terminal Here";
+                exec = "ghostty --working-directory=%f";
+              };
+            };
+          };
+
+        };
+
       };
 
       home.file = {
         ".face".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/.face";
         ".config/wallpapers".source =
           config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/wallpapers";
+      };
+
+      gtk = {
+        enable = true;
+        gtk3.bookmarks = [
+          "file://${config.home.homeDirectory}/Code Code"
+          "file://${config.home.homeDirectory}/Projects Projects"
+          "file://${config.home.homeDirectory}/Downloads Downloads"
+          "file:///mnt/local/resources Resources(SSD)"
+          "file:///mnt/network/fileserver Fileserver"
+        ];
+      };
+
+      dconf.settings = {
+        "org/gnome/desktop/privacy" = {
+          remember-recent-files = false;
+        };
+        "org/gnome/nautilus/preferences" = {
+          # Keep folders at the very top of the window when sorting by name/date
+          sort-directories-first = true;
+
+          # Changes the default behavior when clicking on a file name to change it.
+          # Selecting a file and typing will rename it in-place instead of opening a distinct modal window.
+          rename-with-inline-handler = true;
+
+          # Change default archiving/compression tool choice from .tar.xz to standard zip
+          default-compression-format = "zip";
+
+          # "always" forces thumbnails on local drives AND your network mounted samba/nfs paths
+          show-image-thumbnails = "always";
+
+          # Increases or completely removes the max file size limitation for previews (in bytes)
+          # 0 means unrestricted: it will even thumbnail a 4GB movie file!
+          thumbnail-limit = 0;
+        };
+        "org/gnome/desktop/thumbnail-cache" = {
+          # Set the maximum size of the thumbnail cache folder in Megabytes (MB)
+          # 512 is the default. Let's strictly cap it at 1024 MB (1GB) so it never hogs your storage.
+          maximum-size = 1024;
+
+          # Set the maximum lifetime of cached files in days.
+          # Any thumbnail that hasn't been previewed for 30 days gets cleanly deleted.
+          maximum-age = 30;
+        };
       };
 
     };
@@ -64,6 +157,8 @@
       config = {
         common = {
           default = [ "gtk" ];
+          # Force every app outside native DEs to use the GTK fallback dialog
+          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
         };
         gnome = {
           default = [

@@ -28,11 +28,14 @@
           22
           80
           443
+          445
           59010
           59011
           8080
         ];
         allowedUDPPorts = [
+          137
+          138
           59010
           59011
         ];
@@ -55,10 +58,16 @@
     };
 
     services.gvfs.enable = true;
+
     services.avahi = {
       enable = true;
       nssmdns4 = true;
       browseDomains = [ ];
+    };
+
+    services.samba-wsdd = {
+      enable = true;
+      openFirewall = true;
     };
 
     programs.ssh.extraConfig = ''
