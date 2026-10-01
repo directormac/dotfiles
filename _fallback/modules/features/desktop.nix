@@ -89,6 +89,7 @@
 
         ghostty
         kitty
+        lazyvim
 
         dms
         hyprland

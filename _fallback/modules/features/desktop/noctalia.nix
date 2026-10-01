@@ -12,11 +12,6 @@
     in
     {
 
-      # home.file.".config/noctalia" = {
-      #   source = config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/noctalia";
-      #   recursive = true;
-      # };
-
       programs.noctalia = {
         enable = true;
 
