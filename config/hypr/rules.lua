@@ -34,6 +34,8 @@ hl.window_rule({
 local floating_apps = {
   'bitwarden',
   'feh',
+  'gnome-disks',
+  'gsmartcontrol',
   'com.danklinux.dankcalendar',
   'galculator',
   'org.pulseaudio.pavucontrol',

@@ -109,83 +109,108 @@
       "id": "user",
       "enabled": true,
       "w": 8,
-      "h": 1
+      "h": 1,
+      "col": 0,
+      "row": 0
     },
     {
       "id": "settings",
       "enabled": true,
       "w": 1,
       "h": 1,
-      "small": true
+      "small": true,
+      "col": 0,
+      "row": 1
     },
     {
       "id": "lock",
       "enabled": true,
       "w": 1,
       "h": 1,
-      "small": true
+      "small": true,
+      "col": 1,
+      "row": 1
     },
     {
       "id": "power",
       "enabled": true,
       "w": 1,
       "h": 1,
-      "small": true
+      "small": true,
+      "col": 2,
+      "row": 1
     },
     {
       "id": "volumeSlider",
       "enabled": true,
-      "w": 4,
-      "h": 1
+      "w": 5,
+      "h": 1,
+      "col": 3,
+      "row": 1
     },
     {
       "id": "inputVolumeSlider",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 0,
+      "row": 2
     },
     {
       "id": "audioOutput",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 4,
+      "row": 2
     },
     {
       "id": "audioInput",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 0,
+      "row": 3
     },
     {
       "id": "wifi",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 4,
+      "row": 3
     },
     {
       "id": "bluetooth",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 0,
+      "row": 4
     },
     {
       "id": "darkMode",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 4,
+      "row": 4
     },
     {
       "id": "doNotDisturb",
       "enabled": true,
       "w": 4,
-      "h": 1
+      "h": 1,
+      "col": 0,
+      "row": 5
     },
     {
       "id": "runningApps",
       "enabled": true,
       "w": 4,
       "h": 1,
-      "footer": true
+      "footer": true,
+      "footerW": 5
     },
     {
       "id": "diskUsage",
@@ -194,7 +219,9 @@
       "h": 1,
       "instanceId": "mupdqoz9qwc38ii3wlnrgjccj2kxzu",
       "mountPath": "/",
-      "showMountPath": true
+      "showMountPath": true,
+      "col": 4,
+      "row": 5
     }
   ],
   "bluetoothMprisEnabled": true,
