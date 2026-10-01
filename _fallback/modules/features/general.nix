@@ -4,6 +4,24 @@
   ...
 }:
 {
+
+  flake.homeModules.general = {
+
+    programs = {
+      bat = {
+        enable = true;
+      };
+      btop = {
+        enable = true;
+      };
+      television = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+    };
+
+  };
+
   flake.nixosModules.general =
     {
       pkgs,
@@ -30,6 +48,12 @@
 
       users.users.${config.preferences.user.name} = {
         shell = pkgs.zsh;
+      };
+
+      home-manager.users.${config.preferences.user.name} = {
+        imports = with self.homeModules; [
+          general
+        ];
       };
 
       security.sudo-rs.enable = true;
@@ -82,7 +106,6 @@
         nix-prefetch-scripts
         nix-tree
         ncdu
-        btop
         dust
         fastfetch
         microfetch

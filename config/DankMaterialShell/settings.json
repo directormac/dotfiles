@@ -230,11 +230,9 @@
   "spotlightSectionViewModes": {
     "apps": "list"
   },
-  "dankLauncherV2Size": "micro",
   "dankLauncherV2BorderEnabled": true,
   "dankLauncherV2IncludeFoldersInAll": true,
   "launcherUseOverlayLayer": true,
-  "launcherStyle": "island",
   "dashTabs": [
     {
       "id": "overview",

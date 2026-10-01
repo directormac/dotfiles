@@ -60,6 +60,12 @@
         RandomizedDelaySec = "1h";
       };
     };
+
+    home.packages = with pkgs; [
+      sqlitebrowser
+      gsmartcontrol
+    ];
+
   };
 
   flake.nixosModules.desktop =
@@ -263,8 +269,6 @@
         rmpc
         seahorse
         selfpkgs.rmpd
-        sqlitebrowser
-        gsmartcontrol
         tailscale
         tor-browser
         udiskie

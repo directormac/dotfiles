@@ -44,62 +44,68 @@
         };
 
         desktopEntries = {
-          yazi = {
-            name = "Yazi";
-            genericName = "Terminal File Manager";
-            exec = "ghostty --class=com.yazi.fm -e yazi";
-            terminal = false;
-            type = "Application";
-            icon = "yazi";
-            categories = [
-              "Utility"
-              "Core"
-            ];
-
-            # Define custom right-click context menu actions
-            actions = {
-              "open-terminal" = {
-                name = "Open Terminal Here";
-                exec = "ghostty --working-directory=%f";
-              };
-            };
-          };
+          # yazi = {
+          #   name = "Yazi";
+          #   genericName = "Terminal File Manager";
+          #   exec = "ghostty --class=com.yazi.fm -e yazi";
+          #   terminal = false;
+          #   type = "Application";
+          #   icon = "yazi";
+          #   categories = [
+          #     "Utility"
+          #     "Core"
+          #   ];
+          #
+          #   # Define custom right-click context menu actions
+          #   actions = {
+          #     "open-terminal" = {
+          #       name = "Open Terminal Here";
+          #       exec = "ghostty --working-directory=%f";
+          #     };
+          #   };
+          # };
 
           superfile = {
             name = "Superfile";
             genericName = "Terminal File Manager";
-            exec = "ghostty --class=com.superfile.fm -e spf"; # 'spf' is the binary command for superfile
+            exec = "ghostty --class=com.superfile.fm -e superfile"; # 'spf' is the binary command for superfile
             terminal = false;
             type = "Application";
-            icon = "superfile"; # Ensure you have an icon assigned or change to a generic name
+            icon = "system-file-manager";
             categories = [
               "Utility"
               "Core"
             ];
 
-            actions = {
-              "open-terminal" = {
+            actions = [ "open-in-superfile" ];
+
+            settings = {
+              "Desktop Action open-terminal" = {
                 name = "Open Terminal Here";
-                exec = "ghostty --working-directory=%f";
+                exec = "ghostty --class=com.superfile.fm -e superfile %f";
               };
             };
+
           };
 
-          # gsmartcontrol = {
-          #   name = "GSmartControl (Stylix Fix)";
-          #   genericName = "Hard Disk Health Monitor";
-          #   comment = "Query and control SMART data on storage systems";
-          #   icon = "gsmartcontrol";
-          #
-          #   # Wrap the execution sequence in a shell string to bypass validation checks
-          #   exec = "sh -c 'sudo env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_CONFIG_HOME=$HOME/.config gsmartcontrol'";
-          #
-          #   terminal = true;
-          #   categories = [
-          #     "System"
-          #     "Monitor"
-          #   ];
-          # };
+          gsmartcontrol = {
+            name = "GSmartControl (Stylix Fix)";
+            genericName = "Hard Disk Health Monitor";
+            comment = "Query and control SMART data on storage systems";
+            icon = "gsmartcontrol";
+
+            # Wrap the execution sequence in a shell string to bypass validation checks
+            # exec = "sh -c 'sudo env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_CONFIG_HOME=$HOME/.config gsmartcontrol'";
+            exec = ''
+              sudo env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR XDG_CONFIG_HOME="$HOME/.config" GTK_THEME=$(gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'") gsmartcontrol
+            '';
+
+            terminal = true;
+            categories = [
+              "System"
+              "Monitor"
+            ];
+          };
 
         };
 

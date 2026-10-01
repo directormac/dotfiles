@@ -1,51 +1,38 @@
 { self, ... }: {
 
   flake.homeModules.stylix = {
-    programs.bat.enable = true;
 
     stylix = {
       enable = true;
 
       targets = {
+
+        kde.enable = true;
         dank-calendar.enable = true;
-
-        firefox = {
-          enable = true;
-          profileNames = [ "default" ];
-        };
-
-        gtk = {
-          enable = true;
-        };
-
-        qt = {
-          enable = true;
-        };
+        gtk.enable = true;
+        qt.enable = true;
+        feh.enable = true;
+        foliate.enable = true;
+        mpv.enable = true;
+        cava.enable = true;
+        nixcord.enable = true;
+        opencode.enable = true;
+        bat.enable = true;
+        vivid.enable = true;
+        btop.enable = true;
+        mangohud.enable = true;
+        x11.enable = true;
 
         zen-browser = {
           enable = false;
           profileNames = [ "default" ];
         };
 
-        feh.enable = true;
-        foliate.enable = true;
-        mpv.enable = true;
-        cava.enable = true;
-        nixcord.enable = true;
-
-        opencode.enable = true;
-        bat.enable = true;
-        vivid.enable = true;
-
-        btop = {
+        firefox = {
           enable = true;
+          profileNames = [ "default" ];
         };
 
-        mangohud = {
-          enable = true;
-        };
-
-        x11.enable = true;
       };
 
     };
@@ -130,6 +117,11 @@
           package = pkgs.noto-fonts-color-emoji;
           name = "Noto Color Emoji";
         };
+      };
+
+      targets = {
+        console.enable = true;
+        chromium.enable = true;
       };
 
     };
