@@ -95,7 +95,7 @@
         hyprland
 
         niri
-        mangowc
+        mangowm
 
         browser
         chromium

@@ -1,7 +1,7 @@
 { inputs, self, ... }: {
 
   # Reference https://mangowm.github.io/docs/nix-options
-  flake.homeModules.mangowc = { config, ... }: {
+  flake.homeModules.mangowm = { config, ... }: {
 
     wayland.windowManager.mango = {
       enable = true;
@@ -11,6 +11,18 @@
         variables = [
           "--all"
         ];
+        extraCommands = [
+          "systemctl --user reset-failed"
+          "systemctl --user start mango-session.target"
+        ];
+        autostart_sh =
+          # sh
+          ''
+            noctalia &
+            # /usr/lib/xdg-desktop-portal-wlr &
+            wl-clip-persist --clipboard regular --reconnect-tries 0 &
+            wl-paste --type text --watch cliphist store &
+          '';
       };
     };
 
@@ -21,7 +33,7 @@
 
   };
 
-  flake.nixosModules.mangowc = { config, ... }: {
+  flake.nixosModules.mangowm = { config, ... }: {
     imports = [
       inputs.mangowm.nixosModules.mango
       self.nixosModules.noctalia
@@ -30,7 +42,7 @@
     home-manager.users.${config.preferences.user.name} = {
       imports = [
         inputs.mangowm.hmModules.mango
-        self.homeModules.mangowc
+        self.homeModules.mangowm
       ];
     };
 
