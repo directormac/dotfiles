@@ -85,9 +85,10 @@ hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close())
 hl.bind(modkey .. ' + C', hl.dsp.window.center())
 hl.bind(modkey .. ' + P', hl.dsp.window.pseudo())
 
-hl.bind(modkey .. ' + R', hl.dsp.window.float())
+hl.bind(modkey .. '+ SHIFT + Space', hl.dsp.window.float())
+
 hl.bind(
-  modkey .. ' + SHIFT + R',
+  modkey .. '+ CTRL+ Space',
   function()
     hl.dispatch(hl.dsp.window.cycle_next({
       floating = not hl.get_active_window().floating,
