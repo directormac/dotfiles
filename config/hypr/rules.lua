@@ -39,6 +39,7 @@ local floating_apps = {
   'com.danklinux.dankcalendar',
   'galculator',
   'org.pulseaudio.pavucontrol',
+  'org.localsend.localsend_app',
   'ghostty --class=com.ghostty.float',
   'org.gnome.Nautilus',
   'mpv',

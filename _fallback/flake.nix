@@ -16,12 +16,21 @@
     wrappers.url = "github:nix-community/nix-wrapper-modules";
     wrappers.inputs.nixpkgs.follows = "nixpkgs";
 
-    disko.url = "github:nix-community/disko";
-    impermanence.url = "github:nix-community/impermanence";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     kickstart-nix-nvim.url = "github:directormac/kickstart-nix.nvim";
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
@@ -36,11 +45,23 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dms.url = "github:AvengeMedia/DankMaterialShell";
-    dgop.url = "github:AvengeMedia/dgop";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
-    dankcalendar.url = "github:AvengeMedia/dankcalendar";
-    danksearch.url = "github:AvengeMedia/danksearch";
+    dankcalendar = {
+      url = "github:AvengeMedia/dankcalendar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     ghostty.url = "github:ghostty-org/ghostty";
 
@@ -56,7 +77,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # https://github.com/0xc000022070/zen-browser-flake#installation
     zen-browser = {
@@ -82,10 +106,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixcord.url = "github:4evy/nixcord";
+    nixcord = {
+      url = "github:4evy/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    mangowm.url = "github:mangowm/mango";
-    noctalia.url = "github:noctalia-dev/noctalia";
+    mangowm = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 

@@ -270,8 +270,9 @@
         pavucontrol
         poppler-utils # Lightning-fast PDF thumbnails
         quickshell
-        rmpc
+        fcitx5
         seahorse
+        rmpc
         selfpkgs.rmpd
         tailscale
         tor-browser

@@ -1,6 +1,18 @@
 { inputs, self, ... }: {
 
+  # Reference https://mangowm.github.io/docs/nix-options
   flake.homeModules.mangowc = { config, ... }: {
+
+    wayland.windowManager.mango = {
+      enable = true;
+      systemd = {
+        enable = true;
+        xdgAutostart = true;
+        variables = [
+          "--all"
+        ];
+      };
+    };
 
     home.file.".config/mango" = {
       source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/mango";
@@ -16,8 +28,9 @@
     ];
 
     home-manager.users.${config.preferences.user.name} = {
-      imports = with self.homeModules; [
-        mangowc
+      imports = [
+        inputs.mangowm.hmModules.mango
+        self.homeModules.mangowc
       ];
     };
 
