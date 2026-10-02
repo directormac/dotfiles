@@ -1,7 +1,7 @@
 { inputs, self, ... }: {
 
   # Reference https://mangowm.github.io/docs/nix-options
-  flake.homeModules.mangowm = { config, ... }: {
+  flake.homeModules.mangowm = { config, pkgs, ... }: {
 
     wayland.windowManager.mango = {
       enable = true;
@@ -15,19 +15,31 @@
           "systemctl --user reset-failed"
           "systemctl --user start mango-session.target"
         ];
-        autostart_sh =
-          # sh
-          ''
-            noctalia &
-            # /usr/lib/xdg-desktop-portal-wlr &
-            wl-clip-persist --clipboard regular --reconnect-tries 0 &
-            wl-paste --type text --watch cliphist store &
-          '';
       };
+      autostart_sh =
+        # sh
+        ''
+          noctalia &
+          systemctl --user restart xdg-desktop-portal xdg-desktop-portal-wlr &
+          wl-clip-persist --clipboard regular --reconnect-tries 0 &
+          wl-paste --type text --watch cliphist store &
+        '';
+      extraConfig = ''
+        source = ${config.home.homeDirectory}/.dotfiles/config/mango/config.conf
+      '';
     };
 
-    home.file.".config/mango" = {
-      source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/mango";
+    home.packages = with pkgs; [
+      slurp
+    ];
+
+    home.file.".config/mango/config.d" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/config.d";
+      recursive = true;
+    };
+
+    home.file.".config/mango/dms" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/dms";
       recursive = true;
     };
 
