@@ -26,16 +26,21 @@
     };
 
     stylix.targets = {
-      nixcord.enable = true;
-      vencord.enable = true;
-      vesktop = {
+      nixcord = {
         enable = true;
-        colors = {
-          override = {
-            base0B = "cba6f7";
-          };
-        };
+        extraCss = ''
+          /* Override Stylix mapping blurple to base0B (green) -> use Mauve */
+          :root {
+            --blurple-50: var(--base0D) !important;
+            --button-positive-background: var(--base0D) !important;
+          }
+          path[fill^="rgba(88, 101, 242, 1)"] {
+            fill: var(--base0D) !important;
+          }
+        '';
       };
+      vencord.enable = true;
+      vesktop.enable = true;
     };
 
   };
