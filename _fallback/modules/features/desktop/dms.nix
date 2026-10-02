@@ -46,6 +46,7 @@
         inputs.dms-plugin-registry.nixosModules.default
       ];
 
+      # https://github.com/NixOS/nixpkgs/blob/nixos-26.05/nixos/modules/programs/wayland/dms-shell.nix
       programs.dank-material-shell = {
         enable = true;
 
@@ -151,13 +152,11 @@
 
         dank-calendar = {
           enable = true;
-          systemd = {
-            enable = true;
-            target = "graphical-session.target";
-          };
+          # systemd = {
+          #   enable = true;
+          #   target = "graphical-session.target";
+          # };
         };
-
-        # https://github.com/NixOS/nixpkgs/blob/nixos-26.05/nixos/modules/programs/wayland/dms-shell.nix
 
       };
 

@@ -15,8 +15,6 @@
         foliate.enable = true;
         mpv.enable = true;
         cava.enable = true;
-        nixcord.enable = true;
-        vencord.enable = true;
         opencode.enable = true;
         bat.enable = true;
         vivid.enable = true;
@@ -25,15 +23,6 @@
         x11.enable = true;
 
         noctalia.enable = true;
-
-        vesktop = {
-          enable = true;
-          colors = {
-            override = {
-              base0B = "cba6f7";
-            };
-          };
-        };
 
         zen-browser = {
           enable = false;

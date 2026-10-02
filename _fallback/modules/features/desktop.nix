@@ -266,6 +266,7 @@
         localsend
         foot
         mpv
+        mpvpaper
         nautilus
         pavucontrol
         poppler-utils # Lightning-fast PDF thumbnails
@@ -286,6 +287,7 @@
         wireguard-tools
         wl-clip-persist
         wl-clipboard
+        wlr-randr
         xdg-utils
         yt-dlp
         zed-editor

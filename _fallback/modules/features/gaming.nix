@@ -103,7 +103,7 @@
         lutris
         heroic
 
-        stable.bottles
+        (bottles.override { removeWarningPopup = true; })
 
         steam-run
         wineWow64Packages.staging

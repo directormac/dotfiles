@@ -5,20 +5,8 @@
   "notifications": true,
   "permissions": {
     "allow": [
-      "command(git)",
-      "command(curl)",
-      "command(ls)",
-      "command(cat)",
-      "command(grep)",
-      "command(find)",
-      "command(echo)",
-      "command(strings)",
-      "command(which)",
-      "command(tail)",
-      "command(man)",
-      "command(jq)",
-      "read_url(githubusercontent.com)",
-      "read_url(raw.githubusercontent.com)",
+      "command(regex:^(git|curl|ls|cat|grep|find|echo|strings|which|tail|man|jq|head|ps)$)",
+      "read_url(regex:.*\\.(githubusercontent|github|npmjs|python|readthedocs|mdn\\.mozilla)\\.com|.*\\.dev)",
       "read_file(/nix/store/*)"
     ]
   },

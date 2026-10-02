@@ -3,10 +3,11 @@
     imports = [ inputs.nixcord.homeModules.nixcord ];
     programs.nixcord = {
       enable = true;
-      discord = {
-        enable = false;
-        krisp.enable = true;
-      };
+      # discord = {
+      #   enable = false;
+      #   krisp.enable = true;
+      # };
+      discord.enable = false;
       vesktop.enable = true;
       config.plugins = {
         betterFolders.enable = true;
@@ -23,5 +24,19 @@
       quickCss = "body { --font-primary: monospace; }";
       config.useQuickCss = true;
     };
+
+    stylix.targets = {
+      nixcord.enable = true;
+      vencord.enable = true;
+      vesktop = {
+        enable = true;
+        colors = {
+          override = {
+            base0B = "cba6f7";
+          };
+        };
+      };
+    };
+
   };
 }

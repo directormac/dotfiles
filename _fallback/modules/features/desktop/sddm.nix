@@ -20,7 +20,7 @@ in
     #
     programs.silentSDDM = {
       enable = true;
-      theme = "rei";
+      theme = "catppuccin-mocha";
       backgrounds = {
         output = wallpaper;
       };

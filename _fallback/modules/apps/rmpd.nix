@@ -24,12 +24,14 @@
         mpris = true
 
         [audio]
-        default_output = "pipewire"
+        default_output = "PipeWire Sound Server"
         replay_gain = "off"
+        restore_paused = true
 
         [[output]]
         name = "PipeWire Sound Server"
         type = "pipewire"
+        enabled = true
         resampler_quality = "sinc_medium"
       '';
 
@@ -38,13 +40,20 @@
           Description = "rmpd - Rust Music Player Daemon";
           After = [
             "network.target"
+            "sound.target"
             "pipewire.service"
+            "wireplumber.service"
+          ];
+          Wants = [
+            "pipewire.service"
+            "wireplumber.service"
           ];
         };
 
         Service = {
           ExecStart = "${rmpdPkg}/bin/rmpd";
-          Restart = "always";
+          Restart = "on-failure";
+          RestartSec = "3s";
           StateDirectory = "rmpd";
         };
 

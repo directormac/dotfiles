@@ -104,6 +104,7 @@
 
         # CLI Goodies
         nix-prefetch-scripts
+        nix-search-tv
         nix-tree
         ncdu
         dust
@@ -121,6 +122,7 @@
         starship
         tealdeer
         television
+        trash-cli
         vivid
         wget
         zoxide
