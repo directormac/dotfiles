@@ -35,6 +35,8 @@
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
 
+    nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
+
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 

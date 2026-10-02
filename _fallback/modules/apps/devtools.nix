@@ -15,6 +15,8 @@
       ];
 
       home.packages = with pkgs; [
+        inputs.nix-vite-plus.packages.${pkgs.stdenv.hostPlatform.system}.vp
+
         nodejs_26
         # nodejs-slim_26
         bun
