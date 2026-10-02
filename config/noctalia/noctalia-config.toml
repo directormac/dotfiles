@@ -1,0 +1,170 @@
+[bar]
+background_opacity = 0
+font_family = "NotoMono NF"
+margin_ends = 0
+radius_bottom_left = 0
+radius_bottom_right = 0
+
+    [bar.default]
+    background_opacity = 0.60999998636543751
+    capsule_radius = 2
+    font_family = "NotoMono NF"
+    margin_ends = 0
+    radius = 0
+    radius_bottom_left = 0
+    radius_bottom_right = 0
+    radius_top_left = 0
+    radius_top_right = 0
+    shadow = false
+    thickness = 29
+
+[control_center]
+sidebar = "full"
+sidebar_section = "full"
+
+[dock]
+background_opacity = 1.0
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@WL-1", "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-2" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-2"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1280.0
+    cy = 1258.0
+    output = "DP-2"
+    placement_height = 1440.0
+    placement_width = 2560.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-2".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-3"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1280.0
+    cy = 1258.0
+    output = "DP-3"
+    placement_height = 1440.0
+    placement_width = 2560.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@WL-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1279.0
+    cy = 1224.0
+    output = "WL-1"
+    placement_height = 1406.0
+    placement_width = 2558.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@WL-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+[notification]
+background_opacity = 1.0
+enabled = true
+position = "top-right"
+
+[osd]
+background_opacity = 1.0
+
+[shell]
+font_family = "Noto Sans"
+
+    [shell.screenshot]
+    annotate = true
+
+[sysmon]
+enabled = true
+
+[theme]
+builtin = "Catppuccin"
+custom_palette = "stylix"
+mode = "dark"
+source = "custom"
+
+    [theme.templates]
+    enable_builtin_templates = false
+
+[wallpaper]
+directory = "/home/artifex/.config/wallpapers"
+
+    [wallpaper.automation]
+    enabled = true
+
+    [wallpaper.default]
+    path = "/home/artifex/.config/wallpapers/tokyo-bridal.png"
+
+    [wallpaper.last]
+    path = "/home/artifex/.config/wallpapers/tokyo-bridal.png"
+
+    [wallpaper.monitors.DP-2]
+    path = "/home/artifex/.config/wallpapers/tokyo-bridal.png"
+
+    [wallpaper.monitors.DP-3]
+    path = "/home/artifex/.config/wallpapers/tokyo-bridal.png"
+
+[weather]
+enabled = true
+unit = "metric"
+
+[widget.workspaces]
+hide_when_empty = true
+scale = 1.2
+style = "focus_hint"

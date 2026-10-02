@@ -17,6 +17,19 @@
 
         settings = {
 
+          shell = {
+            screenshot = {
+              annotate = true;
+            };
+          };
+
+          theme = {
+            bultin = "Catppuccin";
+            custom_palette = "stylix";
+            mode = "dark";
+            source = "custom";
+          };
+
           bar = {
             background_opacity = 0;
             font_family = "NotoMono NF";
@@ -41,6 +54,16 @@
 
           wallpaper = {
             directory = "${config.home.homeDirectory}/.config/wallpapers";
+            automation.enable = true;
+          };
+
+          widget = {
+            workspaces = {
+              hide_when_empt = true;
+              scale = 1.2;
+              style = "focus_hint";
+            };
+
           };
 
         };
@@ -63,6 +86,11 @@
         imports = [
           self.homeModules.noctalia
         ];
+      };
+
+      programs.noctalia = {
+        enable = true;
+        recommendedServices.enable = true;
       };
     };
 }

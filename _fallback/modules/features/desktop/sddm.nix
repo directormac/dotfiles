@@ -32,12 +32,12 @@ in
         };
         "LoginScreen" = {
           background = "anime_girl_holding_tea_1080p.mp4";
-          use-background-color = true;
+          use-background-color = false;
         };
         "LockScreen" = {
           display = false;
           background = "anime_girl_holding_tea_1080p.mp4";
-          use-background-color = true;
+          use-background-color = false;
         };
       };
     };
