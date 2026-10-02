@@ -126,6 +126,7 @@
         imports = with self.homeModules; [
           git
           lazyvim
+          doom-emacs
 
           desktop-services
           vesktop
