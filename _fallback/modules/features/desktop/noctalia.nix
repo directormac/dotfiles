@@ -12,6 +12,10 @@
     in
     {
 
+      stylix.targets = {
+        noctalia.enable = true;
+      };
+
       programs.noctalia = {
         enable = true;
 

@@ -39,6 +39,10 @@
         # This merges the filtered directory directly into your home.file
         // lib.concatMapAttrs linkDank (builtins.readDir ../../../../config/DankMaterialShell);
 
+      stylix.targets = {
+        dank-calendar.enable = true;
+      };
+
       imports = [
         inputs.dms.homeModules.dank-material-shell
         inputs.danksearch.homeModules.default

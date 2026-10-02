@@ -2,6 +2,10 @@
 
   flake.homeModules.gaming = { pkgs, ... }: {
 
+    stylix.targets = {
+      mangohud.enable = true;
+    };
+
     programs.mangohud = {
       enable = true;
       enableSessionWide = true;
@@ -87,6 +91,7 @@
         imports = [
           self.homeModules.zsh
         ];
+
       };
 
       nixpkgs.overlays = [ self.overlays.default ];

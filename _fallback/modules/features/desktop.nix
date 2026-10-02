@@ -1,6 +1,20 @@
 { self, ... }: {
   flake.homeModules.desktop-services = { pkgs, ... }: {
 
+    stylix.targets = {
+
+      kde.enable = true;
+      gtk.enable = true;
+      qt.enable = true;
+      feh.enable = true;
+      foliate.enable = true;
+      fuzzel.enable = true;
+      mpv.enable = true;
+      cava.enable = true;
+      x11.enable = true;
+
+    };
+
     # services.tailscale-systray = {
     #   enable = true;
     # };
@@ -273,6 +287,7 @@
         quickshell
         fcitx5
         seahorse
+        fuzzel
         rmpc
         selfpkgs.rmpd
         tailscale

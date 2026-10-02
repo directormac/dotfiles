@@ -6,8 +6,9 @@
   "permissions": {
     "allow": [
       "command(regex:^(git|curl|ls|cat|grep|find|echo|strings|which|tail|man|jq|head|ps)$)",
-      "read_url(regex:.*\\.(githubusercontent|github|npmjs|python|readthedocs|mdn\\.mozilla)\\.com|.*\\.dev)",
-      "read_file(/nix/store/*)"
+      "read_url(regex:^(raw.githubusercontent|github|npmjs|python|readthedocs|mdn\\.mozilla)\\.com|.*\\.dev)",
+      "read_file(/nix/store/*)",
+      "read_url(raw.githubusercontent.com)"
     ]
   },
   "trustedWorkspaces": ["/home/artifex/.dotfiles", "/home/artifex/Projects", "/home/artifex/Code"]

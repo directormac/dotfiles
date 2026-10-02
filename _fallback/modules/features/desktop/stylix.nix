@@ -1,43 +1,9 @@
 { inputs, self, ... }: {
 
   flake.homeModules.stylix = {
-
     stylix = {
       enable = true;
-
-      targets = {
-
-        kde.enable = true;
-        dank-calendar.enable = true;
-        gtk.enable = true;
-        qt.enable = true;
-        feh.enable = true;
-        foliate.enable = true;
-        mpv.enable = true;
-        cava.enable = true;
-        opencode.enable = true;
-        bat.enable = true;
-        vivid.enable = true;
-        btop.enable = true;
-        mangohud.enable = true;
-        x11.enable = true;
-
-        noctalia.enable = true;
-
-        zen-browser = {
-          enable = false;
-          profileNames = [ "default" ];
-        };
-
-        firefox = {
-          enable = true;
-          profileNames = [ "default" ];
-        };
-
-      };
-
     };
-
   };
 
   flake.nixosModules.stylix = { pkgs, config, ... }: {

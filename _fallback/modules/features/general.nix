@@ -7,6 +7,12 @@
 
   flake.homeModules.general = {
 
+    stylix.targets = {
+      bat.enable = true;
+      vivid.enable = true;
+      btop.enable = true;
+    };
+
     programs = {
       bat = {
         enable = true;

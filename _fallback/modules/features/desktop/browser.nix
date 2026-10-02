@@ -209,6 +209,18 @@
         inputs.zen-browser.homeModules.beta
       ];
 
+      stylix.targets = {
+        zen-browser = {
+          enable = false;
+          profileNames = [ "default" ];
+        };
+
+        firefox = {
+          enable = true;
+          profileNames = [ "default" ];
+        };
+      };
+
       programs.firefox = {
         enable = true;
         nativeMessagingHosts = sharedNativeMessagingHosts;
