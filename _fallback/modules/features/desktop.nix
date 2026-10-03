@@ -281,6 +281,7 @@
         localsend
         foot
         mpv
+        scrcpy
         mpvpaper
         nautilus
         pavucontrol

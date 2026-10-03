@@ -103,7 +103,9 @@
         User git
     '';
 
-    environment.systemPackages = [ pkgs.networkmanagerapplet ];
+    environment.systemPackages = with pkgs; [
+      networkmanagerapplet
+    ];
 
     # ── SMB/CIFS mount — template: fill in device + credentials, uncomment ──
     fileSystems."/mnt/network/fileserver" = {
