@@ -75,10 +75,6 @@
         EDITOR = "lazyvim";
         LS_COLORS = "$(vivid generate catppuccin-mocha)";
         BROWSER = "zen-beta";
-        FZF_COMPLETION_TRIGGER = "**";
-        FZF_COMPLETION_OPTS = "--border --info=inline";
-        FZF_COMPLETION_PATH_OPTS = "--walker file,dir,follow,hidden";
-        FZF_COMPLETION_DIR_OPTS = "--walker dir,follow";
 
         # https://stacker.news/items/948469
         NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
@@ -115,48 +111,32 @@
               yt-dlp --write-subs --write-auto-subs --skip-download "$1"
           }
 
-          FZF_TAB_GROUP_COLORS=(
-            $'\033[94m' $'\033[32m' $'\033[33m' $'\033[35m' $'\033[31m' $'\033[38;5;27m' $'\033[36m'
-            $'\033[38;5;100m' $'\033[38;5;98m' $'\033[91m' $'\033[38;5;80m' $'\033[92m'
-            $'\033[38;5;214m' $'\033[38;5;165m' $'\033[38;5;124m' $'\033[38;5;120m'
-          )
-          FZF_CTRL_T_OPTS="
-            --walker-skip .git,node_modules,target
-            --preview 'bat -n --color=always {}'
-            --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
-          FZF_ALT_C_OPTS="
-            --walker-skip .git,node_modules,target
-            --preview 'tree -C {}'"
-
-          FZF_CTRL_R_OPTS="
-            --layout=reverse
-            --bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
-            --color header:italic
-            --header 'Press CTRL-Y to copy command into clipboard'"
-
+          zstyle ':fzf-tab:*' query-string ' '
+          zstyle ':fzf-tab:*' use-fzf-default-opts yes
           zstyle ':completion:*:descriptions' format '[%d]'
-
+          zstyle ':fzf-tab:*' fzf-pad 4
+          zstyle ':fzf-tab:*' fzf-min-height 10
+          zstyle ':fzf-tab:*' fzf-flags --height=~50%
           zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
           zstyle ':fzf-tab:*' switch-group '<' '>'
-          zstyle ':fzf-tab:*' use-fzf-default-opts yes
           zstyle ':fzf-tab:complete:_zlua:*' query-string input
           zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd -la --color=always $realpath'
           zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -la --color=always $realpath'
           zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 
-          # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
-          source <(${lib.getExe pkgs.fzf} --zsh)
 
           eval "$(devenv hook zsh)"
-          eval "$(starship init zsh)"
           eval "$(zoxide init zsh)"
 
           function zvm_after_init() {
-            # Bind history search via FZF to Ctrl+R in both Insert and Normal/Command Modes
             zvm_bindkey viins '^R' fzf-history-widget
             zvm_bindkey vicmd '^R' fzf-history-widget
+
+            # Television integration for zsh-vi-mode
+            # zvm_bindkey viins '^I' tv-smart-autocomplete
+            # zvm_bindkey viins '^T' tv-smart-autocomplete
+            # zvm_bindkey viins '^R' tv-shell-history
+            # zvm_bindkey vicmd '^R' tv-shell-history
 
             zvm_bindkey viins '^ ' autosuggest-accept
             zvm_bindkey viins '\e[27;5;9~' autosuggest-accept
@@ -170,7 +150,10 @@
           bindkey '^[[1;5I' autosuggest-accept
           bindkey '\e[1;5I' autosuggest-accept
 
-          # source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+          # Television integration for zsh-vi-mode
+          # bindkey '^I' tv-smart-autocomplete
+          # bindkey '^T' tv-smart-autocomplete
+          # bindkey '^R' tv-shell-history
         '';
 
       plugins = [
@@ -200,7 +183,6 @@
             default          = #cdd6f4
             unknown-token    = #f38ba8,bold
             commandseparator = #94e2d5
-            redirection      = #94e2d5
             here-string-tri  = #bac2de
             here-string-text = #bac2de
             here-string-var  = #bac2de
@@ -281,13 +263,25 @@
 
     };
 
+    programs.carapace = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      environment = {
+        CARAPACE_BRIDGES = "zsh,bash";
+        CARAPACE_MATCH = true;
+      };
+      extraPackages = with pkgs; [
+        carapace-bridge
+      ];
+    };
+
     programs.fzf = {
       enable = true;
       # https://github.com/junegunn/fzf/wiki/Color-schemes
       colors = { };
       enableBashIntegration = true;
       enableZshIntegration = true;
-
       tmux.enableShellIntegration = true;
 
       defaultOptions = [
