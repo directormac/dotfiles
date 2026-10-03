@@ -40,7 +40,7 @@ local floating_apps = {
   'galculator',
   'org.pulseaudio.pavucontrol',
   'org.localsend.localsend_app',
-  'ghostty --class=com.ghostty.float',
+  'com.ghostty.float',
   'org.gnome.Nautilus',
   'mpv',
   'nm-connection-editor',
