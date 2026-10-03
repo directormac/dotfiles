@@ -1,6 +1,8 @@
-# workmux project configuration
-# For global settings, edit ~/.config/workmux/config.yaml
+# Workmux global configuration
+# Global settings
 # All options below are commented out - uncomment to override defaults.
+nerdfont: true
+auto_update_check: false
 
 #-------------------------------------------------------------------------------
 # Appearance
@@ -23,13 +25,13 @@
 
 # The primary branch to merge into.
 # Default: Auto-detected from remote HEAD, falls back to main/master.
-main_branch: main
+# main_branch: main
 
 # Default base branch/commit to branch from when creating new worktrees.
 # Use "auto" to branch from main_branch or the locally detected main/master branch.
 # The --base CLI flag always overrides this.
 # Default: The currently checked out branch.
-base_branch: auto
+# base_branch: auto
 
 # Default merge strategy for `workmux merge`.
 # Options: merge (default), rebase, squash
@@ -40,6 +42,11 @@ merge_strategy: rebase
 # Keep and cleanup CLI flags always override this.
 merge_keep: true
 
+# Confirm before deleting a branch with commits not merged into its base.
+# Set to false to remove unmerged branches while still protecting uncommitted changes.
+# Default: true.
+# confirm_unmerged_removal: false
+
 #-------------------------------------------------------------------------------
 # Naming & Paths
 #-------------------------------------------------------------------------------
@@ -49,7 +56,7 @@ merge_keep: true
 # and `{project}` for the main worktree's directory name, so a global config
 # can namespace each repo, e.g. `~/.workmux/{project}`.
 # Default: Sibling directory '<project>__worktrees'.
-# worktree_dir: .worktrees
+worktree_dir: "~/Code/.worktrees/{project}"
 
 # Strategy for deriving names from branch names.
 # Options: full (default), basename (part after last '/').
@@ -61,7 +68,8 @@ merge_keep: true
 # Prefix for tmux window and session names. Supports `{project}` for the main
 # worktree's directory name, e.g. `{project} ` to scope session names by repo.
 # Default: "wm-"
-window_prefix: "dotfiles-"
+window_prefix: "wm-{project}"
+
 
 #-------------------------------------------------------------------------------
 # Tmux
@@ -75,11 +83,11 @@ window_prefix: "dotfiles-"
 # Session mode only. Session to return to when a workmux session is closed or
 # removed, instead of whichever session the client was in previously.
 # Not prefixed with window_prefix. Default: the client's previous session.
-default_session: main
+# default_session: main
 
 # Placement for new tmux windows in window mode.
 # Options: after_current (default), rightmost
-window_placement: rightmost
+# window_placement: rightmost
 
 # Custom tmux pane layout (mutually exclusive with 'windows').
 # Default: Two-pane layout with shell and clear command.
@@ -106,11 +114,11 @@ windows:
   - 
     panes: 
       - command: <agent>
-    
+
 
 # Auto-apply agent status icons to tmux window format.
 # Default: true
-status_format: true
+# status_format: true
 
 # Custom icons for agent status display.
 status_icons:
@@ -125,6 +133,10 @@ status_icons:
 # Agent command for '<agent>' placeholder in pane commands.
 # Default: "claude"
 agent: "agy"
+
+agents: 
+  oc: "opencode"
+  agy: "agy"
 
 # LLM-based branch name generation (`workmux add -A`).
 # auto_name:
@@ -203,6 +215,10 @@ agent: "agy"
 # Dashboard
 #-------------------------------------------------------------------------------
 
+# Inactivity period before agents count as stale in the dashboard and sidebar.
+# Defaults to one hour. Accepts integer seconds or a duration such as 90m or 5h.
+# stale_after: 5h
+
 # Actions for dashboard keybindings (c = commit, m = merge).
 # Values are sent to the agent's pane. Use ! prefix for shell commands.
 # Preview size (10-90): larger = more preview, less table. Use +/- keys to adjust.
@@ -249,7 +265,7 @@ agent: "agy"
 #   # in left sidebars.
 #   group_by: project
 #
-#   # Dim agents whose sidebar activity state is older than one hour. Default: true.
+#   # Dim agents classified as stale using `stale_after`. Default: true.
 #   dim_stale: true
 #
 #   # While grouped, fold each group's stale agents behind a toggle and move

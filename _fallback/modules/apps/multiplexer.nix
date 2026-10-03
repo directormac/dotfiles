@@ -73,24 +73,8 @@
       home.packages = [ inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
       # https://workmux.raine.dev/guide/configuration/
-      xdg.configFile."workmux/config.yaml".text =
-        # yaml
-        ''
-          merge_strategy: rebase
-          nerdfont: true
-          merge_keep: true 
-          auto_update_check: false
-
-          mode: session
-          default_session: default
-          window_prefix: "{project}-"
-
-          agent: agy
-
-          panes:
-            - command: clear
-              focus: true
-        '';
+      xdg.configFile."workmux/config.yaml".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/workmux/config.yaml;
 
       # [sesh.nix](https://github.com/nix-community/home-manager/blob/master/modules/programs/sesh.nix)
       programs.sesh = {
