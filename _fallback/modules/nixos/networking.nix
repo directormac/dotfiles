@@ -88,7 +88,7 @@
 
     programs.kdeconnect = {
       enable = true;
-      package = pkgs.valent;
+      # package = pkgs.valent;
     };
 
     services.smartd = {
