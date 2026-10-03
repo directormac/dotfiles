@@ -18,10 +18,14 @@
       executable = true;
     };
 
-    home.packages = with pkgs; [
-      ghostty
-    ];
-
+    programs.ghostty = {
+      enable = true;
+      enableZshIntegration = true;
+      enableBashIntegration = true;
+      installBatSyntax = true;
+      installVimSyntax = true;
+      # systemd = {};
+    };
   };
 
   flake.nixosModules.ghostty = { pkgs, config, ... }: {

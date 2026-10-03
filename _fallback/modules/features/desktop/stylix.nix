@@ -23,25 +23,27 @@
 
       autoEnable = false;
 
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+
       # Explicit Catppuccin Mocha Base16 Palette with Mauve as the primary accent
-      base16Scheme = {
-        base00 = "1e1e2e"; # Base
-        base01 = "313244"; # Surface0 / Mantle
-        base02 = "45475a"; # Surface1
-        base03 = "6c7086"; # Overlay0
-        base04 = "a6adc8"; # Subtext0
-        base05 = "cdd6f4"; # Text
-        base06 = "f5e0dc"; # Rosewater
-        base07 = "b4befe"; # Lavender
-        base08 = "f38ba8"; # Red
-        base09 = "fab387"; # Peach
-        base0A = "f9e2af"; # Yellow
-        base0B = "a6e3a1"; # Green
-        base0C = "94e2d5"; # Teal
-        base0D = "cba6f7"; # Mauve (Main Accent)
-        base0E = "cba6f7"; # Mauve
-        base0F = "f2cdcd"; # Flamingo
-      };
+      # base16Scheme = {
+      #   base00 = "1e1e2e"; # Base
+      #   base01 = "313244"; # Surface0 / Mantle
+      #   base02 = "45475a"; # Surface1
+      #   base03 = "6c7086"; # Overlay0
+      #   base04 = "a6adc8"; # Subtext0
+      #   base05 = "cdd6f4"; # Text
+      #   base06 = "f5e0dc"; # Rosewater
+      #   base07 = "b4befe"; # Lavender
+      #   base08 = "f38ba8"; # Red
+      #   base09 = "fab387"; # Peach
+      #   base0A = "f9e2af"; # Yellow
+      #   base0B = "a6e3a1"; # Green
+      #   base0C = "94e2d5"; # Teal
+      #   base0D = "cba6f7"; # Mauve (Main Accent)
+      #   base0E = "cba6f7"; # Mauve
+      #   base0F = "f2cdcd"; # Flamingo
+      # };
 
       cursor = {
         # The package provides pre-compiled variants like 'mochaMauve'

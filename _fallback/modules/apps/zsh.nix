@@ -190,69 +190,6 @@
       ];
     };
 
-    programs.fzf = {
-      enable = true;
-      # https://github.com/junegunn/fzf/wiki/Color-schemes
-      colors = { };
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      tmux.enableShellIntegration = true;
-
-      defaultOptions = [
-        "--prompt='> '"
-        "--marker='>'"
-        "--pointer='◆'"
-        "--scrollbar='│'"
-        "--gutter=' '"
-        "--preview-border='line'"
-        "--border='none'"
-        "--separator='─'"
-        "--padding='1'"
-        "--highlight-line"
-        "--color=fg:#CDD6F4,fg+:#CDD6F4,bg:-1,bg+:-1"
-        "--color=hl:#F38BA8,hl+:#F38BA8,info:#CBA6F7,marker:#B4BEFE"
-        "--color=prompt:#CBA6F7,spinner:#F5E0DC,pointer:#CBA6F7,header:#F38BA8"
-        "--color=border:#6C7086,label:#CDD6F4,query:#F5E0DC"
-      ];
-
-      # Command line options for the ALT-C keybinding.
-      changeDirWidget = {
-        command = "fd --type d";
-        options = [
-          "--strip-cwd-prefix"
-          "--hidden"
-          "--no-ignore"
-          "--follow"
-          "--exclude .git"
-        ];
-      };
-
-      # Command line options for the CTRL-T keybinding.
-      fileWidget = {
-        command = "fd --type f";
-        options = [
-          "--strip-cwd-prefix"
-          "--hidden"
-          "--no-ignore"
-          "--follow"
-          "--exclude .git"
-        ];
-      };
-
-      # The command that gets executed as the source for fzf for the CTRL-R keybinding.
-      # https://search.nixos.org/options?channel=unstable&query=programs.fzf&source=home_manager&type=options
-      historyWidget = {
-        command = null;
-        options = [
-          "--layout=reverse"
-          "--bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'"
-          "--color header:italic"
-          "--header 'Press CTRL-Y to copy command into clipboard'"
-        ];
-      };
-
-    };
-
   };
 
   flake.nixosModules.zsh =
