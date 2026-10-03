@@ -45,7 +45,7 @@
       # nixPath = ["nixpkgs=${inputs.nixpkgs}"];
       optimise.automatic = false;
       gc = {
-        automatic = true;
+        automatic = false; # Handled by programs.nh.clean
         dates = "daily";
         options = "--delete-older-than 5d";
       };
