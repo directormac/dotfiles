@@ -5,7 +5,7 @@
   "notifications": true,
   "permissions": {
     "allow": [
-      "command(regex:^(git|curl|ls|cat|grep|find|echo|strings|which|tail|man|jq|head|ps)$)",
+      "command(regex:^(git|curl|ls|cat|rg|grep|find|echo|strings|which|tail|man|jq|head|ps)$)",
       "read_url(regex:^(raw.githubusercontent|github|npmjs|python|readthedocs|mdn\\.mozilla)\\.com|.*\\.dev)",
       "read_file(/nix/store/*)",
       "read_url(raw.githubusercontent.com)"
