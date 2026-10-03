@@ -7,7 +7,7 @@
         ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/hypr";
       };
 
-      services.hyprpolkitagent.enable = true;
+      # services.hyprpolkitagent.enable = true;
 
       home.packages = with pkgs; [
         hyprlauncher
@@ -32,7 +32,7 @@
       ];
     };
 
-    security.pam.services.hyprlock = {};
+    # security.pam.services.hyprlock = { };
 
     programs.uwsm = {
       enable = true;
