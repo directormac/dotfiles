@@ -35,10 +35,20 @@
             "x-scheme-handler/http" = "zen-beta.desktop";
             "x-scheme-handler/https" = "zen-beta.desktop";
             "x-scheme-handler/discord" = "vesktop.desktop";
+
+            "application/zip" = "org.gnome.FileRoller.desktop";
+            "application/x-7z-compressed" = "org.gnome.FileRoller.desktop";
+            "application/x-tar" = "org.gnome.FileRoller.desktop";
+            "application/x-bzip2" = "org.gnome.FileRoller.desktop";
+            "application/x-gzip" = "org.gnome.FileRoller.desktop";
+            "application/x-xz" = "org.gnome.FileRoller.desktop";
+            "application/x-rar" = "org.gnome.FileRoller.desktop";
+            "application/rar" = "org.gnome.FileRoller.desktop";
           };
 
           associations.added = {
             "text/plain" = [ "neovim.desktop" ];
+            "inode/directory" = [ "superfile.desktop" ];
           };
 
         };
@@ -48,20 +58,22 @@
           superfile = {
             name = "Superfile";
             genericName = "Terminal File Manager";
-            exec = "ghostty --class=com.superfile.fm -e superfile"; # 'spf' is the binary command for superfile
+            exec = "ghostty --class=com.superfile.fm -e superfile %F"; # 'spf' is the binary command for superfile
             terminal = false;
             type = "Application";
-            icon = "system-file-manager";
+            icon = "utilities-terminal";
+            mimeType = [ "inode/directory" ];
 
             categories = [
-              "X-Terminal"
+              "System"
+              "FileManager"
               "Utility"
               "Core"
             ];
 
             actions = {
               "open-in-superfile" = {
-                name = "Open Terminal Here";
+                name = "Open in Superfile";
                 exec = "ghostty --class=com.superfile.fm -e superfile %f";
 
               };
@@ -148,6 +160,83 @@
             self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-kdeconnect-fix
           ];
         };
+
+        dataFile."nautilus/scripts/Open in Superfile" = {
+          executable = true;
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            TARGET=""
+            if [ -n "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" ]; then
+              TARGET="$(printf '%s\n' "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" | head -n 1)"
+            fi
+            if [ -z "$TARGET" ]; then
+              TARGET="$PWD"
+            fi
+            if [ -f "$TARGET" ]; then
+              TARGET="$(dirname "$TARGET")"
+            fi
+            exec ghostty --class=com.superfile.fm -e superfile "$TARGET"
+          '';
+        };
+
+        dataFile."nautilus/scripts/Compress with File Roller" = {
+          executable = true;
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            file-roller -d "$@"
+          '';
+        };
+
+        dataFile."nautilus/scripts/Extract Here (File Roller)" = {
+          executable = true;
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            file-roller -h "$@"
+          '';
+        };
+
+        dataFile."nautilus-python/extensions/open_in_superfile.py".text = ''
+          import subprocess
+          from gi.repository import Nautilus, GObject
+
+          class SuperfileExtension(GObject.GObject, Nautilus.MenuProvider):
+              def _launch(self, path):
+                  subprocess.Popen(["ghostty", "--class=com.superfile.fm", "-e", "superfile", path])
+
+              def _activate(self, menu, file_item):
+                  loc = file_item.get_location()
+                  if loc:
+                      path = loc.get_path()
+                      if path:
+                          self._launch(path)
+
+              def get_file_items(self, *args):
+                  files = args[-1]
+                  if len(files) == 1 and files[0].is_directory():
+                      item = Nautilus.MenuItem(
+                          name="Superfile::open_folder",
+                          label="Open in Superfile",
+                          tip="Open selected folder in Superfile",
+                          icon="utilities-terminal"
+                      )
+                      item.connect("activate", self._activate, files[0])
+                      return [item]
+                  return []
+
+              def get_background_items(self, *args):
+                  folder = args[-1]
+                  item = Nautilus.MenuItem(
+                      name="Superfile::open_bg",
+                      label="Open in Superfile",
+                      tip="Open current folder in Superfile",
+                      icon="utilities-terminal"
+                  )
+                  item.connect("activate", self._activate, folder)
+                  return [item]
+        '';
 
       };
 
