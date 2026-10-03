@@ -248,11 +248,15 @@ hl.bind('XF86AudioPrev', hl.dsp.exec_cmd('playerctl previous'), { locked = true 
 hl.bind('XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { locked = true })
 
 -- Skip player on long press and only skip 5s on normal press
-hl.bind('SUPER + XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { long_press = true })
-hl.bind('SUPER + XF86AudioNext', hl.dsp.exec_cmd('playerctl position +5'))
+hl.bind(modkey .. ' + XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { long_press = true })
+hl.bind(modkey .. '+ XF86AudioNext', hl.dsp.exec_cmd('playerctl position +5'))
 
 -- === Display Profiles ===
 -- hl.bind('SUPER + P', hl.dsp.exec_cmd('dms ipc outputs cycleProfile'))
+
+hl.bind('SUPER + P', hl.dsp.window.pseudo(), {
+  desc = 'Pseudo mode',
+})
 
 -- === System Controls ===
 -- hl.bind('SUPER + SHIFT + P', hl.dsp.dpms({ action = 'toggle' }))
