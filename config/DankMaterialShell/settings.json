@@ -310,7 +310,6 @@
   "matugenTemplateEmacs": false,
   "matugenTemplateZed": false,
   "notificationOverlayEnabled": true,
-  "lockPamExternallyManaged": false,
   "lockScreenNotificationMode": 2,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,

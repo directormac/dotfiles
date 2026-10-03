@@ -37,6 +37,11 @@
       ];
     };
 
+    # Allow unprivileged access to performance monitoring unit (PMU) counters.
+    # Required for btop to read Intel integrated GPU (iGPU UHD 770) metrics without root.
+    # Note: If you prefer centralizing kernel sysctl configurations, this can also be placed in:
+    boot.kernel.sysctl."kernel.perf_event_paranoid" = 0;
+
     hardware.uinput.enable = true;
     hardware.bluetooth.enable = true;
 

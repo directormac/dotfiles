@@ -5,7 +5,7 @@
 }:
 {
 
-  flake.homeModules.general = { ... }: {
+  flake.homeModules.general = { pkgs, ... }: {
 
     stylix.targets = {
       btop.enable = true;
@@ -34,14 +34,29 @@
 
       btop = {
         enable = true;
+        package = pkgs.btop.override { rocmSupport = true; };
         settings = {
           theme_background = false;
           truecolor = true;
           force_tty = false;
-          graph_symbol = "tty";
           disable_presets = "Off";
           rounded_corners = false;
           vim_keys = true;
+          shown_boxes = "cpu mem net proc";
+
+          #* Define presets for the layout of the boxes. Preset 0 is always all boxes shown with default settings. Max 9 presets.
+          #* Format: "box_name:P:G,box_name:P:G" P=(0 or 1) for alternate positions, G=graph symbol to use for box.
+          #* Use whitespace " " as separator between different presets.
+          #* Example: "cpu:0:default,mem:0:tty,proc:1:default cpu:0:braille,proc:0:tty"
+          presets = "cpu:1:default,proc:0:default cpu:0:default,mem:0:default,net:0:default cpu:0:block,net:0:tty";
+
+          #* Default symbols to use for graph creation, "braille", "block" or "tty".
+          #* "braille" offers the highest resolution but might not be included in all fonts.
+          #* "block" has half the resolution of braille but uses more common characters.
+          #* "tty" uses only 3 different symbols but will work with most fonts and should work in a real TTY.
+          #* Note that "tty" only has half the horizontal resolution of the other two, so will show a shorter historical view.
+          graph_symbol = "braille";
+
         };
 
       };
@@ -202,7 +217,6 @@
 
         # CLI Goodies
         bat
-        btop
         nix-prefetch-scripts
         nix-search-tv
         nix-tree
