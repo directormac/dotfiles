@@ -35,6 +35,8 @@
         pkgs.bitwarden-desktop
       ];
 
+      # Common browser policies configuration
+      # Reference: https://mozilla.github.io/policy-templates/
       sharedPolicies =
         let
           mkExtensionSettings = builtins.mapAttrs (
@@ -111,6 +113,7 @@
             Fingerprinting = true;
           };
 
+          # Reference: https://mozilla.github.io/policy-templates/#preferences
           Preferences = {
             "browser.tabs.warnOnClose" = {
               Value = false;
@@ -127,6 +130,7 @@
         vimium
       ];
 
+      # Reference: https://github.com/nix-community/home-manager/blob/master/modules/programs/firefox/profiles/search.nix
       sharedSearch = {
         force = true;
         default = "google";
@@ -249,6 +253,7 @@
         };
       };
 
+      # Reference https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/zen/default.nix
       programs.zen-browser = {
         enable = true;
         setAsDefaultBrowser = true;
@@ -266,15 +271,14 @@
           settings = {
             "browser.tabs.warnOnClose" = false;
 
-            "browser.tabs.insertAfterCurrent" = true;
-            "browser.tabs.insertAfterCurrentExceptPinned" = true;
+            "browser.tabs.insertAfterCurrent" = false;
+            "browser.tabs.insertAfterCurrentExceptPinned" = false;
 
             "extensions.allowPrivateBrowsingByDefault" = true;
 
             "zen.theme.border-radius" = 0;
             "zen.ui.migration.compact-mode-button-added" = true;
             "zen.theme.content-element-seperation" = 0;
-            "zen.theme.hide-unified-extensions-button" = false;
             "zen.urlbar.behavior" = "float";
             "zen.view.show-newtab-button-top" = true;
             "zen.view.compact.hide-tabbar" = true;
@@ -283,7 +287,16 @@
             "zen.view.use-single-toolbar" = false;
             "zen.view.compact.enable-at-startup" = true;
             "zen.welcome-screen.seen" = true;
+            "zen.workspaces.natural-scroll" = true;
+            "zen.view.compact.animate-sidebar" = false;
+            "zen.theme.hide-unified-extensions-button" = true;
             "zen.workspaces.continue-where-left-off" = true;
+            # "<site> wants to access other apps and services on this device" is the
+            # local network access prompt (loopback-network/local-network), not WebMIDI;
+            # shops like aliexpress port-scan 127.0.0.1 to fingerprint. 2 = BLOCK, and
+            # PermissionUI cancels the request instead of drawing a doorhanger.
+            "permissions.default.loopback-network" = 2;
+            "permissions.default.local-network" = 2;
           };
 
           presets.catppuccin = {
@@ -294,7 +307,26 @@
 
           extensions = {
             packages = sharedExtensionsPackages;
-            settings = { };
+            settings = {
+              "{74145f27-f039-47ce-a470-a662b129930a}" = {
+                force = true;
+                settings = {
+                  badged_color = "#7b383a";
+                  badgedStatus = true;
+                  domainBlocking = false;
+                  eTagFiltering = true;
+                  hashURL = "https://rules2.clearurls.xyz/rules.minify.hash";
+                  historyListenerEnabled = true;
+                  localHostsSkipping = true;
+                  logLimit = 250;
+                  loggingStatus = true;
+                  pingBlocking = true;
+                  referralMarketing = true;
+                  ruleURL = "https://rules2.clearurls.xyz/data.minify.json";
+                  statisticsStatus = true;
+                };
+              };
+            };
           };
 
           search = sharedSearch;
@@ -314,16 +346,16 @@
 
           containersForce = true;
           containers = {
-            Work = {
-              color = "blue";
-              icon = "briefcase";
-              id = 1;
-            };
+            # Work = {
+            #   color = "blue";
+            #   icon = "briefcase";
+            #   id = 1;
+            # };
           };
 
           spaceRouting = {
             force = true;
-            defaultExternalRoute = spaces.scratchpad_one;
+            # defaultExternalRoute = spaces.scratchpad_one;
             routes = {
               "github" = {
                 reference = "github.com";
@@ -358,6 +390,7 @@
             };
           };
 
+          # Reference https://github.com/0xc000022070/zen-browser-flake/blob/main/examples/18-space-routing.nix
           spacesForce = true;
           spaces = {
             "Personal" = {
@@ -391,16 +424,27 @@
               id = spaces.scratchpad_one;
               position = 3000;
               icon = "📝";
+              routes = {
+                "Github" = {
+                  reference = "github.com";
+                };
+              };
             };
             "Scratchpad 2" = {
               id = spaces.scratchpad_two;
               position = 4000;
               icon = "🗒️";
+              "Github" = {
+                reference = "github.com";
+              };
             };
             "Read" = {
               id = spaces.read;
               position = 5000;
               icon = "📖";
+              "Github" = {
+                reference = "github.com";
+              };
             };
             "Media" = {
               id = spaces.media;
@@ -409,6 +453,8 @@
             };
           };
 
+          # Check shortcuts
+          # jq -c '.shortcuts[] | {id, key, keycode, action}' ~/.config/zen/default/zen-keyboard-shortcuts.json | tv
           keyboardShortcuts =
             (map (i: {
               id = "zen-workspace-switch-${toString i}";
@@ -459,7 +505,22 @@
           keyboardShortcutsVersion = 20;
 
           mods = [
-            "253a3a74-0cc4-47b7-8b82-996a64f030d5"
+            "a6335949-4465-4b71-926c-4a52d34bc9c0" # Better Find Bar
+            "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
+            "7190e4e9-bead-4b40-8f57-95d852ddc941" # Tab title fixes
+            "803c7895-b39b-458e-84f8-a521f4d7a064" # Hide Inactive Workspaces
+            "906c6915-5677-48ff-9bfc-096a02a72379" # Floating Status Bar
+            "c8d9e6e6-e702-4e15-8972-3596e57cf398" # Zen Back Forward
+            "cb15abdb-0514-4e09-8ce5-722cf1f4a20f" # Hide Extension Name
+            "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe" # Better Active Tab
+            "f7c71d9a-bce2-420f-ae44-a64bd92975ab" # Better Unloaded Tabs
+            "bd92a9a0-1c00-4187-a66e-94c389fa5a59" # Sidebar Expand on Hover
+            "181e41d4-dfd3-410d-9a73-561381a2f77d" # Extensions List
+            "b0f635d7-c3bf-4709-af68-4712f0e5b2e56" # Cleaner Bookmark Menu
+            # "3ff55ba7-4690-4f74-96a8-9e4416685e4e6" # Colored container tab
+            # https://www.sameerasw.com/zen
+            # "642854b5-88b4-4c40-b256-e035532109df" # Transparent Zen
+            "context-menu-icons"
           ];
 
           userContent =
@@ -473,11 +534,32 @@
             ''
               @import "catppuccin/userChrome.css";
 
+              /* Disable Rounded Corners */
               :root {
                 --zen-webview-border-radius: 0 !important;
               }
 
-              /* .zen-workspace-tabs-section { flex-direction: column-reverse; } */
+              #zen-workspaces-button .subviewbutton:not([active="true"]) {
+                display: none!important;
+              }
+
+              /* https://zen-browser.app/mods/803c7895-b39b-458e-84f8-a521f4d7a064/ */
+              #zen-workspaces-button:hover .subviewbutton:not([active="true"]) {
+                display: flex!important;
+              }
+
+              /* https://zen-browser.app/mods/4ab93b88-151c-451b-a1b7-a1e0e28fa7f8/ */
+              @media not (-moz-pref("theme.nosidebarscrollbar.before125b")) {
+                  scrollbox:nth-child(5) {
+                      scrollbar-width: none !important;
+                  }
+              }
+
+              @media (-moz-pref("theme.nosidebarscrollbar.before125b")) {
+                  #zen-tabs-wrapper {
+                      scrollbar-width: none !important;
+                  }
+              }
 
               #tabbrowser-tabpanels:not([zen-split-view="true"]) {
                 padding-left: 0px !important;
