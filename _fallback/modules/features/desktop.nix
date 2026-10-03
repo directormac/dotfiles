@@ -286,6 +286,14 @@
         nautilus
         nautilus-open-any-terminal
         sushi
+
+        thunar
+        thunar-archive-plugin
+        thunar-volman
+        thunar-media-tags-plugin
+        thunar-vcs-plugin
+        thunar-shares-plugin
+
         pavucontrol
         poppler-utils # Lightning-fast PDF thumbnails
         quickshell
