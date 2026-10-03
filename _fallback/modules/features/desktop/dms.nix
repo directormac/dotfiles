@@ -137,6 +137,8 @@
               "recordingScreenTarget" = "focused";
               "resetLastRegion" = true;
               "skipConfirm" = true;
+              "doneAction" = "clipboard";
+              "menuRightClickAction" = "copy";
             };
           };
 
