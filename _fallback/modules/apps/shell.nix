@@ -27,6 +27,13 @@
         ];
       };
 
+      completionInit =
+        # sh
+        ''
+          eval "$(workmux completions zsh)"
+          autoload -U compinit && compinit
+        '';
+
       shellAliases = {
         "c" = "clear";
         "cat" = "bat";
@@ -53,6 +60,7 @@
         "nrsf" = "sudo nixos-rebuild switch --flake ~/.dotfiles/_fallback";
         "nrbf" = "sudo nixos-rebuild boot --flake ~/.dotfiles/_fallback";
         "top" = "btop";
+        "oc" = "opencode";
         "wh" = "which";
         "v" = "lazyvim";
         "spf" = "superfile";
@@ -61,6 +69,12 @@
         "y" = "yazi";
         "zen" = "zen-beta";
         "wm" = "workmux";
+        "wmd" = "workmux dashboard -t worktrees";
+        "wms" = "workmux sidebar";
+        "wml" = "workmux list";
+        "wmo" = "workmux open";
+        "wma" = "workmux add";
+        "wmm" = "workmux merge";
         "tls" = "tmux ls";
         "ts" = "sesh last";
         "t" = "tv channels";
@@ -69,16 +83,12 @@
         "grab" = "ghgrab --cwd";
         "flake" = "nix flake";
         "nixdev" = "nix develop -c $SHELL";
-        "oc" = "opencode";
-        "wmd" = "workmux dashboard -t worktrees";
         "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
       };
 
       sessionVariables = {
         EDITOR = "lazyvim";
-        LS_COLORS = "$(vivid generate catppuccin-mocha)";
         BROWSER = "zen-beta";
-
         # https://stacker.news/items/948469
         NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
       };

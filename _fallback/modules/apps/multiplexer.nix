@@ -74,7 +74,66 @@
 
       # https://workmux.raine.dev/guide/configuration/
       xdg.configFile."workmux/config.yaml".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/workmux/config.yaml;
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/workmux/config.yaml";
+
+      # Television cable for workmux
+      xdg.configFile."television/cable/workmux.toml".text =
+        # toml
+        ''
+          [metadata]
+          name = "workmux"
+          description = "List and switch between workmux worktrees"
+          requirements = ["workmux", "jq"]
+
+          [source]
+          command = "workmux list --json 2>/dev/null | jq -r '.[] | .handle + \"\\t\" + .branch + \"\\t\" + .path'"
+
+          [preview]
+          command = "cd '{split:\\t:2}' 2>/dev/null && git log --oneline -10 --color=always && echo && git status --short"
+
+          [keybindings]
+          enter = "actions:open"
+          ctrl-d = "actions:close"
+
+          [actions.open]
+          description = "Open or switch to selected worktree in tmux"
+          command = "workmux open '{split:\\t:0}'"
+          mode = "fork"
+
+          [actions.close]
+          description = "Close the selected worktree window/session"
+          command = "workmux close '{split:\\t:0}'"
+          mode = "fork"
+        '';
+
+      xdg.configFile."television/cable/git-worktrees.toml".text =
+        # toml
+        ''
+          [metadata]
+          name = "git-worktrees"
+          description = "List and switch between git worktrees"
+          requirements = ["git"]
+
+          [source]
+          command = "git worktree list --porcelain | grep '^worktree' | cut -d' ' -f2-"
+
+          [preview]
+          command = "cd '{}' && git log --oneline -10 --color=always && echo && git status --short"
+
+          [keybindings]
+          enter = "actions:cd"
+          ctrl-d = "actions:remove"
+
+          [actions.cd]
+          description = "Change to the selected worktree"
+          command = "cd {} && $SHELL"
+          mode = "execute"
+
+          [actions.remove]
+          description = "Remove the selected worktree"
+          command = "git worktree remove {}"
+          mode = "execute"
+        '';
 
       # [sesh.nix](https://github.com/nix-community/home-manager/blob/master/modules/programs/sesh.nix)
       programs.sesh = {
@@ -89,6 +148,22 @@
               windows = [
                 "editor"
                 "terminal"
+              ];
+            }
+            {
+              pattern = "~/.dotfiles__worktrees/*";
+              windows = [
+                "editor"
+                "terminal"
+                "lazygit"
+              ];
+            }
+            {
+              pattern = "~/Code/.worktrees/*/*";
+              windows = [
+                "editor"
+                "terminal"
+                "lazygit"
               ];
             }
           ];
@@ -118,6 +193,10 @@
             {
               name = "lazygit";
               startup_script = "lazygit";
+            }
+            {
+              name = "agent";
+              startup_script = "agy";
             }
           ];
         };
@@ -178,9 +257,8 @@
             bind -N "Create window" c new-window -c "#{pane_current_path}"
             bind -N "Create window cwd" C new-window
 
-            # Prefix key + T
-            unbind t
-            bind T clock-mode
+            # Clock mode
+            bind C-t clock-mode
 
             # Key bind section all key assignments below must use Prefix-key
             # Prefix key is default <C-a>
@@ -216,8 +294,13 @@
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
             # bind -N "Split pane horizontally" -n C-M-S-Enter split-window -h -c "#{pane_current_path}"
 
-            bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
-            bind-key "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
+            # Workmux and Television Popups
+            # bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
+            # bind -N "Workmux dashboard" w display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
+            # bind -N "Toggle workmux sidebar" W run-shell "workmux sidebar"
+            # bind -N "Television worktrees" T display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Worktrees' tv git-worktrees
+            # bind -N "Television tmux sessions" S display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Tmux Sessions' tv tmux-sessions
+            bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
 
 
             set -g @continuum-restore 'on'

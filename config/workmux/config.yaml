@@ -137,6 +137,7 @@ agent: "agy"
 agents: 
   oc: "opencode"
   agy: "agy"
+# agent: claude
 
 # LLM-based branch name generation (`workmux add -A`).
 # auto_name:
@@ -240,37 +241,31 @@ agents:
 # Sidebar
 #-------------------------------------------------------------------------------
 
-# sidebar:
-#   # Position: left (default) or top.
-#   position: left
-#
-#   # Left sidebar width: absolute columns or percentage of terminal width.
-#   # Default: "10%" (clamped to 25-50 columns).
-#   # Explicit values are not clamped (minimum 10 columns).
-#   width: 40       # absolute columns
-#   # width: "15%"  # percentage of terminal width
-#
-#   # Top bar height in rows.
-#   height: 3
-#
-#   # Layout mode for the left sidebar: "compact" or "tiles" (cards).
-#   # Default: "tiles". Can be toggled at runtime with 'v' key.
-#   layout: tiles
-#
-#   # Row ordering: "recency" (default), "priority" or "window".
-#   sort: recency
-#
-#   # Group agents into labeled sections: "project" or "session". Unset keeps
-#   # one flat list; the 't' key switches at runtime. Headers are rendered only
-#   # in left sidebars.
-#   group_by: project
-#
-#   # Dim agents classified as stale using `stale_after`. Default: true.
-#   dim_stale: true
-#
-#   # While grouped, fold each group's stale agents behind a toggle and move
-#   # groups holding nothing but stale agents below the rest. Default: true.
-#   collapse_stale: true
+sidebar:
+  # Position: left (default) or top.
+  position: left
+
+  # Left sidebar width: absolute columns or percentage of terminal width.
+  # Default: "10%" (clamped to 25-50 columns).
+  width: 40       # absolute columns
+
+  # Top bar height in rows.
+  height: 3
+
+  # Layout mode for the left sidebar: "compact" or "tiles" (cards).
+  layout: tiles
+
+  # Row ordering: "recency" (default), "priority" or "window".
+  sort: recency
+
+  # Group agents into labeled sections: "project" or "session".
+  group_by: project
+
+  # Dim agents classified as stale using `stale_after`. Default: true.
+  dim_stale: true
+
+  # While grouped, fold each group's stale agents behind a toggle.
+  collapse_stale: true
 #
 #   horizontal:
 #     item_width: 24  # horizontal chip width in columns, clamped 12-80
