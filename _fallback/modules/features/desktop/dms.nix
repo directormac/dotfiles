@@ -167,6 +167,8 @@
     };
 
   flake.nixosModules.dms = { config, pkgs, ... }: {
+    security.pam.services.dankshell = {};
+
     # imports = [
     #   inputs.dankcalendar.nixosModules.default
     # ];

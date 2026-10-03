@@ -292,9 +292,9 @@
       "cursorHideTimeout": 0
     }
   },
-  "acMonitorTimeout": 7200,
-  "acLockTimeout": 1800,
-  "acSuspendTimeout": 10800,
+  "acMonitorTimeout": 1200,
+  "acLockTimeout": 900,
+  "acSuspendTimeout": 1800,
   "muxUseCustomCommand": true,
   "matugenTemplateNiri": false,
   "matugenTemplateHyprland": false,
@@ -310,7 +310,7 @@
   "matugenTemplateEmacs": false,
   "matugenTemplateZed": false,
   "notificationOverlayEnabled": true,
-  "lockPamExternallyManaged": true,
+  "lockPamExternallyManaged": false,
   "lockScreenNotificationMode": 2,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,

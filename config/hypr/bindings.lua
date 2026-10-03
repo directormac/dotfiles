@@ -266,8 +266,8 @@ hl.bind('SUPER + XF86AudioNext', hl.dsp.exec_cmd('playerctl position +5'))
 -- -- === Cheat sheet
 -- hl.bind('SUPER + SHIFT + Slash', hl.dsp.exec_cmd('dms ipc call keybinds toggle hyprland'))
 --
--- -- === Security ===
--- hl.bind('SUPER + ALT + L', hl.dsp.exec_cmd('dms ipc call lock lock'))
+-- === Security ===
+hl.bind('SUPER + ALT + L', hl.dsp.exec_cmd('dms ipc call lock lock'))
 -- hl.bind('SUPER + SHIFT + E', hl.dsp.exit())
 -- hl.bind('CTRL + ALT + Delete', hl.dsp.exec_cmd('dms ipc call processlist focusOrToggle'))
 

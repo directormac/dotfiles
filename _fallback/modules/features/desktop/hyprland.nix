@@ -32,6 +32,8 @@
       ];
     };
 
+    security.pam.services.hyprlock = {};
+
     programs.uwsm = {
       enable = true;
     };
