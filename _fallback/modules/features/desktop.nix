@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.homeModules.desktop-services = { pkgs, ... }: {
+  flake.homeModules.desktop = { pkgs, ... }: {
 
     stylix.targets = {
 
@@ -130,8 +130,8 @@
           git
           lazyvim
           doom-emacs
-
-          desktop-services
+          mpv
+          desktop
           vesktop
         ];
       };
