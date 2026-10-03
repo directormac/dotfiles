@@ -265,21 +265,23 @@
 
           settings = {
             "browser.tabs.warnOnClose" = false;
+            "browser.tabs.insertAfterCurrent" = true;
+            "browser.tabs.insertAfterCurrentExceptPinned" = true;
             "extensions.allowPrivateBrowsingByDefault" = true;
-            "zen.theme.hide-unified-extensions-button" = false;
-            "zen.theme.content-element-seperation" = 0;
-            "zen.theme.border-radius" = 0;
-            "zen.workspaces.continue-where-left-off" = true;
 
+            "zen.theme.border-radius" = 0;
+            "zen.ui.migration.compact-mode-button-added" = true;
+            "zen.theme.content-element-seperation" = 0;
+            "zen.theme.hide-unified-extensions-button" = false;
+            "zen.urlbar.behavior" = "float";
+            "zen.view.show-newtab-button-top" = true;
             "zen.view.compact.hide-tabbar" = true;
             "zen.view.compact.hide-toolbar" = true;
             "zen.view.sidebar-expanded" = false;
             "zen.view.use-single-toolbar" = false;
-
-            "browser.tabs.insertAfterCurrent" = true;
-            "browser.tabs.insertAfterCurrentExceptPinned" = true;
-            "zen.urlbar.behavior" = "float";
+            "zen.view.compact.enable-at-startup" = true;
             "zen.welcome-screen.seen" = true;
+            "zen.workspaces.continue-where-left-off" = true;
           };
 
           presets.catppuccin = {
@@ -472,6 +474,9 @@
               :root {
                 --zen-webview-border-radius: 0 !important;
               }
+
+              .zen-workspace-tabs-section { flex-direction: column-reverse; }
+
               #tabbrowser-tabpanels:not([zen-split-view="true"]) {
                 padding-left: 0px !important;
                 padding-right: 0px !important;
