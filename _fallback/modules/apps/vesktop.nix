@@ -10,7 +10,6 @@
       discord.enable = false;
       vesktop.enable = true;
       config.plugins = {
-        # betterFolders.enable = true;
         biggerStreamPreview.enable = true;
         fakeNitro.enable = true;
         hideMedia.enable = true;
