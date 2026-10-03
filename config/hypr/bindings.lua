@@ -195,10 +195,12 @@ hl.bind(modkey .. ' + SHIFT + Backslash', Utils.layout.prev())
 --- Applications
 
 -- Essential application bindings.
-hl.bind(modkey .. ' + RETURN', hl.dsp.exec_cmd(terminal))
+hl.bind(modkey .. ' + RETURN', hl.dsp.exec_cmd('ghostty +new-window'))
 hl.bind(modkey .. ' + SHIFT + RETURN', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float', cfg.floating_centered_wr))
 hl.bind(modkey .. ' + E', hl.dsp.exec_cmd(fileManager))
 hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
+hl.bind('CTRL + ALT + comma', hl.dsp.exec_cmd('pavucontrol'))
+hl.bind('CTRL + ALT + m', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float -e rmpc'))
 hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
 hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
 
