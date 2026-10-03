@@ -1,19 +1,110 @@
 { inputs, self, ... }: {
 
-  flake.homeModules.stylix = {
-    imports = [ inputs.catppuccin.homeModules.catppuccin ];
+  flake.homeModules.stylix =
+    { config, lib, ... }:
+    let
+      inherit (config.lib.stylix) colors;
+      mkColorTriple =
+        name:
+        lib.concatStringsSep "," [
+          colors."${name}-rgb-r"
+          colors."${name}-rgb-g"
+          colors."${name}-rgb-b"
+        ];
+      colors' = builtins.listToAttrs (
+        map (num: {
+          name = "base0${lib.toHexString num}";
+          value = mkColorTriple "base0${lib.toHexString num}";
+        }) (lib.range 0 15)
+      );
+      kdecolors = with colors'; ''
+        BackgroundNormal=${base00}
+        BackgroundAlternate=${base01}
+        DecorationFocus=${base0D}
+        DecorationHover=${base0D}
+        ForegroundNormal=${base05}
+        ForegroundActive=${base05}
+        ForegroundInactive=${base05}
+        ForegroundLink=${base05}
+        ForegroundVisited=${base05}
+        ForegroundNegative=${base08}
+        ForegroundNeutral=${base0D}
+        ForegroundPositive=${base0B}
+      '';
 
-    catppuccin = {
-      enable = false;
-      enableReleaseCheck = false;
-      flavor = "mocha";
-      accent = "mauve";
-    };
+      kdeglobalsContent = ''
+        [General]
+        ColorScheme=Stylix
+        Name=Stylix
+        desktopFont=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.desktop},-1,5,50,0,0,0,0,0
+        fixed=${config.stylix.fonts.monospace.name},${toString config.stylix.fonts.sizes.terminal},-1,5,50,0,0,0,0,0
+        font=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.applications},-1,5,50,0,0,0,0,0
+        menuFont=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.desktop},-1,5,50,0,0,0,0,0
+        smallestReadableFont=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.desktop},-1,5,50,0,0,0,0,0
+        taskbarFont=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.desktop},-1,5,50,0,0,0,0,0
+        toolBarFont=${config.stylix.fonts.sansSerif.name},${toString config.stylix.fonts.sizes.desktop},-1,5,50,0,0,0,0,0
 
-    stylix = {
-      enable = true;
+        [KDE]
+        LookAndFeelPackage=stylix
+
+        [UiSettings]
+        ColorScheme=Stylix
+
+        [Colors:Window]
+        ${kdecolors}
+
+        [Colors:View]
+        ${kdecolors}
+
+        [Colors:Button]
+        ${kdecolors}
+
+        [Colors:Tooltip]
+        ${kdecolors}
+
+        [Colors:Complementary]
+        ${kdecolors}
+
+        [Colors:Selection]
+        BackgroundNormal=${colors'.base0D}
+        BackgroundAlternate=${colors'.base0D}
+        DecorationFocus=${colors'.base0D}
+        DecorationHover=${colors'.base0D}
+        ForegroundNormal=${colors'.base00}
+        ForegroundActive=${colors'.base00}
+        ForegroundInactive=${colors'.base00}
+        ForegroundLink=${colors'.base00}
+        ForegroundVisited=${colors'.base00}
+        ForegroundNegative=${colors'.base08}
+        ForegroundNeutral=${colors'.base0D}
+        ForegroundPositive=${colors'.base0B}
+
+        [WM]
+        activeBackground=${colors'.base00}
+        activeForeground=${colors'.base05}
+        activeBlend=${colors'.base0A}
+        inactiveBackground=${colors'.base00}
+        inactiveForeground=${colors'.base05}
+        inactiveBlend=${colors'.base03}
+      '';
+    in
+    {
+      imports = [ inputs.catppuccin.homeModules.catppuccin ];
+
+      catppuccin = {
+        enable = false;
+        enableReleaseCheck = false;
+        flavor = "mocha";
+        accent = "mauve";
+      };
+
+      stylix = {
+        enable = true;
+      };
+
+      xdg.configFile."kdeglobals".text = kdeglobalsContent;
+      xdg.dataFile."color-schemes/Stylix.colors".text = kdeglobalsContent;
     };
-  };
 
   flake.nixosModules.stylix = { pkgs, config, ... }: {
     imports = [
