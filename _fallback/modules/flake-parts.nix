@@ -11,6 +11,7 @@
     inputs.wrappers.flakeModules.wrappers
 
     inputs.agenix-rekey.flakeModule
+    inputs.devshell.flakeModule
   ];
 
   systems = [
@@ -20,18 +21,15 @@
   perSystem = { config, pkgs, ... }: {
     # Add `config.agenix-rekey.package` to your devshell to
     # easily access the `agenix` command wrapper.
-    devShells.default = pkgs.mkShell {
-      nativeBuildInputs = [ config.agenix-rekey.package ];
-
-      packages = with pkgs; [
-        rage
-      ];
-      shellHook = ''
-        alias age="rage"
-      '';
-
-    };
-
+    # devShells.default = pkgs.mkShell {
+    #   nativeBuildInputs = [ config.agenix-rekey.package ];
+    #   packages = with pkgs; [
+    #     rage
+    #   ];
+    #   shellHook = ''
+    #     alias age="rage"
+    #   '';
+    # };
   };
 
   # This is your system configuration entry-point
