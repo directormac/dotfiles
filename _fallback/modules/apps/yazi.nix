@@ -17,6 +17,7 @@
 
     programs.yazi = {
       enable = true;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.yazi;
       plugins = with pkgs.yaziPlugins; {
         inherit git;
         inherit starship;
@@ -34,11 +35,29 @@
     };
   };
 
-  perSystem = { pkgs, ... }: {
-    packages.yazi = inputs.wrappers.lib.wrapPackage {
-      inherit pkgs;
-      package = pkgs.yazi;
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.yazi = inputs.wrappers.lib.wrapPackage {
+        inherit pkgs;
+        package = pkgs.yazi;
+        envDefault = {
+          YAZI_CONFIG_HOME = "/home/artifex/.dotfiles/config/yazi";
+        };
+        runtimePkgs = with pkgs; [
+          file
+          jq
+          fd
+          ripgrep
+          fzf
+          zoxide
+          poppler
+          ffmpegthumbnailer
+          unar
+          imagemagick
+          p7zip
+        ];
+      };
     };
-  };
 
 }
