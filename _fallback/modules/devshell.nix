@@ -1,22 +1,34 @@
 {
-  perSystem = { config, pkgs, ... }: {
-    devshells.default = {
-      env = [
-        {
-          name = "HTTP_PORT";
-          value = 8080;
-        }
-      ];
-      commands = [
-        {
-          help = "print hello";
-          name = "hello";
-          command = "echo hello";
-        }
-      ];
-      packages = [
-        pkgs.cowsay
-      ];
+  perSystem =
+    {
+      config,
+      pkgs,
+      self',
+      ...
+    }:
+    {
+      devshells.default = {
+        packages = [
+          config.agenix-rekey.package
+          pkgs.rage
+          self'.packages.yazi
+          self'.packages.nh
+        ];
+
+        commands = [
+          {
+            name = "age";
+            command = "rage \"$@\"";
+            help = "alias for rage";
+          }
+        ];
+
+        env = [
+          {
+            name = "YAZI_CONFIG_HOME";
+            eval = "$PRJ_ROOT/../config/yazi";
+          }
+        ];
+      };
     };
-  };
 }
