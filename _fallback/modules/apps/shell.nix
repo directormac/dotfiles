@@ -49,6 +49,7 @@
         "man" = "man -P bat -p";
         "nsh" = "nix-shell -p";
         "flakecheck" = "nix flake check ~/.dotfiles/_fallback";
+        "nrsfc" = "sudo nixos-rebuild switch --flake .";
         "nrsf" = "sudo nixos-rebuild switch --flake ~/.dotfiles/_fallback";
         "nrbf" = "sudo nixos-rebuild boot --flake ~/.dotfiles/_fallback";
         "top" = "btop";

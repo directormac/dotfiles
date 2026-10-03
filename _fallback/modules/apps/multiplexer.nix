@@ -85,7 +85,7 @@
           default_session: default
           window_prefix: "{project}-"
 
-          agent: opencode
+          agent: agy
 
           panes:
             - command: clear
@@ -263,7 +263,7 @@
                 set -g @catppuccin_window_status_style "basic"
                 set -g @catppuccin_status_left_separator "█"
                 set -g @catppuccin_status_right_separator "█"
-                set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
+                # set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
                 set -g @catppuccin_status_background "none"
 
                 # Mauve Overrides for a consistent look
@@ -282,7 +282,7 @@
                 set -g status-right-length 100
                 set -g status-right "#{E:@catppuccin_status_directory}"
                 set -ag status-right "#{E:@catppuccin_status_session}"
-                set -ag status-right "#{E:@catppuccin_status_date_time}"
+                # set -ag status-right "#{E:@catppuccin_status_date_time}"
                 set -g @catppuccin_status_background "none"
               '';
           }
@@ -297,7 +297,7 @@
             extraConfig = ''
               set -g @resurrect-strategy-vim 'session'
               set -g @resurrect-strategy-nvim 'session'
-              # set -g @resurrect-capture-pane-contents 'on'
+              set -g @resurrect-capture-pane-contents 'on'
               resurrect_dir=$HOME/.local/state/tmux/resurrect/
               set -g @resurrect-dir $resurrect_dir
               set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
@@ -311,7 +311,6 @@
             extraConfig = ''
               set -g @continuum-save-interval '5'
               set -g @continuum-restore 'on'
-              # set -g @continuum-boot 'off'
             '';
           }
 

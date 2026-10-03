@@ -109,6 +109,10 @@ windows:
   - 
     panes: 
       - command: lazygit
+
+  - 
+    panes: 
+      - command: <agent>
     
 
 # Auto-apply agent status icons to tmux window format.
@@ -127,7 +131,7 @@ status_icons:
 
 # Agent command for '<agent>' placeholder in pane commands.
 # Default: "claude"
-# agent: claude
+agent: agy
 
 # LLM-based branch name generation (`workmux add -A`).
 # auto_name:
