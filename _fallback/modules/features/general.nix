@@ -157,6 +157,7 @@
         # nightly-neovim
 
         nix-ld
+        nh
       ];
 
       users.users.${config.preferences.user.name} = {
@@ -241,7 +242,6 @@
         zoxide
         superfile
 
-        selfpkgs.nh
         selfpkgs.yazi
         selfpkgs.lazygit
       ];
