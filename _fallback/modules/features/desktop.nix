@@ -284,6 +284,8 @@
         scrcpy
         mpvpaper
         nautilus
+        nautilus-open-any-terminal
+        sushi
         pavucontrol
         poppler-utils # Lightning-fast PDF thumbnails
         quickshell
