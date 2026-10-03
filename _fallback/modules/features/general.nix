@@ -130,6 +130,12 @@
 
       };
 
+      superfile = {
+        enable = true;
+        # theme = "catppuccin-mocha";
+        # package = inputs.superfile.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      };
+
     };
 
   };
@@ -241,6 +247,7 @@
         wget
         zoxide
         superfile
+        # inputs.superfile.packages.${pkgs.stdenv.hostPlatform.system}.default
 
         selfpkgs.yazi
         selfpkgs.lazygit

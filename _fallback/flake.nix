@@ -92,6 +92,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    superfile.url = "github:yorukot/superfile";
+
     # https://github.com/0xc000022070/zen-browser-flake#installation
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
