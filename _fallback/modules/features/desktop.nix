@@ -276,6 +276,7 @@
         "share/thumbnailers"
         "/lib/nautilus/extensions-4"
         "/share/nautilus-python/extensions"
+        "/share/color-schemes"
       ];
 
       environment.systemPackages = with pkgs; [
