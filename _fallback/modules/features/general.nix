@@ -219,6 +219,7 @@
 
         # Dev tools
         jq
+        yq
         git
         github-cli
 
