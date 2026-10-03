@@ -19,16 +19,17 @@ hl.config({
     border_size = 1,
 
     col = {
+      -- Catppuccin Mocha Mauve gradient setup
       active_border = {
         colors = {
-          'rgba(94e2d5ee)',
-          'rgba(89dcebee)',
-          'rgba(89b4faee)',
+          'rgba(cba6f7ee)', -- Mauve (Your Accent)
+          'rgba(b4befeee)', -- Lavender
+          'rgba(74c7eeee)', -- Sapphire
         },
         angle = 120,
       },
-      inactive_border = 'rgba(181825aa)',
-      -- inactive_border = 'rgba(1e1e1eaa)',
+      -- Muted Catppuccin Crust for background windows
+      inactive_border = 'rgba(11111bee)',
     },
 
     -- col = {
@@ -107,6 +108,23 @@ hl.animation({ leaf = 'workspaces', enabled = true, speed = 1.94, bezier = 'almo
 hl.animation({ leaf = 'workspacesIn', enabled = true, speed = 1.21, bezier = 'almostLinear', style = 'fade' })
 hl.animation({ leaf = 'workspacesOut', enabled = true, speed = 1.94, bezier = 'almostLinear', style = 'fade' })
 hl.animation({ leaf = 'zoomFactor', enabled = true, speed = 7, bezier = 'quick' })
+
+-- Global event hook for window urgency modifications
+hl.on('window.urgent', function(win)
+  if win and win.address then
+    -- When a window requests attention, color its border Catppuccin Red
+    hl.exec_cmd(
+      string.format("hyprctl windowrule 'bordercolor rgba(f38ba8ee) rgba(f2cdcdee) 45deg, address:%s'", win.address)
+    )
+  end
+end)
+
+hl.on('window.active', function(win)
+  if win and win.address then
+    -- Once you switch to the window, strip the rule to return it to your normal theme
+    hl.exec_cmd(string.format("hyprctl windowrule 'unset, address:%s'", win.address))
+  end
+end)
 
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"

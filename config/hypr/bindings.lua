@@ -71,6 +71,11 @@ end
 hl.bind(modkey .. ' + S', hl.dsp.workspace.toggle_special('scratchpad'), {
   desc = 'Toogle scratchpad workspace.',
 })
+
+hl.bind(modkey .. ' + U', hl.dsp.focus({ urgent_or_last = true }), {
+  desc = 'Focus urgent',
+})
+
 hl.bind(modkey .. ' + SHIFT + S', hl.dsp.window.move({ workspace = 'special:scratchpad' }), {
   desc = 'Move window to scratchpad workspace',
 })
