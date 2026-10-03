@@ -18,7 +18,15 @@
         direnv = {
           enableZshIntegration = true;
           enableBashIntegration = true;
+          mise.enable = true;
         };
+
+        mise = {
+          enable = true;
+          enableZshIntegration = true;
+          enableBashIntegration = true;
+        };
+
       };
 
       home.packages = with pkgs; [
