@@ -19,6 +19,8 @@
     #   enable = true;
     # };
 
+    services.kdeconnect.indicator = true;
+
     services.udiskie = {
       enable = true;
       settings = {
@@ -86,6 +88,7 @@
     {
       pkgs,
       config,
+      lib,
       ...
     }:
     let
@@ -237,10 +240,6 @@
         xfconf.enable = true;
         fuse.userAllowOther = true;
         mtr.enable = true;
-        gnupg.agent = {
-          enable = true;
-          enableSSHSupport = true;
-        };
       };
 
       programs.winbox = {
@@ -258,7 +257,20 @@
         });
       };
 
-      environment.pathsToLink = [ "share/thumbnailers" ];
+      programs.nautilus-open-any-terminal = {
+        enable = true;
+        terminal = "ghostty";
+      };
+
+      environment.sessionVariables = {
+        NAUTILUS_4_EXTENSION_DIR = lib.mkForce "/run/current-system/sw/lib/nautilus/extensions-4";
+      };
+
+      environment.pathsToLink = [
+        "share/thumbnailers"
+        "/lib/nautilus/extensions-4"
+        "/share/nautilus-python/extensions"
+      ];
 
       environment.systemPackages = with pkgs; [
         android-tools
@@ -270,6 +282,7 @@
         ffmpeg-full
         ffmpegthumbnailer # High-performance video thumbs (MKV, MP4, HEVC, AV1)
         file-roller
+        p7zip
         foliate
         galculator
         gdk-pixbuf # Fixes raw image asset translations
@@ -284,6 +297,7 @@
         scrcpy
         mpvpaper
         nautilus
+        nautilus-python
         nautilus-open-any-terminal
         sushi
 
