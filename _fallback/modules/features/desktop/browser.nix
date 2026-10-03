@@ -37,6 +37,7 @@
 
       # Common browser policies configuration
       # Reference: https://mozilla.github.io/policy-templates/
+      # https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/zen/policies-config.nix
       sharedPolicies =
         let
           mkExtensionSettings = builtins.mapAttrs (
@@ -134,63 +135,203 @@
       sharedSearch = {
         force = true;
         default = "google";
-        engines = {
-          nixpkgs = {
-            name = "NixOS Packages";
-            urls = [
-              {
-                template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
-                programs = [
-                  {
-                    name = "query";
-                    value = "searchTerms";
-                  }
-                ];
-              }
-            ];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = [ "@nix" ];
+        engines =
+          let
+            nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          in
+          {
+            "Nix Packages" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "channel";
+                      value = "unstable";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              icon = nixSnowflakeIcon;
+              definedAliases = [ "@pkgs" ];
+            };
+            "Nix Options" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "channel";
+                      value = "unstable";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              icon = nixSnowflakeIcon;
+              definedAliases = [ "@nop" ];
+            };
+            "Nix Home Options" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "channel";
+                      value = "unstable";
+                    }
+                    {
+                      name = "source";
+                      value = "home_manager";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              icon = nixSnowflakeIcon;
+              definedAliases = [ "@nhop" ];
+            };
+            "Home Manager Options" = {
+              urls = [
+                {
+                  template = "https://home-manager-options.extranix.com/";
+                  params = [
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                    {
+                      name = "release";
+                      value = "master";
+                    }
+                  ];
+                }
+              ];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "@hmo" ];
+            };
+
+            "Github Search" = {
+              name = "GitHub Search";
+              urls = [ { template = "https://github.com/search?q={searchTerms}"; } ];
+              definedAliases = [ "@gh" ];
+            };
+
+            "Github Code" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}type=code"; } ];
+              definedAliases = [ "@ghc" ];
+            };
+
+            "Github Repos" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}type=repositories"; } ];
+              definedAliases = [ "@ghc" ];
+            };
+
+            "Github Discussions" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}type=discussions"; } ];
+              definedAliases = [ "@ghd" ];
+            };
+
+            "Github Commits" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}type=commits"; } ];
+              definedAliases = [ "@ghcc" ];
+            };
+
+            "Gists" = {
+              urls = [ { template = "https://gist.github.com/search?q={searchTerms}type=commits"; } ];
+              definedAliases = [ "@ghcc" ];
+            };
+
+            "Youtube" = {
+              urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
+              definedAliases = [ "@yt" ];
+            };
+
+            "Youtube Music" = {
+              urls = [ { template = "https://music.youtube.com/search?q={searchTerms}"; } ];
+              definedAliases = [ "@ym" ];
+            };
+
+            "Google Maps" = {
+              urls = [
+                {
+                  template = "http://maps.google.com";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              definedAliases = [
+                "@maps"
+                "@gmaps"
+              ];
+            };
+
+            "StartPage" = {
+              urls = [
+                {
+                  template = "https://www.startpage.com/sp/search";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              definedAliases = [
+                "@startpage"
+                "@sp"
+                "@pp"
+              ];
+              icon = "https://www.startpage.com/sp/cdn/favicons/favicon-gradient.ico";
+              updateInterval = 24 * 60 * 60 * 1000;
+            };
+
+            "ddg" = {
+              urls = [
+                {
+                  template = "https://duckduckgo.com";
+                  params = [
+                    {
+                      name = "q";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
+              definedAliases = [
+                "@duck"
+                "@ddg"
+                "@dck"
+                "@dckk"
+              ];
+            };
+
+            bing.metaData.hidden = true;
+            google.metaData.alias = "@g";
+
           };
-          nixoptions = {
-            name = "NixOS Options";
-            urls = [
-              {
-                template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
-                programs = [
-                  {
-                    name = "query";
-                    value = "searchTerms";
-                  }
-                ];
-              }
-            ];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = [ "@nixops" ];
-          };
-          hmoptions = {
-            name = "Home Manager Options";
-            urls = [
-              {
-                template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master";
-                programs = [
-                  {
-                    name = "query";
-                    value = "searchTerms";
-                  }
-                ];
-              }
-            ];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = [ "@hm" ];
-          };
-          github = {
-            name = "GitHub Search";
-            urls = [ { template = "https://github.com/search?q={searchTerms}"; } ];
-            definedAliases = [ "@gh" ];
-          };
-        };
       };
 
+      # https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/zen/bookmarks-config.nix
       # sharedBookmarks = {
       #   force = true;
       #   settings = [
@@ -355,18 +496,19 @@
 
           spaceRouting = {
             force = true;
-            # defaultExternalRoute = spaces.scratchpad_one;
+            defaultExternalRoute = spaces.personal;
+            # https://github.com/0xc000022070/zen-browser-flake/blob/main/hm-module/session/space-routing.nix
             routes = {
-              "github" = {
-                reference = "github.com";
-                matchType = "contains";
-                openIn = spaces.dev;
-              };
-              "reddit" = {
-                reference = "reddit.com";
-                matchType = "equal-to";
-                openIn = spaces.read;
-              };
+              # "Github" = {
+              #   reference = "^https?://(www\\.)?github\\.[a-z.]+(/|$|search|\\?)";
+              #   matchType = "regex";
+              #   openIn = spaces.dev;
+              # };
+              # "reddit" = {
+              #   reference = "reddit.com";
+              #   matchType = "equal-to";
+              #   openIn = spaces.read;
+              # };
               "medium" = {
                 reference = "medium.com";
                 matchType = "equal-to";
@@ -419,37 +561,101 @@
               id = spaces.dev;
               position = 2000;
               icon = "👨‍💻";
+              pins = {
+                "Github" = {
+                  id = "06821413-a423-482c-9365-d7e70d14b8e8";
+                  url = "https://github.com";
+                  position = 100;
+                };
+                "Dotfiles" = {
+                  id = "1c971ba4-3527-4ce9-9317-52731bdbb39a";
+                  url = "https://github.com/directormac/dotfiles";
+                  position = 300;
+                };
+              };
+
             };
             "Scratchpad 1" = {
               id = spaces.scratchpad_one;
               position = 3000;
               icon = "📝";
-              routes = {
-                "Github" = {
-                  reference = "github.com";
-                };
-              };
             };
             "Scratchpad 2" = {
               id = spaces.scratchpad_two;
               position = 4000;
               icon = "🗒️";
-              "Github" = {
-                reference = "github.com";
-              };
             };
             "Read" = {
               id = spaces.read;
               position = 5000;
               icon = "📖";
-              "Github" = {
-                reference = "github.com";
-              };
             };
             "Media" = {
               id = spaces.media;
               position = 6000;
               icon = "📺";
+            };
+          };
+
+          liveFolders = {
+
+            "Hacker News" = {
+              id = "fbdea31b-e0c7-4f0e-b4fb-2f0b8cfa8237";
+              collapsed = true;
+              workspace = spaces.read;
+              feedUrl = "https://hnrss.org/newest";
+              kind = "rss";
+              position = 401;
+            };
+
+            "Dev.to" = {
+              id = "92039a58-2ecb-414c-899f-d1bd4b8ea447";
+              collapsed = true;
+              workspace = spaces.read;
+              feedUrl = "https://dev.to/feed";
+              kind = "rss";
+              position = 402;
+            };
+
+            "Code Signal" = {
+              id = "20c2656e-5eb9-42c5-803d-618d369171c6";
+              collapsed = true;
+              workspace = spaces.read;
+              feedUrl = "https://codesignal.com/feed/";
+              kind = "rss";
+              position = 403;
+            };
+
+            "Mozilla Hacks" = {
+              id = "8b3d6e52-97e5-4864-956e-b84efb6c1eaf";
+              collapsed = true;
+              workspace = spaces.read;
+              feedUrl = "https://hacks.mozilla.org/feed/";
+              kind = "rss";
+              position = 404;
+            };
+
+            "Pull requests" = {
+              id = "7f949efb-b5ad-4b0d-910d-f4dadf712cc5";
+              kind = "github:pull-requests";
+              workspace = spaces.dev;
+              collapsed = true;
+              position = 401;
+              github = {
+                assignedMe = true; # default
+                reviewRequested = true;
+                authorMe = true;
+                # repoExcludes = ["owner/noisy-repo"];
+              };
+            };
+
+            "My issues" = {
+              id = "b50b2791-4bf2-465b-8495-f9d14ca70913";
+              kind = "github:issues";
+              workspace = spaces.dev;
+              collapsed = true;
+              position = 402;
+              github.authorMe = true;
             };
           };
 
