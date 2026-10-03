@@ -1,4 +1,8 @@
 {
+  # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/programs/chromium.nix
+  # Reference https://chromeenterprise.google/policies/#ExtensionSettings
+  # https://github.com/luisnquin/nixos-config/blob/main/system/modules/programs/browser/chromium.nix
+  # https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/chromium.nix
   flake.homeModules.chromium =
     { pkgs, ... }:
     let
@@ -36,6 +40,7 @@
         "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
         "leohhkagdnmgbpfbnflhjmnpcjpcjmgm" # Vimium New Tab Page
         "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
+        "dffbjiomnajbmlhjelpipfldgkijdemn" # URL Cleaner
         "ficfmibkjjnpogdcfhfokmihanoldbfe" # File Icons for GitHub and GitLab
         "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
         "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
