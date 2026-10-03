@@ -1,331 +1,161 @@
-# Workmux global configuration
-# Global settings
-# All options below are commented out - uncomment to override defaults.
+# ==============================================================================
+# Workmux Global Configuration (~/.config/workmux/config.yaml)
+# Managed in dotfiles: ~/.dotfiles/config/workmux/config.yaml
+# Reference: https://workmux.raine.dev/guide/configuration/
+# ==============================================================================
+#
+# COMMON COMMANDS CHEAT-SHEET:
+# ------------------------------------------------------------------------------
+# 1. Feature Work (Default: Session Mode):
+#    $ workmux add <branch>           (Alias: wma <branch>)
+#      -> Creates worktree & a dedicated tmux session with 4 windows:
+#         [1:editor, 2:agent, 3:term, 4:git]
+#
+# 2. Quickfix Work (Window Mode from main):
+#    $ workmux add <branch> --mode window --base main -l quickfix  (Alias: wmq <branch>)
+#      -> Creates worktree as a single window inside current session
+#      -> Branches cleanly from main branch
+#      -> Opens focused Neovim without launching all 4 session windows
+#
+# 3. Using Named Layouts:
+#    $ workmux add <branch> -l duo      -> Opens side-by-side Neovim + Agent
+#    $ workmux add <branch> -l quickfix -> Single window Neovim
+#    $ workmux add <branch> -l terminal -> Single clean shell
+#
+# 4. Navigation & Monitoring:
+#    $ workmux list                   (Alias: wml) - List all worktrees & statuses
+#    $ workmux dashboard              (Alias: wmd) - Interactive TUI dashboard
+#    $ workmux sidebar                (Alias: wms) - Toggle live agent sidebar
+#    In Tmux:
+#      - Prefix + t                   -> Sesh session picker (fast switch between sessions)
+#      - Prefix + w                   -> Workmux dashboard popup
+#      - Prefix + W                   -> Toggle workmux sidebar
+#
+# 5. Finishing & Cleanup:
+#    $ workmux merge                  (Alias: wmm) - Rebase & merge into main
+#    $ workmux remove <branch>        (Alias: workmux rm) - Discard without merging
+# ------------------------------------------------------------------------------
+
 nerdfont: true
 auto_update_check: false
 
-#-------------------------------------------------------------------------------
-# Appearance
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Git Configuration
+# ------------------------------------------------------------------------------
+# Automatically base new worktrees from main/master regardless of current branch
+base_branch: auto
 
-# Color scheme for the dashboard. Press T (shift+t) in the dashboard to cycle.
-# Options: default, emberforge, glacier-signal, obsidian-pop, slate-garden,
-#          phosphor-arcade, lasergrid, mossfire, night-sorbet, graphite-code,
-#          festival-circuit, teal-drift
-# theme: default
-#
-# Or with explicit dark/light mode (otherwise auto-detected from terminal):
-# theme:
-#   scheme: emberforge
-#   mode: dark
-
-#-------------------------------------------------------------------------------
-# Git
-#-------------------------------------------------------------------------------
-
-# The primary branch to merge into.
-# Default: Auto-detected from remote HEAD, falls back to main/master.
-# main_branch: main
-
-# Default base branch/commit to branch from when creating new worktrees.
-# Use "auto" to branch from main_branch or the locally detected main/master branch.
-# The --base CLI flag always overrides this.
-# Default: The currently checked out branch.
-# base_branch: auto
-
-# Default merge strategy for `workmux merge`.
-# Options: merge (default), rebase, squash
-# CLI flags (--rebase, --squash) always override this.
+# Fast-forward rebase merge strategy
 merge_strategy: rebase
 
-# Keep the worktree, window, and branch after `workmux merge` by default.
-# Keep and cleanup CLI flags always override this.
+# Keep worktree and branch after merge by default (cleanup manually or with --cleanup)
 merge_keep: true
 
-# Confirm before deleting a branch with commits not merged into its base.
-# Set to false to remove unmerged branches while still protecting uncommitted changes.
-# Default: true.
-# confirm_unmerged_removal: false
-
-#-------------------------------------------------------------------------------
-# Naming & Paths
-#-------------------------------------------------------------------------------
-
-# Directory where worktrees are created.
-# Can be relative to repo root or absolute. Supports `~` for home directory
-# and `{project}` for the main worktree's directory name, so a global config
-# can namespace each repo, e.g. `~/.workmux/{project}`.
-# Default: Sibling directory '<project>__worktrees'.
+# ------------------------------------------------------------------------------
+# Paths & Naming
+# ------------------------------------------------------------------------------
+# Centralized directory for worktrees, namespaced by repository name
 worktree_dir: "~/Code/.worktrees/{project}"
 
-# Strategy for deriving names from branch names.
-# Options: full (default), basename (part after last '/').
-# worktree_naming: basename
-
-# Prefix added to worktree directories and tmux window names.
-# worktree_prefix: ""
-
-# Prefix for tmux window and session names. Supports `{project}` for the main
-# worktree's directory name, e.g. `{project} ` to scope session names by repo.
-# Default: "wm-"
+# Prefix for tmux window and session names
 window_prefix: "wm-{project}"
 
+# ------------------------------------------------------------------------------
+# Tmux & Session Mode (Default)
+# ------------------------------------------------------------------------------
+# Mode: "session" creates an isolated tmux session per worktree (with its own windows)
+# Mode: "window" creates windows within the current session
+mode: session
 
-#-------------------------------------------------------------------------------
-# Tmux
-#-------------------------------------------------------------------------------
+# Return to the primary 'main' session when a worktree session is closed/merged
+default_session: main
 
-# Mode for tmux operations: window (default) or session.
-# - window: Create windows within the current tmux session
-# - session: Create tmux sessions for each worktree
-# mode: session
+# Auto-apply agent status icons in tmux window formats
+status_format: true
 
-# Session mode only. Session to return to when a workmux session is closed or
-# removed, instead of whichever session the client was in previously.
-# Not prefixed with window_prefix. Default: the client's previous session.
-# default_session: main
-
-# Placement for new tmux windows in window mode.
-# Options: after_current (default), rightmost
-# window_placement: rightmost
-
-# Custom tmux pane layout (mutually exclusive with 'windows').
-# Default: Two-pane layout with shell and clear command.
-panes:
-   - command: <agent>
-     focus: true
-
-# Multiple windows per session (session mode only, mutually exclusive with 'panes').
-# Each window can have its own pane layout. Unnamed windows get tmux's
-# automatic naming based on the running command.
-windows:
-  - 
-    panes:
-      - command: nvim
-        focus: true
-  - 
-    panes:
-      - command: clear
-
-  - 
-    panes: 
-      - command: lazygit
-
-  - 
-    panes: 
-      - command: <agent>
-
-
-# Auto-apply agent status icons to tmux window format.
-# Default: true
-# status_format: true
-
-# Custom icons for agent status display.
 status_icons:
   working: "🤖"
   waiting: "💬"
   done: "✅"
 
-#-------------------------------------------------------------------------------
-# Agent & AI
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Default Windows (Session Mode: 4 Windows per Worktree)
+# Note: 'windows' is mutually exclusive with root-level 'panes'
+# ------------------------------------------------------------------------------
+windows:
+  # Window 1: Editor
+  - name: editor
+    panes:
+      - command: nvim
+        focus: true
 
-# Agent command for '<agent>' placeholder in pane commands.
-# Default: "claude"
+  # Window 2: AI Coding Agent
+  - name: agent
+    panes:
+      - command: <agent>
+
+  # Window 3: Terminal / Shell
+  - name: term
+    panes:
+      - command: clear
+
+  # Window 4: Git TUI
+  - name: git
+    panes:
+      - command: lazygit
+
+# ------------------------------------------------------------------------------
+# Named Layouts (Selectable via `-l` / `--layout <name>`)
+# ------------------------------------------------------------------------------
+layouts:
+  # Quickfix: Single editor window, ideal with `--mode window`
+  quickfix:
+    panes:
+      - command: nvim
+        focus: true
+
+  # Duo: Split screen with Neovim on left (60%) and AI Agent on right (40%)
+  duo:
+    panes:
+      - command: nvim
+        focus: true
+      - command: <agent>
+        split: horizontal
+        percentage: 40
+
+  # Agent Only: Single pane running the configured AI agent
+  agent-only:
+    panes:
+      - command: <agent>
+        focus: true
+
+  # Terminal Only: Single clean shell
+  terminal:
+    panes:
+      - command: clear
+        focus: true
+
+# ------------------------------------------------------------------------------
+# Agent & AI Integration
+# ------------------------------------------------------------------------------
+# Default agent used for '<agent>' placeholder
 agent: "agy"
 
-agents: 
-  oc: "opencode"
+# Named agent profiles (used via <agent:name> or --agent <name>)
+agents:
   agy: "agy"
-# agent: claude
+  oc: "opencode"
+  claude: "claude"
 
-# LLM-based branch name generation (`workmux add -A`).
-# auto_name:
-#   model: "gpt-4o-mini"
-#   system_prompt: "Generate a kebab-case git branch name."
-#   background: true  # Always run in background when using --auto-name
-
-#-------------------------------------------------------------------------------
-# Hooks
-#-------------------------------------------------------------------------------
-
-# Executable and arguments used to run lifecycle hooks. The hook command is
-# appended as the final argument. Configure machine-specific paths globally;
-# project configuration may override the complete argv.
-# Default: ["bash", "-c"]
-# hook_shell: ["/opt/homebrew/bin/bash", "-c"]
-
-# Commands to run in new worktree before tmux window opens.
-# These block window creation - use for short tasks only.
-# Use "<global>" to inherit from global config.
-# Set to empty list to disable: `post_create: []`
-# post_create:
-#   - "<global>"
-#   - mise use
-
-# Commands to run before merging (e.g., linting, tests).
-# Aborts the merge if any command fails.
-# Use "<global>" to inherit from global config.
-# Environment variables available:
-#   - WM_BRANCH_NAME: The name of the branch being merged
-#   - WM_TARGET_BRANCH: The name of the target branch (e.g., main)
-#   - WM_WORKTREE_PATH: Absolute path to the worktree
-#   - WM_PROJECT_ROOT: Absolute path of the main project directory
-#   - WM_HANDLE: The worktree handle/window name
-# pre_merge:
-#   - "<global>"
-#   - cargo test
-#   - cargo clippy -- -D warnings
-
-# Commands to run before worktree removal (during merge or remove).
-# Useful for backing up gitignored files before cleanup.
-# Default: Auto-detects Node.js projects and fast-deletes node_modules.
-# Detection looks for a lockfile at the project root or in a direct subdirectory.
-# Defining any command here replaces that default; use "<cleanup-node-modules>"
-# to keep the fast cleanup alongside your own commands.
-# Use "<global>" to inherit from global config.
-# Set to empty list to disable: `pre_remove: []`
-# Environment variables available:
-#   - WM_HANDLE: The worktree handle (directory name)
-#   - WM_WORKTREE_PATH: Absolute path of the worktree being deleted
-#   - WM_PROJECT_ROOT: Absolute path of the main project directory
-# pre_remove:
-#   - "<global>"
-#   - mkdir -p "$WM_PROJECT_ROOT/artifacts/$WM_HANDLE"
-#   - cp -r test-results/ "$WM_PROJECT_ROOT/artifacts/$WM_HANDLE/"
-#   - "<cleanup-node-modules>"
-
-#-------------------------------------------------------------------------------
-# Files
-#-------------------------------------------------------------------------------
-
-# File operations when creating a worktree.
-# files:
-#   # Files to copy (useful for .env files that need to be unique).
-#   copy:
-#     - .env.local
-#
-#   # Files/directories to symlink (saves disk space, shares caches).
-#   # Default: None.
-#   # Use "<global>" to inherit from global config.
-#   symlink:
-#     - "<global>"
-#     - node_modules
-
-#-------------------------------------------------------------------------------
-# Dashboard
-#-------------------------------------------------------------------------------
-
-# Inactivity period before agents count as stale in the dashboard and sidebar.
-# Defaults to one hour. Accepts integer seconds or a duration such as 90m or 5h.
-# stale_after: 5h
-
-# Actions for dashboard keybindings (c = commit, m = merge).
-# Values are sent to the agent's pane. Use ! prefix for shell commands.
-# Preview size (10-90): larger = more preview, less table. Use +/- keys to adjust.
-# Columns of the agents table, in display order. Omit a column to hide it:
-# number, project, worktree, git, pr, status, time, title.
-# Worktree columns: number, project, worktree, git, pr, mux, age, agent.
-# Default sort mode for the agent list: priority (default), project, recency, natural.
-# Used only when no sort preference has been persisted in the dashboard.
-# dashboard:
-#   commit: "Commit staged changes with a descriptive message"
-#   merge: "!workmux merge"
-#   preview_size: 60
-#   agent_columns: [number, project, worktree, git, pr, status, time, title]
-#   worktree_columns: [number, project, worktree, git, pr, mux, age, agent]
-#   sort_mode: priority
-#   close_on_jump: true
-
-#-------------------------------------------------------------------------------
-# Sidebar
-#-------------------------------------------------------------------------------
-
+# ------------------------------------------------------------------------------
+# Sidebar Configuration
+# ------------------------------------------------------------------------------
 sidebar:
-  # Position: left (default) or top.
   position: left
-
-  # Left sidebar width: absolute columns or percentage of terminal width.
-  # Default: "10%" (clamped to 25-50 columns).
-  width: 40       # absolute columns
-
-  # Top bar height in rows.
+  width: 40
   height: 3
-
-  # Layout mode for the left sidebar: "compact" or "tiles" (cards).
   layout: tiles
-
-  # Row ordering: "recency" (default), "priority" or "window".
   sort: recency
-
-  # Group agents into labeled sections: "project" or "session".
   group_by: project
-
-  # Dim agents classified as stale using `stale_after`. Default: true.
   dim_stale: true
-
-  # While grouped, fold each group's stale agents behind a toggle.
   collapse_stale: true
-#
-#   horizontal:
-#     item_width: 24  # horizontal chip width in columns, clamped 12-80
-#
-#   templates:
-#     horizontal:
-#       - "{status_icon} {primary} {pane_suffix} {fill} {elapsed}"
-#       - "{secondary} {fill} {git_stats}"
-#       - "{pane_title}"
-#     # Used while grouping is on. Anything left out falls back to the template
-#     # above it, then to the built-in grouped default.
-#     grouped:
-#       # Group header row; accepts {group}, {group_count}, {fill} and #[...].
-#       header: "{group} {fill} {group_count}"
-#       tiles:
-#         - "{primary} {pane_suffix} {fill} {pr_number} {pr_checks} {elapsed}"
-#         - "{pane_title} {fill} {git_stats}"
-
-#-------------------------------------------------------------------------------
-# Sandbox
-#-------------------------------------------------------------------------------
-
-# sandbox:
-#   enabled: false
-#   backend: lima
-#   # host_commands: ["just", "cargo", "npm"]
-#   # container:
-#   #   runtime: docker          # docker | podman | apple-container
-#   #   # memory: 16G            # VM memory limit (apple-container default: 16G)
-#   #   # cpus: 4                # VM CPU count (only passed when set)
-#   #   # OCI runtime to run under (docker/local Podman --runtime). Unset omits
-#   #   # the flag and uses the engine's configured default.
-#   #   # Set to e.g. "kata" for VM-based isolation (runtime must be installed
-#   #   # and registered). GLOBAL-ONLY: ignored in a project .workmux.yaml.
-#   #   # oci_runtime: kata
-#   #   # Extra capabilities / security options (docker/podman --cap-add /
-#   #   # --security-opt). Empty by default and GLOBAL-ONLY. Permissive values
-#   #   # weaken host-kernel container isolation unless paired with a VM runtime.
-#   #   # Main use: docker-in-docker under oci_runtime: kata.
-#   #   # cap_add: [ALL]
-#   #   # security_opt: [seccomp=unconfined, apparmor=unconfined, systempaths=unconfined]
-#   #   # Mask files out of the worktree bind mounts (paths relative to the
-#   #   # worktree root). Each listed file is shadowed by /dev/null so the
-#   #   # sandboxed agent cannot read it. Missing files are skipped.
-#   #   # GLOBAL-ONLY: ignored when set in a project .workmux.yaml.
-#   #   # excluded_files:
-#   #   #   - .env
-#   #   #   - .env.local
-#   # lima:
-#   #   isolation: project
-#   #   cpus: 4
-#   #   memory: 4GiB
-#   #   # Custom provision script (runs once on VM creation, as user).
-#   #   # Use sudo for system commands.
-#   #   # provision: |
-#   #   #   sudo apt-get install -y ripgrep fd-find jq
-#   # Extra mount points (read-only by default).
-#   # Supports simple paths or detailed specs with guest_path and writable.
-#   # extra_mounts:
-#   #   - ~/my-notes
-#   #   - host_path: ~/data
-#   #     guest_path: /mnt/data
-#   #     writable: true

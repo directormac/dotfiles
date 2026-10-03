@@ -209,7 +209,10 @@
         lshw
         nfs-utils
         ntfs3g
-        p7zip
+        # Install later
+        _7zip-zstd
+        _7zz
+        _7zz-rar
         pciutils
         sshfs
         unzip

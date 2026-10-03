@@ -1,6 +1,15 @@
 { inputs, self, ... }: {
 
   flake.homeModules.stylix = {
+    imports = [ inputs.catppuccin.homeModules.catppuccin ];
+
+    catppuccin = {
+      enable = false;
+      enableReleaseCheck = false;
+      flavor = "mocha";
+      accent = "mauve";
+    };
+
     stylix = {
       enable = true;
     };
@@ -9,6 +18,7 @@
   flake.nixosModules.stylix = { pkgs, config, ... }: {
     imports = [
       inputs.stylix.nixosModules.stylix
+      inputs.catppuccin.nixosModules.catppuccin
     ];
 
     home-manager.users.${config.preferences.user.name} = {
@@ -16,6 +26,13 @@
         stylix
       ];
     };
+
+    # catppuccin = {
+    #   enable = true;
+    #   autoEnable = false;
+    #   enableReleaseCheck = false;
+    #   accent = "mauve";
+    # };
 
     stylix = {
       enable = true;

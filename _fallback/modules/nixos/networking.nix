@@ -86,11 +86,6 @@
       openFirewall = true;
     };
 
-    programs.kdeconnect = {
-      enable = true;
-      # package = pkgs.valent;
-    };
-
     services.smartd = {
       enable = true;
       autodetect = true;

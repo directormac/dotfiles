@@ -15,11 +15,17 @@
 
     };
 
+    catppuccin.qt5ct.enable = true;
+
     # services.tailscale-systray = {
     #   enable = true;
     # };
 
-    services.kdeconnect.indicator = true;
+    services.kdeconnect = {
+      enable = true;
+      indicator = true;
+      # package = pkgs.valent;
+    };
 
     services.udiskie = {
       enable = true;

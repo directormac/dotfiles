@@ -71,6 +71,7 @@
         "wml" = "workmux list";
         "wmo" = "workmux open";
         "wma" = "workmux add";
+        "wmq" = "workmux add --mode window --base main -l quickfix";
         "wmm" = "workmux merge";
         "tls" = "tmux ls";
         "ts" = "sesh last";
