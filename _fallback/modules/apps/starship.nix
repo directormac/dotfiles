@@ -4,7 +4,7 @@
 
     home-manager.users.${config.preferences.user.name} = { config, ... }: {
       imports = with self.homeModules; [ ];
-      xdg.configFile."starship/starship.toml".source =
+      xdg.configFile."starship.toml".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/starship/starship.toml";
     };
 

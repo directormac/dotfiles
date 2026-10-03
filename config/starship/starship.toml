@@ -5,15 +5,20 @@
 # [Advance](https://starship.rs/advanced-config/)
 # [Showcase](https://github.com/starship/starship/discussions/1107)
 
-add_newline = false
+add_newline = true
 palette = "catppuccin_mocha"
 continuation_prompt = '▶▶ '
 scan_timeout = 1000
 command_timeout = 5000
 
-format = """$all\
-$line_break\
-$directory$fill$cmd_duration$jobs$time\
+# format = """$all\
+# $line_break\
+# $directory$fill$cmd_duration$jobs$time\
+# $line_break\
+# $character"""
+
+format = """
+$directory $all$fill$cmd_duration$jobs$time\
 $line_break\
 $character"""
 
@@ -32,13 +37,6 @@ truncation_length = 4
 truncate_to_repo = false
 # truncation_symbol = "~/"
 truncation_symbol = "../"
-
-# [directory]
-# style = "fg:mauve"
-# read_only = " "
-# truncation_length = 4
-# truncate_to_repo = true
-# truncation_symbol = "~/"
 
 [character]
 success_symbol = '[❯](mauve)'
@@ -73,11 +71,16 @@ disabled = false
 
 [cmd_duration]
 show_milliseconds = true
-format = " in $duration "
-style = "fg:text"
+format = "[ in $duration ]($style)"
+style = "bold yellow"
 disabled = false
-# show_notifications = true
-# min_time_to_notify = 45000
+show_notifications = true
+min_time_to_notify = 45000
+
+[time]
+disabled = false
+style = "bold green"
+format = '[ $time ]($style)'
 
 [memory_usage]
 symbol = " "
@@ -87,25 +90,6 @@ symbol = " "
 
 [mise]
 disabled = false
-
-
-[time]
-disabled = false
-style = "bold white"
-format = '[[  $time ](fg:text)]($style)'
-
-# [cmd_duration]
-# show_milliseconds = true
-# format = " in $duration "
-# style = "bg:lavender"
-# disabled = false
-# show_notifications = true
-# min_time_to_notify = 45000
-
-# [time]
-# disabled = false
-# style = "bold white"
-# format = "[$time]($style)"
 
 [hostname]
 ssh_only = false
@@ -133,7 +117,7 @@ format = "[TUNNEL OPEN for $output]($style)"
 # shell = ["bash", "--noprofile", "--norc"]
 # symbol = "🔑"
 # style = "bold fg:red"
-#
+
 # [custom.ssh_keys]
 # description = "SSH key count"
 # when = "ssh-add -l | grep -v -q 'no identities'"
