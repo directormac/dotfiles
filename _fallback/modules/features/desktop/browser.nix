@@ -265,8 +265,10 @@
 
           settings = {
             "browser.tabs.warnOnClose" = false;
+
             "browser.tabs.insertAfterCurrent" = true;
             "browser.tabs.insertAfterCurrentExceptPinned" = true;
+
             "extensions.allowPrivateBrowsingByDefault" = true;
 
             "zen.theme.border-radius" = 0;
@@ -475,7 +477,7 @@
                 --zen-webview-border-radius: 0 !important;
               }
 
-              .zen-workspace-tabs-section { flex-direction: column-reverse; }
+              /* .zen-workspace-tabs-section { flex-direction: column-reverse; } */
 
               #tabbrowser-tabpanels:not([zen-split-view="true"]) {
                 padding-left: 0px !important;
