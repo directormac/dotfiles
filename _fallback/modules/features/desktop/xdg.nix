@@ -104,6 +104,7 @@
                 "gtk"
               ];
               "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+              "org.freedesktop.impl.portal.RemoteDesktop" = [ "hypr_kdeconnect" ];
             };
             kde = {
               default = [
@@ -144,6 +145,7 @@
             pkgs.xdg-desktop-portal-hyprland
             pkgs.kdePackages.xdg-desktop-portal-kde
             pkgs.xdg-desktop-portal-wlr
+            self.packages.${pkgs.stdenv.hostPlatform.system}.hypr-kdeconnect-fix
           ];
         };
 
