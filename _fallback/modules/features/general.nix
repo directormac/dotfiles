@@ -39,6 +39,7 @@
 
         yazi
         zsh
+        starship
         multiplexer
         editor
 
@@ -122,7 +123,6 @@
         killall
         lsd
         ripgrep
-        starship
         tealdeer
         television
         trash-cli

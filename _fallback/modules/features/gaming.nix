@@ -89,7 +89,7 @@
 
       home-manager.users.${config.preferences.user.name} = {
         imports = [
-          self.homeModules.zsh
+          self.homeModules.gaming
         ];
 
       };
