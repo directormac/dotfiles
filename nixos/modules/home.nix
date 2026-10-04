@@ -6,6 +6,13 @@
       inputs.home-manager.nixosModules.default # import official home-manager NixOS module
     ];
 
+    documentation = {
+      enable = true;
+      doc.enable = true;
+      dev.enable = false;
+      man.enable = true;
+    };
+
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
