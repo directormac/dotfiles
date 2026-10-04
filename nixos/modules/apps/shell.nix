@@ -231,7 +231,7 @@
           "wmm" = "workmux merge";
           "tls" = "tmux ls";
           "ts" = "sesh last";
-          "t" = "tv channels";
+          "t" = "tv --layout portrait --hide-preview --input-position bottom";
           "tvk" = "tv zsh-keys";
           "tn" = "sesh connect .";
           "logs" = "journalctl --user -f -n 50";
@@ -254,7 +254,7 @@
             autoload -Uz url-quote-magic
             zle -N self-insert url-quote-magic
 
-            # Force double quotes around any video URL for MP3 conversion
+            # Force double quotes around any video URL for MP3 conversio
             yt-mp3() {
                 yt-dlp -x --audio-format mp3 "$1"
             }
