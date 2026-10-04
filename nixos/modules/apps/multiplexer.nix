@@ -73,10 +73,33 @@
           sha256 = "1jb9zvnzn494m03b6kizazpibdhqvfjywy9shs1p838jafbn6f5c";
         };
       };
+      tmux-list-keys-tv = pkgs.writeShellScriptBin "tmux-list-keys-tv" ''
+        for tbl in prefix root copy-mode-vi; do
+          ${pkgs.tmux}/bin/tmux list-keys -N -a -P "" -T "$tbl" | ${pkgs.gawk}/bin/awk -v tbl="$tbl" '
+            !/(Mouse|Wheel|Click)/ && length($0) > 0 {
+              sub(/^[ \t]+/, "")
+              match($0, /  +/)
+              if (RSTART > 0) {
+                key = substr($0, 1, RSTART - 1)
+                sub(/[ \t]+$/, "", key)
+                desc = substr($0, RSTART + RLENGTH)
+                sub(/^[ \t]+|[ \t]+$/, "", desc)
+                dkey = key
+                if (tbl == "prefix") dkey = "Prefix + " key
+                else if (tbl == "copy-mode-vi") dkey = "[copy] " key
+                printf "%s\t%s\t%s\t%s\n", dkey, desc, tbl, key
+              }
+            }
+          '
+        done
+      '';
     in
     {
 
-      home.packages = [ inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+      home.packages = [
+        inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
+        tmux-list-keys-tv
+      ];
 
       # https://workmux.raine.dev/guide/configuration/
       xdg.configFile."workmux/config.yaml".source =
@@ -86,7 +109,7 @@
       xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
         config:
           show-name: false
-          fallback-icon: ""
+          fallback-icon: "●"
           multi-pane-icon: ""
           always-show-fallback-name: false
 
@@ -94,6 +117,9 @@
           tmux: ""
           television: "󰮚"
           sesh: "⚡"
+          agy: "󱙺"
+          opencode: "󱙺"
+          claude: "󱙺"
       '';
 
       # Television cable for workmux
@@ -152,6 +178,38 @@
           [actions.remove]
           description = "Remove the selected worktree"
           command = "git worktree remove {}"
+          mode = "execute"
+        '';
+
+      # Television cable for tmux keys
+      xdg.configFile."television/cable/tmux-keys.toml".text =
+        # toml
+        ''
+          [metadata]
+          name = "tmux-keys"
+          description = "Fuzzy search tmux keybindings across prefix, root, and copy modes"
+          requirements = ["tmux", "awk"]
+
+          [source]
+          command = "${tmux-list-keys-tv}/bin/tmux-list-keys-tv"
+          display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
+          output = "{split:\t:1}"
+
+          [preview]
+          command = "echo -e '╭── Tmux Keybinding Details ───────────\n│ Key:       {split:\t:0}\n│ Table:     {split:\t:2}\n│ Raw Key:   {split:\t:3}\n╰──────────────────────────────────────\n\nAction / Command:\n{split:\t:1}'"
+
+          [keybindings]
+          enter = "actions:execute"
+          ctrl-y = "actions:copy"
+
+          [actions.execute]
+          description = "Execute the tmux command directly"
+          command = "tmux {split:\t:1}"
+          mode = "execute"
+
+          [actions.copy]
+          description = "Copy the key combination to clipboard"
+          command = "echo '{split:\t:0}' | tr -d '\\n' | wl-copy"
           mode = "execute"
         '';
 
@@ -260,7 +318,7 @@
 
             # Bindings
             bind -N "Reload Configuration" R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
-            # bind -N "Show Tmux keybindings" ? display-popup -E -w 80% -h 70% -T "Tmux keybindings" "todo pipe into tv"
+            bind-key -N "Fuzzy search Tmux keybindings" ? display-popup -E -w 80% -h 75% -d "#{pane_current_path}" -T "Tmux Keybindings" "tv tmux-keys"
             bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
             bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
             bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
@@ -275,6 +333,22 @@
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
             bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
             bind-key -N "Jump to urgent window or toggle last window" ` if-shell -F "#{?#{session_alerts},1,0}" "next-window -a" "last-window"
+            # bind-key -N "Jump to urgent window or toggle last window" -n C-` if-shell -F "#{?#{session_alerts},1,0}" "next-window -a" "last-window"
+
+            # Advanced Pane Movements & Inspection
+            bind -N "Break pane to background window" B break-pane -d
+            bind -N "Toggle marked pane" m select-pane -m
+            bind -N "Join marked pane here" J join-pane
+            bind -N "Inspect scrollback in Neovim" E display-popup -w 95% -h 90% -E "tmux capture-pane -p -S -3000 | nvim -c 'set buftype=nofile' -"
+            bind -N "Respawn failed pane" r respawn-pane -k
+            bind -N "Toggle synchronize panes" S set-window-option synchronize-panes
+
+            # Error Preservation & History
+            set -g history-file ~/.local/state/tmux/tmux_history
+            set -g remain-on-exit failed
+            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press Prefix + r to respawn or Prefix + x to kill."'
+            set-hook -g session-window-changed 'if-shell -F "#{hook_old_window}" "set-option -u -w -t \"#{hook_old_window}\" synchronize-panes"'
+
 
             bind C-y display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
             # bind C-t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" # quick floating terminal
@@ -314,15 +388,16 @@
             set -g status-left-length 100
             set -g status-left ""
             set -ga status-left "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
-            set -ga status-left "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            set -ga status-left "#[fg=#{@thm_maroon}]  #{pane_current_command} "
+            # set -ga status-left "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
             # set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]│"
             # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
 
             # Transparent Status-Right (No mantle backgrounds)
             set -g status-right-length 100
             set -g status-right ""
-            set -ga status-right "#[fg=#{@thm_maroon}]  #{pane_current_command} "
-            # set -ga status-right "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            # set -ga status-right "#[fg=#{@thm_maroon}]  #{pane_current_command} "
+            set -ga status-right "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
             # set -ga status-right "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
             # set -ga status-right "#{?#{e|>=:10,#{battery_percentage}},#{#[bg=#{@thm_red},fg=#{@thm_mantle}]},#{#[bg=#{@thm_mantle},fg=#{@thm_pink}]}} #{battery_icon} #{battery_percentage} "
             # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
@@ -413,9 +488,13 @@
                 set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
                 set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
-                set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_mauve} bg=default] #W }"
+                # Window formatting:
+                # 1. Shows window index (#I:) only in prefix mode (#{?client_prefix,...})
+                # 2. Replaces fallback (●) or agent (󰚩) icon with @workmux_status when active
+                # 3. Keeps tool icons (e.g. nvim ) and appends @workmux_status
+                set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,#I: ,}#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}} }"
                 set -g @catppuccin_window_current_number ""
-                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #W }"
+                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #{?client_prefix,#I: ,}#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}} }"
 
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
