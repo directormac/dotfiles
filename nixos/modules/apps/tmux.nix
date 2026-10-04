@@ -165,6 +165,10 @@
       xdg.configFile."tmux/tmux_extra.conf".source =
         config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux_extra.conf;
 
+      # Helper scripts referenced from tmux_extra.conf (scratch buffers).
+      xdg.configFile."tmux/scripts".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
+
       # FAQ https://github.com/tmux/tmux/wiki/FAQ
       programs.tmux = {
         enable = true;

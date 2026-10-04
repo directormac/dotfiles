@@ -1,0 +1,471 @@
+#!/usr/bin/env bash
+#
+# tmux scratch buffers: named, persistent terminals that can be minimized
+# (parked back into the `scratch` session) and spawned as a floating pane into
+# any window of any session.
+#
+# Model
+#   - one tmux session named `scratch` is the stash
+#   - one window per buffer, window name == buffer name
+#   - the window is named `scratch:<name>`, so buffers are directly addressable
+#   - `_park` is a reserved window that keeps the session alive when every
+#     buffer is spawned elsewhere; names starting with `_` are not buffers
+#   - global options hold the state the status line reads:
+#       @scratch_names   space separated buffer names (registry / indicator)
+#       @scratch_count   number of live buffers
+#       @scratch_pane_<n>   pane id of buffer <n>   (used to reap dead buffers)
+#       @scratch_geom_<n>   "w h x y" float geometry, captured on minimize
+#
+# Mechanics (verified against tmux 3.8-rc3)
+#   - `join-pane -s <src> -t <dst-window>` moves a pane across windows AND
+#     sessions, and lands it tiled.
+#   - `break-pane -W -s <pane> -x W -y H -X X -Y Y` then lifts it out of the
+#     tiled layout and floats it. `-t` cannot be used to select the pane
+#     ("can't specify pane here"), so `-s` is required.
+#   - tmux nudges requested geometry when pane borders / pane-border-status
+#     are active, so the *effective* geometry is captured after spawning and
+#     re-applied verbatim on the next spawn.
+#   - the pane's process survives the join/break round trip untouched.
+
+set -uo pipefail
+
+SESSION="scratch"
+PARK="_park"
+
+# ---------------------------------------------------------------- tmux helpers
+
+t() { tmux "$@"; }
+
+# tmux only has `has-session`, so window and pane existence is tested by asking
+# the target to list itself.
+win_exists() { [ -n "$(t list-windows -t "$1" -F '#{window_id}' 2>/dev/null)" ]; }
+pane_exists() { [ -n "$(t list-panes -t "$1" -F '#{pane_id}' 2>/dev/null)" ]; }
+
+# `display-message` succeeds even when nothing is attached, which silently
+# swallows messages when the script is run from a terminal or under run-shell.
+# Only use it when there is actually a client to show it.
+_notify() {
+	if [ -n "$(t list-clients -F '#{client_name}' 2>/dev/null)" ]; then
+		t display-message "$1" 2>/dev/null
+	else
+		printf '%s\n' "$1" >&2
+	fi
+}
+msg() { _notify "$*"; }
+err() { _notify "scratch: $*"; }
+
+# Validate a buffer name: no colons, dots, spaces or empty. Leading _ is
+# reserved for internal windows.
+valid_name() {
+	case "$1" in
+		"" | _* | *:* | *.* | *" "*) return 1 ;;
+		*) return 0 ;;
+	esac
+}
+
+opt() { t show-options -gv "$1" 2>/dev/null; }
+setopt() { t set-option -gF "$1" "$2"; }
+unsetopt() { t set-option -gu "$1" 2>/dev/null; }
+
+# Buffer names are plain identifiers (validated above) so word splitting is safe
+# and the space separated registry needs no quoting anywhere.
+names() {
+	local n
+	for n in $(opt @scratch_names); do
+		printf '%s\n' "$n"
+	done
+	return 0
+}
+
+# Recompute @scratch_count. The registry is authoritative: a spawned buffer no
+# longer lives in the stash session, so it cannot be rediscovered by listing it.
+# The names shown in the status right indicator, in registration order.
+list_names() {
+	local n out=""
+	for n in $(names); do
+		out="${out:+$out }$n"
+	done
+	printf '%s' "$out"
+}
+
+sync() {
+	local count
+	# Self heal: a buffer whose pane was destroyed with kill-pane leaves no
+	# trace for any hook to report (see reap), so drop those entries here.
+	# This runs on every entry point, which makes the registry converge on the
+	# real state instead of drifting.
+	local n out="" pane
+	for n in $(names); do
+		pane="$(opt "@scratch_pane_$n")"
+		if [ -n "$pane" ] && pane_exists "$pane"; then
+			out="$out $n"
+		else
+			unsetopt "@scratch_pane_$n"
+			unsetopt "@scratch_geom_$n"
+		fi
+	done
+	setopt @scratch_names "${out# }"
+	count="$(names | grep -c . || true)"
+	setopt @scratch_count "$count"
+	setopt @scratch_list "$(list_names)"
+}
+
+register() { # <name> <pane>
+	local n found=1 out=""
+	for n in $(names); do
+		if [ "$n" = "$1" ]; then
+			found=0
+			continue
+		fi
+		out="$out $n"
+	done
+	out="$out $1"
+	setopt @scratch_names "${out# }"
+	setopt "@scratch_pane_$1" "$2"
+	sync
+}
+
+unregister() { # <name>
+	local n out=""
+	for n in $(names); do
+		[ "$n" = "$1" ] || out="$out $n"
+	done
+	setopt @scratch_names "${out# }"
+	unsetopt "@scratch_pane_$1"
+	unsetopt "@scratch_geom_$1"
+	sync
+}
+
+# ---------------------------------------------------------------- stash layout
+
+stash_exists() { t has-session -t "$SESSION" 2>/dev/null; }
+
+ensure_stash() {
+	stash_exists && return 0
+	t new-session -d -s "$SESSION" -n "$PARK" -x 80 -y 24 || return 1
+	t set-option -t "$SESSION" -w automatic-rename off 2>/dev/null
+	t set-option -t "$SESSION" -w allow-rename off 2>/dev/null
+	# Keep the park window out of the way when the session is visited.
+	t set-option -t "$SESSION:$PARK" -w window-size manual 2>/dev/null
+	t resize-window -t "$SESSION:$PARK" -x 20 -y 5 2>/dev/null
+	return 0
+}
+
+stash_pane() { t list-panes -t "$SESSION:$1" -F '#{pane_id}' 2>/dev/null | head -n1; }
+
+# A stash window holds exactly one pane: the buffer. `new-window` used to open
+# the parked window creates its own pane, which becomes a stray once the buffer
+# is joined in, so drop anything that is not the buffer itself.
+prune_stash() { # <name> <keep-pane>
+	local p
+	for p in $(t list-panes -t "$SESSION:$1" -F '#{pane_id}' 2>/dev/null); do
+		[ "$p" = "$2" ] || t kill-pane -t "$p" 2>/dev/null
+	done
+	return 0
+}
+
+# Move <src-pane> into <dst-window>. `join-pane -t <window>` targets that
+# window's *active* pane, and tmux refuses to split a floating one ("size or
+# position can't split a floating pane"), so try each pane in turn. A window
+# always has at least one tiled pane, so this terminates.
+join_into_window() { # <src-pane> <dst-window>
+	local p
+	for p in $(t list-panes -t "$2" -F '#{pane_id}' 2>/dev/null); do
+		t join-pane -s "$1" -t "$p" 2>/dev/null && return 0
+	done
+	return 1
+}
+
+# Create the stash window for <name> if it is not already parked there.
+ensure_parked() { # <name>
+	ensure_stash
+	win_exists "$SESSION:$1" && return 0
+	t new-window -d -t "$SESSION" -n "$1" || return 1
+	t set-option -t "$SESSION:$1" -w automatic-rename off 2>/dev/null
+	return 0
+}
+
+# ------------------------------------------------------------------- geometry
+
+# tmux is inconsistent about floating pane geometry, so the values handed to
+# break-pane -x/-y/-X/-Y are not the values reported back afterwards:
+#
+#   -X/-Y are one based while pane_left/pane_top are zero based, so the same
+#   number round trips one cell off in each direction.
+#   -x/-y are the size of the box the pane is put in, which is two columns and
+#   two rows larger than the pane itself, so a naive round trip shrinks the
+#   pane by 2x2 every single time it is spawned again.
+#
+# Both offsets are undone here so that a spawn/minimize cycle is lossless.
+geom_get() {
+	t display-message -p -t "$1" \
+		'#{pane_width} #{pane_height} #{pane_left} #{pane_top}' 2>/dev/null
+}
+
+geom_store() { # <name> <pane>
+	local w h x y
+	read -r w h x y <<<"$(geom_get "$2")"
+	[ -n "$w" ] || return 0
+	setopt "@scratch_geom_$1" "$((w + 2)) $((h + 2)) $((x - 1)) $((y - 1))"
+}
+
+# Geometry to spawn with. On the first spawn there is nothing stored, so return
+# nothing and let tmux pick its own default, which *cascades* each new float from
+# the top-left. Passing our own centred default instead would stack every buffer
+# at the same coordinates and hide all but the newest.
+geom_resolve() { # <name>
+	opt "@scratch_geom_$1"
+}
+
+# -------------------------------------------------------------------- actions
+
+spawn() { # <name> [dst-window]
+	local name="$1" dst="${2:-}" pane g
+	sync
+	[ -n "$name" ] || { err "no buffer name"; return 1; }
+	valid_name "$name" || { err "invalid buffer name: $name"; return 1; }
+
+	if [ -z "$dst" ]; then
+		dst="$(t display-message -p '#{window_id}' 2>/dev/null)"
+	fi
+	[ -n "$dst" ] || {
+		err "no destination window (pass one explicitly)"
+		return 1
+	}
+	win_exists "$dst" || {
+		err "no such window: $dst"
+		return 1
+	}
+
+	pane="$(opt "@scratch_pane_$name")"
+	if [ -z "$pane" ] || ! pane_exists "$pane"; then
+		# not parked (or gone): it must already live in the stash
+		pane="$(stash_pane "$name")"
+		[ -n "$pane" ] || { err "no such buffer: $name"; return 1; }
+	fi
+
+	# move it into the destination window, tiled ...
+	if ! join_into_window "$pane" "$dst"; then
+		err "could not move $name into $dst"
+		return 1
+	fi
+	# ... then lift it out of the tiled layout and float it. With no stored
+	# geometry tmux applies its own default and cascades the pane so it does
+	# not land on top of an existing buffer.
+	# shellcheck disable=SC2206 # deliberate word splitting of the geometry
+	local -a g
+	g=( $(geom_resolve "$name") )
+	if [ "${#g[@]}" -eq 4 ]; then
+		if ! t break-pane -W -s "$pane" \
+			-x "${g[0]}" -y "${g[1]}" -X "${g[2]}" -Y "${g[3]}" 2>/dev/null; then
+			err "could not float $name"
+			return 1
+		fi
+	elif ! t break-pane -W -s "$pane" 2>/dev/null; then
+		err "could not float $name"
+		return 1
+	fi
+	t select-pane -t "$pane" 2>/dev/null
+	t select-pane -t "$pane" -T "scratch:$name" 2>/dev/null
+	geom_store "$name" "$pane" # tmux nudges geometry; keep the effective value
+	setopt "@scratch_pane_$name" "$pane"
+	msg "scratch: $name spawned into $dst"
+}
+
+new() { # <name> [dst-window] [command...]
+	local name="$1" dst="$2" pane dir
+	shift 2 2>/dev/null || shift $# # drop <name> and the optional dst
+	[ -n "$name" ] || { err "no buffer name"; return 1; }
+	valid_name "$name" || {
+		err "invalid name (no spaces, dots or colons; no leading _)"
+		return 1
+	}
+	# Validate the destination before creating anything, so a bad window does
+	# not leave a half made buffer behind in the stash.
+	[ -n "$dst" ] || dst="$(t display-message -p '#{window_id}' 2>/dev/null)"
+	[ -n "$dst" ] && win_exists "$dst" || {
+		err "no destination window: ${dst:-<none>}"
+		return 1
+	}
+	ensure_stash || { err "could not create the $SESSION session"; return 1; }
+
+	if win_exists "$SESSION:$name" ||
+		[ -n "$(opt "@scratch_pane_$name")" ]; then
+		err "buffer already exists: $name"
+		return 1
+	fi
+
+	# A window made in the stash session starts in whatever directory the
+	# script itself was run from, which is nowhere useful. The buffer is about
+	# to be spawned into the destination window, so start it where that
+	# window's active pane is instead.
+	dir="$(t display-message -p -t "$dst" '#{pane_current_path}' 2>/dev/null)"
+
+	pane="$(t new-window -d -t "$SESSION" -n "$name" ${dir:+-c "$dir"} \
+		-P -F '#{pane_id}' "$@")" || {
+		err "could not create buffer: $name"
+		return 1
+	}
+	t set-option -t "$SESSION:$name" -w automatic-rename off 2>/dev/null
+	t select-pane -t "$pane" -T "scratch:$name" 2>/dev/null
+	register "$name" "$pane"
+	spawn "$name" "$dst"
+}
+
+minimize() { # [pane]
+	local pane="${1:-}" title name
+	sync
+	[ -n "$pane" ] || pane="$(t display-message -p '#{pane_id}')"
+	title="$(t display-message -p -t "$pane" '#{pane_title}')"
+
+	case "$title" in
+		scratch:*)
+			name="${title#scratch:}"
+			;;
+		*)
+			err "active pane is not a scratch buffer"
+			return 1
+			;;
+	esac
+
+	if [ "$(t display-message -p -t "$pane" '#{session_name}')" = "$SESSION" ]; then
+		err "$name is already minimized"
+		return 1
+	fi
+
+	geom_store "$name" "$pane"
+	ensure_parked "$name" || { err "could not open $SESSION:$name"; return 1; }
+	if ! join_into_window "$pane" "$SESSION:$name"; then
+		err "could not minimize $name"
+		return 1
+	fi
+	prune_stash "$name" "$pane"
+	t select-pane -t "$pane" -T "scratch:$name" 2>/dev/null
+	setopt "@scratch_pane_$name" "$pane"
+	sync
+	msg "scratch: $name minimized"
+}
+
+kill_one() { # <name>
+	local name="$1" pane
+	sync
+	[ -n "$name" ] || { err "no buffer name"; return 1; }
+	pane="$(opt "@scratch_pane_$name")"
+	if [ -n "$pane" ] && pane_exists "$pane"; then
+		t kill-pane -t "$pane" 2>/dev/null
+	fi
+	t kill-window -t "$SESSION:$name" 2>/dev/null
+	unregister "$name"
+	# drop the stash session once nothing is parked in it any more
+	if [ -z "$(t list-windows -t "$SESSION" -F '#{window_name}' 2>/dev/null | grep -v "^$PARK\$")" ]; then
+		t kill-session -t "$SESSION" 2>/dev/null
+	fi
+	msg "scratch: $name killed"
+}
+
+kill_menu() { # [dst-window]
+	local args=() name
+	sync
+	while read -r name; do
+		[ -n "$name" ] || continue
+		args+=("$name" "" "run-shell -b $0 kill $name")
+	done < <(names)
+	if [ "${#args[@]}" -eq 0 ]; then
+		err "no scratch buffers"
+		return 1
+	fi
+	t display-menu -T " kill scratch buffer " "${args[@]}"
+}
+
+# Remove a buffer whose pane exited, so the indicator cannot go stale.
+# Hook helper. tmux expands #{hook_pane} while it is still parsing the config
+# file, where there is no pane to name, so by the time this runs it is handed no
+# argument at all. Pruning the whole registry works regardless and costs a
+# handful of option lookups, so the pane argument is only ever an optimisation.
+reap() { # [pane]
+	local pane="${1:-}" name owner
+	if [ -n "$pane" ]; then
+		for name in $(names); do
+			owner="$(opt "@scratch_pane_$name")"
+			[ "$owner" = "$pane" ] || continue
+			pane_exists "$pane" && return 0 # still alive
+			unregister "$name"
+			return 0
+		done
+		return 0
+	fi
+	sync
+}
+
+pick() { # [dst-window]
+	local dst="${1:-}" args=() name pane
+	sync
+	[ -n "$dst" ] || dst="$(t display-message -p '#{window_id}')"
+	while read -r name; do
+		[ -n "$name" ] || continue
+		args+=("$name" "" "run-shell -b $0 spawn $name $dst")
+	done < <(names)
+	if [ "${#args[@]}" -eq 0 ]; then
+		err "no scratch buffers yet - create one with prefix + b n"
+		return 1
+	fi
+	t display-menu -T " scratch buffers " "${args[@]}"
+}
+
+list() {
+	local name state n
+	sync
+	n="$(names | grep -c . || true)"
+	if [ "$n" -eq 0 ]; then
+		msg "scratch: no buffers"
+		return 0
+	fi
+	while read -r name; do
+		[ -n "$name" ] || continue
+		if [ "$(t display-message -p -t "$(opt "@scratch_pane_$name")" '#{session_name}' 2>/dev/null)" = "$SESSION" ]; then
+			state="minimized"
+		else
+			state="spawned"
+		fi
+		msg "scratch: $name ($state)"
+	done < <(names)
+}
+
+# ----------------------------------------------------------------- dispatcher
+
+usage() {
+	cat <<EOF
+usage: scratch <command> [args]
+
+  new <name> [window] [command...]  create a buffer and spawn it
+  spawn <name> [window]    spawn a buffer as a floating pane
+  pick [window]            choose a buffer to spawn from a menu
+  minimize [pane]          send the active scratch pane back to the stash
+  kill <name>              kill a buffer
+  kill-menu                choose a buffer to kill from a menu
+  list                     list buffers
+  reap [pane]            forget buffers whose pane is gone (hook helper)
+  sync                    rebuild the status line registry
+EOF
+}
+
+cmd="${1:-}"
+[ "$#" -gt 0 ] && shift
+
+case "$cmd" in
+new) new "$@" ;;
+spawn) spawn "$@" ;;
+pick) pick "$@" ;;
+minimize) minimize "$@" ;;
+kill) kill_one "$@" ;;
+kill-menu) kill_menu "$@" ;;
+list | ls) list ;;
+reap) reap "$@" ;;
+sync) sync ;;
+"" | -h | --help | help) usage ;;
+*)
+	err "unknown command: $cmd"
+	usage
+	exit 1
+	;;
+esac

@@ -174,6 +174,7 @@
           lua
           nix
           hyprlang
+          fish
         ];
 
         configFiles = ../../../config/lazyvim;
