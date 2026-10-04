@@ -70,8 +70,8 @@ mode: session
 # Return to the primary 'main' session when a worktree session is closed/merged
 default_session: main
 
-# Auto-apply agent status icons in tmux window formats
-status_format: true
+# Auto-apply agent status icons in tmux window formats (managed directly in tmux/catppuccin config)
+status_format: false
 
 status_icons:
   working: "🤖"
@@ -98,7 +98,10 @@ windows:
   - 
     panes:
       - command: lazygit
+        focus: true
       - command: workmux dashboard -t worktrees
+        split: horizontal
+        percentage: 50
 
   # Window 4: Agent
   - 

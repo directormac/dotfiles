@@ -41,26 +41,30 @@ default_session: main
 # Session Windows (4 Windows per Worktree)
 # ------------------------------------------------------------------------------
 windows:
-  # Window 1: Neovim Editor
-  - name: editor
+  # Window 1: Editor
+  - 
     panes:
       - command: nvim
         focus: true
 
-  # Window 2: AI Coding Agent (agy)
-  - name: agent
-    panes:
-      - command: <agent>
-
-  # Window 3: Terminal for testing & commands
-  - name: term
+  # Window 2: AI Coding Agent
+  - 
     panes:
       - command: clear
 
-  # Window 4: Git TUI
-  - name: git
+  # Window 3: Git
+  - 
     panes:
       - command: lazygit
+        focus: true
+      - command: workmux dashboard -t worktrees
+        split: horizontal
+        percentage: 50
+
+  # Window 4: Agent
+  - 
+    panes:
+      - command: <agent>
 
 # ------------------------------------------------------------------------------
 # Project Named Layouts
