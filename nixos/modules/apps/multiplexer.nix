@@ -3,6 +3,12 @@
     { pkgs, config, ... }:
     let
 
+      kanjiIndex = "#{?#{==:#I,1},一,#{?#{==:#I,2},二,#{?#{==:#I,3},三,#{?#{==:#I,4},四,#{?#{==:#I,5},五,#{?#{==:#I,6},六,#{?#{==:#I,7},七,#{?#{==:#I,8},八,#{?#{==:#I,9},九,#{?#{==:#I,10},十,#I}}}}}}}}}}";
+
+      # Resolves window icon: replaces fallback (●, ) or agent icons (󰚩, 󱙺) with @workmux_status when set;
+      # for other tools (e.g. nvim ), keeps the tool icon and appends @workmux_status.
+      windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{||:#{m:**,#W},#{||:#{m:*󰚩*,#W},#{m:*󱙺*,#W}}}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
+
       # storeSymLink = config.lib.file.mkOutOfStoreSymlink;
 
       /**
@@ -110,7 +116,7 @@
         config:
           show-name: false
           # ● 
-        fallback-icon: ""
+          fallback-icon: ""
           multi-pane-icon: ""
           always-show-fallback-name: false
 
@@ -119,9 +125,11 @@
           television: "󰮚"
           sesh: "⚡"
           nix: ""  
-          agy: "󱙺"
-          opencode: "󱙺"
-          claude: "󱙺"
+          agy: "󱙺 "
+          agyx: "󱙺 "
+          opencode: "󱙺 "
+          ocx: "󱙺 "
+          claude: "󱙺 "
       '';
 
       # Television cable for workmux
@@ -394,13 +402,15 @@
             set -g status-left-length 100
             set -g status-left ""
             set -ga status-left "#{?client_prefix,#[fg=#{@thm_green} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}},  #{=/22/...:#{s/^[^-]*-//:session_name}},} ,#[fg=#{@thm_mauve} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}}, ,} }"
-            set -ga status-left "#[fg=#{@thm_maroon}] #{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#{?#{!=:#W,},#W,}} #{pane_current_command} "
+            set -ga status-left "#[fg=#{@thm_maroon}] #{?#{!=:${windowIcon},},${windowIcon},} #{pane_current_command} "
 
             # Transparent Status-Right (No mantle backgrounds)
-            # 1. In normal mode, displays only the clock for a clean, non-overlapping status bar.
-            # 2. In prefix mode, swaps clock with the current directory path (truncated to 28 chars).
+            # 1. Shows alert bell (󰂞) if any window has an alert (#{?session_alerts,...})
+            # 2. In normal mode, displays only the clock for a clean, non-overlapping status bar.
+            # 3. In prefix mode, swaps clock with the current directory path (truncated to 28 chars).
             set -g status-right-length 100
             set -g status-right ""
+            set -ga status-right "#{?session_alerts,#[fg=#{@thm_maroon} bold]󰂞 ,}"
             set -ga status-right "#{?client_prefix,#[fg=#{@thm_blue} bold]  #{=/-28/...:#{b:pane_current_path}} ,#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M }"
 
             # Command Prompt & Message Styling (Solid Mantle background on Ctrl+a :)
@@ -489,12 +499,13 @@
                 set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
 
                 # Window formatting:
-                # 1. Shows window index (#I:) only in prefix mode (#{?client_prefix,...})
-                # 2. Replaces fallback (●) or agent (󰚩) icon with @workmux_status when active
+                # 1. Shows window index (Kanji) only in prefix mode (#{?client_prefix,...})
+                # 2. Replaces fallback (●, ) or agent (󰚩, 󱙺) icon with @workmux_status when active
                 # 3. Keeps tool icons (e.g. nvim ) and appends @workmux_status
-                set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,#I: ,}#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}} }"
+                # 4. Shows urgent icon () with maroon background on alert, moving bell out to status-right
+                set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${kanjiIndex} ,} ${windowIcon} #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,${kanjiIndex} ,}${windowIcon} }"
                 set -g @catppuccin_window_current_number ""
-                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #{?client_prefix,#I: ,}#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}} }"
+                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${kanjiIndex} ,} ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #{?client_prefix,${kanjiIndex} ,}${windowIcon} }"
 
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
