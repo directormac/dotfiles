@@ -110,25 +110,28 @@
       ];
 
       # Configuration for tmux-nerd-font-window-name: icon-only window display
-      xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
-        config:
-          show-name: false
-          # ● 
-          fallback-icon: ""
-          multi-pane-icon: ""
-          always-show-fallback-name: false
+      xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text =
+        # yaml
+        ''
+          config:
+            show-name: false
+            # ● 
+            fallback-icon: ""
+            multi-pane-icon: ""
+            always-show-fallback-name: false
 
-        icons:
-          tmux: ""
-          television: "󰮚"
-          sesh: "⚡"
-          nix: ""  
-          agy: "󱙺 "
-          agyx: "󱙺 "
-          opencode: "󱙺 "
-          ocx: "󱙺 "
-          claude: "󱙺 "
-      '';
+          icons:
+            tmux: ""
+            television: "󰮚"
+            sesh: "⚡"
+            nix: ""  
+            nh: ""  
+            agy: "󱙺 "
+            agyx: "󱙺 "
+            opencode: "󱙺 "
+            ocx: "󱙺 "
+            claude: "󱙺 "
+        '';
 
       # Television cable for tmux keys
       xdg.configFile."television/cable/tmux-keys.toml".text =
@@ -251,89 +254,15 @@
             bind -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
             bind -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
-            # Advanced Pane Movements & Inspection
-            bind -N "Break pane to background window" B break-pane -d
-            bind -N "Toggle marked pane" m select-pane -m
-            bind -N "Join marked pane here" J join-pane
-            bind -N "Inspect scrollback in Neovim" E display-popup -w 95% -h 90% -E "tmux capture-pane -p -S -3000 | nvim -c 'set buftype=nofile' -"
-            bind -N "Respawn failed pane" r respawn-pane -k
-            bind -N "Toggle synchronize panes" S set-window-option synchronize-panes
-
-            # Error Preservation & History
-            set -g history-file ~/.local/state/tmux/tmux_history
-            set -g remain-on-exit failed-key
-            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
-            set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
+            # ========================
+            #  UI SECTION BEGIN
+            # ========================
 
 
-            bind C-y display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
-            # bind C-t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" # quick floating terminal
-            # bind C-g display-popup -d "#{pane-current-path}" -w 90% -h 90% -E "lazygit" # lazygit float
-            # bind C-m display-popup -w 95% -h 95% -E "rmpc" # music float
 
-            # Workmux and Television Popups
-            # bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
-            # bind -N "Workmux dashboard" w display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
-            # bind -N "Toggle workmux sidebar" W run-shell "workmux sidebar"
-            # bind -N "Television worktrees" T display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Worktrees' tv git-worktrees
-            # bind -N "Television tmux sessions" S display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Tmux Sessions' tv tmux-sessions
-
-            # https://medium.com/hackernoon/customizing-tmux-b3d2a5050207
-            # Styles
-
-            # Empty line before status
-            set -g status-position bottom
-            # set -g status-style "bg=#{@thm_bg}"
-            set -wg automatic-rename on
-            set -g allow-rename off
-            set -g status-justify "absolute-centre"
-            # Window status styling (clear default 'underscore' attribute)
-            set -g window-status-style "default"
-            set -g window-status-current-style "default"
-            # set -g status-justify "left"
-            # set -Fg "status-format[1]" "#{status-format[0]}"
-            # set -g "status-format[0]" ""
-
-            # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
-            set -g pane-border-status off
-            set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-            set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-            set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-            set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-            set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-            set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
-
-            # Transparent Status-Left (No mantle backgrounds)
-            # 1. Project name is always displayed (#{s/-.*$//:session_name})
-            # 2. If session has a branch and is not main/master, normal mode shows '',
-            #    while prefix mode reveals the branch name (truncated to 22 chars).
-            # 3. Dynamic active command icon matches active window's icon / workmux status.
-            set -g status-left-length 100
-            set -g status-left ""
-            set -ga status-left "#{?client_prefix,#[fg=#{@thm_green} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}},  #{=/22/...:#{s/^[^-]*-//:session_name}},} ,#[fg=#{@thm_mauve} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}}, ,} }"
-            set -ga status-left "#[fg=#{@thm_maroon}] #{?#{!=:${windowIcon},},${windowIcon},} #{pane_current_command} "
-
-            # Transparent Status-Right (No mantle backgrounds)
-            # 1. Shows alert bell (󰂞) if any window has an alert (#{?session_alerts,...})
-            # 2. In normal mode, displays only the clock for a clean, non-overlapping status bar.
-            # 3. In prefix mode, swaps clock with the current directory path (truncated to 28 chars).
-            set -g status-right-length 100
-            set -g status-right ""
-            set -ga status-right "#{?session_alerts,#[fg=#{@thm_maroon} bold]󰂞 ,}"
-            set -ga status-right "#{?client_prefix,#[fg=#{@thm_blue} bold]  #{=/-28/...:#{b:pane_current_path}} ,#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M }"
-
-            # Command Prompt & Message Styling (Solid Mantle background on Ctrl+a :)
-
-            # set -g message-style "bg=#{@thm_bg},fg=#{@thm_fg},align=centre"
-            # set -g message-command-style "bg=#{@thm_mantle}, fg=#{@thm_fg},align=centre"
-            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
-            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
-
-            # Window bell style (runs after plugins to override catppuccin's default yellow)
-            set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
-            # Tmux 3.8: Highlight current line in copy mode
-            set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
-
+            # ========================
+            #  UI SECTION END
+            # ========================
             # Hook to run fastfetch on window creation if there's only one window
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
 
