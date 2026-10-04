@@ -9,11 +9,11 @@
     let
       tmuxPkg = self.packages.${pkgs.stdenv.hostPlatform.system}.tmux;
 
-      kanjiIndex = "#{?#{==:#I,1},一,#{?#{==:#I,2},二,#{?#{==:#I,3},三,#{?#{==:#I,4},四,#{?#{==:#I,5},五,#{?#{==:#I,6},六,#{?#{==:#I,7},七,#{?#{==:#I,8},八,#{?#{==:#I,9},九,#{?#{==:#I,10},十,#I}}}}}}}}}}";
+      kanjiIndex = "#{?#{==:#I,1},一,#{==:#I,2},二,#{==:#I,3},三,#{==:#I,4},四,#{==:#I,5},五,#{==:#I,6},六,#{==:#I,7},七,#{==:#I,8},八,#{==:#I,9},九,#{==:#I,10},十,#I}";
 
       # Resolves window icon: replaces fallback (●, ) or agent icons (󰚩, 󱙺) with @workmux_status when set;
       # for other tools (e.g. nvim ), keeps the tool icon and appends @workmux_status.
-      windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{||:#{m:**,#W},#{||:#{m:*󰚩*,#W},#{m:*󱙺*,#W}}}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
+      windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󰚩*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
 
       /**
         ## NOTE: fetchFromGitHub
@@ -223,8 +223,8 @@
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
             bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
-            bind-key -N "Jump to urgent window or toggle last window" ` if-shell -F "#{?#{session_alerts},1,0}" "next-window -a" "last-window"
-            # bind-key -N "Jump to urgent window or toggle last window" -n C-` if-shell -F "#{?#{session_alerts},1,0}" "next-window -a" "last-window"
+            bind-key -N "Jump to urgent window or toggle last window" ` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
+            # bind-key -N "Jump to urgent window or toggle last window" -n C-` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
 
             # Advanced Pane Movements & Inspection
             bind -N "Break pane to background window" B break-pane -d
@@ -236,9 +236,9 @@
 
             # Error Preservation & History
             set -g history-file ~/.local/state/tmux/tmux_history
-            set -g remain-on-exit failed
-            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press Prefix + r to respawn or Prefix + x to kill."'
-            set-hook -g session-window-changed 'if-shell -F "#{hook_old_window}" "set-option -u -w -t \"#{hook_old_window}\" synchronize-panes"'
+            set -g remain-on-exit failed-key
+            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
+            set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
 
 
             bind C-y display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
@@ -262,17 +262,20 @@
             set -wg automatic-rename on
             set -g allow-rename off
             set -g status-justify "absolute-centre"
+            # Window status styling (clear default 'underscore' attribute)
+            set -g window-status-style "default"
+            set -g window-status-current-style "default"
             # set -g status-justify "left"
             # set -Fg "status-format[1]" "#{status-format[0]}"
             # set -g "status-format[0]" ""
 
             # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
             set -g pane-border-status off
-            set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
-            set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
-            set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
-            set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
-            set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+            set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+            set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+            set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+            set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
             set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
 
             # Transparent Status-Left (No mantle backgrounds)
@@ -303,6 +306,8 @@
 
             # Window bell style (runs after plugins to override catppuccin's default yellow)
             set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
+            # Tmux 3.8: Highlight current line in copy mode
+            set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
 
             # Hook to run fastfetch on window creation if there's only one window
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
@@ -377,7 +382,6 @@
                 set -g @catppuccin_window_status_style 'custom'
                 set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
-                set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
 
                 # Window formatting:
                 # 1. Shows window index (Kanji) only in prefix mode (#{?client_prefix,...})
