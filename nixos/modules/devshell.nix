@@ -24,8 +24,8 @@
           }
           {
             name = "tmux-reload";
-            category = "multiplexer";
-            help = "Quickly reload the active tmux session from multiplexer.nix without rebuilding";
+            category = "tmux";
+            help = "Quickly reload the active tmux session from tmux.nix without rebuilding";
             command = ''
               repo_root="$(git rev-parse --show-toplevel)"
               eval_expr="((builtins.getFlake \"git+file://$repo_root?dir=nixos\").nixosConfigurations.nixos.config.home-manager.users.artifex.xdg.configFile.\"tmux/tmux.conf\").text"
@@ -33,7 +33,7 @@
               echo "Evaluating tmux configuration from flake..."
               if nix eval --impure --raw --expr "$eval_expr" > "$conf" 2>/dev/null; then
                 tmux source-file "$conf"
-                echo "Tmux reloaded with latest configuration from multiplexer.nix!"
+                echo "Tmux reloaded with latest configuration from tmux.nix!"
               else
                 echo "Failed to evaluate tmux configuration." >&2
               fi
@@ -42,8 +42,8 @@
           }
           {
             name = "tmux-test";
-            category = "multiplexer";
-            help = "Run an isolated test tmux session using multiplexer.nix without rebuilding";
+            category = "tmux";
+            help = "Run an isolated test tmux session using tmux.nix without rebuilding";
             command = ''
               repo_root="$(git rev-parse --show-toplevel)"
               eval_expr="((builtins.getFlake \"git+file://$repo_root?dir=nixos\").nixosConfigurations.nixos.config.home-manager.users.artifex.xdg.configFile.\"tmux/tmux.conf\").text"
