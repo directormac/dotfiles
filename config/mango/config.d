@@ -1,1 +1,1 @@
-/nix/store/b5rjw5sv9dgnxb5brxr2vcpsz984bzrl-home-manager-files/.config/mango/config.d
+/nix/store/qmpr3px58akyg71n7hh1vm1r4n2h0xnh-home-manager-files/.config/mango/config.d

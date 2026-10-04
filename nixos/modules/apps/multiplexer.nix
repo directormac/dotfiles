@@ -194,8 +194,8 @@
                     hide_frame_for_single_pane "true"
 
                     format_left  "{mode}#[fg=#89B4FA,bg=#181825,bold] {session}#[bg=#181825] {tabs}"
-                    format_right "{pipe_zjstatus_hints}#[fg=#424555,bg=#181825]::{datetime}"
-                    # format_right "#[fg=#424554,bg=#181825]::{datetime}"
+                    format_right "{pipe_zjstatus_hints}#[fg=#424554,bg=#181825]::{datetime}"
+                    // format_right "#[fg=#424554,bg=#181825]::{datetime}"
                     format_space "#[bg=#181825]"
 
                     mode_normal         "#[bg=#89B4FA] "
