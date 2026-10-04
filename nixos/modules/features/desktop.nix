@@ -127,6 +127,7 @@
         rmpd
 
         gaming
+        nautilus
       ];
 
       home-manager.users.${config.preferences.user.name} = {
@@ -261,19 +262,7 @@
         });
       };
 
-      programs.nautilus-open-any-terminal = {
-        enable = true;
-        terminal = "ghostty";
-      };
-
-      environment.sessionVariables = {
-        NAUTILUS_4_EXTENSION_DIR = lib.mkForce "/run/current-system/sw/lib/nautilus/extensions-4";
-      };
-
       environment.pathsToLink = [
-        "share/thumbnailers"
-        "/lib/nautilus/extensions-4"
-        "/share/nautilus-python/extensions"
         "/share/color-schemes"
       ];
 
@@ -285,27 +274,16 @@
         evince
         feh
         ffmpeg-full
-        ffmpegthumbnailer # High-performance video thumbs (MKV, MP4, HEVC, AV1)
-        file-roller
-        p7zip
         foliate
         galculator
-        gdk-pixbuf # Fixes raw image asset translations
         gnome-disk-utility
         google-chrome
-        libgsf # Explodes ODF and open-office document formats
         libinput
-        libjxl
         localsend
         foot
         mpv
         scrcpy
         mpvpaper
-
-        nautilus
-        nautilus-python
-        nautilus-open-any-terminal
-        sushi
 
         thunar
         thunar-archive-plugin
@@ -315,7 +293,6 @@
         thunar-shares-plugin
 
         pavucontrol
-        poppler-utils # Lightning-fast PDF thumbnails
         quickshell
         fcitx5
         seahorse
@@ -329,7 +306,6 @@
         vlc
         vscode
         vulkan-tools
-        webp-pixbuf-loader # Ensures .webp images show clean previews
         wev
         wireguard-tools
         wl-clip-persist
