@@ -40,7 +40,10 @@
 
       # Television config link
       xdg.configFile."television/config.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/television/config.toml";
+        config.lib.file.mkOutOfStoreSymlink ../../../config/television/config.toml;
+
+      xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/television/themes/catppuccin-mocha-mauve.toml;
 
       # Cable: Unified Nix Search (packages, NixOS options, Home Manager options via nix-search-tv)
       xdg.configFile."television/cable/nix.toml".text =

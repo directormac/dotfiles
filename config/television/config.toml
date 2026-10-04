@@ -16,7 +16,7 @@
 # General settings
 # ----------------------------------------------------------------------------
 tick_rate = 50
-default_channel = "files"
+default_channel = "channels"
 # Shell settings
 # --------------
 # Default shell used for executing commands (source, preview, actions).
@@ -52,12 +52,12 @@ typo_resistance = false
 # └─────────────────────────┘
 ui_scale = 100
 # What orientation should tv be (landscape or portrait)
-orientation = "portrait"
+orientation = "landscape"
 # The theme to use for the UI
 # A list of builtin themes can be found in the `themes` directory of the television
 # repository. You may also create your own theme by creating a new file in a `themes`
 # directory in your configuration directory (see the `config.toml` location above).
-theme = "catppuccin"
+theme = "catppuccin-mocha-mauve.toml"
 
 # Feature-specific configurations
 # Each feature can have its own configuration section
