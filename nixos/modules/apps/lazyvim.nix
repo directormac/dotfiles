@@ -169,6 +169,7 @@
 
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
         treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+          kdl
           json
           toml
           lua

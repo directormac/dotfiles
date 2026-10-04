@@ -3,6 +3,8 @@
     { pkgs, config, ... }:
     {
 
+      # imports = [ inputs.yazelix.homeManagerModules.default ];
+
       home.packages = [
         inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
@@ -129,6 +131,108 @@
         };
       };
 
+      stylix.targets.zellij.enable = true;
+
+      programs.zellij = {
+        enable = true;
+        enableBashIntegration = false;
+        enableZshIntegration = false;
+        attachExistingSession = false;
+
+        layouts = {
+          # 1. Your customized default layout using zjstatus
+          default =
+            # kdl
+            ''
+              layout {
+                  pane split_direction="vertical" {
+                      pane
+                  }
+
+                  pane size=1 borderless=true {
+                    plugin location="file:/home/artifex/.config/zellij/plugins/zjstatus.wasm" {
+                          hide_frame_for_single_pane "true"
+
+                          format_left  "{mode}#[fg=#89B4FA,bg=#181825,bold] {session}#[bg=#181825] {tabs}"
+                          format_right "{command_kubectx}#[fg=#424554,bg=#181825]::{command_kubens}{datetime}"
+                          format_space "#[bg=#181825]"
+
+                          mode_normal         "#[bg=#89B4FA] "
+                          mode_tmux           "#[bg=#ffc387] "
+                          mode_default_to_mode "tmux"
+
+                          tab_normal               "#[fg=#6C7086,bg=#181825] {index} {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+                          tab_active               "#[fg=#9399B2,bg=#181825,bold,italic] {index} {name} {fullscreen_indicator}{sync_indicator}{floating_indicator}"
+                          tab_fullscreen_indicator "□ "
+                          tab_sync_indicator       "  "
+                          tab_floating_indicator   "󰉈 "
+
+                          command_kubectx_command  "kubectx -c"
+                          command_kubectx_format   "#[fg=#6C7086,bg=#181825,italic] {stdout}"
+                          command_kubectx_interval "2"
+
+                          command_kubens_command   "kubens -c"
+                          command_kubens_format    "#[fg=#6C7086,bg=#181825]{stdout} "
+                          command_kubens_interval  "2"
+
+                          datetime          "#[fg=#9399B2,bg=#181825] {format} "
+                          datetime_format   "%A, %d %b %Y %H:%M"
+                          datetime_timezone "Europe/Berlin"
+                      }
+                  }
+              }
+            '';
+
+          # 2. Your multi-tab dev layout for nvim, lazygit, yazi, and shell
+          dev = ''
+            layout {
+                default_tab_template {
+                    pane size=1 borderless=true {
+                        plugin location="zellij:tab-bar"
+                    }
+                    children
+                    pane size=2 borderless=true {
+                        plugin location="zellij:status-bar"
+                    }
+                }
+
+                tab name="Project" focus=true {
+                    pane command="nvim"
+                }
+
+                tab name="Git" {
+                    pane command="lazygit"
+                }
+
+                tab name="Files" {
+                    pane command="yazi"
+                }
+
+                tab name="Shell" {
+                    pane command="zsh"
+                }
+            }
+          '';
+        };
+
+        plugins = with pkgs.zellijPlugins; [
+          zjstatus
+          zjframes
+          workspace
+          # https://github.com/Nacho114/harpoon
+          # https://github.com/laperlej/zellij-sessionizer
+          # https://github.com/sharph/zellij-worktree
+          # https://github.com/karimould/zellij-forgot
+          # https://github.com/b0o/zjstatus-hints
+          #https://github.com/dj95/zj-smart-sessions
+          # https://github.com/dj95/zj-quit
+          # vim-zellij-navigator
+        ];
+      };
+
+      # https://github.com/Yazelix/nova/blob/stable/docs/installation.md
+      # programs.yazelix.enable = true;
+
     };
 
   flake.nixosModules.multiplexer = { pkgs, config, ... }: {
@@ -142,7 +246,6 @@
     environment.systemPackages = with pkgs; [
       inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
       sesh
-      zellij
     ];
 
   };

@@ -215,7 +215,6 @@
           "oc" = "opencode";
           "wh" = "which";
           "v" = "lazyvim";
-          "spf" = "superfile";
           "vi" = "neovim";
           "nvim" = "lazyvim";
           "y" = "yazi";
@@ -277,6 +276,27 @@
             # Download subtitles only without the underlying video stream
             yt-subs() {
                 yt-dlp --write-subs --write-auto-subs --skip-download "$1"
+            }
+
+            spf() {
+                os=$(uname -s)
+
+                # Linux
+                if [[ "$os" == "Linux" ]]; then
+                    export SPF_LAST_DIR="${config.home.homeDirectory}/.local/state}/superfile/lastdir"
+                fi
+
+                # macOS
+                if [[ "$os" == "Darwin" ]]; then
+                    export SPF_LAST_DIR="$HOME/Library/Application Support/superfile/lastdir"
+                fi
+
+                command spf "$@"
+
+                [ ! -f "$SPF_LAST_DIR" ] || {
+                    . "$SPF_LAST_DIR"
+                    rm -f -- "$SPF_LAST_DIR" > /dev/null
+                }
             }
 
             # Note: fzf does not support 'ctrl-tab' in --bind (unsupported key in fzf's Go core)

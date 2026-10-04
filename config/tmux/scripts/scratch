@@ -10,10 +10,12 @@
 #   - the window is named `scratch:<name>`, so buffers are directly addressable
 #   - `_park` is a reserved window that keeps the session alive when every
 #     buffer is spawned elsewhere; names starting with `_` are not buffers
+#   - the set of buffers *is* the set of @scratch_pane_<name> options; there is
+#     no separate name list to keep in step with it (see sync)
 #   - global options hold the state the status line reads:
-#       @scratch_names   space separated buffer names (registry / indicator)
-#       @scratch_count   number of live buffers
-#       @scratch_pane_<n>   pane id of buffer <n>   (used to reap dead buffers)
+#       @scratch_pane_<n>   pane id of buffer <n>   (the registry itself)
+#       @scratch_count      number of live buffers  (display only, derived)
+#       @scratch_list       names for the indicator (display only, derived)
 #       @scratch_geom_<n>   "w h x y" float geometry, captured on minimize
 #
 # Mechanics (verified against tmux 3.8-rc3)
@@ -32,9 +34,32 @@ set -uo pipefail
 SESSION="scratch"
 PARK="_park"
 
+# Absolute path to this script, used to re-invoke it from tmux menus. Those go
+# through /bin/sh in the tmux *server's* working directory, so a relative $0
+# would not resolve there.
+case "$0" in
+*/*) SELF="$(cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)/$(basename -- "$0")" ;;
+*) SELF="$(command -v -- "$0" 2>/dev/null || printf '%s' "$0")" ;;
+esac
+
 # ---------------------------------------------------------------- tmux helpers
 
 t() { tmux "$@"; }
+
+# Build a tmux command that re-invokes this script, keeping the whole
+# invocation inside a single quoted shell-command word.
+#
+# `run-shell` parses its own command line, and its trailing `[argument ...]`
+# values are only ever surfaced as #{1}, #{2} - they are never appended to
+# shell-command. Written as separate tokens the arguments are dropped and the
+# script runs bare, which falls into the usage branch and looks like the binding
+# is simply dead. display-menu item commands are parsed the same way, so they
+# need the same treatment.
+self_cmd() {
+	local cmd="$SELF $*"
+	cmd="${cmd//\'/\'\\\'\'}"
+	printf "run-shell -b '%s'" "$cmd"
+}
 
 # tmux only has `has-session`, so window and pane existence is tested by asking
 # the target to list itself.
@@ -54,11 +79,15 @@ _notify() {
 msg() { _notify "$*"; }
 err() { _notify "scratch: $*"; }
 
-# Validate a buffer name: no colons, dots, spaces or empty. Leading _ is
-# reserved for internal windows.
+# Validate a buffer name. Names are identifiers only: they end up in tmux option
+# *names* (@scratch_pane_<name>), in a space separated registry, and in the value
+# of that registry - which set-option writes with -F, expanding any format it
+# finds. Allowing `#`, `{` or `}` through would let a name rewrite the options
+# it is stored in. Leading _ is reserved for internal windows.
 valid_name() {
 	case "$1" in
-		"" | _* | *:* | *.* | *" "*) return 1 ;;
+		*[!A-Za-z0-9_-]* | -* | "") return 1 ;;
+		_*) return 1 ;;
 		*) return 0 ;;
 	esac
 }
@@ -69,17 +98,27 @@ unsetopt() { t set-option -gu "$1" 2>/dev/null; }
 
 # Buffer names are plain identifiers (validated above) so word splitting is safe
 # and the space separated registry needs no quoting anywhere.
+# Live buffer names, derived from the @scratch_pane_<name> options themselves.
+#
+# The options *are* the registry. An earlier design also kept a space separated
+# @scratch_names list, but registering a buffer then became a read-modify-write
+# of that option with no lock. tmux runs the reap hook from a background shell,
+# and users fire `new` in quick succession, so concurrent invocations dropped
+# each other's writes: buffers got created but never registered, and the name
+# list silently disagreed with the options. Deriving the names means the only
+# mutation is a single option write, which is idempotent and therefore safe to
+# run concurrently. show-options -g returns options in a stable sorted order, so
+# the status line gets a deterministic list for free.
 names() {
-	local n
-	for n in $(opt @scratch_names); do
-		printf '%s\n' "$n"
+	local o
+	for o in $(t show-options -g 2>/dev/null |
+		sed -n 's/^@scratch_pane_\([^ ]*\) .*/\1/p'); do
+		printf '%s\n' "$o"
 	done
 	return 0
 }
 
-# Recompute @scratch_count. The registry is authoritative: a spawned buffer no
-# longer lives in the stash session, so it cannot be rediscovered by listing it.
-# The names shown in the status right indicator, in registration order.
+# The names shown in the status right indicator.
 list_names() {
 	local n out=""
 	for n in $(names); do
@@ -89,48 +128,28 @@ list_names() {
 }
 
 sync() {
-	local count
+	local count n pane
 	# Self heal: a buffer whose pane was destroyed with kill-pane leaves no
 	# trace for any hook to report (see reap), so drop those entries here.
 	# This runs on every entry point, which makes the registry converge on the
 	# real state instead of drifting.
-	local n out="" pane
 	for n in $(names); do
 		pane="$(opt "@scratch_pane_$n")"
-		if [ -n "$pane" ] && pane_exists "$pane"; then
-			out="$out $n"
-		else
-			unsetopt "@scratch_pane_$n"
-			unsetopt "@scratch_geom_$n"
-		fi
+		[ -n "$pane" ] && pane_exists "$pane" && continue
+		unsetopt "@scratch_pane_$n"
+		unsetopt "@scratch_geom_$n"
 	done
-	setopt @scratch_names "${out# }"
 	count="$(names | grep -c . || true)"
 	setopt @scratch_count "$count"
 	setopt @scratch_list "$(list_names)"
 }
 
 register() { # <name> <pane>
-	local n found=1 out=""
-	for n in $(names); do
-		if [ "$n" = "$1" ]; then
-			found=0
-			continue
-		fi
-		out="$out $n"
-	done
-	out="$out $1"
-	setopt @scratch_names "${out# }"
 	setopt "@scratch_pane_$1" "$2"
 	sync
 }
 
 unregister() { # <name>
-	local n out=""
-	for n in $(names); do
-		[ "$n" = "$1" ] || out="$out $n"
-	done
-	setopt @scratch_names "${out# }"
 	unsetopt "@scratch_pane_$1"
 	unsetopt "@scratch_geom_$1"
 	sync
@@ -277,7 +296,7 @@ new() { # <name> [dst-window] [command...]
 	shift 2 2>/dev/null || shift $# # drop <name> and the optional dst
 	[ -n "$name" ] || { err "no buffer name"; return 1; }
 	valid_name "$name" || {
-		err "invalid name (no spaces, dots or colons; no leading _)"
+		err "invalid name: letters, digits, - and _ only, no leading _"
 		return 1
 	}
 	# Validate the destination before creating anything, so a bad window does
@@ -312,21 +331,62 @@ new() { # <name> [dst-window] [command...]
 	spawn "$name" "$dst"
 }
 
-minimize() { # [pane]
+# Which buffer does <pane> belong to, if any?
+#
+# The registry is authoritative: @scratch_pane_<name> records the pane id that
+# belongs to each buffer, so a lookup settles it without trusting the pane's
+# title. The title is only a fallback for the window of the stash session, where
+# the pane has just been joined in and its id is already known.
+owner_of() { # <pane>
+	local name
+	for name in $(names); do
+		[ "$(opt "@scratch_pane_$name")" = "$1" ] && {
+			printf '%s' "$name"
+			return 0
+		}
+	done
+	return 1
+}
+
+pane_of() { # <name>
+	local p
+	p="$(opt "@scratch_pane_$1")"
+	[ -n "$p" ] || return 1
+	printf '%s' "$p"
+}
+
+minimize() { # [pane|buffer]
 	local pane="${1:-}" title name
 	sync
 	[ -n "$pane" ] || pane="$(t display-message -p '#{pane_id}')"
-	title="$(t display-message -p -t "$pane" '#{pane_title}')"
 
-	case "$title" in
-		scratch:*)
-			name="${title#scratch:}"
-			;;
-		*)
-			err "active pane is not a scratch buffer"
-			return 1
-			;;
+	# Accept a buffer name as well as a pane id, so minimize takes the same
+	# argument as spawn and kill. A pane id from list-panes always starts with
+	# %, so anything else is a name; if it is not a buffer the title lookup below
+	# reports it rather than silently parking the wrong pane.
+	case "$pane" in
+	%*) ;;
+	*)
+		if name="$(pane_of "$pane")"; then
+			pane="$name"
+		fi
+		;;
 	esac
+
+	# Prefer the registry over the title: `select-pane -T` writes scratch:<name>
+	# once, and any application that sets its own pane title overwrites it, after
+	# which a title lookup reports a perfectly good buffer as "not a scratch
+	# buffer".
+	if ! name="$(owner_of "$pane")"; then
+		title="$(t display-message -p -t "$pane" '#{pane_title}')"
+		case "$title" in
+			scratch:*) name="${title#scratch:}" ;;
+			*)
+				err "not a scratch buffer: $pane"
+				return 1
+				;;
+		esac
+	fi
 
 	if [ "$(t display-message -p -t "$pane" '#{session_name}')" = "$SESSION" ]; then
 		err "$name is already minimized"
@@ -368,7 +428,7 @@ kill_menu() { # [dst-window]
 	sync
 	while read -r name; do
 		[ -n "$name" ] || continue
-		args+=("$name" "" "run-shell -b $0 kill $name")
+		args+=("$name" "" "$(self_cmd kill "$name")")
 	done < <(names)
 	if [ "${#args[@]}" -eq 0 ]; then
 		err "no scratch buffers"
@@ -398,12 +458,12 @@ reap() { # [pane]
 }
 
 pick() { # [dst-window]
-	local dst="${1:-}" args=() name pane
+	local dst="${1:-}" args=() name
 	sync
 	[ -n "$dst" ] || dst="$(t display-message -p '#{window_id}')"
 	while read -r name; do
 		[ -n "$name" ] || continue
-		args+=("$name" "" "run-shell -b $0 spawn $name $dst")
+		args+=("$name" "" "$(self_cmd spawn "$name" "$dst")")
 	done < <(names)
 	if [ "${#args[@]}" -eq 0 ]; then
 		err "no scratch buffers yet - create one with prefix + b n"
@@ -413,13 +473,8 @@ pick() { # [dst-window]
 }
 
 list() {
-	local name state n
+	local name state n=0 out=""
 	sync
-	n="$(names | grep -c . || true)"
-	if [ "$n" -eq 0 ]; then
-		msg "scratch: no buffers"
-		return 0
-	fi
 	while read -r name; do
 		[ -n "$name" ] || continue
 		if [ "$(t display-message -p -t "$(opt "@scratch_pane_$name")" '#{session_name}' 2>/dev/null)" = "$SESSION" ]; then
@@ -427,14 +482,24 @@ list() {
 		else
 			state="spawned"
 		fi
-		msg "scratch: $name ($state)"
+		out="${out:+$out$'\n'}$name ($state)"
+		n=$((n + 1))
 	done < <(names)
+	if [ "$n" -eq 0 ]; then
+		msg "scratch: no buffers"
+		return 0
+	fi
+	# One message, not one per buffer: display-message replaces whatever was
+	# there before, so a message per buffer only ever leaves the last one
+	# visible.
+	_notify "$(printf 'scratch buffers (%d):%s' "$n" "$out")"
 }
 
 # ----------------------------------------------------------------- dispatcher
 
 usage() {
-	cat <<EOF
+	local text
+	text="$(cat <<'EOF'
 usage: scratch <command> [args]
 
   new <name> [window] [command...]  create a buffer and spawn it
@@ -447,6 +512,19 @@ usage: scratch <command> [args]
   reap [pane]            forget buffers whose pane is gone (hook helper)
   sync                    rebuild the status line registry
 EOF
+)"
+
+	if [ "${1:-}" = "--bare" ]; then
+		# A bare invocation is almost never someone asking for help, it means
+		# the caller lost the arguments. Help text on stdout is useless here:
+		# `run-shell -b` throws the child's stdout away, which is exactly how a
+		# dropped argument goes unnoticed. Say so in the status line instead.
+		err "no command given - arguments were dropped by the caller?"
+		err "see $SELF for the command list"
+		printf '%s\n' "$text" >&2
+		exit 1
+	fi
+	printf '%s\n' "$text"
 }
 
 cmd="${1:-}"
@@ -462,10 +540,11 @@ kill-menu) kill_menu "$@" ;;
 list | ls) list ;;
 reap) reap "$@" ;;
 sync) sync ;;
-"" | -h | --help | help) usage ;;
+-h | --help | help) usage ;;
+"") usage --bare ;;
 *)
 	err "unknown command: $cmd"
-	usage
+	usage >&2
 	exit 1
 	;;
 esac
