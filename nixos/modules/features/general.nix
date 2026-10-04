@@ -61,12 +61,6 @@
 
       };
 
-      television = {
-        enable = true;
-        enableZshIntegration = true;
-        enableBashIntegration = true;
-      };
-
       fzf = {
         enable = true;
         # https://github.com/junegunn/fzf/wiki/Color-schemes
@@ -160,6 +154,7 @@
         multiplexer
         tmux
         editor
+        television
 
         # nightly-neovim
 
@@ -230,7 +225,6 @@
         # CLI Goodies
         bat
         nix-prefetch-scripts
-        nix-search-tv
         nix-tree
         ncdu
         dust
@@ -246,7 +240,6 @@
         lsd
         ripgrep
         tealdeer
-        television
         trash-cli
         vivid
         wget

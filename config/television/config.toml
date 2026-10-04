@@ -34,6 +34,10 @@ history_size = 200
 # When true: history navigation shows entries from all channels
 # When false: history navigation is scoped to the current channel
 global_history = false
+# Whether fuzzy matching tolerates typos (default: false)
+# When true, every fuzzy pattern gets a typo budget that scales with its
+# length (one typo per 4 characters, capped at 2)
+typo_resistance = false
 
 [ui]
 # How much space to allocate for the UI (in percentage of the screen)
@@ -48,7 +52,7 @@ global_history = false
 # └─────────────────────────┘
 ui_scale = 100
 # What orientation should tv be (landscape or portrait)
-orientation = "landscape"
+orientation = "portrait"
 # The theme to use for the UI
 # A list of builtin themes can be found in the `themes` directory of the television
 # repository. You may also create your own theme by creating a new file in a `themes`
@@ -61,7 +65,7 @@ theme = "catppuccin"
 # Where to place the input bar in the UI (top or bottom)
 position = "top"
 # The input prompt string (empty by default: no prompt at all)
-prompt = ""
+prompt = "❯"
 # header = "{}"
 # padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
 border_type = "none" # https://docs.rs/ratatui/latest/ratatui/widgets/block/enum.BorderType.html#variants
@@ -134,8 +138,8 @@ ctrl-down = "select_next_history"
 
 # Multi-selection
 # --------------
-tab = "toggle_selection_down"
-backtab = "toggle_selection_up"
+tab = "toggle_selection"
+backtab = "toggle_selection_all"
 enter = "confirm_selection"
 
 # Preview panel control
@@ -243,7 +247,7 @@ fallback_channel = "files"
 [shell_integration.keybindings]
 # controls which key binding should trigger tv
 # for shell autocomplete
-"smart_autocomplete" = "ctrl-t"
+"smart_autocomplete" = "alt-t" #Default ctrl-t 
 # controls which keybinding should trigger tv
 # for command history
-"command_history" = "ctrl-r"
+"command_history" = "alt-r" #Default ctrl-r
