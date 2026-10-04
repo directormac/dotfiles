@@ -207,6 +207,11 @@
         historyLimit = 1000000;
 
         # Pieces of config from our config/tmux.conf
+        # References
+        # https://github.com/catppuccin/tmux/discussions/317#discussioncomment-12731361
+        # https://github.com/omerxx/dotfiles/blob/master/tmux/tmux.conf
+        # https://github.com/omacom/omarchy/discussions/5086
+        # https://github.com/omacom/omarchy/blob/quattro/config/tmux/tmux.conf
         extraConfig =
           # conf
           ''
@@ -294,12 +299,22 @@
             # bind -N "Television tmux sessions" S display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Tmux Sessions' tv tmux-sessions
             bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
 
-
             set -g @continuum-restore 'on'
           '';
         plugins = [
           # https://github.com/joshmedeski/tmux-nerd-font-window-name#nix-flakes
-          inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default
+          # inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default
+          {
+            plugin = pkgs.tmuxPlugins.tmux-nerd-font-window-name;
+            extraConfig =
+              # conf
+              ''
+                # set -g automatic-rename-format "#{window_icon} #{b:pane_current_path}"
+                set -g automatic-rename-format "#{window_icon}"
+              '';
+
+          }
+
           # https://github.com/jaclu/tmux-menus
           # {
           #   plugin = tmux-menus;
@@ -320,22 +335,34 @@
 
                 set -g @catppuccin_flavor 'mocha' # latte,frappe, macchiato or mocha
                 set -g @catppuccin_window_status_style "basic"
-                set -g @catppuccin_status_left_separator "█"
-                set -g @catppuccin_status_right_separator "█"
-                # set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
+                # set -g @catppuccin_status_left_separator "█"
+                # set -g @catppuccin_status_right_separator "█"
+                set -g @catppuccin_status_left_separator ""
+                set -g @catppuccin_status_right_separator ""
+                set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
                 set -g @catppuccin_status_background "none"
 
-                # Mauve Overrides for a consistent look
-                set -g @catppuccin_window_current_number_color "#cba6f7"
-                set -g @catppuccin_directory_color "#cba6f7"
-                set -g @catppuccin_session_color "#cba6f7"
+                # Hiding window numbers completely
+                set -g @catppuccin_window_number ""
+                set -g @catppuccin_window_current_number ""
 
-                ### Plugin: https://github.com/catppuccin/tmux
-                set-option -g @catppuccin_window_number_position 'left'
+                # Color formatting: Transparent/Default background for normal windows, Mauve background for active window
+                set -g @catppuccin_window_text_color "none"
+                set -g @catppuccin_window_current_text_color "#cba6f7" 
+
+                # Mauve Overrides for a consistent look
+                # set -g @catppuccin_window_current_number_color "#cba6f7"
+                set -g @catppuccin_directory_color "#b4befe"
+                set -g @catppuccin_session_color "#a6e3a1"
+
                 set-option -g @catppuccin_window_flags 'no'
-                set-option -g @catppuccin_window_text ' #W'
-                set-option -g @catppuccin_window_current_text ' #W'
+                set-option -g @catppuccin_window_text '#W '
+                set-option -g @catppuccin_window_current_text '#W '
                 set-option -g @catppuccin_status_middle_separator ""
+
+                # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
+                set -g @catppuccin_directory_text "#(echo '#{b:pane_current_path}' | sed -E 's/^(feat|fix|refactor|docs|style|test|chore|ci|perf)([/-])//')"
+                set -g @catppuccin_session_text "#(echo '#S' | cut -d'-' -f1)"
 
                 set -g status-left ""
                 set -g status-right-length 100
@@ -357,6 +384,7 @@
               set -g @resurrect-strategy-vim 'session'
               set -g @resurrect-strategy-nvim 'session'
               set -g @resurrect-capture-pane-contents 'on'
+              set -g @resurrect-processes 'lazydocker lazygit yazi'
               resurrect_dir=$HOME/.local/state/tmux/resurrect/
               set -g @resurrect-dir $resurrect_dir
               set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"

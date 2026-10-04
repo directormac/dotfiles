@@ -93,7 +93,6 @@
 
       catppuccin = {
         enable = false;
-        enableReleaseCheck = false;
         flavor = "mocha";
         accent = "mauve";
       };

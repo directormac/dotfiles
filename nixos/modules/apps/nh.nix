@@ -57,87 +57,42 @@
         };
         runShell = [
           ''
-            # If NH_FLAKE is empty or set to the default static base path (or legacy _fallback), perform dynamic resolution
-            if [ -z "$NH_FLAKE" ] || [ "$NH_FLAKE" = "/home/$USER/.dotfiles/nixos" ] || [ "$NH_FLAKE" = "/home/artifex/.dotfiles/nixos" ] || [ "$NH_FLAKE" = "/home/$USER/.dotfiles/_fallback" ] || [ "$NH_FLAKE" = "/home/artifex/.dotfiles/_fallback" ]; then
-              __nh_detect_flake() {
-                # 1. Environment variable override
-                if [ -n "$NH_WORKTREE" ]; then
-                  local cand="/home/$USER/Code/.worktrees/.dotfiles/$NH_WORKTREE/nixos"
-                  if [ -f "$cand/flake.nix" ]; then
-                    echo "$cand"
-                    return 0
+            # Trigger dynamic detection if NH_FLAKE is empty, invalid, or points to the base flake
+            if [ -z "$NH_FLAKE" ] || [ ! -f "$NH_FLAKE/flake.nix" ] || [ "$NH_FLAKE" = "$HOME/.dotfiles/nixos" ]; then
+              __nh_target=""
+
+              # 1. Environment variable override
+              if [ -n "$NH_WORKTREE" ] && [ -f "$HOME/Code/.worktrees/.dotfiles/$NH_WORKTREE/nixos/flake.nix" ]; then
+                __nh_target="$HOME/Code/.worktrees/.dotfiles/$NH_WORKTREE/nixos"
+              fi
+
+              # 2. Check current working directory or git worktree root
+              if [ -z "$__nh_target" ]; then
+                __git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+                if [ -n "$__git_root" ]; then
+                  if [ -f "$__git_root/nixos/flake.nix" ]; then
+                    __nh_target="$__git_root/nixos"
+                  elif [ -f "$__git_root/flake.nix" ]; then
+                    __nh_target="$__git_root"
                   fi
                 fi
+              fi
 
-                # 2. Check current working directory git root
-                local git_root
-                git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
-                if [ -n "$git_root" ]; then
-                  if [ -f "$git_root/nixos/flake.nix" ]; then
-                    echo "$git_root/nixos"
-                    return 0
-                  elif [ -f "$git_root/flake.nix" ]; then
-                    echo "$git_root"
-                    return 0
-                  fi
+              # 3. Check tmux session name (e.g. dotfiles-<worktree>)
+              if [ -z "$__nh_target" ] && [ -n "$TMUX" ]; then
+                __session_name="$(tmux display-message -p '#{session_name}' 2>/dev/null)"
+                if [[ "$__session_name" =~ ^dotfiles-(.+) ]]; then
+                  __wt_cand="$HOME/Code/.worktrees/.dotfiles/''${BASH_REMATCH[1]}/nixos"
+                  [ -f "$__wt_cand/flake.nix" ] && __nh_target="$__wt_cand"
                 fi
+              fi
 
-                # 3. Check tmux session or pane
-                if [ -n "$TMUX" ]; then
-                  local pane_path pane_git
-                  pane_path="$(tmux display-message -p '#{pane_current_path}' 2>/dev/null)"
-                  if [ -n "$pane_path" ]; then
-                    pane_git="$(git -C "$pane_path" rev-parse --show-toplevel 2>/dev/null)"
-                    if [ -n "$pane_git" ]; then
-                      if [ -f "$pane_git/nixos/flake.nix" ]; then
-                        echo "$pane_git/nixos"
-                        return 0
-                      elif [ -f "$pane_git/flake.nix" ]; then
-                        echo "$pane_git"
-                        return 0
-                      fi
-                    fi
-                  fi
+              export NH_FLAKE="''${__nh_target:-$HOME/.dotfiles/nixos}"
 
-                  local session_name
-                  session_name="$(tmux display-message -p '#{session_name}' 2>/dev/null)"
-                  if [[ "$session_name" =~ ^dotfiles-(.+) ]]; then
-                    local wt_name="''${BASH_REMATCH[1]}"
-                    local wt_cand="/home/$USER/Code/.worktrees/.dotfiles/$wt_name/nixos"
-                    if [ -f "$wt_cand/flake.nix" ]; then
-                      echo "$wt_cand"
-                      return 0
-                    fi
-                  fi
-                fi
-
-                # 4. Check git worktrees in ~/.dotfiles for checked out branch
-                if [ -d "/home/$USER/.dotfiles" ]; then
-                  local cur_branch
-                  cur_branch="$(git -C "/home/$USER/.dotfiles" branch --show-current 2>/dev/null)"
-                  if [ -n "$cur_branch" ] && [ "$cur_branch" != "main" ] && [ "$cur_branch" != "master" ]; then
-                    local branch_slug
-                    branch_slug="$(echo "$cur_branch" | tr '/' '-')"
-                    local wt_cand="/home/$USER/Code/.worktrees/.dotfiles/$branch_slug/nixos"
-                    if [ -f "$wt_cand/flake.nix" ]; then
-                      echo "$wt_cand"
-                      return 0
-                    fi
-                  fi
-                fi
-
-                # 5. Fallback to main dotfiles flake
-                echo "/home/$USER/.dotfiles/nixos"
-              }
-
-              __detected="$(__nh_detect_flake)"
-              if [ -n "$__detected" ]; then
-                export NH_FLAKE="$__detected"
-                if [[ "$__detected" == *"/Code/.worktrees/.dotfiles/"* ]]; then
-                  __wt_display="''${__detected#*/Code/.worktrees/.dotfiles/}"
-                  __wt_display="''${__wt_display%/nixos}"
-                  echo -e "\033[34m>\033[0m \033[1m[nh]\033[0m Detected worktree branch: \033[32m$__wt_display\033[0m ($__detected)" >&2
-                fi
+              if [[ "$NH_FLAKE" == *"/Code/.worktrees/.dotfiles/"* ]]; then
+                __wt_display="''${NH_FLAKE#*/Code/.worktrees/.dotfiles/}"
+                __wt_display="''${__wt_display%/nixos}"
+                echo -e "\033[34m>\033[0m \033[1m[nh]\033[0m Detected worktree branch: \033[32m$__wt_display\033[0m ($NH_FLAKE)" >&2
               fi
             fi
           ''
