@@ -141,11 +141,11 @@
 
           [source]
           command = "${tmux-list-keys-tv}/bin/tmux-list-keys-tv"
-          display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
+          display = "{split:\t:0}     {split:\t:1}  [{split:\t:2}]"
           output = "{split:\t:1}"
 
           [preview]
-          command = "echo -e '╭── Tmux Keybinding Details ───────────\n│ Key:       {split:\t:0}\n│ Table:     {split:\t:2}\n│ Raw Key:   {split:\t:3}\n╰──────────────────────────────────────\n\nAction / Command:\n{split:\t:1}'"
+          command = "echo -e '    Tmux Keybinding Details            \n  Key:       {split:\t:0}\n  Table:     {split:\t:2}\n  Raw Key:   {split:\t:3}\n                                       \n\nAction / Command:\n{split:\t:1}'"
 
           [keybindings]
           enter = "actions:execute"
@@ -161,6 +161,9 @@
           command = "echo '{split:\t:0}' | tr -d '\\n' | wl-copy"
           mode = "execute"
         '';
+
+      xdg.configFile."tmux/tmux.playground".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux.playground;
 
       programs.tmux = {
         enable = true;
@@ -185,9 +188,8 @@
           ''
             # General Settings
 
-            set-option -g status-interval 1
-            set-window-option -g pane-base-index 1 # Base window number?
-            set-option -g renumber-windows on # Renumber windows on remove
+            set -g status-interval 1
+            set -g renumber-windows on # Renumber windows on remove
             set -g history-limit 100000
             set -g repeat-time 350
             set -g display-time 1500
@@ -208,10 +210,17 @@
             set -as terminal-features ",xterm-256color:RGB"
 
             # Bindings
+
+            bind -N "Prompt a command" : command-prompt -P
+
+            bind -N "Fuzzy search Tmux keybindings" ? display-popup -E -w 80% -h 75% -d "#{pane_current_path}" -T "Tmux Keybindings" "tmux list-keys -N -a | tv --config-file ~/.config/television/tv-slim.toml"
+
+            bind -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh --hide-preview --input-position bottom
+
+            bind -N "Jump to urgent window or toggle last window" ` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
+
+
             bind -N "Reload Configuration" R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
-            bind-key -N "Fuzzy search Tmux keybindings" ? display-popup -E -w 80% -h 75% -d "#{pane_current_path}" -T "Tmux Keybindings" "tv tmux-keys"
-            bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
-            bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
             bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
             bind -N "Create window" c new-window -c "#{pane_current_path}"
             bind -N "Create window cwd" C new-window
@@ -222,9 +231,11 @@
             bind -N "Kill session" X confirm-before -p "Kill session #S? (y/n)" kill-session
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
-            bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
-            bind-key -N "Jump to urgent window or toggle last window" ` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
             # bind-key -N "Jump to urgent window or toggle last window" -n C-` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
+
+
+            bind -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
+            bind -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
             # Advanced Pane Movements & Inspection
             bind -N "Break pane to background window" B break-pane -d
@@ -332,15 +343,15 @@
           }
 
           # https://github.com/jaclu/tmux-menus
-          {
-            plugin = tmux-menus;
-            extraConfig =
-              # sh
-              ''
-                set -g @menus_config_file "$HOME/.config/tmux/tmux.conf"
-                set -g @menus_trigger 'm'
-              '';
-          }
+          # {
+          #   plugin = tmux-menus;
+          #   extraConfig =
+          #     # sh
+          #     ''
+          #       set -g @menus_config_file "$HOME/.config/tmux/tmux.conf"
+          #       set -g @menus_trigger 'm'
+          #     '';
+          # }
 
           # https://github.com/alberti42/tmux-fzf-links
           {
@@ -435,25 +446,25 @@
 
           # sensible
 
-          {
-            # https://github.com/alexwforsythe/tmux-which-key#nix-with-home-manager-flake-installation
-            plugin = tmux-which-key;
-
-            extraConfig =
-              # sh
-              ''
-                # Enables XDG user directory support for the plugin.
-                set -g @tmux-which-key-xdg-enable 1;
-
-                # Disables building the tmux configuration from YAML everytime the plugin starts.
-                # The home manager module calls `plugin/build.py` on each generation.
-                set -g @tmux-which-key-disable-autobuild 1
-
-                # Follows nixpkgs prefered path for plugins instead of the default
-                # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
-                set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
-              '';
-          }
+          # {
+          #   # https://github.com/alexwforsythe/tmux-which-key#nix-with-home-manager-flake-installation
+          #   plugin = tmux-which-key;
+          #
+          #   extraConfig =
+          #     # sh
+          #     ''
+          #       # Enables XDG user directory support for the plugin.
+          #       set -g @tmux-which-key-xdg-enable 1;
+          #
+          #       # Disables building the tmux configuration from YAML everytime the plugin starts.
+          #       # The home manager module calls `plugin/build.py` on each generation.
+          #       set -g @tmux-which-key-disable-autobuild 1
+          #
+          #       # Follows nixpkgs prefered path for plugins instead of the default
+          #       # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
+          #       set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
+          #     '';
+          # }
 
         ]);
       };

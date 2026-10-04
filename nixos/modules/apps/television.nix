@@ -42,6 +42,9 @@
       xdg.configFile."television/config.toml".source =
         config.lib.file.mkOutOfStoreSymlink ../../../config/television/config.toml;
 
+      xdg.configFile."television/tv-slim.toml".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/television/tv-slim.toml;
+
       xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
         config.lib.file.mkOutOfStoreSymlink ../../../config/television/themes/catppuccin-mocha-mauve.toml;
 
