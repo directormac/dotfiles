@@ -54,6 +54,12 @@
           rev = "1c3372d489a10907d2dff7731e0a10246b7a6a81";
           sha256 = "0xh8f3bd03crsdhnpsqwb5b57hj720k67n45nckdkvdm1yjkl3fx";
         };
+        postPatch = ''
+          substituteInPlace scripts/helpers_minimal.sh \
+            --replace-fail 'd_cache="$D_TM_BASE_PATH"/cache' 'd_cache="''${XDG_CACHE_HOME:-$HOME/.cache}/tmux-menus"'
+          substituteInPlace scripts/utils/tmux.sh \
+            --replace-fail 'grep @menus_use_timers "$f_cached_tmux_options"' '[ -f "$f_cached_tmux_options" ] && grep @menus_use_timers "$f_cached_tmux_options"'
+        '';
       };
       tmux-fzf-links = pkgs.tmuxPlugins.mkTmuxPlugin {
         pluginName = "tmux-fzf-links";
@@ -80,12 +86,11 @@
       xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
         config:
           show-name: false
-          fallback-icon: ""
+          fallback-icon: ""
           multi-pane-icon: ""
           always-show-fallback-name: false
 
         icons:
-          agy: "󱚣"
           tmux: ""
           television: "󰮚"
           sesh: "⚡"
@@ -217,6 +222,7 @@
         baseIndex = 1;
         keyMode = "vi";
         # newSession = true;
+        aggressiveResize = true;
         mouse = true;
         escapeTime = 100;
         historyLimit = 1000000;
@@ -225,9 +231,6 @@
         # Pieces of config from our config/tmux.conf
         # References
         # https://github.com/catppuccin/tmux/discussions/317#discussioncomment-12731361
-        # https://github.com/omerxx/dotfiles/blob/master/tmux/tmux.conf
-        # https://github.com/omacom/omarchy/discussions/5086
-        # https://github.com/omacom/omarchy/blob/quattro/config/tmux/tmux.conf
         extraConfig =
           # sh
           ''
@@ -242,8 +245,6 @@
             set -s set-clipboard on
             # Dont exit from tmux when closing session
             set -g detach-on-destroy off
-            # Required by tmux-nerd-font-window-name
-            set -g allow-rename off
             set -g wrap-search off
             set -g allow-passthrough all
             set -g visual-activity off
@@ -271,9 +272,14 @@
             bind -N "Kill window" q confirm-before -p "Kill window #W? (y/n)" kill-window
             bind -N "Kill session" X confirm-before -p "Kill session #S? (y/n)" kill-session
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
-            # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
-            # bind -N "Split pane horizontally" -n C-M-S-Enter split-window -h -c "#{pane_current_path}"
+            bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
+            bind-key -N "Jump to urgent window or toggle last window" ` if-shell -F "#{?#{session_alerts},1,0}" "next-window -a" "last-window"
+
+            bind C-y display-popup -d "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
+            # bind C-t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" # quick floating terminal
+            # bind C-g display-popup -d "#{pane-current-path}" -w 90% -h 90% -E "lazygit" # lazygit float
+            # bind C-m display-popup -w 95% -h 95% -E "rmpc" # music float
 
             # Workmux and Television Popups
             # bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
@@ -281,14 +287,19 @@
             # bind -N "Toggle workmux sidebar" W run-shell "workmux sidebar"
             # bind -N "Television worktrees" T display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Worktrees' tv git-worktrees
             # bind -N "Television tmux sessions" S display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Tmux Sessions' tv tmux-sessions
-            bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
 
-
+            # https://medium.com/hackernoon/customizing-tmux-b3d2a5050207
             # Styles
 
+            # Empty line before status
             set -g status-position bottom
+            # set -g status-style "bg=#{@thm_bg}"
             set -wg automatic-rename on
+            set -g allow-rename off
             set -g status-justify "absolute-centre"
+            # set -g status-justify "left"
+            # set -Fg "status-format[1]" "#{status-format[0]}"
+            # set -g "status-format[0]" ""
 
             # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
             set -g pane-border-status off
@@ -302,37 +313,48 @@
             # Transparent Status-Left (No mantle backgrounds)
             set -g status-left-length 100
             set -g status-left ""
-            set -ga status-left "#{?client_prefix,#{#[bg=#{@thm_red},fg=#{@thm_crust},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
-            set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
-            set -ga status-left "#[fg=#{@thm_maroon}]  #{pane_current_command} "
-            set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
+            set -ga status-left "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
+            set -ga status-left "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            # set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]│"
+            # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
 
             # Transparent Status-Right (No mantle backgrounds)
             set -g status-right-length 100
             set -g status-right ""
-            set -ga status-right "#[fg=#{@thm_mauve}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            set -ga status-right "#[fg=#{@thm_maroon}]  #{pane_current_command} "
+            # set -ga status-right "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            # set -ga status-right "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
             # set -ga status-right "#{?#{e|>=:10,#{battery_percentage}},#{#[bg=#{@thm_red},fg=#{@thm_mantle}]},#{#[bg=#{@thm_mantle},fg=#{@thm_pink}]}} #{battery_icon} #{battery_percentage} "
-            set -ga status-right "#[fg=#{@thm_overlay_0}, none]│"
-            # set -ga status-right "#[bg=#{@thm_mantle}]#{?#{==:#{online_status},ok},#[fg=#{@thm_mauve}] 󰖩 on ,#[fg=#{@thm_red},bold]#[reverse] 󰖪 off }"
+            # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
             # set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
-            set -ga status-right "#[fg=#{@thm_blue}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
+            set -ga status-right "#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
 
             # Command Prompt & Message Styling (Solid Mantle background on Ctrl+a :)
-            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=left"
-            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=left"
+
+            # set -g message-style "bg=#{@thm_bg},fg=#{@thm_fg},align=centre"
+            # set -g message-command-style "bg=#{@thm_mantle}, fg=#{@thm_fg},align=centre"
+            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
+            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
+
+            # Window bell style (runs after plugins to override catppuccin's default yellow)
+            set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
 
             # Hook to run fastfetch on window creation if there's only one window
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
 
             # set -g @continuum-restore 'on'
           '';
+
+        # Plugins
+        # https://github.com/tmux-plugins/list
+        # https://search.nixos.org/packages?channel=unstable&query=tmuxPlugins.
         plugins = [
           # https://github.com/joshmedeski/tmux-nerd-font-window-name#nix-flakes
           # inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default
           {
             plugin = pkgs.tmuxPlugins.tmux-nerd-font-window-name;
             extraConfig =
-              # conf
+              # sh
               ''
                 set -g @tmux-nerd-font-window-name-config-file "$HOME/.config/tmux/tmux-nerd-font-window-name.yml"
                 set -g automatic-rename-format "#{window_icon}"
@@ -340,12 +362,27 @@
           }
 
           # https://github.com/jaclu/tmux-menus
-          # {
-          #   plugin = tmux-menus;
-          # }
+          {
+            plugin = tmux-menus;
+            extraConfig =
+              # sh
+              ''
+                set -g @menus_config_file "$HOME/.config/tmux/tmux.conf"
+                set -g @menus_trigger 'm'
+              '';
+          }
+
           # https://github.com/alberti42/tmux-fzf-links
           {
             plugin = tmux-fzf-links;
+            extraConfig =
+              # sh
+              ''
+                set -g @fzf-links-key 'u'
+                set -g @fzf-links-python "${pkgs.python3}/bin/python3"
+                set -g @fzf-links-browser-open-cmd "zen-browser '%url'"
+                set -g @fzf-links-editor-open-cmd "tmux new-window -n 'nvim' nvim +%line '%file'"
+              '';
           }
         ]
         ++ (with pkgs.tmuxPlugins; [
@@ -366,8 +403,8 @@
                 set -g @catppuccin_status_right_separator ""
                 set -g @catppuccin_window_middle_separator ""
 
-                # Panes
-                set -g @catppuccin_pane_status_enabled "yes"
+                # Panes Border
+                set -g @catppuccin_pane_status_enabled "off"
                 set -g @catppuccin_pane_border_status "off"
                 set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_yellow},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_mauve}}}"
                 set -g @catppuccin_pane_color "#{@thm_overlay_0}"
@@ -375,9 +412,11 @@
                 set -g @catppuccin_window_status_style 'custom'
                 set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
-                set -g @catppuccin_window_text "#[fg=#{@thm_rosewater},bg=default] #W "
+                set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
+                set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_mauve} bg=default] #W }"
                 set -g @catppuccin_window_current_number ""
-                set -g @catppuccin_window_current_text "#[fg=#{@thm_crust},bg=#{@thm_mauve},bold] #W "
+                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] 󰂞 #W #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #W }"
+
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
                 # set -g @catppuccin_directory_text "#(echo '#{b:pane_current_path}' | sed -E 's/^(feat|fix|refactor|docs|style|test|chore|ci|perf)([/-])//')"

@@ -84,25 +84,26 @@ status_icons:
 # ------------------------------------------------------------------------------
 windows:
   # Window 1: Editor
-  - name: editor
+  - 
     panes:
       - command: nvim
         focus: true
 
   # Window 2: AI Coding Agent
-  - name: agent
-    panes:
-      - command: <agent>
-
-  # Window 3: Terminal / Shell
-  - name: term
+  - 
     panes:
       - command: clear
 
-  # Window 4: Git TUI
-  - name: git
+  # Window 3: Git
+  - 
     panes:
       - command: lazygit
+      - command: workmux dashboard -t worktrees
+
+  # Window 4: Agent
+  - 
+    panes:
+      - command: <agent>
 
 # ------------------------------------------------------------------------------
 # Named Layouts (Selectable via `-l` / `--layout <name>`)
@@ -145,7 +146,6 @@ agent: "agy"
 agents:
   agy: "agy"
   oc: "opencode"
-  claude: "claude"
 
 # ------------------------------------------------------------------------------
 # Sidebar Configuration

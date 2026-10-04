@@ -2,9 +2,11 @@
   flake.nixosModules.lazyvim = { ... }: {
     nixpkgs.overlays = [
       (final: prev: {
-        vimPlugins = prev.vimPlugins.extend (finalVim: prevVim: {
-          codeium-nvim = prevVim.windsurf-nvim;
-        });
+        vimPlugins = prev.vimPlugins.extend (
+          finalVim: prevVim: {
+            codeium-nvim = prevVim.windsurf-nvim;
+          }
+        );
       })
     ];
   };

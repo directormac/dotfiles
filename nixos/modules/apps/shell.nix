@@ -71,6 +71,7 @@
         "wmo" = "workmux open";
         "wma" = "workmux add";
         "wmq" = "workmux add --mode window --base main -l quickfix";
+        "wmw" = "workmux add --mode window --base main -l agent-only";
         "wmm" = "workmux merge";
         "tls" = "tmux ls";
         "ts" = "sesh last";
