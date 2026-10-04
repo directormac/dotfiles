@@ -205,6 +205,7 @@
         mouse = true;
         escapeTime = 100;
         historyLimit = 1000000;
+        customPaneNavigationAndResize = true;
 
         # Pieces of config from our config/tmux.conf
         # References
@@ -215,79 +216,45 @@
         extraConfig =
           # conf
           ''
-            # Must not overide with neovim and terminal emulator keys
-            # Reference https://github.com/tmux/tmux/wiki/Modifier-Keys
-            unbind C-b
-
-            set -g base-index 1 # index of tabs starts at 1
-            set -g pane-base-index 1 # inex of pane must also start at 1
+            # General Settings
+            set-option -g status-interval 1
             set-window-option -g pane-base-index 1 # Base window number?
             set-option -g renumber-windows on # Renumber windows on remove
-
             set -g history-limit 100000
-            #Set Refresh every Second
-            set-option -g status-interval 1
-
-
+            set -g repeat-time 350
+            set -g display-time 1500
+            set -s set-clipboard on
             # Dont exit from tmux when closing session
-            # Sesh Recommendation
             set -g detach-on-destroy off
-
             # Required by tmux-nerd-font-window-name
             set -g allow-rename off
+            set -g wrap-search off
+            set -g allow-passthrough all
+            set -g visual-activity off
 
+            # Terminal 
             set -g default-terminal "tmux-256color"
-
-            set -s set-clipboard on
-
-            # Linux Wayland (wl-clipboard)
-            bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
-            bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-            bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
-
+            set -as terminal-overrides ',*:RGB'
             # Tell tmux that the *outside* terminal (Ghostty/Alacritty/etc.) supports True Color (RGB)
             # This works for Ghostty (which uses xterm-ghostty) and others using xterm-256color
             set -as terminal-features ",xterm-ghostty:RGB"
             set -as terminal-features ",xterm-256color:RGB"
 
-
+            # Bindings
+            bind -N "Reload Configuration" R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
+            # bind -N "Show Tmux keybindings" ? display-popup -E -w 80% -h 70% -T "Tmux keybindings" "todo pipe into tv"
+            bind-key -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
+            bind-key -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+            bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
             bind -N "Create window" c new-window -c "#{pane_current_path}"
             bind -N "Create window cwd" C new-window
-
-            # Clock mode
-            bind C-t clock-mode
-
-            # Key bind section all key assignments below must use Prefix-key
-            # Prefix key is default <C-a>
-            #Vim style pane selection <Prefix-key>
-            bind -N "Focus pane left" h select-pane -L
-            bind -N "Focus pane down" j select-pane -D
-            bind -N "Focus pane up" k select-pane -U
-            bind -N "Focus pane right" l select-pane -R
-
-            # Vim style pane resizing (No Prefix-key needed)
-            bind -N "Resize pane left"  -n C-M-S-h resize-pane -L 5
-            bind -N "Resize pane down"  -n C-M-S-j resize-pane -D 5
-            bind -N "Resize pane up"    -n C-M-S-k resize-pane -U 5
-            bind -N "Resize pane right" -n C-M-S-l resize-pane -R 5
-
-            bind -N "Resize pane left" -n C-M-S-Left resize-pane -L 5
-            bind -N "Resize pane down" -n C-M-S-Down resize-pane -D 5
-            bind -N "Resize pane up" -n C-M-S-Up resize-pane -U 5
-            bind -N "Resize pane right" -n C-M-S-Right resize-pane -R 5
-
+            bind -N "Display Clock" C-t clock-mode
             # bind -N "Kill pane" x confirm-before -p "Kill pane #P? (y/n)" kill-pane
-            unbind x
             bind -N "Kill pane" x kill-pane
             bind -N "Kill window" q confirm-before -p "Kill window #W? (y/n)" kill-window
             bind -N "Kill session" X confirm-before -p "Kill session #S? (y/n)" kill-session
-
-            # Quick reload shortcut
-            bind R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
-
             bind -N "Split pane vertically" - split-window -v -c "#{pane_current_path}"
             # bind -N "Split pane vertically" -n M-Enter split-window -v -c "#{pane_current_path}"
-
             bind -N "Split pane horizontally" \| split-window -h -c "#{pane_current_path}" #split to current path
             # bind -N "Split pane horizontally" -n C-M-S-Enter split-window -h -c "#{pane_current_path}"
 
@@ -299,7 +266,37 @@
             # bind -N "Television tmux sessions" S display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Tmux Sessions' tv tmux-sessions
             bind-key -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' tv sesh
 
-            set -g @continuum-restore 'on'
+
+            # Styles
+
+            set -g status-position bottom
+            set -wg automatic-rename on
+            # set -g automatic-rename-format ""
+            # set -g window-status-separator "|"
+            set -g status-justify "absolute-centre"
+
+            set -g status-left-length 100
+            set -g status-left ""
+            set -ga status-left "#{?client_prefix,#{#[bg=#{@thm_red},fg=#{@thm_mantle},bold]  #S },#{#[bg=#{@thm_mantle},fg=#{@thm_green}]  #S }}"
+            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0},none]│"
+            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_maroon}]  #{pane_current_command} "
+            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0},none]│"
+
+            # set -g status-justify "left"
+
+            set -g status-right-length 100
+            set -g status-right ""
+            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            # set -ga status-right "#{?#{e|>=:10,#{battery_percentage}},#{#[bg=#{@thm_red},fg=#{@thm_mantle}]},#{#[bg=#{@thm_mantle},fg=#{@thm_pink}]}} #{battery_icon} #{battery_percentage} "
+            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
+            # set -ga status-right "#[bg=#{@thm_mantle}]#{?#{==:#{online_status},ok},#[fg=#{@thm_mauve}] 󰖩 on ,#[fg=#{@thm_red},bold]#[reverse] 󰖪 off }"
+            # set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
+            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_blue}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
+
+            # Hook to run fastfetch on window creation if there's only one window
+            # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
+
+            # set -g @continuum-restore 'on'
           '';
         plugins = [
           # https://github.com/joshmedeski/tmux-nerd-font-window-name#nix-flakes
@@ -312,7 +309,6 @@
                 # set -g automatic-rename-format "#{window_icon} #{b:pane_current_path}"
                 set -g automatic-rename-format "#{window_icon}"
               '';
-
           }
 
           # https://github.com/jaclu/tmux-menus
@@ -329,47 +325,35 @@
           {
             plugin = catppuccin;
             extraConfig =
-              # config
+              # conf
               ''
                 # Reference https://github.com/catppuccin/tmux/blob/main/docs/reference/configuration.md
 
                 set -g @catppuccin_flavor 'mocha' # latte,frappe, macchiato or mocha
-                set -g @catppuccin_window_status_style "basic"
+                set -g @catppuccin_status_background "none" # none == default
                 # set -g @catppuccin_status_left_separator "█"
                 # set -g @catppuccin_status_right_separator "█"
+                # set -g @catppuccin_window_middle_separator "█"
                 set -g @catppuccin_status_left_separator ""
                 set -g @catppuccin_status_right_separator ""
-                set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
-                set -g @catppuccin_status_background "none"
+                set -g @catppuccin_window_middle_separator ""
 
-                # Hiding window numbers completely
+                # Panes
+                set -g @catppuccin_pane_status_enabled "yes"
+                set -g @catppuccin_pane_border_status "yes"
+                set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_peach},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_peach}}}"
+                set -g @catppuccin_pane_color "#{@thm_rosewater}"
+
+                set -g @catppuccin_window_status_style 'custom'
+                set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
+                set -g @catppuccin_window_text "#[fg=#{@thm_rosewater},bg=#{@thm_mantle}] #I#{?#{!=:#{window_name},},: #W ,}"
                 set -g @catppuccin_window_current_number ""
-
-                # Color formatting: Transparent/Default background for normal windows, Mauve background for active window
-                set -g @catppuccin_window_text_color "none"
-                set -g @catppuccin_window_current_text_color "#cba6f7" 
-
-                # Mauve Overrides for a consistent look
-                # set -g @catppuccin_window_current_number_color "#cba6f7"
-                set -g @catppuccin_directory_color "#b4befe"
-                set -g @catppuccin_session_color "#a6e3a1"
-
-                set-option -g @catppuccin_window_flags 'no'
-                set-option -g @catppuccin_window_text '#W '
-                set-option -g @catppuccin_window_current_text '#W '
-                set-option -g @catppuccin_status_middle_separator ""
+                set -g @catppuccin_window_current_text "#[fg=#{@thm_mantle},bg=#{@thm_peach}] #I#{?#{!=:#{window_name},},: #W ,}"
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
-                set -g @catppuccin_directory_text "#(echo '#{b:pane_current_path}' | sed -E 's/^(feat|fix|refactor|docs|style|test|chore|ci|perf)([/-])//')"
-                set -g @catppuccin_session_text "#(echo '#S' | cut -d'-' -f1)"
-
-                set -g status-left ""
-                set -g status-right-length 100
-                set -g status-right "#{E:@catppuccin_status_directory}"
-                set -ag status-right "#{E:@catppuccin_status_session}"
-                # set -ag status-right "#{E:@catppuccin_status_date_time}"
-                set -g @catppuccin_status_background "none"
+                # set -g @catppuccin_directory_text "#(echo '#{b:pane_current_path}' | sed -E 's/^(feat|fix|refactor|docs|style|test|chore|ci|perf)([/-])//')"
+                # set -g @catppuccin_session_text "#(echo '#S' | cut -d'-' -f1)"
               '';
           }
           {

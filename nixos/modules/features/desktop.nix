@@ -15,8 +15,6 @@
 
     };
 
-    catppuccin.qt5ct.enable = true;
-
     # services.tailscale-systray = {
     #   enable = true;
     # };

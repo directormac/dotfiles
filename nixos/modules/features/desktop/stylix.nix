@@ -91,11 +91,11 @@
     {
       imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
-      catppuccin = {
-        enable = false;
-        flavor = "mocha";
-        accent = "mauve";
-      };
+      # catppuccin = {
+      #   enable = false;
+      #   flavor = "mocha";
+      #   accent = "mauve";
+      # };
 
       stylix = {
         enable = true;
