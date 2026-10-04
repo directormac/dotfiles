@@ -13,6 +13,7 @@
           pkgs.rage
           self'.packages.yazi
           self'.packages.nh
+          self'.packages.tmux
         ];
 
         commands = [
