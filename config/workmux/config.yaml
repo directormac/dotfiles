@@ -124,7 +124,7 @@ layouts:
       - command: nvim
         focus: true
       - command: <agent>
-        split: horizontal
+        split: vertical
         percentage: 40
 
   # Agent Only: Single pane running the configured AI agent
@@ -143,12 +143,21 @@ layouts:
 # Agent & AI Integration
 # ------------------------------------------------------------------------------
 # Default agent used for '<agent>' placeholder
-agent: "agy"
+agent: agy
 
 # Named agent profiles (used via <agent:name> or --agent <name>)
+# --dangerously-skip-permissions
 agents:
-  agy: "agy"
-  oc: "opencode"
+  agy: agy
+  oc: opencode
+  agyx:
+    type: agy
+    args:
+      - --dangerously-skip-permissions
+  ocx:
+    type: opencode
+    args:
+      - --auto
 
 # ------------------------------------------------------------------------------
 # Sidebar Configuration

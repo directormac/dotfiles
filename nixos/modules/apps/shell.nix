@@ -35,6 +35,8 @@
         '';
 
       shellAliases = {
+        "agyx" = "agy  --dangerously-skip-permissions";
+        "ocx" = "opencode --auto";
         "c" = "clear";
         "cat" = "bat";
         "cd" = "z";

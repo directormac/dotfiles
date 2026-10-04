@@ -37,6 +37,8 @@ mode: session
 # Return to 'main' session when closing/removing this worktree session
 default_session: main
 
+agent: agyx
+
 # ------------------------------------------------------------------------------
 # Session Windows (4 Windows per Worktree)
 # ------------------------------------------------------------------------------
@@ -58,29 +60,26 @@ windows:
       - command: lazygit
         focus: true
       - command: workmux dashboard -t worktrees
-        split: horizontal
+        split: vertical
         percentage: 50
 
   # Window 4: Agent
   - 
     panes:
       - command: <agent>
+        focus: true
 
 # ------------------------------------------------------------------------------
 # Project Named Layouts
 # ------------------------------------------------------------------------------
 layouts:
-  # Quickfix: Single pane running Neovim, intended for quick tweaks
-  quickfix:
+  base:
     panes:
       - command: nvim
         focus: true
-
-  # Duo: Split screen with Neovim (60%) and AI Agent (40%)
-  duo:
+      - command: "agy --dangerously-skip-permissions"
+        split: vertical
+  alone:
     panes:
-      - command: nvim
-        focus: true
       - command: <agent>
-        split: horizontal
-        percentage: 40
+        split: vertical
