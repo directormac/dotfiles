@@ -76,6 +76,21 @@
       xdg.configFile."workmux/config.yaml".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/workmux/config.yaml";
 
+      # Configuration for tmux-nerd-font-window-name: icon-only window display
+      xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
+        config:
+          show-name: false
+          fallback-icon: ""
+          multi-pane-icon: ""
+          always-show-fallback-name: false
+
+        icons:
+          agy: "󱚣"
+          tmux: ""
+          television: "󰮚"
+          sesh: "⚡"
+      '';
+
       # Television cable for workmux
       xdg.configFile."television/cable/workmux.toml".text =
         # toml
@@ -214,9 +229,10 @@
         # https://github.com/omacom/omarchy/discussions/5086
         # https://github.com/omacom/omarchy/blob/quattro/config/tmux/tmux.conf
         extraConfig =
-          # conf
+          # sh
           ''
             # General Settings
+
             set-option -g status-interval 1
             set-window-option -g pane-base-index 1 # Base window number?
             set-option -g renumber-windows on # Renumber windows on remove
@@ -234,7 +250,8 @@
 
             # Terminal 
             set -g default-terminal "tmux-256color"
-            set -as terminal-overrides ',*:RGB'
+            set -ga terminal-overrides ",*256col*:Tc"
+            set -ga terminal-overrides ",xterm-ghostty:Tc"
             # Tell tmux that the *outside* terminal (Ghostty/Alacritty/etc.) supports True Color (RGB)
             # This works for Ghostty (which uses xterm-ghostty) and others using xterm-256color
             set -as terminal-features ",xterm-ghostty:RGB"
@@ -271,27 +288,38 @@
 
             set -g status-position bottom
             set -wg automatic-rename on
-            # set -g automatic-rename-format ""
-            # set -g window-status-separator "|"
             set -g status-justify "absolute-centre"
 
+            # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
+            set -g pane-border-status off
+            set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-window-option pane-border-status bottom" "set-window-option pane-border-status off"'
+            set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
+
+            # Transparent Status-Left (No mantle backgrounds)
             set -g status-left-length 100
             set -g status-left ""
-            set -ga status-left "#{?client_prefix,#{#[bg=#{@thm_red},fg=#{@thm_mantle},bold]  #S },#{#[bg=#{@thm_mantle},fg=#{@thm_green}]  #S }}"
-            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0},none]│"
-            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_maroon}]  #{pane_current_command} "
-            set -ga status-left "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0},none]│"
+            set -ga status-left "#{?client_prefix,#{#[bg=#{@thm_red},fg=#{@thm_crust},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
+            set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
+            set -ga status-left "#[fg=#{@thm_maroon}]  #{pane_current_command} "
+            set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
 
-            # set -g status-justify "left"
-
+            # Transparent Status-Right (No mantle backgrounds)
             set -g status-right-length 100
             set -g status-right ""
-            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
+            set -ga status-right "#[fg=#{@thm_mauve}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
             # set -ga status-right "#{?#{e|>=:10,#{battery_percentage}},#{#[bg=#{@thm_red},fg=#{@thm_mantle}]},#{#[bg=#{@thm_mantle},fg=#{@thm_pink}]}} #{battery_icon} #{battery_percentage} "
-            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
+            set -ga status-right "#[fg=#{@thm_overlay_0}, none]│"
             # set -ga status-right "#[bg=#{@thm_mantle}]#{?#{==:#{online_status},ok},#[fg=#{@thm_mauve}] 󰖩 on ,#[fg=#{@thm_red},bold]#[reverse] 󰖪 off }"
             # set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
-            set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_blue}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
+            set -ga status-right "#[fg=#{@thm_blue}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
+
+            # Command Prompt & Message Styling (Solid Mantle background on Ctrl+a :)
+            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=left"
+            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=left"
 
             # Hook to run fastfetch on window creation if there's only one window
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
@@ -306,7 +334,7 @@
             extraConfig =
               # conf
               ''
-                # set -g automatic-rename-format "#{window_icon} #{b:pane_current_path}"
+                set -g @tmux-nerd-font-window-name-config-file "$HOME/.config/tmux/tmux-nerd-font-window-name.yml"
                 set -g automatic-rename-format "#{window_icon}"
               '';
           }
@@ -325,7 +353,7 @@
           {
             plugin = catppuccin;
             extraConfig =
-              # conf
+              # sh
               ''
                 # Reference https://github.com/catppuccin/tmux/blob/main/docs/reference/configuration.md
 
@@ -340,16 +368,16 @@
 
                 # Panes
                 set -g @catppuccin_pane_status_enabled "yes"
-                set -g @catppuccin_pane_border_status "yes"
-                set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_peach},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_peach}}}"
-                set -g @catppuccin_pane_color "#{@thm_rosewater}"
+                set -g @catppuccin_pane_border_status "off"
+                set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_yellow},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_mauve}}}"
+                set -g @catppuccin_pane_color "#{@thm_overlay_0}"
 
                 set -g @catppuccin_window_status_style 'custom'
                 set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
-                set -g @catppuccin_window_text "#[fg=#{@thm_rosewater},bg=#{@thm_mantle}] #I#{?#{!=:#{window_name},},: #W ,}"
+                set -g @catppuccin_window_text "#[fg=#{@thm_rosewater},bg=default] #W "
                 set -g @catppuccin_window_current_number ""
-                set -g @catppuccin_window_current_text "#[fg=#{@thm_mantle},bg=#{@thm_peach}] #I#{?#{!=:#{window_name},},: #W ,}"
+                set -g @catppuccin_window_current_text "#[fg=#{@thm_crust},bg=#{@thm_mauve},bold] #W "
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)
                 # set -g @catppuccin_directory_text "#(echo '#{b:pane_current_path}' | sed -E 's/^(feat|fix|refactor|docs|style|test|chore|ci|perf)([/-])//')"
@@ -358,31 +386,37 @@
           }
           {
             plugin = fzf-tmux-url;
-            extraConfig = ''
-              set -g @fzf-url-bind 'o'
-            '';
+            extraConfig =
+              # sh
+              ''
+                set -g @fzf-url-bind 'o'
+              '';
           }
           {
             plugin = resurrect;
-            extraConfig = ''
-              set -g @resurrect-strategy-vim 'session'
-              set -g @resurrect-strategy-nvim 'session'
-              set -g @resurrect-capture-pane-contents 'on'
-              set -g @resurrect-processes 'lazydocker lazygit yazi'
-              resurrect_dir=$HOME/.local/state/tmux/resurrect/
-              set -g @resurrect-dir $resurrect_dir
-              set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
-              set -g @resurrect-save 'C-s'
-              set -g @resurrect-restore 'C-r'
-            '';
+            extraConfig =
+              # sh
+              ''
+                set -g @resurrect-strategy-vim 'session'
+                set -g @resurrect-strategy-nvim 'session'
+                set -g @resurrect-capture-pane-contents 'on'
+                set -g @resurrect-processes 'lazydocker lazygit yazi'
+                resurrect_dir=$HOME/.local/state/tmux/resurrect/
+                set -g @resurrect-dir $resurrect_dir
+                set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
+                set -g @resurrect-save 'C-s'
+                set -g @resurrect-restore 'C-r'
+              '';
           }
 
           {
             plugin = continuum;
-            extraConfig = ''
-              set -g @continuum-save-interval '5'
-              set -g @continuum-restore 'on'
-            '';
+            extraConfig =
+              # sh
+              ''
+                set -g @continuum-save-interval '5'
+                set -g @continuum-restore 'on'
+              '';
           }
 
           # sensible
@@ -391,18 +425,20 @@
             # https://github.com/alexwforsythe/tmux-which-key#nix-with-home-manager-flake-installation
             plugin = tmux-which-key;
 
-            extraConfig = ''
-              # Enables XDG user directory support for the plugin.
-              set -g @tmux-which-key-xdg-enable 1;
+            extraConfig =
+              # sh
+              ''
+                # Enables XDG user directory support for the plugin.
+                set -g @tmux-which-key-xdg-enable 1;
 
-              # Disables building the tmux configuration from YAML everytime the plugin starts.
-              # The home manager module calls `plugin/build.py` on each generation.
-              set -g @tmux-which-key-disable-autobuild 1
+                # Disables building the tmux configuration from YAML everytime the plugin starts.
+                # The home manager module calls `plugin/build.py` on each generation.
+                set -g @tmux-which-key-disable-autobuild 1
 
-              # Follows nixpkgs prefered path for plugins instead of the default
-              # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
-              set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
-            '';
+                # Follows nixpkgs prefered path for plugins instead of the default
+                # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
+                set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
+              '';
           }
 
         ]);

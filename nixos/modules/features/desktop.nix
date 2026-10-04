@@ -301,6 +301,7 @@
         mpv
         scrcpy
         mpvpaper
+
         nautilus
         nautilus-python
         nautilus-open-any-terminal
