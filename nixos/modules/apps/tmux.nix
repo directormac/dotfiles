@@ -166,8 +166,13 @@
         config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux_extra.conf;
 
       # Helper scripts referenced from tmux_extra.conf (scratch buffers).
-      xdg.configFile."tmux/scripts".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
+      # force: an out-of-store symlink to a directory always fails HM's
+      # checkLinkTargets collision check, which only recognises links
+      # pointing into the store.
+      xdg.configFile."tmux/scripts" = {
+        source = config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
+        force = true;
+      };
 
       # FAQ https://github.com/tmux/tmux/wiki/FAQ
       programs.tmux = {
@@ -207,6 +212,7 @@
             set -g visual-activity off
 
             # Terminal 
+            set -as terminal-features 'xterm*:extkeys'
             set -g default-terminal "tmux-256color"
             set -ga terminal-overrides ",*256col*:Tc"
             set -ga terminal-overrides ",xterm-ghostty:Tc"
@@ -214,6 +220,8 @@
             # This works for Ghostty (which uses xterm-ghostty) and others using xterm-256color
             set -as terminal-features ",xterm-ghostty:RGB"
             set -as terminal-features ",xterm-256color:RGB"
+
+            set -s extended-keys on
 
             # Bindings
             # https://github.com/tmux/tmux/wiki/Modifier-Keys#extended-keys

@@ -326,12 +326,12 @@
             bindkey '\e[1;5I' autosuggest-accept                 # Alternative Ghostty representation
 
             # Television zsh keybinding search widget
-            tv-zsh-keys() {
-              zle -I
-              tv zsh-keys
-              zle reset-prompt
-            }
-            zle -N tv-zsh-keys
+            # tv-zsh-keys() {
+            #   zle -I
+            #   tv zsh-keys
+            #   zle reset-prompt
+            # }
+            # zle -N tv-zsh-keys
           '';
 
         plugins = [
