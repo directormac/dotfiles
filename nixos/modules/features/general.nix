@@ -158,6 +158,7 @@
         zsh
         starship
         multiplexer
+        tmux
         editor
 
         # nightly-neovim
