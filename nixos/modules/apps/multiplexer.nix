@@ -109,7 +109,8 @@
       xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
         config:
           show-name: false
-          fallback-icon: "●"
+          # ● 
+        fallback-icon: ""
           multi-pane-icon: ""
           always-show-fallback-name: false
 
@@ -117,6 +118,7 @@
           tmux: ""
           television: "󰮚"
           sesh: "⚡"
+          nix: ""  
           agy: "󱙺"
           opencode: "󱙺"
           claude: "󱙺"
@@ -385,24 +387,21 @@
             set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
 
             # Transparent Status-Left (No mantle backgrounds)
+            # 1. Project name is always displayed (#{s/-.*$//:session_name})
+            # 2. If session has a branch and is not main/master, normal mode shows '',
+            #    while prefix mode reveals the branch name (truncated to 22 chars).
+            # 3. Dynamic active command icon matches active window's icon / workmux status.
             set -g status-left-length 100
             set -g status-left ""
-            set -ga status-left "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
-            set -ga status-left "#[fg=#{@thm_maroon}]  #{pane_current_command} "
-            # set -ga status-left "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
-            # set -ga status-left "#[bg=#{@thm_bg},fg=#{@thm_overlay_0},none]│"
-            # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
+            set -ga status-left "#{?client_prefix,#[fg=#{@thm_green} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}},  #{=/22/...:#{s/^[^-]*-//:session_name}},} ,#[fg=#{@thm_mauve} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}}, ,} }"
+            set -ga status-left "#[fg=#{@thm_maroon}] #{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:*󰚩*,#W}}},#{@workmux_status},#{?#{!=:#W,},#W,}} #{pane_current_command} "
 
             # Transparent Status-Right (No mantle backgrounds)
+            # 1. In normal mode, displays only the clock for a clean, non-overlapping status bar.
+            # 2. In prefix mode, swaps clock with the current directory path (truncated to 28 chars).
             set -g status-right-length 100
             set -g status-right ""
-            # set -ga status-right "#[fg=#{@thm_maroon}]  #{pane_current_command} "
-            set -ga status-right "#[fg=#{@thm_blue}]  #{=/-32/...:#{s|$USER|~|:#{b:pane_current_path}}} "
-            # set -ga status-right "#{?client_prefix,#{#[fg=#{@thm_green},bold]  #S },#{#[fg=#{@thm_mauve},bold]  #S }}"
-            # set -ga status-right "#{?#{e|>=:10,#{battery_percentage}},#{#[bg=#{@thm_red},fg=#{@thm_mantle}]},#{#[bg=#{@thm_mantle},fg=#{@thm_pink}]}} #{battery_icon} #{battery_percentage} "
-            # set -ga status-left "#[fg=#{@thm_overlay_0},none]│"
-            # set -ga status-right "#[bg=#{@thm_mantle},fg=#{@thm_overlay_0}, none]│"
-            set -ga status-right "#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M "
+            set -ga status-right "#{?client_prefix,#[fg=#{@thm_blue} bold]  #{=/-28/...:#{b:pane_current_path}} ,#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M }"
 
             # Command Prompt & Message Styling (Solid Mantle background on Ctrl+a :)
 
@@ -488,6 +487,7 @@
                 set -g @catppuccin_window_flags ""
                 set -g @catppuccin_window_number ""
                 set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
+
                 # Window formatting:
                 # 1. Shows window index (#I:) only in prefix mode (#{?client_prefix,...})
                 # 2. Replaces fallback (●) or agent (󰚩) icon with @workmux_status when active
