@@ -162,9 +162,10 @@
           mode = "execute"
         '';
 
-      xdg.configFile."tmux/tmux.playground".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux.playground;
+      xdg.configFile."tmux/tmux_extra.conf".source =
+        config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux_extra.conf;
 
+      # FAQ https://github.com/tmux/tmux/wiki/FAQ
       programs.tmux = {
         enable = true;
         package = tmuxPkg;
@@ -174,11 +175,13 @@
         baseIndex = 1;
         keyMode = "vi";
         # newSession = true;
+        focusEvents = true;
         aggressiveResize = true;
         mouse = true;
         escapeTime = 100;
         historyLimit = 1000000;
         customPaneNavigationAndResize = true;
+        terminal = "tmux-256color";
 
         # Pieces of config from our config/tmux.conf
         # References
@@ -189,12 +192,11 @@
             # General Settings
 
             set -g status-interval 1
-            set -g renumber-windows on # Renumber windows on remove
             set -g history-limit 100000
             set -g repeat-time 350
             set -g display-time 1500
             set -s set-clipboard on
-            # Dont exit from tmux when closing session
+            set -g renumber-windows on 
             set -g detach-on-destroy off
             set -g wrap-search off
             set -g allow-passthrough all
@@ -210,7 +212,7 @@
             set -as terminal-features ",xterm-256color:RGB"
 
             # Bindings
-
+            # https://github.com/tmux/tmux/wiki/Modifier-Keys#extended-keys
             bind -N "Prompt a command" : command-prompt -P
 
             bind -N "Fuzzy search Tmux keybindings" ? display-popup -E -w 80% -h 75% -d "#{pane_current_path}" -T "Tmux Keybindings" "tmux list-keys -N -a | tv --config-file ~/.config/television/tv-slim.toml"
@@ -324,6 +326,7 @@
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
 
             # set -g @continuum-restore 'on'
+            source -F $HOME/.config/tmux/tmux_extra.conf
           '';
 
         # Plugins

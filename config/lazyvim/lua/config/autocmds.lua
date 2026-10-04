@@ -5,6 +5,7 @@
 vim.filetype.add({
   extension = {
     zsh = 'zsh',
+    tmux = 'tmux',
     mjml = 'html',
     ['mjml.eex'] = 'html.eex',
     mdx = 'markdown.mdx',
@@ -48,14 +49,11 @@ vim.api.nvim_create_autocmd(
   desc = 'Proper formatoptions' }
 )
 
-
 -- Reload files changed outside of Neovim
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-  desc = "Reload files changed outside of Neovim",
-  group = vim.api.nvim_create_augroup("checktime_extended", { clear = true }),
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  desc = 'Reload files changed outside of Neovim',
+  group = vim.api.nvim_create_augroup('checktime_extended', { clear = true }),
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
+    if vim.o.buftype ~= 'nofile' then vim.cmd('checktime') end
   end,
 })
