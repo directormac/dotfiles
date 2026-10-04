@@ -89,7 +89,7 @@
       '';
     in
     {
-      imports = [ inputs.catppuccin.homeModules.catppuccin ];
+      imports = [ ];
 
       # catppuccin = {
       #   enable = false;
@@ -108,7 +108,6 @@
   flake.nixosModules.stylix = { pkgs, config, ... }: {
     imports = [
       inputs.stylix.nixosModules.stylix
-      inputs.catppuccin.nixosModules.catppuccin
     ];
 
     home-manager.users.${config.preferences.user.name} = {
