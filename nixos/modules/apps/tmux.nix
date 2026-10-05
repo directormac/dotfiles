@@ -25,6 +25,19 @@
         };
       };
 
+      # devel branch - main does not support tmux 3.8+
+      tmux-menus = pkgs.tmuxPlugins.mkTmuxPlugin {
+        pluginName = "tmux-menus";
+        version = "0-unstable-2026-10-02";
+        rtpFilePath = "menus.tmux";
+        src = pkgs.fetchFromGitHub {
+          owner = "jaclu";
+          repo = "tmux-menus";
+          rev = "30a18ec5e949db228f1596937880e494a7be49ef";
+          hash = "sha256-C2rFzuR12ap2ytX03XaBycNia3vzaexFdOFM3qrSsUw=";
+        };
+      };
+
     in
     {
       xdg = {
@@ -258,6 +271,16 @@
                 set -g @fzf-links-python "${pkgs.python3}/bin/python3"
                 set -g @fzf-links-browser-open-cmd "zen-beta '%url'"
                 set -g @fzf-links-editor-open-cmd "tmux new-window -n 'nvim' nvim +%line '%file'"
+              '';
+          }
+          # https://github.com/jaclu/tmux-menus
+          {
+            plugin = tmux-menus;
+            extraConfig =
+              # sh
+              ''
+                # Cache dir lives inside the plugin folder - read-only in the nix store
+                set -g @menus_use_cache 'No'
               '';
           }
         ]
