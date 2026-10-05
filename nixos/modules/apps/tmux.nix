@@ -231,6 +231,10 @@
 
             # Window bell style (runs after plugins to override catppuccin's default yellow)
             set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
+            # Tmux 3.8: Theme display-menu (tmux-menus plugin) — must come after catppuccin sets @thm_*
+            set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
+            set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
+            set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
             # Tmux 3.8: Highlight current line in copy mode
             set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
             # Tmux 3.8: Theme search highlights and copy-mode marks
@@ -286,13 +290,13 @@
               # sh
               ''
                 # Tmux 3.8: Theme display-menu (tmux-menus plugin)
-                set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
-                set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
-                set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
+                # NOTE: menu-style lines moved to main extraConfig — they need @thm_*
+                # which only exists after the catppuccin plugin runs.
 
                 # Cache dir lives inside the plugin folder - read-only in the nix store
                 set -g @menus_use_cache "No"
-                # set -g @menus_trigger disable
+                # Explicit trigger key also disables the secondary <prefix> Enter default
+                set -g @menus_trigger '\\'
               '';
           }
         ]
