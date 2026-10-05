@@ -1,8 +1,8 @@
 {
   perSystem =
     {
-      config,
       pkgs,
+      config,
       self',
       ...
     }:
@@ -16,6 +16,7 @@
           self'.packages.tmux
           pkgs.television
           pkgs.nix-search-tv
+          config.treefmt.build.wrapper
         ];
 
         commands = [

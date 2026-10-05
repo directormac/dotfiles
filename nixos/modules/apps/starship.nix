@@ -3,7 +3,7 @@
   flake.nixosModules.starship = { config, ... }: {
 
     home-manager.users.${config.preferences.user.name} = { config, ... }: {
-      imports = with self.homeModules; [ ];
+      imports = [ ];
       xdg.configFile."starship.toml".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/starship/starship.toml";
     };

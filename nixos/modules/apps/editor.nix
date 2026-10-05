@@ -96,14 +96,21 @@
     nixpkgs.overlays = [ inputs.kickstart-nix-nvim.overlays.default ];
 
     environment.systemPackages = with pkgs; [
-
+      config.treefmt.build.wrapper
       # Editor tools
       tree-sitter
       nixfmt
       stylua
       lua-language-server
+      # shfmt
+      bash-language-server
       nixd
       nil
+
+      pkgs.nur.repos.Freed-Wu.lsp-tree-sitter
+      pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
+      pkgs.nur.repos.Freed-Wu.tmux-language-server
+      pkgs.nur.repos.Freed-Wu.termux-language-server
     ];
 
   };

@@ -1,12 +1,17 @@
 { self, ... }: {
 
   flake.homeModules.hyprland =
-    { pkgs, config, lib, ... }:
+    {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
     let
       # Use stable udev symlink paths for GPU detection
       gpuDevices = lib.concatStringsSep ":" [
-        "/dev/dri/pci-0000:03:00.0-card"  # AMD (primary for displays)
-        "/dev/dri/pci-0000:00:02.0-card"  # Intel (secondary)
+        "/dev/dri/pci-0000:03:00.0-card" # AMD (primary for displays)
+        "/dev/dri/pci-0000:00:02.0-card" # Intel (secondary)
       ];
     in
     {

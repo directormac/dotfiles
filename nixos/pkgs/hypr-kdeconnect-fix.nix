@@ -12,7 +12,7 @@
   libei,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "hypr-kdeconnect-fix";
   version = "0.1.0-unstable-2026-10-03";
 

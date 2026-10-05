@@ -7,18 +7,16 @@
 {
   imports = [
     inputs.home-manager.flakeModules.home-manager
-
     inputs.wrappers.flakeModules.wrappers
-
     inputs.agenix-rekey.flakeModule
     inputs.devshell.flakeModule
+    inputs.treefmt-nix.flakeModule
+    inputs.flake-root.flakeModule
   ];
 
   systems = [
     "x86_64-linux"
   ];
-
-
 
   # This is your system configuration entry-point
   flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {

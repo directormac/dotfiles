@@ -1,4 +1,7 @@
-{ pkgs, lib ? pkgs.lib }:
+{
+  pkgs,
+  lib ? pkgs.lib,
+}:
 {
   policies = import ./policies.nix;
   extensions = import ./extensions.nix { inherit pkgs; };

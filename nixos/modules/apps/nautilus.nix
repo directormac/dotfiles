@@ -286,11 +286,11 @@
 
         # High-performance thumbnailers
         ffmpegthumbnailer # Video thumbs (MKV, MP4, HEVC, AV1)
-        gdk-pixbuf        # Raw image asset translations
+        gdk-pixbuf # Raw image asset translations
         webp-pixbuf-loader # .webp images
-        poppler-utils     # PDF thumbnails
-        libgsf            # ODF and open-office document formats
-        libjxl            # JPEG-XL
+        poppler-utils # PDF thumbnails
+        libgsf # ODF and open-office document formats
+        libjxl # JPEG-XL
       ];
     };
 

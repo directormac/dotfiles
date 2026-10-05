@@ -14,7 +14,10 @@
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     devshell.url = "github:numtide/devshell";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    systems.url = "github:nix-systems/default";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-root.url = "github:srid/flake-root";
 
     wrappers.url = "github:nix-community/nix-wrapper-modules";
     wrappers.inputs.nixpkgs.follows = "nixpkgs";

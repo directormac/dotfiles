@@ -1,7 +1,8 @@
 { inputs, self, ... }: {
 
   # Reference https://mangowm.github.io/docs/nix-options
-  flake.homeModules.mangowm = { config, pkgs, ... }:
+  flake.homeModules.mangowm =
+    { config, pkgs, ... }:
     let
       mango-noctalia-notifier = pkgs.writers.writePython3Bin "mango-noctalia-notifier" { } ''
         import json
@@ -223,114 +224,109 @@
     in
     {
 
-    wayland.windowManager.mango = {
-      enable = true;
-      systemd = {
+      wayland.windowManager.mango = {
         enable = true;
-        xdgAutostart = true;
-        variables = [
-          "--all"
-        ];
-        extraCommands = [
-          "systemctl --user reset-failed"
-          "systemctl --user start mango-session.target"
-        ];
-      };
-      autostart_sh =
-        # sh
-        ''
-          noctalia &
-          mango-noctalia-notifier &
-          systemctl --user restart xdg-desktop-portal xdg-desktop-portal-wlr &
-          wl-clip-persist --clipboard regular --reconnect-tries 0 &
-          wl-paste --type text --watch cliphist store &
+        systemd = {
+          enable = true;
+          xdgAutostart = true;
+          variables = [
+            "--all"
+          ];
+          extraCommands = [
+            "systemctl --user reset-failed"
+            "systemctl --user start mango-session.target"
+          ];
+        };
+        autostart_sh =
+          # sh
+          ''
+            noctalia &
+            mango-noctalia-notifier &
+            systemctl --user restart xdg-desktop-portal xdg-desktop-portal-wlr &
+            wl-clip-persist --clipboard regular --reconnect-tries 0 &
+            wl-paste --type text --watch cliphist store &
+          '';
+        extraConfig = ''
+          source = ${config.home.homeDirectory}/.dotfiles/config/mango/config.conf
         '';
-      extraConfig = ''
-        source = ${config.home.homeDirectory}/.dotfiles/config/mango/config.conf
+      };
+
+      xdg.configFile."television/cable/mango-clients.toml".text =
+        # toml
+        ''
+          [metadata]
+          name = "mango-clients"
+          description = "Manage active window manager clients with a detailed preview"
+
+          [source]
+          # Line format: ID │ APPID │ TITLE
+          command = "mmsg get all-clients | jq -r '.clients[] | \"\\(.id) │ \\(.appid) │ \\(.title)\"'"
+
+          [preview]
+          # We use jq to match the current line's window ID back against the full state,
+          # and then print out an itemized list of key-value properties.
+          command = "WINDOW_ID=$(echo '{}' | cut -d'│' -f1 | tr -d ' '); mmsg get all-clients | jq -r --arg id \"$WINDOW_ID\" '.clients[] | select(.id == $id) | \"🆔 Window ID:   \\(.id)\\n🚀 Application: \\(.appid)\\n📋 Window Title: \\(.title)\\n📌 Workspace:    \\(.workspace // \"N/A\")\\n🔍 Floating:     \\(.is_floating // \"false\")\\n✨ Fullscreen:   \\(.is_fullscreen // \"false\")\"'"
+
+          [keybindings]
+          enter = "actions:focus"
+          ctrl-y = "actions:copy_info"
+          ctrl-x = "actions:kill_client"
+
+          [actions.focus]
+          command = "mmsg dispatch focus_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
+          mode = "execute"
+
+          [actions.copy_info]
+          command = "echo '{}' | cut -d'│' -f2,3 | tr -d ' ' | wl-copy"
+          mode = "execute"
+
+          [actions.kill_client]
+          command = "mmsg dispatch close_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
+          mode = "execute"      '';
+
+      xdg.configFile."xdg-desktop-portal-wlr/config".text = ''
+        [screencast]
+        max_fps=60
+        chooser_type=simple
+        chooser_cmd=${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or
       '';
-    };
 
-    xdg.configFile."television/cable/mango-clients.toml".text =
-      # toml
-      ''
-        [metadata]
-        name = "mango-clients"
-        description = "Manage active window manager clients with a detailed preview"
+      xdg.configFile."xdg-desktop-portal-wlr/mango".text = ''
+        [screencast]
+        max_fps=60
+        chooser_type=simple
+        chooser_cmd=${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or
+      '';
 
-        [source]
-        # Line format: ID │ APPID │ TITLE
-        command = "mmsg get all-clients | jq -r '.clients[] | \"\\(.id) │ \\(.appid) │ \\(.title)\"'"
+      home.packages = with pkgs; [
+        slurp
+        wl-clipboard
+        libnotify
+        mango-noctalia-notifier
+      ];
 
-        [preview]
-        # We use jq to match the current line's window ID back against the full state,
-        # and then print out an itemized list of key-value properties.
-        command = "WINDOW_ID=$(echo '{}' | cut -d'│' -f1 | tr -d ' '); mmsg get all-clients | jq -r --arg id \"$WINDOW_ID\" '.clients[] | select(.id == $id) | \"🆔 Window ID:   \\(.id)\\n🚀 Application: \\(.appid)\\n📋 Window Title: \\(.title)\\n📌 Workspace:    \\(.workspace // \"N/A\")\\n🔍 Floating:     \\(.is_floating // \"false\")\\n✨ Fullscreen:   \\(.is_fullscreen // \"false\")\"'"
-
-        [keybindings]
-        enter = "actions:focus"
-        ctrl-y = "actions:copy_info"
-        ctrl-x = "actions:kill_client"
-
-        [actions.focus]
-        command = "mmsg dispatch focus_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
-        mode = "execute"
-
-        [actions.copy_info]
-        command = "echo '{}' | cut -d'│' -f2,3 | tr -d ' ' | wl-copy"
-        mode = "execute"
-
-        [actions.kill_client]
-        command = "mmsg dispatch close_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
-        mode = "execute"      '';
-
-    xdg.configFile."xdg-desktop-portal-wlr/config".text = ''
-      [screencast]
-      max_fps=60
-      chooser_type=simple
-      chooser_cmd=${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or
-    '';
-
-    xdg.configFile."xdg-desktop-portal-wlr/mango".text = ''
-      [screencast]
-      max_fps=60
-      chooser_type=simple
-      chooser_cmd=${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or
-    '';
-
-    home.packages = with pkgs; [
-      slurp
-      wl-clipboard
-      libnotify
-      mango-noctalia-notifier
-    ];
-
-    systemd.user.services.mango-noctalia-notifier = {
-      Unit = {
-        Description = "Mango WM to Noctalia Notification Bridge";
-        PartOf = [ "mango-session.target" ];
-        After = [ "mango-session.target" ];
+      systemd.user.services.mango-noctalia-notifier = {
+        Unit = {
+          Description = "Mango WM to Noctalia Notification Bridge";
+          PartOf = [ "mango-session.target" ];
+          After = [ "mango-session.target" ];
+        };
+        Service = {
+          ExecStart = "${mango-noctalia-notifier}/bin/mango-noctalia-notifier";
+          Restart = "always";
+          RestartSec = 2;
+        };
+        Install = {
+          WantedBy = [ "mango-session.target" ];
+        };
       };
-      Service = {
-        ExecStart = "${mango-noctalia-notifier}/bin/mango-noctalia-notifier";
-        Restart = "always";
-        RestartSec = 2;
+
+      home.file.".config/mango/config.d" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/config.d";
+        recursive = true;
       };
-      Install = {
-        WantedBy = [ "mango-session.target" ];
-      };
-    };
 
-    home.file.".config/mango/config.d" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/config.d";
-      recursive = true;
     };
-
-    home.file.".config/mango/dms" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/dms";
-      recursive = true;
-    };
-
-  };
 
   flake.nixosModules.mangowm = { config, pkgs, ... }: {
     imports = [

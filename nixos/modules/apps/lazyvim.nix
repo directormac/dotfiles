@@ -160,7 +160,9 @@
           nixd
           nixfmt
           statix
+          shellcheck
 
+          bash-language-server
           astro-language-server
           svelte-language-server
           lua-language-server
@@ -176,6 +178,9 @@
           nix
           hyprlang
           fish
+          kitty
+          dot
+          ini
         ];
 
         configFiles = ../../../config/lazyvim;

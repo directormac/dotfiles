@@ -21,14 +21,14 @@
       ...
     }:
     {
-      packages.lazygit = inputs.wrappers.lib.wrapPackage ({
+      packages.lazygit = inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
         package = pkgs.lazygit;
 
         flags = {
           "--use-config-file" = ../../../config/lazygit/config.yml;
         };
-      });
+      };
 
     };
 }
