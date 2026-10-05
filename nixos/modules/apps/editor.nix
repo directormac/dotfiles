@@ -83,6 +83,10 @@
 
     programs.helix.enable = true;
 
+    programs.neovim.plugins = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+    ];
+
   };
 
   flake.nixosModules.editor = { pkgs, config, ... }: {

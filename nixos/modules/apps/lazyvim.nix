@@ -167,20 +167,13 @@
           svelte-language-server
           lua-language-server
           stylua
+
         ];
 
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
         treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
-          kdl
-          json
-          toml
-          lua
-          nix
-          hyprlang
           fish
-          kitty
-          dot
-          ini
+          hyprland
         ];
 
         configFiles = ../../../config/lazyvim;

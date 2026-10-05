@@ -318,9 +318,6 @@
         qt5.qtwayland
         qt6.qtwayland
 
-        # gnumake
-        # gcc
-        # binutils
         # pkg-config
         # imagemagickBig
         # losslessaudiochecker

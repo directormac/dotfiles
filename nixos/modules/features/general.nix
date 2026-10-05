@@ -215,6 +215,11 @@
         unrar
         zip
         doggo
+        gnumake
+        gcc
+        binutils
+        llvm
+        man-pages
 
         # Dev tools
         jq
