@@ -31,6 +31,8 @@ hl.env('XDG_MENU_PREFIX', 'hyprland-')
 --   hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
 -- end
 
+hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
+
 -- Set programs that you use
 local apps = cfg.applications
 

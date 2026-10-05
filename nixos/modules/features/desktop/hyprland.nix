@@ -7,22 +7,9 @@
       lib,
       ...
     }:
-    let
-      # Use stable udev symlink paths for GPU detection
-      gpuDevices = lib.concatStringsSep ":" [
-        "/dev/dri/pci-0000:03:00.0-card" # AMD (primary for displays)
-        "/dev/dri/pci-0000:00:02.0-card" # Intel (secondary)
-      ];
-    in
     {
       home.file = {
         ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/hypr";
-      };
-
-      # Set environment variables for multi-GPU support
-      home.sessionVariables = {
-        AQ_DRM_DEVICES = gpuDevices;
-        WLR_DRM_DEVICES = gpuDevices;
       };
 
       # services.hyprpolkitagent.enable = true;
@@ -41,7 +28,7 @@
 
     };
 
-  flake.nixosModules.hyprland = { pkgs, config, ... }: {
+  flake.nixosModules.hyprland = { config, ... }: {
 
     # This is applied to this host with home-manager
     home-manager.users.${config.preferences.user.name} = {
