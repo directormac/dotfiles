@@ -25,10 +25,11 @@ hl.env('QT_QPA_PLATFORMTHEME', 'qt6ct')
 hl.env('QT_QPA_PLATFORM', 'wayland')
 hl.env('XDG_MENU_PREFIX', 'hyprland-')
 
-if cfg.hostname == 'super' then
-  -- https://wiki.hypr.land/configuring/extra/multi-gpu/
-  hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
-end
+-- https://wiki.hypr.land/configuring/extra/multi-gpu/
+-- GPU configuration is also set via Nix for declarative management
+-- if cfg.hostname == 'super' then
+--   hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
+-- end
 
 -- Set programs that you use
 local apps = cfg.applications
