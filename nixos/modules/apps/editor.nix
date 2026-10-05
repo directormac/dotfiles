@@ -107,8 +107,10 @@
       nixd
       nil
 
-      pkgs.nur.repos.Freed-Wu.lsp-tree-sitter
+      #https://github.com/Freed-Wu/tree-sitter-tmuxf
+      # https://github.com/Freed-Wu/tree-sitter-tmux
       pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
+      # https://github.com/Freed-Wu/tmux-language-server
       pkgs.nur.repos.Freed-Wu.tmux-language-server
       pkgs.nur.repos.Freed-Wu.termux-language-server
     ];
