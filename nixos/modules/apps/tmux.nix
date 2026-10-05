@@ -140,14 +140,14 @@
 
 
 
-              # ========================
-              #  UI SECTION END
-              # ========================
-              # Hook to run fastfetch on window creation if there's only one window
-              # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
+            # ========================
+            #  UI SECTION END
+            # ========================
+            # Hook to run fastfetch on window creation if there's only one window
+            # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
 
-              # set -g @continuum-restore "on"
-              source -F $HOME/.config/tmux/dev.tmux..conf
+            # set -g @continuum-restore "on"
+            source -F $HOME/.config/tmux/dev.tmux.conf
           '';
 
         # Plugins
