@@ -239,10 +239,7 @@
             set -gF copy-mode-mark-style "bg=#{@thm_mauve},fg=#{@thm_crust}"
             set -gF copy-mode-line-number-style "fg=#{@thm_overlay_1},dim"
             set -gF copy-mode-current-line-number-style "fg=#{@thm_mauve}"
-            # Tmux 3.8: Theme display-menu (tmux-menus plugin)
-            set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
-            set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
-            set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
+
 
 
 
@@ -288,9 +285,14 @@
             extraConfig =
               # sh
               ''
+                # Tmux 3.8: Theme display-menu (tmux-menus plugin)
+                set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
+                set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
+                set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
+
                 # Cache dir lives inside the plugin folder - read-only in the nix store
                 set -g @menus_use_cache "No"
-                set -g @menus_trigger disable
+                # set -g @menus_trigger disable
               '';
           }
         ]
