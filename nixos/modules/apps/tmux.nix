@@ -121,16 +121,16 @@
             set -as terminal-features ",xterm-ghostty:RGB"
             set -as terminal-features ",xterm-256color:RGB"
 
+            # https://github.com/tmux/tmux/wiki/Modifier-Keys#extended-keys
             set -s extended-keys on
             set -as terminal-features "xterm*:extkeys"
 
             # Bindings
-            # https://github.com/tmux/tmux/wiki/Modifier-Keys#extended-keys
             bind -N "Prompt a command" : command-prompt -P
             bind -N "Fuzzy search Tmux keybindings" ? display-popup -E -w 80% -h 75% -d "#{pane_current_path}" -T "Tmux Keybindings" "tmux list-keys -N -a | tv --config-file ~/.config/television/tv-slim.toml"
             bind -N "Television sesh" "t" display-popup -E -w 80% -h 70% -d '#{pane_current_path}' -T 'Sesh' "tv sesh --hide-preview --input-position bottom"
             bind -N "Jump to urgent window or toggle last window" ` if-shell -F "#{session_alerts}" "next-window -a" "last-window"
-            bind -N "Reload Configuration" R source-file ~/.config/tmux/tmux.conf \; display "Nix-managed tmux config reloaded!"
+            bind -N "Reload Configuration" R source-file "~/.config/tmux/tmux.conf" \; display "Nix-managed tmux config reloaded!"
             bind -N "Copy selection" -T copy-mode-vi y send -X copy-pipe-and-cancel "wl-copy"
             bind -N "Create window" c new-window -c "#{pane_current_path}"
             bind -N "Create window cwd" C new-window
@@ -181,7 +181,7 @@
 
 
             # Error Preservation & History
-            set -g history-file ~/.local/state/tmux/tmux_history
+            set -g history-file "~/.local/state/tmux/tmux_history"
             set -g remain-on-exit 'failed'
             set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
             set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
@@ -233,6 +233,16 @@
             set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
             # Tmux 3.8: Highlight current line in copy mode
             set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
+            # Tmux 3.8: Theme search highlights and copy-mode marks
+            set -gF copy-mode-match-style "bg=#{@thm_surface_1},fg=#{@thm_fg}"
+            set -gF copy-mode-current-match-style "bg=#{@thm_mauve},fg=#{@thm_crust},bold"
+            set -gF copy-mode-mark-style "bg=#{@thm_mauve},fg=#{@thm_crust}"
+            set -gF copy-mode-line-number-style "fg=#{@thm_overlay_1},dim"
+            set -gF copy-mode-current-line-number-style "fg=#{@thm_mauve}"
+            # Tmux 3.8: Theme display-menu (tmux-menus plugin)
+            set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
+            set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
+            set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
 
 
 
@@ -242,8 +252,7 @@
             # Hook to run fastfetch on window creation if there's only one window
             # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
 
-            # set -g @continuum-restore "on"
-            source -F $HOME/.config/tmux/dev.tmux.conf
+            source -F "$HOME/.config/tmux/dev.tmux.conf"
           '';
 
         # Plugins
@@ -280,7 +289,8 @@
               # sh
               ''
                 # Cache dir lives inside the plugin folder - read-only in the nix store
-                set -g @menus_use_cache 'No'
+                set -g @menus_use_cache "No"
+                set -g @menus_trigger disable
               '';
           }
         ]
@@ -302,7 +312,7 @@
                 # Panes Border
                 set -g @catppuccin_pane_status_enabled "off"
                 set -g @catppuccin_pane_border_status "off"
-                set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_yellow},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_mauve}}}"
+                set -g @catppuccin_pane_active_border_style "##{?pane_in_mode,fg=#{@thm_mauve},##{?pane_synchronized,fg=#{@thm_rosewater},fg=#{@thm_mauve}}}"
                 set -g @catppuccin_pane_color "#{@thm_overlay_0}"
 
                 set -g @catppuccin_window_status_style "custom"
