@@ -253,6 +253,7 @@ vnoremap <A-k> :m '<-2<CR>gv=vgv
 " [[ Configure fzf.vim ]]
 " See `:help fzf-vim`
 " https://github.com/junegunn/fzf.vim
+let g:fzf_vim = get(g:, 'fzf_vim', {})
 let g:fzf_vim.paste_key = 'alt-enter'
 let g:fzf_vim.preview_window = []
 
@@ -277,7 +278,7 @@ let g:which_key_map.f.f = '[F]ind  [F]iles'
 nmap <leader>fg :Rg<CR>
 let g:which_key_map.f.g = '[F]ind by [G]rep'
 nmap <leader>f. :History<CR>
-let g:which_key_map.s['.'] = '[F]ind  Recent Files ("." for repeat)'
+let g:which_key_map.f['.'] = '[F]ind  Recent Files ("." for repeat)'
 
 nmap <leader><leader> :Buffers<CR>
 let g:which_key_map[' '] = '[ ] Find existing buffers'

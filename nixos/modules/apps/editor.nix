@@ -11,11 +11,6 @@
           source = config.lib.file.mkOutOfStoreSymlink ../../../config/vim;
         };
       };
-      packages = with pkgs; [
-        (pkgs.writeShellScriptBin "neovim" ''
-          exec env NVIM_APPNAME=nvim ${nvim-pkg}/bin/nvim "$@"
-        '')
-      ];
     };
 
     xdg.desktopEntries = {
@@ -96,8 +91,6 @@
         editor
       ];
     };
-
-    nixpkgs.overlays = [ inputs.kickstart-nix-nvim.overlays.default ];
 
     environment.systemPackages = with pkgs; [
       # config.treefmt.build.wrapper

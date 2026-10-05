@@ -57,8 +57,8 @@
                 tmux: ""
                 television: "󰮚"
                 sesh: "⚡"
-                nix: ""  
-                nh: ""  
+                nix: ""
+                nh: ""
                 agy: "󱙺 "
                 agyx: "󱙺 "
                 opencode: "󱙺 "
@@ -332,7 +332,7 @@
                 # 4. Shows urgent icon () with maroon background on alert, moving bell out to status-right
                 set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${kanjiIndex} ,} ${windowIcon} #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,${kanjiIndex} ,}${windowIcon} }"
                 set -g @catppuccin_window_current_number ""
-                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${kanjiIndex} ,} ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #{?client_prefix,${kanjiIndex} ,}${windowIcon} }"
+                set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold]  ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] ${windowIcon} }"
 
 
                 # Clean directory text: Strips conventional commit prefixes (e.g. feat/, fix-, refactor-)

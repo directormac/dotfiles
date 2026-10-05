@@ -173,7 +173,7 @@
         # See https://github.com/pfassina/lazyvim-nix/blob/main/data/treesitter.json
         treesitterParsers = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
           fish
-          hyprland
+          hyprlang
         ];
 
         configFiles = ../../../config/lazyvim;
