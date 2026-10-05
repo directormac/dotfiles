@@ -133,30 +133,30 @@
             bind -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
             bind -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
-                          # ========================
-                          #  UI SECTION BEGIN
-                          # ========================
+            # ========================
+            #  UI SECTION BEGIN
+            # ========================
 
 
-              # Advanced Pane Movements & Inspection
-              bind -N "Break pane to background window" B break-pane -d
-              bind -N "Toggle marked pane" m select-pane -m
-              bind -N "Join marked pane here" J join-pane
-              bind -N "Inspect scrollback in Neovim" E display-popup -w 95% -h 90% -E "tmux capture-pane -p -S -3000 | nvim -c 'set buftype=nofile' -"
-              bind -N "Respawn failed pane" r respawn-pane -k
-              bind -N "Toggle synchronize panes" S set-window-option synchronize-panes
+            # Advanced Pane Movements & Inspection
+            bind -N "Break pane to background window" B break-pane -d
+            bind -N "Toggle marked pane" m select-pane -m
+            bind -N "Join marked pane here" J join-pane
+            bind -N "Inspect scrollback in Neovim" E display-popup -w 95% -h 90% -E "tmux capture-pane -p -S -3000 | nvim -c 'set buftype=nofile' -"
+            bind -N "Respawn failed pane" r respawn-pane -k
+            bind -N "Toggle synchronize panes" S set-window-option synchronize-panes
 
-              # Error Preservation & History
-              set -g history-file ~/.local/state/tmux/tmux_history
-              set -g remain-on-exit failed-key
-              set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
-              set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
+            # Error Preservation & History
+            set -g history-file ~/.local/state/tmux/tmux_history
+            set -g remain-on-exit failed-key
+            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
+            set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
 
 
-                          bind C-y new-pane -O -W -d "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
-              # bind C-t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" # quick floating terminal
-              # bind C-g display-popup -d "#{pane-current-path}" -w 90% -h 90% -E "lazygit" # lazygit float
-              # bind C-m display-popup -w 95% -h 95% -E "rmpc" # music float
+            bind C-y new-pane -O -c "#{pane_current_path}" -w 90% -h 90% -E "yazi" # yazi float
+            # bind C-t display-popup -d "#{pane_current_path}" -w 80% -h 80% -E "zsh" # quick floating terminal
+            # bind C-g display-popup -d "#{pane-current-path}" -w 90% -h 90% -E "lazygit" # lazygit float
+            # bind C-m display-popup -w 95% -h 95% -E "rmpc" # music float
 
               # Workmux and Television Popups
               # bind C-S-s display-popup -h 30 -w 100 -E "workmux dashboard -t worktrees"
@@ -418,7 +418,7 @@
               ''
                 set -g @resurrect-strategy-vim "session"
                 set -g @resurrect-strategy-nvim "session"
-                set -g @resurrect-capture-pane-contents "on"
+                # set -g @resurrect-capture-pane-contents "on"
                 set -g @resurrect-processes "lazydocker lazygit yazi"
                 resurrect_dir=$HOME/.local/state/tmux/resurrect/
                 set -g @resurrect-dir $resurrect_dir
