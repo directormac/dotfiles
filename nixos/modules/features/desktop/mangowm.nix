@@ -237,6 +237,7 @@
             "systemctl --user start mango-session.target"
           ];
         };
+
         autostart_sh =
           # sh
           ''
@@ -246,8 +247,9 @@
             wl-clip-persist --clipboard regular --reconnect-tries 0 &
             wl-paste --type text --watch cliphist store &
           '';
+
         extraConfig = ''
-          source = ${config.home.homeDirectory}/.dotfiles/config/mango/config.conf
+          source = ${../../../../config/mango/config.conf}
         '';
       };
 
@@ -322,7 +324,7 @@
       };
 
       home.file.".config/mango/config.d" = {
-        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/mango/config.d";
+        source = config.lib.file.mkOutOfStoreSymlink ../../../../config/mango/config.d;
         recursive = true;
       };
 

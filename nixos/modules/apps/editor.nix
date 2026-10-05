@@ -96,7 +96,7 @@
     nixpkgs.overlays = [ inputs.kickstart-nix-nvim.overlays.default ];
 
     environment.systemPackages = with pkgs; [
-      config.treefmt.build.wrapper
+      # config.treefmt.build.wrapper
       # Editor tools
       tree-sitter
       nixfmt
