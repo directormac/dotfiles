@@ -3,9 +3,10 @@ return {
     'catppuccin/nvim',
     name = 'catppuccin',
     priority = 1000,
+    lazy = false,
     ---@type CatppuccinOptions
     opts = {
-      falvour = 'mocha',
+      flavour = 'mocha',
       background = { -- :h background
         light = 'latte',
         dark = 'mocha',
