@@ -53,8 +53,8 @@
                 claude: "󱙺 "
             '';
 
-          # "tmux/tmux_extra.conf".source =
-          #   config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux_extra.conf;
+          "tmux/dev.tmux.conf".source =
+            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/dev.tmux.conf;
 
           "tmux/scripts" = {
             source = config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
@@ -133,10 +133,93 @@
             bind -N "Begin selection" -T copy-mode-vi v send-keys -X begin-selection
             bind -N "Copy selection"  -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 
+            # Advanced Pane Movements & Inspection
+            bind -N "Break pane to background window" B break-pane -d
+            bind -N "Toggle marked pane" m select-pane -m
+            bind -N "Join marked pane here" J join-pane
+            bind -N "Inspect scrollback in Neovim" E display-popup -w 95% -h 90% -E "tmux capture-pane -p -S -3000 | nvim -c 'set buftype=nofile' -"
+            bind -N "Respawn failed pane" r respawn-pane -k
+            bind -N "Toggle synchronize panes" S set-window-option synchronize-panes
+
+            # Unbind alt key, bound in neovim buffers.
+            unbind-key -n M-0
+            unbind-key -n M-1
+            unbind-key -n M-2
+            unbind-key -n M-3
+            unbind-key -n M-4
+            unbind-key -n M-5
+            unbind-key -n M-6
+            unbind-key -n M-7
+            unbind-key -n M-8
+            unbind-key -n M-9
+
+            # bind -N "Go to left window" -n C-, select-window -t -1
+            # bind -n "Go to right window" C-. select-window -t +1
+
+            bind -N "Go to window 1" -T root C-1 select-window -t 1
+            bind -N "Go to window 2" -T root C-2 select-window -t 2
+            bind -N "Go to window 3" -T root C-3 select-window -t 3
+            bind -N "Go to window 4" -T root C-4 select-window -t 4
+            bind -N "Go to window 5" -T root C-5 select-window -t 5
+            bind -N "Go to window 6" -T root C-6 select-window -t 6
+            bind -N "Go to window 7" -T root C-7 select-window -t 7
+            bind -N "Go to window 8" -T root C-8 select-window -t 8
+            bind -N "Go to window 9" -T root C-9 select-window -t 9
+
+
+            # Error Preservation & History
+            set -g history-file ~/.local/state/tmux/tmux_history
+            set -g remain-on-exit 'failed'
+            set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
+            set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
+
             # ========================
             #  UI SECTION BEGIN
             # ========================
 
+
+              # Empty line before status
+              set -g status-position bottom
+              # set -g status-style "bg=#{@thm_bg}"
+              set -wg automatic-rename on
+              set -g allow-rename off
+              # Window status styling (clear default 'underscore' attribute)
+              set -g window-status-style "default"
+              set -g window-status-current-style "default"
+              set -g status-justify "absolute-centre"
+              # set -g status-justify "left"
+              # set -Fg "status-format[1]" "#{status-format[0]}"
+              # set -g "status-format[0]" ""
+
+              # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
+              set -g pane-border-status off
+              set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+              set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+              set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+              set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+              set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
+              set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
+
+              set -g status-left-length 100
+              set -g status-left ""
+              set -ga status-left "#{?client_prefix,#[fg=#{@thm_green} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}},  #{=/22/...:#{s/^[^-]*-//:session_name}},} ,#[fg=#{@thm_mauve} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}}, ,} }"
+
+              set -g status-right-length 100
+              set -g status-right ""
+              set -ga status-right "#{?session_alerts,#[fg=#{@thm_maroon} bold]󰂞 ,}"
+              set -ga status-right "#[fg=#{@thm_maroon}] #{?#{!=:${windowIcon},},${windowIcon},} #{pane_current_command} "
+              set -ga status-right "#{?client_prefix,#[fg=#{@thm_blue} bold]  #{=/-28/...:#{b:pane_current_path}} ,#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M }"
+
+
+            # set -g message-style "bg=#{@thm_bg},fg=#{@thm_fg},align=centre"
+            # set -g message-command-style "bg=#{@thm_mantle}, fg=#{@thm_fg},align=centre"
+            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
+            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
+
+            # Window bell style (runs after plugins to override catppuccin's default yellow)
+            set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
+            # Tmux 3.8: Highlight current line in copy mode
+            set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
 
 
 
@@ -246,28 +329,7 @@
               '';
           }
 
-          # sensible
-
-          # {
-          #   # https://github.com/alexwforsythe/tmux-which-key#nix-with-home-manager-flake-installation
-          #   plugin = tmux-which-key;
-          #
-          #   extraConfig =
-          #     # sh
-          #     ''
-          #       # Enables XDG user directory support for the plugin.
-          #       set -g @tmux-which-key-xdg-enable 1;
-          #
-          #       # Disables building the tmux configuration from YAML everytime the plugin starts.
-          #       # The home manager module calls `plugin/build.py` on each generation.
-          #       set -g @tmux-which-key-disable-autobuild 1
-          #
-          #       # Follows nixpkgs prefered path for plugins instead of the default
-          #       # path of $XDG_*_HOME/tmux/plugins/tmux-which-key.
-          #       set -g @tmux-which-key-xdg-plugin-path tmux-plugins/tmux-which-key
-          #     '';
-          # }
-
+          # https://github.com/spywhere/tmux-named-snapshohttps://github.com/spywhere/tmux-named-snapshotqt
         ]);
       };
 
@@ -327,6 +389,7 @@
 
       environment.systemPackages = [
         self.packages.${pkgs.stdenv.hostPlatform.system}.tmux
+        self.packages.${pkgs.stdenv.hostPlatform.system}.tmuxx
       ];
     };
 
@@ -334,5 +397,6 @@
     { pkgs, ... }:
     {
       packages.tmux = pkgs.callPackage ../../pkgs/tmux.nix { };
+      packages.tmuxx = pkgs.callPackage ../../pkgs/tmuxx.nix { };
     };
 }
