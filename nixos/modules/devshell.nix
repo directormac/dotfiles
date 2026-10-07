@@ -14,6 +14,8 @@
           self'.packages.yazi
           self'.packages.nh
           self'.packages.tmux
+          # Nightly neovim that loads the live repo config (hot reload)
+          self'.packages.nvim-dev
           pkgs.television
           pkgs.nix-search-tv
           config.treefmt.build.wrapper

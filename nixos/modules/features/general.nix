@@ -156,8 +156,6 @@
         editor
         television
 
-        # nightly-neovim
-
         nix-ld
         nh
       ];

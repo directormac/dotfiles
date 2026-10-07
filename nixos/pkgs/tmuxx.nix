@@ -14,7 +14,7 @@ tmux.overrideAttrs (oldAttrs: {
     hash = "sha256-xUYIpIOKzfd34+KlwQjPhmfE1qUbDJ8IvcL0bZy5CH8=";
   };
 
-    # git builds report `tmux -V` as "next-3.x", failing versionCheckHook
+  # git builds report `tmux -V` as "next-3.x", failing versionCheckHook
   doInstallCheck = false;
 
   # NOTE: plugins that shell out to `tmux` (e.g. tmux-menus via TMUX_BIN) will

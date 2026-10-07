@@ -301,9 +301,9 @@
             "803c7895-b39b-458e-84f8-a521f4d7a064" # Hide Inactive Workspaces
             "906c6915-5677-48ff-9bfc-096a02a72379" # Floating Status Bar
             "c8d9e6e6-e702-4e15-8972-3596e57cf398" # Zen Back Forward
-            "cb15abdb-0514-4e09-8ce5-722cf1f4a20f" # Hide Extension Name
+            # "cb15abdb-0514-4e09-8ce5-722cf1f4a20f" # Hide Extension Name
             "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe" # Better Active Tab
-            "f7c71d9a-bce2-420f-ae44-a64bd92975ab" # Better Unloaded Tabs
+            # "f7c71d9a-bce2-420f-ae44-a64bd92975ab" # Better Unloaded Tabs
             "bd92a9a0-1c00-4187-a66e-94c389fa5a59" # Sidebar Expand on Hover
             "181e41d4-dfd3-410d-9a73-561381a2f77d" # Extensions List
             "b0f635d7-c3bf-4709-af68-4712f0e5b2e56" # Cleaner Bookmark Menu
@@ -314,64 +314,66 @@
             @import "catppuccin/userContent.css";
           '';
 
-          userChrome = ''
-            @import "catppuccin/userChrome.css";
+          userChrome =
+            # css
+            ''
+              @import "catppuccin/userChrome.css";
 
-            /* Better Find Bar Native Styles */
-            ${common.findbarCss}
+              /* Better Find Bar Native Styles */
+              ${common.findbarCss}
 
-            /* Disable Rounded Corners */
-            :root {
-              --zen-webview-border-radius: 0 !important;
-            }
-
-            #zen-workspaces-button .subviewbutton:not([active="true"]) {
-              display: none !important;
-            }
-
-            /* https://zen-browser.app/mods/803c7895-b39b-458e-84f8-a521f4d7a064/ */
-            #zen-workspaces-button:hover .subviewbutton:not([active="true"]) {
-              display: flex !important;
-            }
-
-            /* https://zen-browser.app/mods/4ab93b88-151c-451b-a1b7-a1e0e28fa7f8/ */
-            @media not (-moz-pref("theme.nosidebarscrollbar.before125b")) {
-              scrollbox:nth-child(5) {
-                scrollbar-width: none !important;
+              /* Disable Rounded Corners */
+              :root {
+                --zen-webview-border-radius: 0 !important;
               }
-            }
 
-            @media (-moz-pref("theme.nosidebarscrollbar.before125b")) {
-              #zen-tabs-wrapper {
-                scrollbar-width: none !important;
+              #zen-workspaces-button .subviewbutton:not([active="true"]) {
+                display: none !important;
               }
-            }
 
-            #tabbrowser-tabpanels:not([zen-split-view="true"]) {
-              padding-left: 0px !important;
-              padding-right: 0px !important;
-            }
+              /* https://zen-browser.app/mods/803c7895-b39b-458e-84f8-a521f4d7a064/ */
+              #zen-workspaces-button:hover .subviewbutton:not([active="true"]) {
+                display: flex !important;
+              }
 
-            #urlbar {
-              @media -moz-pref("mod.ivaon.urlbar.hide_results", "0") {
-                &:not([usertyping], [searchmode])>.urlbarView {
-                  display: none !important;
+              /* https://zen-browser.app/mods/4ab93b88-151c-451b-a1b7-a1e0e28fa7f8/ */
+              @media not (-moz-pref("theme.nosidebarscrollbar.before125b")) {
+                scrollbox:nth-child(5) {
+                  scrollbar-width: none !important;
                 }
               }
-              #urlbar-results div.urlbarView-row[row-selectable][type="top_site"] {
-                @media -moz-pref("mod.ivaon.urlbar.hide_results", "0"), -moz-pref("mod.ivaon.urlbar.hide_results", "1") {
-                  & {
+
+              @media (-moz-pref("theme.nosidebarscrollbar.before125b")) {
+                #zen-tabs-wrapper {
+                  scrollbar-width: none !important;
+                }
+              }
+
+              #tabbrowser-tabpanels:not([zen-split-view="true"]) {
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+              }
+
+              #urlbar {
+                @media -moz-pref("mod.ivaon.urlbar.hide_results", "0") {
+                  &:not([usertyping], [searchmode])>.urlbarView {
                     display: none !important;
                   }
                 }
-                @media -moz-pref("mod.ivaon.urlbar.hide_results", "2") {
-                  &:not([pinned]) {
-                    display: none !important;
+                #urlbar-results div.urlbarView-row[row-selectable][type="top_site"] {
+                  @media -moz-pref("mod.ivaon.urlbar.hide_results", "0"), -moz-pref("mod.ivaon.urlbar.hide_results", "1") {
+                    & {
+                      display: none !important;
+                    }
+                  }
+                  @media -moz-pref("mod.ivaon.urlbar.hide_results", "2") {
+                    &:not([pinned]) {
+                      display: none !important;
+                    }
                   }
                 }
               }
-            }
-          '';
+            '';
         };
 
         profiles.default.presets.betterfox.enable = true;

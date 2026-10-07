@@ -1,6 +1,11 @@
 {
   flake.homeModules.mpv = { pkgs, ... }: {
     stylix.targets.mpv.enable = true;
+
+    home.packages = with pkgs; [
+      mpvc
+    ];
+
     programs.mpv = {
       enable = true;
 

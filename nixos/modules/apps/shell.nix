@@ -214,9 +214,10 @@
           "top" = "btop";
           "oc" = "opencode";
           "wh" = "which";
-          "v" = "lazyvim";
+          "v" = "nvim";
           "vi" = "neovim";
-          "nvim" = "lazyvim";
+          # "nvim" = "lazyvim";
+          "lazyvim" = "lazyvim";
           "y" = "yazi";
           "zen" = "zen-beta";
           "wm" = "workmux";
@@ -236,12 +237,12 @@
           "logs" = "journalctl --user -f -n 50";
           "grab" = "ghgrab --cwd";
           "flake" = "nix flake";
-          "nixdev" = "nix develop -c $SHELL";
+          "nixdev" = "nix develop";
           "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
         };
 
         sessionVariables = {
-          EDITOR = "lazyvim";
+          EDITOR = "nvim";
           BROWSER = "zen-beta";
           # https://stacker.news/items/948469
           NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";

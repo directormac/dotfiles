@@ -78,10 +78,6 @@
 
     programs.helix.enable = true;
 
-    programs.neovim.plugins = [
-      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-    ];
-
   };
 
   flake.nixosModules.editor = { pkgs, config, ... }: {
@@ -89,6 +85,7 @@
     home-manager.users.${config.preferences.user.name} = {
       imports = with self.homeModules; [
         editor
+        neovim
       ];
     };
 
@@ -103,6 +100,8 @@
       bash-language-server
       nixd
       nil
+
+      self.packages."${pkgs.stdenv.hostPlatform.system}".neovim
 
       #https://github.com/Freed-Wu/tree-sitter-tmuxf
       # https://github.com/Freed-Wu/tree-sitter-tmux
