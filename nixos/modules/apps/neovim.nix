@@ -109,6 +109,8 @@
           }
           snacks-nvim
           oil-nvim
+          oil-git-nvim
+          oil-lsp-diagnostics-nvim
 
           nvim-lspconfig
           nvim-surround
@@ -171,6 +173,11 @@
       # Point ~/.config/nvim at the live repo checkout. The production wrapper
       # links its own in-store config and blocks stdpath('config'), so this is
       # only actually read by the dev variant (vim.fn.stdpath('config')).
+      # NOTE: cannot symlink ~/.config/nvim at the whole-directory level while
+      # lazyvim-nix enables `programs.neovim`, because that module also writes
+      # `~/.config/nvim/init.lua` (the rplugin manifest). Home Manager then
+      # fails with "Error installing file '.config/nvim/init.lua' outside $HOME"
+      # and the whole generation fails to build. Uncomment once lazyvim is gone.
       # home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink ../../../config/nvim;
     };
 
