@@ -11,9 +11,9 @@
 vim.loader.enable() -- <- bytecode caching
 
 -- nixInfo + lze + the spec handlers everything else depends on
-require('config.bootstrap')
+require('bootstrap')
 -- options and keymaps, before any plugin that binds keys
-require('config.options')
-require('config.keymaps')
+require('options')
+require('keymaps')
 -- the specs themselves
-require('config.plugins')
+require('plugins')
