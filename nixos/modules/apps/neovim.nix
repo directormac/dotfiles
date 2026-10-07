@@ -107,6 +107,11 @@
             data = vim-sleuth;
             lazy = false;
           }
+          {
+            # icon provider for oil.nvim, needs to be on the runtimepath at startup
+            data = mini-nvim;
+            lazy = false;
+          }
           snacks-nvim
           oil-nvim
           oil-git-nvim

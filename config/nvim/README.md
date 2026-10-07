@@ -24,6 +24,35 @@ Because the config dir is prepended, anything you put in `syntax/`, `indent/`,
 `keymap/` or `lsp/` replaces the same file in `$VIMRUNTIME` and in plugins when it is
 picked by name (`lsp/<name>.lua`, `<ft>/...`, `syntax/x.vim`).
 
+## Translating a spec from lazy.nvim / lz.n
+
+This config uses **lze** (via `nix-wrapper-modules` + `lzextras`), not lazy.nvim, and
+Nix rather than `vim.pack.add` for installation. A lazy.nvim spec dropped in verbatim
+loads nothing and reports no error, because lze ignores fields it has no handler for.
+Translation:
+
+| lazy.nvim / lz.n | lze here |
+| --- | --- |
+| `opts = { ... }` | `after = function() require('<module>').setup({ ... }) end` |
+| `config = function(_, opts) ... end` | same `after` shape |
+| `keys = { { '<leader>x', '<cmd>Foo<cr>', { desc = 'x' } } }` | `keys = { { '<leader>x', '<cmd>Foo<cr>', desc = 'x' } }` |
+| `{ '<leader>x', '<cmd>Foo<cr>', desc = 'x' }` (flat tuple) | wrap it: `keys = { { ... } }` |
+| `dependencies = { 'a/b' }` | `dep_of = { 'a.nvim' }` (only when it must load *before*) |
+| an integration that `require`s its host | `on_plugin = { 'oil.nvim' }` — `dep_of` fires too early |
+| `pkgs = { 'owner/repo' }` | nothing: add a Nix spec, `pkgs` is an lz.n handler that runs `vim.pack.add` |
+| `version`, `build`, `priority = 'high'`, `lazy = true` | `version`/`build`/`priority` do not exist; `lazy = true` is the default for children of a parent spec |
+| `require('oil.nvim')` | `require('oil')` — the module name is rarely the plugin name |
+
+Two ordering rules that bite most often:
+
+* `desc` must be a **named field** of the key table (`{ lhs, rhs, desc = '...' }`). A
+  nested `{ desc = ... }` as the third item is dropped, so the mapping appears with no
+  description.
+* `dep_of` runs the dependency's `after` hook from the dependent's `before` hook, i.e.
+  **before** the dependent is packadd'd. If the dependency's setup needs the
+  dependent's module (`oil-lsp-diagnostics` does `require('oil')` on line 1), you get
+  `module 'oil' not found` — use `on_plugin` instead, which fires after.
+
 ## Layout
 
 ```
@@ -39,6 +68,10 @@ lsp/<server>.lua             settings for one language server
 plugin/editor.lua            netrw globals, formatoptions, yank highlight
 ftplugin/*.lua               markdown, gitcommit
 ```
+
+`lua/plugins/oil.lua` is the worked example of the three rules above: it configures three
+plugins (`oil.nvim` plus the `oil-git` and `oil-lsp-diagnostics` integrations) using
+`on_plugin`, and it is the spec to copy when translating one of your lazy.nvim files.
 
 Every `lua/plugins/*.lua` and `lua/lsp/*.lua` module **returns a table of lze specs**
 and is pulled in by `lua/config/plugins.lua` with lze's `import` field

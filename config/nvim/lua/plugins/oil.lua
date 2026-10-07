@@ -1,47 +1,75 @@
+-- oil.nvim file explorer, plus the git and diagnostics integrations.
+--
+-- NOTE: these are lze specs, not lazy.nvim specs. The translation:
+--   * `opts = { ... }` -> `after = function() require('<module>').setup({ ... }) end`
+--   * `keys = { { lhs, rhs, { desc = ... } } }` -> `keys = { { lhs, rhs, desc = ... } }`
+--     (`desc` has to be a named field of the same table, a nested table is dropped)
+--   * there is no `pkgs` / `dependencies` field: Nix decides what is installed,
+--     and `auto_enable` disables a spec whose plugin is missing
+--   * `on_plugin = { 'oil.nvim' }` (not `dep_of`): the integration is configured
+--     AFTER oil is loaded, which `dep_of` cannot guarantee since it fires the
+--     dependency's `after` hook before the dependent is packadd'd
 return {
   {
     'oil.nvim',
     auto_enable = true,
     keys = {
-      {
-        '<leader>fo',
-        '<cmd>Oil<cr>',
-        { desc = 'Oil explorer on current buffer directory' },
-      },
-      {
-        '<leader>fO',
-        '<cmd>Oil .<cr>',
-        { desc = 'Oil explorer on current buffer directory' },
-      },
+      { '<leader>fo', '<cmd>Oil<cr>', desc = 'Oil explorer on current buffer directory' },
+      { '<leader>fO', '<cmd>Oil .<cr>', desc = 'Oil explorer on parent directory' },
     },
-    opts = {
-      default_file_explorer = true,
-      columns = {
-        'icon',
-        'size',
-      },
-      -- Skip the confirmation popup for simple operations
-      skip_confirm_for_simple_edits = true,
-      keymaps = {
-        ['q'] = 'actions.close',
-        ['<C-s>'] = false,
-      },
-      view_options = {
-        show_hidden = true,
-      },
-      -- TODO:(oil config): Configure properly
-      -- EXPERIMENTAL support for performing file operations with git
-      git = {
-        -- Return true to automatically git add/mv/rm files
-        add = function(path) return false end,
-        mv = function(src_path, dest_path) return false end,
-        rm = function(path) return false end,
-      },
-    },
+    after = function()
+      -- icon provider, installed as a startup spec in neovim.nix
+      require('mini.icons').setup()
+      require('oil').setup({
+        default_file_explorer = true,
+        columns = {
+          'icon',
+          'size',
+        },
+        -- Skip the confirmation popup for simple operations
+        skip_confirm_for_simple_edits = true,
+        keymaps = {
+          ['q'] = 'actions.close',
+          ['<C-s>'] = false,
+        },
+        view_options = {
+          show_hidden = true,
+        },
+        -- EXPERIMENTAL support for performing file operations with git.
+        -- NOTE: oil-git.nvim below replaces this with its own adapter.
+        git = {
+          -- Return true to automatically git add/mv/rm files
+          add = function(path) return false end,
+          mv = function(src_path, dest_path) return false end,
+          rm = function(path) return false end,
+        },
+      })
+    end,
   },
-  -- { 'malewicz1337/oil-git.nvim', dependencies = { 'stevearc/oil.nvim' } },
-  -- {
-  --   'JezerM/oil-lsp-diagnostics.nvim',
-  --   dependencies = { 'stevearc/oil.nvim' },
-  -- },
+  {
+    -- git aware file operations (rename, delete, move in oil)
+    'oil-git.nvim',
+    auto_enable = true,
+    on_plugin = { 'oil.nvim' },
+    after = function()
+      require('oil-git').setup({
+        -- default is to auto add/remove on write/delete
+        -- oil.add = true
+        -- oil.delete_file = true
+        -- oil.delete_folder = true
+      })
+    end,
+  },
+  {
+    -- diagnostics in the oil window
+    'oil-lsp-diagnostics.nvim',
+    auto_enable = true,
+    on_plugin = { 'oil.nvim' },
+    after = function()
+      require('oil-lsp-diagnostics').setup({
+        -- jump to diagnostic on cursor hold
+        show_diagnostics_on_cursor_hold = true,
+      })
+    end,
+  },
 }
