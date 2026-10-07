@@ -1,0 +1,12 @@
+# tuxedo config
+
+
+theme = Terminal
+density = comfortable
+sort = priority
+show_left = true
+show_right = true
+show_line_num = true
+show_status_bar = true
+show_done = false
+show_future = false

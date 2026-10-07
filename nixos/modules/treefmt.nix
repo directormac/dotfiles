@@ -45,6 +45,8 @@
           toml-sort.enable = true;
           shfmt.enable = true;
           shellcheck.enable = true;
+          # picks up the per-directory .stylua.toml files
+          stylua.enable = true;
         };
       };
     };

@@ -55,7 +55,8 @@
 
               icons:
                 tmux: ""
-                television: "󰮚"
+                tuxedo: " "
+                television: "󰠹 "
                 sesh: "⚡"
                 neovim: " "
                 nix: " "

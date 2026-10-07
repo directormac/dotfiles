@@ -108,6 +108,8 @@
             lazy = false;
           }
           snacks-nvim
+          oil-nvim
+
           nvim-lspconfig
           nvim-surround
           vim-startuptime

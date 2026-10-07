@@ -98,10 +98,12 @@
       lua-language-server
       # shfmt
       bash-language-server
+
       nixd
       nil
 
-      self.packages."${pkgs.stdenv.hostPlatform.system}".neovim
+      # NOTE: the wrapped neovim is installed by `homeModules.neovim` (imported
+      # above) through home.packages, so it is not repeated in systemPackages.
 
       #https://github.com/Freed-Wu/tree-sitter-tmuxf
       # https://github.com/Freed-Wu/tree-sitter-tmux

@@ -216,7 +216,7 @@
           "wh" = "which";
           "v" = "nvim";
           "vi" = "neovim";
-          # "nvim" = "lazyvim";
+          "nvim" = "lazyvim";
           "lazyvim" = "lazyvim";
           "y" = "yazi";
           "zen" = "zen-beta";
@@ -231,6 +231,7 @@
           "wmm" = "workmux merge";
           "tls" = "tmux ls";
           "ts" = "sesh last";
+          "todo" = "tuxedo";
           "t" = "tv --layout portrait --hide-preview --input-position bottom";
           "tvk" = "tv zsh-keys";
           "tn" = "sesh connect .";

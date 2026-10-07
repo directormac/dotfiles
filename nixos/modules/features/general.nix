@@ -155,6 +155,7 @@
         tmux
         editor
         television
+        tuxedo
 
         nix-ld
         nh
