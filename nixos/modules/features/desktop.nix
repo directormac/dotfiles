@@ -1,4 +1,4 @@
-{ self, ... }: {
+{ self, inputs, ... }: {
   flake.homeModules.desktop = { pkgs, ... }: {
 
     stylix.targets = {
@@ -292,6 +292,7 @@
         thunar-vcs-plugin
         thunar-shares-plugin
 
+        inputs.torlink.packages.${pkgs.stdenv.hostPlatform.system}.default
         pavucontrol
         quickshell
         fcitx5
