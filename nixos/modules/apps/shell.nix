@@ -181,12 +181,11 @@
           ];
         };
 
-        completionInit =
-          # sh
-          ''
-            eval "$(workmux completions zsh)"
-            autoload -U compinit && compinit
-          '';
+        # completionInit =
+        #   # sh
+        #   ''
+        #     autoload -U compinit && compinit
+        #   '';
 
         shellAliases = {
           "agyx" = "agy  --dangerously-skip-permissions";

@@ -45,16 +45,32 @@
       };
 
       # nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-      optimise.automatic = false;
+
+      optimise = {
+        automatic = true;
+        dates = [ "05:00" ];
+      };
+
       gc = {
-        automatic = false; # Handled by programs.nh.clean
-        dates = "daily";
-        options = "--delete-older-than 5d";
+        automatic = true;
+        # dates = "daily";
+        dates = "00:01";
+        options = "--delete-older-than 10d";
       };
     };
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
+
+    system.autoUpgrade = {
+      enable = true;
+      dates = "02:00";
+      flags = [
+        "update"
+        "nixpkgs"
+      ];
+      randomizedDelaySec = "45min";
+    };
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
