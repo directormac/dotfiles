@@ -7,7 +7,7 @@
 --   plugin/       runtime plugin scripts
 --   ftplugin/     filetype settings
 --   after/        overrides, applied last
-
+_G.__startup_time = vim.uv.hrtime()
 vim.loader.enable() -- <- bytecode caching
 
 -- nixInfo + lze + the spec handlers everything else depends on
@@ -17,3 +17,4 @@ require('options')
 require('keymaps')
 -- the specs themselves
 require('plugins')
+

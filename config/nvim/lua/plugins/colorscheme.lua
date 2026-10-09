@@ -37,6 +37,11 @@ return {
         flavour = 'mocha',
         background = { light = 'latte', dark = 'mocha' },
         transparent_background = true,
+        float = {
+          transparent = true,
+          solid = false,
+        },
+        auto_integrations = true,
         term_colors = true,
         integrations = {
           blink_cmp = true,

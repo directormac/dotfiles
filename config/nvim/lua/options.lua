@@ -8,6 +8,7 @@ vim.o.exrc = true -- load .nvim.lua from the current dir and parents (project co
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.fillchars:append({ eob = ' ' })
 
 -- Set highlight on search
 vim.opt.hlsearch = true
@@ -19,8 +20,10 @@ vim.opt.inccommand = 'split'
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- Make line numbers default
-vim.wo.number = true
+-- Make line numbers default & enable cursorline (LazyVim standard)
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.cursorline = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -46,12 +49,14 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 -- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
-vim.wo.relativenumber = true
+vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
+
+vim.opt.pumblend = 10 -- Popup blend
+vim.opt.pumheight = 100 -- Maximum number of entries in a popup
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menu,preview,noselect'

@@ -100,9 +100,12 @@
         runtimePkgs = with pkgs; [
           lazygit
           tree-sitter
+          ripgrep
+          fd
         ];
         lazy = true;
         data = with pkgs.vimPlugins; [
+          plenary-nvim
 
           snacks-nvim
           oil-nvim
@@ -126,8 +129,31 @@
           fidget-nvim
           nvim-lint
           conform-nvim
+          zen-mode-nvim
+          yanky-nvim
+          otter-nvim
+          # windsurf-nvim
+
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
+
+          # Navigation & Editing
+          flash-nvim
+          todo-comments-nvim
+          grug-far-nvim
+          edgy-nvim
+
+          # UI & Notifications
+          noice-nvim
+          nui-nvim
+          nvim-notify
+
+          # Debug Adapter Protocol (DAP)
+          nvim-dap
+          nvim-dap-ui
+          nvim-nio
+          nvim-dap-virtual-text
+          one-small-step-for-vimkind
         ];
       };
 

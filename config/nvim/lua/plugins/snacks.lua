@@ -31,7 +31,19 @@ return {
         scope = {},
         scratch = {},
         scroll = {},
-        statuscolumn = {},
+        statuscolumn = {
+          left = { 'mark', 'sign' }, -- priority of signs on the left (high to low)
+          right = { 'fold', 'git' }, -- priority of signs on the right (high to low)
+          folds = {
+            open = false, -- do not show open fold dots on every line
+            git_hl = true, -- use Git Signs hl for fold icons
+          },
+          git = {
+            -- patterns to match Git signs
+            patterns = { 'GitSign', 'MiniDiffSign' },
+          },
+          refresh = 50, -- refresh at most every 50ms
+        },
         styles = { float = { backdrop = 60 } },
         terminal = {},
         words = {},
@@ -95,7 +107,7 @@ return {
   ██║  ██║██║  ██║   ██║   ██║██║     ███████╗██╔╝╚██╗
   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
   ɔɐɯɹoʇɔǝɹᴉp
-           
+             
         ]],
           },
           -- item field formatters
@@ -127,16 +139,39 @@ return {
           sections = {
             { section = 'header' },
             { section = 'keys', gap = 1, padding = 1 },
-            -- {
-            --   align = 'center',
-            --   padding = 1,
-            --   text = {
-            --     {
-            --       '󱐋 Loaded ' .. tostring(plugin_count()) .. ' plugins via vim.pack',
-            --       hl = 'footer',
-            --     },
-            --   },
-            -- },
+            function()
+              local nix_count = _G.nixInfo
+                  and nixInfo.plugins
+                  and (vim.tbl_count(nixInfo.plugins.lazy or {}) + vim.tbl_count(nixInfo.plugins.start or {}))
+                or 0
+              local pack_count = 0
+              local lockfile = vim.fs.joinpath(vim.fn.stdpath('config'), 'nvim-pack-lock.json')
+              local ok, data = pcall(
+                function() return vim.json.decode(table.concat(vim.fn.readfile(lockfile), '\n')) end
+              )
+              if ok and data and data.plugins then
+                pack_count = vim.tbl_count(data.plugins)
+              elseif vim.pack and vim.pack.get then
+                pack_count = #vim.pack.get()
+              end
+              local total = nix_count + pack_count
+              local ms = _G.__startup_time and string.format('%.2f', (vim.uv.hrtime() - _G.__startup_time) / 1e6) or '0'
+
+              return {
+                align = 'center',
+                padding = 1,
+                text = {
+                  { '⚡ Loaded ', hl = 'footer' },
+                  { tostring(total), hl = 'special' },
+                  { ' plugins (', hl = 'footer' },
+                  { tostring(nix_count) .. ' nix', hl = 'Constant' },
+                  { ' · ', hl = 'footer' },
+                  { tostring(pack_count) .. ' vim.pack', hl = 'Statement' },
+                  { ') in ', hl = 'footer' },
+                  { ms .. 'ms', hl = 'special' },
+                },
+              }
+            end,
           },
         },
         -- make sure lazygit always reopens the correct program
@@ -249,10 +284,8 @@ return {
         vim.keymap.set(mode, lhs, rhs, opts)
       end
 
-      vim.keymap.set('n', '-', function() Snacks.explorer.open() end, { desc = 'Snacks file explorer' })
-      vim.keymap.set('n', '<c-\\>', function() Snacks.terminal.open() end, { desc = 'Snacks Terminal' })
-      vim.keymap.set('n', '<leader>_', function() Snacks.lazygit.open() end, { desc = 'Snacks LazyGit' })
-      vim.keymap.set('n', '<leader>sf', function() Snacks.picker.smart() end, { desc = 'Smart Find Files' })
+      vim.keymap.set('n', '<leader>e', function() Snacks.explorer.open() end, { desc = 'Snacks file explorer' })
+      -- vim.keymap.set('n', '<c-\\>', function() Snacks.terminal.open() end, { desc = 'Snacks Terminal' })
 
       -- find
       vim.keymap.set('n', '<leader>ff', function() Snacks.picker.files() end, { desc = 'Find Files' })
@@ -376,7 +409,6 @@ return {
       map('n', '<leader>sl', function() Snacks.picker.loclist() end, { desc = 'Location List' })
       map('n', '<leader>sm', function() Snacks.picker.marks() end, { desc = 'Marks' })
       map('n', '<leader>sM', function() Snacks.picker.man(require('')) end, { desc = 'Man Pages' })
-      map('n', '<leader>sp', function() Snacks.picker.lazy() end, { desc = 'Search for Plugin Spec' })
       map('n', '<leader>sq', function() Snacks.picker.qflist() end, { desc = 'Quickfix List' })
       map('n', '<leader>sR', function() Snacks.picker.resume() end, { desc = 'Resume' })
       map('n', '<leader>su', function() Snacks.picker.undo() end, { desc = 'Undo History' })
