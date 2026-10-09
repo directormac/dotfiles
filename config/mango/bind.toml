@@ -2,23 +2,47 @@
 # Reload config
 "SUPER+r" = "reload_config"
 
-# Menu and terminal
-"SUPER+space" = "spawn,noctalia msg panel-toggle launcher"
-"SUPER+s" = "spawn,noctalia msg panel-toggle control-center"
-"SUPER+comma" = "spawn,noctalia msg settings-toggle"
-"SUPER+Return" = "spawn,ghostty"
+# Applications
+"SUPER+Return" = "spawn,ghostty +new-window"
+"SUPER+SHIFT+Return" = "spawn,ghostty --class=com.ghostty.float"
+"SUPER+e" = "spawn,nautilus --new-window"
+"SUPER+o" = "spawn,zen"
+"SUPER+d" = "spawn,which-key"
 "CTRL+ALT+comma" = "spawn,pavucontrol"
+"CTRL+ALT+m" = "spawn,ghostty --class=com.ghostty.float -e rmpc"
 
-# Noctalia Screenshots
-"Print" = "spawn,noctalia msg screenshot-region"
-"SHIFT+Print" = "spawn,noctalia msg screenshot-fullscreen"
-"CTRL+Print" = "spawn,noctalia msg screenshot-annotate"
+# DMS (DankMaterialShell) Integration
+"SUPER+space" = "spawn,dms ipc call spotlight toggle"
+"SUPER+v" = "spawn,dms ipc call clipboard toggle"
+"SUPER+comma" = "spawn,dms ipc call settings focusOrToggle"
+"SUPER+SHIFT+slash" = "spawn,dms ipc call keybinds toggle mangowm"
+"SUPER+Alt+l" = "spawn,dms ipc call lock lock"
+"SUPER+SHIFT+Escape" = "spawn,dms ipc powermenu toggle"
+"SUPER+Escape" = "toggleoverview"
 
-# Exit / Close window
-"SUPER+SHIFT+Escape" = "spawn,noctalia msg panel-toggle session"
+# DMS QuickCapture Screenshots
+"Print" = "spawn,dms ipc call quickCapture screenshot region copy"
+"CTRL+Print" = "spawn,dms ipc call quickCapture screenshot full copy"
+"ALT+Print" = "spawn,dms ipc call quickCapture screenshot window copy"
+"SHIFT+Print" = "spawn,dms ipc call quickCapture screenshot region edit"
+
+# Window Management
 "SUPER+SHIFT+q" = "killclient,"
+"SUPER+SHIFT+space" = "togglefloating,"
+"SUPER+f" = "togglemaximizescreen,"
+"SUPER+SHIFT+f" = "togglefullscreen,"
+"SUPER+CTRL+f" = "togglefakefullscreen,"
+"SUPER+c" = "centerwin,"
+"SUPER+p" = "dwindle_toggle_split_direction"
+"SUPER+u" = "focuslast,"
+"SUPER+g" = "toggleglobal,"
+"SUPER+s" = "toggle_scratchpad"
+"SUPER+SHIFT+s" = "minimized,"
+"SUPER+SHIFT+i" = "restore_minimized"
+"ALT+z" = "toggle_scratchpad"
+"ALT+Tab" = "togglejump,"
 
-# Switch window focus
+# Switch Window Focus (Directional & Stack)
 "SUPER+Tab" = "focusstack,next"
 "SUPER+Left" = "focusdir,left"
 "SUPER+Right" = "focusdir,right"
@@ -29,42 +53,43 @@
 "SUPER+k" = "focusdir,up"
 "SUPER+j" = "focusdir,down"
 
-# Swap window
-"SUPER+SHIFT+Up" = "exchange_client,up"
-"SUPER+SHIFT+Down" = "exchange_client,down"
-"SUPER+SHIFT+Left" = "exchange_client,left"
-"SUPER+SHIFT+Right" = "exchange_client,right"
-"SUPER+SHIFT+k" = "exchange_client,up"
-"SUPER+SHIFT+j" = "exchange_client,down"
-"SUPER+SHIFT+h" = "exchange_client,left"
-"SUPER+SHIFT+l" = "exchange_client,right"
+# Move Window (Re-insert / Swap)
+"SUPER+SHIFT+Left" = "move_client,left"
+"SUPER+SHIFT+Right" = "move_client,right"
+"SUPER+SHIFT+Up" = "move_client,up"
+"SUPER+SHIFT+Down" = "move_client,down"
+"SUPER+SHIFT+h" = "move_client,left"
+"SUPER+SHIFT+l" = "move_client,right"
+"SUPER+SHIFT+k" = "move_client,up"
+"SUPER+SHIFT+j" = "move_client,down"
 
-# Move window
-"CTRL+SHIFT+Up" = "movewin,+0,-50"
-"CTRL+SHIFT+Down" = "movewin,+0,+50"
+# Swap Window (Explicit Exchange)
+"SUPER+CTRL+Left" = "exchange_client,left"
+"SUPER+CTRL+Right" = "exchange_client,right"
+"SUPER+CTRL+Up" = "exchange_client,up"
+"SUPER+CTRL+Down" = "exchange_client,down"
+"SUPER+CTRL+h" = "exchange_client,left"
+"SUPER+CTRL+l" = "exchange_client,right"
+"SUPER+CTRL+k" = "exchange_client,up"
+"SUPER+CTRL+j" = "exchange_client,down"
+
+# Floating Window Position
 "CTRL+SHIFT+Left" = "movewin,-50,+0"
 "CTRL+SHIFT+Right" = "movewin,+50,+0"
+"CTRL+SHIFT+Up" = "movewin,+0,-50"
+"CTRL+SHIFT+Down" = "movewin,+0,+50"
 
-# Resize window
-"CTRL+ALT+Up" = "resizewin,+0,-50"
-"CTRL+ALT+Down" = "resizewin,+0,+50"
+# Floating Window Size
 "CTRL+ALT+Left" = "resizewin,-50,+0"
 "CTRL+ALT+Right" = "resizewin,+50,+0"
+"CTRL+ALT+Up" = "resizewin,+0,-50"
+"CTRL+ALT+Down" = "resizewin,+0,+50"
 
-# Switch window status
-"SUPER+g" = "toggleglobal,"
-"ALT+Tab" = "togglejump,"
-"ALT+backslash" = "togglefloating,"
-"SUPER+SHIFT+space" = "togglefloating"
-"ALT+a" = "togglemaximizescreen,"
-"ALT+f" = "togglefullscreen,"
-"ALT+SHIFT+f" = "togglefakefullscreen,"
-"SUPER+i" = "minimized,"
-"SUPER+o" = "toggleoverlay,"
-"SUPER+SHIFT+I" = "restore_minimized"
-"ALT+z" = "toggle_scratchpad"
+# Layout Sizing
+"SUPER+equal" = "setmfact,+0.05"
+"SUPER+minus" = "setmfact,-0.05"
 
-# Scroller layout
+# Scroller Layout
 "ALT+e" = "set_proportion,1.0"
 "ALT+x" = "switch_proportion_preset,"
 "alt+super+ctrl+Left" = "scroller_stack,left"
@@ -72,18 +97,13 @@
 "alt+super+ctrl+Up" = "scroller_stack,up"
 "alt+super+ctrl+Down" = "scroller_stack,down"
 
-# Dwindle layout (manual split mode)
+# Layout Switching
+"SUPER+n" = "switch_layout"
 "alt+shift+Return" = "dwindle_toggle_split_direction"
 
-# Switch layout
-"SUPER+n" = "switch_layout"
-"SUPER+SHIFT+n" = "spawn,noctalia msg panel-toggle ezequiel/mango_layouts:panel"
-
-# Tag switch
+# Tag Switch
 "CTRL+Left" = "viewtoleft_have_client,0"
 "CTRL+Right" = "viewtoright_have_client,0"
-"CTRL+SUPER+Left" = "tagtoleft,0"
-"CTRL+SUPER+Right" = "tagtoright,0"
 
 # Split Tag Bindings Across Monitors
 # Monitor 1 (DP-2): Tags 1-5
@@ -118,13 +138,22 @@
 "alt+shift+l" = "focusmon,right"
 "SUPER+Alt+Left" = "tagmon,left"
 "SUPER+Alt+Right" = "tagmon,right"
-"SUPER+Alt+h" = "tagmon,left"
-"SUPER+Alt+l" = "tagmon,right"
 
 # Gaps
-"ALT+SHIFT+X" = "incgaps,1"
-"ALT+SHIFT+Z" = "incgaps,-1"
-"ALT+SHIFT+R" = "togglegaps"
+"ALT+SHIFT+x" = "incgaps,1"
+"ALT+SHIFT+z" = "incgaps,-1"
+"ALT+SHIFT+r" = "togglegaps"
+
+# Multimedia Controls (active even when locked)
+[bind.default.lock]
+"XF86AudioRaiseVolume" = "spawn,wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+"XF86AudioLowerVolume" = "spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+"XF86AudioMute" = "spawn,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+"XF86AudioMicMute" = "spawn,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+"XF86AudioPlay" = "spawn,playerctl play-pause"
+"XF86AudioPrev" = "spawn,playerctl previous"
+"XF86AudioNext" = "spawn,playerctl next"
+"SUPER+XF86AudioNext" = "spawn,playerctl position +5"
 
 # Multi-action bindings (tag + focus monitor)
 [bind.default.conflict]
