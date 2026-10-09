@@ -46,8 +46,8 @@
           "tmux/tmux-nerd-font-window-name.yml".source =
             config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux-nerd-font-window-name.yml;
 
-          "tmux/dev.tmux.conf".source =
-            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/dev.tmux.conf;
+          "tmux/status.tmux.conf".source =
+            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/status.tmux.conf;
 
           "tmux/scripts" = {
             source = config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
@@ -166,71 +166,8 @@
             set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
             set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
 
-            # ========================
-            #  UI SECTION BEGIN
-            # ========================
 
-
-              # Empty line before status
-              set -g status-position bottom
-              # set -g status-style "bg=#{@thm_bg}"
-              set -wg automatic-rename on
-              set -g allow-rename off
-              # Window status styling (clear default 'underscore' attribute)
-              set -g window-status-style "default"
-              set -g window-status-current-style "default"
-              set -g status-justify "absolute-centre"
-              # set -g status-justify "left"
-              # set -Fg "status-format[1]" "#{status-format[0]}"
-              # set -g "status-format[0]" ""
-
-              # Pane status: Only show when there are 2+ panes in a window, and align right at bottom
-              set -g pane-border-status off
-              set-hook -g window-layout-changed 'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-              set-hook -g after-split-window    'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-              set-hook -g after-kill-pane       'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-              set-hook -g pane-exited           'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-              set-hook -g pane-focus-in         'if-shell -F "#{>:#{window_panes},1}" "set-option -w pane-border-status bottom" "set-option -w pane-border-status off"'
-              set -g pane-border-format "#[align=right]#{?pane_active,#[fg=#{@thm_crust} bg=#{@thm_mauve} bold]  #{b:pane_current_path} │  #{pane_current_command} #[default],#[fg=#{@thm_overlay_0} bg=default]  #{b:pane_current_path} │  #{pane_current_command} #[default]} "
-
-              set -g status-left-length 100
-              set -g status-left ""
-              set -ga status-left "#{?client_prefix,#[fg=#{@thm_green} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}},  #{=/22/...:#{s/^[^-]*-//:session_name}},} ,#[fg=#{@thm_mauve} bold]  #{s/-.*$//:session_name}#{?#{&&:#{m:*-*,#S},#{!:#{||:#{m:*-main,#S},#{m:*-master,#S}}}}, ,} }"
-
-              set -g status-right-length 100
-              set -g status-right ""
-              set -ga status-right "#{?session_alerts,#[fg=#{@thm_maroon} bold]󰂞 ,}"
-              set -ga status-right "#[fg=#{@thm_maroon}] #{?#{!=:${windowIcon},},${windowIcon},} #{pane_current_command} "
-              set -ga status-right "#{?client_prefix,#[fg=#{@thm_blue} bold]  #{=/-28/...:#{b:pane_current_path}} ,#[fg=#{@thm_lavender}] 󰭦 %Y-%m-%d 󰅐 %H:%M }"
-
-
-            # set -g message-style "bg=#{@thm_bg},fg=#{@thm_fg},align=centre"
-            # set -g message-command-style "bg=#{@thm_mantle}, fg=#{@thm_fg},align=centre"
-            set -g message-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
-            set -g message-command-style "fg=#{@thm_fg},bg=#{@thm_mantle},align=centre"
-
-            # Window bell style (runs after plugins to override catppuccin's default yellow)
-            set -gF window-status-bell-style "bg=#{@thm_maroon},fg=#{@thm_crust},bold"
-            # Tmux 3.8: Theme display-menu (tmux-menus plugin) — must come after catppuccin sets @thm_*
-            set -gF menu-style "bg=#{@thm_mantle},fg=#{@thm_fg}"
-            set -gF menu-selected-style "bg=#{@thm_surface_0},fg=#{@thm_fg},bold"
-            set -gF menu-border-style "bg=#{@thm_mantle},fg=#{@thm_overlay_0}"
-            # Tmux 3.8: Highlight current line in copy mode
-            set -gF copy-mode-current-line-style "bg=#{@thm_surface_0}"
-            # Tmux 3.8: Theme search highlights and copy-mode marks
-            set -gF copy-mode-match-style "bg=#{@thm_surface_1},fg=#{@thm_fg}"
-            set -gF copy-mode-current-match-style "bg=#{@thm_mauve},fg=#{@thm_crust},bold"
-            set -gF copy-mode-mark-style "bg=#{@thm_mauve},fg=#{@thm_crust}"
-            set -gF copy-mode-line-number-style "fg=#{@thm_overlay_1},dim"
-            set -gF copy-mode-current-line-number-style "fg=#{@thm_mauve}"
-
-            # ========================
-            #  UI SECTION END
-            # ========================
-            # Hook to run fastfetch on window creation if there's only one window
-            # set-hook -g after-new-session 'send-keys " clear && fastfetch" C-m'
-
-            source -F "$HOME/.config/tmux/dev.tmux.conf"
+            source -F "$HOME/.config/tmux/status.tmux.conf"
           '';
 
         # Plugins
