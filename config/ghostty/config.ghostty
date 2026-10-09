@@ -53,6 +53,7 @@ keybind = ctrl+shift+c=copy_to_clipboard
 
 
 keybind = shift+enter=text:\x1b\r
+keybind = ctrl+tab=text:\x1b[27;5;9~
 # keybind = shift+enter=text:\\\n\r
 
 # Font Sizing

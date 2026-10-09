@@ -88,26 +88,14 @@
 
         # Command line options for the ALT-C keybinding.
         changeDirWidget = {
-          command = "fd --type d";
-          options = [
-            "--strip-cwd-prefix"
-            "--hidden"
-            "--no-ignore"
-            "--follow"
-            "--exclude .git"
-          ];
+          command = "fd --type d --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
+          options = [ ];
         };
 
         # Command line options for the CTRL-T keybinding.
         fileWidget = {
-          command = "fd --type f";
-          options = [
-            "--strip-cwd-prefix"
-            "--hidden"
-            "--no-ignore"
-            "--follow"
-            "--exclude .git"
-          ];
+          command = "fd --type f --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
+          options = [ ];
         };
 
         # The command that gets executed as the source for fzf for the CTRL-R keybinding.
@@ -122,6 +110,12 @@
           ];
         };
 
+      };
+
+      zoxide = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
       };
 
       superfile = {
@@ -248,7 +242,6 @@
         trash-cli
         vivid
         wget
-        zoxide
         superfile
         # inputs.superfile.packages.${pkgs.stdenv.hostPlatform.system}.default
 

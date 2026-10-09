@@ -168,7 +168,7 @@
       programs.zsh = {
         enable = true;
         enableCompletion = true;
-        autosuggestion.enable = false;
+        autosuggestion.enable = true;
         syntaxHighlighting.enable = false;
         history = {
           size = 100000;
@@ -251,8 +251,9 @@
         initContent =
           # sh
           ''
-            autoload -Uz url-quote-magic
-            zle -N self-insert url-quote-magic
+            # Quote URLs on paste only (does not wrap typing / self-insert)
+            autoload -Uz bracketed-paste-url-magic
+            zle -N bracketed-paste bracketed-paste-url-magic
 
             # Force double quotes around any video URL for MP3 conversio
             yt-mp3() {
@@ -315,44 +316,20 @@
 
 
             eval "$(devenv hook zsh)"
-            eval "$(zoxide init zsh)"
 
             function zvm_after_init() {
               zvm_bindkey viins '^R' fzf-history-widget
               zvm_bindkey vicmd '^R' fzf-history-widget
 
-              # Television integration for zsh-vi-mode
-              # zvm_bindkey viins '^I' tv-smart-autocomplete
-              # zvm_bindkey viins '^T' tv-smart-autocomplete
-              # zvm_bindkey viins '^R' tv-shell-history
-              # zvm_bindkey vicmd '^R' tv-shell-history
-
               # -------------------------------------------------------------
               # Autosuggest Accept Keybindings (Ctrl+Tab only)
               # -------------------------------------------------------------
               # Ctrl+Tab (Modern terminal sequences)
-              # zvm_bindkey viins '\e[27;5;9~' autosuggest-accept  # CSI u encoding
-              # zvm_bindkey viins '^[[27;5;9~' autosuggest-accept # CSI u raw escape representation
-              # zvm_bindkey viins '^[[1;5I' autosuggest-accept    # Ghostty / Kitty CSI format
-              # zvm_bindkey viins '\e[1;5I' autosuggest-accept    # Alternative Ghostty representation
+              zvm_bindkey viins '^[[27;5;9~' autosuggest-accept # xterm modifyOtherKeys
+              zvm_bindkey viins '^[[1;5I' autosuggest-accept    # Ghostty / Kitty CSI format
+              zvm_bindkey viins '^[[9;5u' autosuggest-accept    # CSI u (tmux extended-keys csi-u / kitty protocol)
             }
 
-            # -----------------------------------------------------------------
-            # Global fallback keybindings (Ctrl+Tab only)
-            # -----------------------------------------------------------------
-            # Ctrl+Tab (Modern terminal sequences)
-            # bindkey '\e[27;5;9~' autosuggest-accept              # CSI u encoding
-            # bindkey '^[[27;5;9~' autosuggest-accept             # CSI u raw escape representation
-            # bindkey '^[[1;5I' autosuggest-accept                 # Ghostty / Kitty CSI format
-            # bindkey '\e[1;5I' autosuggest-accept                 # Alternative Ghostty representation
-
-            # Television zsh keybinding search widget
-            # tv-zsh-keys() {
-            #   zle -I
-            #   tv zsh-keys
-            #   zle reset-prompt
-            # }
-            # zle -N tv-zsh-keys
           '';
 
         plugins = [
@@ -408,7 +385,7 @@
         enable = true;
         enableCompletion = true;
         enableBashCompletion = true;
-        autosuggestions.enable = true;
+        autosuggestions.enable = false;
         syntaxHighlighting.enable = false;
         histSize = 100000;
       };
