@@ -6,14 +6,14 @@
   flake.homeModules.ghostty = { pkgs, config, ... }: {
 
     home.file.".config/ghostty" = {
-      source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/ghostty";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/ghostty";
       recursive = true;
     };
 
     home.file.".local/bin/gshader" = {
       text = ''
         #!/usr/bin/env bash
-        exec /home/artifex/.dotfiles/config/ghostty/shader.sh "$@"
+        exec ${config.preferences.dotsConfigPath}/ghostty/shader.sh "$@"
       '';
       executable = true;
     };

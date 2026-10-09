@@ -23,6 +23,7 @@
           { osConfig, lib, ... }:
           {
             preferences.user.name = lib.mkDefault osConfig.preferences.user.name;
+            preferences.dotsConfigPath = lib.mkDefault osConfig.preferences.dotsConfigPath;
             preferences.user.email = lib.mkDefault osConfig.preferences.user.email;
             preferences.defaultSession = lib.mkDefault osConfig.preferences.defaultSession;
             preferences.keymap = lib.mkDefault osConfig.preferences.keymap;

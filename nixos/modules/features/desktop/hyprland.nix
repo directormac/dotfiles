@@ -9,7 +9,7 @@
     }:
     {
       home.file = {
-        ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/hypr";
+        ".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/hypr";
       };
 
       # services.hyprpolkitagent.enable = true;

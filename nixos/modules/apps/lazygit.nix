@@ -1,34 +1,36 @@
+{ self, ... }:
 {
-  self,
-  inputs,
-  ...
-}:
-{
-  flake.nixosModules.lazygit =
+  # Declared once here; the flake-parts wrappers module turns this into
+  # outputs.wrappers.lazygit and packages.<system>.lazygit (in-store config).
+  flake.wrappers.lazygit =
     {
+      config,
+      wlib,
+      lib,
       pkgs,
       ...
     }:
     {
-      environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.lazygit
-      ];
-    };
+      imports = [ wlib.modules.default ];
 
-  perSystem =
-    {
-      pkgs,
-      ...
-    }:
-    {
-      packages.lazygit = inputs.wrappers.lib.wrapPackage {
-        inherit pkgs;
-        package = pkgs.lazygit;
-
-        flags = {
-          "--use-config-file" = ../../../config/lazygit/config.yml;
-        };
+      options.configFile = lib.mkOption {
+        type = lib.types.either lib.types.str lib.types.path;
+        default = ../../../config/lazygit/config.yml;
+        description = "Lazygit config file. Defaults to the in-store copy; hosts override it with the live checkout.";
       };
 
+      config.package = pkgs.lazygit;
+      config.flags."--use-config-file" = "${config.configFile}";
+    };
+
+  flake.nixosModules.lazygit =
+    { config, ... }:
+    {
+      imports = [ self.wrappers.lazygit.install ];
+
+      wrappers.lazygit = {
+        enable = true;
+        configFile = "${config.preferences.dotsConfigPath}/lazygit/config.yml";
+      };
     };
 }

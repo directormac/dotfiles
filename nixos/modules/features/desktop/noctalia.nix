@@ -7,9 +7,6 @@
       lib,
       ...
     }:
-    let
-      flakePath = "${config.home.homeDirectory}/.dotfiles";
-    in
     {
 
       stylix.targets = {

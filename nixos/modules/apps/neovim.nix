@@ -180,7 +180,7 @@
       # fails with "Error installing file '.config/nvim/init.lua' outside $HOME"
       # and the whole generation fails to build. Uncomment once lazyvim is gone.
       home.file.".config/nvim-dev".source =
-        config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/nvim";
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";
     };
 
   flake.nixosModules.neovim = {

@@ -159,6 +159,7 @@
 
         nix-ld
         nh
+        lazygit
       ];
 
       users.users.${config.preferences.user.name} = {
@@ -251,8 +252,6 @@
         superfile
         # inputs.superfile.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-        selfpkgs.yazi
-        selfpkgs.lazygit
       ];
 
     };

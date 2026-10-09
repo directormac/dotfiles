@@ -207,9 +207,9 @@
       };
 
       home.file = {
-        ".face".source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/.face";
+        ".face".source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/.face";
         ".config/wallpapers".source =
-          config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/wallpapers";
+          config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/wallpapers";
       };
 
       gtk = {

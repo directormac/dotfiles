@@ -18,7 +18,7 @@
       };
 
       home.file.".gemini/antigravity-cli/settings.json" = {
-        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/antigravity-cli/settings.json";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/antigravity-cli/settings.json";
         force = true;
       };
 

@@ -5,10 +5,10 @@
     home = {
       file = {
         ".config/helix" = {
-          source = config.lib.file.mkOutOfStoreSymlink ../../../config/helix;
+          source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/helix";
         };
         ".config/vim" = {
-          source = config.lib.file.mkOutOfStoreSymlink ../../../config/vim;
+          source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/vim";
         };
       };
     };

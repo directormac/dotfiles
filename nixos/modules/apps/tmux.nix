@@ -8,6 +8,7 @@
     { pkgs, config, ... }:
     let
       tmuxPkg = self.packages.${pkgs.stdenv.hostPlatform.system}.tmux;
+      dotfilesTmux = "${config.preferences.dotsConfigPath}/tmux";
 
       kanjiIndex = "#{?#{==:#I,1},一,#{==:#I,2},二,#{==:#I,3},三,#{==:#I,4},四,#{==:#I,5},五,#{==:#I,6},六,#{==:#I,7},七,#{==:#I,8},八,#{==:#I,9},九,#{==:#I,10},十,#I}";
       windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󰚩*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
@@ -44,13 +45,13 @@
         configFile = {
           # Configuration for tmux-nerd-font-window-name: icon-only window display
           "tmux/tmux-nerd-font-window-name.yml".source =
-            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux-nerd-font-window-name.yml;
+            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/tmux-nerd-font-window-name.yml";
 
           "tmux/status.tmux.conf".source =
-            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/status.tmux.conf;
+            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/status.tmux.conf";
 
           "tmux/scripts" = {
-            source = config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/scripts;
+            source = config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/scripts";
             force = true;
           };
         };
@@ -167,6 +168,7 @@
             set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
 
 
+            set -g @window_icon "${windowIcon}"
             source -F "$HOME/.config/tmux/status.tmux.conf"
           '';
 

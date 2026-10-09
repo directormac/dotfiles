@@ -40,13 +40,13 @@
 
       # Television config link
       xdg.configFile."television/config.toml".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/television/config.toml;
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/television/config.toml";
 
       xdg.configFile."television/tv-slim.toml".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/television/tv-slim.toml;
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/television/tv-slim.toml";
 
       xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
-        config.lib.file.mkOutOfStoreSymlink ../../../config/television/themes/catppuccin-mocha-mauve.toml;
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/television/themes/catppuccin-mocha-mauve.toml";
 
       xdg.configFile."television/cable/flake-inputs".text =
         # toml

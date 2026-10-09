@@ -3,7 +3,7 @@
   flake.homeModules.tuxedo =
     { config, ... }:
     {
-      home.file.".config/tuxedo".source = config.lib.file.mkOutOfStoreSymlink ../../../config/tuxedo;
+      home.file.".config/tuxedo".source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/tuxedo";
     };
 
   flake.nixosModules.tuxedo = { pkgs, config, ... }: {

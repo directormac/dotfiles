@@ -14,9 +14,6 @@
     }:
     let
 
-      # Define where your flake lives on the live filesystem
-      flakePath = "${config.home.homeDirectory}/.dotfiles";
-
       linkDank =
         name: type:
         if
@@ -29,7 +26,7 @@
         else
           {
             ".config/DankMaterialShell/${name}".source =
-              config.lib.file.mkOutOfStoreSymlink "${flakePath}/config/DankMaterialShell/${name}";
+              config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/DankMaterialShell/${name}";
           };
     in
 

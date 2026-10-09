@@ -5,7 +5,7 @@
     home-manager.users.${config.preferences.user.name} = { config, ... }: {
       imports = [ ];
       xdg.configFile."starship.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/starship/starship.toml";
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/starship/starship.toml";
     };
 
     programs.starship = {

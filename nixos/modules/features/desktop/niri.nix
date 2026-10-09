@@ -3,7 +3,7 @@
   flake.homeModules.niri = { config, ... }: {
 
     home.file.".config/niri" = {
-      source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/niri";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/niri";
       recursive = true;
     };
 

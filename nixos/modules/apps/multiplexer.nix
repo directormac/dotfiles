@@ -51,7 +51,7 @@
 
       # https://workmux.raine.dev/guide/configuration/
       xdg.configFile."workmux/config.yaml".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/workmux/config.yaml";
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/workmux/config.yaml";
 
       # Television cable for workmux
       xdg.configFile."television/cable/workmux.toml".text =

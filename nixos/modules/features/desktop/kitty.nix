@@ -3,7 +3,7 @@
   flake.homeModules.kitty = { pkgs, config, ... }: {
 
     home.file.".config/kitty" = {
-      source = config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/kitty";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/kitty";
       recursive = true;
     };
 

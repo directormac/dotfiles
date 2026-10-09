@@ -273,7 +273,7 @@
       };
 
       home.file.".config/mango/config.d" = {
-        source = config.lib.file.mkOutOfStoreSymlink ../../../../config/mango/config.d;
+        source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/config.d";
         recursive = true;
       };
 

@@ -163,7 +163,7 @@
         '';
 
       xdg.configFile."fsh".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/fsh";
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/fsh";
 
       programs.zsh = {
         enable = true;

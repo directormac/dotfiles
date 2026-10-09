@@ -1,9 +1,16 @@
 { self, ... }:
 let
   preferencesSubmodule =
-    { lib, ... }:
+    { lib, config, ... }:
     {
       options.preferences = {
+        dotsConfigPath = lib.mkOption {
+          type = lib.types.str;
+          default = "/home/${config.preferences.user.name}/.dotfiles/config";
+          description = "Absolute path to the live `config/` directory that out-of-store symlinks point at. Must be a string (not a path literal) so it is never copied to the store.";
+          example = "/mnt/dotfiles/config";
+        };
+
         user = {
           name = lib.mkOption {
             type = lib.types.str;
