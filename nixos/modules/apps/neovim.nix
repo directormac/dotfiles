@@ -108,6 +108,7 @@
           oil-nvim
           oil-git-nvim
           oil-lsp-diagnostics-nvim
+          persistence-nvim
 
           # vim-sleuth
           mini-nvim

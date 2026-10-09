@@ -11,6 +11,8 @@ return {
     after = function(plugin)
       -- I also like this color
       vim.api.nvim_set_hl(0, 'MySnacksIndent', { fg = '#32a88f' })
+
+      ---@type snacks.Config
       require('snacks').setup({
         explorer = { replace_netrw = true },
         picker = {
