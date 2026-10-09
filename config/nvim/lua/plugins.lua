@@ -1,21 +1,16 @@
--- The single entrypoint for lazy.nvim (lze).
+-- The single entrypoint for lze.
 --
--- Specs live in `lua/plugins/*.lua` and `lua/lsp/*.lua`; each one returns a list of
--- specs. They are pulled in with lze's `import` spec field, which `require`s the
--- module. That keeps them require-able (so `vim.loader` can cache the bytecode)
--- and keeps `auto_enable` / `for_cat` gating working per spec.
+-- Specs live in `lua/plugins/*.lua` and `lua/lsp/*.lua`. The plugins directory is
+-- discovered automatically with lzextras' `mod_dir_to_spec`, so a new file there is
+-- imported without editing this one. The lsp files stay explicit: order matters
+-- (shared nvim-lspconfig spec first, then the per-language trigger specs).
+--
+-- `import` uses `require()`, so these files get `vim.loader` bytecode caching for
+-- free and `auto_enable` / `for_cat` gating keep working per spec.
 --
 -- See https://github.com/BirdeeHub/lze?tab=readme-ov-file#structuring-your-plugins
 nixInfo.lze.load({
-  { import = 'plugins.colorscheme' },
-  { import = 'plugins.snacks' },
-  { import = 'plugins.oil' },
-  { import = 'plugins.ui' },
-  { import = 'plugins.completion' },
-  { import = 'plugins.editing' },
-  { import = 'plugins.treesitter' },
-  { import = 'plugins.lazydev' },
-  { import = 'plugins.mason' },
+  { import = require('lzextras').mod_dir_to_spec('plugins') },
   -- lsp
   { import = 'lsp' },
   { import = 'lsp.lua' },

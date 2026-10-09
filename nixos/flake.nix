@@ -96,6 +96,7 @@
 
     superfile.url = "github:yorukot/superfile";
 
+    zennotes.url = "github:ZenNotes/zennotes";
     torlink.url = "github:baairon/torlink";
 
     # https://github.com/0xc000022070/zen-browser-flake#installation

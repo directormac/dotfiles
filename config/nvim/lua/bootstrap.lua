@@ -24,7 +24,11 @@ function nixInfo.get_nix_plugin_path(name)
   return nixInfo(nil, 'plugins', 'lazy', name) or nixInfo(nil, 'plugins', 'start', name)
 end
 
+-- `pkgs` field -> install the plugin with vim.pack, see lua/pack.lua
+local pack = require('pack')
+
 nixInfo.lze.register_handlers({
+  pack.handler,
   {
     -- adds an `auto_enable` field to lze specs
     -- if true, will disable it if not installed by nix.
@@ -69,6 +73,9 @@ nixInfo.lze.register_handlers({
   -- as it also relies on the modify hook, and the value of enabled at that point
   nixInfo.lze.lsp,
 })
+
+-- install every collected `pkgs` entry (and prune undeclared ones) on VimEnter
+pack.setup()
 
 -- This config uses lzextras.lsp handler https://github.com/BirdeeHub/lzextras?tab=readme-ov-file#lsp-handler
 -- Because we have the paths, we can set a more performant fallback function

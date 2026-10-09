@@ -39,7 +39,7 @@ Translation:
 | `{ '<leader>x', '<cmd>Foo<cr>', desc = 'x' }` (flat tuple) | wrap it: `keys = { { ... } }` |
 | `dependencies = { 'a/b' }` | `dep_of = { 'a.nvim' }` (only when it must load *before*) |
 | an integration that `require`s its host | `on_plugin = { 'oil.nvim' }` — `dep_of` fires too early |
-| `pkgs = { 'owner/repo' }` | nothing: add a Nix spec, `pkgs` is an lz.n handler that runs `vim.pack.add` |
+| `pkgs = { 'owner/repo' }` | works as-is: installed with `vim.pack` on VimEnter and packed with the spec, see *Adding a plugin* |
 | `version`, `build`, `priority = 'high'`, `lazy = true` | `version`/`build`/`priority` do not exist; `lazy = true` is the default for children of a parent spec |
 | `require('oil.nvim')` | `require('oil')` — the module name is rarely the plugin name |
 
@@ -57,10 +57,11 @@ Two ordering rules that bite most often:
 
 ```
 init.lua                     19 lines: vim.loader.enable() + 4 requires, nothing else
-lua/config/bootstrap.lua     nixInfo, lze, the spec handlers, mapleader
-lua/config/options.lua       vim.o / vim.opt / vim.wo
-lua/config/keymaps.lua       global + clipboard maps
-lua/config/plugins.lua       the single nixInfo.lze.load({ { import = ... } }) call
+lua/bootstrap.lua            nixInfo, lze, the spec handlers (incl. `pkgs`), mapleader
+lua/options.lua              vim.o / vim.opt / vim.wo
+lua/keymaps.lua              global + clipboard maps
+lua/pack.lua                 the `pkgs` handler: vim.pack install + VimEnter prune
+lua/plugins.lua              the single nixInfo.lze.load call; auto-imports lua/plugins/
 lua/plugins/*.lua            one module per plugin domain, each returns a LIST of specs
 lua/lsp/init.lua             nvim-lspconfig spec + the shared vim.lsp.config('*') on_attach
 lua/lsp/<lang>.lua           one trigger spec per language
@@ -73,17 +74,52 @@ ftplugin/*.lua               markdown, gitcommit
 plugins (`oil.nvim` plus the `oil-git` and `oil-lsp-diagnostics` integrations) using
 `on_plugin`, and it is the spec to copy when translating one of your lazy.nvim files.
 
-Every `lua/plugins/*.lua` and `lua/lsp/*.lua` module **returns a table of lze specs**
-and is pulled in by `lua/config/plugins.lua` with lze's `import` field
-(`{ import = 'plugins.snacks' }`). `import` uses `require()`, so these files get
-`vim.loader` bytecode caching for free. To add a new spec file, add the module *and*
-one `{ import = '...' }` line in `lua/config/plugins.lua`.
+Every `lua/plugins/*.lua` module **returns a table of lze specs** and is discovered
+automatically: `lua/plugins.lua` imports the whole directory with lzextras'
+`mod_dir_to_spec('plugins')`, so a new spec file needs no other edits. `lua/lsp/*.lua`
+stays an explicit import list — order matters there (the shared nvim-lspconfig spec
+first, then the per-language triggers). Imports use `require()`, so these files get
+`vim.loader` bytecode caching for free.
 
 ## Adding a plugin
 
-Plugins are installed by Nix, not by a plugin manager. So every plugin needs a spec in
-`nixos/modules/apps/neovim.nix` **and** a matching lze spec in Lua. The single most
-common mistake is a name mismatch, see below.
+Plugins come from two places. The hermetic core is installed by Nix (declared in
+`nixos/modules/apps/neovim.nix` **and** in Lua). Anything else is installed at runtime
+by `vim.pack` from a `pkgs` field — no Nix edit, no listing anywhere else. The most
+common mistake on the Nix side is a name mismatch, see below.
+
+### Via `vim.pack` (no Nix spec)
+
+Drop a file in `lua/plugins/` — the directory is auto-discovered:
+
+```lua
+-- config/nvim/lua/plugins/tuxedo.lua
+return {
+  'tuxedo',
+  pkgs = {
+    'IogaMaster/tuxedo.nvim',
+  },
+  keys = {
+    { '<leader>tt', '<cmd>Tuxedo<cr>', desc = 'Task Management' },
+  },
+}
+```
+
+* `pkgs` takes `owner/repo` shorthand or full URLs. The plugin itself goes in the list;
+  dependencies go in the same list — they are packadd'd together with the spec.
+* The spec name does not need to match the directory name: the `pkgs` directories are
+  packed first, and a `packadd` of a missing directory is silent.
+* Installed once on `VimEnter` (`confirm = false`, `load = false` — so lazy loading
+  still works), and on demand if a trigger fires first. Never *updated* automatically:
+  run `:lua vim.pack.update()` and review the confirmation buffer.
+* The lockfile (`~/.config/nvim/nvim-pack-lock.json`) pins installed revisions; the
+  plugins themselves live in `stdpath('data')/site/pack/core/opt`.
+* When a spec disappears, its plugin is deleted from disk on the next start. Only
+  `vim.pack`-managed plugins are ever pruned; the Nix packdir is untouched.
+* No `auto_enable` on a pkgs spec — Nix never installed it, so the spec would disable
+  itself. And don't declare the same plugin on both sides: two copies on the runtimepath.
+* Give pkgs specs a normal trigger (`keys`, `ft`, `cmd`, ...). A non-lazy one installs
+  synchronously during `init.lua` on the very first run.
 
 ### Already in nixpkgs
 
@@ -218,7 +254,7 @@ return {
 }
 ```
 
-**4. Register the import** in `lua/config/plugins.lua`:
+**4. Register the import** in `lua/plugins.lua` (lsp imports stay explicit):
 
 ```lua
 { import = 'lsp.python' },
@@ -257,7 +293,7 @@ require('lint').linters_by_ft = { python = { 'ruff' } }
 
 ## Spec gating: `auto_enable` and `for_cat`
 
-Both are lzextras handlers registered in `lua/config/bootstrap.lua`.
+Both are custom handlers registered in `lua/bootstrap.lua`.
 
 * `auto_enable = true` disables the spec when Nix did not install that plugin, so the
   config still works when you use it outside Nix. It accepts `true`, a plugin name, or a
@@ -338,6 +374,8 @@ nix fmt
 | `module 'config.x' not found` | file not staged, or not in `runtimepath` (should not happen: the dir is prepended) |
 | `lze: Plugin <name> not found` | Lua spec name does not match the packdir name |
 | `auto_enable` silently disabled a spec | plugin missing from `nixInfo.plugins` — check the Nix spec |
+| `vim.pack install failed` / `could not install` in `:messages` | clone failed (no network, or no `git` on PATH) — restart to retry; nothing was pruned |
+| pkgs spec does nothing | `auto_enable` disabled it, it has no trigger field, or it is also declared in Nix |
 | spec loads but nothing happens | lazy spec with no trigger field |
 | an `lsp/*.lua` setting seems ignored | the same key is still in `spec.lsp` (bucket 4 wins) |
 | hook error with no traceback | `vim.schedule_wrap` in lze's `xpcall`; check `:messages` |

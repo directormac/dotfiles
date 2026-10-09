@@ -19,7 +19,6 @@ return {
     },
     after = function()
       -- icon provider, installed as a startup spec in neovim.nix
-      require('mini.icons').setup()
       require('oil').setup({
         default_file_explorer = true,
         columns = {

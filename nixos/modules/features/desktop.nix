@@ -293,6 +293,8 @@
         thunar-shares-plugin
 
         inputs.torlink.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.zennotes.packages.${pkgs.stdenv.hostPlatform.system}.zennotes-desktop
+
         pavucontrol
         quickshell
         fcitx5
