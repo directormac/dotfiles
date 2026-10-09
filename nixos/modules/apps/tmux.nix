@@ -43,30 +43,8 @@
       xdg = {
         configFile = {
           # Configuration for tmux-nerd-font-window-name: icon-only window display
-          "tmux/tmux-nerd-font-window-name.yml".text =
-            # yaml
-            ''
-              config:
-                show-name: false
-                # ● 
-                fallback-icon: ""
-                multi-pane-icon: ""
-                always-show-fallback-name: false
-
-              icons:
-                tmux: ""
-                tuxedo: " "
-                television: "󰠹 "
-                sesh: "⚡"
-                neovim: " "
-                nix: " "
-                nh: " "
-                agy: "󱙺 "
-                agyx: "󱙺 "
-                opencode: "󱙺 "
-                ocx: "󱙺 "
-                claude: "󱙺 "
-            '';
+          "tmux/tmux-nerd-font-window-name.yml".source =
+            config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/tmux-nerd-font-window-name.yml;
 
           "tmux/dev.tmux.conf".source =
             config.lib.file.mkOutOfStoreSymlink ../../../config/tmux/dev.tmux.conf;
@@ -246,9 +224,6 @@
             set -gF copy-mode-line-number-style "fg=#{@thm_overlay_1},dim"
             set -gF copy-mode-current-line-number-style "fg=#{@thm_mauve}"
 
-
-
-
             # ========================
             #  UI SECTION END
             # ========================
@@ -298,7 +273,7 @@
                 # Cache dir lives inside the plugin folder - read-only in the nix store
                 set -g @menus_use_cache "No"
                 # Explicit trigger key also disables the secondary <prefix> Enter default
-                set -g @menus_trigger '\\'
+                set -g @menus_trigger '\'
               '';
           }
         ]

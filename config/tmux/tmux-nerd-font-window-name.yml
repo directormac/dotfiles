@@ -1,0 +1,20 @@
+config:
+  show-name: false
+  # ● 
+  fallback-icon: ""
+  multi-pane-icon: ""
+  always-show-fallback-name: false
+
+icons:
+  tmux: ""
+  tuxedo: ""
+  tv: "󰠹"
+  sesh: "⚡"
+  neovim: ""
+  nix: ""
+  nh: ""
+  agy: "󱙺"
+  agyx: "󱙺"
+  opencode: "󱙺"
+  ocx: "󱙺"
+  claude: "󱙺"
