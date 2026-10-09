@@ -331,20 +331,20 @@
               # Autosuggest Accept Keybindings (Ctrl+Tab only)
               # -------------------------------------------------------------
               # Ctrl+Tab (Modern terminal sequences)
-              zvm_bindkey viins '\e[27;5;9~' autosuggest-accept  # CSI u encoding
-              zvm_bindkey viins '^[[27;5;9~' autosuggest-accept # CSI u raw escape representation
-              zvm_bindkey viins '^[[1;5I' autosuggest-accept    # Ghostty / Kitty CSI format
-              zvm_bindkey viins '\e[1;5I' autosuggest-accept    # Alternative Ghostty representation
+              # zvm_bindkey viins '\e[27;5;9~' autosuggest-accept  # CSI u encoding
+              # zvm_bindkey viins '^[[27;5;9~' autosuggest-accept # CSI u raw escape representation
+              # zvm_bindkey viins '^[[1;5I' autosuggest-accept    # Ghostty / Kitty CSI format
+              # zvm_bindkey viins '\e[1;5I' autosuggest-accept    # Alternative Ghostty representation
             }
 
             # -----------------------------------------------------------------
             # Global fallback keybindings (Ctrl+Tab only)
             # -----------------------------------------------------------------
             # Ctrl+Tab (Modern terminal sequences)
-            bindkey '\e[27;5;9~' autosuggest-accept              # CSI u encoding
-            bindkey '^[[27;5;9~' autosuggest-accept             # CSI u raw escape representation
-            bindkey '^[[1;5I' autosuggest-accept                 # Ghostty / Kitty CSI format
-            bindkey '\e[1;5I' autosuggest-accept                 # Alternative Ghostty representation
+            # bindkey '\e[27;5;9~' autosuggest-accept              # CSI u encoding
+            # bindkey '^[[27;5;9~' autosuggest-accept             # CSI u raw escape representation
+            # bindkey '^[[1;5I' autosuggest-accept                 # Ghostty / Kitty CSI format
+            # bindkey '\e[1;5I' autosuggest-accept                 # Alternative Ghostty representation
 
             # Television zsh keybinding search widget
             # tv-zsh-keys() {

@@ -8,6 +8,11 @@
     }:
     {
       devshells.default = {
+        devshell.motd = ''
+          {bold}{202}🔨 Welcome to devshell, ''$USER!{reset}
+          $(type -p menu &>/dev/null && menu)
+        '';
+
         packages = [
           config.agenix-rekey.package
           pkgs.rage
