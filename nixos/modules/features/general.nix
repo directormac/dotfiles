@@ -194,7 +194,6 @@
       environment.systemPackages = with pkgs; [
         # Nix
         nix-index
-        inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
 
         # Common
         aria2
@@ -229,6 +228,7 @@
         # CLI Goodies
         bat
         nix-prefetch-scripts
+        nix-prefetch-github
         nix-tree
         ncdu
         dust

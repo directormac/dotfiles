@@ -113,15 +113,8 @@
 
     nur.url = "github:nix-community/NUR";
 
-    nix-alien.url = "github:thiagokokada/nix-alien";
-
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nixcord = {
       url = "github:4evy/nixcord";
