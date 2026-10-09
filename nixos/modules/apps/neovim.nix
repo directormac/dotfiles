@@ -32,7 +32,7 @@
       # The config directory. `mkDefault` so the devshell variant can override it.
       config.settings.config_directory = lib.mkDefault ../../../config/nvim;
 
-      config.binName = "neovim";
+      config.binName = lib.mkDefault "neovim";
 
       config.settings.dont_link = true;
 
@@ -178,7 +178,8 @@
       # `~/.config/nvim/init.lua` (the rplugin manifest). Home Manager then
       # fails with "Error installing file '.config/nvim/init.lua' outside $HOME"
       # and the whole generation fails to build. Uncomment once lazyvim is gone.
-      # home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink ../../../config/nvim;
+      home.file.".config/nvim-dev".source =
+        config.lib.file.mkOutOfStoreSymlink "/home/artifex/.dotfiles/config/nvim";
     };
 
   flake.nixosModules.neovim = {
@@ -196,6 +197,8 @@
     {
       packages.nvim-dev =
         (self.wrappers.neovim.apply {
+          binName = "nvim-dev";
+          env.NVIM_APPNAME = "nvim-dev";
           settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
         }).wrap
           { inherit pkgs; };

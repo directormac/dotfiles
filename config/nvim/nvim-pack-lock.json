@@ -1,0 +1,8 @@
+{
+  "plugins": {
+    "tuxedo.nvim": {
+      "rev": "65650b0ae3b1c3755a43306b07ada13bd78d47ac",
+      "src": "https://github.com/IogaMaster/tuxedo.nvim"
+    }
+  }
+}

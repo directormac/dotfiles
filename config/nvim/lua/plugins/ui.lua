@@ -1,6 +1,15 @@
 -- Statusline, which-key, notifications, startup profiling and git signs.
 return {
   {
+    'nvim-web-devicons',
+    auto_enable = true,
+    event = 'DeferredUIEnter',
+    after = function(plugin)
+      -- Setup nvim-web-devicons
+      require('nvim-web-devicons').setup()
+    end,
+  },
+  {
     'lualine.nvim',
     auto_enable = true,
     -- cmd = { "" },

@@ -14,10 +14,10 @@
       programs.nh = {
         enable = true;
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.nh;
-        clean = {
-          enable = true;
-          extraArgs = "--keep-since 2d --keep 2";
-        };
+        # clean = {
+        #   enable = true;
+        #   extraArgs = "--keep-since 2d --keep 2";
+        # };
         # Leave flake unset so NixOS environment.variables.NH_FLAKE does not hardcode
         # a static path, allowing our dynamic wrapper to resolve branch/worktree dynamically.
         flake = null;
