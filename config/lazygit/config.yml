@@ -11,10 +11,12 @@ gui:
   # Config relating to colors and styles.
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#color-attributes
 
-  authorColors:
-    "*": "#b4befe"
 
   theme:
+
+    authorColors:
+      "*": "#b4befe"
+
     activeBorderColor:
       - "#cba6f7"
       - bold
