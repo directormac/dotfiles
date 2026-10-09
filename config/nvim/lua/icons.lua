@@ -19,6 +19,15 @@ M.git = {
   added = ' ',
   modified = ' ',
   removed = ' ',
+  deleted = ' ',
+  renamed = ' ',
+  copied = '󰆑 ',
+  conflict = ' ',
+  untracked = ' ',
+  ignored = ' ',
+  staged = '✓ ',
+  unstaged = '󰄱 ',
+  branch = ' ',
 }
 
 M.kinds = {

@@ -35,7 +35,6 @@ return {
           show_hidden = true,
         },
         -- EXPERIMENTAL support for performing file operations with git.
-        -- NOTE: oil-git.nvim below replaces this with its own adapter.
         git = {
           -- Return true to automatically git add/mv/rm files
           add = function(path) return false end,
@@ -46,16 +45,34 @@ return {
     end,
   },
   {
-    -- git aware file operations (rename, delete, move in oil)
+    -- git status highlights and symbols in oil (malewicz1337/oil-git.nvim)
     'oil-git.nvim',
     auto_enable = true,
     on_plugin = { 'oil.nvim' },
     after = function()
+      local git_icons = require('icons').git
+      local symbols = {
+        added = git_icons.added,
+        modified = git_icons.modified,
+        renamed = git_icons.renamed,
+        deleted = git_icons.deleted or git_icons.removed,
+        copied = git_icons.copied,
+        conflict = git_icons.conflict,
+        untracked = git_icons.untracked,
+        ignored = git_icons.ignored,
+      }
+
       require('oil-git').setup({
-        -- default is to auto add/remove on write/delete
-        -- oil.add = true
-        -- oil.delete_file = true
-        -- oil.delete_folder = true
+        show_file_highlights = true,
+        show_directory_highlights = true,
+        show_file_symbols = true,
+        show_directory_symbols = true,
+        show_branch = false,
+        branch_format = (git_icons.branch or ' ') .. '%s',
+        symbols = {
+          file = symbols,
+          directory = symbols,
+        },
       })
     end,
   },

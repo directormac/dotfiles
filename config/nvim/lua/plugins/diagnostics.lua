@@ -59,7 +59,7 @@ return {
           source = 'if_many',
           prefix = ' ',
           header = '',
-          focusable = false,
+          focusable = true,
         },
         signs = {
           priority = 9999,
@@ -72,19 +72,85 @@ return {
         },
       })
 
-      -- Pop out floating diagnostic on CursorHold (pause on line with issue)
-      local diag_group = vim.api.nvim_create_augroup('DiagnosticPopout', { clear = true })
+      -- Pop out floating diagnostic or LSP hover documentation on CursorHold
+      local diag_group = vim.api.nvim_create_augroup('CursorHoldPopout', { clear = true })
+      local last_cursor = nil
+
+      -- Reset cursor tracking when cursor moves or leaves buffer
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'BufLeave' }, {
+        group = diag_group,
+        callback = function()
+          last_cursor = nil
+        end,
+      })
+
       vim.api.nvim_create_autocmd({ 'CursorHold' }, {
         group = diag_group,
         callback = function()
-          local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+          -- Skip non-normal buffers, oil explorer, or non-normal mode
+          if vim.bo.buftype ~= '' or vim.bo.filetype == 'oil' or vim.fn.mode() ~= 'n' then
+            return
+          end
+
+          -- Don't pop up if completion menu is active or cursor is inside a float
+          if vim.fn.pumvisible() ~= 0 then
+            return
+          end
+          local current_win = vim.api.nvim_get_current_win()
+          local current_win_cfg = vim.api.nvim_win_get_config(current_win)
+          if current_win_cfg.relative and current_win_cfg.relative ~= '' then
+            return
+          end
+
+          local bufnr = vim.api.nvim_get_current_buf()
+          local pos = vim.api.nvim_win_get_cursor(0)
+
+          -- If a hover float or preview float is ALREADY open, do not re-trigger
+          -- (prevents Neovim from interpreting repeated CursorHold as an intent to focus the float)
+          local existing_hover = vim.b[bufnr].lsp_floating_preview
+          if existing_hover and vim.api.nvim_win_is_valid(existing_hover) then
+            return
+          end
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if win ~= current_win and vim.api.nvim_win_is_valid(win) then
+              local cfg = vim.api.nvim_win_get_config(win)
+              if cfg.relative and cfg.relative ~= '' then
+                return
+              end
+            end
+          end
+
+          -- If cursor hasn't moved since last evaluation, do not repeat
+          if last_cursor and last_cursor.bufnr == bufnr and last_cursor.line == pos[1] and last_cursor.col == pos[2] then
+            return
+          end
+          last_cursor = { bufnr = bufnr, line = pos[1], col = pos[2] }
+
+          local line = pos[1] - 1
           local diags = vim.diagnostic.get(0, { lnum = line })
+          local diag_opened = false
           if #diags > 0 then
-            vim.diagnostic.open_float(nil, {
+            diag_opened = vim.diagnostic.open_float(nil, {
               border = 'rounded',
               scope = 'cursor',
-              focusable = false,
+              focusable = true,
+              focus = false,
               close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+            }) ~= nil
+          end
+
+          if diag_opened then
+            return
+          end
+
+          -- If no diagnostic was shown at cursor, show hover documentation if LSP supports it
+          local clients = vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/hover' })
+          if #clients > 0 then
+            vim.lsp.buf.hover({
+              border = 'rounded',
+              focus = false,
+              silent = true,
+              focusable = true,
             })
           end
         end,

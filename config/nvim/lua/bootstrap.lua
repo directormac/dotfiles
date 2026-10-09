@@ -1,6 +1,10 @@
 -- Nix info plumbing + lazy.nvim (lze) bootstrap.
 -- Runs before anything else in init.lua: every other file reads `nixInfo`.
 
+-- Prevent plugins (like which-key) from mistaking external lazy.nvim on packpath for an active lazy manager
+package.loaded['lazy'] = false
+package.preload['lazy'] = function() return false end
+
 -- Set up a global in a way that also handles non-nix compat
 local ok
 ok, _G.nixInfo = pcall(require, vim.g.nix_info_plugin_name)

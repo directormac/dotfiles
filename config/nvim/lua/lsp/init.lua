@@ -31,8 +31,39 @@ return {
           nmap('<leader>ds', function() Snacks.picker.lsp_symbols() end, '[D]ocument [S]ymbols')
           nmap('<leader>ws', function() Snacks.picker.lsp_workspace_symbols() end, '[W]orkspace [S]ymbols')
 
-          -- See `:help K` for why this keymap
-          nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+          -- Focus inside popup (hover or diagnostic) or open hover documentation
+          local hover_or_focus = function()
+            local current_win = vim.api.nvim_get_current_win()
+            local win_cfg = vim.api.nvim_win_get_config(current_win)
+            -- If already inside a floating window, return focus to editing window
+            if win_cfg.relative and win_cfg.relative ~= '' then
+              vim.cmd('wincmd p')
+              return
+            end
+
+            -- 1. Check if hover float window exists for this buffer
+            local hover_win = vim.b[bufnr].lsp_floating_preview
+            if hover_win and vim.api.nvim_win_is_valid(hover_win) then
+              vim.api.nvim_set_current_win(hover_win)
+              return
+            end
+
+            -- 2. Check if any other focusable floating window is visible in this tab
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+              if win ~= current_win and vim.api.nvim_win_is_valid(win) then
+                local cfg = vim.api.nvim_win_get_config(win)
+                if cfg.relative and cfg.relative ~= '' and cfg.focusable ~= false then
+                  vim.api.nvim_set_current_win(win)
+                  return
+                end
+              end
+            end
+
+            -- 3. If no float is currently open, trigger hover and focus it
+            vim.lsp.buf.hover({ border = 'rounded', focus = true, silent = true })
+          end
+
+          nmap('K', hover_or_focus, 'Hover Documentation / Focus Popup')
           nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
           -- Lesser used LSP functionality

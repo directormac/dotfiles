@@ -109,7 +109,16 @@
 
           snacks-nvim
           oil-nvim
-          oil-git-nvim
+          (oil-git-nvim.overrideAttrs (_: {
+            pname = "oil-git.nvim";
+            version = "unstable-2026-10-10";
+            src = pkgs.fetchFromGitHub {
+              owner = "malewicz1337";
+              repo = "oil-git.nvim";
+              rev = "8bab14df0b7db7a62fa75c8978d6181daed2f0a2";
+              hash = "sha256-JqJ1t4Zk4ROUXnFvk63hJw18nq7rXQU5NxnP4HHWXpU=";
+            };
+          }))
           oil-lsp-diagnostics-nvim
           persistence-nvim
 

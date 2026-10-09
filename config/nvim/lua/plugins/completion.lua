@@ -11,6 +11,10 @@ return {
         keymap = {
           preset = 'default',
         },
+        appearance = {
+          nerd_font_variant = 'mono',
+          kind_icons = vim.tbl_map(vim.trim, require('icons').kinds),
+        },
         cmdline = {
           enabled = true,
           completion = {

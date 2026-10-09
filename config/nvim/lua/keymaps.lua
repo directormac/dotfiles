@@ -7,6 +7,35 @@ vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Moves Line Up' })
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Scroll Down' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Scroll Up' })
 
+-- Shift+K: focus inside open floating window (hover or diagnostic) or trigger hover
+vim.keymap.set('n', 'K', function()
+  local current_win = vim.api.nvim_get_current_win()
+  local win_cfg = vim.api.nvim_win_get_config(current_win)
+  if win_cfg.relative and win_cfg.relative ~= '' then
+    vim.cmd('wincmd p')
+    return
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local hover_win = vim.b[bufnr].lsp_floating_preview
+  if hover_win and vim.api.nvim_win_is_valid(hover_win) then
+    vim.api.nvim_set_current_win(hover_win)
+    return
+  end
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if win ~= current_win and vim.api.nvim_win_is_valid(win) then
+      local cfg = vim.api.nvim_win_get_config(win)
+      if cfg.relative and cfg.relative ~= '' and cfg.focusable ~= false then
+        vim.api.nvim_set_current_win(win)
+        return
+      end
+    end
+  end
+
+  vim.lsp.buf.hover({ border = 'rounded', focus = true, silent = true })
+end, { desc = 'Hover Documentation / Focus Popup' })
+
 
 -- Buffer navigation (Lualine & Neovim)
 vim.keymap.set('n', '<S-h>', '<cmd>bprev<CR>', { desc = 'Previous buffer' })

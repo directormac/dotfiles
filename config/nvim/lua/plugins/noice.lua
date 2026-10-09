@@ -34,6 +34,15 @@ return {
         routes = {
           {
             filter = {
+              any = {
+                { find = 'No information available' },
+                { find = 'Empty hover response' },
+              },
+            },
+            opts = { skip = true },
+          },
+          {
+            filter = {
               event = 'msg_show',
               any = {
                 { find = '%d+L, %d+B' },

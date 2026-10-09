@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Example keymaps for navigation/inspection
 		local opts = { buffer = ev.buf }
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded", silent = true }) end, opts)
 
 		-- Enable built-in completion if supported
 		if client:supports_method("textDocument/completion") then

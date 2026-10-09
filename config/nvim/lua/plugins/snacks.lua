@@ -288,7 +288,16 @@ return {
       -- vim.keymap.set('n', '<c-\\>', function() Snacks.terminal.open() end, { desc = 'Snacks Terminal' })
 
       -- find
-      vim.keymap.set('n', '<leader>ff', function() Snacks.picker.files() end, { desc = 'Find Files' })
+      vim.keymap.set(
+        'n',
+        '<leader>ff',
+        function()
+          Snacks.picker.files({
+            layout = { hidden = { 'preview' } },
+          })
+        end,
+        { desc = 'Find Files' }
+      )
       vim.keymap.set('n', '<leader>fg', function() Snacks.picker.git_files() end, { desc = 'Find Git Files' })
 
       vim.keymap.set('n', '<leader><leader>', function()

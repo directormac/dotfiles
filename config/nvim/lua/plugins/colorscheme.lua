@@ -41,8 +41,8 @@ return {
           transparent = true,
           solid = false,
         },
-        auto_integrations = true,
         term_colors = true,
+        -- auto_integrations = true,
         integrations = {
           blink_cmp = true,
           bufferline = true,
