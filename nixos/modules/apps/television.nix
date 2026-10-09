@@ -216,6 +216,38 @@
           command = "${tv-history-delete}/bin/tv-history-delete '{}'"
           mode = "execute"
         '';
+
+      # Cable: Hyprland Clients
+      xdg.configFile."television/cable/hypr-clients.toml".text =
+        # toml
+        ''
+          [metadata]
+          name = "hypr-clients"
+          description = "Fuzzy search Hyprland windows with JSON preview"
+          requirements = ["hyprctl", "jq"]
+
+          [source]
+          command = "hyprctl clients -j | jq -r '.[] | [.workspace.id, .class, .title, .address] | @tsv'"
+          display = "{split:\t:0}  │  {split:\t:1}"
+          output = "{split:\t:3}"
+
+          [preview]
+          command = "hyprctl clients -j | jq -r --arg addr '{}' '.[] | select(.address == $addr) | \"Class: \" + .class, \"Initial Class: \" + .initialClass, \"Title: \" + .title, \"Initial Title: \" + .initialTitle, \"Workspace: \" + (.workspace.id | tostring) + \" (\" + .workspace.name + \")\", \"PID: \" + (.pid | tostring), \"Floating: \" + (.floating | tostring), \"Monitor: \" + (.monitor | tostring), \"Size: \" + (.size[0] | tostring) + \"x\" + (.size[1] | tostring), \"At: \" + (.at[0] | tostring) + \", \" + (.at[1] | tostring), \"Address: \" + .address'"
+
+          [keybindings]
+          enter = "actions:print_json"
+          ctrl-f = "actions:focus"
+
+          [actions.print_json]
+          description = "Print selected client JSON to stdout"
+          command = "hyprctl clients -j | jq --arg addr '{}' '.[] | select(.address == $addr)'"
+          mode = "execute"
+
+          [actions.focus]
+          description = "Focus the selected window"
+          command = "hyprctl dispatch focuswindow address:{}"
+          mode = "execute"
+        '';
     };
 
   flake.nixosModules.television =
@@ -230,6 +262,7 @@
       environment.systemPackages = with pkgs; [
         television
         nix-search-tv
+        jq
       ];
     };
 }
