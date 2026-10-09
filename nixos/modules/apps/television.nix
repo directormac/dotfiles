@@ -48,6 +48,24 @@
       xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
         config.lib.file.mkOutOfStoreSymlink ../../../config/television/themes/catppuccin-mocha-mauve.toml;
 
+      xdg.configFile."television/cable/flake-inputs".text =
+        # toml
+        ''
+          [metadata]
+          name = "flake-inputs"
+          description = "Interactively select and update Nix flake inputs"
+
+          [source]
+          command = "nix flake metadata --json | jq -r '.locks.nodes.root.inputs | keys[]'"
+
+          [keybindings]
+          enter = "actions:update"
+
+          [actions.update]
+          command = "nix flake update {}"
+          mode = "execute"
+        '';
+
       # Cable: Unified Nix Search (packages, NixOS options, Home Manager options via nix-search-tv)
       xdg.configFile."television/cable/nix.toml".text =
         # toml
