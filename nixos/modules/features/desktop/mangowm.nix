@@ -241,6 +241,12 @@
           ];
         };
 
+        settings = {
+          source_optional = [
+            "./config.toml"
+          ];
+        };
+
         autostart_sh =
           # sh
           ''
@@ -251,31 +257,16 @@
             wl-paste --type text --watch cliphist store &
           '';
 
-        extraConfig =
-          # sh
-          ''
-            # More options: https://github.com/DreamMaoMao/mango/wiki/
-            # Mango Window Manager Main Configuration
-
-            # --- Core Modules ---
-            source = ./config.d/appearance.conf
-            source = ./config.d/theme.conf
-            source = ./config.d/animations.conf
-            source = ./config.d/layouts.conf
-            source = ./config.d/input.conf
-            source = ./config.d/misc.conf
-            source = ./config.d/bindings.conf
-            source = ./config.d/rules.conf
-
-            # --- Local Machine Overrides (Optional) ---
-            source-optional = ./local.conf
-          '';
       };
 
-      home.file.".config/mango/config.d" = {
-        source = config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/config.d";
-        recursive = true;
-      };
+      home.file.".config/mango/config.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/config.toml";
+      home.file.".config/mango/bind.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/bind.toml";
+      home.file.".config/mango/rule.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/rule.toml";
+      home.file.".config/mango/tag.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mango/tag.toml";
 
       xdg.configFile."television/cable/mango-clients.toml".text =
         # toml

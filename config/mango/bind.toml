@@ -1,0 +1,160 @@
+[bind.default]
+# Reload config
+"SUPER+r" = "reload_config"
+
+# Menu and terminal
+"SUPER+space" = "spawn,noctalia msg panel-toggle launcher"
+"SUPER+s" = "spawn,noctalia msg panel-toggle control-center"
+"SUPER+comma" = "spawn,noctalia msg settings-toggle"
+"SUPER+Return" = "spawn,ghostty"
+"CTRL+ALT+comma" = "spawn,pavucontrol"
+
+# Noctalia Screenshots
+"Print" = "spawn,noctalia msg screenshot-region"
+"SHIFT+Print" = "spawn,noctalia msg screenshot-fullscreen"
+"CTRL+Print" = "spawn,noctalia msg screenshot-annotate"
+
+# Exit / Close window
+"SUPER+SHIFT+Escape" = "spawn,noctalia msg panel-toggle session"
+"SUPER+SHIFT+q" = "killclient,"
+
+# Switch window focus
+"SUPER+Tab" = "focusstack,next"
+"SUPER+Left" = "focusdir,left"
+"SUPER+Right" = "focusdir,right"
+"SUPER+Up" = "focusdir,up"
+"SUPER+Down" = "focusdir,down"
+"SUPER+h" = "focusdir,left"
+"SUPER+l" = "focusdir,right"
+"SUPER+k" = "focusdir,up"
+"SUPER+j" = "focusdir,down"
+
+# Swap window
+"SUPER+SHIFT+Up" = "exchange_client,up"
+"SUPER+SHIFT+Down" = "exchange_client,down"
+"SUPER+SHIFT+Left" = "exchange_client,left"
+"SUPER+SHIFT+Right" = "exchange_client,right"
+"SUPER+SHIFT+k" = "exchange_client,up"
+"SUPER+SHIFT+j" = "exchange_client,down"
+"SUPER+SHIFT+h" = "exchange_client,left"
+"SUPER+SHIFT+l" = "exchange_client,right"
+
+# Move window
+"CTRL+SHIFT+Up" = "movewin,+0,-50"
+"CTRL+SHIFT+Down" = "movewin,+0,+50"
+"CTRL+SHIFT+Left" = "movewin,-50,+0"
+"CTRL+SHIFT+Right" = "movewin,+50,+0"
+
+# Resize window
+"CTRL+ALT+Up" = "resizewin,+0,-50"
+"CTRL+ALT+Down" = "resizewin,+0,+50"
+"CTRL+ALT+Left" = "resizewin,-50,+0"
+"CTRL+ALT+Right" = "resizewin,+50,+0"
+
+# Switch window status
+"SUPER+g" = "toggleglobal,"
+"ALT+Tab" = "togglejump,"
+"ALT+backslash" = "togglefloating,"
+"SUPER+SHIFT+space" = "togglefloating"
+"ALT+a" = "togglemaximizescreen,"
+"ALT+f" = "togglefullscreen,"
+"ALT+SHIFT+f" = "togglefakefullscreen,"
+"SUPER+i" = "minimized,"
+"SUPER+o" = "toggleoverlay,"
+"SUPER+SHIFT+I" = "restore_minimized"
+"ALT+z" = "toggle_scratchpad"
+
+# Scroller layout
+"ALT+e" = "set_proportion,1.0"
+"ALT+x" = "switch_proportion_preset,"
+"alt+super+ctrl+Left" = "scroller_stack,left"
+"alt+super+ctrl+Right" = "scroller_stack,right"
+"alt+super+ctrl+Up" = "scroller_stack,up"
+"alt+super+ctrl+Down" = "scroller_stack,down"
+
+# Dwindle layout (manual split mode)
+"alt+shift+Return" = "dwindle_toggle_split_direction"
+
+# Switch layout
+"SUPER+n" = "switch_layout"
+"SUPER+SHIFT+n" = "spawn,noctalia msg panel-toggle ezequiel/mango_layouts:panel"
+
+# Tag switch
+"CTRL+Left" = "viewtoleft_have_client,0"
+"CTRL+Right" = "viewtoright_have_client,0"
+"CTRL+SUPER+Left" = "tagtoleft,0"
+"CTRL+SUPER+Right" = "tagtoright,0"
+
+# Split Tag Bindings Across Monitors
+# Monitor 1 (DP-2): Tags 1-5
+"SUPER+1" = "viewcrossmon,1,DP-2"
+"SUPER+2" = "viewcrossmon,2,DP-2"
+"SUPER+3" = "viewcrossmon,3,DP-2"
+"SUPER+4" = "viewcrossmon,4,DP-2"
+"SUPER+5" = "viewcrossmon,5,DP-2"
+
+# Monitor 2 (DP-3): Tags 6-9
+"SUPER+6" = "viewcrossmon,6,DP-3"
+"SUPER+7" = "viewcrossmon,7,DP-3"
+"SUPER+8" = "viewcrossmon,8,DP-3"
+"SUPER+9" = "viewcrossmon,9,DP-3"
+
+# Move Window to Tag on Specific Monitor
+"SUPER+SHIFT+1" = "tagcrossmon,1,DP-2"
+"SUPER+SHIFT+2" = "tagcrossmon,2,DP-2"
+"SUPER+SHIFT+3" = "tagcrossmon,3,DP-2"
+"SUPER+SHIFT+4" = "tagcrossmon,4,DP-2"
+"SUPER+SHIFT+5" = "tagcrossmon,5,DP-2"
+
+"SUPER+SHIFT+6" = "tagcrossmon,6,DP-3"
+"SUPER+SHIFT+7" = "tagcrossmon,7,DP-3"
+"SUPER+SHIFT+8" = "tagcrossmon,8,DP-3"
+"SUPER+SHIFT+9" = "tagcrossmon,9,DP-3"
+
+# Monitor Navigation
+"alt+shift+Left" = "focusmon,left"
+"alt+shift+Right" = "focusmon,right"
+"alt+shift+h" = "focusmon,left"
+"alt+shift+l" = "focusmon,right"
+"SUPER+Alt+Left" = "tagmon,left"
+"SUPER+Alt+Right" = "tagmon,right"
+"SUPER+Alt+h" = "tagmon,left"
+"SUPER+Alt+l" = "tagmon,right"
+
+# Gaps
+"ALT+SHIFT+X" = "incgaps,1"
+"ALT+SHIFT+Z" = "incgaps,-1"
+"ALT+SHIFT+R" = "togglegaps"
+
+# Multi-action bindings (tag + focus monitor)
+[bind.default.conflict]
+"SUPER+SHIFT+o" = [
+  "tagmon,next",
+  "focusmon,next",
+]
+"SUPER+SHIFT+period" = [
+  "tagmon,right",
+  "focusmon,right",
+]
+"SUPER+SHIFT+comma" = [
+  "tagmon,left",
+  "focusmon,left",
+]
+
+[mousebind.default]
+"SUPER+btn_left" = "moveresize,curmove"
+"SUPER+btn_right" = "moveresize,curresize"
+
+[axisbind.default]
+"SUPER+UP" = "viewtoleft_have_client"
+"SUPER+DOWN" = "viewtoright_have_client"
+
+[gesturebind.default]
+"none+left+3" = "focusdir,left"
+"none+right+3" = "focusdir,right"
+"none+up+3" = "focusdir,up"
+"none+down+3" = "focusdir,down"
+"none+right+4" = "viewprev_have_client"
+"none+left+4" = "viewnext_have_client"
+"none+up+4" = "enteroverview"
+"none+down+4" = "leaveoverview"

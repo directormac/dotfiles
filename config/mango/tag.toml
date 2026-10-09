@@ -1,0 +1,55 @@
+# Monitor 1 (DP-2) - Tags 1 to 5
+[[rule.tag_rule]]
+id = "1"
+monitor_name = "DP-2"
+layout_name = "dwindle"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "2"
+monitor_name = "DP-2"
+layout_name = "dwindle"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "3"
+monitor_name = "DP-2"
+layout_name = "dwindle"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "4"
+monitor_name = "DP-2"
+layout_name = "dwindle"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "5"
+monitor_name = "DP-2"
+layout_name = "vertical_scroller"
+no_hide = 1
+
+# Monitor 2 (DP-3) - Tags 6 to 9
+[[rule.tag_rule]]
+id = "6"
+monitor_name = "DP-3"
+layout_name = "scroller"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "7"
+monitor_name = "DP-3"
+layout_name = "dwindle"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "8"
+monitor_name = "DP-3"
+layout_name = "grid"
+no_hide = 1
+
+[[rule.tag_rule]]
+id = "9"
+monitor_name = "DP-3"
+layout_name = "dwindle"
+no_hide = 1

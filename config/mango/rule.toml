@@ -1,0 +1,166 @@
+# Layer Rules
+[[rule.layer_rule]]
+animation_type_open = "zoom"
+layer_name = "rofi"
+
+[[rule.layer_rule]]
+animation_type_close = "zoom"
+layer_name = "rofi"
+
+# Window Rules: System & Event Handling
+[[rule.window_rule]]
+ignore_maximize = 1
+app_id = ".*"
+
+[[rule.window_rule]]
+no_focus = 1
+app_id = "^$"
+title = "^$"
+
+# Window Rules: Floating Applications (50% size, centered)
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^bitwarden$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^dev.noctalia.Noctalia$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^feh$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^gnome-disks$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^gsmartcontrol$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^com\\.danklinux\\.dankcalendar$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^galculator$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^org\\.pulseaudio\\.pavucontrol$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^pavucontrol$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^org\\.localsend\\.localsend_app$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^com\\.ghostty\\.float$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^org\\.gnome\\.Nautilus$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^mpv$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^nm-connection-editor$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^[Ww]aydroid$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^com\\.jaoushingan\\.WaydroidHelper$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^com\\.neovim\\.editor$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^com\\.superfile\\.fm$"
+
+# Window Rules: Waydroid Sub-applications
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^waydroid\\.com\\..*"
+
+# Window Rules: Virtualization
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^virt-manager$"
+
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^qemu$"
+
+# Window Rules: Dialogs & Security Pickers
+[[rule.window_rule]]
+is_floating = 1
+width = 0.5
+height = 0.5
+title = "^Select what to share.*$"
+
+[[rule.window_rule]]
+is_floating = 1
+app_id = "^pinentry.*$"
+
+# Window Rules: Browser Extension Popups (Firefox & Zen)
+[[rule.window_rule]]
+is_floating = 1
+width = 800
+height = 600
+app_id = "^(firefox|zen|zen-beta.*)$"
+title = "^Extension:.*$"
