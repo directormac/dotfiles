@@ -68,6 +68,7 @@
       "magnification": false,
       "magnificationScale": 130,
       "magnificationProfile": "parabolic",
+      "magnificationExpand": false,
       "order": [],
       "widgets": [
         {
@@ -231,6 +232,15 @@
       "enabled": true,
       "w": 4,
       "h": 1
+    },
+    {
+      "id": "edit",
+      "enabled": true,
+      "w": 1,
+      "h": 1,
+      "small": true,
+      "footer": true,
+      "footerEnd": true
     }
   ],
   "bluetoothMprisEnabled": true,
@@ -320,7 +330,6 @@
   "matugenTemplateEmacs": false,
   "matugenTemplateZed": false,
   "notificationOverlayEnabled": true,
-  "lockScreenNotificationMode": 2,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,
   "osdWorkspaceEnabled": true,
@@ -349,9 +358,17 @@
           "id": "workspaceSwitcher",
           "enabled": true,
           "showWorkspaceName": true,
-          "workspaceAppIconSizeOffset": 5,
+          "workspaceAppIconSizeOffset": 0,
           "groupActiveWorkspaceApps": true,
-          "workspaceFocusedBorderEnabled": true
+          "workspaceFocusedBorderEnabled": true,
+          "workspaceIndicatorStyle": "pills",
+          "workspaceIndicatorCompact": true,
+          "workspaceIndicatorRoundness": 0,
+          "showWorkspaceIndex": false,
+          "showWorkspaceApps": false,
+          "maxWorkspaceIcons": 3,
+          "showOccupiedWorkspacesOnly": false,
+          "showSpecialWorkspaces": false
         }
       ],
       "centerWidgets": [
@@ -635,5 +652,11 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 36
+  "configVersion": 39,
+  "workspaceNameIcons": {
+    "special": {
+      "type": "icon",
+      "value": "dashboard"
+    }
+  }
 }

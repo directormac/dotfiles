@@ -293,7 +293,7 @@
                 };
               }
             ];
-          keyboardShortcutsVersion = 20;
+          keyboardShortcutsVersion = 21;
 
           mods = [
             "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
@@ -304,8 +304,8 @@
             # "cb15abdb-0514-4e09-8ce5-722cf1f4a20f" # Hide Extension Name
             "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe" # Better Active Tab
             # "f7c71d9a-bce2-420f-ae44-a64bd92975ab" # Better Unloaded Tabs
-            "bd92a9a0-1c00-4187-a66e-94c389fa5a59" # Sidebar Expand on Hover
-            "181e41d4-dfd3-410d-9a73-561381a2f77d" # Extensions List
+            # "bd92a9a0-1c00-4187-a66e-94c389fa5a59" # Sidebar Expand on Hover
+            # "181e41d4-dfd3-410d-9a73-561381a2f77d" # Extensions List
             "b0f635d7-c3bf-4709-af68-4712f0e5b2e56" # Cleaner Bookmark Menu
             "context-menu-icons"
           ];

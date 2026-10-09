@@ -3,39 +3,54 @@
   # flake.overlays.default = final: prev: {
   # };
 
-  flake.homeModules.devtools = { pkgs, config, ... }: {
+  flake.homeModules.devtools =
+    { pkgs, config, ... }:
+    let
+      viteplus = inputs.nix-vite-plus.packages.${pkgs.stdenv.hostPlatform.system}.vp;
+    in
+    {
+      xdg = {
+        configFile = {
 
-  };
+          "direnv/direnv.toml".source =
+            config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/direnv/direnv.toml";
 
-  flake.nixosModules.devtools = { pkgs, config, ... }: {
+          "mise/.miserc.toml".source =
+            config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mise/.miserc.toml";
 
-    home-manager.users.${config.preferences.user.name} = {
-      imports = with self.homeModules; [
-        devtools
-      ];
+          "mise/config.toml".source =
+            config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/mise/config.toml";
+        };
+      };
 
       programs = {
         direnv = {
+          enable = true;
           enableZshIntegration = true;
           enableBashIntegration = true;
           mise.enable = true;
+          nix-direnv.enable = true;
         };
 
         mise = {
           enable = true;
           enableZshIntegration = true;
           enableBashIntegration = true;
+
+          # globalConfig =
+          #   # toml
+          #   "";
+          mutableSettings = true;
         };
 
       };
 
       home.packages = with pkgs; [
-        inputs.nix-vite-plus.packages.${pkgs.stdenv.hostPlatform.system}.vp
 
         nodejs_26
         # nodejs-slim_26
 
-        direnv
+        viteplus
         bun
         cargo
         deno
@@ -45,15 +60,22 @@
 
     };
 
+  flake.nixosModules.devtools = { pkgs, config, ... }: {
+
+    home-manager.users.${config.preferences.user.name} = {
+      imports = with self.homeModules; [
+        devtools
+      ];
+
+    };
+
     nixpkgs.overlays = [ inputs.mise-nix.overlays.default ];
 
     environment.systemPackages = with pkgs; [
       rage
       sops
-
       devenv
       secretspec
-
     ];
 
   };
