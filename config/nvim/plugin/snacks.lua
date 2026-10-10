@@ -259,16 +259,30 @@ nixInfo.lze.load({
       vim.keymap.set('n', '<leader>e', function() Snacks.explorer.open() end, { desc = 'Snacks file explorer' })
       -- vim.keymap.set('n', '<c-\\>', function() Snacks.terminal.open() end, { desc = 'Snacks Terminal' })
 
+      local util = require('config.util')
+
       -- find
       vim.keymap.set(
         'n',
         '<leader>ff',
         function()
           Snacks.picker.files({
+            cwd = util.cwd(),
             layout = { hidden = { 'preview' } },
           })
         end,
-        { desc = 'Find Files' }
+        { desc = 'Find Files (cwd)' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>fF',
+        function()
+          Snacks.picker.files({
+            cwd = util.root(),
+            layout = { hidden = { 'preview' } },
+          })
+        end,
+        { desc = 'Find Files (root)' }
       )
       vim.keymap.set('n', '<leader>fg', function() Snacks.picker.git_files() end, { desc = 'Find Git Files' })
 
@@ -291,12 +305,13 @@ nixInfo.lze.load({
         '<leader>/',
         function()
           Snacks.picker.grep({
+            cwd = util.root(),
             hidden = true,
             ignored = true,
             formatters = { file = { truncate = 100 } },
           })
         end,
-        { desc = 'Smart file picker.' }
+        { desc = 'Grep (root)' }
       )
 
       vim.keymap.set('n', '<leader>:', function() Snacks.picker.command_history() end, { desc = 'Command History' })
@@ -346,8 +361,20 @@ nixInfo.lze.load({
       map('n', '<leader>gd', function() Snacks.picker.git_diff() end, { desc = 'Git Diff (Hunks)' })
       map('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = 'Git Log File' }) -- Grep
       map('n', '<leader>sB', function() Snacks.picker.grep_buffers() end, { desc = 'Grep Open Buffers' })
-      map('n', '<leader>sg', function() Snacks.picker.grep() end, { desc = 'Grep' })
-      map({ 'n', 'x' }, '<leader>sw', function() Snacks.picker.grep_word() end, { desc = 'Visual selection or word' })
+      map('n', '<leader>sg', function() Snacks.picker.grep({ cwd = util.cwd() }) end, { desc = 'Grep (cwd)' })
+      map('n', '<leader>sG', function() Snacks.picker.grep({ cwd = util.root() }) end, { desc = 'Grep (root)' })
+      map(
+        { 'n', 'x' },
+        '<leader>sw',
+        function() Snacks.picker.grep_word({ cwd = util.cwd() }) end,
+        { desc = 'Visual selection or word (cwd)' }
+      )
+      map(
+        { 'n', 'x' },
+        '<leader>sW',
+        function() Snacks.picker.grep_word({ cwd = util.root() }) end,
+        { desc = 'Visual selection or word (root)' }
+      )
       map('n', '<leader>gi', function() Snacks.picker.gh_issue() end, { desc = 'GitHub Issues (open)' })
       map('n', '<leader>gI', function() Snacks.picker.gh_issue({ state = 'all' }) end, { desc = 'GitHub Issues (all)' })
       map('n', '<leader>gp', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
@@ -497,7 +524,7 @@ nixInfo.lze.load({
 
       vim.keymap.set('n', '<leader>fsp', function()
         local items = {}
-        local ok, colorpicker = pcall(require, "nvim-colorpicker")
+        local ok, colorpicker = pcall(require, 'nvim-colorpicker')
         if ok and colorpicker.presets then
           local presets = colorpicker.presets()
           for _, preset_name in ipairs(presets.get_preset_names()) do
@@ -505,7 +532,7 @@ nixInfo.lze.load({
             if preset_colors then
               for name, hex in pairs(preset_colors) do
                 table.insert(items, {
-                  text = preset_name .. " " .. name .. " " .. hex,
+                  text = preset_name .. ' ' .. name .. ' ' .. hex,
                   name = name,
                   hex = hex,
                   preset = preset_name,
@@ -516,23 +543,21 @@ nixInfo.lze.load({
         end
 
         Snacks.picker.pick({
-          title = "Colorpicker Presets",
+          title = 'Colorpicker Presets',
           items = items,
           format = function(item, _)
-            local hl_group = "SnacksColor" .. item.hex:gsub("#", "")
+            local hl_group = 'SnacksColor' .. item.hex:gsub('#', '')
             pcall(vim.api.nvim_set_hl, 0, hl_group, { fg = item.hex })
             return {
-              { "■ ", hl = hl_group },
-              { item.name, hl = "SnacksPickerString" },
-              { " " .. item.hex, hl = "SnacksPickerComment" },
-              { " (" .. item.preset .. ")", hl = "SnacksPickerComment" },
+              { '■ ', hl = hl_group },
+              { item.name, hl = 'SnacksPickerString' },
+              { ' ' .. item.hex, hl = 'SnacksPickerComment' },
+              { ' (' .. item.preset .. ')', hl = 'SnacksPickerComment' },
             }
           end,
           confirm = function(picker, item)
             picker:close()
-            if item then
-               vim.api.nvim_put({ item.hex }, "c", true, true)
-            end
+            if item then vim.api.nvim_put({ item.hex }, 'c', true, true) end
           end,
         })
       end, { desc = 'Find Colors (Presets)' })

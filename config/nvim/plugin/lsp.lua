@@ -10,6 +10,19 @@ nixInfo.lze.load({
   { import = require('lzextras').mod_dir_to_spec('lsp_specs') },
 })
 
+-- Floating window borders for LSP handlers
+local orig_hover = vim.lsp.handlers['textDocument/hover']
+vim.lsp.handlers['textDocument/hover'] = function(err, result, ctx, config)
+  config = vim.tbl_extend('force', { border = 'rounded' }, config or {})
+  return orig_hover(err, result, ctx, config)
+end
+
+local orig_sig = vim.lsp.handlers['textDocument/signatureHelp']
+vim.lsp.handlers['textDocument/signatureHelp'] = function(err, result, ctx, config)
+  config = vim.tbl_extend('force', { border = 'rounded' }, config or {})
+  return orig_sig(err, result, ctx, config)
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
   callback = function(ev)
@@ -22,8 +35,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     nmap('<leader>cr', vim.lsp.buf.rename, 'Rename')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-    nmap('grt', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('gd', function() Snacks.picker.lsp_definitions() end, '[G]oto [D]efinition')
+    nmap('grt', function() Snacks.picker.lsp_type_definitions() end, 'Type [D]efinition')
     nmap('grr', function() Snacks.picker.lsp_references() end, '[G]oto [R]eferences')
     nmap('gri', function() Snacks.picker.lsp_implementations() end, '[G]oto [I]mplementation')
     nmap('<leader>ss', function() Snacks.picker.lsp_symbols() end, '[D]ocument [S]ymbols')

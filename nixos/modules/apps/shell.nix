@@ -214,9 +214,7 @@
           "oc" = "opencode";
           "wh" = "which";
           "v" = "nvim";
-          "vi" = "neovim";
-          "nvim" = "lazyvim";
-          "lazyvim" = "lazyvim";
+          "vi" = "vim";
           "y" = "yazi";
           "zen" = "zen-beta";
           "wm" = "workmux";

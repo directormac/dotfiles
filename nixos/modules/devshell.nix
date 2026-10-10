@@ -33,7 +33,7 @@
             help = "alias for rage";
           }
           {
-            name = "nvim";
+            name = "neovim";
             command = "nvim-dev";
             help = "neovim dev";
           }

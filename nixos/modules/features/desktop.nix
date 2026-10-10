@@ -110,7 +110,6 @@
 
         ghostty
         kitty
-        lazyvim
 
         dms
         hyprland
@@ -133,7 +132,6 @@
       home-manager.users.${config.preferences.user.name} = {
         imports = with self.homeModules; [
           git
-          lazyvim
           doom-emacs
           mpv
           desktop

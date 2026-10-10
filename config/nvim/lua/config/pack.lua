@@ -73,19 +73,21 @@ function M.setup()
   vim.api.nvim_create_autocmd('VimEnter', {
     once = true,
     callback = function()
-      if #all_pkgs == 0 then return end
-      local seen, list, declared = {}, {}, {}
-      for _, p in ipairs(all_pkgs) do
-        if not seen[p.src] then
-          seen[p.src] = true
-          list[#list + 1] = p
-          declared[plug_name(p)] = true
+      local declared = {}
+      if #all_pkgs > 0 then
+        local seen, list = {}, {}
+        for _, p in ipairs(all_pkgs) do
+          if not seen[p.src] then
+            seen[p.src] = true
+            list[#list + 1] = p
+            declared[plug_name(p)] = true
+          end
         end
-      end
-      local ok, err = pcall(vim.pack.add, list, { confirm = false, load = false })
-      if not ok then
-        vim.notify('vim.pack install failed:\n' .. tostring(err), vim.log.levels.WARN, { title = 'pack' })
-        return -- declared plugins are not active yet, cleanup below would delete them
+        local ok, err = pcall(vim.pack.add, list, { confirm = false, load = false })
+        if not ok then
+          vim.notify('vim.pack install failed:\n' .. tostring(err), vim.log.levels.WARN, { title = 'pack' })
+          return -- declared plugins are not active yet, cleanup below would delete them
+        end
       end
       -- remove managed (site/pack/core/opt) plugins no spec declares any more;
       -- nix packdir plugins live elsewhere and are never touched

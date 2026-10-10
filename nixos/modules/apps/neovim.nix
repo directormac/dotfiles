@@ -32,9 +32,8 @@
       # The config directory. `mkDefault` so the devshell variant can override it.
       config.settings.config_directory = lib.mkDefault ../../../config/nvim;
 
-      config.binName = lib.mkDefault "neovim";
-
-      config.settings.dont_link = true;
+      config.binName = lib.mkDefault "nvim";
+      config.settings.dont_link = false;
 
       # -----------------------------------------------------------------------
       # User-facing options -> exposed to Lua via the generated info plugin.
@@ -189,6 +188,8 @@
           blink-compat
           cmp-cmdline
           colorful-menu-nvim
+          luasnip
+          friendly-snippets
           lualine-nvim
           gitsigns-nvim
           which-key-nvim
@@ -274,7 +275,6 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-
             name = "tuxedo.nvim";
             src = pkgs.fetchFromGitHub {
               owner = "IogaMaster";
@@ -343,6 +343,9 @@
       imports = [ self.wrappers.neovim.install ];
 
       wrappers.neovim.enable = true;
+
+      home.file.".config/nvim".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";
 
       home.file.".config/nvim-dev".source =
         config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";

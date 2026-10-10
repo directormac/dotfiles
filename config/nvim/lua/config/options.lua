@@ -51,7 +51,11 @@ vim.opt.autoindent = true -- Copy indent from current line when starting a new o
 vim.o.breakindent = true
 
 -- Save undo history
-vim.o.undofile = true
+vim.cmd([[set undodir=~/.cache/vim/undodir]])
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.undodir = os.getenv('HOME') .. '/.vim/undodir'
+vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
@@ -70,7 +74,6 @@ vim.opt.pumheight = 100 -- Maximum number of entries in a popup
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menu,preview,noselect'
 
--- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
 vim.g.netrw_liststyle = 0
@@ -94,3 +97,6 @@ vim.opt.virtualedit = 'block'
 
 -- Break lines at word boundaries when wrap is enabled
 vim.opt.linebreak = true
+
+-- Default window border for floating windows
+vim.o.winborder = 'single'

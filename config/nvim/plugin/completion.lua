@@ -39,6 +39,9 @@ nixInfo.lze.load({
           nerd_font_variant = 'mono',
           kind_icons = vim.tbl_map(vim.trim, require('config.icons').kinds),
         },
+        snippets = {
+          preset = 'luasnip',
+        },
         cmdline = {
           enabled = true,
           completion = {
@@ -66,11 +69,13 @@ nixInfo.lze.load({
         signature = {
           enabled = true,
           window = {
+            border = 'single',
             show_documentation = true,
           },
         },
         completion = {
           menu = {
+            -- border = 'rounded',
             draw = {
               treesitter = { 'lsp' },
               columns = { { 'kind_icon' }, { 'label', gap = 1 } },
@@ -100,11 +105,18 @@ nixInfo.lze.load({
           },
           documentation = {
             auto_show = true,
+            auto_show_delay_ms = 200,
+            window = {
+              border = 'rounded',
+            },
           },
         },
         sources = {
-          default = { 'lsp', 'path', 'buffer', 'omni' },
+          default = { 'lsp', 'path', 'snippets', 'buffer', 'omni' },
           providers = {
+            snippets = {
+              score_offset = 30,
+            },
             path = {
               score_offset = 50,
             },
@@ -139,5 +151,23 @@ nixInfo.lze.load({
     'colorful-menu.nvim',
     auto_enable = true,
     on_plugin = { 'blink.cmp' },
+  },
+  {
+    'friendly-snippets',
+    auto_enable = true,
+    dep_of = { 'luasnip' },
+  },
+  {
+    'luasnip',
+    auto_enable = true,
+    dep_of = { 'blink.cmp' },
+    after = function(_)
+      local luasnip = require('luasnip')
+      luasnip.config.set_config({
+        history = true,
+        updateevents = 'TextChanged,TextChangedI',
+      })
+      require('luasnip.loaders.from_vscode').lazy_load()
+    end,
   },
 })
