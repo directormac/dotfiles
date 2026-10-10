@@ -1,6 +1,6 @@
 {
-  inputs,
   self,
+  inputs,
   lib,
   ...
 }:
@@ -74,7 +74,7 @@
       ];
 
       # -----------------------------------------------------------------------
-      # Language groups. in the Lua specs
+      # Language groups. `lua/lsp_specs/<lang>.lua` in the Lua specs
       # gate LSP setup on whether these top level specs are enabled.
       # -----------------------------------------------------------------------
       config.specs.nix = {
@@ -82,6 +82,7 @@
         runtimePkgs = with pkgs; [
           nixd
           nixfmt
+          nil
         ];
       };
 
@@ -93,6 +94,60 @@
           lua-language-server
           stylua
         ];
+      };
+
+      config.specs.sh = {
+        data = null;
+        runtimePkgs = with pkgs; [
+          bash-language-server
+          shfmt
+          shellcheck
+        ];
+      };
+
+      config.specs.rust = {
+        data = null;
+        runtimePkgs = with pkgs; [
+          rust-analyzer
+          cargo
+          rustc
+          rustfmt
+        ];
+      };
+
+      config.specs.elixir = {
+        data = null;
+        runtimePkgs = with pkgs; [
+          beam29Packages.expert
+          elixir-ls
+        ];
+      };
+
+      config.specs.ts = {
+        data = null;
+        runtimePkgs = with pkgs; [
+          typescript
+        ];
+      };
+
+      config.specs.tailwind = {
+        data = null;
+        runtimePkgs = with pkgs; [ tailwindcss-language-server ];
+      };
+
+      config.specs.markdown = {
+        data = null;
+        runtimePkgs = with pkgs; [ marksman ];
+      };
+
+      config.specs.svelte = {
+        data = null;
+        runtimePkgs = with pkgs; [ svelte-language-server ];
+      };
+
+      config.specs.astro = {
+        data = null;
+        runtimePkgs = with pkgs; [ astro-language-server ];
       };
 
       config.specs.general = {
@@ -122,6 +177,8 @@
           oil-lsp-diagnostics-nvim
           persistence-nvim
 
+          nvim-colorizer-lua
+
           # vim-sleuth
           mini-nvim
           nvim-web-devicons
@@ -137,6 +194,7 @@
           which-key-nvim
           fidget-nvim
           nvim-lint
+          bufferline-nvim
           conform-nvim
           zen-mode-nvim
           yanky-nvim
@@ -163,6 +221,57 @@
           nvim-nio
           nvim-dap-virtual-text
           one-small-step-for-vimkind
+
+          nerdy-nvim
+
+          fff-nvim
+          ccc-nvim
+
+          # https://github.com/dmtrKovalenko/fff
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "snacks-unicode";
+            src = pkgs.fetchFromGitHub {
+              owner = "ecruzolivera";
+              repo = "snacks-unicode";
+              rev = "2dafb7574ab3d689ed06bb2a41b89c7368fc604b";
+              hash = "sha256-6o0DvRqLX06FeTNYe9msuSluTxsiBwU7A2Y3PET3Ztw=";
+            };
+            doCheck = false;
+          })
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "emoji.nvim";
+            src = pkgs.fetchFromGitHub {
+              owner = "Allaman";
+              repo = "emoji.nvim";
+              rev = "372cb33e608941d2ddbdb60fc52eb78bfdf62ea2";
+              hash = "sha256-Z6njpXPG1AnCh76HKPITF0TA3eIBeP0LWP8rUxgMvjk=";
+            };
+            doCheck = false;
+          })
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "nvim-colorpicker";
+            src = pkgs.fetchFromGitHub {
+              owner = "mikevskater";
+              repo = "nvim-colorpicker";
+              rev = "88f6aeac944570ebfb97ac67c9fea27a73ea0429";
+              hash = "sha256-OfJuhBFel+lEmm11QCXKGayFx47mRJatqMFOEbbqz9o=";
+            };
+            doCheck = false;
+          })
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "nvim-float";
+            src = pkgs.fetchFromGitHub {
+              owner = "mikevskater";
+              repo = "nvim-float";
+              rev = "ae790c0a96fcf0c5267371bff04b2fc4542fd643";
+              hash = "sha256-5rV35/k9TXiprjpEWH3j+/FKryfwijR4GN1mCQBPVhU=";
+            };
+            doCheck = false;
+          })
         ];
       };
 
@@ -188,12 +297,6 @@
         };
       config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
 
-      # Expose which top level spec groups are enabled to Lua (`settings.cats`).
-      options.settings.cats = lib.mkOption {
-        readOnly = true;
-        type = lib.types.attrsOf lib.types.bool;
-        default = builtins.mapAttrs (_: v: v.enable) config.specs;
-      };
     };
 
   # ---------------------------------------------------------------------------
@@ -206,14 +309,6 @@
 
       wrappers.neovim.enable = true;
 
-      # Point ~/.config/nvim at the live repo checkout. The production wrapper
-      # links its own in-store config and blocks stdpath('config'), so this is
-      # only actually read by the dev variant (vim.fn.stdpath('config')).
-      # NOTE: cannot symlink ~/.config/nvim at the whole-directory level while
-      # lazyvim-nix enables `programs.neovim`, because that module also writes
-      # `~/.config/nvim/init.lua` (the rplugin manifest). Home Manager then
-      # fails with "Error installing file '.config/nvim/init.lua' outside $HOME"
-      # and the whole generation fails to build. Uncomment once lazyvim is gone.
       home.file.".config/nvim-dev".source =
         config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";
     };

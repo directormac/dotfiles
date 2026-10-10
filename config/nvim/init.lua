@@ -1,20 +1,13 @@
--- NOTE: Welcome to your neovim configuration!
--- This file only handles ordering. Everything else lives in:
---   lua/config/   bootstrap, options, keymaps, plugin entrypoint
---   lua/plugins/  lazy.nvim (lze) specs
---   lua/lsp/      lsp specs
---   lsp/          server settings, merged from 'runtimepath'
---   plugin/       runtime plugin scripts
---   ftplugin/     filetype settings
---   after/        overrides, applied last
+-- Ordering only. Layout:
+--   lua/config/  bootstrap, options, keymaps, shared utils
+--   plugin/      one file per plugin, each registers its own lze spec (auto-sourced)
+--   lsp/         server settings, merged by vim.lsp.config (see :h lsp-config-merge)
+--   ftplugin/    filetype settings      after/  overrides, applied last
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 _G.__startup_time = vim.uv.hrtime()
 vim.loader.enable() -- <- bytecode caching
 
--- nixInfo + lze + the spec handlers everything else depends on
-require('bootstrap')
--- options and keymaps, before any plugin that binds keys
-require('options')
-require('keymaps')
--- the specs themselves
-require('plugins')
-
+require('config.bootstrap')
+require('config.options')
+require('config.keymaps')

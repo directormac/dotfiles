@@ -56,30 +56,25 @@ Two ordering rules that bite most often:
 ## Layout
 
 ```
-init.lua                     19 lines: vim.loader.enable() + 4 requires, nothing else
-lua/bootstrap.lua            nixInfo, lze, the spec handlers (incl. `pkgs`), mapleader
-lua/options.lua              vim.o / vim.opt / vim.wo
-lua/keymaps.lua              global + clipboard maps
-lua/pack.lua                 the `pkgs` handler: vim.pack install + VimEnter prune
-lua/plugins.lua              the single nixInfo.lze.load call; auto-imports lua/plugins/
-lua/plugins/*.lua            one module per plugin domain, each returns a LIST of specs
-lua/lsp/init.lua             nvim-lspconfig spec + the shared vim.lsp.config('*') on_attach
-lua/lsp/<lang>.lua           one trigger spec per language
+init.lua                     requires the config.* modules
+lua/config/bootstrap.lua     nixInfo, lze, the spec handlers (incl. `pkgs`), mapleader
+lua/config/options.lua       vim.o / vim.opt / vim.wo
+lua/config/keymaps.lua       global + clipboard maps
+lua/config/pack.lua          the `pkgs` handler: vim.pack install + VimEnter prune
+plugin/*.lua                 plugins loaded with nixInfo.lze.load, plus standard vim plugins
+plugin/lsp.lua               the shared LspAttach and mod_dir_to_spec('lsp_specs')
+lua/lsp_specs/<lang>.lua     one trigger spec per language
 lsp/<server>.lua             settings for one language server
-plugin/editor.lua            netrw globals, formatoptions, yank highlight
+plugin/autocmds.lua          netrw globals, formatoptions, yank highlight
 ftplugin/*.lua               markdown, gitcommit
 ```
 
-`lua/plugins/oil.lua` is the worked example of the three rules above: it configures three
+`plugin/oil.lua` is the worked example of the three rules above: it configures three
 plugins (`oil.nvim` plus the `oil-git` and `oil-lsp-diagnostics` integrations) using
 `on_plugin`, and it is the spec to copy when translating one of your lazy.nvim files.
 
-Every `lua/plugins/*.lua` module **returns a table of lze specs** and is discovered
-automatically: `lua/plugins.lua` imports the whole directory with lzextras'
-`mod_dir_to_spec('plugins')`, so a new spec file needs no other edits. `lua/lsp/*.lua`
-stays an explicit import list — order matters there (the shared nvim-lspconfig spec
-first, then the per-language triggers). Imports use `require()`, so these files get
-`vim.loader` bytecode caching for free.
+Every `plugin/*.lua` module can call `nixInfo.lze.load({...})` directly with a table of lze specs.
+`lua/lsp_specs/*.lua` files return lists of specs, and are discovered automatically via `mod_dir_to_spec('lsp_specs')` within `plugin/lsp.lua`. This allows easy drop-in of language specific setup.
 
 ## Adding a plugin
 
@@ -90,19 +85,21 @@ common mistake on the Nix side is a name mismatch, see below.
 
 ### Via `vim.pack` (no Nix spec)
 
-Drop a file in `lua/plugins/` — the directory is auto-discovered:
+Drop a file in `plugin/`:
 
 ```lua
--- config/nvim/lua/plugins/tuxedo.lua
-return {
-  'tuxedo',
-  pkgs = {
-    'IogaMaster/tuxedo.nvim',
-  },
-  keys = {
-    { '<leader>tt', '<cmd>Tuxedo<cr>', desc = 'Task Management' },
-  },
-}
+-- config/nvim/plugin/tuxedo.lua
+nixInfo.lze.load({
+  {
+    'tuxedo',
+    pkgs = {
+      'IogaMaster/tuxedo.nvim',
+    },
+    keys = {
+      { '<leader>tt', '<cmd>Tuxedo<cr>', desc = 'Task Management' },
+    },
+  }
+})
 ```
 
 * `pkgs` takes `owner/repo` shorthand or full URLs. The plugin itself goes in the list;
@@ -132,7 +129,7 @@ config.specs.fzf = {
 ```
 
 ```lua
--- config/nvim/lua/plugins/editing.lua (inside the returned list)
+-- config/nvim/plugin/editing.lua (inside nixInfo.lze.load)
 { 'fzf-vim', auto_enable = true, event = 'InsertEnter', cmd = { 'FzfLua' } },
 ```
 
@@ -233,11 +230,10 @@ from `environment.systemPackages`) will win — same version, but worth knowing.
 **2. Trigger spec** (which filetype starts it):
 
 ```lua
--- config/nvim/lua/lsp/python.lua
+-- config/nvim/lua/lsp_specs/python.lua
 return {
   {
     'basedpyright',
-    for_cat = 'python',
     lsp = { filetypes = { 'python' } },
   },
 }
@@ -254,11 +250,7 @@ return {
 }
 ```
 
-**4. Register the import** in `lua/plugins.lua` (lsp imports stay explicit):
-
-```lua
-{ import = 'lsp.python' },
-```
+(No need to register the import, `plugin/lsp.lua` automatically discovers anything in `lua/lsp_specs/`).
 
 ### Why settings live in `lsp/` and not in the spec
 
@@ -291,17 +283,13 @@ conform.setup({
 require('lint').linters_by_ft = { python = { 'ruff' } }
 ```
 
-## Spec gating: `auto_enable` and `for_cat`
+## Spec gating: `auto_enable`
 
-Both are custom handlers registered in `lua/bootstrap.lua`.
+This is a custom handler registered in `lua/config/bootstrap.lua`.
 
 * `auto_enable = true` disables the spec when Nix did not install that plugin, so the
   config still works when you use it outside Nix. It accepts `true`, a plugin name, or a
   list of names.
-* `for_cat = '<name>'` disables the spec when the top-level Nix spec `specs.<name>` is not
-  enabled. `settings.cats` in the info plugin is generated from `config.specs` for exactly
-  this purpose. Note the Nix-side `data` field has no default, so a category-only spec
-  must say `data = null;`.
 
 ## Reading Nix values from Lua
 

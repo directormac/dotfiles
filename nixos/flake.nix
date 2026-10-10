@@ -47,10 +47,8 @@
 
     workmux.url = "github:raine/workmux";
     tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
-    tmux-which-key = {
-      url = "github:alexwforsythe/tmux-which-key";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
+    tmux-remux.url = "github:noamsto/tmux-remux";
 
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
