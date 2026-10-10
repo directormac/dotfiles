@@ -93,12 +93,6 @@ vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>', { desc = 'Quit All' })
 vim.keymap.set('n', '<leader>qf', '<cmd>noautocmd wqa!<CR>', { desc = 'Force write everything and Quit' })
 vim.keymap.set('n', '<leader>qr', '<cmd>restart<CR>', { desc = 'Restart Neovim' })
 
-vim.keymap.set(
-  'n',
-  '<leader>sp',
-  '<cmd>lua nixInfo.lze.debug.display(nixInfo.plugins)<CR>',
-  { desc = 'Show Lazy Plugins' }
-)
 
 -- Keybinds to make split navigation easier.
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })

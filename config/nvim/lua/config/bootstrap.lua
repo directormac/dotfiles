@@ -1,4 +1,4 @@
--- Nix info plumbing + lazy.nvim (lze) bootstrap.
+-- Nix info plumbing + lz.n bootstrap.
 -- Runs before anything else in init.lua: every other file reads `nixInfo`.
 
 -- Prevent plugins (like which-key) from mistaking external lazy.nvim on packpath for an active lazy manager
@@ -6,81 +6,36 @@ package.loaded['lazy'] = false
 package.preload['lazy'] = function() return false end
 
 -- Set up a global in a way that also handles non-nix compat
-local ok
-ok, _G.nixInfo = pcall(require, vim.g.nix_info_plugin_name)
-if not ok then
-  package.loaded[vim.g.nix_info_plugin_name] = setmetatable({}, {
+if vim.g.nix_info_plugin_name then
+  local ok, info = pcall(require, vim.g.nix_info_plugin_name)
+  _G.nixInfo = ok and info or setmetatable({}, {
     __call = function(_, default) return default end,
   })
-  _G.nixInfo = require(vim.g.nix_info_plugin_name)
-  -- If you always use the fetcher function to fetch nix values,
-  -- rather than indexing into the tables directly,
-  -- it will use the value you specified as the default
-  -- TODO: for non-nix compat, vim.pack.add in another file and require here.
+else
+  _G.nixInfo = setmetatable({}, {
+    __call = function(_, default) return default end,
+  })
 end
 nixInfo.isNix = vim.g.nix_info_plugin_name ~= nil
-
----@module 'lzextras'
----@type lzextras | lze
-nixInfo.lze = setmetatable(require('lze'), getmetatable(require('lzextras')))
 
 function nixInfo.get_nix_plugin_path(name)
   return nixInfo(nil, 'plugins', 'lazy', name) or nixInfo(nil, 'plugins', 'start', name)
 end
 
--- `pkgs` field -> install the plugin with vim.pack, see lua/pack.lua
-local pack = require('config.pack')
+-- Initialize lz.n
+local lzn = require('lz.n')
+_G.lzn = lzn
+nixInfo.lzn = lzn
 
-nixInfo.lze.register_handlers({
-  pack.handler,
-  {
-    -- adds an `auto_enable` field to lze specs
-    -- if true, will disable it if not installed by nix.
-    -- if string, will disable if that name was not installed by nix.
-    -- if a table of strings, it will disable if any were not.
-    spec_field = 'auto_enable',
-    set_lazy = false,
-    modify = function(plugin)
-      if vim.g.nix_info_plugin_name then
-        if type(plugin.auto_enable) == 'table' then
-          for _, name in pairs(plugin.auto_enable) do
-            if not nixInfo.get_nix_plugin_path(name) then
-              plugin.enabled = false
-              break
-            end
-          end
-        elseif type(plugin.auto_enable) == 'string' then
-          if not nixInfo.get_nix_plugin_path(plugin.auto_enable) then plugin.enabled = false end
-        elseif type(plugin.auto_enable) == 'boolean' and plugin.auto_enable then
-          if not nixInfo.get_nix_plugin_path(plugin.name) then plugin.enabled = false end
-        end
-      end
-      return plugin
-    end,
-  },
-
-  -- From lzextras. This one makes it so that
-  -- you can set up lsps within lze specs,
-  -- and trigger lspconfig setup hooks only on the correct filetypes
-  -- It is (unfortunately) important that it be registered after the above 2,
-  -- as it also relies on the modify hook, and the value of enabled at that point
-  nixInfo.lze.lsp,
-})
-
--- install every collected `pkgs` entry (and prune undeclared ones) on VimEnter
-pack.setup()
-
--- This config uses lzextras.lsp handler https://github.com/BirdeeHub/lzextras?tab=readme-ov-file#lsp-handler
--- Because we have the paths, we can set a more performant fallback function
--- for when you don't provide a filetype to trigger on yourself.
--- If you do provide a filetype, this will never be called.
-nixInfo.lze.h.lsp.set_ft_fallback(function(name)
-  local lspcfg = nixInfo.get_nix_plugin_path('nvim-lspconfig')
-  if lspcfg then
-    local ok, cfg = pcall(dofile, lspcfg .. '/lsp/' .. name .. '.lua')
-    return (ok and cfg or {}).filetypes or {}
-  else
-    -- the less performant thing we are trying to avoid at startup
-    return (vim.lsp.config[name] or {}).filetypes or {}
+-- Auto-filter plugins not provisioned by Nix (safe dynamic toggling)
+local spec_mod = require('lz.n.spec')
+local orig_parse = spec_mod.parse
+spec_mod.parse = function(spec)
+  local result = orig_parse(spec)
+  if vim.g.nix_info_plugin_name then
+    for name, plugin in pairs(result) do
+      if plugin.auto_enable ~= false and not nixInfo.get_nix_plugin_path(name) then result[name] = nil end
+    end
   end
-end)
+  return result
+end

@@ -62,103 +62,46 @@
       };
 
       # -----------------------------------------------------------------------
-      # lze + lzextras come from nixpkgs (LuaRocks based) - no extra flake inputs.
+      # lz.n comes from nixpkgs (LuaRocks based) - no extra flake inputs.
       # -----------------------------------------------------------------------
-      config.specs.lze = [
-        pkgs.vimPlugins.lze
-        {
-          data = pkgs.vimPlugins.lzextras;
-          name = "lzextras";
-        }
+      config.specs.lzn = pkgs.vimPlugins.lz-n;
+
+      # -----------------------------------------------------------------------
+      # Runtime packages (tools, language servers, formatters, linters)
+      # -----------------------------------------------------------------------
+      config.runtimePkgs = with pkgs; [
+        # CLI tools
+        lazygit
+        tree-sitter
+        ripgrep
+        fd
+
+        # Language servers, linters, formatters
+        nixd
+        nixfmt
+        nil
+        lua-language-server
+        stylua
+        bash-language-server
+        shfmt
+        shellcheck
+        rust-analyzer
+        cargo
+        rustc
+        rustfmt
+        beam29Packages.expert
+        elixir-ls
+        typescript
+        tailwindcss-language-server
+        marksman
+        svelte-language-server
+        astro-language-server
       ];
 
-      # -----------------------------------------------------------------------
-      # Language groups. `lua/lsp_specs/<lang>.lua` in the Lua specs
-      # gate LSP setup on whether these top level specs are enabled.
-      # -----------------------------------------------------------------------
-      config.specs.nix = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          nixd
-          nixfmt
-          nil
-        ];
-      };
-
-      config.specs.lua = {
-        after = [ "general" ];
-        lazy = true;
-        data = with pkgs.vimPlugins; [ lazydev-nvim ];
-        runtimePkgs = with pkgs; [
-          lua-language-server
-          stylua
-        ];
-      };
-
-      config.specs.sh = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          bash-language-server
-          shfmt
-          shellcheck
-        ];
-      };
-
-      config.specs.rust = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          rust-analyzer
-          cargo
-          rustc
-          rustfmt
-        ];
-      };
-
-      config.specs.elixir = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          beam29Packages.expert
-          elixir-ls
-        ];
-      };
-
-      config.specs.ts = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          typescript
-        ];
-      };
-
-      config.specs.tailwind = {
-        data = null;
-        runtimePkgs = with pkgs; [ tailwindcss-language-server ];
-      };
-
-      config.specs.markdown = {
-        data = null;
-        runtimePkgs = with pkgs; [ marksman ];
-      };
-
-      config.specs.svelte = {
-        data = null;
-        runtimePkgs = with pkgs; [ svelte-language-server ];
-      };
-
-      config.specs.astro = {
-        data = null;
-        runtimePkgs = with pkgs; [ astro-language-server ];
-      };
-
       config.specs.general = {
-        after = [ "lze" ];
-        runtimePkgs = with pkgs; [
-          lazygit
-          tree-sitter
-          ripgrep
-          fd
-        ];
         lazy = true;
         data = with pkgs.vimPlugins; [
+          lazydev-nvim
           plenary-nvim
 
           snacks-nvim
@@ -231,7 +174,8 @@
           # https://github.com/dmtrKovalenko/fff
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "snacks-unicode";
+            pname = "snacks-unicode";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "ecruzolivera";
               repo = "snacks-unicode";
@@ -242,7 +186,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "emoji.nvim";
+            pname = "emoji.nvim";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "Allaman";
               repo = "emoji.nvim";
@@ -253,7 +198,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "nvim-colorpicker";
+            pname = "nvim-colorpicker";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "mikevskater";
               repo = "nvim-colorpicker";
@@ -264,7 +210,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "nvim-float";
+            pname = "nvim-float";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "mikevskater";
               repo = "nvim-float";
@@ -275,7 +222,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "tuxedo.nvim";
+            pname = "tuxedo.nvim";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "IogaMaster";
               repo = "tuxedo.nvim";
@@ -286,7 +234,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "showkeys";
+            pname = "showkeys";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "nvzone";
               repo = "showkeys";
@@ -297,7 +246,8 @@
           })
 
           (pkgs.vimUtils.buildVimPlugin {
-            name = "sidekick.nvim";
+            pname = "sidekick.nvim";
+            version = "unstable-2026-10-10";
             src = pkgs.fetchFromGitHub {
               owner = "folke";
               repo = "sidekick.nvim";
@@ -309,28 +259,6 @@
 
         ];
       };
-
-      # -----------------------------------------------------------------------
-      # Tips & tricks: add a per-spec `runtimePkgs` field.
-      # -----------------------------------------------------------------------
-      config.specMods =
-        {
-          parentSpec ? null,
-          parentOpts ? null,
-          parentName ? null,
-          config,
-          ...
-        }:
-        {
-          options.runtimePkgs = options.runtimePkgs // {
-            description = ''
-              A runtimePkgs spec field to put packages on the PATH.
-              If the spec is disabled, this value will not be included in the
-              resulting neovim derivation.
-            '';
-          };
-        };
-      config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
 
     };
 
