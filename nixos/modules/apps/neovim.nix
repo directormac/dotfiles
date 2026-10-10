@@ -272,6 +272,41 @@
             };
             doCheck = false;
           })
+
+          (pkgs.vimUtils.buildVimPlugin {
+
+            name = "tuxedo.nvim";
+            src = pkgs.fetchFromGitHub {
+              owner = "IogaMaster";
+              repo = "tuxedo.nvim";
+              rev = "65650b0ae3b1c3755a43306b07ada13bd78d47ac";
+              hash = "sha256-e8Vk2QvMNDDpYCiTWwm5IgDlDhVKj2g+kNHpLbkYGx4=";
+            };
+            doCheck = false;
+          })
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "showkeys";
+            src = pkgs.fetchFromGitHub {
+              owner = "nvzone";
+              repo = "showkeys";
+              rev = "cb0a50296f11f1e585acffba8c253b9e8afc1f84";
+              hash = "sha256-mn/SBtk9YbYZRTJZ054IVsSVOlrry5gsHOXQEnd3b7M=";
+            };
+            doCheck = false;
+          })
+
+          (pkgs.vimUtils.buildVimPlugin {
+            name = "sidekick.nvim";
+            src = pkgs.fetchFromGitHub {
+              owner = "folke";
+              repo = "sidekick.nvim";
+              rev = "3d80a47e6375f6d647c9695d3afea6fa1b3275df";
+              hash = "sha256-YV4QMU2I+6PwTVdjsh/1Z+WTeLW9spgpugccmsqpxRY=";
+            };
+            doCheck = false;
+          })
+
         ];
       };
 

@@ -9,7 +9,31 @@ nixInfo.lze.load({
         -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
         -- See :h blink-cmp-config-keymap for configuring keymaps
         keymap = {
+          -- 'default' (recommended) for mappings similar to built-in completions
+          --   <c-y> to accept ([y]es) the completion.
+          --    This will auto-import if your LSP supports it.
+          --    This will expand snippets if the LSP sent a snippet.
+          -- 'super-tab' for tab to accept
+          -- 'enter' for enter to accept
+          -- 'none' for no mappings
+          --
+          -- For an understanding of why the 'default' preset is recommended,
+          -- you will need to read `:help ins-completion`
+          --
+          -- No, but seriously. Please read `:help ins-completion`, it is really good!
+          --
+          -- All presets have the following mappings:
+          -- <tab>/<s-tab>: move to right/left of your snippet expansion
+          -- <c-space>: Open menu or open docs if already open
+          -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
+          -- <c-e>: Hide menu
+          -- <c-k>: Toggle signature help
+          -- See `:help blink-cmp-config-keymap` for defining your own keymap
+          -- set to 'none' to disable the 'default' preset
+          -- Reference https://cmp.saghen.dev/configuration/reference.html#completion-trigger
           preset = 'default',
+
+          ['<C-Tab>'] = { 'select_and_accept' },
         },
         appearance = {
           nerd_font_variant = 'mono',
@@ -49,10 +73,27 @@ nixInfo.lze.load({
           menu = {
             draw = {
               treesitter = { 'lsp' },
+              columns = { { 'kind_icon' }, { 'label', gap = 1 } },
               components = {
                 label = {
-                  text = function(ctx) return require('colorful-menu').blink_components_text(ctx) end,
-                  highlight = function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end,
+                  width = { fill = true, max = 60 },
+                  text = function(ctx)
+                    local highlights_info = require('colorful-menu').blink_highlights(ctx)
+                    if highlights_info ~= nil then
+                      return highlights_info.label
+                    else
+                      return ctx.label
+                    end
+                  end,
+                  highlight = function(ctx)
+                    local highlights = {}
+                    local highlights_info = require('colorful-menu').blink_highlights(ctx)
+                    if highlights_info ~= nil then highlights = highlights_info.highlights end
+                    for _, idx in ipairs(ctx.label_matched_indices) do
+                      table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                    end
+                    return highlights
+                  end,
                 },
               },
             },

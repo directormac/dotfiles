@@ -1,9 +1,7 @@
 nixInfo.lze.load({
   {
-    'showkeys',
-    pkgs = {
-      'nvzone/showkeys',
-    },
+    'vimplugin-showkeys',
+    auto_enable = true,
     cmd = { 'ShowkeysToggle' },
     keys = {
       { '<leader>uk', '<cmd>ShowkeysToggle<CR>', desc = 'Toggle showkeys', silent = true },

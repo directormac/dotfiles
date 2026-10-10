@@ -1,8 +1,6 @@
 nixInfo.lze.load({
-  'tuxedo',
-  pkgs = {
-    'IogaMaster/tuxedo.nvim',
-  },
+  'vimplugin-tuxedo.nvim',
+  auto_enable = true,
   keys = {
     { '<leader>tt', '<cmd>Tuxedo<cr>', desc = 'Task Management' },
   },

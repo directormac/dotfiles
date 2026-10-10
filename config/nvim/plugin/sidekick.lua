@@ -1,9 +1,8 @@
 nixInfo.lze.load({
   {
-    'sidekick.nvim',
-    pkgs = {
-      'folke/sidekick.nvim',
-    },
+    'vimplugin-sidekick.nvim',
+
+    auto_enable = true,
     cmd = { 'Sidekick' },
     keys = {
       {

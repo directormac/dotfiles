@@ -72,20 +72,20 @@ nixInfo.lze.load({
       })
 
       -- Set Line Number Colors
-      -- vim.api.nvim_create_autocmd({ 'ColorScheme', 'InsertEnter', 'InsertLeave', 'ModeChanged' }, {
-      --   callback = function()
-      --     vim.cmd('hi LineNr guifg=#6c7086')
-      --     vim.cmd('hi LineNrAbove guifg=#6c7086')
-      --     vim.cmd('hi LineNrBelow guifg=#6c7086')
-      --     vim.cmd('hi CursorLineNr guifg=#cba6f7 gui=bold')
-      --     vim.cmd('hi CursorLine guibg=#313244')
-      --   end,
-      -- })
+      vim.api.nvim_create_autocmd({ 'ColorScheme', 'InsertEnter', 'InsertLeave', 'ModeChanged' }, {
+        callback = function()
+          vim.cmd('hi LineNr guifg=#6c7086')
+          vim.cmd('hi LineNrAbove guifg=#6c7086')
+          vim.cmd('hi LineNrBelow guifg=#6c7086')
+          vim.cmd('hi CursorLineNr guifg=#cba6f7 gui=bold')
+          vim.cmd('hi CursorLine guibg=#313244')
+        end,
+      })
     end,
   },
-  {
-    'nvim-colorizer.lua',
-    auto_enable = true,
-    after = function() require('colorizer').setup() end,
-  },
+  -- {
+  --   'nvim-colorizer.lua',
+  --   auto_enable = true,
+  --   after = function() require('colorizer').setup() end,
+  -- },
 })
