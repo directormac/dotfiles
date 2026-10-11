@@ -10,6 +10,9 @@ return {
         'blink.compat',
         'cmp-cmdline',
         'colorful-menu.nvim',
+        'blink-ripgrep.nvim',
+        'blink-emoji.nvim',
+        'blink-cmp-dictionary',
       })
     end,
     after = function(_)
@@ -39,12 +42,14 @@ return {
               auto_show = true,
             },
           },
-          sources = function()
-            local type = vim.fn.getcmdtype()
-            if type == '/' or type == '?' then return { 'buffer' } end
-            if type == ':' or type == '@' then return { 'cmdline', 'cmp_cmdline' } end
-            return {}
-          end,
+          sources = {
+            default = function()
+              local type = vim.fn.getcmdtype()
+              if type == '/' or type == '?' then return { 'buffer' } end
+              if type == ':' or type == '@' then return { 'cmdline', 'cmp_cmdline' } end
+              return {}
+            end,
+          },
         },
         fuzzy = {
           sorts = {
@@ -97,7 +102,7 @@ return {
           },
         },
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer' },
+          default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev', 'ripgrep', 'emoji', 'dictionary' },
           providers = {
             snippets = {
               score_offset = 30,
@@ -107,6 +112,32 @@ return {
             },
             lsp = {
               score_offset = 40,
+            },
+            lazydev = {
+              name = 'lazydev',
+              module = 'lazydev.integrations.blink',
+              score_offset = 45,
+            },
+            ripgrep = {
+              name = 'ripgrep',
+              module = 'blink-ripgrep',
+              score_offset = 10,
+            },
+            emoji = {
+              name = 'emoji',
+              module = 'blink-emoji',
+              score_offset = 20,
+            },
+            -- spell = {
+            --   name = 'spell',
+            --   module = 'blink-cmp-spell',
+            --   score_offset = 5,
+            -- },
+            dictionary = {
+              name = 'dictionary',
+              module = 'blink-cmp-dictionary',
+              score_offset = 15,
+              min_keyword_length = 3,
             },
             cmp_cmdline = {
               name = 'cmp_cmdline',
@@ -135,10 +166,14 @@ return {
   },
   { 'cmp-cmdline', lazy = true },
   { 'blink.compat', lazy = true },
+  { 'blink.lib', lazy = true },
   {
     'colorful-menu.nvim',
     lazy = true,
     after = function() require('colorful-menu').setup() end,
   },
   { 'friendly-snippets', lazy = true },
+  { 'blink-ripgrep.nvim', lazy = true },
+  { 'blink-emoji.nvim', lazy = true },
+  { 'blink-cmp-dictionary', lazy = true },
 }

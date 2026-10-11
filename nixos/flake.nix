@@ -37,6 +37,14 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blink-cmp = {
+      url = "github:saghen/blink.cmp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    blink-lib = {
+      url = "github:saghen/blink.lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
 

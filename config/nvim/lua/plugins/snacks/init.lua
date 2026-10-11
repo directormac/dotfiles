@@ -24,6 +24,7 @@ local snacks_spec = {
   'snacks.nvim',
   auto_enable = true,
   lazy = false,
+
   priority = 1000,
   after = function(plugin)
     require('snacks').setup(merged_opts)

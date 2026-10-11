@@ -5,15 +5,6 @@
   ...
 }:
 {
-  # ---------------------------------------------------------------------------
-  # Main wrapped Neovim (nightly + nix-wrapper-modules)
-  #
-  # Declared once here; the flake-parts module (imported in flake-parts.nix)
-  # turns this into:
-  #   outputs.wrappers.neovim
-  #   outputs.wrapperModules.neovim
-  #   packages.<system>.neovim
-  # ---------------------------------------------------------------------------
   flake.wrappers.neovim =
     {
       config,
@@ -30,10 +21,9 @@
       config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
 
       # The config directory. `mkDefault` so the devshell variant can override it.
-      config.settings.config_directory = lib.mkDefault ../../../config/nvim;
-
       config.binName = lib.mkDefault "nvim";
       config.settings.dont_link = false;
+      config.settings.config_directory = lib.mkDefault ../../../config/nvim;
 
       # -----------------------------------------------------------------------
       # User-facing options -> exposed to Lua via the generated info plugin.
@@ -61,9 +51,6 @@
         );
       };
 
-      # -----------------------------------------------------------------------
-      # lz.n comes from nixpkgs (LuaRocks based) - no extra flake inputs.
-      # -----------------------------------------------------------------------
       config.specs.lzn = pkgs.vimPlugins.lz-n;
 
       # -----------------------------------------------------------------------
@@ -75,6 +62,7 @@
         tree-sitter
         ripgrep
         fd
+        cargo
 
         # Language servers, linters, formatters
         nixd
@@ -121,15 +109,21 @@
 
           nvim-colorizer-lua
 
-          # vim-sleuth
           mini-nvim
           nvim-web-devicons
           nvim-lspconfig
           nvim-surround
           vim-startuptime
-          blink-cmp
+
+          # Completion
+          (inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp)
+          (inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib)
           blink-compat
+          blink-ripgrep-nvim
+          blink-emoji-nvim
+          blink-cmp-dictionary
           cmp-cmdline
+
           colorful-menu-nvim
           luasnip
           friendly-snippets
@@ -141,7 +135,6 @@
           bufferline-nvim
           conform-nvim
           zen-mode-nvim
-          yanky-nvim
           otter-nvim
           # windsurf-nvim
 
@@ -153,6 +146,7 @@
           todo-comments-nvim
           grug-far-nvim
           edgy-nvim
+          yanky-nvim
 
           # UI & Notifications
           noice-nvim
@@ -168,10 +162,9 @@
 
           nerdy-nvim
 
+          # https://github.com/dmtrKovalenko/fff
           fff-nvim
           ccc-nvim
-
-          # https://github.com/dmtrKovalenko/fff
 
           (pkgs.vimUtils.buildVimPlugin {
             pname = "snacks-unicode";
