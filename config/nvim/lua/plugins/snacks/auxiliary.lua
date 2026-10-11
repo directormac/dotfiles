@@ -1,45 +1,5 @@
 return {
   {
-    'emoji.nvim',
-    event = 'DeferredUIEnter',
-    after = function()
-      local ok, emoji = pcall(require, 'emoji')
-      if ok then
-        local emoji_file = vim.api.nvim_get_runtime_file('lua/data/emojis.json', false)[1]
-        local kaomoji_file = vim.api.nvim_get_runtime_file('lua/data/kaomojis.json', false)[1]
-        local emoji_cfg = require('emoji.config')
-        if emoji_file then
-          local dir = vim.fs.dirname(vim.fs.dirname(vim.fs.dirname(emoji_file)))
-          emoji_cfg.options.plugin_path = dir
-          emoji_cfg.paths.emoji = 'lua/data/emojis.json'
-          if kaomoji_file then emoji_cfg.paths.kaomoji = 'lua/data/kaomojis.json' end
-        end
-        emoji.setup({})
-      end
-
-      vim.keymap.set(
-        'n',
-        '<leader>fse',
-        '<cmd>lua require("emoji").insert()<CR>',
-        { desc = 'Find Emojis (emoji.nvim)' }
-      )
-    end,
-  },
-  {
-    'snacks-unicode',
-    event = 'DeferredUIEnter',
-    after = function()
-      require('snacks-unicode').setup()
-
-      vim.keymap.set(
-        'n',
-        '<leader>fsu',
-        '<cmd>lua Snacks.picker.unicode()<CR>',
-        { desc = 'Find Unicode Symbols (snacks)' }
-      )
-    end,
-  },
-  {
     'nvim-float',
     lazy = true,
   },
@@ -97,16 +57,6 @@ return {
           end,
         })
       end, { desc = 'Find Colors (Presets)' })
-    end,
-  },
-  {
-    'nerdy.nvim',
-    event = 'DeferredUIEnter',
-    after = function()
-      require('nerdy').setup({
-        picker = 'snacks',
-      })
-      vim.keymap.set('n', '<leader>fss', '<cmd>Nerdy<CR>', { desc = 'Find Nerd Font Symbols (nerdy)' })
     end,
   },
 }

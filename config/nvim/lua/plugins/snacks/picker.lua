@@ -40,7 +40,7 @@ M.opts = {
         layout = { hidden = { 'preview' } },
       },
       projects = {
-        dev = { '~/projects', '~/.dotfiles' },
+        dev = { '~/Projects', '~/Code' },
       },
       zoxide = {},
       man = {},
