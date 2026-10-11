@@ -74,13 +74,16 @@ vim.keymap.set(
   '"+yy',
   { noremap = true, silent = true, desc = 'Yank line to clipboard' }
 )
+
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>p', '"+p', { noremap = true, silent = true, desc = 'Paste from clipboard' })
-vim.keymap.set(
-  'i',
-  '<C-p>',
-  '<C-r><C-p>+',
-  { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' }
-)
+
+-- vim.keymap.set(
+--   'n',
+--   '<C-p>',
+--   '<C-r><C-p>+',
+--   { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' }
+-- )
+
 vim.keymap.set(
   'x',
   '<leader>P',
@@ -92,7 +95,6 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>qq', '<cmd>qa<CR>', { desc = 'Quit All' })
 vim.keymap.set('n', '<leader>qf', '<cmd>noautocmd wqa!<CR>', { desc = 'Force write everything and Quit' })
 vim.keymap.set('n', '<leader>qr', '<cmd>restart<CR>', { desc = 'Restart Neovim' })
-
 
 -- Keybinds to make split navigation easier.
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
