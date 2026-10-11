@@ -87,7 +87,8 @@
 
       home.packages = [
         pkgs.llm-agents.omo-ai
-        pkgs.opencode-desktop
+        pkgs.llm-agents.opencode2
+        pkgs.llm-agents.opencode2-desktop
       ];
 
     };

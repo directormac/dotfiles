@@ -297,6 +297,17 @@
       ];
     };
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        # nixpkgs builds sesh (and its go-mockery codegen tool) with Go 1.27, but
+        # go-mockery 3.8.0 pins x/tools v0.49.0, which cannot read Go 1.27's export
+        # data format (v5). Pin both back to Go 1.26 until upstream ships a fix.
+        sesh = prev.sesh.override {
+          buildGo127Module = prev.buildGo126Module;
+        };
+      })
+    ];
+
     environment.systemPackages = with pkgs; [
       inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
       sesh

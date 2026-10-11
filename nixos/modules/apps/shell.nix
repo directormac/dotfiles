@@ -213,6 +213,7 @@
           "rmr" = "rm -r";
           "top" = "btop";
           "oc" = "opencode";
+          "oc2" = "opencode2";
           "wh" = "which";
           "v" = "nvim";
           "vi" = "vim";
