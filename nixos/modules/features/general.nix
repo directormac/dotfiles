@@ -213,6 +213,7 @@
         binutils
         llvm
         man-pages
+        man-pages-posix
 
         # Dev tools
         jq

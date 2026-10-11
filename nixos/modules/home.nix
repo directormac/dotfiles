@@ -9,8 +9,11 @@
     documentation = {
       enable = true;
       doc.enable = true;
-      dev.enable = false;
-      man.enable = true;
+      dev.enable = true;
+      man = {
+        enable = true;
+        cache.enable = true;
+      };
     };
 
     home-manager = {
