@@ -66,28 +66,55 @@
         tree-sitter
         ripgrep
         fd
-        cargo
 
+        # -----------------------------------------------------------------------
         # Language servers, linters, formatters
+        # [lsp.lua](../../../config/nvim/lua/plugins/lsp.lua)
+        # [lint.lua](../../../config/nvim/lua/plugins/lint.lua)
+        # [conform.lua](../../../config/nvim/lua/plugins/conform.lua)
+        # -----------------------------------------------------------------------
+
+        # nix
         nixd
-        nixfmt
         nil
+        nixfmt
+
+        # lua
         lua-language-server
         stylua
+
+        # shell
         bash-language-server
         shfmt
         shellcheck
-        rust-analyzer
-        cargo
-        rustc
-        rustfmt
+
+        # markdown
+        marksman
+        markdownlint-cli2
+
+        # toml
+        taplo
+
+        # yaml
+        yaml-language-server
+
+        # kdl
+        kdlfmt
+
+        # json
+        vscode-json-languageserver
+
+        # Web
+        emmet-language-server
         beam29Packages.expert
         elixir-ls
         typescript
+        oxfmt
+        oxlint
         tailwindcss-language-server
-        marksman
         svelte-language-server
         astro-language-server
+
       ];
 
       config.specs.general = {
@@ -101,6 +128,7 @@
           nvim-surround
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
+          SchemaStore-nvim
           otter-nvim
 
           # Debug Adapter Protocol (DAP)
@@ -170,6 +198,7 @@
           # UI
           bufferline-nvim
           octo-nvim
+          lensline-nvim
           gitsigns-nvim
           lualine-nvim
           nvim-web-devicons
@@ -178,8 +207,8 @@
 
           # AI
           codecompanion-nvim
-          # sidekick-nvim
           # windsurf-nvim
+          # sidekick-nvim
 
           # https://github.com/dmtrKovalenko/fff
 

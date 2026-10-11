@@ -103,7 +103,7 @@
 
           spaceRouting = {
             force = true;
-            defaultExternalRoute = spaces.personal;
+            defaultExternalRoute = "most-recent-space";
             routes = {
               "medium" = {
                 reference = "medium.com";

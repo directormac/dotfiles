@@ -9,7 +9,7 @@ return {
     Lua = {
       signatureHelp = { enabled = true },
       diagnostics = {
-        globals = { 'nixInfo', 'vim' },
+        globals = { 'nixInfo', 'vim', 'Snacks' },
         disable = { 'missing-fields' },
       },
     },

@@ -4,25 +4,33 @@ return {
   after = function()
     require('config.lsp_handlers').setup()
 
-    -- Language servers enabled via Neovim 0.11+ native LSP engine
     local servers = {
       'lua_ls',
       'nixd',
       'nil_ls',
       'bashls',
-      'rust_analyzer',
-      'elixirls',
-      'vtsls',
-      'tailwindcss',
+      'kdl',
+      'taplo',
+      'emmet_ls',
+      'jsonls',
       'marksman',
+      'yamlls',
+
+      -- Web Developlment
+      'tsc',
+      'tailwindcss',
+      'oxlint',
+      'oxfmt',
       'svelte',
       'astro',
+      'elixirls',
+      'expert',
     }
 
     for _, server in ipairs(servers) do
       vim.lsp.enable(server)
     end
 
-    vim.lsp.codelens.enable(true)
+    -- vim.lsp.codelens.enable(true)
   end,
 }
