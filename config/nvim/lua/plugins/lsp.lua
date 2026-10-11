@@ -6,7 +6,6 @@ return {
 
     -- Language servers enabled via Neovim 0.11+ native LSP engine
     local servers = {
-      'codelens',
       'lua_ls',
       'nixd',
       'nil_ls',
@@ -23,5 +22,7 @@ return {
     for _, server in ipairs(servers) do
       vim.lsp.enable(server)
     end
+
+    vim.lsp.codelens.enable(true)
   end,
 }

@@ -1,6 +1,8 @@
 local M = {}
 
-M.opts = {}
+M.opts = {
+  toggle = {},
+}
 
 function M.keys()
   Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
@@ -15,6 +17,14 @@ function M.keys()
   Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ub')
   Snacks.toggle.inlay_hints():map('<leader>uh')
   Snacks.toggle.dim():map('<leader>uD')
+
+  local autohover_enabled = false
+  Snacks.toggle({
+    id = 'autohover',
+    name = 'Auto Hover',
+    get = function() return autohover_enabled end,
+    set = function(state) autohover_enabled = state end,
+  }):map('<leader>uK')
 
   Snacks.toggle.profiler():map('<leader>dpp')
   Snacks.toggle.profiler_highlights():map('<leader>dph')

@@ -75,12 +75,6 @@ function M.keys()
   -- Lua runner
   map({ 'n', 'x' }, '<localleader>r', function() Snacks.debug.run() end, { desc = 'Run Lua' })
 
-  -- LSP restart
-  map('n', '<leader>cL', function()
-    vim.cmd('lsp restart')
-    vim.notify('LSP restarted', vim.log.levels.INFO, { title = 'LSP' })
-  end, { desc = 'Restart Language Server Attached' })
-
   -- Neovim News popup
   map(
     'n',

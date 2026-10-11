@@ -11,16 +11,65 @@ function M.setup()
 
       local hover_or_focus = require('config.util').hover_or_focus
 
+      nmap('<leader>c?', function() Snacks.picker.lsp_config() end, 'Active Language Servers')
+      nmap('<leader>cc', vim.lsp.codelens.run, 'Run CodeLens')
+      nmap('<leader>cl', function()
+        local enabled = not vim.lsp.codelens.is_enabled()
+        vim.lsp.codelens.enable(enabled)
+        vim.notify('Codelens: ' .. (enabled and 'on' or 'off'))
+      end, 'Toggle codelens')
+
+      nmap('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
+
+      nmap('gd', function() Snacks.picker.lsp_definitions() end, 'Goto Definition')
+      nmap('gD', function() Snacks.picker.lsp_declarations() end, 'Goto Definition')
+
+      -- nmap('gr', function() Snacks.picker.lsp_references() end, '[G]oto [R]eferences')
+      vim.keymap.set(
+        'n',
+        'gr',
+        function() Snacks.picker.lsp_references() end,
+        { nowait = true, desc = 'LSP: References' }
+      )
+      nmap('gI', function() Snacks.picker.lsp_implementations() end, 'Goto Implementation')
+      nmap('gy', function() Snacks.picker.lsp_type_definitions() end, 'Type Definition')
+
+      nmap('gai', function() Snacks.picker.lsp_incoming_calls() end, 'Calls Incoming')
+      nmap('gao', function() Snacks.picker.lsp_outgoing_calls() end, 'Calls Ongoing')
+
+      nmap('<leader>cwa', vim.lsp.buf.add_workspace_folder, 'Workspace Add Folder')
+      nmap('<leader>cwr', vim.lsp.buf.remove_workspace_folder, 'Workspace Remove Folder')
+
+      nmap(
+        '<leader>cwl',
+        function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+        'Workspace List Folders'
+      )
+
+      nmap('<leader>ss', function() Snacks.picker.lsp_symbols() end, 'Document Symbols')
+      nmap('<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, 'Workspace Symbols')
+
+      vim.keymap.set(
+        { 'n', 'x' },
+        '<M-o>',
+        function() vim.lsp.buf.selection_range(1) end,
+        { buffer = ev.buf, desc = 'Expand selection (LSP)' }
+      )
+
+      vim.keymap.set(
+        'x',
+        '<M-i>',
+        function() vim.lsp.buf.selection_range(-1) end,
+        { buffer = ev.buf, desc = 'Shrink selection (LSP)' }
+      )
+
+      nmap('[d', function() vim.diagnostic.jump({ count = -1 }) end, 'Prev diagnostic')
+      nmap(']d', function() vim.diagnostic.jump({ count = 1 }) end, 'Next diagnostic')
+
       nmap('<leader>cr', vim.lsp.buf.rename, 'Rename')
-      nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-      nmap('gd', function() Snacks.picker.lsp_definitions() end, '[G]oto [D]efinition')
-      nmap('grt', function() Snacks.picker.lsp_type_definitions() end, 'Type [D]efinition')
-      nmap('grr', function() Snacks.picker.lsp_references() end, '[G]oto [R]eferences')
-      nmap('gri', function() Snacks.picker.lsp_implementations() end, '[G]oto [I]mplementation')
-      nmap('<leader>ss', function() Snacks.picker.lsp_symbols() end, '[D]ocument [S]ymbols')
-      nmap('<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, '[W]orkspace [S]ymbols')
 
       nmap('K', hover_or_focus, 'Hover Documentation / Focus Popup')
+
       vim.keymap.set(
         'i',
         '<C-k>',
@@ -28,14 +77,10 @@ function M.setup()
         { buffer = ev.buf, desc = 'LSP: Signature Documentation' }
       )
 
-      nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-      nmap('<leader>cwa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-      nmap('<leader>cwr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-      nmap(
-        '<leader>cwl',
-        function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-        '[W]orkspace [L]ist Folders'
-      )
+      nmap('<leader>cL', function()
+        vim.cmd('lsp restart')
+        vim.notify('LSP restarted', vim.log.levels.INFO, { title = 'LSP' })
+      end, 'Restart Language Server Attached')
 
       -- Create a command `:Format` local to the LSP buffer
       vim.api.nvim_buf_create_user_command(

@@ -8,7 +8,7 @@ vim.filetype.add({
     tmux = 'tmux',
     mjml = 'html',
     ['mjml.eex'] = 'html.eex',
-    mdx = 'markdown.mdx',
+    mdx = 'markdown',
     postcss = 'css',
     pcss = 'css',
     caddy = 'caddy',

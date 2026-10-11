@@ -65,6 +65,9 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'BufLeave' }, {
 vim.api.nvim_create_autocmd({ 'CursorHold' }, {
   group = diag_group,
   callback = function()
+    local autohover = Snacks.toggle.get('autohover')
+    if autohover and not autohover:get() then return end
+
     if vim.bo.buftype ~= '' or vim.bo.filetype == 'oil' or vim.fn.mode() ~= 'n' then return end
 
     if vim.fn.pumvisible() ~= 0 then return end

@@ -121,13 +121,6 @@ return {
             },
             opts = { skip = true },
           },
-          {
-            filter = {
-              event = 'lsp',
-              kind = 'progress',
-            },
-            opts = { skip = true },
-          },
         },
         views = {
           cmdline_popup = {
