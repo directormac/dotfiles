@@ -92,13 +92,12 @@
 
           # Language Helpers
           conform-nvim
+          nvim-lspconfig
           nvim-lint
           nvim-surround
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
           otter-nvim
-
-          vim-startuptime
 
           # Debug Adapter Protocol (DAP)
           nvim-dap
@@ -112,8 +111,10 @@
           mini-nvim
           noice-nvim
           nui-nvim
+          plenary-nvim
           persistence-nvim
           snacks-nvim
+          vim-startuptime
 
           # Navigation & Editing
           flash-nvim
@@ -168,47 +169,12 @@
           which-key-nvim
           render-markdown-nvim
 
-          nerdy-nvim
-
-          plenary-nvim
-          ccc-nvim
-          nvim-colorizer-lua
-
-          nvim-lspconfig
-
-          fidget-nvim
-          cmp-cmdline
-          nvim-notify
-          zen-mode-nvim
+          # AI
+          codecompanion-nvim
+          # sidekick-nvim
           # windsurf-nvim
 
-          # UI & Notifications
-
           # https://github.com/dmtrKovalenko/fff
-
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "snacks-unicode";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "ecruzolivera";
-              repo = "snacks-unicode";
-              rev = "2dafb7574ab3d689ed06bb2a41b89c7368fc604b";
-              hash = "sha256-6o0DvRqLX06FeTNYe9msuSluTxsiBwU7A2Y3PET3Ztw=";
-            };
-            doCheck = false;
-          })
-
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "emoji.nvim";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "Allaman";
-              repo = "emoji.nvim";
-              rev = "372cb33e608941d2ddbdb60fc52eb78bfdf62ea2";
-              hash = "sha256-Z6njpXPG1AnCh76HKPITF0TA3eIBeP0LWP8rUxgMvjk=";
-            };
-            doCheck = false;
-          })
 
           (pkgs.vimUtils.buildVimPlugin {
             pname = "nvim-float";
@@ -246,18 +212,6 @@
             doCheck = false;
           })
 
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "sidekick.nvim";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "folke";
-              repo = "sidekick.nvim";
-              rev = "3d80a47e6375f6d647c9695d3afea6fa1b3275df";
-              hash = "sha256-YV4QMU2I+6PwTVdjsh/1Z+WTeLW9spgpugccmsqpxRY=";
-            };
-            doCheck = false;
-          })
-
         ];
       };
 
@@ -276,8 +230,6 @@
       home.file.".config/nvim".source =
         config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";
 
-      home.file.".config/nvim-dev".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/nvim";
     };
 
   flake.nixosModules.neovim = {

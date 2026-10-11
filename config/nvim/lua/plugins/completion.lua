@@ -5,10 +5,10 @@ return {
     event = { 'DeferredUIEnter' },
     before = function()
       require('lz.n').trigger_load({
+        'lazydev.nvim',
         'friendly-snippets',
         'luasnip',
         'blink.compat',
-        'cmp-cmdline',
         'colorful-menu.nvim',
         'blink-ripgrep.nvim',
         'blink-emoji.nvim',
@@ -45,14 +45,12 @@ return {
               auto_show = true,
             },
           },
-          sources = {
-            default = function()
-              local type = vim.fn.getcmdtype()
-              if type == '/' or type == '?' then return { 'buffer' } end
-              if type == ':' or type == '@' then return { 'cmdline', 'cmp_cmdline' } end
-              return {}
-            end,
-          },
+          sources = function()
+            local type = vim.fn.getcmdtype()
+            if type == '/' or type == '?' then return { 'buffer' } end
+            if type == ':' or type == '@' then return { 'cmdline' } end
+            return {}
+          end,
         },
         fuzzy = {
           sorts = {
@@ -177,14 +175,6 @@ return {
             --   module = 'blink-cmp-spell',
             --   score_offset = 5,
             -- },
-            cmp_cmdline = {
-              name = 'cmp_cmdline',
-              module = 'blink.compat.source',
-              score_offset = -100,
-              opts = {
-                cmp_name = 'cmdline',
-              },
-            },
           },
         },
       })
@@ -216,5 +206,4 @@ return {
   { 'blink-emoji.nvim', lazy = true },
   { 'blink-cmp-env', lazy = true },
   { 'blink-nerdfont.nvim', lazy = true },
-  { 'cmp-cmdline', lazy = true },
 }
