@@ -25,12 +25,6 @@ M.cwd = function() return vim.fs.normalize(vim.uv.cwd() or vim.fn.getcwd()) end
 
 M.root_patterns = { '.git', 'flake.nix', 'package.json', 'Cargo.toml', 'go.mod', 'pyproject.toml' }
 
---- Get project root directory
---- Hierarchy:
---- 1. LSP client workspace folders / root_dir (if attached and not opts.lsp == false)
---- 2. Snacks.git.get_root (if snacks loaded)
---- 3. Native root marker search via vim.fs.root
---- 4. Fallback to M.cwd()
 ---@param opts? { buf?: number, lsp?: boolean, patterns?: string[] }
 ---@return string
 M.root = function(opts)
@@ -39,7 +33,15 @@ M.root = function(opts)
   local file = vim.api.nvim_buf_get_name(buf)
   local path = (file ~= '' and file) or M.cwd()
 
-  -- 1. LSP root if client attached
+  if package.loaded['snacks'] and Snacks.git and Snacks.git.get_root then
+    local git_root = Snacks.git.get_root(path)
+    if git_root then return vim.fs.normalize(git_root) end
+  end
+
+  local patterns = opts.patterns or M.root_patterns
+  local detected = vim.fs.root(path, patterns)
+  if detected then return vim.fs.normalize(detected) end
+
   if opts.lsp ~= false and vim.lsp.get_clients then
     local clients = vim.lsp.get_clients({ bufnr = buf })
     for _, client in ipairs(clients) do
@@ -50,18 +52,6 @@ M.root = function(opts)
     end
   end
 
-  -- 2. Git root via Snacks
-  if package.loaded['snacks'] and Snacks.git and Snacks.git.get_root then
-    local git_root = Snacks.git.get_root(path)
-    if git_root then return vim.fs.normalize(git_root) end
-  end
-
-  -- 3. Native root marker search (Neovim 0.10+)
-  local patterns = opts.patterns or M.root_patterns
-  local detected = vim.fs.root(path, patterns)
-  if detected then return vim.fs.normalize(detected) end
-
-  -- 4. Fallback to CWD
   return M.cwd()
 end
 

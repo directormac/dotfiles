@@ -4,7 +4,7 @@ gui:
   tabWidth: 4
   sidePanelWidth: 0.4
   commandLogSize: 20
-  border: double
+  border: single
   statusPanelView: allBranchesLog
 
   nerdFontsVersion: "3"
