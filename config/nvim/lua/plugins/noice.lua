@@ -41,10 +41,23 @@ return {
       if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
 
       require('noice').setup({
-        popupmenu = {
-          enabled = false, -- Blink.cmp manages all completion menus!
-        },
+        -- popupmenu = {
+        --   enabled = false, -- Blink.cmp manages all completion menus!
+        -- },
         lsp = {
+
+          progress = {
+            enabled = false,
+            -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
+            -- See the section on formatting for more details on how to customize.
+            --- @type NoiceFormat|string
+            format = 'lsp_progress',
+            --- @type NoiceFormat|string
+            format_done = 'lsp_progress_done',
+            throttle = 1000 / 30, -- frequency to update lsp progress message
+            view = 'mini',
+          },
+
           override = {
             ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
             ['vim.lsp.util.stylize_markdown'] = true,
@@ -108,9 +121,20 @@ return {
             },
             opts = { skip = true },
           },
+          {
+            filter = {
+              event = 'lsp',
+              kind = 'progress',
+            },
+            opts = { skip = true },
+          },
         },
         views = {
           cmdline_popup = {
+            border = {
+              style = 'single',
+            },
+            filter_options = {},
             position = {
               row = 5,
               col = '50%',
@@ -118,6 +142,24 @@ return {
             size = {
               width = 60,
               height = 'auto',
+            },
+          },
+          popupmenu = {
+            relative = 'editor',
+            position = {
+              row = 8,
+              col = '50%',
+            },
+            size = {
+              width = 60,
+              height = 10,
+            },
+            border = {
+              style = 'rounded',
+              padding = { 0, 1 },
+            },
+            win_options = {
+              winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
             },
           },
         },
@@ -132,5 +174,13 @@ return {
     end,
   },
   { 'nui.nvim', lazy = true },
-  { 'nvim-notify', lazy = true },
+  -- {
+  --   'nvim-notify',
+  --   lazy = true,
+  --   after = function()
+  --     require('notify').setup({
+  --       background_colour = '#000000',
+  --     })
+  --   end,
+  -- },
 }

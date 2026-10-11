@@ -2,6 +2,7 @@ local M = {}
 
 M.opts = {
   notifier = {},
+  notify = {},
 }
 
 function M.keys()

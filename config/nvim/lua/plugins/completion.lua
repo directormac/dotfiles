@@ -33,7 +33,6 @@ return {
         },
         cmdline = {
           enabled = true,
-          menu = { auto_show = true },
           completion = {
             ghost_text = { enabled = true },
             menu = {
