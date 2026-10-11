@@ -22,6 +22,7 @@
           pkgs.rage
           pkgs.television
           pkgs.nix-search-tv
+          pkgs.jq
 
           # self'.packages.yazi
           # Nightly neovim that loads the live repo config (hot reload)
@@ -35,8 +36,51 @@
           }
           {
             name = "v";
+            category = "neovim";
             command = "nvim \"$@\"";
             help = "Neovim with live configuration reload from repository";
+          }
+          {
+            name = "update-nvim";
+            category = "neovim";
+            help = "Check and update Neovim dependencies (Neovim nightly overlay, Blink inputs, and GitHub plugins)";
+            command = ''
+              repo_root="$(git rev-parse --show-toplevel)"
+              bash "$repo_root/nixos/scripts/update-neovim.sh" "$@"
+            '';
+          }
+          {
+            name = "flake-update";
+            category = "flake";
+            help = "Update specific flake inputs (e.g. 'flake-update blink-cmp' or 'flake-update --all')";
+            command = ''
+              repo_root="$(git rev-parse --show-toplevel)"
+              flake_dir="$repo_root/nixos"
+
+              if [ "$#" -eq 0 ]; then
+                echo "Usage: flake-update <input1> [input2 ...]"
+                echo "       flake-update --all"
+                echo "       flake-update --list"
+                echo ""
+                echo "Tip: Run 'update-nvim' to check and update Neovim inputs and plugins."
+                exit 1
+              fi
+
+              case "$1" in
+                --list)
+                  echo "Root inputs in $flake_dir/flake.nix:"
+                  nix flake metadata "$flake_dir" --json 2>/dev/null | jq -r '.locks.nodes.root.inputs | keys[]'
+                  ;;
+                --all)
+                  echo "Updating all flake inputs in $flake_dir..."
+                  nix flake update --flake "$flake_dir"
+                  ;;
+                *)
+                  echo "Updating inputs: $* in $flake_dir..."
+                  nix flake update --flake "$flake_dir" "$@"
+                  ;;
+              esac
+            '';
           }
           {
             name = "tmux-reload";

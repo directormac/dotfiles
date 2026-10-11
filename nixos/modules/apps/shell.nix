@@ -210,6 +210,7 @@
           "lzg" = "lazygit";
           "man" = "man -P bat -p";
           "nsh" = "nix-shell -p";
+          "rmr" = "rm -r";
           "top" = "btop";
           "oc" = "opencode";
           "wh" = "which";
