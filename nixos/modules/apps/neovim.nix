@@ -89,10 +89,39 @@
       config.specs.general = {
         lazy = true;
         data = with pkgs.vimPlugins; [
-          lazydev-nvim
-          plenary-nvim
 
+          # Language Helpers
+          conform-nvim
+          nvim-lint
+          nvim-surround
+          nvim-treesitter-textobjects
+          nvim-treesitter.withAllGrammars
+          otter-nvim
+
+          vim-startuptime
+
+          # Debug Adapter Protocol (DAP)
+          nvim-dap
+          nvim-dap-ui
+          nvim-nio
+          nvim-dap-virtual-text
+          one-small-step-for-vimkind
+
+          # Utils
+          lazydev-nvim
+          mini-nvim
+          noice-nvim
+          nui-nvim
+          persistence-nvim
           snacks-nvim
+
+          # Navigation & Editing
+          flash-nvim
+          todo-comments-nvim
+          grug-far-nvim
+          edgy-nvim
+          yanky-nvim
+          fff-nvim
           oil-nvim
           (oil-git-nvim.overrideAttrs (_: {
             pname = "oil-git.nvim";
@@ -105,15 +134,17 @@
             };
           }))
           oil-lsp-diagnostics-nvim
-          persistence-nvim
-
-          nvim-colorizer-lua
-
-          mini-nvim
-          nvim-web-devicons
-          nvim-lspconfig
-          nvim-surround
-          vim-startuptime
+          (pkgs.vimUtils.buildVimPlugin {
+            pname = "nvim-colorpicker";
+            version = "unstable-2026-10-10";
+            src = pkgs.fetchFromGitHub {
+              owner = "mikevskater";
+              repo = "nvim-colorpicker";
+              rev = "88f6aeac944570ebfb97ac67c9fea27a73ea0429";
+              hash = "sha256-OfJuhBFel+lEmm11QCXKGayFx47mRJatqMFOEbbqz9o=";
+            };
+            doCheck = false;
+          })
 
           # Completion
           (inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp)
@@ -121,50 +152,39 @@
           blink-compat
           blink-ripgrep-nvim
           blink-emoji-nvim
+          blink-nerdfont-nvim
+          blink-cmp-env
           blink-cmp-dictionary
-          cmp-cmdline
-
+          blink-pairs
           colorful-menu-nvim
           luasnip
           friendly-snippets
-          lualine-nvim
-          gitsigns-nvim
-          which-key-nvim
-          fidget-nvim
-          nvim-lint
+
+          # UI
           bufferline-nvim
-          conform-nvim
-          zen-mode-nvim
-          otter-nvim
-          # windsurf-nvim
-
-          nvim-treesitter-textobjects
-          nvim-treesitter.withAllGrammars
-
-          # Navigation & Editing
-          flash-nvim
-          todo-comments-nvim
-          grug-far-nvim
-          edgy-nvim
-          yanky-nvim
-
-          # UI & Notifications
-          noice-nvim
-          nui-nvim
-          nvim-notify
-
-          # Debug Adapter Protocol (DAP)
-          nvim-dap
-          nvim-dap-ui
-          nvim-nio
-          nvim-dap-virtual-text
-          one-small-step-for-vimkind
+          gitsigns-nvim
+          lualine-nvim
+          nvim-web-devicons
+          which-key-nvim
+          render-markdown
 
           nerdy-nvim
 
-          # https://github.com/dmtrKovalenko/fff
-          fff-nvim
+          plenary-nvim
           ccc-nvim
+          nvim-colorizer-lua
+
+          nvim-lspconfig
+
+          fidget-nvim
+          cmp-cmdline
+          nvim-notify
+          zen-mode-nvim
+          # windsurf-nvim
+
+          # UI & Notifications
+
+          # https://github.com/dmtrKovalenko/fff
 
           (pkgs.vimUtils.buildVimPlugin {
             pname = "snacks-unicode";
@@ -186,18 +206,6 @@
               repo = "emoji.nvim";
               rev = "372cb33e608941d2ddbdb60fc52eb78bfdf62ea2";
               hash = "sha256-Z6njpXPG1AnCh76HKPITF0TA3eIBeP0LWP8rUxgMvjk=";
-            };
-            doCheck = false;
-          })
-
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "nvim-colorpicker";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "mikevskater";
-              repo = "nvim-colorpicker";
-              rev = "88f6aeac944570ebfb97ac67c9fea27a73ea0429";
-              hash = "sha256-OfJuhBFel+lEmm11QCXKGayFx47mRJatqMFOEbbqz9o=";
             };
             doCheck = false;
           })
