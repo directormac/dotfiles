@@ -1,4 +1,5 @@
 return {
+  -- Configuration Defaults https://github.com/dmtrKovalenko/fff#configuration
   'fff.nvim',
   cmd = {
     'FFFFind',
@@ -76,11 +77,13 @@ return {
   },
   after = function()
     require('fff').setup({
+      title = ' Fuzzy Fucking Finder. 󰉁  󰩐 󱡴 ',
       prompt = ' ',
       layout = {
         prompt_position = 'top',
         preview_position = 'right',
         preview_size = 0.4,
+        flex = { wrap = 'bottom' },
       },
       preview = {
         enabled = true,
