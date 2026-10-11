@@ -14,6 +14,11 @@
       options,
       ...
     }:
+    let
+
+      blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
+      blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
+    in
     {
       imports = [ wlib.wrapperModules.neovim ];
 
@@ -29,7 +34,6 @@
       # User-facing options -> exposed to Lua via the generated info plugin.
       # Read in Lua with:
       #   nixInfo(nil, "settings", "colorscheme")
-      #   nixInfo(false, "settings", "cats", "lua")
       # -----------------------------------------------------------------------
       options.settings.colorscheme = lib.mkOption {
         type = lib.types.str;
@@ -135,6 +139,7 @@
             };
           }))
           oil-lsp-diagnostics-nvim
+
           (pkgs.vimUtils.buildVimPlugin {
             pname = "nvim-colorpicker";
             version = "unstable-2026-10-10";
@@ -148,14 +153,15 @@
           })
 
           # Completion
-          (inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp)
-          (inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib)
+          blink-cmp # Flake input
+          blink-lib # Flake input
           blink-compat
           blink-ripgrep-nvim
           blink-emoji-nvim
           blink-nerdfont-nvim
           blink-cmp-env
           blink-cmp-dictionary
+          blink-cmp-git
           blink-pairs
           colorful-menu-nvim
           luasnip
@@ -163,6 +169,7 @@
 
           # UI
           bufferline-nvim
+          octo-nvim
           gitsigns-nvim
           lualine-nvim
           nvim-web-devicons

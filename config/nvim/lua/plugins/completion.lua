@@ -12,9 +12,10 @@ return {
         'colorful-menu.nvim',
         'blink-ripgrep.nvim',
         'blink-emoji.nvim',
+        'blink-nerdfont.nvim',
+        'blink-cmp-git',
         'blink-cmp-env',
         'blink-cmp-dictionary',
-        'blink-nerdfont.nvim',
       })
     end,
     after = function(_)
@@ -132,7 +133,7 @@ return {
               score_offset = 40,
             },
             lazydev = {
-              name = 'lazydev',
+              name = 'LazyDev',
               module = 'lazydev.integrations.blink',
               score_offset = 45,
             },
@@ -170,11 +171,15 @@ return {
               module = 'blink-nerdfont',
               score_offset = 20,
             },
-            -- spell = {
-            --   name = 'spell',
-            --   module = 'blink-cmp-spell',
-            --   score_offset = 5,
-            -- },
+            git = {
+              module = 'blink-cmp-git',
+              name = 'Git',
+              -- only enable this source when filetype is gitcommit, markdown, or 'octo'
+              enabled = function() return vim.tbl_contains({ 'octo', 'gitcommit', 'markdown' }, vim.bo.filetype) end,
+              --- @module 'blink-cmp-git'
+              --- @type blink-cmp-git.Options
+              opts = {},
+            },
           },
         },
       })
@@ -203,6 +208,7 @@ return {
 
   { 'blink-ripgrep.nvim', lazy = true },
   { 'blink-cmp-dictionary', lazy = true },
+  { 'blink-cmp-git', lazy = true },
   { 'blink-emoji.nvim', lazy = true },
   { 'blink-cmp-env', lazy = true },
   { 'blink-nerdfont.nvim', lazy = true },

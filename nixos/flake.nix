@@ -45,6 +45,7 @@
       url = "github:saghen/blink.lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     lazyvim.url = "github:pfassina/lazyvim-nix";
     make-shell.url = "github:nicknovitski/make-shell";
 
@@ -131,8 +132,6 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # yazelix.url = "github:Yazelix/nova/stable";
 
     noctalia = {
       url = "github:noctalia-dev/noctalia";

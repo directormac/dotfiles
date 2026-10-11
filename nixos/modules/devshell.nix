@@ -15,15 +15,16 @@
 
         packages = [
           config.agenix-rekey.package
-          pkgs.rage
-          self'.packages.yazi
-          self'.packages.nh
-          self'.packages.tmux
-          # Nightly neovim that loads the live repo config (hot reload)
+          config.treefmt.build.wrapper
           self'.packages.nvim-dev
+          self'.packages.tmux
+          self'.packages.nh
+          pkgs.rage
           pkgs.television
           pkgs.nix-search-tv
-          config.treefmt.build.wrapper
+
+          # self'.packages.yazi
+          # Nightly neovim that loads the live repo config (hot reload)
         ];
 
         commands = [

@@ -43,8 +43,6 @@
     in
     {
 
-      # imports = [ inputs.yazelix.homeManagerModules.default ];
-
       home.packages = [
         inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
@@ -288,9 +286,6 @@
         '';
 
       };
-
-      # https://github.com/Yazelix/nova/blob/stable/docs/installation.md
-      # programs.yazelix.enable = true;
 
     };
 

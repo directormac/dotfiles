@@ -6,6 +6,7 @@ return {
 
     -- Language servers enabled via Neovim 0.11+ native LSP engine
     local servers = {
+      'codelens',
       'lua_ls',
       'nixd',
       'nil_ls',
