@@ -15,26 +15,26 @@ return {
       { '<leader>sna', function() require('noice').cmd('all') end, desc = 'Noice All' },
       { '<leader>snd', function() require('noice').cmd('dismiss') end, desc = 'Dismiss All' },
       { '<leader>snt', function() require('noice').cmd('pick') end, desc = 'Noice Picker' },
-      -- {
-      --   '<c-f>',
-      --   function()
-      --     if not require('noice.lsp').scroll(4) then return '<c-f>' end
-      --   end,
-      --   silent = true,
-      --   expr = true,
-      --   desc = 'Scroll Forward',
-      --   mode = { 'i', 'n', 's' },
-      -- },
-      -- {
-      --   '<c-b>',
-      --   function()
-      --     if not require('noice.lsp').scroll(-4) then return '<c-b>' end
-      --   end,
-      --   silent = true,
-      --   expr = true,
-      --   desc = 'Scroll Backward',
-      --   mode = { 'i', 'n', 's' },
-      -- },
+      {
+        '<c-f>',
+        function()
+          if not require('noice.lsp').scroll(4) then return '<c-f>' end
+        end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll Forward',
+        mode = { 'i', 'n', 's' },
+      },
+      {
+        '<c-b>',
+        function()
+          if not require('noice.lsp').scroll(-4) then return '<c-b>' end
+        end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll Backward',
+        mode = { 'i', 'n', 's' },
+      },
     },
     before = function() require('lz.n').trigger_load({ 'nui.nvim', 'nvim-notify' }) end,
     after = function()
@@ -155,11 +155,7 @@ return {
               height = 10,
             },
             border = {
-              style = 'rounded',
-              padding = { 0, 1 },
-            },
-            win_options = {
-              winhighlight = { Normal = 'Normal', FloatBorder = 'DiagnosticInfo' },
+              style = 'single',
             },
           },
         },
@@ -174,13 +170,4 @@ return {
     end,
   },
   { 'nui.nvim', lazy = true },
-  -- {
-  --   'nvim-notify',
-  --   lazy = true,
-  --   after = function()
-  --     require('notify').setup({
-  --       background_colour = '#000000',
-  --     })
-  --   end,
-  -- },
 }
