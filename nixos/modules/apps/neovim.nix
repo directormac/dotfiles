@@ -166,7 +166,7 @@
           lualine-nvim
           nvim-web-devicons
           which-key-nvim
-          render-markdown
+          render-markdown-nvim
 
           nerdy-nvim
 
