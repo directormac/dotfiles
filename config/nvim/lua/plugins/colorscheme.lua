@@ -16,6 +16,8 @@ return {
         bufferline = true,
         blink_pairs = true,
         gitsigns = true,
+        harpoon = true,
+        render_markdown = true,
         nvimtree = true,
         snacks = true,
         treesitter = true,

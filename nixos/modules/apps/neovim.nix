@@ -203,6 +203,7 @@
           lualine-nvim
           nvim-web-devicons
           which-key-nvim
+          hlchunk-nvim
           render-markdown-nvim
 
           # AI
