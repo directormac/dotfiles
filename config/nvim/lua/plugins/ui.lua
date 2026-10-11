@@ -1,10 +1,14 @@
--- Web-devicons, which-key, fidget, and vim-startuptime.
 return {
   {
     'nvim-web-devicons',
     event = 'DeferredUIEnter',
-    after = function(plugin)
-      require('nvim-web-devicons').setup()
+    after = function(plugin) require('nvim-web-devicons').setup() end,
+  },
+  {
+    'blink.pairs',
+    after = function()
+      -- https://github.com/saghen/blink.pairs#installation
+      require('blink.pairs').setup({})
     end,
   },
   {
@@ -54,11 +58,6 @@ return {
 
       vim.keymap.set('n', '<leader>?', '<cmd>lua Snacks.picker.keymaps()<CR>', { desc = 'Search Keybindings' })
     end,
-  },
-  {
-    'fidget.nvim',
-    event = 'DeferredUIEnter',
-    after = function(plugin) require('fidget').setup({}) end,
   },
   {
     'vim-startuptime',
