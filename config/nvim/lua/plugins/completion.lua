@@ -12,10 +12,13 @@ return {
         'colorful-menu.nvim',
         'blink-ripgrep.nvim',
         'blink-emoji.nvim',
+        'blink-cmp-env',
         'blink-cmp-dictionary',
+        'blink-nerdfont.nvim',
       })
     end,
     after = function(_)
+      local item_kinds = require('blink.cmp.types').CompletionItemKind
       require('blink.cmp').setup({
         keymap = {
           preset = 'default',
@@ -60,13 +63,17 @@ return {
         },
         signature = {
           enabled = false, -- Handled cleanly by Noice!
+          window = {
+            border = 'single',
+          },
         },
         completion = {
           menu = {
             border = 'single',
             winblend = 0,
             draw = {
-              treesitter = { 'lsp' },
+              -- We don't need label_description now because label and label_description are already
+              -- combined together in label by colorful-menu.nvim.
               columns = { { 'kind_icon' }, { 'label', gap = 1 } },
               components = {
                 label = {
@@ -74,6 +81,7 @@ return {
                   text = function(ctx)
                     local highlights_info = require('colorful-menu').blink_highlights(ctx)
                     if highlights_info ~= nil then
+                      -- Or you want to add more item to label
                       return highlights_info.label
                     else
                       return ctx.label
@@ -86,6 +94,7 @@ return {
                     for _, idx in ipairs(ctx.label_matched_indices) do
                       table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
                     end
+                    -- Do something else
                     return highlights
                   end,
                 },
@@ -102,7 +111,18 @@ return {
           },
         },
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev', 'ripgrep', 'emoji', 'dictionary' },
+          default = {
+            'lsp',
+            'path',
+            'snippets',
+            'buffer',
+            'lazydev',
+            'env',
+            'ripgrep',
+            'dictionary',
+            'emoji',
+            'nerdfont',
+          },
           providers = {
             snippets = {
               score_offset = 30,
@@ -118,14 +138,38 @@ return {
               module = 'lazydev.integrations.blink',
               score_offset = 45,
             },
+            env = {
+              name = 'Env',
+              module = 'blink-cmp-env',
+              score_offset = 20,
+              opts = {
+                item_kind = item_kinds.Variable,
+                show_braces = false,
+                show_documentation_window = true,
+              },
+            },
+            -- https://github.com/mikavilpas/blink-ripgrep.nvim#full-config
             ripgrep = {
-              name = 'ripgrep',
+              name = 'Grep',
               module = 'blink-ripgrep',
               score_offset = 10,
             },
+            -- TODO: Needs more configuration
+            -- https://github.com/Kaiser-Yang/blink-cmp-dictionary/
+            dictionary = {
+              name = 'Dictionary',
+              module = 'blink-cmp-dictionary',
+              score_offset = 15,
+              min_keyword_length = 3,
+            },
             emoji = {
-              name = 'emoji',
+              name = 'Emoji',
               module = 'blink-emoji',
+              score_offset = 20,
+            },
+            nerdfont = {
+              name = 'Nerd Fonts',
+              module = 'blink-nerdfont',
               score_offset = 20,
             },
             -- spell = {
@@ -133,12 +177,6 @@ return {
             --   module = 'blink-cmp-spell',
             --   score_offset = 5,
             -- },
-            dictionary = {
-              name = 'dictionary',
-              module = 'blink-cmp-dictionary',
-              score_offset = 15,
-              min_keyword_length = 3,
-            },
             cmp_cmdline = {
               name = 'cmp_cmdline',
               module = 'blink.compat.source',
@@ -164,7 +202,6 @@ return {
       require('luasnip.loaders.from_vscode').lazy_load()
     end,
   },
-  { 'cmp-cmdline', lazy = true },
   { 'blink.compat', lazy = true },
   { 'blink.lib', lazy = true },
   {
@@ -173,7 +210,11 @@ return {
     after = function() require('colorful-menu').setup() end,
   },
   { 'friendly-snippets', lazy = true },
+
   { 'blink-ripgrep.nvim', lazy = true },
-  { 'blink-emoji.nvim', lazy = true },
   { 'blink-cmp-dictionary', lazy = true },
+  { 'blink-emoji.nvim', lazy = true },
+  { 'blink-cmp-env', lazy = true },
+  { 'blink-nerdfont.nvim', lazy = true },
+  { 'cmp-cmdline', lazy = true },
 }
