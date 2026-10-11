@@ -19,6 +19,17 @@ return {
             LineNrBelow = { fg = colors.overlay0 },
             CursorLineNr = { fg = colors.mauve, style = { 'bold' } },
             CursorLine = { bg = colors.surface0 },
+            -- Transparent popup menu and blink.cmp
+            Pmenu = { bg = 'NONE', fg = colors.overlay2 },
+            PmenuBorder = { bg = 'NONE', fg = colors.surface2 },
+            BlinkCmpMenu = { bg = 'NONE', fg = colors.text },
+            BlinkCmpMenuBorder = { bg = 'NONE', fg = colors.surface2 },
+            BlinkCmpDoc = { bg = 'NONE', fg = colors.text },
+            BlinkCmpDocBorder = { bg = 'NONE', fg = colors.surface2 },
+            BlinkCmpDocSeparator = { bg = 'NONE', fg = colors.surface2 },
+            BlinkCmpSignatureHelp = { bg = 'NONE', fg = colors.text },
+            BlinkCmpSignatureHelpBorder = { bg = 'NONE', fg = colors.surface2 },
+            BlinkCmpScrollBarGutter = { bg = 'NONE' },
           }
         end,
       },

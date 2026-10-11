@@ -8,24 +8,7 @@ M.hover_or_focus = function()
     return
   end
 
-  local bufnr = vim.api.nvim_get_current_buf()
-  local hover_win = vim.b[bufnr].lsp_floating_preview
-  if hover_win and vim.api.nvim_win_is_valid(hover_win) then
-    vim.api.nvim_set_current_win(hover_win)
-    return
-  end
-
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if win ~= current_win and vim.api.nvim_win_is_valid(win) then
-      local cfg = vim.api.nvim_win_get_config(win)
-      if cfg.relative and cfg.relative ~= '' and cfg.focusable ~= false then
-        vim.api.nvim_set_current_win(win)
-        return
-      end
-    end
-  end
-
-  vim.lsp.buf.hover({ border = 'single', max_height = 40, max_width = 60, focus = true, silent = true })
+  vim.lsp.buf.hover()
 end
 
 M.buf_delete = function(buf)
@@ -82,29 +65,26 @@ M.root = function(opts)
   return M.cwd()
 end
 
---- Open Snacks file picker in cwd or root
+--- Open FFF file picker in cwd or root
 ---@param opts? table
 M.picker_files = function(opts)
   opts = opts or {}
   local target_cwd = opts.cwd or (opts.root and M.root(opts) or M.cwd())
-  local picker_opts = vim.tbl_deep_extend('force', {
-    cwd = target_cwd,
-    layout = { hidden = { 'preview' } },
-  }, opts)
+  if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
+  local picker_opts = vim.tbl_deep_extend('force', opts, { cwd = target_cwd })
   picker_opts.root = nil
-  Snacks.picker.files(picker_opts)
+  require('fff').find_files(picker_opts)
 end
 
---- Open Snacks grep in cwd or root
+--- Open FFF live grep in cwd or root
 ---@param opts? table
 M.picker_grep = function(opts)
   opts = opts or {}
   local target_cwd = opts.cwd or (opts.root and M.root(opts) or M.cwd())
-  local picker_opts = vim.tbl_deep_extend('force', {
-    cwd = target_cwd,
-  }, opts)
+  if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
+  local picker_opts = vim.tbl_deep_extend('force', opts, { cwd = target_cwd })
   picker_opts.root = nil
-  Snacks.picker.grep(picker_opts)
+  require('fff').live_grep(picker_opts)
 end
 
 return M

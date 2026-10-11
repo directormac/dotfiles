@@ -33,9 +33,9 @@
             help = "alias for rage";
           }
           {
-            name = "neovim";
-            command = "nvim-dev";
-            help = "neovim dev";
+            name = "v";
+            command = "nvim \"$@\"";
+            help = "Neovim with live configuration reload from repository";
           }
           {
             name = "tmux-reload";

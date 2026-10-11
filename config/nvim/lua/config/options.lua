@@ -68,7 +68,7 @@ vim.opt.signcolumn = 'yes'
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
-vim.opt.pumblend = 10 -- Popup blend
+vim.opt.pumblend = 0 -- Popup blend (0 for true terminal transparency)
 vim.opt.pumheight = 100 -- Maximum number of entries in a popup
 
 -- Set completeopt to have a better completion experience

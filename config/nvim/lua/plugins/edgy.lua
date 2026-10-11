@@ -45,7 +45,7 @@ return {
           title = function() return '%{b:snacks_terminal.id}: %{b:term_title}' end,
           filter = function(_buf, win)
             return vim.w[win].snacks_win
-              and vim.w[win].snacks_win.relative == 'editor'
+              and vim.w[win].snacks_win.position ~= 'float'
               and not vim.w[win].trouble_preview
           end,
         },

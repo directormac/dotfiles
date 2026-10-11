@@ -294,9 +294,8 @@
     {
       packages.nvim-dev =
         (self.wrappers.neovim.apply {
-          binName = "nvim-dev";
-          env.NVIM_APPNAME = "nvim-dev";
-          settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
+          binName = "nvim";
+          settings.config_directory = lib.generators.mkLuaInline "(vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config'))";
         }).wrap
           { inherit pkgs; };
     };

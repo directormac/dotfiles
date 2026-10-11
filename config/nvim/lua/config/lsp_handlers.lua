@@ -1,19 +1,6 @@
 local M = {}
 
 function M.setup()
-  -- Floating window borders for LSP handlers
-  local orig_hover = vim.lsp.handlers['textDocument/hover']
-  vim.lsp.handlers['textDocument/hover'] = function(err, result, ctx, config)
-    config = vim.tbl_extend('force', { border = 'rounded' }, config or {})
-    return orig_hover(err, result, ctx, config)
-  end
-
-  local orig_sig = vim.lsp.handlers['textDocument/signatureHelp']
-  vim.lsp.handlers['textDocument/signatureHelp'] = function(err, result, ctx, config)
-    config = vim.tbl_extend('force', { border = 'rounded' }, config or {})
-    return orig_sig(err, result, ctx, config)
-  end
-
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
     callback = function(ev)
@@ -34,7 +21,12 @@ function M.setup()
       nmap('<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, '[W]orkspace [S]ymbols')
 
       nmap('K', hover_or_focus, 'Hover Documentation / Focus Popup')
-      vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf, desc = 'LSP: Signature Documentation' })
+      vim.keymap.set(
+        'i',
+        '<C-k>',
+        vim.lsp.buf.signature_help,
+        { buffer = ev.buf, desc = 'LSP: Signature Documentation' }
+      )
 
       nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
       nmap('<leader>cwa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')

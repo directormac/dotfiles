@@ -48,6 +48,7 @@ return {
           { '<leader>w', group = 'Windows' },
           { '<leader>x', group = 'Diagnostics / Quickfix' },
           { '<leader><tab>', group = 'Tabs' },
+          { 'gs', group = 'Surround', mode = { 'n', 'x' } },
         },
       })
 

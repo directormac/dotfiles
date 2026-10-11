@@ -12,7 +12,7 @@ vim.diagnostic.config({
   },
   severity_sort = true,
   float = {
-    border = 'rounded',
+    border = 'single',
     source = 'if_many',
     prefix = ' ',
     header = '',
@@ -105,13 +105,6 @@ vim.api.nvim_create_autocmd({ 'CursorHold' }, {
     if diag_opened then return end
 
     local clients = vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/hover' })
-    if #clients > 0 then
-      vim.lsp.buf.hover({
-        border = 'rounded',
-        focus = false,
-        silent = true,
-        focusable = true,
-      })
-    end
+    if #clients > 0 then vim.lsp.buf.hover() end
   end,
 })

@@ -17,6 +17,12 @@ return {
         keymap = {
           preset = 'default',
           ['<C-Tab>'] = { 'select_and_accept' },
+          ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+          ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+          ['<C-n>'] = { 'select_next', 'fallback' },
+          ['<C-p>'] = { 'select_prev', 'fallback' },
+          ['<CR>'] = { 'accept', 'fallback' },
+          ['<C-k>'] = {}, -- Handled by Noice signature help
         },
         appearance = {
           nerd_font_variant = 'mono',
@@ -27,7 +33,9 @@ return {
         },
         cmdline = {
           enabled = true,
+          menu = { auto_show = true },
           completion = {
+            ghost_text = { enabled = true },
             menu = {
               auto_show = true,
             },
@@ -47,14 +55,12 @@ return {
           },
         },
         signature = {
-          enabled = true,
-          window = {
-            border = 'single',
-            show_documentation = true,
-          },
+          enabled = false, -- Handled cleanly by Noice!
         },
         completion = {
           menu = {
+            border = 'single',
+            winblend = 0,
             draw = {
               treesitter = { 'lsp' },
               columns = { { 'kind_icon' }, { 'label', gap = 1 } },
@@ -86,12 +92,13 @@ return {
             auto_show = true,
             auto_show_delay_ms = 200,
             window = {
-              border = 'rounded',
+              border = 'single',
+              winblend = 0,
             },
           },
         },
         sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer', 'omni' },
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
           providers = {
             snippets = {
               score_offset = 30,
@@ -129,6 +136,10 @@ return {
   },
   { 'cmp-cmdline', lazy = true },
   { 'blink.compat', lazy = true },
-  { 'colorful-menu.nvim', lazy = true },
+  {
+    'colorful-menu.nvim',
+    lazy = true,
+    after = function() require('colorful-menu').setup() end,
+  },
   { 'friendly-snippets', lazy = true },
 }
