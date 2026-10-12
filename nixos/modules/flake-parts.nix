@@ -34,6 +34,8 @@
 
       inputs.nur.modules.nixos.default
     ];
+
+    # nixpkgs.config.allowUnfree = true;
   };
 
   # This is your standalone home-manager configuration, meant to be used on non-nixos machines
