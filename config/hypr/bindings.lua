@@ -219,33 +219,29 @@ end, { description = 'Enter the cursor submap' })
 hl.define_submap('cursor', function()
   -- Jump the cursor to a position. wl-kbptr grabs the keyboard, so drop out of
   -- the submap while it runs and re-enter once it has finished.
-  hl.bind('a', function()
+  hl.bind('q', function()
     hl.dispatch(hl.dsp.submap('reset'))
-    -- hyprctl dispatch is Lua-backed in 0.56+, so the old `dispatch submap cursor`
-    -- form is a syntax error. Re-enter via the Lua dispatcher instead.
-    hl.exec_cmd([[wl-kbptr; hyprctl dispatch "hl.dsp.submap('cursor')"]])
+    hl.exec_cmd('wl-kbptr')
   end, { description = 'Jump cursor to a position' })
 
   -- Floating mode with OpenCV auto-detection: wl-kbptr screen-captures the
   -- output, highlights detected clickable elements, then left-clicks the one
   -- you pick. Requires the binary to be built with the opencv feature.
-  hl.bind('f', function()
+  hl.bind('a', function()
     hl.dispatch(hl.dsp.submap('reset'))
-    hl.exec_cmd(
-      [[wl-kbptr -o modes=floating,click -o mode_floating.source=detect; hyprctl dispatch "hl.dsp.submap('cursor')"]]
-    )
+    hl.exec_cmd('wl-kbptr -o modes=floating,click -o mode_floating.source=detect')
   end, { description = 'Click a detected element' })
 
   -- Movement
-  hl.bind('j', hl.dsp.exec_cmd('wlrctl pointer move 0 100'), { repeating = true })
-  hl.bind('k', hl.dsp.exec_cmd('wlrctl pointer move 0 -100'), { repeating = true })
-  hl.bind('l', hl.dsp.exec_cmd('wlrctl pointer move 100 0'), { repeating = true })
-  hl.bind('h', hl.dsp.exec_cmd('wlrctl pointer move -100 0'), { repeating = true })
+  hl.bind('j', hl.dsp.exec_cmd('wlrctl pointer move 0 10'), { repeating = true })
+  hl.bind('k', hl.dsp.exec_cmd('wlrctl pointer move 0 -10'), { repeating = true })
+  hl.bind('l', hl.dsp.exec_cmd('wlrctl pointer move 10 0'), { repeating = true })
+  hl.bind('h', hl.dsp.exec_cmd('wlrctl pointer move -10 0'), { repeating = true })
 
   -- Buttons
-  hl.bind('s', hl.dsp.exec_cmd('wlrctl pointer click left'), { description = 'Left click' })
-  hl.bind('d', hl.dsp.exec_cmd('wlrctl pointer click middle'), { description = 'Middle click' })
-  hl.bind('v', hl.dsp.exec_cmd('wlrctl pointer click right'), { description = 'Right click' })
+  hl.bind('v', hl.dsp.exec_cmd('wlrctl pointer click left'), { description = 'Left click' })
+  hl.bind('b', hl.dsp.exec_cmd('wlrctl pointer click middle'), { description = 'Middle click' })
+  hl.bind('n', hl.dsp.exec_cmd('wlrctl pointer click right'), { description = 'Right click' })
 
   -- Scroll up / down
   hl.bind('e', hl.dsp.exec_cmd('wlrctl pointer scroll 10 0'), { repeating = true })
