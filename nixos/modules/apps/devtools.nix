@@ -56,6 +56,7 @@
         deno
         mise
         pitchfork
+        luarocks-nix
       ];
 
     };

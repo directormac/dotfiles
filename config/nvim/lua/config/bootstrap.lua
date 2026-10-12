@@ -27,6 +27,12 @@ local lzn = require('lz.n')
 _G.lzn = lzn
 nixInfo.lzn = lzn
 
+-- Register custom lz.n handlers
+lzn.register_handler(require('config.load_before'))
+local on_require = require('config.on_require')
+lzn.register_handler(on_require)
+on_require.enable()
+
 -- Global config utilities and icons
 _G.Util = require('config.util')
 _G.Icons = require('config.icons')

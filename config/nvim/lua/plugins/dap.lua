@@ -58,7 +58,6 @@ return {
     end,
   },
   { 'nvim-dap-ui', lazy = true },
-  { 'nvim-nio', lazy = true },
   { 'nvim-dap-virtual-text', lazy = true },
   { 'one-small-step-for-vimkind', lazy = true },
 }

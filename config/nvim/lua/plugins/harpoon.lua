@@ -3,6 +3,7 @@ return {
     -- Configuration Reference https://github.com/ThePrimeagen/harpoon/tree/harpoon2#config
     'harpoon2',
     event = 'DeferredUIEnter',
+    load_before = { 'harpoon-lualine' },
     after = function()
       local harpoon = require('harpoon')
       harpoon:setup({
@@ -42,7 +43,8 @@ return {
     end,
   },
   {
-    'hapool-lualine',
+    'harpoon-lualine',
+    load_before = { 'lualine.nvim' },
     lazy = true,
   },
 }

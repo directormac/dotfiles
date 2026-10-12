@@ -84,6 +84,7 @@
         tree-sitter
         ripgrep
         fd
+        lua5_1
 
         # -----------------------------------------------------------------------
         # Language servers, linters, formatters
@@ -96,6 +97,7 @@
         nixd
         nil
         nixfmt
+        statix
 
         # lua
         lua-language-server

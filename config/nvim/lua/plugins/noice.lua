@@ -43,15 +43,7 @@ return {
 
       -- Configurtaion Reference https://github.com/folke/noice.nvim#%EF%B8%8F-configuration
       require('noice').setup({
-        -- popupmenu = {
-        --   enabled = false, -- Blink.cmp manages all completion menus!
-        -- },
-        -- notify = {
-        --   enabled = false,
-        --   view = 'snacks',
-        -- },
         lsp = {
-
           progress = {
             enabled = true,
             -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
@@ -67,13 +59,6 @@ return {
           override = {
             ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
             ['vim.lsp.util.stylize_markdown'] = true,
-          },
-
-          message = {
-            -- Messages shown by lsp servers
-            enabled = true,
-            view = 'mini',
-            opts = {},
           },
 
           hover = {
@@ -123,25 +108,20 @@ return {
               },
             },
           },
+          documentation = {
+            view = 'hover',
+            ---@type NoiceViewOptions
+            opts = {
+              lang = 'markdown',
+              replace = true,
+              render = 'plain',
+              format = { '{message}' },
+              win_options = { concealcursor = 'n', conceallevel = 3 },
+            },
+          },
         },
         ---@type NoiceRouteConfig[]
-        routes = {
-          {
-            view = 'mini',
-            filter = { event = 'msg_showmode' },
-          },
-          {
-            filter = {
-              event = 'msg_show',
-              any = {
-                { find = '%d+L, %d+B' },
-                { find = '; after #%d+' },
-                { find = '; before #%d+' },
-              },
-            },
-            view = 'mini',
-          },
-        },
+        routes = {},
         ---@type NoiceConfigViews
         views = {
           cmdline_popup = {
@@ -173,6 +153,9 @@ return {
             },
           },
         },
+        -- You can add any custom commands below that will be available with `:Noice command`
+        ---@type table<string, NoiceCommand>
+        commands = {},
         ---@type NoiceFormatOptions
         format = {}, --- @see section on formatting
         ---@type NoicePresets
@@ -186,5 +169,4 @@ return {
       })
     end,
   },
-  { 'nui.nvim', lazy = true },
 }

@@ -199,6 +199,7 @@
         lshw
         nfs-utils
         ntfs3g
+
         # Install later
         _7zip-zstd
         _7zz
@@ -213,6 +214,8 @@
         gcc
         binutils
         llvm
+
+        manix
         man-pages
         man-pages-posix
 

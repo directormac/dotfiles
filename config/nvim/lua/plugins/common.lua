@@ -15,5 +15,16 @@ return {
   {
     'plenary.nvim',
     lazy = true,
+    on_require = { 'plenary' },
+  },
+  {
+    'nui.nvim',
+    lazy = true,
+    on_require = { 'nui' },
+  },
+  {
+    'nvim-nio',
+    lazy = true,
+    on_require = { 'nio' },
   },
 }

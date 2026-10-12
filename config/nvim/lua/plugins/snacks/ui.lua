@@ -37,6 +37,9 @@ M.opts = {
   },
   styles = {
     float = { backdrop = 60 },
+    notification = {
+      border = 'single',
+    },
   },
 }
 

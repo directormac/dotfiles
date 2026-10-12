@@ -16,7 +16,7 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch' },
+        lualine_b = { 'branch', 'harpoon2' },
         lualine_c = {
           {
             'diagnostics',

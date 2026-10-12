@@ -21,4 +21,5 @@ require('lz.n').load('plugins')
 -- Apply colorscheme (lazily loaded via lz.n colorscheme handler)
 vim.cmd.colorscheme(nixInfo('catppuccin', 'settings', 'colorscheme'))
 
-require('lzn-auto-require').enable()
+local ok_ar, lzn_ar = pcall(require, 'lzn-auto-require')
+if ok_ar then lzn_ar.enable() end
