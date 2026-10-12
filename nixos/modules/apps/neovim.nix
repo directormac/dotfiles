@@ -73,6 +73,7 @@
       };
 
       config.specs.lzn = pkgs.vimPlugins.lz-n;
+      config.specs.lzn-auto-require = pkgs.vimPlugins.lzn-auto-require;
 
       # -----------------------------------------------------------------------
       # Runtime packages (tools, language servers, formatters, linters)

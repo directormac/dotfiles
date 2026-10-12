@@ -1,10 +1,5 @@
 return {
   {
-    'nvim-web-devicons',
-    event = 'DeferredUIEnter',
-    after = function(plugin) require('nvim-web-devicons').setup() end,
-  },
-  {
     'blink.pairs',
     after = function()
       -- https://github.com/saghen/blink.pairs#installation

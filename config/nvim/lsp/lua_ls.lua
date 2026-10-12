@@ -1,17 +1,17 @@
----@brief
---- lua-language-server settings.
----
---- This file is on 'runtimepath', so neovim merges it into `vim.lsp.config('lua_ls')`
---- when the client starts. See `:h lsp-config-merge`.
---- The trigger spec (which filetypes activate the server) lives in `lua/lsp/lua.lua`.
 return {
   settings = {
     Lua = {
-      signatureHelp = { enabled = true },
+      signatureHelp = { enable = false },
+      runtime = { version = 'LuaJIT' },
+      workspace = {
+        checkThirdParty = false,
+        library = { vim.env.VIMRUNTIME },
+      },
       diagnostics = {
-        globals = { 'nixInfo', 'vim', 'Snacks' },
+        globals = { 'vim', 'nixInfo', 'Snacks', 'lzn', 'Util', 'Icons' },
         disable = { 'missing-fields' },
       },
+      telemetry = { enable = false },
     },
   },
 }

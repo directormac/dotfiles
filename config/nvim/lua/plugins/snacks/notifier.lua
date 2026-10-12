@@ -1,8 +1,12 @@
 local M = {}
 
 M.opts = {
-  notifier = {},
-  notify = {},
+  notifier = {
+    enable = true,
+  },
+  notify = {
+    enable = true,
+  },
 }
 
 function M.keys()

@@ -1,5 +1,6 @@
 return {
   {
+
     'noice.nvim',
     event = 'DeferredUIEnter',
     keys = {
@@ -36,13 +37,18 @@ return {
         mode = { 'i', 'n', 's' },
       },
     },
-    before = function() require('lz.n').trigger_load({ 'nui.nvim', 'nvim-notify' }) end,
+    before = function() require('lz.n').trigger_load({ 'nui.nvim', 'snacks.nvim' }) end,
     after = function()
-      if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
+      -- if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
 
+      -- Configurtaion Reference https://github.com/folke/noice.nvim#%EF%B8%8F-configuration
       require('noice').setup({
         -- popupmenu = {
         --   enabled = false, -- Blink.cmp manages all completion menus!
+        -- },
+        -- notify = {
+        --   enabled = false,
+        --   view = 'snacks',
         -- },
         lsp = {
 
@@ -61,12 +67,19 @@ return {
           override = {
             ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
             ['vim.lsp.util.stylize_markdown'] = true,
-            ['cmp.entry.get_documentation'] = true,
+          },
+
+          message = {
+            -- Messages shown by lsp servers
+            enabled = true,
+            view = 'mini',
+            opts = {},
           },
 
           hover = {
             enabled = true,
             silent = true,
+            ---@type NoiceViewOptions
             opts = {
               border = {
                 style = 'single',
@@ -84,7 +97,6 @@ return {
               },
             },
           },
-
           signature = {
             enabled = true,
             auto_open = {
@@ -93,6 +105,7 @@ return {
               luasnip = true,
               throttle = 50,
             },
+            ---@type NoiceViewOptions
             opts = {
               border = {
                 style = 'single',
@@ -111,17 +124,25 @@ return {
             },
           },
         },
+        ---@type NoiceRouteConfig[]
         routes = {
           {
+            view = 'mini',
+            filter = { event = 'msg_showmode' },
+          },
+          {
             filter = {
+              event = 'msg_show',
               any = {
-                { find = 'No information available' },
-                { find = 'Empty hover response' },
+                { find = '%d+L, %d+B' },
+                { find = '; after #%d+' },
+                { find = '; before #%d+' },
               },
             },
-            opts = { skip = true },
+            view = 'mini',
           },
         },
+        ---@type NoiceConfigViews
         views = {
           cmdline_popup = {
             border = {
@@ -152,6 +173,9 @@ return {
             },
           },
         },
+        ---@type NoiceFormatOptions
+        format = {}, --- @see section on formatting
+        ---@type NoicePresets
         presets = {
           bottom_search = true,
           command_palette = true,

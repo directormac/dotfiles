@@ -13,8 +13,4 @@ return {
       require('codecompanion').setup({})
     end,
   },
-  {
-    'plenary.nvim',
-    lazy = true,
-  },
 }

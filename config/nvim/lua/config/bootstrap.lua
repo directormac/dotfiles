@@ -61,6 +61,3 @@ spec_mod.parse = function(spec)
   end
   return result
 end
-
--- Enable module-based on-demand loading
-require('config.auto_require').enable()

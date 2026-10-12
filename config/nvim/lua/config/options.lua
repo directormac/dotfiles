@@ -1,7 +1,6 @@
 -- Options. See `:help vim.o`
 
--- allow .nvim.lua in current dir and parents (project config)
-vim.o.exrc = true -- load .nvim.lua from the current dir and parents (project config)
+vim.o.exrc = true
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
