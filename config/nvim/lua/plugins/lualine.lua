@@ -3,6 +3,7 @@ return {
   event = 'DeferredUIEnter',
   after = function()
     local icons = require('config.icons')
+    local util = require('config.util')
 
     require('lualine').setup({
       options = {
@@ -27,7 +28,7 @@ return {
             },
           },
           { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
-          'filename',
+          { util.lualine.pretty_path() },
         },
         lualine_x = {
           Snacks.profiler.status(),
