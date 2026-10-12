@@ -332,7 +332,7 @@
   "notificationOverlayEnabled": true,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,
-  "osdWorkspaceEnabled": true,
+  "osdWorkspaceEnabled": false,
   "updaterCheckOnStart": true,
   "displayNameMode": "model",
   "screenPreferences": {
