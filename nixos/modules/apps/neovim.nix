@@ -167,6 +167,8 @@
           # Navigation & Editing
           flash-nvim
           todo-comments-nvim
+          harpoon2
+          # harpoon-lualine
           grug-far-nvim
           edgy-nvim
           yanky-nvim

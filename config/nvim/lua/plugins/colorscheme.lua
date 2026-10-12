@@ -55,11 +55,8 @@ return {
     -- Set Line Number Colors
     vim.api.nvim_create_autocmd({ 'ColorScheme', 'InsertEnter', 'InsertLeave', 'ModeChanged' }, {
       callback = function()
-        vim.cmd('hi LineNr guifg=#6c7086')
-        vim.cmd('hi LineNrAbove guifg=#6c7086')
-        vim.cmd('hi LineNrBelow guifg=#6c7086')
         vim.cmd('hi CursorLineNr guifg=#cba6f7 gui=bold')
-        vim.cmd('hi CursorLine guibg=#313244')
+        vim.cmd('hi SnacksIndenScope guifg=#89b4fa gui=bold')
       end,
     })
   end,
