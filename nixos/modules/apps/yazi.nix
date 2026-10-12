@@ -11,16 +11,21 @@
       ...
     }:
     {
-      imports = [ wlib.modules.default ];
+      imports = [ wlib.wrapperModules.yazi ];
 
-      options.configDir = lib.mkOption {
-        type = lib.types.either lib.types.str lib.types.path;
-        default = ../../../config/yazi;
-        description = "Yazi config directory (YAZI_CONFIG_HOME). Defaults to the in-store copy; hosts override it with the live checkout.";
+      config.plugins = with pkgs.yaziPlugins; {
+        inherit git;
+        inherit starship;
+        inherit ouch;
+        inherit sudo;
+        inherit drag;
+        inherit mount;
+        inherit gvfs;
+        inherit sshfs;
+        inherit bookmarks;
+        inherit split-tabs;
       };
 
-      config.package = pkgs.yazi;
-      config.envDefault.YAZI_CONFIG_HOME = "${config.configDir}";
       config.runtimePkgs = with pkgs; [
         file
         jq
@@ -34,15 +39,48 @@
         imagemagick
         p7zip
       ];
+
+      config.settings = {
+        theme = {
+          indicator = {
+            padding = {
+              open = "█";
+              close = "█";
+            };
+            parent = {
+              fg = "#1e1e2e";
+              bg = "#cdd6f4";
+            };
+            current = {
+              fg = "#1e1e2e";
+              bg = "#89b4fa";
+            };
+            preview = {
+              fg = "#1e1e2e";
+              bg = "#cdd6f4";
+            };
+          };
+
+        };
+      };
+
+      # config.binName = lib.mkDefault "yazi";
+      # config.package = lib.mkForce pkgs.yazi-unwrapped;
+
+      # config.envDefault.YAZI_CONFIG_HOME = "${config.configDir}";
     };
 
   flake.homeModules.yazi =
     { config, ... }:
     {
-      home.file = {
-        ".config/yazi".source =
-          config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/yazi";
-      };
+      imports = [ self.wrappers.yazi.install ];
+
+      wrappers.yazi.enable = true;
+
+      # home.file = {
+      #   ".config/yazi".source =
+      #     config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/yazi";
+      # };
     };
 
   flake.nixosModules.yazi =
@@ -50,34 +88,15 @@
     {
       imports = [ self.wrappers.yazi.install ];
 
-      wrappers.yazi.configDir = "${config.preferences.dotsConfigPath}/yazi";
-
-      # This is applied to this host with home-manager
       home-manager.users.${config.preferences.user.name} = {
-        imports = [
-          self.homeModules.yazi
-        ];
+        imports = [ self.homeModules.yazi ];
       };
 
-      # The wrapper is installed through programs.yazi (which layers the plugins on top),
-      # so wrappers.yazi.enable stays off to avoid installing it twice.
-      programs.yazi = {
-        enable = true;
-        package = config.wrappers.yazi.wrapper;
-        plugins = with pkgs.yaziPlugins; {
-          inherit git;
-          inherit starship;
-          inherit ouch;
-          inherit sudo;
-          inherit drag;
-          inherit mount;
-          inherit gvfs;
-          inherit sshfs;
-          inherit bookmarks;
-          inherit split-tabs;
-        };
+    };
 
-        # theme = fromTOML (builtins.readFile ./theme.toml);
-      };
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.yazi-dev = (self.wrappers.yazi.apply { }).wrap { inherit pkgs; };
     };
 }

@@ -113,6 +113,7 @@
 
         dms
         hyprland
+        wl-kbptr
 
         niri
         mangowm

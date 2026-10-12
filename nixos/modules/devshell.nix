@@ -16,15 +16,18 @@
         packages = [
           config.agenix-rekey.package
           config.treefmt.build.wrapper
-          self'.packages.nvim-dev
           self'.packages.tmux
           self'.packages.nh
+
+          self'.packages.nvim-dev
+          self'.packages.yazi-dev
+          self'.packages.wl-kbptr-dev
+
           pkgs.rage
           pkgs.television
           pkgs.nix-search-tv
           pkgs.jq
 
-          # self'.packages.yazi
           # Nightly neovim that loads the live repo config (hot reload)
         ];
 
@@ -121,10 +124,10 @@
         ];
 
         env = [
-          {
-            name = "YAZI_CONFIG_HOME";
-            eval = "$([ -d \"$PRJ_ROOT/config/yazi\" ] && echo \"$PRJ_ROOT/config/yazi\" || echo \"$PRJ_ROOT/../config/yazi\")";
-          }
+          # {
+          #   name = "YAZI_CONFIG_HOME";
+          #   eval = "$([ -d \"$PRJ_ROOT/config/yazi\" ] && echo \"$PRJ_ROOT/config/yazi\" || echo \"$PRJ_ROOT/../config/yazi\")";
+          # }
           {
             name = "NVIM_DEV_CONFIG";
             eval = "$([ -d \"$PRJ_ROOT/config/nvim\" ] && echo \"$PRJ_ROOT/config/nvim\" || echo \"$PRJ_ROOT/../config/nvim\")";

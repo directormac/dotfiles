@@ -197,6 +197,71 @@ hl.bind(modkey .. ' + SHIFT + Backslash', Utils.layout.prev())
 -- hl.bind(modkey .. ' + SHIFT + P', Utils.screenshot.window())
 -- hl.bind(modkey .. ' + CTRL + P', Utils.screenshot.screen())
 
+---- Cursor (wl-kbptr / wlrctl)
+-- https://github.com/moverest/wl-kbptr#hyprland
+-- See https://wiki.hypr.land/configuring/core/binds/submaps/
+
+-- Keep the cursor visible while it is being driven from the keyboard.
+local function cursor_kb_mode(enabled)
+  hl.config({
+    cursor = {
+      inactive_timeout = enabled and 0 or 3,
+      hide_on_key_press = not enabled,
+    },
+  })
+end
+
+hl.bind(modkey .. ' + G', function()
+  cursor_kb_mode(true)
+  hl.dispatch(hl.dsp.submap('cursor'))
+end, { description = 'Enter the cursor submap' })
+
+hl.define_submap('cursor', function()
+  -- Jump the cursor to a position. wl-kbptr grabs the keyboard, so drop out of
+  -- the submap while it runs and re-enter once it has finished.
+  hl.bind('a', function()
+    hl.dispatch(hl.dsp.submap('reset'))
+    -- hyprctl dispatch is Lua-backed in 0.56+, so the old `dispatch submap cursor`
+    -- form is a syntax error. Re-enter via the Lua dispatcher instead.
+    hl.exec_cmd([[wl-kbptr; hyprctl dispatch "hl.dsp.submap('cursor')"]])
+  end, { description = 'Jump cursor to a position' })
+
+  -- Floating mode with OpenCV auto-detection: wl-kbptr screen-captures the
+  -- output, highlights detected clickable elements, then left-clicks the one
+  -- you pick. Requires the binary to be built with the opencv feature.
+  hl.bind('f', function()
+    hl.dispatch(hl.dsp.submap('reset'))
+    hl.exec_cmd(
+      [[wl-kbptr -o modes=floating,click -o mode_floating.source=detect; hyprctl dispatch "hl.dsp.submap('cursor')"]]
+    )
+  end, { description = 'Click a detected element' })
+
+  -- Movement
+  hl.bind('j', hl.dsp.exec_cmd('wlrctl pointer move 0 100'), { repeating = true })
+  hl.bind('k', hl.dsp.exec_cmd('wlrctl pointer move 0 -100'), { repeating = true })
+  hl.bind('l', hl.dsp.exec_cmd('wlrctl pointer move 100 0'), { repeating = true })
+  hl.bind('h', hl.dsp.exec_cmd('wlrctl pointer move -100 0'), { repeating = true })
+
+  -- Buttons
+  hl.bind('s', hl.dsp.exec_cmd('wlrctl pointer click left'), { description = 'Left click' })
+  hl.bind('d', hl.dsp.exec_cmd('wlrctl pointer click middle'), { description = 'Middle click' })
+  hl.bind('v', hl.dsp.exec_cmd('wlrctl pointer click right'), { description = 'Right click' })
+
+  -- Scroll up / down
+  hl.bind('e', hl.dsp.exec_cmd('wlrctl pointer scroll 10 0'), { repeating = true })
+  hl.bind('r', hl.dsp.exec_cmd('wlrctl pointer scroll -10 0'), { repeating = true })
+
+  -- Scroll left / right
+  hl.bind('t', hl.dsp.exec_cmd('wlrctl pointer scroll 0 -10'), { repeating = true })
+  hl.bind('g', hl.dsp.exec_cmd('wlrctl pointer scroll 0 10'), { repeating = true })
+
+  -- Exit
+  hl.bind('escape', function()
+    cursor_kb_mode(false)
+    hl.dispatch(hl.dsp.submap('reset'))
+  end, { description = 'Exit the cursor submap' })
+end)
+
 --- Applications
 
 -- Essential application bindings.
