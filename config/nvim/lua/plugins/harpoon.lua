@@ -18,7 +18,6 @@ return {
       '<leader>H',
       function() require('harpoon'):list():add() end,
       desc = 'Harpoon File',
-      mode = { 'n' },
     },
     {
       '<leader>h',

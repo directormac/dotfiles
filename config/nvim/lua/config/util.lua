@@ -272,4 +272,5 @@ function M.lualine.root_dir(opts)
   }
 end
 
+_G.Util = M
 return M

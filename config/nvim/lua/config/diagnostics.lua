@@ -1,5 +1,5 @@
 -- Diagnostic configuration and CursorHold auto-popout.
-local icons = require('config.icons').diagnostics
+local icons = Icons.diagnostics
 
 vim.diagnostic.config({
   virtual_lines = false,

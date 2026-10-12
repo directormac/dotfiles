@@ -9,7 +9,7 @@ return {
         diagnostics = 'nvim_lsp',
 
         diagnostics_indicator = function(_, _, diag)
-          local icons = require('config.icons').diagnostics
+          local icons = Icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. ' ' or '')
             .. (diag.warning and icons.Warn .. diag.warning or '')
           return vim.trim(ret)

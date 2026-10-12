@@ -24,7 +24,7 @@ vim.keymap.set('n', '<A-5>', '<cmd>LualineBuffersJump! 5<CR>', { desc = 'Go to b
 vim.keymap.set('n', '<A-6>', '<cmd>LualineBuffersJump! 6<CR>', { desc = 'Go to buffer 6' })
 
 -- Buffer actions
-local function buf_delete(buf) require('config.util').buf_delete(buf) end
+local function buf_delete(buf) Util.buf_delete(buf) end
 
 vim.keymap.set('n', '<leader>bd', function() buf_delete() end, { desc = 'Delete buffer' })
 

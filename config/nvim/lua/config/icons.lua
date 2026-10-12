@@ -72,4 +72,5 @@ M.kinds = {
   Variable = '󰀫 ',
 }
 
+_G.Icons = M
 return M

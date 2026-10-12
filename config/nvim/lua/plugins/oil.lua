@@ -33,7 +33,7 @@ return {
     'oil-git.nvim',
     lazy = true,
     after = function()
-      local git_icons = require('config.icons').git
+      local git_icons = Icons.git
       local symbols = {
         added = git_icons.added,
         modified = git_icons.modified,

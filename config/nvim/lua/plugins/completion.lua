@@ -33,7 +33,7 @@ return {
         },
         appearance = {
           nerd_font_variant = 'mono',
-          kind_icons = vim.tbl_map(vim.trim, require('config.icons').kinds),
+          kind_icons = vim.tbl_map(vim.trim, Icons.kinds),
         },
         snippets = {
           preset = 'luasnip',

@@ -2,8 +2,8 @@ return {
   'lualine.nvim',
   event = 'DeferredUIEnter',
   after = function()
-    local icons = require('config.icons')
-    local util = require('config.util')
+    local icons = Icons
+    local util = Util
 
     require('lualine').setup({
       options = {

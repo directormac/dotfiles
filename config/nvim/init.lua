@@ -14,7 +14,6 @@ require('config.filetypes')
 require('config.keymaps')
 require('config.autocmds')
 require('config.diagnostics')
-require('config.util') -- registers :Root and the root cache invalidation autocmds
 
 -- Load all plugin specs from lua/plugins/ via lz.n
 require('lz.n').load('plugins')

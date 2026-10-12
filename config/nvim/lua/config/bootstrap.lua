@@ -27,6 +27,10 @@ local lzn = require('lz.n')
 _G.lzn = lzn
 nixInfo.lzn = lzn
 
+-- Global config utilities and icons
+_G.Util = require('config.util')
+_G.Icons = require('config.icons')
+
 -- Auto-filter plugins not provisioned by Nix (safe dynamic toggling)
 local spec_mod = require('lz.n.spec')
 local orig_parse = spec_mod.parse

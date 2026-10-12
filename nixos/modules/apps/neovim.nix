@@ -5,13 +5,17 @@
   ...
 }:
 {
+  # References
+  # https://nixos.org/manual/nixpkgs/unstable/#neovim-custom-configuration
+  # https://github.com/nix-community/neovim-nightly-overlay
+  # https://github.com/lumen-oss/lz.n
+  # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/neovim.html
   flake.wrappers.neovim =
     {
       config,
       wlib,
       lib,
       pkgs,
-      options,
       ...
     }:
     let
@@ -134,6 +138,7 @@
 
       config.specs.general = {
         lazy = true;
+        # https://wiki.nixos.org/wiki/Vim#Add_a_new_custom_plugin_to_the_users_packages
         data = with pkgs.vimPlugins; [
 
           # Language Helpers

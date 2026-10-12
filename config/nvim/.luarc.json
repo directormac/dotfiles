@@ -3,7 +3,10 @@
     "globals": [
       "vim",
       "nixInfo",
-      "Snacks"
+      "Snacks",
+      "lzn",
+      "Util",
+      "Icons"
     ]
   }
 }

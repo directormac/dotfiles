@@ -5,17 +5,17 @@ vim.lsp.config("tmux_ls", {
 	root_markers = { ".git", ".tmux.conf", "tmux.conf" },
 })
 
-vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = {
-			signatureHelp = { enabled = true },
-			diagnostics = {
-				globals = { "nixInfo", "vim", "Snacks" },
-				disable = { "missing-fields" },
-			},
-		},
-	},
-})
+-- vim.lsp.config("lua_ls", {
+-- 	settings = {
+-- 		Lua = {
+-- 			signatureHelp = { enabled = true },
+-- 			diagnostics = {
+-- 				globals = { "nixInfo", "vim", "Snacks", "lzn", "Util", "Icons" },
+-- 				disable = { "missing-fields" },
+-- 			},
+-- 		},
+-- 	},
+-- })
 
 -- 2. Enable it globally (automatically attaches when filetype matches)
 vim.lsp.enable("tmux_ls")

@@ -21,7 +21,7 @@ return {
       })
     end,
     after = function()
-      local icons = require('config.icons').dap
+      local icons = Icons.dap
       for name, sign in pairs(icons) do
         local parts = type(sign) == 'table' and sign or { sign }
         vim.fn.sign_define('Dap' .. name, {
