@@ -147,6 +147,7 @@
           persistence-nvim
           snacks-nvim
           vim-startuptime
+          cord-nvim
 
           # Navigation & Editing
           flash-nvim
