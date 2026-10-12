@@ -30,6 +30,9 @@ return {
           ['<C-p>'] = { 'select_prev', 'fallback' },
           ['<CR>'] = { 'accept', 'fallback' },
           ['<C-k>'] = {}, -- Handled by Noice signature help
+          -- Ripgrep is manual-only (see `sources.providers.ripgrep`) so it needs an
+          -- explicit keymap to be reachable at all.
+          -- ['<C-g>'] = { function(cmp) cmp.show({ providers = { 'ripgrep' } }) end },
         },
         appearance = {
           nerd_font_variant = 'mono',
@@ -54,6 +57,10 @@ return {
           end,
         },
         fuzzy = {
+          -- The order here IS the priority: `exact` wins outright, then the fuzzy
+          -- score (which is where every `score_offset` competes), then `sortText`.
+          -- NOTE: `sources.default` order does not set priority -- provider ids are
+          -- collected with `vim.tbl_keys`, so that order is arbitrary.
           sorts = {
             'exact',
             'score',
@@ -117,17 +124,23 @@ return {
             'buffer',
             'lazydev',
             'env',
-            'ripgrep',
             'dictionary',
             'emoji',
             'nerdfont',
+            -- NOTE: 'git' must be listed here for its `enabled` gate to matter.
+            'git',
           },
           providers = {
+            -- `score_offset` is additive to the fuzzy score, so it can only shift a
+            -- source relative to the spread of fuzzy scores. Negative values on the
+            -- noise-generators below are the real fix -- they match almost any keyword.
             snippets = {
-              score_offset = 30,
+              score_offset = 20,
+              min_keyword_length = 3,
+              should_show_items = function(ctx) return ctx.trigger.initial_kind ~= 'trigger_character' end,
             },
             path = {
-              score_offset = 50,
+              score_offset = 25,
             },
             lsp = {
               score_offset = 40,
@@ -135,12 +148,15 @@ return {
             lazydev = {
               name = 'LazyDev',
               module = 'lazydev.integrations.blink',
-              score_offset = 45,
+              score_offset = 30,
+            },
+            buffer = {
+              score_offset = -10,
             },
             env = {
               name = 'Env',
               module = 'blink-cmp-env',
-              score_offset = 20,
+              score_offset = 5,
               opts = {
                 item_kind = item_kinds.Variable,
                 show_braces = false,
@@ -151,28 +167,44 @@ return {
             ripgrep = {
               name = 'Grep',
               module = 'blink-ripgrep',
-              score_offset = 10,
+              -- Deliberately NOT in `sources.default`: searching the whole project on
+              -- every keystroke is too expensive. Type `<C-g>` to open it manually.
+              -- To re-enable it automatically, add 'ripgrep' to `sources.default`.
+              score_offset = -30,
+              min_keyword_length = 4,
+              async = true,
               ---@module "blink-ripgrep"
               ---@type blink-ripgrep.Options
-              opts = {},
+              opts = {
+                prefix_min_len = 4,
+                -- Requires snacks.nvim, which is already loaded.
+                toggles = {
+                  on_off = '<leader>tg',
+                },
+                backend = {
+                  use = 'gitgrep-or-ripgrep',
+                },
+              },
             },
             -- TODO: Needs more configuration
             -- https://github.com/Kaiser-Yang/blink-cmp-dictionary/
             dictionary = {
               name = 'Dictionary',
               module = 'blink-cmp-dictionary',
-              score_offset = 15,
+              score_offset = 10,
               min_keyword_length = 3,
             },
             emoji = {
               name = 'Emoji',
               module = 'blink-emoji',
-              score_offset = 20,
+              score_offset = -40,
+              min_keyword_length = 3,
             },
             nerdfont = {
               name = 'Nerd Fonts',
               module = 'blink-nerdfont',
-              score_offset = 20,
+              score_offset = -45,
+              min_keyword_length = 3,
             },
             git = {
               module = 'blink-cmp-git',
