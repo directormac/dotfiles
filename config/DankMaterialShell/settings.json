@@ -461,7 +461,7 @@
       "maximizeDetection": true,
       "useOverlayLayer": false,
       "scrollEnabled": true,
-      "scrollXBehavior": "column",
+      "scrollXBehavior": "focusWindow",
       "scrollYBehavior": "workspace",
       "shadowIntensity": 0,
       "shadowOpacity": 60,
@@ -652,7 +652,7 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 39,
+  "configVersion": 40,
   "workspaceNameIcons": {
     "special": {
       "type": "icon",
