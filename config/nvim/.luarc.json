@@ -1,0 +1,9 @@
+{
+  "diagnostics": {
+    "globals": [
+      "vim",
+      "nixInfo",
+      "Snacks"
+    ]
+  }
+}
