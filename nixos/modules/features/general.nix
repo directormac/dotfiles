@@ -147,6 +147,7 @@
         starship
         multiplexer
         tmux
+        herdr
         editor
         television
         tuxedo

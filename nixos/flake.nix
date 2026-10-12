@@ -54,6 +54,8 @@
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
+    herdr.url = "github:herdrdev/herdr/v0.9.3";
+
     workmux.url = "github:raine/workmux";
     tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
 
