@@ -329,7 +329,7 @@
   "matugenTemplateVscode": false,
   "matugenTemplateEmacs": false,
   "matugenTemplateZed": false,
-  "notificationOverlayEnabled": true,
+  "notificationOverlayEnabled": false,
   "notificationCompactMode": true,
   "osdPowerProfileEnabled": true,
   "osdWorkspaceEnabled": false,
@@ -658,5 +658,6 @@
       "type": "icon",
       "value": "dashboard"
     }
-  }
+  },
+  "notificationFocusedMonitor": true
 }
