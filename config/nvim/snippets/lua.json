@@ -1,0 +1,126 @@
+{
+  "Plugin (lz.n basic)": {
+    "prefix": "plugin",
+    "body": [
+      "return {",
+      "  '${1:plugin-name}',",
+      "  event = '${2:DeferredUIEnter}',",
+      "  after = function()",
+      "    require('${3:module}').setup({",
+      "      $0",
+      "    })",
+      "  end,",
+      "}"
+    ],
+    "description": "Basic lz.n plugin specification"
+  },
+  "Plugin (lz.n with keys)": {
+    "prefix": "lzkeys",
+    "body": [
+      "return {",
+      "  '${1:plugin-name}',",
+      "  event = '${2:DeferredUIEnter}',",
+      "  keys = {",
+      "    {",
+      "      '${3:<leader>x}',",
+      "      function()",
+      "        $4",
+      "      end,",
+      "      desc = '${5:Description}',",
+      "    },",
+      "  },",
+      "  after = function()",
+      "    require('${6:module}').setup({",
+      "      $0",
+      "    })",
+      "  end,",
+      "}"
+    ],
+    "description": "lz.n plugin specification with lazy keybindings"
+  },
+  "Plugin (lz.n filetype)": {
+    "prefix": "lzft",
+    "body": [
+      "return {",
+      "  '${1:plugin-name}',",
+      "  ft = { '${2:filetype}' },",
+      "  after = function()",
+      "    require('${3:module}').setup({",
+      "      $0",
+      "    })",
+      "  end,",
+      "}"
+    ],
+    "description": "lz.n plugin specification loaded on filetype"
+  },
+  "Plugin (lz.n cmd)": {
+    "prefix": "lzcmd",
+    "body": [
+      "return {",
+      "  '${1:plugin-name}',",
+      "  cmd = { '${2:Command}' },",
+      "  after = function()",
+      "    require('${3:module}').setup({",
+      "      $0",
+      "    })",
+      "  end,",
+      "}"
+    ],
+    "description": "lz.n plugin specification loaded on command"
+  },
+  "Require module": {
+    "prefix": "req",
+    "body": "local ${1:module} = require('${1:module}')",
+    "description": "Require a Lua module into local variable"
+  },
+  "Pcall require": {
+    "prefix": "preq",
+    "body": [
+      "local ok, ${1:module} = pcall(require, '${2:$1}')",
+      "if not ok then",
+      "  return",
+      "end",
+      "$0"
+    ],
+    "description": "Protected call require"
+  },
+  "Keymap": {
+    "prefix": "keymap",
+    "body": "vim.keymap.set('${1:n}', '${2:lhs}', ${3:rhs}, { desc = '${4:description}' })",
+    "description": "Set Neovim keymap"
+  },
+  "Autocmd": {
+    "prefix": "autocmd",
+    "body": [
+      "vim.api.nvim_create_autocmd('${1:FileType}', {",
+      "  group = ${2:vim.api.nvim_create_augroup('${3:AugroupName}', { clear = true })},",
+      "  pattern = '${4:*}',",
+      "  callback = function(${5:ev})",
+      "    $0",
+      "  end,",
+      "})"
+    ],
+    "description": "Create Neovim autocommand"
+  },
+  "Augroup": {
+    "prefix": "augroup",
+    "body": "local ${1:group} = vim.api.nvim_create_augroup('${2:AugroupName}', { clear = true })",
+    "description": "Create Neovim augroup"
+  },
+  "Module boilerplate": {
+    "prefix": "mod",
+    "body": [
+      "local M = {}",
+      "",
+      "$0",
+      "",
+      "return M"
+    ],
+    "description": "Standard Lua module boilerplate"
+  },
+  "Vim inspect print": {
+    "prefix": "vinsp",
+    "body": "vim.print($0)",
+    "description": "Print inspected Lua value with vim.print"
+  }
+}

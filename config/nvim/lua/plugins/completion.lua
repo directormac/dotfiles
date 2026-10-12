@@ -152,6 +152,9 @@ return {
               name = 'Grep',
               module = 'blink-ripgrep',
               score_offset = 10,
+              ---@module "blink-ripgrep"
+              ---@type blink-ripgrep.Options
+              opts = {},
             },
             -- TODO: Needs more configuration
             -- https://github.com/Kaiser-Yang/blink-cmp-dictionary/
@@ -194,7 +197,16 @@ return {
         history = true,
         updateevents = 'TextChanged,TextChangedI',
       })
+      -- Load friendly-snippets from runtimepath
       require('luasnip.loaders.from_vscode').lazy_load()
+      -- Load custom snippets from config snippets/ directory
+      local snippet_dir = (vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config')) .. '/snippets'
+      require('luasnip.loaders.from_vscode').lazy_load({
+        paths = { snippet_dir },
+      })
+      require('luasnip.loaders.from_lua').lazy_load({
+        paths = { snippet_dir },
+      })
     end,
   },
   { 'blink.compat', lazy = true },

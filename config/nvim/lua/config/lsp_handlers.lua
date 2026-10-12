@@ -12,6 +12,7 @@ function M.setup()
       local hover_or_focus = require('config.util').hover_or_focus
 
       nmap('<leader>c?', function() Snacks.picker.lsp_config() end, 'Active Language Servers')
+
       nmap('<leader>cc', vim.lsp.codelens.run, 'Run CodeLens')
       nmap('<leader>cl', function()
         local enabled = not vim.lsp.codelens.is_enabled()
