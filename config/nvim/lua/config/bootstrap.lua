@@ -31,7 +31,25 @@ nixInfo.lzn = lzn
 _G.Util = require('config.util')
 _G.Icons = require('config.icons')
 
--- Auto-filter plugins not provisioned by Nix (safe dynamic toggling)
+-- Hook lz.n keys handler to support dynamic function specs (e.g. keys = function() return { ... } end)
+local keys_handler = require('lz.n.handler.keys')
+local orig_keys_parse = keys_handler.parse
+keys_handler.parse = function(plugin, keys_spec)
+  if type(keys_spec) == 'function' then
+    local ok, res = pcall(keys_spec, plugin)
+    if ok and type(res) == 'table' then
+      keys_spec = res
+    elseif not ok then
+      vim.notify(
+        'Failed to evaluate keys function for ' .. tostring(plugin.name) .. ': ' .. tostring(res),
+        vim.log.levels.ERROR
+      )
+    end
+  end
+  return orig_keys_parse(plugin, keys_spec)
+end
+
+-- Auto-filter plugins not provisioned by Nix
 local spec_mod = require('lz.n.spec')
 local orig_parse = spec_mod.parse
 spec_mod.parse = function(spec)
@@ -43,3 +61,6 @@ spec_mod.parse = function(spec)
   end
   return result
 end
+
+-- Enable module-based on-demand loading
+require('config.auto_require').enable()

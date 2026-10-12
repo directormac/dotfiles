@@ -275,6 +275,59 @@
         ];
       };
 
+      # -----------------------------------------------------------------------
+      # Rich metadata exposed to Lua via nixInfo(nil, "info", ...)
+      # -----------------------------------------------------------------------
+      config.info =
+        let
+          extractMeta =
+            raw:
+            let
+              p = raw.data or raw;
+              pname =
+                if p ? pname && p.pname != null then
+                  p.pname
+                else if p ? name && p.name != null then
+                  p.name
+                else
+                  null;
+            in
+            {
+              name = pname;
+              version = p.version or null;
+              rev = if p ? src && p.src ? rev then p.src.rev else null;
+              repo =
+                if p ? src && p.src ? owner && p.src ? repo then
+                  "${p.src.owner}/${p.src.repo}"
+                else if p ? src && p.src ? gitRepoUrl then
+                  p.src.gitRepoUrl
+                else
+                  null;
+            };
+          allPlugins = config.specs.general.data ++ [
+            config.specs.colorscheme.data
+            (config.specs.lzn.data or config.specs.lzn)
+          ];
+        in
+        {
+          flake = {
+            rev = self.shortRev or self.dirtyShortRev or "dirty";
+            date = self.lastModifiedDate or null;
+            nixpkgs_version = pkgs.lib.version;
+            system = pkgs.stdenv.hostPlatform.system;
+          };
+          plugins_meta = lib.pipe allPlugins [
+            (map extractMeta)
+            (builtins.filter (m: m.name != null))
+            (map (m: lib.nameValuePair m.name m))
+            builtins.listToAttrs
+          ];
+          runtime_pkgs = map (p: {
+            name = p.pname or p.name;
+            version = p.version or null;
+          }) config.runtimePkgs;
+        };
+
     };
 
   # ---------------------------------------------------------------------------

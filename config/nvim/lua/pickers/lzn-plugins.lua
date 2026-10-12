@@ -1,5 +1,7 @@
 local M = {}
 
+local update_cache = {}
+
 -- Helper to extract clean version strings from Nix store path
 local function parse_plugin_version(path)
   if not path or path == '' then return nil end
@@ -130,7 +132,10 @@ function M.pick(opts)
 
   local function add_item(name, path, status, loaded)
     local spec_info = plugin_to_spec[name]
-    local version = parse_plugin_version(path)
+    local meta = nixInfo(nil, 'info', 'plugins_meta', name)
+    local version = (meta and meta.version) or parse_plugin_version(path)
+    local repo = meta and meta.repo or nil
+    local rev = meta and meta.rev or nil
     local triggers = get_plugin_triggers(name)
     local trigger_summary = format_trigger_summary(triggers)
     local spec_basename = spec_info and vim.fs.basename(spec_info.file) or ''
@@ -140,6 +145,7 @@ function M.pick(opts)
       status,
       loaded and 'loaded' or 'lazy',
       version or '',
+      repo or '',
       trigger_summary,
       spec_basename,
     }
@@ -165,6 +171,8 @@ function M.pick(opts)
       status = status,
       loaded = loaded,
       version = version,
+      repo = repo,
+      rev = rev,
       triggers = triggers,
       trigger_summary = trigger_summary,
       text = table.concat(search_terms, ' '),
@@ -213,6 +221,19 @@ function M.pick(opts)
 
       ret[#ret + 1] = { string.format('%-9s', status_label), hl = status_hl }
 
+      local uc = update_cache[item.name]
+      if uc then
+        if uc.status == 'checking' then
+          ret[#ret + 1] = { ' [checking...]', hl = 'SnacksPickerComment' }
+        elseif uc.status == 'up-to-date' then
+          ret[#ret + 1] = { ' [✓ up-to-date]', hl = 'DiagnosticOk' }
+        elseif uc.status == 'update-available' then
+          ret[#ret + 1] = { ' [↑ ' .. (uc.remote_sha or 'new') .. ']', hl = 'DiagnosticWarn' }
+        elseif uc.status == 'error' then
+          ret[#ret + 1] = { ' [✗ error]', hl = 'DiagnosticError' }
+        end
+      end
+
       if item.trigger_summary and item.trigger_summary ~= '' then
         ret[#ret + 1] = { ' ' .. item.trigger_summary, hl = 'Special' }
       end
@@ -244,6 +265,27 @@ function M.pick(opts)
       add('')
       add('- **Status**: `' .. item.status .. '`' .. (item.loaded and ' (currently in runtime)' or ' (deferred)'))
       if item.version then add('- **Version**: `' .. item.version .. '`') end
+      if item.repo then
+        add('- **Repository**: [https://github.com/' .. item.repo .. '](https://github.com/' .. item.repo .. ')')
+      end
+      if item.rev then add('- **Pinned Rev**: `' .. item.rev .. '`') end
+
+      local uc = update_cache[item.name]
+      if uc then
+        if uc.status == 'checking' then
+          add('- **Update Check**: *checking upstream GitHub...*')
+        elseif uc.status == 'up-to-date' then
+          add('- **Update Check**: `✓ up-to-date` (' .. (uc.remote_sha or '') .. ')')
+        elseif uc.status == 'update-available' then
+          local p_rev = item.rev and item.rev:sub(1, 7) or 'pinned'
+          add('- **Update Check**: `↑ update available` (' .. p_rev .. ' -> `' .. (uc.remote_sha or '') .. '`)')
+        elseif uc.status == 'error' then
+          add('- **Update Check**: `✗ error`: ' .. (uc.err or 'unknown'))
+        end
+      else
+        if item.repo then add('- **Update Check**: *press `<C-u>` to check for updates*') end
+      end
+
       if item.spec_file then
         add(
           '- **Spec File**: `'
@@ -293,7 +335,7 @@ function M.pick(opts)
       add('')
       add('---')
       add(
-        '*Actions: `<CR>` jump to spec | `<C-l>` trigger load | `<C-o>` browse store files | `<C-h>` help | `<C-r>` README*'
+        '*Actions: `<CR>` jump to spec | `<C-l>` trigger load | `<C-u>` check update | `<C-o>` browse store files | `<C-h>` help | `<C-r>` README*'
       )
 
       ctx.preview:set_lines(lines)
@@ -324,6 +366,72 @@ function M.pick(opts)
           picker:find()
         end
       end,
+      check_update = function(picker, item)
+        if not item or not item.repo or not item.rev then
+          Snacks.notify(
+            'No repository or revision metadata available for ' .. (item and item.name or 'selected plugin'),
+            {
+              title = 'Plugins',
+              level = 'warn',
+            }
+          )
+          return
+        end
+
+        local name = item.name
+        local repo = item.repo
+        local rev = item.rev
+
+        update_cache[name] = { status = 'checking' }
+        picker:find()
+        Snacks.notify('Checking GitHub for ' .. name .. ' (' .. repo .. ')...', { title = 'Plugins' })
+
+        local cmd = {
+          'curl',
+          '-sL',
+          '--max-time',
+          '5',
+          '-H',
+          'Accept: application/vnd.github.v3+json',
+          'https://api.github.com/repos/' .. repo .. '/commits/HEAD',
+        }
+
+        vim.system(cmd, { text = true }, function(obj)
+          vim.schedule(function()
+            if obj.code ~= 0 or not obj.stdout or obj.stdout == '' then
+              update_cache[name] = { status = 'error', err = 'Network failure' }
+              Snacks.notify('Failed to check updates for ' .. name, { title = 'Plugins', level = 'error' })
+            else
+              local ok, data = pcall(vim.json.decode, obj.stdout)
+              if ok and data and data.sha then
+                local remote_sha = data.sha:sub(1, 7)
+                local local_sha = rev:sub(1, 7)
+                if rev == data.sha or data.sha:find(rev, 1, true) or rev:find(remote_sha, 1, true) then
+                  update_cache[name] = { status = 'up-to-date', remote_sha = remote_sha }
+                  Snacks.notify(name .. ' is up to date (' .. remote_sha .. ')', { title = 'Plugins', level = 'info' })
+                else
+                  update_cache[name] = { status = 'update-available', remote_sha = remote_sha }
+                  Snacks.notify(
+                    'Update available for ' .. name .. '! Pinned: ' .. local_sha .. ', Upstream: ' .. remote_sha,
+                    {
+                      title = 'Plugins',
+                      level = 'warn',
+                    }
+                  )
+                end
+              else
+                local msg = (ok and data and data.message) or 'Invalid response'
+                update_cache[name] = { status = 'error', err = msg }
+                Snacks.notify(
+                  'GitHub API error for ' .. name .. ': ' .. tostring(msg),
+                  { title = 'Plugins', level = 'error' }
+                )
+              end
+            end
+            picker:find()
+          end)
+        end)
+      end,
       open_readme = function(picker, item)
         if item and item.path then
           local readme = item.path .. '/README.md'
@@ -348,6 +456,7 @@ function M.pick(opts)
         keys = {
           ['<C-o>'] = { 'browse_store', desc = 'Browse store files' },
           ['<C-l>'] = { 'toggle_load', desc = 'Trigger load plugin' },
+          ['<C-u>'] = { 'check_update', desc = 'Check for updates' },
           ['<C-r>'] = { 'open_readme', desc = 'Open README.md' },
           ['<C-h>'] = { 'open_help', desc = 'Open help page' },
         },
