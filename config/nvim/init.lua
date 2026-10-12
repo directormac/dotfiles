@@ -10,6 +10,7 @@ vim.loader.enable() -- <- bytecode caching
 
 require('config.bootstrap')
 require('config.options')
+require('config.filetypes')
 require('config.keymaps')
 require('config.autocmds')
 require('config.diagnostics')

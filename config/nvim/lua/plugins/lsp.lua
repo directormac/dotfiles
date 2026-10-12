@@ -9,9 +9,9 @@ return {
       'nixd',
       'nil_ls',
       'bashls',
-      'kdl',
+      'kdl_lsp',
       'taplo',
-      'emmet_ls',
+      'emmet_language_server',
       'jsonls',
       'marksman',
       'yamlls',
@@ -27,10 +27,26 @@ return {
       'expert',
     }
 
+    -- Scope tailwindcss filetypes to active web languages
+    vim.lsp.config('tailwindcss', {
+      filetypes = {
+        'html',
+        'css',
+        'scss',
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'svelte',
+        'astro',
+        'vue',
+        'heex',
+        'elixir',
+      },
+    })
+
     for _, server in ipairs(servers) do
       vim.lsp.enable(server)
     end
-
-    -- vim.lsp.codelens.enable(true)
   end,
 }

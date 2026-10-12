@@ -18,6 +18,19 @@
 
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
+
+      kdl-lsp = pkgs.rustPlatform.buildRustPackage {
+        pname = "kdl-lsp";
+        version = "0.1.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "kdl-org";
+          repo = "kdl-rs";
+          rev = "7de9eb2f4879f3f86157bf2345c93ed52db88e7a";
+          hash = "sha256-Fx6yjh/JmCxrQWWkqJRQwCoeWRQ6OZPm3zHpPLaUYMQ=";
+        };
+        cargoHash = "sha256-lAmfaH3SpX0Al2VuT+V/0K5+KpwV0uIKZV0idoUy08w=";
+        buildAndTestSubdir = "tools/kdl-lsp";
+      };
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
@@ -97,9 +110,11 @@
 
         # yaml
         yaml-language-server
+        yamlfmt
 
         # kdl
         kdlfmt
+        kdl-lsp
 
         # json
         vscode-json-languageserver
