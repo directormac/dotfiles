@@ -24,7 +24,7 @@ return {
     { '<leader><tab>[', '<cmd>tabprevious<cr>', desc = 'Previous Tab' },
 
     -- Lua runner
-    { '<localleader>r', function() Snacks.debug.run() end, desc = 'Run Lua' },
+    -- { '<localleader>r', function() Snacks.debug.run() end, desc = 'Run Lua' },
 
     -- Neovim News popup
 

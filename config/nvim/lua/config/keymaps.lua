@@ -155,11 +155,6 @@ vim.keymap.set({ 'i', 'n', 's' }, '<esc>', function()
   return '<esc>'
 end, { expr = true, desc = 'Escape and clear hlsearch/snippet' })
 
-vim.keymap.set('n', '<leader>uf', function()
-  vim.g.auto_format = not vim.g.auto_format
-  vim.notify('Auto-format: ' .. (vim.g.auto_format and 'on' or 'off'))
-end, { desc = 'Toggle auto-format' })
-
 -- Yank/Select whole text
 vim.keymap.set('n', '<leader>cy', ':%y+<CR>', { desc = 'Yank Entire Buffer' })
 vim.keymap.set('n', '<leader>cs', 'ggVG', { desc = 'Select Entire Buffer' })

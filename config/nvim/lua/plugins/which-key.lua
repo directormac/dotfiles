@@ -3,7 +3,7 @@ return {
   event = 'DeferredUIEnter',
   ---@class wk.Opts
   opts = {
-    preset = 'modern',
+    preset = 'helix',
     ---@param mapping wk.Mapping
     filter = function(mapping)
       -- Filter Hapoon keys
@@ -45,6 +45,7 @@ return {
         { '<leader>s', group = 'Search' },
         { '<leader>u', group = 'Ui' },
         { '<leader>x', group = 'Diagnostics/quickfix' },
+        { '<leader>t', group = 'Toggle' },
         { '[', group = 'prev' },
         { ']', group = 'next' },
         { 'g', group = 'goto' },

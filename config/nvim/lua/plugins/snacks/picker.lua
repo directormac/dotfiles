@@ -1,4 +1,5 @@
 local Util = require('config.util')
+local CommonPickers = require('pickers.common')
 
 local exclude = {
   '**/.secrets/**',
@@ -16,9 +17,6 @@ local exclude = {
   '.elixir_ls',
   '.vscode',
 }
-
--- Plugins picker (<leader>sp) for Nix & lz.n managed plugins
-local function plugins_picker(opts) return require('pickers.lzn-plugins').pick(opts) end
 
 return {
   'snacks.nvim',
@@ -56,11 +54,23 @@ return {
     { '<leader>sM', function() Snacks.picker.man() end, desc = 'Man Pages' },
     { '<leader>sq', function() Snacks.picker.qflist() end, desc = 'Quickfix List' },
     { '<leader>sR', function() Snacks.picker.resume() end, desc = 'Resume' },
-    { '<leader>su', function() Snacks.picker.undo() end, desc = 'Undo History' },
-    { '<leader>uC', function() Snacks.picker.colorschemes() end, desc = 'Colorschemes' },
+
+    -- { '<leader>uC', function() Snacks.picker.colorschemes() end, desc = 'Colorschemes' },
+
+    {
+      '<leader>su',
+      function()
+        Snacks.picker.undo({
+          layout = 'ivy_bottom',
+        })
+      end,
+      desc = 'Undo History',
+    },
+
+    { '<leader>s`', function() CommonPickers.snippets() end, desc = 'Snippets' },
 
     -- Custom Plugins picker
-    { '<leader>sp', plugins_picker, desc = 'Plugins' },
+    { '<leader>sp', function() require('pickers.lzn-plugins').pick() end, desc = 'Plugins' },
 
     -- Todo comments picker
     {

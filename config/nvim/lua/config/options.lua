@@ -97,5 +97,12 @@ vim.opt.virtualedit = 'block'
 -- Break lines at word boundaries when wrap is enabled
 vim.opt.linebreak = true
 
+-- Disable line wrapping by default (toggle with <leader>tw)
+vim.opt.wrap = false
+
 -- Default window border for floating windows
 vim.o.winborder = 'single'
+
+-- Runtime toggle defaults (flipped via <leader>t* keymaps, see plugins/snacks/toggle.lua)
+vim.g.auto_format = true -- conform format-on-save gate (<leader>tf)
+vim.g.autohover = false -- CursorHold hover / diagnostic popout gate (<leader>tK)

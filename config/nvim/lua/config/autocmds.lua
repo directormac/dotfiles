@@ -3,10 +3,14 @@
 
 -- [[ Disable auto comment on enter ]]
 -- See :help formatoptions
-vim.api.nvim_create_autocmd('FileType', {
-  desc = 'remove formatoptions',
-  callback = function() vim.opt.formatoptions:remove({ 'c', 'r', 'o' }) end,
-})
+-- vim.api.nvim_create_autocmd('FileType', {
+--   desc = 'remove formatoptions',
+--   callback = function() vim.opt.formatoptions:remove({ 'c', 'r', 'o' }) end,
+-- })
+vim.api.nvim_create_autocmd(
+  'FileType',
+  { callback = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end, desc = 'Remove formatoptions' }
+)
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -16,11 +20,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-
-vim.api.nvim_create_autocmd(
-  'FileType',
-  { callback = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end, desc = 'Proper formatoptions' }
-)
 
 -- Auto-reload files changed outside of Neovim when Neovim gains focus
 local _checktime_timer = nil

@@ -105,7 +105,20 @@ return {
           },
         },
       },
-      routes = {},
+      routes = {
+        {
+          filter = {
+            event = 'lsp',
+            kind = 'progress',
+            any = {
+              { find = 'Searching in files' },
+              { find = 'WINDOW_PROCESSING_TYPE_DEFINITION' },
+              { find = 'Processing reference' },
+            },
+          },
+          opts = { skip = true },
+        },
+      },
       views = {
         cmdline_popup = {
           border = {
