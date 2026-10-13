@@ -22,31 +22,6 @@
         force = true;
       };
 
-      # home.file.".gemini/antigravity-cli/settings.json" = {
-      #   text =
-      #     # json
-      #     ''
-      #       {
-      #         "defaultMode" : "plan",
-      #         "altScreenMode": "always",
-      #         "notifications":true,
-      #         "enableTerminalSandbox": true,
-      #         "toolPermission" : "request-review";
-      #         "trustedWorkspaces": [
-      #           "${config.home.homeDirectory}/.dotfiles"
-      #           "${config.home.homeDirectory}/Projects"
-      #         ],
-      #         "permissions" :{
-      #           "allow": [
-      #             "command(git)",
-      #           ]
-      #         }
-      #
-      #       }
-      #     '';
-      #   force = true;
-      # };
-
       programs.antigravity-cli = {
         enable = true;
         package = pkgs.llm-agents.antigravity-cli;
@@ -85,10 +60,21 @@
         package = pkgs.llm-agents.pi;
       };
 
-      home.packages = [
-        pkgs.llm-agents.omo-ai
-        pkgs.llm-agents.opencode2
-        pkgs.llm-agents.opencode2-desktop
+      home.packages = with pkgs.llm-agents; [
+        rtk # https://www.rtk-ai.app/docs/
+        ctx # https://ctx.rs/
+        cli-proxy-api # https://help.router-for.me/configuration/basic.html
+
+        copilot-language-server
+
+        omo-ai
+        opencode2
+        opencodex
+        terminal-browser
+        agent-browser
+        kimi-code
+        code # https://github.com/just-every/code/
+        codex
       ];
 
     };

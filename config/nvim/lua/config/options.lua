@@ -37,8 +37,8 @@ vim.o.mouse = 'a'
 vim.opt.autoread = true
 
 -- Indent
--- vim.o.smarttab = true
 vim.opt.cpoptions:append('I')
+vim.o.smarttab = true
 vim.o.expandtab = true
 vim.opt.tabstop = 2 -- Number of visual spaces per TAB
 vim.opt.softtabstop = 2 -- Number of spaces per TAB when editing

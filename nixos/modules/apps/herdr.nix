@@ -8,12 +8,12 @@
   flake.homeModules.herdr =
     { pkgs, config, ... }:
     let
-      herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      # herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      herdr = pkgs.llm-agents.herdr;
     in
     {
       programs.herdr = {
         enable = true;
-        # package = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default;
         package = herdr;
       };
 

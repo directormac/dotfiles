@@ -33,9 +33,9 @@ panel_bg = "black"
 # panel_bg = "#eff1f5"
 # text = "#4c4f69"
 #
-# [theme.custom.dark]
-# panel_bg = "#1e1e2e"
-# text = "#cdd6f4"
+[theme.custom.dark]
+panel_bg = "#1e1e2e"
+text = "#cdd6f4"
 
 [terminal]
 # Executable used for new interactive panes.
@@ -327,6 +327,7 @@ window_title = "{hostname}: {workspace}"
 # rows = [["state_icon", "workspace"], ["branch", "git_status"]]
 
 # Background notification popup delivery
+status_indicators = "symbols"
 [ui.toast]
 # off = disable pop-up notifications
 # herdr = show in-app toasts
@@ -335,6 +336,7 @@ window_title = "{hostname}: {workspace}"
 # delivery = "off"
 # delay_seconds = 1
 
+delivery = "system"
 [ui.toast.herdr]
 # position = "bottom-right"
 

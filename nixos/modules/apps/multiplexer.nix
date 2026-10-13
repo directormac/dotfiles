@@ -40,11 +40,15 @@
         # lib.fakeSha256; # Will fail on first build and show the correct hash to paste here
         sha256 = "sha256-k2xV6QJcDtvUNCE4PvwVG9/ceOkk+Wa/6efGgr7IcZ0=";
       };
+
+      # workmux = inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      workmux = pkgs.llm-agents.workmux;
+
     in
     {
 
       home.packages = [
-        inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default
+        workmux
       ];
 
       # https://workmux.raine.dev/guide/configuration/
