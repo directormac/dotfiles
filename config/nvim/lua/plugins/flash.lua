@@ -65,7 +65,6 @@ return {
       desc = 'Treesitter Incremental Selection',
     },
   },
-  after = function(plugin) require('flash').setup(plugin.opts or {}) end,
   specs = {
     {
       'snacks.nvim',

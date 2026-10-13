@@ -62,8 +62,4 @@ return {
       },
     }
   end,
-  after = function(plugin)
-    local opts = type(plugin.opts) == 'function' and plugin.opts(plugin, {}) or (plugin.opts or {})
-    require('bufferline').setup(opts)
-  end,
 }

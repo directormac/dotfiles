@@ -4,24 +4,6 @@ return {
     'harpoon2',
     event = 'DeferredUIEnter',
     load_before = { 'harpoon-lualine' },
-    after = function()
-      local harpoon = require('harpoon')
-      harpoon:setup({
-        menu = {
-          width = vim.api.nvim_win_get_width(0) - 4,
-        },
-        settings = {
-          save_on_toggle = true,
-        },
-      })
-
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'DeferredPlugin',
-        callback = function(ev)
-          if ev.data == 'which-key.nvim' then return true end
-        end,
-      })
-    end,
     keys = function()
       local keys = {
         {
@@ -48,6 +30,15 @@ return {
       end
       return keys
     end,
+    ---@type HarpoonConfig
+    opts = {
+      menu = {
+        width = vim.api.nvim_win_get_width(0) - 4,
+      },
+      settings = {
+        save_on_toggle = true,
+      },
+    },
   },
   {
     'harpoon-lualine',

@@ -12,8 +12,8 @@ return {
   {
     'colorful-menu.nvim',
     load_before = { 'blink.cmp' },
-    after = function() require('colorful-menu').setup() end,
   },
+
   {
     'blink.cmp',
     event = { 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },

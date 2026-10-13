@@ -1,5 +1,11 @@
 local M = {}
 
+--- Resolve the options from the plugin specification.
+--- Delegated to config.specs.opts for centralized builder evaluation and merging.
+---@param plugin table The lz.n plugin table or specification
+---@return table opts The resolved configuration table
+M.opts = function(plugin) return require('config.specs').opts(plugin) end
+
 --- Deep merge that appends and deduplicates lists, and recurses into dicts.
 --- Use vim.NIL as a value to explicitly remove a key.
 ---@param base table

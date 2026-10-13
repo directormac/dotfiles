@@ -22,30 +22,27 @@ This setup uses [`lz.n`](https://github.com/lumen-oss/lz.n) with an enhanced pre
 
 Every plugin spec in `lua/plugins/` returns a declarative table or a list of tables.
 
-### 1. Recursive Auto-Discovery
+### 1. Recursive Auto-Discovery & Submodule Merging
 Any `.lua` file placed anywhere inside `lua/plugins/**` is discovered automatically without manual `require()` lists. You can organize files into arbitrary subdirectories:
 - `lua/plugins/<plugin>.lua`
 - `lua/plugins/ui/<plugin>.lua`
 - `lua/plugins/coding/<plugin>.lua`
 - `lua/plugins/git/<plugin>.lua`
+- `lua/plugins/snacks/<submodule>.lua`
 
-**Package Boundaries**:
-- If a directory under `lua/plugins/` contains an `init.lua` (such as `lua/plugins/snacks/`), it is treated as a self-contained package. The engine imports `plugins.<dir>` as a unit, letting `init.lua` orchestrate its own submodules.
-- If a directory does **not** contain `init.lua`, the engine recursively imports every `.lua` file inside it.
+**Subdirectories and Packages**:
+- The preprocessor recursively crawls all subdirectories under `lua/plugins/`.
+- If a subdirectory contains `init.lua` (such as `lua/plugins/snacks/`), `init.lua` is loaded as the directory package (e.g. `plugins.snacks`) and all sibling/nested spec files in that directory are also imported and normalized.
+- When multiple files define the same plugin (e.g. `'snacks.nvim'`), all `opts`, `keys`, `before`, and `after` hooks are deep-merged into a single plugin record.
 
-### 2. Auto-Default `.setup(opts)`
-When a plugin spec defines `opts` and omits `after`, the engine automatically identifies the Lua module name (e.g. `'gitsigns.nvim'` &rarr; `'gitsigns'`) and invokes `require(mod).setup(plugin.opts or {})`.
+### 2. Auto-Default `.setup(opts)` & Decoupled Lifecycle Hooks
+When a plugin spec defines `opts`, the engine automatically:
+1. Resolves all `opts` builders (whether static tables, functions returning tables, or functions mutating `opts` in-place).
+2. Identifies the target module name (e.g. `'catppuccin-nvim'` &rarr; `'catppuccin'`, `'harpoon2'` &rarr; `'harpoon'`, `'gitsigns.nvim'` &rarr; `'gitsigns'`).
+3. Invokes `require(mod).setup(resolved_opts)`. If `config = function(plugin, opts)` is defined, it runs your custom setup function instead.
+4. Executes the `after(plugin)` hook (if defined) **after** setup has completed.
 
-```lua
--- lua/plugins/todo-comments.lua
-return {
-  'todo-comments.nvim',
-  event = 'DeferredUIEnter',
-  opts = {}, -- Automatically calls require('todo-comments').setup({})
-}
-```
-
-If custom logic (like extra autocmds or Snack toggles) is needed, declare an explicit `after(plugin)` hook, which receives `plugin.opts`:
+> **Key Rule**: You do **not** need to call `require('foo').setup(...)` inside `after`. Use `after` strictly for post-setup logic such as creating autocmds, setting options, or registering Snacks toggles:
 
 ```lua
 -- lua/plugins/gitsigns.lua
@@ -55,28 +52,83 @@ return {
   opts = {
     signs = { add = { text = '▎' } },
   },
-  after = function(plugin)
-    require('gitsigns').setup(plugin.opts or {})
-    Snacks.toggle({ ... }):map('<leader>uG')
+  after = function()
+    -- Automatically set up! Only add custom post-load logic here:
+    Snacks.toggle({
+      name = 'Git Signs',
+      get = function() return require('gitsigns.config').config.signcolumn end,
+      set = function(state) require('gitsigns').toggle_signs(state) end,
+    }):map('<leader>tG')
   end,
 }
 ```
+
+If a plugin only needs default setup with resolved options (even dynamic function options), simply omit `after`:
+
+```lua
+-- lua/plugins/bufferline.lua
+return {
+  'bufferline.nvim',
+  event = 'DeferredUIEnter',
+  opts = function()
+    return {
+      options = {
+        diagnostics = 'nvim_lsp',
+        -- ...
+      },
+    }
+  end,
+  -- No after hook needed! require('bufferline').setup(opts) is called automatically.
+}
+```
+
+### 3. Dynamic Functions for `opts` and `keys`
+Both `opts` and `keys` support dynamic builder functions:
+
+- **`opts` Function**: Can return a table or mutate `opts` in-place:
+  ```lua
+  opts = function(plugin, opts)
+    return { option_name = value }
+  end
+  ```
+  Options can also be resolved at any time via `require('config.specs').opts(plugin)`.
+
+- **`keys` Function**: Can dynamically compute keymaps (e.g. numbered slots or runtime calculations):
+  ```lua
+  -- lua/plugins/harpoon.lua
+  keys = function()
+    local keys = {
+      { '<leader>H', function() require('harpoon'):list():add() end, desc = 'Harpoon File' },
+      { '<leader>h', function() require('harpoon').ui:toggle_quick_menu(require('harpoon'):list()) end, desc = 'Harpoon Menu' },
+    }
+    for i = 1, 9 do
+      table.insert(keys, {
+        '<leader>' .. i,
+        function() require('harpoon'):list():select(i) end,
+        desc = 'Harpoon to File ' .. i,
+      })
+    end
+    return keys
+  end,
+  ```
 
 ### Spec Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `[1]` | `string` | Plugin name (e.g. `'snacks.nvim'`, `'folke/flash.nvim'`) |
+| `[1]` | `string` | Plugin name (e.g. `'snacks.nvim'`, `'catppuccin-nvim'`, `'harpoon2'`) |
 | `event` | `string \| string[]` | Load on event (e.g. `'DeferredUIEnter'`, `'BufReadPost'`, `'CmdlineEnter'`) |
 | `cmd` | `string \| string[]` | Load on command (e.g. `'Oil'`, `'GrugFar'`) |
 | `ft` | `string \| string[]` | Load on filetype (e.g. `'markdown'`, `'lua'`) |
-| `keys` | `table \| fun()` | Keymaps that trigger loading or register with which-key |
+| `keys` | `table \| fun(plugin, keys): table` | Keymaps that trigger loading or register with which-key |
 | `colorscheme` | `string` | Colorscheme name that triggers loading |
 | `load_before` | `string \| string[]` | Loads this plugin before the target plugin(s) load (via custom handler) |
 | `on_require` | `string \| string[]` | Loads this plugin when any module prefixes are required (via custom handler) |
-| `before` | `fun()` | Executed before plugin is loaded (useful for global variables) |
-| `after` | `fun(plugin)` | Executed after plugin is loaded (auto-defaults to `.setup(plugin.opts)` if omitted) |
-| `opts` | `table \| fun()` | Options table or deferred builder function, deep-merged across all specs |
+| `before` | `fun(plugin)` | Executed before plugin is loaded (useful for global variables or pre-load highlights) |
+| `after` | `fun(plugin)` | Executed after plugin is loaded and set up (ideal for autocmds, toggles) |
+| `config` | `fun(plugin, opts) \| false` | Custom setup function override (if false, skips auto-setup) |
+| `auto_setup` | `boolean` | Set to false to disable automatic `.setup(opts)` |
+| `opts` | `table \| fun(plugin, opts): table\|nil` | Options table or builder function, deep-merged across all specs |
 | `specs` | `table` | Child specs merged into other target plugins (LazyVim-style) |
 | `optional` | `boolean` | If true, only applies if target plugin is explicitly enabled/installed |
 
@@ -158,10 +210,10 @@ return {
 }
 ```
 
-`lua/plugins/snacks/init.lua` dynamically auto-scans all files in `lua/plugins/snacks/**`:
-- Every modular spec (`git.lua`, `picker.lua`, `explorer.lua`, `dashboard.lua`, `terminal.lua`, `ui.lua`, etc.) declares its own scoped `keys` and `opts`.
-- All keymaps across files are accumulated into `snacks.nvim` (over 75 keymaps active).
-- All options are deep-merged using `Util.merge`.
+`lua/plugins/snacks/init.lua` simply declares the core `snacks.nvim` spec (`lazy = false`, `priority = 1000`):
+- `specs.lua` automatically recurses into `lua/plugins/snacks/` and imports all submodule spec files (`git.lua`, `picker.lua`, `explorer.lua`, `dashboard.lua`, `terminal.lua`, `ui.lua`, `auxiliary.lua`, etc.).
+- All keymaps across files are accumulated into `snacks.nvim` (over 70 keymaps active).
+- All options across submodules are deep-merged automatically before `.setup(opts)` runs.
 
 ### 4. LazyVim-Style Cross-Plugin Spec Merging (`specs = { ... }`)
 Any plugin file can declare `specs = { ... }` to inject options, keymaps, or actions into another plugin without modifying that plugin's source file:

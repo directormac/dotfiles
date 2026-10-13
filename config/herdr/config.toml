@@ -94,13 +94,18 @@ close_pane = ["prefix+x", "alt+esc"]
 zoom = "prefix+z"
 last_pane = "prefix+;"
 
-resize_mode = ["prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
+resize_mode = [
+  "prefix+ctrl+left",
+  "prefix+ctrl+down",
+  "prefix+ctrl+up",
+  "prefix+ctrl+right",
+]
 
 
 # Windows -> tabs
 new_tab = "prefix+c"
 rename_tab = "prefix+r"
-close_tab = "prefix+k"
+close_tab = "prefix+X"
 switch_tab = ["prefix+1..9", "ctrl+1..9"]
 previous_tab = ["prefix+p", "ctrl+left"]
 next_tab = ["prefix+n", "ctrl+right"]

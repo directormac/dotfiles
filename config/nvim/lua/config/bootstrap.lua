@@ -37,23 +37,5 @@ on_require.enable()
 _G.Util = require('config.util')
 _G.Icons = require('config.icons')
 
--- Hook lz.n keys handler to support dynamic function specs (e.g. keys = function() return { ... } end)
-local keys_handler = require('lz.n.handler.keys')
-local orig_keys_parse = keys_handler.parse
-keys_handler.parse = function(plugin, keys_spec)
-  if type(keys_spec) == 'function' then
-    local ok, res = pcall(keys_spec, plugin)
-    if ok and type(res) == 'table' then
-      keys_spec = res
-    elseif not ok then
-      vim.notify(
-        'Failed to evaluate keys function for ' .. tostring(plugin.name) .. ': ' .. tostring(res),
-        vim.log.levels.ERROR
-      )
-    end
-  end
-  return orig_keys_parse(plugin, keys_spec)
-end
-
--- Preprocess specs: nested child specs, cross-spec opts merging, and Nix auto-filtering
+-- Preprocess specs: nested child specs, cross-spec opts merging, dynamic keys, and Nix auto-filtering
 require('config.specs').setup()

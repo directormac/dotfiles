@@ -1,37 +1,39 @@
 return {
-  'lualine.nvim',
-  event = 'DeferredUIEnter',
-  opts = function()
-    local icons = Icons
-    local util = Util
 
-    return {
-      options = {
-        icons_enabled = true,
-        theme = 'auto',
-        component_separators = '',
-        section_separators = '',
-        globalstatus = true,
-        disabled_filetypes = { statusline = { 'snacks_dashboard', 'oil' } },
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'harpoon2' },
-        lualine_c = {
-          {
-            'diagnostics',
-            symbols = {
-              error = icons.diagnostics.Error,
-              warn = icons.diagnostics.Warn,
-              info = icons.diagnostics.Info,
-              hint = icons.diagnostics.Hint,
-            },
-          },
-          { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
-          { util.lualine.pretty_path() },
+  {
+    'lualine.nvim',
+    event = 'DeferredUIEnter',
+    opts = function()
+      local icons = Icons
+      local util = Util
+
+      return {
+        options = {
+          icons_enabled = true,
+          theme = 'auto',
+          component_separators = '',
+          section_separators = '',
+          globalstatus = true,
+          disabled_filetypes = { statusline = { 'snacks_dashboard', 'oil' } },
         },
-        lualine_x = {
-          Snacks.profiler.status(),
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'harpoon2' },
+          lualine_c = {
+            {
+              'diagnostics',
+              symbols = {
+                error = icons.diagnostics.Error,
+                warn = icons.diagnostics.Warn,
+                info = icons.diagnostics.Info,
+                hint = icons.diagnostics.Hint,
+              },
+            },
+            { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
+            { util.lualine.pretty_path() },
+          },
+          lualine_x = {
+            Snacks.profiler.status(),
           -- stylua: ignore
           {
             function() return require('noice').api.status.command.get() end,
@@ -62,48 +64,46 @@ return {
               return { fg = Snacks.util.color('Debug') } 
             end,
           },
-        },
-        lualine_y = {
-          {
-            'diff',
-            symbols = {
-              added = icons.git.added,
-              modified = icons.git.modified,
-              removed = icons.git.removed,
-            },
-            source = function()
-              local gitsigns = vim.b.gitsigns_status_dict
-              if gitsigns then
-                return {
-                  added = gitsigns.added,
-                  modified = gitsigns.changed,
-                  removed = gitsigns.removed,
-                }
-              end
-            end,
           },
-          { 'progress', separator = ' ', padding = { left = 1, right = 0 } },
-          { 'location', padding = { left = 0, right = 1 } },
-          'lsp_status',
+          lualine_y = {
+            {
+              'diff',
+              symbols = {
+                added = icons.git.added,
+                modified = icons.git.modified,
+                removed = icons.git.removed,
+              },
+              source = function()
+                local gitsigns = vim.b.gitsigns_status_dict
+                if gitsigns then
+                  return {
+                    added = gitsigns.added,
+                    modified = gitsigns.changed,
+                    removed = gitsigns.removed,
+                  }
+                end
+              end,
+            },
+            { 'progress', separator = ' ', padding = { left = 1, right = 0 } },
+            { 'location', padding = { left = 0, right = 1 } },
+            'lsp_status',
+          },
+          lualine_z = {},
         },
-        lualine_z = {},
-      },
-    }
-  end,
-  after = function(plugin)
-    local opts = type(plugin.opts) == 'function' and plugin.opts(plugin, {}) or (plugin.opts or {})
-    require('lualine').setup(opts)
+      }
+    end,
+    after = function()
+      vim.opt.showmode = false
 
-    vim.opt.showmode = false
-
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufDelete' }, {
-      callback = function()
-        vim.schedule(function()
-          local bufs = vim.fn.getbufinfo({ buflisted = 1 })
-          local tabs = vim.fn.gettabinfo()
-          vim.o.showtabline = (#bufs > 1 or #tabs > 1) and 2 or 0
-        end)
-      end,
-    })
-  end,
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufAdd', 'BufDelete' }, {
+        callback = function()
+          vim.schedule(function()
+            local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+            local tabs = vim.fn.gettabinfo()
+            vim.o.showtabline = (#bufs > 1 or #tabs > 1) and 2 or 0
+          end)
+        end,
+      })
+    end,
+  },
 }

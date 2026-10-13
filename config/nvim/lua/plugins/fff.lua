@@ -97,4 +97,10 @@ return {
       trim_whitespace = true,
     },
   },
+  before = function()
+    vim.api.nvim_create_autocmd('User', {
+      pattern = { 'FFFOpen', 'FFFClose' },
+      callback = function(ev) vim.o.showtabline = ev.match == 'FFFOpen' and 0 or 2 end,
+    })
+  end,
 }
