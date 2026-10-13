@@ -65,6 +65,7 @@
         ctx # https://ctx.rs/
         cli-proxy-api # https://help.router-for.me/configuration/basic.html
 
+        copilot-cli
         copilot-language-server
 
         omo-ai

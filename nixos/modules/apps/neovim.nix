@@ -35,6 +35,53 @@
         cargoHash = "sha256-lAmfaH3SpX0Al2VuT+V/0K5+KpwV0uIKZV0idoUy08w=";
         buildAndTestSubdir = "tools/kdl-lsp";
       };
+
+      # https://github.com/zFrenesy/vellum.nvim — live markdown preview.
+      # Diagrams, display math and non-PNG images are rendered by a Node sidecar
+      # in render/ (Puppeteer). Its lazy.nvim build.lua runs `npm ci` and
+      # downloads a headless Chrome; we never let that run. Instead the npm deps
+      # are built here from the committed lockfile, and Puppeteer is pointed at
+      # pkgs.chromium via PUPPETEER_EXECUTABLE_PATH (see config.env below).
+      vellumSrc = pkgs.fetchFromGitHub {
+        owner = "zFrenesy";
+        repo = "vellum.nvim";
+        rev = "910b79e76f5a3389e55a64da9b6816cb9e89a64e";
+        hash = "sha256-WKbnohPgZOQd1klxXXDGKbZeMSNQmjEuYTi+sL+zMgA=";
+      };
+
+      vellum-render = pkgs.buildNpmPackage {
+        pname = "vellum-render";
+        version = "unstable-2026-10-13";
+        src = "${vellumSrc}/render";
+        # Regenerate with: nix run nixpkgs#prefetch-npm-deps -- <render>/package-lock.json
+        npmDepsHash = "sha256-Zcitez2/UGHu4Reux1XwTBwLMzyMDg17Ywa6QXWGTYQ=";
+        dontNpmBuild = true;
+        # Puppeteer's install script downloads its own browser; skip it and use
+        # pkgs.chromium at runtime instead.
+        npmFlags = [ "--ignore-scripts" ];
+        env.PUPPETEER_SKIP_DOWNLOAD = "true";
+        # render/package.json has no "version", so the stock npm install hook's
+        # `npm pack`/`npm prune` steps fail. We only need node_modules beside
+        # browser.mjs, so copy it out directly (matches browser.lua's lookup).
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/lib/node_modules/vellum-render
+          cp -r node_modules $out/lib/node_modules/vellum-render/node_modules
+          runHook postInstall
+        '';
+      };
+
+      vellum-nvim = pkgs.vimUtils.buildVimPlugin {
+        pname = "vellum.nvim";
+        version = "unstable-2026-10-13";
+        src = vellumSrc;
+        doCheck = false;
+        # lua/vellum/browser.lua looks for the renderer at <plugin>/render/node_modules.
+        postInstall = ''
+          cp -r ${vellum-render}/lib/node_modules/vellum-render/node_modules \
+            $out/render/node_modules
+        '';
+      };
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
@@ -46,6 +93,10 @@
       config.binName = lib.mkDefault "nvim";
       config.settings.dont_link = false;
       config.settings.config_directory = lib.mkDefault ../../../config/nvim;
+
+      # vellum.nvim's Node renderer (render/browser.mjs) launches Puppeteer. It
+      # is built without its bundled Chrome, so point it at Nix's Chromium.
+      config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
 
       # -----------------------------------------------------------------------
       # User-facing options -> exposed to Lua via the generated info plugin.
@@ -90,6 +141,7 @@
         ripgrep
         fd
         lua5_1
+        nodejs # vellum.nvim renderer (diagrams / math / images)
 
         # -----------------------------------------------------------------------
         # Language servers, linters, formatters
@@ -246,6 +298,7 @@
           which-key-nvim
           hlchunk-nvim
           render-markdown-nvim
+          vellum-nvim # live markdown preview (Node renderer for diagrams/math/images)
 
           # AI
           codecompanion-nvim

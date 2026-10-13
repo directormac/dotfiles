@@ -1,7 +1,7 @@
 return {
   'snacks.nvim',
   keys = {
-    { 'n', '<leader>od', function() Snacks.dashboard.open() end, desc = 'Dashboard' },
+    { '<leader>uD', function() Snacks.dashboard.open() end, desc = 'Dashboard' },
   },
   opts = {
     ---@type snacks.dashboard.Config

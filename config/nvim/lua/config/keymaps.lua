@@ -1,6 +1,17 @@
 -- Global keymaps.
 -- See `:help vim.keymap.set()`
 
+-- Clear highlights on search when pressing <Esc> in normal mode
+-- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set({ 'i', 'n', 's' }, '<esc>', function()
+  vim.cmd('noh')
+  if vim.snippet then vim.snippet.stop() end
+  return '<esc>'
+end, {
+  expr = true,
+  desc = 'Escape and Clear hlserach',
+})
+
 -- Keymaps for better default experience
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Moves Line Down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Moves Line Up' })
