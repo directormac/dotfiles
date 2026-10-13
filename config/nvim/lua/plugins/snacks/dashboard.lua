@@ -25,6 +25,12 @@ M.opts = {
           action = ":lua Snacks.dashboard.pick('recent', { layout = { hidden = { 'preview' } } })",
         },
         {
+          icon = ' ',
+          key = 'p',
+          desc = 'Projects',
+          action = ':lua Snacks.picker.projects()',
+        },
+        {
           icon = ' ',
           key = 's',
           desc = 'Restore Session',

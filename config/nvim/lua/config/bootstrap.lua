@@ -55,15 +55,5 @@ keys_handler.parse = function(plugin, keys_spec)
   return orig_keys_parse(plugin, keys_spec)
 end
 
--- Auto-filter plugins not provisioned by Nix
-local spec_mod = require('lz.n.spec')
-local orig_parse = spec_mod.parse
-spec_mod.parse = function(spec)
-  local result = orig_parse(spec)
-  if vim.g.nix_info_plugin_name then
-    for name, plugin in pairs(result) do
-      if plugin.auto_enable ~= false and not nixInfo.get_nix_plugin_path(name) then result[name] = nil end
-    end
-  end
-  return result
-end
+-- Preprocess specs: nested child specs, cross-spec opts merging, and Nix auto-filtering
+require('config.specs').setup()

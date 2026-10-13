@@ -74,6 +74,8 @@
 
       config.specs.lzn = pkgs.vimPlugins.lz-n;
       config.specs.lzn-auto-require = pkgs.vimPlugins.lzn-auto-require;
+      config.specs.rtp = pkgs.vimPlugins.rtp-nvim;
+
       # https://github.com/lumen-oss/rtp.nvim
       # More Handlers. .
       # https://github.com/BirdeeHub/lzextras

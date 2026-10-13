@@ -19,14 +19,97 @@ local exclude = {
 
 M.opts = {
   -- Documentation https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
-  ---@class snacks.Picker
+  ---@class snacks.picker.Config
   picker = {
+    win = {
+      input = {
+        keys = {
+          ['<a-c>'] = {
+            'toggle_cwd',
+            mode = { 'n', 'i' },
+          },
+        },
+      },
+    },
+    actions = {
+      ---@param p snacks.Picker
+      toggle_cwd = function(p)
+        local root = Util.root({ buf = p.input.filter.current_buf, normalize = true })
+        local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or '.')
+        local current = p:cwd()
+        p:set_cwd(current == root and cwd or root)
+        p:find()
+      end,
+    },
+    ---@class snacks.picker.previewers.Config
+    previewers = {
+      diff = {
+        -- fancy: Snacks fancy diff (borders, multi-column line numbers, syntax highlighting)
+        -- syntax: Neovim's built-in diff syntax highlighting
+        -- terminal: external command (git's pager for git commands, `cmd` for other diffs)
+        style = 'fancy', ---@type "fancy"|"syntax"|"terminal"
+        cmd = { 'delta' }, -- example for using `delta` as the external diff command
+        ---@type vim.wo?|{} window options for the fancy diff preview window
+        wo = {
+          breakindent = true,
+          wrap = true,
+          linebreak = true,
+          showbreak = '',
+        },
+      },
+      git = {
+        args = {}, -- additional arguments passed to the git command. Useful to set pager options usin `-c ...`
+      },
+      file = {
+        max_size = 1024 * 1024, -- 1MB
+        max_line_length = 500, -- max line length
+        ft = nil, ---@type string? filetype for highlighting. Use `nil` for auto detect
+      },
+      man_pager = nil, ---@type string? MANPAGER env to use for `man` preview
+    },
+
+    layouts = {
+      ivy_bottom = {
+        auto_hide = { 'input' },
+        layout = {
+          box = 'vertical',
+          backdrop = false,
+          row = -1,
+          width = 0,
+          height = 0.4,
+          border = 'top',
+          title = ' {title} {live} {flags}',
+          title_pos = 'left',
+          { win = 'input', height = 1, border = 'bottom' },
+          {
+            box = 'horizontal',
+            { win = 'list', border = 'none' },
+            { win = 'preview', title = '{preview}', width = 0.8, border = 'left' },
+          },
+        },
+      },
+    },
+
+    --- Layout https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
     sources = {
       files = {
         layout = { hidden = { 'preview' } },
+        -- multi = { 'recent', 'files' },
         hidden = true,
-        ignored = false,
+        ignored = true,
+        formatters = { file = { truncate = 100 } },
         exclude = exclude,
+      },
+
+      cliphist = {
+        finder = 'system_cliphist',
+        format = 'text',
+        preview = 'preview',
+        confirm = { 'copy', 'close' },
+        layout = { hidden = { 'preview' } },
+      },
+      colorschemes = {
+        layout = { hidden = { 'preview' } },
       },
       grep = {
         layout = { hidden = { 'preview' } },
@@ -46,7 +129,43 @@ M.opts = {
       },
       zoxide = {},
       man = {},
-      notifications = {},
+
+      -- Git
+
+      git_log_file = {
+        layout = 'vscode',
+      },
+
+      git_log_line = {
+        layout = 'ivy_bottom',
+      },
+
+      git_branches = {
+        layout = 'ivy_bottom',
+      },
+
+      git_diff = {
+        group = false,
+        finder = 'git_diff',
+        format = 'git_status',
+        preview = 'diff',
+        matcher = { sort_empty = true },
+        sort = { fields = { 'score:desc', 'file', 'idx' } },
+        win = {
+          input = {
+            keys = {
+              ['<Tab>'] = { 'git_stage', mode = { 'n', 'i' } },
+              ['<c-r>'] = { 'git_restore', mode = { 'n', 'i' }, nowait = true },
+            },
+          },
+        },
+
+        layout = 'ivy_bottom',
+      },
+
+      git_log = {
+        layout = 'ivy_bottom',
+      },
     },
   },
 
@@ -129,6 +248,7 @@ function M.keys()
   map('n', '<leader>gs', function() Snacks.picker.git_status() end, { desc = 'Git Status' })
   map('n', '<leader>gS', function() Snacks.picker.git_stash() end, { desc = 'Git Stash' })
   map('n', '<leader>gd', function() Snacks.picker.git_diff() end, { desc = 'Git Diff (Hunks)' })
+
   map('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = 'Git Log File' })
 
   -- GitHub

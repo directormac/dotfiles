@@ -15,14 +15,6 @@ vim.keymap.set('n', ']b', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '[B', '<cmd>bfirst<CR>', { desc = 'First buffer' })
 vim.keymap.set('n', ']B', '<cmd>blast<CR>', { desc = 'Last buffer' })
 
--- Jump directly to buffer by index using Lualine
-vim.keymap.set('n', '<A-1>', '<cmd>LualineBuffersJump! 1<CR>', { desc = 'Go to buffer 1' })
-vim.keymap.set('n', '<A-2>', '<cmd>LualineBuffersJump! 2<CR>', { desc = 'Go to buffer 2' })
-vim.keymap.set('n', '<A-3>', '<cmd>LualineBuffersJump! 3<CR>', { desc = 'Go to buffer 3' })
-vim.keymap.set('n', '<A-4>', '<cmd>LualineBuffersJump! 4<CR>', { desc = 'Go to buffer 4' })
-vim.keymap.set('n', '<A-5>', '<cmd>LualineBuffersJump! 5<CR>', { desc = 'Go to buffer 5' })
-vim.keymap.set('n', '<A-6>', '<cmd>LualineBuffersJump! 6<CR>', { desc = 'Go to buffer 6' })
-
 -- Buffer actions
 local function buf_delete(buf) Util.buf_delete(buf) end
 

@@ -28,7 +28,8 @@ local snacks_spec = {
 
   priority = 1000,
   after = function(plugin)
-    require('snacks').setup(merged_opts)
+    local final_opts = Util.merge(merged_opts, plugin.opts or {})
+    require('snacks').setup(final_opts)
 
     for _, mod in ipairs(modules) do
       if mod.setup then mod.setup() end

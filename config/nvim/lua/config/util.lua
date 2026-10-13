@@ -27,6 +27,19 @@ M.merge = function(base, override)
   return base
 end
 
+--- Load a plugin via lz.n and source its after/ directory using rtp.nvim
+---@param plugin_name string
+M.load_with_after = function(plugin_name)
+  require('lz.n').trigger_load(plugin_name)
+  if nixInfo and nixInfo.get_nix_plugin_path then
+    local path = nixInfo.get_nix_plugin_path(plugin_name)
+    if path and vim.fn.isdirectory(path .. '/after') == 1 then
+      local ok, rtp = pcall(require, 'rtp_nvim')
+      if ok then rtp.source_after_plugin_dir(path) end
+    end
+  end
+end
+
 M.hover_or_focus = function()
   local current_win = vim.api.nvim_get_current_win()
   local win_cfg = vim.api.nvim_win_get_config(current_win)

@@ -52,6 +52,9 @@ return {
 | `on_require` | `string \| string[]` | Loads this plugin when any of the module prefixes are required (via custom `on_require` handler) |
 | `before` | `fun()` | Executed before plugin is loaded (useful for setting global variables) |
 | `after` | `fun()` | Executed after plugin is loaded (equivalent to `config` in lazy.nvim) |
+| `opts` | `table` | Options table passed to `setup(plugin.opts)` or merged across specs |
+| `specs` | `table` | Child plugin specs merged into target plugins (LazyVim-style) |
+| `optional` | `boolean` | If true, only applies if target plugin is explicitly enabled/installed |
 
 ## Handlers & Auto-Requiring Architecture
 
@@ -167,7 +170,86 @@ for _, mod in ipairs(modules) do
   if mod.opts then merged_opts = Util.merge(merged_opts, mod.opts) end
 end
 
-require('snacks').setup(merged_opts)
+-- plugin.opts (merged across specs via config/specs.lua) is combined with submodules:
+local final_opts = Util.merge(merged_opts, plugin.opts or {})
+require('snacks').setup(final_opts)
+```
+
+### 6. LazyVim-Style Child Specs & Cross-Plugin `opts` Merging (`specs = { ... }`)
+Any plugin file can declare `specs = { ... }` to inject options, keymaps, or actions into another plugin without modifying that plugin's source file. `config/specs.lua` automatically normalizes repository names (e.g. `'folke/snacks.nvim'` &rarr; `'snacks.nvim'`) and deep-merges `opts`:
+
+```lua
+-- lua/plugins/flash.lua
+return {
+  'flash.nvim',
+  event = 'DeferredUIEnter',
+  opts = { ... },
+  keys = { ... },
+  after = function(plugin) require('flash').setup(plugin.opts or {}) end,
+
+  -- Inject picker keymaps & flash actions into snacks.nvim picker:
+  specs = {
+    {
+      'snacks.nvim',
+      opts = {
+        picker = {
+          win = {
+            input = {
+              keys = {
+                ['<a-s>'] = { 'flash', mode = { 'n', 'i' } },
+                ['s'] = { 'flash' },
+              },
+            },
+          },
+          actions = {
+            flash = function(picker)
+              require('flash').jump({
+                pattern = '^',
+                label = { after = { 0, 0 } },
+                search = {
+                  mode = 'search',
+                  exclude = {
+                    function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= 'snacks_picker_list' end,
+                  },
+                },
+                action = function(match)
+                  local idx = picker.list:row2idx(match.pos[1])
+                  picker.list:_move(idx, true, true)
+                end,
+              })
+            end,
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+You can also use this pattern to add keymap groups into `which-key.nvim`:
+
+```lua
+-- In any plugin spec:
+specs = {
+  {
+    'which-key.nvim',
+    opts = {
+      spec = {
+        { '<leader>cz', desc = 'Custom Code Action' },
+      },
+    },
+  },
+}
+```
+
+### 7. Sourcing `after/` Directories with `rtp.nvim` (`Util.load_with_after`)
+On NixOS, Neovim plugins live in individual `/nix/store/...` derivations rather than a monolithic `packpath`. Sourcing `packadd <name>/after` directly does not work because `:h packpath` expects standard folder layouts.
+
+Using [`rtp.nvim`](https://github.com/lumen-oss/rtp.nvim), `Util.load_with_after(plugin_name)` triggers `lz.n` loading and sources the plugin's `after/plugin/*.lua` scripts directly from its Nix store path:
+
+```lua
+-- In any after hook or custom loader:
+Util.load_with_after('octo.nvim')
 ```
 
 ## LSP Configuration
