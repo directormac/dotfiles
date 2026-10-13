@@ -9,6 +9,10 @@
       viteplus = inputs.nix-vite-plus.packages.${pkgs.stdenv.hostPlatform.system}.vp;
     in
     {
+      imports = [
+        inputs.direnv-instant.homeModules.direnv-instant
+      ];
+
       xdg = {
         configFile = {
 
@@ -26,10 +30,18 @@
       programs = {
         direnv = {
           enable = true;
-          enableZshIntegration = true;
-          enableBashIntegration = true;
           # mise.enable = true;
           nix-direnv.enable = true;
+        };
+
+        direnv-instant = {
+          enable = true;
+          # Defaults are fine. Tweak if desired:
+          settings = {
+            mux_delay = 2; # seconds before opening a tmux pane
+            use_cache = true; # apply cached env instantly on prompt
+            debug_log = "/tmp/direnv-instant.log";
+          };
         };
 
         mise = {
@@ -51,6 +63,7 @@
         # nodejs-slim_26
 
         viteplus
+        go
         bun
         cargo
         deno

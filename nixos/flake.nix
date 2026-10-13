@@ -14,6 +14,7 @@
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     devshell.url = "github:numtide/devshell";
+    direnv-instant.url = "github:Mic92/direnv-instant";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     systems.url = "github:nix-systems/default";
     flake-utils.url = "github:numtide/flake-utils";

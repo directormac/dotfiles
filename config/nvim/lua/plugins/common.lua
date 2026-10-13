@@ -64,4 +64,6 @@ return {
     'yanky.nvim',
     on_require = { 'yanky' },
   },
+  -- https://github.com/ChmaraX/herdr-nvim
+  -- { 'herdr-nvim', event = 'DeferredUIEnter', opts = {} },
 }

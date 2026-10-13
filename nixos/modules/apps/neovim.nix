@@ -247,6 +247,18 @@
 
           # https://github.com/dmtrKovalenko/fff
 
+          # (pkgs.vimUtils.buildVimPlugin {
+          #   pname = "herdr-nvim";
+          #   version = "1.2.0";
+          #   src = pkgs.fetchFromGitHub {
+          #     owner = "ChmaraX";
+          #     repo = "herdr-nvim";
+          #     rev = "e2ec32e7bbbb1eefd64363414b5806f84eedd6bc";
+          #     hash = "sha256-Hk+r5ReArirmjsYOK7BEt8/tj81RmM56SqZSfkYgmcQ=";
+          #   };
+          #   doCheck = false;
+          # })
+
           (pkgs.vimUtils.buildVimPlugin {
             pname = "nvim-float";
             version = "unstable-2026-10-10";
