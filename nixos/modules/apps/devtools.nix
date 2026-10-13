@@ -57,20 +57,27 @@
 
       };
 
-      home.packages = with pkgs; [
+      home.packages =
+        with pkgs;
+        [
 
-        nodejs_26
-        # nodejs-slim_26
+          nodejs_26
+          # nodejs-slim_26
 
-        viteplus
-        go
-        bun
-        cargo
-        deno
-        mise
-        pitchfork
-        luarocks-nix
-      ];
+          viteplus
+          go
+          bun
+          cargo
+          rustc
+          deno
+          mise
+          pitchfork
+          luarocks-nix
+        ]
+        ++ (with pkgs.beam29Packages; [
+          hex
+          elixir_1_20
+        ]);
 
     };
 

@@ -156,17 +156,17 @@ toggle_sidebar = "prefix+b"
 # workspaces = "" # e.g. "ctrl+shift" makes ctrl+shift+1..9 switch workspaces directly
 # agents = ""     # e.g. "alt" makes alt+1..9 focus agent rows directly
 
-[[keys.command]]
-key = "prefix+e"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.toggle"
-description = "nvim sidebar"
+# [[keys.command]]
+# key = "prefix+e"
+# type = "plugin_action"
+# command = "chmarax.herdr-nvim.toggle"
+# description = "nvim sidebar"
 
-[[keys.command]]
-key = "prefix+o"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.pick-file"
-description = "open file from agent output"
+# [[keys.command]]
+# key = "prefix+o"
+# type = "plugin_action"
+# command = "chmarax.herdr-nvim.pick-file"
+# description = "open file from agent output"
 
 copy_mode = "prefix+[" # Copy mode
 
@@ -266,7 +266,7 @@ pane_gaps = true
 
 # Hide the tab row when a workspace has exactly one tab.
 # New tabs can still be created with the configured keybinding.
-hide_tab_bar_when_single_tab = true
+hide_tab_bar_when_single_tab = false
 
 # Desktop tab row placement: "top" or "bottom".
 tab_bar_position = "bottom"
