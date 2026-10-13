@@ -30,7 +30,7 @@ return {
         rm = function(path) return false end,
       },
     },
-    after = function(plugin) require('oil').setup(plugin.opts({})) end,
+    after = function(plugin) require('oil').setup(plugin.opts or {}) end,
   },
   {
     'oil-git.nvim',
