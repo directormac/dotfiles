@@ -40,7 +40,7 @@
           {
             name = "v";
             category = "neovim";
-            command = "nvim \"$@\"";
+            command = "NVIM_PROFILER=1 nvim \"$@\"";
             help = "Neovim with live configuration reload from repository";
           }
           {
@@ -132,6 +132,10 @@
             name = "NVIM_DEV_CONFIG";
             eval = "$([ -d \"$PRJ_ROOT/config/nvim\" ] && echo \"$PRJ_ROOT/config/nvim\" || echo \"$PRJ_ROOT/../config/nvim\")";
           }
+          # {
+          #   name = "NVIM_PROFILER";
+          #   eval = 1;
+          # }
         ];
       };
     };

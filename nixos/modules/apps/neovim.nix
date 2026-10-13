@@ -149,6 +149,15 @@
         # https://wiki.nixos.org/wiki/Vim#Add_a_new_custom_plugin_to_the_users_packages
         data = with pkgs.vimPlugins; [
 
+          {
+            data = snacks-nvim;
+            lazy = false;
+          }
+          {
+            data = nvim-web-devicons;
+            lazy = false;
+          }
+
           # Language Helpers
           conform-nvim
           nvim-lspconfig
@@ -176,7 +185,6 @@
           nui-nvim
           plenary-nvim
           persistence-nvim
-          snacks-nvim
           vim-startuptime
           cord-nvim
 
@@ -235,7 +243,6 @@
           lensline-nvim
           gitsigns-nvim
           lualine-nvim
-          nvim-web-devicons
           which-key-nvim
           hlchunk-nvim
           render-markdown-nvim

@@ -4,7 +4,19 @@
 --   lsp/          server settings, merged by vim.lsp.config (see :h lsp-config-merge)
 --   ftplugin/     filetype settings      after/  overrides, applied last
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.maplocalleader = '\\'
+
+if vim.env.NVIM_PROFILER then
+  -- Nix wrapper installs snacks.nvim as a startup plugin (lazy = false in
+  -- neovim.nix), so it's already on the runtimepath here. No rtp append needed.
+  require('snacks.profiler').startup({
+    startup = {
+      event = 'VimEnter',
+      -- event = 'DeferredUIEnter', -- stop profiling at this event
+    },
+  })
+end
+
 _G.__startup_time = vim.uv.hrtime()
 vim.loader.enable() -- <- bytecode caching
 
