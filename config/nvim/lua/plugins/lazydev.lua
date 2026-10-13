@@ -12,18 +12,26 @@ return {
       { path = 'nvim-lspconfig', words = { 'lspconfig.settings' } },
     }
 
-    local lzn_path = nixInfo.get_nix_plugin_path('lz.n')
-    if lzn_path and vim.uv.fs_stat(lzn_path .. '/lua') then
+    local lze_path = nixInfo.get_nix_plugin_path('lze')
+    if lze_path and vim.uv.fs_stat(lze_path .. '/lua') then
       table.insert(library, {
-        words = { 'lz%.n', 'nixInfo%.lzn' },
-        path = lzn_path .. '/lua',
+        words = { 'lze', 'nixInfo%.lze' },
+        path = lze_path .. '/lua',
+      })
+    end
+
+    local lzextras_path = nixInfo.get_nix_plugin_path('lzextras')
+    if lzextras_path and vim.uv.fs_stat(lzextras_path .. '/lua') then
+      table.insert(library, {
+        words = { 'lzextras' },
+        path = lzextras_path .. '/lua',
       })
     end
 
     if _G.nixInfo and nixInfo.plugins then
       local function add_plugins(tbl)
         for name, path in pairs(tbl or {}) do
-          if name ~= 'lz.n' and vim.uv.fs_stat(path .. '/lua') then
+          if name ~= 'lze' and name ~= 'lzextras' and vim.uv.fs_stat(path .. '/lua') then
             local clean_name = name:gsub('%.nvim$', ''):gsub('^nvim%-', '')
             table.insert(library, {
               path = path .. '/lua',

@@ -35,7 +35,7 @@ return {
     'oil-git.nvim',
     load_before = { 'oil.nvim' },
     after = function()
-      local git_icons = Icons.git
+      local git_icons = Utils.icons.git
       local symbols = {
         added = git_icons.added,
         modified = git_icons.modified,

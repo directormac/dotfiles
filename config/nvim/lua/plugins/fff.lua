@@ -17,44 +17,44 @@ return {
     -- Primary file finders
     {
       '<leader><leader>',
-      function() require('fff').find_files({ cwd = Util.root() }) end,
+      function() require('fff').find_files({ cwd = Utils.root() }) end,
       desc = 'Find Files (fff)',
     },
     {
       '<leader>ff',
-      function() require('fff').find_files({ cwd = Util.cwd() }) end,
+      function() require('fff').find_files({ cwd = Utils.cwd() }) end,
       desc = 'Find Files (cwd) (fff)',
     },
     {
       '<leader>fF',
-      function() require('fff').find_files({ cwd = Util.root() }) end,
+      function() require('fff').find_files({ cwd = Utils.root() }) end,
       desc = 'Find Files (root) (fff)',
     },
     -- Grep
     {
       '<leader>/',
-      function() require('fff').live_grep({ cwd = Util.root() }) end,
+      function() require('fff').live_grep({ cwd = Utils.root() }) end,
       desc = 'Grep (root) (fff)',
     },
     {
       '<leader>sg',
-      function() require('fff').live_grep({ cwd = Util.cwd() }) end,
+      function() require('fff').live_grep({ cwd = Utils.cwd() }) end,
       desc = 'Grep (cwd) (fff)',
     },
     {
       '<leader>sG',
-      function() require('fff').live_grep({ cwd = Util.root() }) end,
+      function() require('fff').live_grep({ cwd = Utils.root() }) end,
       desc = 'Grep (root) (fff)',
     },
     {
       '<leader>sw',
-      function() require('fff').live_grep_under_cursor({ cwd = Util.cwd() }) end,
+      function() require('fff').live_grep_under_cursor({ cwd = Utils.cwd() }) end,
       mode = { 'n', 'x' },
       desc = 'Grep word/selection (cwd) (fff)',
     },
     {
       '<leader>sW',
-      function() require('fff').live_grep_under_cursor({ cwd = Util.root() }) end,
+      function() require('fff').live_grep_under_cursor({ cwd = Utils.root() }) end,
       mode = { 'n', 'x' },
       desc = 'Grep word/selection (root) (fff)',
     },

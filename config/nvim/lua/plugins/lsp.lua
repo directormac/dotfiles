@@ -3,7 +3,7 @@ return {
     'nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     after = function()
-      require('config.lsp_handlers').setup()
+      require('lsp_handlers').setup()
 
       local servers = {
         'lua_ls',

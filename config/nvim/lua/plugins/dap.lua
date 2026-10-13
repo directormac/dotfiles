@@ -13,7 +13,7 @@ return {
       { '<leader>dLr', function() require('osv').run_this() end, desc = 'Debug Lua: run this' },
     },
     after = function()
-      local icons = Icons.dap
+      local icons = Utils.icons.dap
       for name, sign in pairs(icons) do
         local parts = type(sign) == 'table' and sign or { sign }
         vim.fn.sign_define('Dap' .. name, {

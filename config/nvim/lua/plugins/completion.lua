@@ -35,7 +35,7 @@ return {
       },
       appearance = {
         nerd_font_variant = 'mono',
-        kind_icons = vim.tbl_map(vim.trim, Icons.kinds),
+        kind_icons = vim.tbl_map(vim.trim, Utils.icons.kinds),
       },
       snippets = {
         preset = 'luasnip',

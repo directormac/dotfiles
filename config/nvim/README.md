@@ -139,12 +139,12 @@ Both `opts` and `keys` support dynamic builder functions:
 This configuration uses a layered strategy for dependency loading and on-demand requires:
 
 1. **`load_before` (Inter-plugin Dependency Ordering)**:
-   - Defined in `lua/config/load_before.lua`.
+   - Defined in `lua/handlers/load_before.lua`.
    - Used when Plugin A must be loaded and initialized before Plugin B starts loading.
    - Example: `harpoon2` (`load_before = { 'harpoon-lualine' }`) &rarr; `harpoon-lualine` (`load_before = { 'lualine.nvim' }`) &rarr; `lualine.nvim`.
 
 2. **`on_require` (Explicit Fast-Path Module Loading)**:
-   - Defined in `lua/config/on_require.lua`.
+   - Defined in `lua/handlers/on_require.lua`.
    - Used for common shared dependencies in `lua/plugins/common.lua` (`plenary`, `nui`, `nio`).
    - Resolves modules in-memory with zero disk/filesystem scanning overhead.
 
@@ -272,12 +272,12 @@ To ensure pinned buffers persist across restarts and sessions:
 1. `vim.opt.sessionoptions` in `lua/config/options.lua` includes `'globals'` so that `BufferlinePinnedBuffers` is written to session files.
 2. `lua/plugins/bufferline.lua` listens to both `SessionLoadPost` and `User PersistenceLoadPost` to automatically restore pinned tabs whenever sessions are restored (`<leader>qs`, `<leader>ql`, `<leader>qS` via `persistence.nvim`).
 
-### 6. Sourcing `after/` Directories with `rtp.nvim` (`Util.load_with_after`)
-On NixOS, Neovim plugins live in individual `/nix/store/...` derivations rather than a monolithic `packpath`. Using [`rtp.nvim`](https://github.com/lumen-oss/rtp.nvim), `Util.load_with_after(plugin_name)` triggers `lz.n` loading and sources the plugin's `after/plugin/*.lua` scripts directly from its Nix store path:
+### 6. Sourcing `after/` Directories with `rtp.nvim` (`Utils.load_with_after`)
+On NixOS, Neovim plugins live in individual `/nix/store/...` derivations rather than a monolithic `packpath`. Using [`rtp.nvim`](https://github.com/lumen-oss/rtp.nvim), `Utils.load_with_after(plugin_name)` triggers `lz.n` loading and sources the plugin's `after/plugin/*.lua` scripts directly from its Nix store path:
 
 ```lua
 -- In any after hook or custom loader:
-Util.load_with_after('octo.nvim')
+Utils.load_with_after('octo.nvim')
 ```
 
 ---

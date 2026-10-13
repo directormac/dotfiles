@@ -9,7 +9,7 @@ function M.setup()
         vim.keymap.set('n', keys, func, { buffer = ev.buf, desc = desc })
       end
 
-      local hover_or_focus = Util.hover_or_focus
+      local hover_or_focus = Utils.hover_or_focus
 
       nmap('<leader>c?', function() Snacks.picker.lsp_config() end, 'Active Language Servers')
 

@@ -45,7 +45,7 @@ return {
       set = function(state)
         local ok, lensline = pcall(require, 'lensline')
         if not ok then
-          pcall(function() require('lz.n').load('lensline.nvim') end)
+          pcall(Utils.load_with_after, 'lensline.nvim')
           ok, lensline = pcall(require, 'lensline')
         end
         if ok then
@@ -70,7 +70,7 @@ return {
       set = function(state)
         local ok, otter = pcall(require, 'otter')
         if not ok then
-          pcall(function() require('lz.n').load('otter.nvim') end)
+          pcall(Utils.load_with_after, 'otter.nvim')
           ok, otter = pcall(require, 'otter')
         end
         if ok then

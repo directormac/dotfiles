@@ -1,4 +1,4 @@
-local Util = require('config.util')
+local Utils = require('utils')
 local CommonPickers = require('pickers.common')
 
 local exclude = {
@@ -69,9 +69,6 @@ return {
 
     { '<leader>s`', function() CommonPickers.snippets() end, desc = 'Snippets' },
 
-    -- Custom Plugins picker
-    { '<leader>sp', function() require('pickers.lzn-plugins').pick() end, desc = 'Plugins' },
-
     -- Todo comments picker
     {
       '<leader>st',
@@ -102,7 +99,7 @@ return {
       actions = {
         ---@param p snacks.Picker
         toggle_cwd = function(p)
-          local root = Util.root({ buf = p.input.filter.current_buf, normalize = true })
+          local root = Utils.root({ buf = p.input.filter.current_buf, normalize = true })
           local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or '.')
           local current = p:cwd()
           p:set_cwd(current == root and cwd or root)

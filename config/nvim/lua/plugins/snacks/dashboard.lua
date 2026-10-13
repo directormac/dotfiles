@@ -81,33 +81,21 @@ return {
         { section = 'header' },
         { section = 'keys', gap = 1, padding = 1 },
         function()
-          local nix_count = _G.nixInfo
-              and nixInfo.plugins
-              and (vim.tbl_count(nixInfo.plugins.lazy or {}) + vim.tbl_count(nixInfo.plugins.start or {}))
-            or 0
-          local pack_count = 0
-          local lockfile = vim.fs.joinpath(vim.fn.stdpath('config'), 'nvim-pack-lock.json')
-          local ok, data = pcall(function() return vim.json.decode(table.concat(vim.fn.readfile(lockfile), '\n')) end)
-          if ok and data and data.plugins then
-            pack_count = vim.tbl_count(data.plugins)
-          elseif vim.pack and vim.pack.get then
-            pack_count = #vim.pack.get()
-          end
-          local total = nix_count + pack_count
-          local ms = _G.__startup_time and string.format('%.2f', (vim.uv.hrtime() - _G.__startup_time) / 1e6) or '0'
+          local ms = _G._startup_time and string.format('%.2f', (vim.uv.hrtime() - _G._startup_time) / 1e6) or '0'
+          local lazy = vim.tbl_count(nixInfo.plugins.lazy)
+          local loaded = vim.tbl_count(nixInfo.plugins.start)
+          local total = lazy + loaded
 
           return {
             align = 'center',
             padding = 1,
             text = {
-              { '⚡ Loaded ', hl = 'footer' },
-              { tostring(total), hl = 'special' },
-              { ' plugins (', hl = 'footer' },
-              { tostring(nix_count) .. ' nix', hl = 'Constant' },
-              { ' · ', hl = 'footer' },
-              { tostring(pack_count) .. ' vim.pack', hl = 'Statement' },
-              { ') in ', hl = 'footer' },
-              { ms .. 'ms', hl = 'special' },
+              { 'Loaded ', hl = 'footer' },
+              { tostring(loaded), hl = 'special' },
+              { '/', hl = 'footer' },
+              { tostring(total) .. ' 🔌 ', hl = 'Constant' },
+              { 'in ', hl = 'footer' },
+              { ms .. 'ms  .', hl = 'special' },
             },
           }
         end,

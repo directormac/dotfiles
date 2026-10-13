@@ -108,3 +108,20 @@ vim.o.winborder = 'single'
 -- Runtime toggle defaults (flipped via <leader>t* keymaps, see plugins/snacks/toggle.lua)
 vim.g.auto_format = true -- conform format-on-save gate (<leader>tf)
 vim.g.autohover = false -- CursorHold hover / diagnostic popout gate (<leader>tK)
+
+---@brief
+--- Custom filetype detection rules and compound filetypes.
+vim.filetype.add({
+  extension = {
+    mdx = 'markdown.mdx',
+    kdl = 'kdl',
+    ron = 'ron',
+    rasi = 'rasi',
+  },
+  pattern = {
+    ['docker%-compose.*%.ya?ml'] = 'yaml.docker-compose',
+    ['compose.*%.ya?ml'] = 'yaml.docker-compose',
+    ['%.gitlab%-ci%.ya?ml'] = 'yaml.gitlab',
+    ['.*helm.*/values.*%.ya?ml'] = 'yaml.helm-values',
+  },
+})

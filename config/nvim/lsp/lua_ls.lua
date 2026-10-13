@@ -8,7 +8,7 @@ return {
         library = { vim.env.VIMRUNTIME },
       },
       diagnostics = {
-        globals = { 'vim', 'nixInfo', 'Snacks', 'lzn', 'Util', 'Icons' },
+        globals = { 'vim', 'nixInfo', 'Snacks', 'lze', 'Utils' },
         disable = { 'missing-fields' },
       },
       telemetry = { enable = false },

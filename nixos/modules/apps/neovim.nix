@@ -16,6 +16,7 @@
       wlib,
       lib,
       pkgs,
+      options,
       ...
     }:
     let
@@ -86,23 +87,63 @@
     {
       imports = [ wlib.wrapperModules.neovim ];
 
+      # This allows us to put plugins in our flake inputs
+      #  inputs.vim-plugins-lze = {
+      #   url = "github:BirdeeHub/lze";
+      #    flake = false;
+      #  };
+      options.nvim-lib.neovimPlugins = lib.mkOption {
+        readOnly = true;
+        type = lib.types.attrsOf wlib.types.stringable;
+        # Makes plugins autobuilt from our inputs available with
+        # `config.nvim-lib.neovimPlugins.<name_without_prefix>`
+        default = config.nvim-lib.pluginsFromPrefix "vim-plugins-" inputs;
+      };
+
       # Nightly Neovim via the overlay input (verified: .packages.<sys>.neovim).
+      # Exposed by this flake input
+      # inputs.neovim-nightly-overlay = {
+      #   url = "github:nix-community/neovim-nightly-overlay";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };
       config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
 
       # The config directory. `mkDefault` so the devshell variant can override it.
       config.binName = lib.mkDefault "nvim";
-      config.settings.dont_link = false;
+
+      # If you want to install multiple neovim derivations via home.packages or environment.systemPackages
+      # in order to prevent path collisions:
+
+      # set this to true:
+      # config.settings.dont_link = true;
+
+      # you can also use an impure path!
+      # config.settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
       config.settings.config_directory = lib.mkDefault ../../../config/nvim;
+      # If you do that, it will not be provisioned by nix, but it will have normal reload for quick edits!
+      # config.settings.config_directory =
+      #   if config.settings.dev then
+      #     lib.generators.mkLuaInline "(vim.env.NEOVIM_DIR or vim.fn.getcwd())"
+      #   else
+      #     ../../../config/nvim;
 
       # vellum.nvim's Node renderer (render/browser.mjs) launches Puppeteer. It
       # is built without its bundled Chrome, so point it at Nix's Chromium.
       config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
 
-      # -----------------------------------------------------------------------
-      # User-facing options -> exposed to Lua via the generated info plugin.
-      # Read in Lua with:
-      #   nixInfo(nil, "settings", "colorscheme")
-      # -----------------------------------------------------------------------
+      options.settings.dev = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Read the config directory live from the current working directory for quick iteration.";
+      };
+
+      options.settings.profiler = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Enable snacks.nvim startup profiler via wrapper environment.";
+      };
+      config.env.PROFILER = lib.mkIf config.settings.profiler "1";
+
       options.settings.colorscheme = lib.mkOption {
         type = lib.types.str;
         default = "catppuccin";
@@ -118,91 +159,73 @@
             catppuccin = catppuccin-nvim;
             tokyonight = tokyonight-nvim;
             onedark = onedarkpro-nvim;
-            moonfly = vim-moonfly-colors;
           }
         );
       };
 
-      config.specs.lzn = pkgs.vimPlugins.lz-n;
-      config.specs.lzn-auto-require = pkgs.vimPlugins.lzn-auto-require;
-      config.specs.rtp = pkgs.vimPlugins.rtp-nvim;
-
-      # https://github.com/lumen-oss/rtp.nvim
-      # More Handlers. .
-      # https://github.com/BirdeeHub/lzextras
-
-      # -----------------------------------------------------------------------
-      # Runtime packages (tools, language servers, formatters, linters)
-      # -----------------------------------------------------------------------
-      config.runtimePkgs = with pkgs; [
-        # CLI tools
-        lazygit
-        tree-sitter
-        ripgrep
-        fd
-        lua5_1
-        nodejs # vellum.nvim renderer (diagrams / math / images)
-
-        # -----------------------------------------------------------------------
-        # Language servers, linters, formatters
-        # [lsp.lua](../../../config/nvim/lua/plugins/lsp.lua)
-        # [lint.lua](../../../config/nvim/lua/plugins/lint.lua)
-        # [conform.lua](../../../config/nvim/lua/plugins/conform.lua)
-        # -----------------------------------------------------------------------
-
-        # nix
-        nixd
-        nil
-        nixfmt
-        statix
-
-        # lua
-        lua-language-server
-        stylua
-
-        # shell
-        bash-language-server
-        shfmt
-        shellcheck
-
-        # markdown
-        marksman
-        markdownlint-cli2
-
-        # toml
-        taplo
-
-        # yaml
-        yaml-language-server
-        yamlfmt
-
-        # kdl
-        kdlfmt
-        kdl-lsp
-
-        # json
-        vscode-json-languageserver
-
-        # Web
-        emmet-language-server
-        beam29Packages.expert
-        elixir-ls
-        typescript
-        oxfmt
-        oxlint
-        tailwindcss-language-server
-        svelte-language-server
-        astro-language-server
-
+      # If the defaults are fine, you can just provide the `.data` field
+      # In this case, a list of specs, instead of a single plugin like above
+      config.specs.lze = [
+        # if defaults is fine, you can just provide the `.data` field
+        config.nvim-lib.neovimPlugins.lze
+        # but these can be specs too!
+        {
+          # these ones can't take lists though
+          data = config.nvim-lib.neovimPlugins.lzextras;
+          # things can target any spec that has a name.
+          name = "lzextras";
+          # now something else can be after = [ "lzextras" ]
+          # the spec name is not the plugin name.
+          # to override the plugin name, use `pname`
+          # You could run something before your main init.lua like this
+          # before = [ "INIT_MAIN" ];
+          # You can include configuration and translated nix values here as well!
+          # type = "lua"; # | "fnl" | "vim"
+          # info = { };
+          # config = ''
+          #   local info, pname, lazy = ...
+          # '';
+        }
       ];
 
+      config.specs.nix = {
+        data = null;
+        runtimePkgs = with pkgs; [
+          nixd
+          nil
+          nixfmt
+        ];
+      };
+
+      # You can use the before and after fields to run them before or after other specs or spec of lists of specs
+      config.specs.lua = {
+        after = [ "general" ];
+        lazy = true;
+        data = with pkgs.vimPlugins; [
+          lazydev-nvim
+        ];
+        runtimePkgs = with pkgs; [
+          lua-language-server
+          stylua
+        ];
+      };
+
       config.specs.general = {
+        # Will load after lze
+        after = [ "lze" ];
+        # Lazy by default
         lazy = true;
         # https://wiki.nixos.org/wiki/Vim#Add_a_new_custom_plugin_to_the_users_packages
         data = with pkgs.vimPlugins; [
 
+          # Override lazy loading for these
           {
             data = snacks-nvim;
+            lazy = false;
+          }
+
+          {
+            data = rtp-nvim;
             lazy = false;
           }
           {
@@ -219,9 +242,9 @@
           nvim-treesitter.withAllGrammars
           nvim-treesitter
           nvim-treesitter-context
-          treesj
-          SchemaStore-nvim
           otter-nvim
+          SchemaStore-nvim
+          treesj
 
           # Debug Adapter Protocol (DAP)
           nvim-dap
@@ -250,29 +273,10 @@
           yanky-nvim
           fff-nvim
           oil-nvim
-          (oil-git-nvim.overrideAttrs (_: {
-            pname = "oil-git.nvim";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "malewicz1337";
-              repo = "oil-git.nvim";
-              rev = "8bab14df0b7db7a62fa75c8978d6181daed2f0a2";
-              hash = "sha256-JqJ1t4Zk4ROUXnFvk63hJw18nq7rXQU5NxnP4HHWXpU=";
-            };
-          }))
           oil-lsp-diagnostics-nvim
-
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "nvim-colorpicker";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "mikevskater";
-              repo = "nvim-colorpicker";
-              rev = "88f6aeac944570ebfb97ac67c9fea27a73ea0429";
-              hash = "sha256-OfJuhBFel+lEmm11QCXKGayFx47mRJatqMFOEbbqz9o=";
-            };
-            doCheck = false;
-          })
+          config.nvim-lib.neovimPlugins.oil-git-nvim
+          config.nvim-lib.neovimPlugins.nvim-colorpicker
+          config.nvim-lib.neovimPlugins.tuxedo-nvim
 
           # Completion
           blink-cmp # Flake input
@@ -298,6 +302,8 @@
           which-key-nvim
           hlchunk-nvim
           render-markdown-nvim
+          config.nvim-lib.neovimPlugins.nvim-float
+          config.nvim-lib.neovimPlugins.showkeys
           vellum-nvim # live markdown preview (Node renderer for diagrams/math/images)
 
           # AI
@@ -305,57 +311,144 @@
           # windsurf-nvim
           # sidekick-nvim
 
-          # https://github.com/dmtrKovalenko/fff
+        ];
 
-          # (pkgs.vimUtils.buildVimPlugin {
-          #   pname = "herdr-nvim";
-          #   version = "1.2.0";
-          #   src = pkgs.fetchFromGitHub {
-          #     owner = "ChmaraX";
-          #     repo = "herdr-nvim";
-          #     rev = "e2ec32e7bbbb1eefd64363414b5806f84eedd6bc";
-          #     hash = "sha256-Hk+r5ReArirmjsYOK7BEt8/tj81RmM56SqZSfkYgmcQ=";
-          #   };
-          #   doCheck = false;
-          # })
+        runtimePkgs = with pkgs; [
+          # CLI tools
+          lazygit
+          tree-sitter
+          ripgrep
+          fd
+          lua5_1
+          nodejs # vellum.nvim renderer (diagrams / math / images)
 
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "nvim-float";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "mikevskater";
-              repo = "nvim-float";
-              rev = "ae790c0a96fcf0c5267371bff04b2fc4542fd643";
-              hash = "sha256-5rV35/k9TXiprjpEWH3j+/FKryfwijR4GN1mCQBPVhU=";
-            };
-            doCheck = false;
-          })
+          # -----------------------------------------------------------------------
+          # Language servers, linters, formatters
+          # [lsp.lua](../../../config/nvim/lua/plugins/lsp.lua)
+          # [lint.lua](../../../config/nvim/lua/plugins/lint.lua)
+          # [conform.lua](../../../config/nvim/lua/plugins/conform.lua)
+          # -----------------------------------------------------------------------
 
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "tuxedo.nvim";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "IogaMaster";
-              repo = "tuxedo.nvim";
-              rev = "65650b0ae3b1c3755a43306b07ada13bd78d47ac";
-              hash = "sha256-e8Vk2QvMNDDpYCiTWwm5IgDlDhVKj2g+kNHpLbkYGx4=";
-            };
-            doCheck = false;
-          })
+          # nix
+          nixd
+          nil
+          nixfmt
+          statix
 
-          (pkgs.vimUtils.buildVimPlugin {
-            pname = "showkeys";
-            version = "unstable-2026-10-10";
-            src = pkgs.fetchFromGitHub {
-              owner = "nvzone";
-              repo = "showkeys";
-              rev = "cb0a50296f11f1e585acffba8c253b9e8afc1f84";
-              hash = "sha256-mn/SBtk9YbYZRTJZ054IVsSVOlrry5gsHOXQEnd3b7M=";
-            };
-            doCheck = false;
-          })
+          # lua
+          lua-language-server
+          stylua
+
+          # shell
+          bash-language-server
+          shfmt
+          shellcheck
+
+          # markdown
+          marksman
+          markdownlint-cli2
+
+          # toml
+          taplo
+
+          # yaml
+          yaml-language-server
+          yamlfmt
+
+          # kdl
+          kdlfmt
+          kdl-lsp
+
+          # json
+          vscode-json-languageserver
+
+          # Web
+          emmet-language-server
+          beam29Packages.expert
+          elixir-ls
+          typescript
+          oxfmt
+          oxlint
+          tailwindcss-language-server
+          svelte-language-server
+          astro-language-server
 
         ];
+
+      };
+
+      # These are from the tips and tricks section of the neovim wrapper docs!
+      # https://nix-community.github.io/nix-wrapper-modules/neovim.html#tips-and-tricks
+      # We could put these in another module and import them here instead!
+
+      # This submodule modifies both levels of your specs
+      config.specMods =
+        {
+          # When this module is ran in an inner list,
+          # this will contain `config` of the parent spec
+          parentSpec ? null,
+          # and this will contain `options`
+          # otherwise they will be `null`
+          parentOpts ? null,
+          parentName ? null,
+          # and then config from this one, as normal
+          config,
+          # and the other module arguments.
+          ...
+        }:
+        {
+          # you could use this to change defaults for the specs
+          # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
+          # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
+          # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
+          # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
+          # or something more interesting like:
+          # add a runtimePkgs field to the specs themselves
+          options.runtimePkgs = options.runtimePkgs // {
+            description = ''
+              A runtimePkgs spec field to put packages on the PATH
+              If the spec is disabled, this value will not be included in the resulting neovim derivation
+            '';
+          };
+          # You could do this too
+          # config.before = lib.mkDefault [ "INIT_MAIN" ];
+        };
+      config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
+
+      options.settings.extraCats = lib.mkOption {
+        type = lib.types.attrsOf lib.types.bool;
+        default = { };
+        description = "Additional categories to expose to Lua via nixInfo.has_cat()";
+      };
+
+      # Inform our lua of which top level specs and extra categories are enabled
+      options.settings.cats = lib.mkOption {
+        readOnly = true;
+        type = lib.types.attrsOf lib.types.bool;
+        default = (builtins.mapAttrs (_: v: v.enable) config.specs) // config.settings.extraCats;
+      };
+
+      # build plugins from inputs set
+      options.nvim-lib.pluginsFromPrefix = lib.mkOption {
+        type = lib.types.raw;
+        readOnly = true;
+        default =
+          prefix: inputs:
+          lib.pipe inputs [
+            builtins.attrNames
+            (builtins.filter (s: lib.hasPrefix prefix s))
+            (map (
+              input:
+              let
+                name = lib.removePrefix prefix input;
+              in
+              {
+                inherit name;
+                value = config.nvim-lib.mkPlugin name inputs.${input};
+              }
+            ))
+            builtins.listToAttrs
+          ];
       };
 
       # -----------------------------------------------------------------------
@@ -389,7 +482,7 @@
             };
           allPlugins = config.specs.general.data ++ [
             config.specs.colorscheme.data
-            (config.specs.lzn.data or config.specs.lzn)
+            (config.specs.lze.data or config.specs.lze)
           ];
         in
         {

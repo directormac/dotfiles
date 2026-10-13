@@ -1,10 +1,157 @@
 local M = {}
 
---- Resolve the options from the plugin specification.
---- Delegated to config.specs.opts for centralized builder evaluation and merging.
----@param plugin table The lz.n plugin table or specification
----@return table opts The resolved configuration table
-M.opts = function(plugin) return require('config.specs').opts(plugin) end
+M.icons = {
+  diagnostics = {
+    Error = ' ',
+    Warn = ' ',
+    Hint = ' ',
+    Info = ' ',
+  },
+
+  dap = {
+    Stopped = { '󰁕 ', 'DiagnosticWarn', 'DapStoppedLine' },
+    Breakpoint = ' ',
+    BreakpointCondition = ' ',
+    BreakpointRejected = { ' ', 'DiagnosticError' },
+    LogPoint = '.>',
+  },
+
+  git = {
+    added = ' ',
+    modified = ' ',
+    removed = ' ',
+    deleted = ' ',
+    renamed = ' ',
+    copied = '󰆑 ',
+    conflict = ' ',
+    untracked = ' ',
+    ignored = ' ',
+    staged = '✓ ',
+    unstaged = '󰄱 ',
+    branch = ' ',
+  },
+
+  kinds = {
+    Array = ' ',
+    Boolean = '󰨙 ',
+    Class = ' ',
+    Codeium = '󰘦 ',
+    Color = ' ',
+    Control = ' ',
+    Collapsed = ' ',
+    Constant = '󰏿 ',
+    Constructor = ' ',
+    Copilot = ' ',
+    Enum = ' ',
+    EnumMember = ' ',
+    Event = ' ',
+    Field = ' ',
+    File = ' ',
+    Folder = ' ',
+    Function = '󰊕 ',
+    Interface = ' ',
+    Key = ' ',
+    Keyword = ' ',
+    Method = '󰊕 ',
+    Module = ' ',
+    Namespace = '󰦮 ',
+    Null = ' ',
+    Number = '󰎠 ',
+    Object = ' ',
+    Operator = ' ',
+    Package = ' ',
+    Property = ' ',
+    Reference = ' ',
+    Snippet = '󱄽 ',
+    String = ' ',
+    Struct = '󰆼 ',
+    TabNine = '󰏚 ',
+    Text = ' ',
+    TypeParameter = ' ',
+    Unit = ' ',
+    Value = ' ',
+    Variable = '󰀫 ',
+  },
+
+  ---@type table<string, string[]|boolean>?
+  kind_filter = {
+    default = {
+      'Class',
+      'Constructor',
+      'Enum',
+      'Field',
+      'Function',
+      'Interface',
+      'Method',
+      'Module',
+      'Namespace',
+      'Package',
+      'Property',
+      'Struct',
+      'Trait',
+    },
+    markdown = false,
+    help = false,
+    -- you can specify a different filter for each filetype
+    lua = {
+      'Class',
+      'Constructor',
+      'Enum',
+      'Field',
+      'Function',
+      'Interface',
+      'Method',
+      'Module',
+      'Namespace',
+      -- "Package", -- remove package since luals uses it for control flow structures
+      'Property',
+      'Struct',
+      'Trait',
+    },
+  },
+}
+
+--- Delete a buffer safely using Snacks or fallback to bdelete
+---@param buf? number
+M.buf_delete = function(buf)
+  if package.loaded['snacks'] and Snacks.bufdelete then
+    Snacks.bufdelete(buf)
+  else
+    vim.cmd('bdelete ' .. (buf and tostring(buf) or ''))
+  end
+end
+
+--- Jump to floating window or trigger LSP hover
+M.hover_or_focus = function()
+  local current_win = vim.api.nvim_get_current_win()
+  local win_cfg = vim.api.nvim_win_get_config(current_win)
+  if win_cfg.relative and win_cfg.relative ~= '' then
+    vim.cmd('wincmd p')
+    return
+  end
+
+  vim.lsp.buf.hover()
+end
+
+M.resolve_specs_key = function(val, ...)
+  if type(val) == 'function' then return val(...) end
+  return val
+end
+
+M.deep_merge = function(target, source)
+  for k, v in pairs(source) do
+    if type(v) == 'table' and type(target[k]) == 'table' then
+      if vim.islist(target[k]) and vim.islist(v) then
+        vim.list_extend(target[k], v)
+      else
+        M.deep_merge(target[k], v)
+      end
+    else
+      target[k] = vim.deepcopy(v)
+    end
+  end
+  return target
+end
 
 --- Deep merge that appends and deduplicates lists, and recurses into dicts.
 --- Use vim.NIL as a value to explicitly remove a key.
@@ -33,35 +180,42 @@ M.merge = function(base, override)
   return base
 end
 
---- Load a plugin via lz.n and source its after/ directory using rtp.nvim
+M.merge_specs = function(target, source)
+  -- Resolve and merge keys (supports both functions and tables)
+  if source.keys ~= nil then
+    local k = M.resolve_specs_key(source.keys, target, target.keys)
+    if type(k) == 'table' then vim.list_extend(target.keys, k) end
+  end
+
+  -- Resolve and merge opts (supports both functions and tables)
+  if source.opts ~= nil then
+    local o = M.resolve_specs_key(source.opts, target, target.opts)
+    if type(o) == 'table' then M.deep_merge(target.opts, o) end
+  end
+
+  -- Merge any other plugin spec fields
+  for k, v in pairs(source) do
+    if type(k) ~= 'number' and k ~= 'keys' and k ~= 'opts' and k ~= 'name' then target[k] = v end
+  end
+end
+
+--- Load a plugin via lze / lz.n and source its after/ directory using rtp.nvim
 ---@param plugin_name string
 M.load_with_after = function(plugin_name)
-  require('lz.n').trigger_load(plugin_name)
+  if nixInfo and nixInfo.lze then
+    nixInfo.lze.trigger_load(plugin_name)
+  elseif package.loaded['lze'] then
+    require('lze').trigger_load(plugin_name)
+  elseif package.loaded['lz.n'] then
+    require('lz.n').trigger_load(plugin_name)
+  end
+
   if nixInfo and nixInfo.get_nix_plugin_path then
     local path = nixInfo.get_nix_plugin_path(plugin_name)
     if path and vim.fn.isdirectory(path .. '/after') == 1 then
       local ok, rtp = pcall(require, 'rtp_nvim')
       if ok then rtp.source_after_plugin_dir(path) end
     end
-  end
-end
-
-M.hover_or_focus = function()
-  local current_win = vim.api.nvim_get_current_win()
-  local win_cfg = vim.api.nvim_win_get_config(current_win)
-  if win_cfg.relative and win_cfg.relative ~= '' then
-    vim.cmd('wincmd p')
-    return
-  end
-
-  vim.lsp.buf.hover()
-end
-
-M.buf_delete = function(buf)
-  if package.loaded['snacks'] and Snacks.bufdelete then
-    Snacks.bufdelete(buf)
-  else
-    vim.cmd('bdelete ' .. (buf and tostring(buf) or ''))
   end
 end
 
@@ -86,16 +240,15 @@ end
 
 M.root_patterns = { '.git', 'flake.nix', 'package.json', 'Cargo.toml', 'go.mod', 'pyproject.toml' }
 
---- Per-buffer root cache, invalidated by the autocmds below.
+--- Per-buffer root cache, invalidated by autocmds.
 ---@type table<number, string>
 M._root_cache = {}
 
-local root_group = vim.api.nvim_create_augroup('config_root_cache', { clear = true })
+local root_group = vim.api.nvim_create_augroup('utils_root_cache', { clear = true })
 vim.api.nvim_create_autocmd({ 'LspAttach', 'BufWritePost', 'BufEnter', 'BufDelete' }, {
   group = root_group,
   callback = function(event) M._root_cache[event.buf] = nil end,
 })
--- cwd fallback makes every buffer's root stale on directory change
 vim.api.nvim_create_autocmd('DirChanged', {
   group = root_group,
   callback = function() M._root_cache = {} end,
@@ -109,6 +262,7 @@ vim.api.nvim_create_user_command('Root', function()
   vim.notify(table.concat(lines, '\n'), { title = 'Root' })
 end, { desc = 'Project root for current buffer' })
 
+--- Determine project root for current buffer
 ---@param opts? { buf?: number, lsp?: boolean, patterns?: string[] }
 ---@return string
 M.root = function(opts)
@@ -172,7 +326,9 @@ M.picker_grep = function(opts)
   require('fff').live_grep(picker_opts)
 end
 
+--------------------------------------------------------------------------------
 -- Lualine helpers, adapted from LazyVim
+--------------------------------------------------------------------------------
 M.lualine = {}
 
 ---@param icon string
@@ -316,5 +472,106 @@ function M.lualine.root_dir(opts)
   }
 end
 
-_G.Util = M
+--------------------------------------------------------------------------------
+-- Treesitter Query Providers
+--------------------------------------------------------------------------------
+M.queries = {
+  ---Retrieve all query files for a language and query name across runtimepath,
+  ---including base queries and after/queries extensions.
+  ---@param lang string
+  ---@param query_name string
+  ---@return string[]
+  get_files = function(lang, query_name)
+    local ok, files = pcall(vim.treesitter.query.get_files, lang, query_name)
+    if ok and type(files) == 'table' then return files end
+    return vim.api.nvim_get_runtime_file(string.format('queries/%s/%s.scm', lang, query_name), true)
+  end,
+
+  ---Check if an after/queries override exists on runtimepath for the given query
+  ---@param lang string
+  ---@param query_name string
+  ---@return boolean, string[]
+  get_overrides = function(lang, query_name)
+    local all_files = M.queries.get_files(lang, query_name)
+    local overrides = {}
+    for _, file in ipairs(all_files) do
+      if file:match('/after/queries/') then table.insert(overrides, file) end
+    end
+    return #overrides > 0, overrides
+  end,
+}
+
+--------------------------------------------------------------------------------
+-- Snippet Providers & Directory Utilities
+--------------------------------------------------------------------------------
+M.snippets = {
+  ---Get all directories matching snippets/ and after/snippets/ in runtimepath
+  ---@return string[]
+  get_dirs = function()
+    local dirs = {}
+    for _, rtp_entry in ipairs(vim.opt.runtimepath:get()) do
+      local snippet_dir = vim.fs.joinpath(rtp_entry, 'snippets')
+      if vim.uv.fs_stat(snippet_dir) then table.insert(dirs, snippet_dir) end
+    end
+    return dirs
+  end,
+
+  ---Get all snippet files for a language across runtimepath (e.g. snippets/lua.json, after/snippets/lua.json)
+  ---@param lang string? Language/filetype or nil for global snippets
+  ---@return string[]
+  get_files = function(lang)
+    local pattern = lang and string.format('snippets/%s.*', lang) or 'snippets/global.*'
+    local files = vim.api.nvim_get_runtime_file(pattern, true)
+    return files
+  end,
+
+  ---Load and merge snippets for a given language, with after/snippets taking precedence
+  ---@param lang string? Language/filetype or nil for global snippets
+  ---@return table<string, table>
+  load = function(lang)
+    local files = M.snippets.get_files(lang)
+    local merged = {}
+    for _, file in ipairs(files) do
+      if file:match('%.json$') then
+        local f = io.open(file, 'r')
+        if f then
+          local content = f:read('*a')
+          f:close()
+          local ok, decoded = pcall(vim.json.decode, content)
+          if ok and type(decoded) == 'table' then
+            for k, v in pairs(decoded) do
+              merged[k] = v
+            end
+          end
+        end
+      elseif file:match('%.lua$') then
+        local ok, mod = pcall(dofile, file)
+        if ok and type(mod) == 'table' then
+          for k, v in pairs(mod) do
+            merged[k] = v
+          end
+        end
+      end
+    end
+    return merged
+  end,
+
+  ---Provider callback for snippet engines (like mini.snippets, blink.cmp, etc.)
+  ---@param lang string?
+  ---@return table[]
+  provider = function(lang)
+    local snippets = M.snippets.load(lang)
+    local list = {}
+    for name, item in pairs(snippets) do
+      table.insert(list, {
+        name = name,
+        prefix = item.prefix or name,
+        body = item.body or '',
+        desc = item.description or item.desc or name,
+      })
+    end
+    return list
+  end,
+}
+
 return M

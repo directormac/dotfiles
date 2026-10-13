@@ -19,9 +19,16 @@ local function parse_plugin_version(path)
   return 'v' .. ver
 end
 
--- Helper to extract triggers from lz.n spec
+-- Helper to extract triggers from lze / lz.n spec
 local function get_plugin_triggers(name)
-  local spec = package.loaded['lz.n'] and require('lz.n').lookup(name)
+  local spec = nil
+  if nixInfo and nixInfo.lze and type(nixInfo.lze.state) == 'table' then
+    spec = nixInfo.lze.state[name]
+  elseif package.loaded['lze'] and type(require('lze').state) == 'table' then
+    spec = require('lze').state[name]
+  elseif package.loaded['lz.n'] then
+    spec = require('lz.n').lookup(name)
+  end
   if not spec then return nil end
   local triggers = {
     events = {},
@@ -358,7 +365,13 @@ function M.pick(opts)
       end,
       toggle_load = function(picker, item)
         if item and not item.loaded then
-          require('lz.n').trigger_load(item.name)
+          if nixInfo and nixInfo.lze then
+            nixInfo.lze.trigger_load(item.name)
+          elseif package.loaded['lze'] then
+            require('lze').trigger_load(item.name)
+          elseif package.loaded['lz.n'] then
+            require('lz.n').trigger_load(item.name)
+          end
           item.loaded = true
           item.status = 'loaded'
           item.text = item.name .. ' loaded ' .. (item.version or '') .. ' ' .. item.trigger_summary

@@ -4,8 +4,8 @@ return {
     'lualine.nvim',
     event = 'DeferredUIEnter',
     opts = function()
-      local icons = Icons
-      local util = Util
+      local icons = Utils.icons
+      local util = Utils
 
       return {
         options = {

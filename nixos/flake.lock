@@ -2008,6 +2008,13 @@
         "tmux-remux": "tmux-remux",
         "torlink": "torlink",
         "treefmt-nix": "treefmt-nix_6",
+        "vim-plugins-lze": "vim-plugins-lze",
+        "vim-plugins-lzextras": "vim-plugins-lzextras",
+        "vim-plugins-nvim-colorpicker": "vim-plugins-nvim-colorpicker",
+        "vim-plugins-nvim-float": "vim-plugins-nvim-float",
+        "vim-plugins-oil-git-nvim": "vim-plugins-oil-git-nvim",
+        "vim-plugins-showkeys": "vim-plugins-showkeys",
+        "vim-plugins-tuxedo-nvim": "vim-plugins-tuxedo-nvim",
         "workmux": "workmux",
         "wrappers": "wrappers",
         "zen-browser": "zen-browser",
@@ -2528,6 +2535,118 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "vim-plugins-lze": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791893192,
+        "narHash": "sha256-6tHakQ5xHsqirKuxC8eEiw6vuWWLYr5vcq1AbcnpsRI=",
+        "owner": "BirdeeHub",
+        "repo": "lze",
+        "rev": "c0f881bab1091bab827d2b966fe1dbdfa32809ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "lze",
+        "type": "github"
+      }
+    },
+    "vim-plugins-lzextras": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788891348,
+        "narHash": "sha256-ae+NIDI+1po2HeY/efAdsyMtKn8I1p3Tx8MuX7X9XcI=",
+        "owner": "BirdeeHub",
+        "repo": "lzextras",
+        "rev": "84224dbbee6e392a581870ac8657cd0bfe81396f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "lzextras",
+        "type": "github"
+      }
+    },
+    "vim-plugins-nvim-colorpicker": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773302749,
+        "narHash": "sha256-OfJuhBFel+lEmm11QCXKGayFx47mRJatqMFOEbbqz9o=",
+        "owner": "mikevskater",
+        "repo": "nvim-colorpicker",
+        "rev": "88f6aeac944570ebfb97ac67c9fea27a73ea0429",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikevskater",
+        "repo": "nvim-colorpicker",
+        "type": "github"
+      }
+    },
+    "vim-plugins-nvim-float": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774577541,
+        "narHash": "sha256-5rV35/k9TXiprjpEWH3j+/FKryfwijR4GN1mCQBPVhU=",
+        "owner": "mikevskater",
+        "repo": "nvim-float",
+        "rev": "ae790c0a96fcf0c5267371bff04b2fc4542fd643",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mikevskater",
+        "repo": "nvim-float",
+        "type": "github"
+      }
+    },
+    "vim-plugins-oil-git-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791042691,
+        "narHash": "sha256-JqJ1t4Zk4ROUXnFvk63hJw18nq7rXQU5NxnP4HHWXpU=",
+        "owner": "malewicz1337",
+        "repo": "oil-git.nvim",
+        "rev": "8bab14df0b7db7a62fa75c8978d6181daed2f0a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "malewicz1337",
+        "repo": "oil-git.nvim",
+        "type": "github"
+      }
+    },
+    "vim-plugins-showkeys": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748072946,
+        "narHash": "sha256-mn/SBtk9YbYZRTJZ054IVsSVOlrry5gsHOXQEnd3b7M=",
+        "owner": "nvzone",
+        "repo": "showkeys",
+        "rev": "cb0a50296f11f1e585acffba8c253b9e8afc1f84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvzone",
+        "repo": "showkeys",
+        "type": "github"
+      }
+    },
+    "vim-plugins-tuxedo-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781186796,
+        "narHash": "sha256-e8Vk2QvMNDDpYCiTWwm5IgDlDhVKj2g+kNHpLbkYGx4=",
+        "owner": "IogaMaster",
+        "repo": "tuxedo.nvim",
+        "rev": "65650b0ae3b1c3755a43306b07ada13bd78d47ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "IogaMaster",
+        "repo": "tuxedo.nvim",
         "type": "github"
       }
     },

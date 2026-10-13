@@ -38,6 +38,41 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vim-plugins-lze = {
+      url = "github:BirdeeHub/lze";
+      flake = false;
+    };
+    vim-plugins-lzextras = {
+      url = "github:BirdeeHub/lzextras";
+      flake = false;
+    };
+
+    vim-plugins-oil-git-nvim = {
+      url = "github:malewicz1337/oil-git.nvim";
+      flake = false;
+    };
+
+    vim-plugins-nvim-colorpicker = {
+      url = "github:mikevskater/nvim-colorpicker";
+      flake = false;
+    };
+
+    vim-plugins-nvim-float = {
+      url = "github:mikevskater/nvim-float";
+      flake = false;
+    };
+
+    vim-plugins-tuxedo-nvim = {
+      url = "github:IogaMaster/tuxedo.nvim";
+      flake = false;
+    };
+
+    vim-plugins-showkeys = {
+      url = "github:nvzone/showkeys";
+      flake = false;
+    };
+
     blink-cmp = {
       url = "github:saghen/blink.cmp";
       inputs.nixpkgs.follows = "nixpkgs";

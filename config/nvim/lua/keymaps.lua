@@ -27,7 +27,7 @@ vim.keymap.set('n', '[B', '<cmd>bfirst<CR>', { desc = 'First buffer' })
 vim.keymap.set('n', ']B', '<cmd>blast<CR>', { desc = 'Last buffer' })
 
 -- Buffer actions
-local function buf_delete(buf) Util.buf_delete(buf) end
+local function buf_delete(buf) Utils.buf_delete(buf) end
 
 vim.keymap.set('n', '<leader>bd', function() buf_delete() end, { desc = 'Delete buffer' })
 
