@@ -5,6 +5,24 @@ return {
     after = function(plugin)
       require('mini.icons').setup()
       require('mini.bracketed').setup()
+
+      require('mini.surround').setup({
+        mappings = {
+          add = 'zsa',
+          delete = 'zsd',
+          find = 'zsf',
+          find_left = 'zsF',
+          highlight = 'zsh',
+          replace = 'zsr',
+          update_n_lines = 'gsn',
+        },
+      })
+
+      vim.keymap.set('n', 'zsq', function()
+        -- Pass an empty target '' with 'i' (inside), which tells mini.surround
+        -- to automatically detect and target the closest surrounding pair around the cursor.
+        require('mini.surround').replace('i', '', "'")
+      end, { desc = 'Replace current surrounding with single quotes' })
     end,
   },
   {

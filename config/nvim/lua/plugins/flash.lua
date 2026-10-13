@@ -3,6 +3,7 @@ return {
   event = 'DeferredUIEnter',
   ---@type Flash.Config
   opts = {
+    labels = 'asfgqwertyuiopzcvbnm',
     modes = {
       search = {
         enabled = true,

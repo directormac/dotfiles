@@ -68,28 +68,6 @@ M.opts = {
       man_pager = nil, ---@type string? MANPAGER env to use for `man` preview
     },
 
-    layouts = {
-      ivy_bottom = {
-        auto_hide = { 'input' },
-        layout = {
-          box = 'vertical',
-          backdrop = false,
-          row = -1,
-          width = 0,
-          height = 0.4,
-          border = 'top',
-          title = ' {title} {live} {flags}',
-          title_pos = 'left',
-          { win = 'input', height = 1, border = 'bottom' },
-          {
-            box = 'horizontal',
-            { win = 'list', border = 'none' },
-            { win = 'preview', title = '{preview}', width = 0.8, border = 'left' },
-          },
-        },
-      },
-    },
-
     --- Layout https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
     sources = {
       files = {
@@ -127,56 +105,12 @@ M.opts = {
       projects = {
         dev = { '~/Projects', '~/Code' },
       },
-      zoxide = {},
-      man = {},
-
-      -- Git
-
-      git_log_file = {
+      keymaps = {
         layout = 'vscode',
       },
-
-      git_log_line = {
-        layout = 'ivy_bottom',
-      },
-
-      git_branches = {
-        layout = 'ivy_bottom',
-      },
-
-      git_diff = {
-        group = false,
-        finder = 'git_diff',
-        format = 'git_status',
-        preview = 'diff',
-        matcher = { sort_empty = true },
-        sort = { fields = { 'score:desc', 'file', 'idx' } },
-        win = {
-          input = {
-            keys = {
-              ['<Tab>'] = { 'git_stage', mode = { 'n', 'i' } },
-              ['<c-r>'] = { 'git_restore', mode = { 'n', 'i' }, nowait = true },
-            },
-          },
-        },
-
-        layout = 'ivy_bottom',
-      },
-
-      git_log = {
-        layout = 'ivy_bottom',
-      },
+      zoxide = {},
+      man = {},
     },
-  },
-
-  git = {
-    enable = true,
-  },
-  gh = {
-    enable = true,
-  },
-  gitbrowse = {
-    enable = true,
   },
 }
 
@@ -236,26 +170,6 @@ function M.keys()
     end
     Snacks.picker.pick('todo_comments', {})
   end, { desc = 'Search Todos' })
-
-  -- Git
-
-  map({ 'n', 'v' }, '<leader>go', function() Snacks.gitbrowse() end, { desc = 'Git Browse (Remote)' })
-  map('n', '<leader>gb', function() Snacks.picker.git_branches() end, { desc = 'Git Branches' })
-
-  map('n', '<leader>g?', function() Snacks.picker.git_log() end, { desc = 'Git Log' })
-  map('n', '<leader>gL', function() Snacks.picker.git_log_line() end, { desc = 'Git Log Line' })
-
-  map('n', '<leader>gs', function() Snacks.picker.git_status() end, { desc = 'Git Status' })
-  map('n', '<leader>gS', function() Snacks.picker.git_stash() end, { desc = 'Git Stash' })
-  map('n', '<leader>gd', function() Snacks.picker.git_diff() end, { desc = 'Git Diff (Hunks)' })
-
-  map('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = 'Git Log File' })
-
-  -- GitHub
-  map('n', '<leader>gi', function() Snacks.picker.gh_issue() end, { desc = 'GitHub Issues (open)' })
-  map('n', '<leader>gI', function() Snacks.picker.gh_issue({ state = 'all' }) end, { desc = 'GitHub Issues (all)' })
-  map('n', '<leader>gp', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
-  map('n', '<leader>gP', function() Snacks.picker.gh_pr({ state = 'all' }) end, { desc = 'GitHub Pull Requests (all)' })
 end
 
 return M

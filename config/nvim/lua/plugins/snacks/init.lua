@@ -1,19 +1,33 @@
--- snacks.nvim modularized configuration
-local modules = {
-  require('plugins.snacks.ui'),
-  require('plugins.snacks.indent'),
-  require('plugins.snacks.lazygit'),
-  require('plugins.snacks.dashboard'),
-  require('plugins.snacks.explorer'),
-  require('plugins.snacks.picker'),
-  require('plugins.snacks.terminal'),
-  require('plugins.snacks.notifier'),
-  require('plugins.snacks.scratch'),
-  require('plugins.snacks.words'),
-  require('plugins.snacks.toggle'),
-}
-
+-- snacks.nvim modularized configuration (flake-parts style auto-discovery)
 local Util = require('config.util')
+
+local modules = {}
+local extra_specs = {}
+local loaded = {}
+
+-- Auto-discover all files in lua/plugins/snacks/ (except init.lua and auxiliary.lua)
+local dirs = vim.api.nvim_get_runtime_file('lua/plugins/snacks', true)
+for _, dir in ipairs(dirs) do
+  local handle = vim.uv.fs_scandir(dir)
+  while handle do
+    local name, ty = vim.uv.fs_scandir_next(handle)
+    if not name then break end
+    if (ty == 'file' or ty == 'link') and name:sub(-4) == '.lua' then
+      local modname = name:sub(1, -5)
+      if modname ~= 'init' and modname ~= 'auxiliary' and not loaded[modname] then
+        loaded[modname] = true
+        local ok, mod = pcall(require, 'plugins.snacks.' .. modname)
+        if ok and type(mod) == 'table' then
+          if mod[1] == 'snacks.nvim' or mod.name == 'snacks.nvim' then
+            table.insert(extra_specs, mod)
+          else
+            table.insert(modules, mod)
+          end
+        end
+      end
+    end
+  end
+end
 
 -- Aggregate all opts from submodules
 local merged_opts = {}
@@ -45,6 +59,9 @@ local snacks_spec = {
 local auxiliary_specs = require('plugins.snacks.auxiliary')
 
 local specs = { snacks_spec }
+for _, spec in ipairs(extra_specs) do
+  table.insert(specs, spec)
+end
 for _, spec in ipairs(auxiliary_specs) do
   table.insert(specs, spec)
 end

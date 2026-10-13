@@ -158,21 +158,24 @@ Plugins that inspect global `vim.g` variables upon being sourced should configur
 }
 ```
 
-### 5. Modular Option Aggregation with `Util.merge`
-For modular plugin suites like `snacks.nvim`, submodules export partial option tables (`mod.opts`). `Util.merge` recursively deep-merges dictionaries while appending and deduplicating lists:
+### 5. Flake-Parts Style Auto-Discovery & Modular Option Aggregation
+For modular plugin suites like `snacks.nvim`, `lua/plugins/snacks/init.lua` dynamically auto-scans all files in `lua/plugins/snacks/*.lua`:
+- **Submodules** (like `picker.lua`, `ui.lua`) export `{ opts = ..., setup = ..., keys = ... }`.
+- **Scoped specs** (like `another.lua`) export `{ 'snacks.nvim', keys = ..., opts = ... }`.
+
+No manual `require()` list is required in `init.lua`—any new `.lua` file dropped into `lua/plugins/snacks/` is automatically discovered, its `opts` are deep-merged with `Util.merge`, and its `keys` are registered into `lz.n`:
 
 ```lua
--- lua/plugins/snacks/init.lua
-local Util = require('config.util')
-
-local merged_opts = {}
-for _, mod in ipairs(modules) do
-  if mod.opts then merged_opts = Util.merge(merged_opts, mod.opts) end
-end
-
--- plugin.opts (merged across specs via config/specs.lua) is combined with submodules:
-local final_opts = Util.merge(merged_opts, plugin.opts or {})
-require('snacks').setup(final_opts)
+-- lua/plugins/snacks/another.lua
+return {
+  'snacks.nvim',
+  keys = {
+    { '<leader>go', function() Snacks.gitbrowse() end, desc = 'Git Browse (Remote)' },
+  },
+  opts = {
+    picker = { ... },
+  },
+}
 ```
 
 ### 6. LazyVim-Style Child Specs & Cross-Plugin `opts` Merging (`specs = { ... }`)

@@ -1,34 +1,121 @@
 return {
   'nvim-surround',
   event = 'DeferredUIEnter',
-  keys = {
-    { 'gsa', desc = 'Add Surrounding', mode = { 'n', 'x' } },
-    { 'gss', desc = 'Add Surrounding to Line', mode = 'n' },
-    { 'gsA', desc = 'Add Surrounding (New Line)', mode = { 'n', 'x' } },
-    { 'gsd', desc = 'Delete Surrounding', mode = 'n' },
-    { 'gsr', desc = 'Replace Surrounding', mode = 'n' },
-    { 'gsR', desc = 'Replace Surrounding (New Line)', mode = 'n' },
-    { 'ys', desc = 'Add Surrounding', mode = 'n' },
-    { 'yss', desc = 'Add Surrounding to Line', mode = 'n' },
-    { 'yS', desc = 'Add Surrounding (New Line)', mode = 'n' },
-    { 'ds', desc = 'Delete Surrounding', mode = 'n' },
-    { 'cs', desc = 'Change Surrounding', mode = 'n' },
-  },
   before = function()
-    -- Disable nvim-surround default visual mode S to prevent collision with flash.nvim
-    vim.g.nvim_surround_no_visual_mappings = true
+    -- We provide our own gs*/<C-g>s mappings in `keys`, so remove all of
+    -- nvim-surround's built-in defaults (ys/yss/yS/ySS/ds/cs/cS, S/gS,
+    -- <C-g>s/<C-g>S) to avoid conflicts with other plugins.
+    vim.g.nvim_surround_no_mappings = true
   end,
-  after = function(plugin)
-    require('nvim-surround').setup()
 
-    -- LazyVim style surround mappings
-    vim.keymap.set('n', 'gsa', '<Plug>(nvim-surround-normal)', { desc = 'Add Surrounding' })
-    vim.keymap.set('n', 'gss', '<Plug>(nvim-surround-normal-cur)', { desc = 'Add Surrounding to Line' })
-    vim.keymap.set('n', 'gsA', '<Plug>(nvim-surround-normal-line)', { desc = 'Add Surrounding (New Line)' })
-    vim.keymap.set('x', 'gsa', '<Plug>(nvim-surround-visual)', { desc = 'Add Surrounding' })
-    vim.keymap.set('x', 'gsA', '<Plug>(nvim-surround-visual-line)', { desc = 'Add Surrounding (New Line)' })
-    vim.keymap.set('n', 'gsd', '<Plug>(nvim-surround-delete)', { desc = 'Delete Surrounding' })
-    vim.keymap.set('n', 'gsr', '<Plug>(nvim-surround-change)', { desc = 'Replace Surrounding' })
-    vim.keymap.set('n', 'gsR', '<Plug>(nvim-surround-change-line)', { desc = 'Replace Surrounding (New Line)' })
+  keys = {
+    {
+      'gsa',
+      function() return require('nvim-surround').normal_surround({ line_mode = false }) end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding',
+    },
+    {
+      'gss',
+      function() return require('nvim-surround').normal_surround({ line_mode = false }) .. 'Vg_' end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding to Line',
+    },
+    {
+      'gsA',
+      function() return require('nvim-surround').normal_surround({ line_mode = true }) end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding (New Line)',
+    },
+    {
+      'gsS',
+      function()
+        return '^' .. tostring(vim.v.count1) .. require('nvim-surround').normal_surround({ line_mode = true }) .. 'g_'
+      end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding to Line (New Line)',
+    },
+    {
+      'gsa',
+      function()
+        local curpos = require('nvim-surround.buffer').get_curpos()
+        return string.format(
+          ":lua require'nvim-surround'.visual_surround({ line_mode = false, curpos = { %d, %d }, curswant = %d })<CR>",
+          curpos[1],
+          curpos[2],
+          vim.fn.winsaveview().curswant
+        )
+      end,
+      mode = 'x',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding',
+    },
+    {
+      'gsA',
+      function()
+        local curpos = require('nvim-surround.buffer').get_curpos()
+        return string.format(
+          ":lua require'nvim-surround'.visual_surround({ line_mode = true, curpos = { %d, %d }, curswant = 0 })<CR>",
+          curpos[1],
+          curpos[2]
+        )
+      end,
+      mode = 'x',
+      expr = true,
+      silent = true,
+      desc = 'Add Surrounding (New Line)',
+    },
+    {
+      'gsd',
+      function() return require('nvim-surround').delete_surround() end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Delete Surrounding',
+    },
+    {
+      'gsr',
+      function() return require('nvim-surround').change_surround({ line_mode = false }) end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Replace Surrounding',
+    },
+    {
+      'gsR',
+      function() return require('nvim-surround').change_surround({ line_mode = true }) end,
+      mode = 'n',
+      expr = true,
+      silent = true,
+      desc = 'Replace Surrounding (New Line)',
+    },
+    -- {
+    --   '<C-g>s',
+    --   function() require('nvim-surround').insert_surround({ line_mode = false }) end,
+    --   mode = 'i',
+    --   silent = true,
+    --   desc = 'Add Surrounding (insert)',
+    -- },
+    -- {
+    --   '<C-g>S',
+    --   function() require('nvim-surround').insert_surround({ line_mode = true }) end,
+    --   mode = 'i',
+    --   silent = true,
+    --   desc = 'Add Surrounding (insert, new lines)',
+    -- },
+  },
+
+  after = function(plugin)
+    -- Default Configuration https://github.com/kylechui/nvim-surround/blob/main/lua/nvim-surround/config.lua
+    require('nvim-surround').setup()
   end,
 }
