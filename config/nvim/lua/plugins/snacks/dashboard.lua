@@ -10,19 +10,13 @@ M.opts = {
           icon = ' ',
           key = 'f',
           desc = 'Find File',
-          action = function()
-            if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
-            require('fff').find_files()
-          end,
+          action = function() require('fff').find_files() end,
         },
         {
           icon = ' ',
           key = 'g',
           desc = 'Find Text',
-          action = function()
-            if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
-            require('fff').live_grep()
-          end,
+          action = function() require('fff').live_grep() end,
         },
         {
           icon = ' ',

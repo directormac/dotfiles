@@ -1,6 +1,7 @@
 return {
   -- Configuration Defaults https://github.com/dmtrKovalenko/fff#configuration
   'fff.nvim',
+  on_require = { 'fff' },
   cmd = {
     'FFFFind',
     'FFFScan',

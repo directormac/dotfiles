@@ -11,13 +11,14 @@ local modules = {
   require('plugins.snacks.scratch'),
   require('plugins.snacks.words'),
   require('plugins.snacks.toggle'),
-  require('plugins.snacks.git'),
 }
+
+local Util = require('config.util')
 
 -- Aggregate all opts from submodules
 local merged_opts = {}
 for _, mod in ipairs(modules) do
-  if mod.opts then merged_opts = vim.tbl_deep_extend('force', merged_opts, mod.opts) end
+  if mod.opts then merged_opts = Util.merge(merged_opts, mod.opts) end
 end
 
 local snacks_spec = {
@@ -33,6 +34,10 @@ local snacks_spec = {
       if mod.setup then mod.setup() end
       if mod.keys then mod.keys() end
     end
+
+    -- Setup some globals for debugging (lazy-loaded)
+    _G.dd = function(...) Snacks.debug.inspect(...) end
+    _G.bt = function() Snacks.debug.backtrace() end
   end,
 }
 

@@ -1,37 +1,40 @@
 return {
   {
     'oil.nvim',
+    cmd = { 'Oil' },
     keys = {
       { '<leader>fo', '<cmd>Oil<cr>', desc = 'Oil explorer on current buffer directory' },
-      { '<leader>fO', '<cmd>Oil .<cr>', desc = 'Oil explorer on parent directory' },
+      { '<leader>fO', '<cmd>Oil .<cr>', desc = 'Oil explorer on root directory' },
     },
-    after = function()
-      require('oil').setup({
-        default_file_explorer = true,
-        columns = {
-          'icon',
-          'size',
-        },
-        skip_confirm_for_simple_edits = true,
-        keymaps = {
-          ['q'] = 'actions.close',
-          ['<C-s>'] = false,
-        },
-        view_options = {
-          show_hidden = true,
-        },
-        git = {
-          add = function(path) return false end,
-          mv = function(src_path, dest_path) return false end,
-          rm = function(path) return false end,
-        },
-      })
-      require('lz.n').trigger_load({ 'oil-git.nvim', 'oil-lsp-diagnostics.nvim' })
-    end,
+    -- Configuration Reference https://github.com/stevearc/oil.nvim#options
+    ---@type oil.SetupOpts
+    opts = {
+      -- Set to true to watch the filesystem for changes and reload oil
+      watch_for_changes = true,
+      default_file_explorer = true,
+      columns = {
+        'icon',
+        'size',
+      },
+      skip_confirm_for_simple_edits = true,
+      keymaps = {
+        ['q'] = 'actions.close',
+        ['<C-s>'] = false,
+      },
+      view_options = {
+        show_hidden = true,
+      },
+      git = {
+        add = function(path) return false end,
+        mv = function(src_path, dest_path) return false end,
+        rm = function(path) return false end,
+      },
+    },
+    after = function(plugin) require('oil').setup(plugin.opts({})) end,
   },
   {
     'oil-git.nvim',
-    lazy = true,
+    load_before = { 'oil.nvim' },
     after = function()
       local git_icons = Icons.git
       local symbols = {
@@ -61,7 +64,7 @@ return {
   },
   {
     'oil-lsp-diagnostics.nvim',
-    lazy = true,
+    load_before = { 'oil.nvim' },
     after = function()
       require('oil-lsp-diagnostics').setup({
         show_diagnostics_on_cursor_hold = true,

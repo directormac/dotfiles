@@ -1,14 +1,14 @@
 local M = {}
 
 M.opts = {
-  animate = {},
-  bigfile = {},
-  health = {},
-  image = {},
-  input = {},
-  quickfile = {},
-  scope = {},
-  scroll = {},
+  animate = { enable = true },
+  bigfile = { enable = true },
+  health = { enable = true },
+  image = { enable = true },
+  input = { enable = true },
+  quickfile = { enable = true },
+  scope = { enable = true },
+  scroll = { enable = true },
   dim = {
     scope = {
       min_size = 5,

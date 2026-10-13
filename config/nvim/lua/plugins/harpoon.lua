@@ -14,6 +14,13 @@ return {
           save_on_toggle = true,
         },
       })
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'DeferredPlugin',
+        callback = function(ev)
+          if ev.data == 'which-key.nvim' then return true end
+        end,
+      })
     end,
     keys = function()
       local keys = {
@@ -36,7 +43,7 @@ return {
         table.insert(keys, {
           '<leader>' .. i,
           function() require('harpoon'):list():select(i) end,
-          desc = 'Harpoon to File ' .. i,
+          desc = 'Harpoon to File' .. i,
         })
       end
       return keys
@@ -45,6 +52,5 @@ return {
   {
     'harpoon-lualine',
     load_before = { 'lualine.nvim' },
-    lazy = true,
   },
 }

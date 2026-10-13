@@ -38,9 +38,7 @@ return {
   {
     'nvim-treesitter-textobjects',
     lazy = false,
-    before = function(plugin)
-      vim.g.no_plugin_maps = true
-    end,
+    before = function(plugin) vim.g.no_plugin_maps = true end,
     after = function(plugin)
       require('nvim-treesitter-textobjects').setup({
         select = {

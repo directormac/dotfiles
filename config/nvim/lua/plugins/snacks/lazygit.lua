@@ -51,10 +51,9 @@ function M.setup()
 end
 
 function M.keys()
-  vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit.open() end, { desc = 'Lazygit (Float)' })
-  vim.keymap.set('n', '<leader>lg', function() Snacks.lazygit.open() end, { desc = 'Lazygit (Float)' })
-  vim.keymap.set('n', '<leader>ll', function() Snacks.lazygit.log() end, { desc = 'Lazygit Log' })
-  vim.keymap.set('n', '<leader>lf', function() Snacks.lazygit.log_file() end, { desc = 'Lazygit File History' })
+  vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.open() end, { desc = 'Lazygit (Float)' })
+  vim.keymap.set('n', '<leader>glf', function() Snacks.lazygit.log_file() end, { desc = 'Lazygit file' })
+  vim.keymap.set('n', '<leader>gll', function() Snacks.lazygit.log() end, { desc = 'Lazygit Log' })
 end
 
 return M

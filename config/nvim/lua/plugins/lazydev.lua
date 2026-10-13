@@ -4,8 +4,13 @@ return {
   'lazydev.nvim',
   cmd = { 'LazyDev' },
   ft = 'lua',
+  on_require = { 'lazydev' },
   after = function(_)
-    local library = {}
+    local library = {
+      { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      { path = 'snacks.nvim', words = { 'Snacks' } },
+      { path = 'nvim-lspconfig', words = { 'lspconfig.settings' } },
+    }
 
     local lzn_path = nixInfo.get_nix_plugin_path('lz.n')
     if lzn_path and vim.uv.fs_stat(lzn_path .. '/lua') then

@@ -1,47 +1,82 @@
 return {
   'which-key.nvim',
   event = 'DeferredUIEnter',
-  after = function(plugin)
-    require('which-key').setup({
-      preset = 'helix',
-      plugins = {
-        marks = true,
-        registers = true,
-        spelling = {
-          enabled = true,
-          suggestions = 20,
-        },
-        presets = {
-          operators = true,
-          motions = true,
-          text_objects = true,
-          windows = true,
-          nav = true,
-          z = true,
-          g = true,
-        },
+  ---@class wk.Opts
+  opts = {
+    preset = 'modern',
+    ---@param mapping wk.Mapping
+    filter = function(mapping)
+      -- Filter Hapoon keys
+      if mapping.desc and mapping.desc:match('Harpoon to File') then return false end
+      -- example to exclude mappings without a description
+      -- return mapping.desc and mapping.desc ~= ""
+      return true
+    end,
+    ---@type (string|wk.Sorter)[]
+    --- Mappings are sorted using configured sorters and natural sort of the keys
+    --- Available sorters:
+    --- * local: buffer-local mappings first
+    --- * order: order of the items (Used by plugins like marks / registers)
+    --- * group: groups last
+    --- * alphanum: alpha-numerical first
+    --- * mod: special modifier keys last
+    --- * manual: the order the mappings were added
+    --- * case: lower-case first
+    sort = { 'manual', 'local', 'order', 'group', 'alphanum', 'mod' },
+    icons = {
+      ---@type wk.IconRule[]
+      rules = {
+        { pattern = 'harpoon', icon = '󰛢 ', color = 'green' },
+        { pattern = 'oil', icon = '󱧫 ', color = 'blue' },
       },
-      delay = 0,
-      icons = { mappings = vim.g.have_nerd_font },
-      spec = {
-        { '<leader>a', group = 'AI (sidekick)' },
-        { '<leader>b', group = 'Buffers' },
-        { '<leader>c', group = 'Code Related Actions', mode = { 'n', 'x' } },
+    },
+    --@type wk.Spec
+    spec = {
+      {
+        mode = { 'n', 'x' },
+        { '<leader><tab>', group = 'Tabs' },
+        { '<leader>c', group = 'Code' },
         { '<leader>d', group = 'Debug' },
+        { '<leader>dp', group = 'Profiler' },
         { '<leader>f', group = 'Find' },
         { '<leader>g', group = 'Git' },
-        { '<leader>o', group = 'Other' },
-        { '<leader>q', group = 'Quit / Session' },
+        { '<leader>gh', group = 'Hunks' },
+        { '<leader>q', group = 'Quit/session' },
         { '<leader>s', group = 'Search' },
-        { '<leader>sn', group = 'Noice' },
-        { '<leader>t', group = 'Tasks' },
         { '<leader>u', group = 'Ui' },
-        { '<leader>w', group = 'Windows' },
-        { '<leader>x', group = 'Diagnostics / Quickfix' },
-        { '<leader><tab>', group = 'Tabs' },
-        { 'gs', group = 'Surround', mode = { 'n', 'x' } },
+        { '<leader>x', group = 'Diagnostics/quickfix' },
+        { '[', group = 'prev' },
+        { ']', group = 'next' },
+        { 'g', group = 'goto' },
+        { 'gs', group = 'surround' },
+        { 'z', group = 'fold' },
+        {
+          '<leader>b',
+          group = 'buffer',
+          expand = function() return require('which-key.extras').expand.buf() end,
+        },
+        {
+          '<leader>w',
+          group = 'windows',
+          proxy = '<c-w>',
+          expand = function() return require('which-key.extras').expand.win() end,
+        },
+        -- better descriptions
+        { 'gx', desc = 'Open with system app' },
       },
-    })
+
+      { '<leader>o', group = 'Oil Explorer' },
+    },
+  },
+  keys = {
+    {
+      '<c-w><space>',
+      function() require('which-key').show({ keys = '<c-w>', loop = true }) end,
+      desc = 'Window Hydra Mode (which-key)',
+    },
+  },
+  after = function(plugin)
+    require('which-key').setup(plugin.opts or {})
 
     vim.keymap.set('n', '<leader>?', '<cmd>lua Snacks.picker.keymaps()<CR>', { desc = 'Search Keybindings' })
   end,

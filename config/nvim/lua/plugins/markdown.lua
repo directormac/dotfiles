@@ -1,6 +1,8 @@
 return {
   {
     'render-markdown.nvim',
+    ft = { 'markdown', 'codecompanion' },
+    cmd = { 'RenderMarkdown' },
     after = function()
       --- https://github.com/meanderingprogrammer/render-markdown.nvim#setup
       ---@module 'render-markdown'

@@ -1,6 +1,7 @@
 return {
   {
     'blink.pairs',
+    event = { 'BufReadPost', 'BufNewFile', 'InsertEnter' },
     after = function()
       -- https://github.com/saghen/blink.pairs#installation
       require('blink.pairs').setup({})

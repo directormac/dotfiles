@@ -1,5 +1,8 @@
 return {
-  'schemastore.nvim',
+  'SchemaStore.nvim',
+  load_before = { 'nvim-lspconfig' },
+  ft = { 'json', 'jsonc', 'yaml' },
+  on_require = { 'schemastore' },
   after = function()
     -- https://github.com/b0o/SchemaStore.nvim
     vim.lsp.config('jsonls', {

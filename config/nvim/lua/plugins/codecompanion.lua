@@ -2,12 +2,7 @@ return {
   {
     -- Documentation https://codecompanion.olimorris.dev/getting-started
     'codecompanion.nvim',
-
-    before = function()
-      require('lz.n').trigger_load({
-        'plenary.nvim',
-      })
-    end,
+    cmd = { 'CodeCompanion', 'CodeCompanionActions', 'CodeCompanionChat', 'CodeCompanionCmd' },
     after = function()
       -- Configuration Reference https://codecompanion.olimorris.dev/configuration/action-palette
       require('codecompanion').setup({})

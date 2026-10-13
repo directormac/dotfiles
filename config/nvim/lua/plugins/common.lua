@@ -9,22 +9,24 @@ return {
   },
   {
     'nvim-web-devicons',
-    lazy = false,
+    on_require = { 'nvim-web-devicons' },
     after = function(plugin) require('nvim-web-devicons').setup() end,
   },
   {
     'plenary.nvim',
-    lazy = true,
     on_require = { 'plenary' },
   },
   {
     'nui.nvim',
-    lazy = true,
     on_require = { 'nui' },
   },
   {
     'nvim-nio',
-    lazy = true,
     on_require = { 'nio' },
+  },
+  {
+    -- Configuration Reference https://github.com/gbprod/yanky.nvim#%EF%B8%8F-configuration
+    'yanky.nvim',
+    on_require = { 'yanky' },
   },
 }

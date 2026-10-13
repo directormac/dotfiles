@@ -1,13 +1,12 @@
 return {
   {
     'nvim-float',
-    lazy = true,
+    load_before = { 'nvim-colorpicker' },
   },
   {
     'nvim-colorpicker',
     cmd = { 'ColorPicker', 'ColorPickerAtCursor', 'ColorPickerMini', 'ColorHighlight' },
     event = 'DeferredUIEnter',
-    before = function() require('lz.n').trigger_load('nvim-float') end,
     after = function()
       require('nvim-colorpicker').setup({
         alpha_enabled = true,

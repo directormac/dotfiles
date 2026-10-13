@@ -12,14 +12,6 @@ return {
       { '<leader>dLl', function() require('osv').launch({ port = 8086 }) end, desc = 'Debug Lua: launch server' },
       { '<leader>dLr', function() require('osv').run_this() end, desc = 'Debug Lua: run this' },
     },
-    before = function()
-      require('lz.n').trigger_load({
-        'nvim-nio',
-        'nvim-dap-ui',
-        'nvim-dap-virtual-text',
-        'one-small-step-for-vimkind',
-      })
-    end,
     after = function()
       local icons = Icons.dap
       for name, sign in pairs(icons) do
@@ -57,7 +49,7 @@ return {
       }
     end,
   },
-  { 'nvim-dap-ui', lazy = true },
-  { 'nvim-dap-virtual-text', lazy = true },
-  { 'one-small-step-for-vimkind', lazy = true },
+  { 'nvim-dap-ui', load_before = { 'nvim-dap' } },
+  { 'nvim-dap-virtual-text', load_before = { 'nvim-dap' } },
+  { 'one-small-step-for-vimkind', load_before = { 'nvim-dap' } },
 }

@@ -74,6 +74,9 @@
 
       config.specs.lzn = pkgs.vimPlugins.lz-n;
       config.specs.lzn-auto-require = pkgs.vimPlugins.lzn-auto-require;
+      # https://github.com/lumen-oss/rtp.nvim
+      # More Handlers. .
+      # https://github.com/BirdeeHub/lzextras
 
       # -----------------------------------------------------------------------
       # Runtime packages (tools, language servers, formatters, linters)
@@ -151,6 +154,9 @@
           nvim-surround
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
+          nvim-treesitter
+          nvim-treesitter-context
+          treesj
           SchemaStore-nvim
           otter-nvim
 

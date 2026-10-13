@@ -18,7 +18,7 @@ M.merge = function(base, override)
           if type(item) == 'table' or not vim.list_contains(bv, item) then table.insert(bv, item) end
         end
       else
-        merge(bv, v)
+        M.merge(bv, v)
       end
     else
       base[k] = v
@@ -138,7 +138,6 @@ end
 M.picker_files = function(opts)
   opts = opts or {}
   local target_cwd = opts.cwd or (opts.root and M.root(opts) or M.cwd())
-  if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
   local picker_opts = vim.tbl_deep_extend('force', opts, { cwd = target_cwd })
   picker_opts.root = nil
   require('fff').find_files(picker_opts)
@@ -149,7 +148,6 @@ end
 M.picker_grep = function(opts)
   opts = opts or {}
   local target_cwd = opts.cwd or (opts.root and M.root(opts) or M.cwd())
-  if not package.loaded['fff'] then require('lz.n').trigger_load('fff.nvim') end
   local picker_opts = vim.tbl_deep_extend('force', opts, { cwd = target_cwd })
   picker_opts.root = nil
   require('fff').live_grep(picker_opts)

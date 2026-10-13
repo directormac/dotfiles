@@ -37,7 +37,6 @@ return {
         mode = { 'i', 'n', 's' },
       },
     },
-    before = function() require('lz.n').trigger_load({ 'nui.nvim', 'snacks.nvim' }) end,
     after = function()
       -- if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
 

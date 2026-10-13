@@ -1,23 +1,25 @@
 -- blink.cmp with colorful-menu renderers, luasnip, and cmp-cmdline.
 return {
+  { 'blink.lib', load_before = { 'blink.cmp' } },
+  { 'blink.compat', load_before = { 'blink.cmp' } },
+  { 'blink-cmp-dictionary', load_before = { 'blink.cmp' } },
+  { 'blink-cmp-env', load_before = { 'blink.cmp' } },
+  { 'blink-cmp-git', load_before = { 'blink.cmp' } },
+  { 'blink-emoji.nvim', load_before = { 'blink.cmp' } },
+  { 'blink-nerdfont.nvim', load_before = { 'blink.cmp' } },
+  { 'blink-ripgrep.nvim', load_before = { 'blink.cmp' } },
+
+  {
+    'colorful-menu.nvim',
+    load_before = { 'blink.cmp' },
+    after = function() require('colorful-menu').setup() end,
+  },
   {
     'blink.cmp',
-    event = { 'DeferredUIEnter' },
-    before = function()
-      require('lz.n').trigger_load({
-        'lazydev.nvim',
-        'friendly-snippets',
-        'luasnip',
-        'blink.compat',
-        'colorful-menu.nvim',
-        'blink-ripgrep.nvim',
-        'blink-emoji.nvim',
-        'blink-nerdfont.nvim',
-        'blink-cmp-git',
-        'blink-cmp-env',
-        'blink-cmp-dictionary',
-      })
-    end,
+    event = { 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {},
     after = function(_)
       local item_kinds = require('blink.cmp.types').CompletionItemKind
       require('blink.cmp').setup({
@@ -127,7 +129,6 @@ return {
             'dictionary',
             'emoji',
             'nerdfont',
-            -- NOTE: 'git' must be listed here for its `enabled` gate to matter.
             'git',
           },
           providers = {
@@ -220,40 +221,4 @@ return {
       })
     end,
   },
-  {
-    'luasnip',
-    lazy = true,
-    after = function(_)
-      local luasnip = require('luasnip')
-      luasnip.config.set_config({
-        history = true,
-        updateevents = 'TextChanged,TextChangedI',
-      })
-      -- Load friendly-snippets from runtimepath
-      require('luasnip.loaders.from_vscode').lazy_load()
-      -- Load custom snippets from config snippets/ directory
-      local snippet_dir = (vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config')) .. '/snippets'
-      require('luasnip.loaders.from_vscode').lazy_load({
-        paths = { snippet_dir },
-      })
-      require('luasnip.loaders.from_lua').lazy_load({
-        paths = { snippet_dir },
-      })
-    end,
-  },
-  { 'blink.compat', lazy = true },
-  { 'blink.lib', lazy = true },
-  {
-    'colorful-menu.nvim',
-    lazy = true,
-    after = function() require('colorful-menu').setup() end,
-  },
-  { 'friendly-snippets', lazy = true },
-
-  { 'blink-ripgrep.nvim', lazy = true },
-  { 'blink-cmp-dictionary', lazy = true },
-  { 'blink-cmp-git', lazy = true },
-  { 'blink-emoji.nvim', lazy = true },
-  { 'blink-cmp-env', lazy = true },
-  { 'blink-nerdfont.nvim', lazy = true },
 }
