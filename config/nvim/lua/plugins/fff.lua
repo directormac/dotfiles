@@ -76,27 +76,25 @@ return {
       desc = 'Open file under cursor (fff)',
     },
   },
-  after = function()
-    require('fff').setup({
-      title = ' Fuzzy Fucking Finder. 󰉁  󰩐 󱡴 ',
-      prompt = ' ',
-      layout = {
-        prompt_position = 'top',
-        preview_position = 'right',
-        preview_size = 0.4,
-        flex = { wrap = 'bottom' },
-      },
-      preview = {
-        enabled = true,
-        line_numbers = true,
-      },
-      git = {
-        status_text_color = true,
-      },
-      grep = {
-        smart_case = true,
-        trim_whitespace = true,
-      },
-    })
-  end,
+  opts = {
+    title = ' Fuzzy Fucking Finder. 󰉁  󰩐 󱡴 ',
+    prompt = ' ',
+    layout = {
+      prompt_position = 'top',
+      preview_position = 'right',
+      preview_size = 0.4,
+      flex = { wrap = 'bottom' },
+    },
+    preview = {
+      enabled = true,
+      line_numbers = true,
+    },
+    git = {
+      status_text_color = true,
+    },
+    grep = {
+      smart_case = true,
+      trim_whitespace = true,
+    },
+  },
 }

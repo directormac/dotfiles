@@ -24,5 +24,5 @@ return {
       desc = 'Todo',
     },
   },
-  after = function() require('todo-comments').setup({}) end,
+  opts = {},
 }

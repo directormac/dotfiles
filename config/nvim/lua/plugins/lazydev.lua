@@ -5,7 +5,7 @@ return {
   cmd = { 'LazyDev' },
   ft = 'lua',
   on_require = { 'lazydev' },
-  after = function(_)
+  opts = function()
     local library = {
       { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       { path = 'snacks.nvim', words = { 'Snacks' } },
@@ -37,8 +37,12 @@ return {
       add_plugins(nixInfo.plugins.lazy)
     end
 
-    require('lazydev').setup({
+    return {
       library = library,
-    })
+    }
+  end,
+  after = function(plugin)
+    local opts = type(plugin.opts) == 'function' and plugin.opts(plugin, {}) or (plugin.opts or {})
+    require('lazydev').setup(opts)
   end,
 }

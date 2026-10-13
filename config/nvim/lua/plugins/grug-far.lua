@@ -18,9 +18,7 @@ return {
       mode = { 'n', 'x' },
     },
   },
-  after = function()
-    require('grug-far').setup({
-      engine = 'ripgrep',
-    })
-  end,
+  opts = {
+    engine = 'ripgrep',
+  },
 }

@@ -1,6 +1,5 @@
 return {
   {
-
     'noice.nvim',
     event = 'DeferredUIEnter',
     keys = {
@@ -37,135 +36,115 @@ return {
         mode = { 'i', 'n', 's' },
       },
     },
-    after = function()
-      -- if vim.o.filetype == 'lazy' then vim.cmd([[messages clear]]) end
-
-      -- Configurtaion Reference https://github.com/folke/noice.nvim#%EF%B8%8F-configuration
-      require('noice').setup({
-        lsp = {
-          progress = {
-            enabled = true,
-            -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
-            -- See the section on formatting for more details on how to customize.
-            --- @type NoiceFormat|string
-            format = 'lsp_progress',
-            --- @type NoiceFormat|string
-            format_done = 'lsp_progress_done',
-            throttle = 1000 / 30, -- frequency to update lsp progress message
-            view = 'mini',
-          },
-
-          override = {
-            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-            ['vim.lsp.util.stylize_markdown'] = true,
-          },
-
-          hover = {
-            enabled = true,
-            silent = true,
-            ---@type NoiceViewOptions
-            opts = {
-              border = {
-                style = 'single',
-              },
-              win_options = {
-                winblend = 0,
-                winhighlight = {
-                  Normal = 'NormalFloat',
-                  FloatBorder = 'FloatBorder',
-                },
-              },
-              size = {
-                max_width = 80,
-                max_height = 30,
-              },
-            },
-          },
-          signature = {
-            enabled = true,
-            auto_open = {
-              enabled = true,
-              trigger = true,
-              luasnip = true,
-              throttle = 50,
-            },
-            ---@type NoiceViewOptions
-            opts = {
-              border = {
-                style = 'single',
-              },
-              win_options = {
-                winblend = 0,
-                winhighlight = {
-                  Normal = 'NormalFloat',
-                  FloatBorder = 'FloatBorder',
-                },
-              },
-              size = {
-                max_width = 80,
-                max_height = 20,
-              },
-            },
-          },
-          documentation = {
-            view = 'hover',
-            ---@type NoiceViewOptions
-            opts = {
-              lang = 'markdown',
-              replace = true,
-              render = 'plain',
-              format = { '{message}' },
-              win_options = { concealcursor = 'n', conceallevel = 3 },
-            },
-          },
+    opts = {
+      lsp = {
+        progress = {
+          enabled = true,
+          format = 'lsp_progress',
+          format_done = 'lsp_progress_done',
+          throttle = 1000 / 30,
+          view = 'mini',
         },
-        ---@type NoiceRouteConfig[]
-        routes = {},
-        ---@type NoiceConfigViews
-        views = {
-          cmdline_popup = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+        },
+        hover = {
+          enabled = true,
+          silent = true,
+          opts = {
             border = {
               style = 'single',
             },
-            filter_options = {},
-            position = {
-              row = 5,
-              col = '50%',
+            win_options = {
+              winblend = 0,
+              winhighlight = {
+                Normal = 'NormalFloat',
+                FloatBorder = 'FloatBorder',
+              },
             },
             size = {
-              width = 60,
-              height = 'auto',
+              max_width = 80,
+              max_height = 30,
             },
           },
-          popupmenu = {
-            relative = 'editor',
-            position = {
-              row = 8,
-              col = '50%',
-            },
-            size = {
-              width = 60,
-              height = 10,
-            },
+        },
+        signature = {
+          enabled = true,
+          auto_open = {
+            enabled = true,
+            trigger = true,
+            luasnip = true,
+            throttle = 50,
+          },
+          opts = {
             border = {
               style = 'single',
             },
+            win_options = {
+              winblend = 0,
+              winhighlight = {
+                Normal = 'NormalFloat',
+                FloatBorder = 'FloatBorder',
+              },
+            },
+            size = {
+              max_width = 80,
+              max_height = 20,
+            },
           },
         },
-        -- You can add any custom commands below that will be available with `:Noice command`
-        ---@type table<string, NoiceCommand>
-        commands = {},
-        ---@type NoiceFormatOptions
-        format = {}, --- @see section on formatting
-        ---@type NoicePresets
-        presets = {
-          bottom_search = true,
-          command_palette = true,
-          long_message_to_split = true,
-          inc_rename = false,
-          lsp_doc_border = true,
+        documentation = {
+          view = 'hover',
+          opts = {
+            lang = 'markdown',
+            replace = true,
+            render = 'plain',
+            format = { '{message}' },
+            win_options = { concealcursor = 'n', conceallevel = 3 },
+          },
         },
-      })
-    end,
+      },
+      routes = {},
+      views = {
+        cmdline_popup = {
+          border = {
+            style = 'single',
+          },
+          filter_options = {},
+          position = {
+            row = 5,
+            col = '50%',
+          },
+          size = {
+            width = 60,
+            height = 'auto',
+          },
+        },
+        popupmenu = {
+          relative = 'editor',
+          position = {
+            row = 8,
+            col = '50%',
+          },
+          size = {
+            width = 60,
+            height = 10,
+          },
+          border = {
+            style = 'single',
+          },
+        },
+      },
+      commands = {},
+      format = {},
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = true,
+      },
+    },
   },
 }

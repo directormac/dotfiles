@@ -1,11 +1,11 @@
 return {
   'lualine.nvim',
   event = 'DeferredUIEnter',
-  after = function()
+  opts = function()
     local icons = Icons
     local util = Util
 
-    require('lualine').setup({
+    return {
       options = {
         icons_enabled = true,
         theme = 'auto',
@@ -35,10 +35,9 @@ return {
           -- stylua: ignore
           {
             function() return require('noice').api.status.command.get() end,
-            cond = 
-              function() 
-                return package.loaded['noice'] and require('noice').api.status.command.has() 
-              end,
+            cond = function() 
+              return package.loaded['noice'] and require('noice').api.status.command.has() 
+            end,
             color = function() 
               return { fg = Snacks.util.color('Statement') } 
             end,
@@ -65,7 +64,6 @@ return {
           },
         },
         lualine_y = {
-
           {
             'diff',
             symbols = {
@@ -90,7 +88,11 @@ return {
         },
         lualine_z = {},
       },
-    })
+    }
+  end,
+  after = function(plugin)
+    local opts = type(plugin.opts) == 'function' and plugin.opts(plugin, {}) or (plugin.opts or {})
+    require('lualine').setup(opts)
 
     vim.opt.showmode = false
 

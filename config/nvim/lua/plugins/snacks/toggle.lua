@@ -83,6 +83,8 @@ function M.keys()
 
   Snacks.toggle.zoom():map('<leader>wm'):map('<leader>uZ')
   Snacks.toggle.zen():map('<leader>uz')
+
+  Snacks.toggle.indent():map('<leader>ug')
 end
 
 return M

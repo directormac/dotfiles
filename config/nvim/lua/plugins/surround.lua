@@ -98,20 +98,20 @@ return {
       silent = true,
       desc = 'Replace Surrounding (New Line)',
     },
-    -- {
-    --   '<C-g>s',
-    --   function() require('nvim-surround').insert_surround({ line_mode = false }) end,
-    --   mode = 'i',
-    --   silent = true,
-    --   desc = 'Add Surrounding (insert)',
-    -- },
-    -- {
-    --   '<C-g>S',
-    --   function() require('nvim-surround').insert_surround({ line_mode = true }) end,
-    --   mode = 'i',
-    --   silent = true,
-    --   desc = 'Add Surrounding (insert, new lines)',
-    -- },
+    {
+      '<C-g>s',
+      function() require('nvim-surround').insert_surround({ line_mode = false }) end,
+      mode = 'i',
+      silent = true,
+      desc = 'Add Surrounding (insert)',
+    },
+    {
+      '<C-g>S',
+      function() require('nvim-surround').insert_surround({ line_mode = true }) end,
+      mode = 'i',
+      silent = true,
+      desc = 'Add Surrounding (insert, new lines)',
+    },
   },
 
   after = function(plugin)
