@@ -162,6 +162,9 @@
           mode = "execute"
         '';
 
+      xdg.configFile."zsh/extra.zsh".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/zsh/extra.zsh";
+
       xdg.configFile."fsh".source =
         config.lib.file.mkOutOfStoreSymlink "${config.preferences.dotsConfigPath}/fsh";
 
@@ -181,15 +184,16 @@
           ];
         };
 
-        # completionInit =
-        #   # sh
-        #   ''
-        #     autoload -U compinit && compinit
-        #   '';
+        completionInit =
+          # sh
+          ''
+            eval "$(herdr completion zsh)"
+            autoload -U compinit && compinit
+          '';
 
         shellAliases = {
+          "age" = "rage";
           "agyx" = "agy  --dangerously-skip-permissions";
-          "ocx" = "opencode --auto";
           "c" = "clear";
           "cat" = "bat";
           "cd" = "z";
@@ -200,45 +204,45 @@
           "dotfiles" = "cd ~/.dotfiles";
           "du" = "dust";
           "find" = "fd";
+          "flake" = "nix flake";
+          "grab" = "ghgrab --cwd";
           "grep" = "rg";
-          "age" = "rage";
           "l" = "lsd -a";
-          "ll" = "lsd -l";
           "la" = "lsd -la";
+          "ll" = "lsd -l";
+          "logs" = "journalctl --user -f -n 50";
           "ls" = "lsd";
           "lt" = "lsd --tree";
           "lzg" = "lazygit";
           "man" = "man -P bat -p";
+          "nixdev" = "nix develop";
           "nsh" = "nix-shell -p";
-          "rmr" = "rm -r";
-          "top" = "btop";
           "oc" = "opencode";
           "oc2" = "opencode2";
-          "wh" = "which";
+          "ocx" = "opencode --auto";
+          "rmr" = "rm -r";
+          "t" = "tv --layout portrait --hide-preview --input-position bottom";
+          "tls" = "tmux ls";
+          "tn" = "sesh connect .";
+          "todo" = "tuxedo";
+          "top" = "btop";
+          "ts" = "sesh last";
+          "tvk" = "tv zsh-keys";
           "v" = "nvim";
           "vi" = "vim";
+          "wh" = "which";
+          "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
+          "wm" = "workmux";
+          "wma" = "workmux add";
+          "wmd" = "workmux dashboard -t worktrees";
+          "wml" = "workmux list";
+          "wmm" = "workmux merge";
+          "wmo" = "workmux open";
+          "wmq" = "workmux add --mode window --base main -l quickfix";
+          "wms" = "workmux sidebar";
+          "wmw" = "workmux add --mode window --base main -l agent-only";
           "y" = "yazi";
           "zen" = "zen-beta";
-          "wm" = "workmux";
-          "wmd" = "workmux dashboard -t worktrees";
-          "wms" = "workmux sidebar";
-          "wml" = "workmux list";
-          "wmo" = "workmux open";
-          "wma" = "workmux add";
-          "wmq" = "workmux add --mode window --base main -l quickfix";
-          "wmw" = "workmux add --mode window --base main -l agent-only";
-          "wmm" = "workmux merge";
-          "tls" = "tmux ls";
-          "ts" = "sesh last";
-          "todo" = "tuxedo";
-          "t" = "tv --layout portrait --hide-preview --input-position bottom";
-          "tvk" = "tv zsh-keys";
-          "tn" = "sesh connect .";
-          "logs" = "journalctl --user -f -n 50";
-          "grab" = "ghgrab --cwd";
-          "flake" = "nix flake";
-          "nixdev" = "nix develop";
-          "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
         };
 
         sessionVariables = {
@@ -354,7 +358,6 @@
             zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 
 
-            eval "$(devenv hook zsh)"
 
             function zvm_after_init() {
               zvm_bindkey viins '^R' fzf-history-widget
@@ -369,6 +372,8 @@
               zvm_bindkey viins '^[[9;5u' autosuggest-accept    # CSI u (tmux extended-keys csi-u / kitty protocol)
             }
 
+            eval "$(devenv hook zsh)"
+            source $XDG_CONFIG_HOME/zsh/extra.zsh
           '';
 
         plugins = [
