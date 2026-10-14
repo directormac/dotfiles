@@ -106,11 +106,11 @@
         '';
 
       # Cable: Nix Packages only
-      xdg.configFile."television/cable/nix-packages.toml".text =
+      xdg.configFile."television/cable/nix-pkgs.toml".text =
         # toml
         ''
           [metadata]
-          name = "nix-packages"
+          name = "nix-pkgs"
           description = "Fuzzy search Nixpkgs packages via nix-search-tv"
           requirements = ["nix-search-tv", "grep"]
 

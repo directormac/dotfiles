@@ -1,7 +1,6 @@
 return {
   {
     'SchemaStore.nvim',
-    load_before = { 'nvim-lspconfig' },
     ft = { 'json', 'jsonc', 'yaml' },
     on_require = { 'schemastore' },
     after = function()

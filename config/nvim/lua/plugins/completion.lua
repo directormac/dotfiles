@@ -2,6 +2,7 @@
 return {
   { 'blink.lib', load_before = { 'blink.cmp' } },
   { 'blink.compat', load_before = { 'blink.cmp' } },
+  { 'blink-copilot', load_before = { 'blink.cmp' } },
   { 'blink-cmp-dictionary', load_before = { 'blink.cmp' } },
   { 'blink-cmp-env', load_before = { 'blink.cmp' } },
   { 'blink-cmp-git', load_before = { 'blink.cmp' } },
@@ -9,14 +10,15 @@ return {
   { 'blink-nerdfont.nvim', load_before = { 'blink.cmp' } },
   { 'blink-ripgrep.nvim', load_before = { 'blink.cmp' } },
 
-  {
-    'colorful-menu.nvim',
-    load_before = { 'blink.cmp' },
-  },
+  -- {
+  --   'colorful-menu.nvim',
+  --   load_before = { 'blink.cmp' },
+  --   on_require = { 'colorful-menu' },
+  -- },
 
   {
     'blink.cmp',
-    event = { 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
+    event = { 'InsertEnter', 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -70,7 +72,7 @@ return {
         },
       },
       signature = {
-        enabled = false, -- Handled cleanly by Noice!
+        enabled = true,
         window = {
           border = 'single',
         },
@@ -79,38 +81,38 @@ return {
         menu = {
           border = 'single',
           winblend = 0,
-          draw = {
-            -- We don't need label_description now because label and label_description are already
-            -- combined together in label by colorful-menu.nvim.
-            columns = { { 'kind_icon' }, { 'label', gap = 1 } },
-            components = {
-              label = {
-                width = { fill = true, max = 60 },
-                text = function(ctx)
-                  local highlights_info = require('colorful-menu').blink_highlights(ctx)
-                  if highlights_info ~= nil then
-                    -- Or you want to add more item to label
-                    return highlights_info.label
-                  else
-                    return ctx.label
-                  end
-                end,
-                highlight = function(ctx)
-                  local highlights = {}
-                  local highlights_info = require('colorful-menu').blink_highlights(ctx)
-                  if highlights_info ~= nil then highlights = highlights_info.highlights end
-                  for _, idx in ipairs(ctx.label_matched_indices) do
-                    table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
-                  end
-                  -- Do something else
-                  return highlights
-                end,
-              },
-            },
-          },
+          -- draw = {
+          --   -- We don't need label_description now because label and label_description are already
+          --   -- combined together in label by colorful-menu.nvim.
+          --   columns = { { 'kind_icon' }, { 'label', gap = 1 } },
+          --   components = {
+          --     label = {
+          --       width = { fill = true, max = 60 },
+          --       text = function(ctx)
+          --         local highlights_info = require('colorful-menu').blink_highlights(ctx)
+          --         if highlights_info ~= nil then
+          --           -- Or you want to add more item to label
+          --           return highlights_info.label
+          --         else
+          --           return ctx.label
+          --         end
+          --       end,
+          --       highlight = function(ctx)
+          --         local highlights = {}
+          --         local highlights_info = require('colorful-menu').blink_highlights(ctx)
+          --         if highlights_info ~= nil then highlights = highlights_info.highlights end
+          --         for _, idx in ipairs(ctx.label_matched_indices) do
+          --           table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+          --         end
+          --         -- Do something else
+          --         return highlights
+          --       end,
+          --     },
+          --   },
+          -- },
         },
         documentation = {
-          auto_show = false,
+          auto_show = true,
           auto_show_delay_ms = 200,
           window = {
             border = 'single',
@@ -130,6 +132,7 @@ return {
           'emoji',
           'nerdfont',
           'git',
+          'copilot',
         },
         providers = {
           -- `score_offset` is additive to the fuzzy score, so it can only shift a
@@ -146,13 +149,35 @@ return {
           lsp = {
             score_offset = 40,
           },
+          buffer = {
+            score_offset = -10,
+          },
+          copilot = {
+            name = 'Copilot',
+            module = 'blink-copilot',
+            score_offset = 100,
+            async = true,
+            ---@module 'blink-copilot'
+            ---@type blink-copilot.Config
+            opts = {
+              max_completions = 3,
+              max_attempts = 4,
+              debounce = 200,
+              auto_refresh = {
+                backward = true,
+                forward = true,
+              },
+            },
+          },
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
+            enabled = function()
+              return vim.tbl_contains({
+                'lua',
+              }, vim.bo.filetype)
+            end,
             score_offset = 30,
-          },
-          buffer = {
-            score_offset = -10,
           },
           env = {
             name = 'Env',
@@ -210,7 +235,13 @@ return {
             module = 'blink-cmp-git',
             name = 'Git',
             -- only enable this source when filetype is gitcommit, markdown, or 'octo'
-            enabled = function() return vim.tbl_contains({ 'octo', 'gitcommit', 'markdown' }, vim.bo.filetype) end,
+            enabled = function()
+              return vim.tbl_contains({
+                'octo',
+                'gitcommit',
+                'markdown',
+              }, vim.bo.filetype)
+            end,
             --- @module 'blink-cmp-git'
             --- @type blink-cmp-git.Options
             opts = {},

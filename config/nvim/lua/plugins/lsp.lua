@@ -6,6 +6,7 @@ return {
       require('lsp_handlers').setup()
 
       local servers = {
+        'copilot',
         'lua_ls',
         'nixd',
         'nil_ls',

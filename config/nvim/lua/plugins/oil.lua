@@ -32,8 +32,8 @@ return {
     },
   },
   {
-    'oil-git.nvim',
-    load_before = { 'oil.nvim' },
+    'oil-git-nvim',
+    on_plugin = { 'oil.nvim' },
     after = function()
       local git_icons = Utils.icons.git
       local symbols = {
@@ -63,7 +63,7 @@ return {
   },
   {
     'oil-lsp-diagnostics.nvim',
-    load_before = { 'oil.nvim' },
+    on_plugin = { 'oil.nvim' },
     after = function()
       require('oil-lsp-diagnostics').setup({
         show_diagnostics_on_cursor_hold = true,

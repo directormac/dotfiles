@@ -19,53 +19,92 @@ local function parse_plugin_version(path)
   return 'v' .. ver
 end
 
--- Helper to extract triggers from lze / lz.n spec
-local function get_plugin_triggers(name)
-  local spec = nil
-  if nixInfo and nixInfo.lze and type(nixInfo.lze.state) == 'table' then
-    spec = nixInfo.lze.state[name]
-  elseif package.loaded['lze'] and type(require('lze').state) == 'table' then
-    spec = require('lze').state[name]
-  elseif package.loaded['lz.n'] then
-    spec = require('lz.n').lookup(name)
-  end
-  if not spec then return nil end
+-- Helper to extract triggers from a resolved plugin spec
+local function extract_triggers_from_spec(spec)
+  if not spec or type(spec) ~= 'table' then return nil end
+
   local triggers = {
     events = {},
     ft = {},
     cmds = {},
     keys = {},
+    load_before = {},
+    dep_of = {},
+    after = {},
   }
+
+  -- Commands
   if spec.cmd then
     local cmds = type(spec.cmd) == 'table' and spec.cmd or { spec.cmd }
     for _, c in ipairs(cmds) do
-      table.insert(triggers.cmds, c)
+      if type(c) == 'string' and c ~= '' then table.insert(triggers.cmds, c) end
     end
   end
+
+  -- Keys
   if spec.keys then
-    for _, k in ipairs(spec.keys) do
-      local lhs = k.lhs or k[1]
-      local desc = k.desc or ''
-      if lhs then table.insert(triggers.keys, { lhs = lhs, desc = desc }) end
-    end
-  end
-  if spec.event then
-    for _, ev in ipairs(spec.event) do
-      if ev.event == 'FileType' then
-        table.insert(triggers.ft, ev.pattern or '')
-      elseif ev.pattern and ev.pattern ~= '' then
-        table.insert(triggers.events, ev.pattern)
-      elseif ev.event then
-        table.insert(triggers.events, ev.event)
+    local raw_keys = type(spec.keys) == 'table' and spec.keys or { spec.keys }
+    for _, k in ipairs(raw_keys) do
+      if type(k) == 'string' and k ~= '' then
+        table.insert(triggers.keys, { lhs = k, desc = '' })
+      elseif type(k) == 'table' then
+        local lhs = k.lhs or k[1]
+        local desc = k.desc or ''
+        if lhs and type(lhs) == 'string' then table.insert(triggers.keys, { lhs = lhs, desc = desc }) end
       end
     end
   end
+
+  -- Events (handles string, list of strings, or table of event objects)
+  if spec.event then
+    local raw_events = type(spec.event) == 'table' and spec.event or { spec.event }
+    for _, ev in ipairs(raw_events) do
+      if type(ev) == 'string' and ev ~= '' then
+        table.insert(triggers.events, ev)
+      elseif type(ev) == 'table' then
+        if ev.event == 'FileType' then
+          if ev.pattern and ev.pattern ~= '' then table.insert(triggers.ft, ev.pattern) end
+        elseif ev.pattern and ev.pattern ~= '' then
+          table.insert(triggers.events, ev.pattern)
+        elseif ev.event and ev.event ~= '' then
+          table.insert(triggers.events, ev.event)
+        end
+      end
+    end
+  end
+
+  -- Filetypes
   if spec.ft then
     local fts = type(spec.ft) == 'table' and spec.ft or { spec.ft }
     for _, f in ipairs(fts) do
-      table.insert(triggers.ft, f)
+      if type(f) == 'string' and f ~= '' then table.insert(triggers.ft, f) end
     end
   end
+
+  -- Load before
+  if spec.load_before then
+    local befores = type(spec.load_before) == 'table' and spec.load_before or { spec.load_before }
+    for _, b in ipairs(befores) do
+      if type(b) == 'string' and b ~= '' then table.insert(triggers.load_before, b) end
+    end
+  end
+
+  -- Dep of
+  if spec.dep_of then
+    local deps = type(spec.dep_of) == 'table' and spec.dep_of or { spec.dep_of }
+    for _, d in ipairs(deps) do
+      if type(d) == 'string' and d ~= '' then table.insert(triggers.dep_of, d) end
+    end
+  end
+
+  -- After (when string/table of plugin names, not hook function)
+  if spec.after and type(spec.after) ~= 'function' then
+    local afters = type(spec.after) == 'table' and spec.after or { spec.after }
+    for _, a in ipairs(afters) do
+      if type(a) == 'string' and a ~= '' then table.insert(triggers.after, a) end
+    end
+  end
+
   return triggers
 end
 
@@ -83,31 +122,50 @@ local function format_trigger_summary(triggers)
     end
     table.insert(parts, 'keys:' .. table.concat(key_lhs, ' '))
   end
+  if #triggers.load_before > 0 then table.insert(parts, 'before:' .. table.concat(triggers.load_before, ',')) end
+  if #triggers.dep_of > 0 then table.insert(parts, 'dep_of:' .. table.concat(triggers.dep_of, ',')) end
+  if #triggers.after > 0 then table.insert(parts, 'after:' .. table.concat(triggers.after, ',')) end
   return table.concat(parts, ' | ')
 end
 
---- Open Snacks picker for Nix & lz.n managed plugins
----@param opts? table Extra picker options to forward to Snacks.picker.pick
-function M.pick(opts)
-  local rtp_names = {}
-  for _, path in ipairs(vim.opt.rtp:get()) do
-    rtp_names[vim.fs.basename(path)] = true
+-- Helper to scan config/nvim/lua/plugins for specs and line numbers
+local function load_specs_and_locations(plugins)
+  local config_dir = vim.fn.stdpath('config')
+  local spec_files = vim.fn.glob(config_dir .. '/lua/plugins/**/*.lua', false, true)
+  if #spec_files == 0 and Utils and Utils.root then
+    spec_files = vim.fn.glob(Utils.root() .. '/config/nvim/lua/plugins/**/*.lua', false, true)
   end
+
+  local specs_cache = {}
+  local plugin_to_spec = {}
 
   local function is_plugin_decl(line, name)
     local escaped = vim.pesc(name)
-    return line:match('^%s*[\'"]' .. escaped .. '[\'"]') ~= nil or line:match('{%s*[\'"]' .. escaped .. '[\'"]') ~= nil
+    return line:match('^%s*[\'"]' .. escaped .. '[\'"]') ~= nil
+      or line:match('{%s*[\'"]' .. escaped .. '[\'"]') ~= nil
+      or line:match('name%s*=%s*[\'"]' .. escaped .. '[\'"]') ~= nil
   end
 
-  local plugins = nixInfo(nil, 'plugins') or {}
-  local config_dir = vim.fn.stdpath('config')
-  local spec_files = vim.fn.glob(config_dir .. '/lua/plugins/**/*.lua', false, true)
-  if #spec_files == 0 and Util and Util.root then
-    spec_files = vim.fn.glob(Util.root() .. '/config/nvim/lua/plugins/**/*.lua', false, true)
+  local function add_spec_to_cache(spec)
+    if type(spec) ~= 'table' then return end
+    local name = spec.name or (type(spec[1]) == 'string' and spec[1])
+    if name then
+      specs_cache[name] = spec
+    else
+      for _, item in ipairs(spec) do
+        add_spec_to_cache(item)
+      end
+    end
   end
 
-  local plugin_to_spec = {}
   for _, file in ipairs(spec_files) do
+    local modname = file:match('.*/lua/(plugins/.*)%.lua$') or file:match('.*/lua/(plugins/.*)/init%.lua$')
+    if modname then
+      modname = modname:gsub('/', '.')
+      local ok, mod = pcall(require, modname)
+      if ok and type(mod) == 'table' then add_spec_to_cache(mod) end
+    end
+
     local lines = vim.fn.readfile(file)
     for lnum, line in ipairs(lines) do
       for name in pairs(plugins.lazy or {}) do
@@ -135,15 +193,60 @@ function M.pick(opts)
     end
   end
 
+  return specs_cache, plugin_to_spec
+end
+
+--- Open Snacks picker for Nix & lze managed plugins
+---@param opts? table Extra picker options to forward to Snacks.picker.pick
+function M.pick(opts)
+  local rtp_names = {}
+  for _, path in ipairs(vim.opt.rtp:get()) do
+    rtp_names[vim.fs.basename(path)] = true
+  end
+
+  local plugins = nixInfo(nil, 'plugins') or {}
+  local specs_cache, plugin_to_spec = load_specs_and_locations(plugins)
+
+  local function get_plugin_spec(name)
+    -- 1. Try lze live state (if pending)
+    if nixInfo and nixInfo.lze and nixInfo.lze.state then
+      local ok, s = pcall(function() return nixInfo.lze.state[name] end)
+      if ok and type(s) == 'table' then return s end
+    elseif package.loaded['lze'] and require('lze').state then
+      local ok, s = pcall(function() return require('lze').state[name] end)
+      if ok and type(s) == 'table' then return s end
+    end
+    -- 2. Fall back to specs_cache loaded from lua/plugins
+    if specs_cache[name] then return specs_cache[name] end
+    return nil
+  end
+
+  local function is_plugin_loaded(name)
+    if rtp_names[name] == true then return true end
+    if nixInfo and nixInfo.lze and nixInfo.lze.state then
+      local ok, res = pcall(function() return nixInfo.lze.state(name) end)
+      if ok and res == false then return true end
+    elseif package.loaded['lze'] and require('lze').state then
+      local ok, res = pcall(function() return require('lze').state(name) end)
+      if ok and res == false then return true end
+    end
+    return false
+  end
+
+  local seen = {}
   local items = {}
 
   local function add_item(name, path, status, loaded)
+    if seen[name] then return end
+    seen[name] = true
+
     local spec_info = plugin_to_spec[name]
     local meta = nixInfo(nil, 'info', 'plugins_meta', name)
     local version = (meta and meta.version) or parse_plugin_version(path)
     local repo = meta and meta.repo or nil
     local rev = meta and meta.rev or nil
-    local triggers = get_plugin_triggers(name)
+    local spec = get_plugin_spec(name)
+    local triggers = extract_triggers_from_spec(spec)
     local trigger_summary = format_trigger_summary(triggers)
     local spec_basename = spec_info and vim.fs.basename(spec_info.file) or ''
 
@@ -165,6 +268,15 @@ function M.pick(opts)
       end
       for _, e in ipairs(triggers.events) do
         table.insert(search_terms, e)
+      end
+      for _, b in ipairs(triggers.load_before) do
+        table.insert(search_terms, b)
+      end
+      for _, d in ipairs(triggers.dep_of) do
+        table.insert(search_terms, d)
+      end
+      for _, a in ipairs(triggers.after) do
+        table.insert(search_terms, a)
       end
       for _, k in ipairs(triggers.keys) do
         table.insert(search_terms, k.lhs)
@@ -190,13 +302,13 @@ function M.pick(opts)
     })
   end
 
-  for name, path in pairs(plugins.start or {}) do
-    add_item(name, path, 'start', true)
+  for name, path in pairs(plugins.lazy or {}) do
+    local loaded = is_plugin_loaded(name)
+    add_item(name, path, loaded and 'loaded' or 'lazy', loaded)
   end
 
-  for name, path in pairs(plugins.lazy or {}) do
-    local loaded = rtp_names[name] == true
-    add_item(name, path, loaded and 'loaded' or 'lazy', loaded)
+  for name, path in pairs(plugins.start or {}) do
+    add_item(name, path, 'start', true)
   end
 
   table.sort(items, function(a, b)
@@ -205,7 +317,7 @@ function M.pick(opts)
   end)
 
   local picker_opts = vim.tbl_deep_extend('force', {
-    title = 'Plugins',
+    title = 'Plugins (lze)',
     items = items,
     format = function(item, _)
       local icon = item.status == 'start' and '◆ ' or (item.loaded and '● ' or '○ ')
@@ -309,6 +421,9 @@ function M.pick(opts)
           or #item.triggers.ft > 0
           or #item.triggers.cmds > 0
           or #item.triggers.keys > 0
+          or #item.triggers.load_before > 0
+          or #item.triggers.dep_of > 0
+          or #item.triggers.after > 0
         if has_trig then
           add('')
           add('### Triggers')
@@ -319,6 +434,13 @@ function M.pick(opts)
           if #item.triggers.cmds > 0 then
             add('- **Commands**: `' .. table.concat(item.triggers.cmds, '`, `') .. '`')
           end
+          if #item.triggers.load_before > 0 then
+            add('- **Load Before**: `' .. table.concat(item.triggers.load_before, '`, `') .. '`')
+          end
+          if #item.triggers.dep_of > 0 then
+            add('- **Dependency Of**: `' .. table.concat(item.triggers.dep_of, '`, `') .. '`')
+          end
+          if #item.triggers.after > 0 then add('- **After**: `' .. table.concat(item.triggers.after, '`, `') .. '`') end
           if #item.triggers.keys > 0 then
             add('- **Keymaps**:')
             for _, k in ipairs(item.triggers.keys) do
@@ -369,12 +491,10 @@ function M.pick(opts)
             nixInfo.lze.trigger_load(item.name)
           elseif package.loaded['lze'] then
             require('lze').trigger_load(item.name)
-          elseif package.loaded['lz.n'] then
-            require('lz.n').trigger_load(item.name)
           end
           item.loaded = true
           item.status = 'loaded'
-          item.text = item.name .. ' loaded ' .. (item.version or '') .. ' ' .. item.trigger_summary
+          item.text = item.name .. ' loaded ' .. (item.version or '') .. ' ' .. (item.trigger_summary or '')
           Snacks.notify('Loaded ' .. item.name, { title = 'Plugins' })
           picker:find()
         end

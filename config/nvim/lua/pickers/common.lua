@@ -4,6 +4,7 @@ local M = {}
 function M.snippets(opts)
   return Snacks.picker.files(vim.tbl_deep_extend('keep', opts or {}, {
     supports_live = false,
+    title = 'Snippets',
     layout = 'vscode',
     preview = 'preview',
     format = function(item, picker)
@@ -69,5 +70,8 @@ function M.snippets(opts)
     end,
   }))
 end
+
+---@param opts? table Extra picker options
+function M.plugins(opts) return require('pickers.lze-plugins').pick(opts) end
 
 return M

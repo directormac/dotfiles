@@ -94,7 +94,6 @@ return {
     },
     grep = {
       smart_case = true,
-      trim_whitespace = true,
     },
   },
   before = function()

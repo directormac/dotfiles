@@ -7,9 +7,10 @@
       ...
     }:
     {
+
       devshells.default = {
         devshell.motd = ''
-          {bold}{202}🔨 Welcome to devshell, ''$USER!{reset}
+          {bold}{202} Welcome to devshell, ''$USER!{reset}
           $(type -p menu &>/dev/null && menu)
         '';
 

@@ -2,6 +2,7 @@ return {
   {
     'noice.nvim',
     event = 'DeferredUIEnter',
+    enabled = false,
     keys = {
       { '<leader>sn', '', desc = '+noice' },
       {
@@ -37,6 +38,13 @@ return {
       },
     },
     opts = {
+      -- Disable Noice's popupmenu UI so it never hijacks Neovim's completion menu.
+      -- When enabled, Noice takes over `ext_popupmenu` and renders completion items
+      -- in an intrusive floating window in the middle of the screen instead of letting
+      -- blink.cmp / native completion render anchored directly at the cursor.
+      notify = {
+        enabled = false,
+      },
       lsp = {
         progress = {
           enabled = true,
@@ -72,9 +80,9 @@ return {
         signature = {
           enabled = true,
           auto_open = {
-            enabled = true,
-            trigger = true,
-            luasnip = true,
+            enabled = false,
+            trigger = false,
+            luasnip = false,
             throttle = 50,
           },
           opts = {
@@ -135,15 +143,6 @@ return {
           },
         },
         popupmenu = {
-          relative = 'editor',
-          position = {
-            row = 8,
-            col = '50%',
-          },
-          size = {
-            width = 60,
-            height = 10,
-          },
           border = {
             style = 'single',
           },
@@ -155,8 +154,8 @@ return {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = true,
+        inc_rename = true,
+        -- lsp_doc_border = true,
       },
     },
   },

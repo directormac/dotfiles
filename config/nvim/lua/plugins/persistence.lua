@@ -1,6 +1,6 @@
 return {
   'persistence.nvim',
-  event = 'DeferredUIEnter',
+  on_require = { 'persistence' },
   keys = {
 
     { '<leader>qs', function() require('persistence').load() end, desc = 'Restore Session' },

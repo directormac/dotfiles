@@ -1,15 +1,24 @@
 ---@type lze.Handler
+---Custom `load_before` handler for `lze`.
+---Allows a plugin to declare `load_before = { "target_plugin" }`, ensuring that this plugin
+---is loaded immediately before the target plugin(s) are initialized.
+---
+---Semantics:
+---  1. If any target plugin is already loaded when this spec is evaluated,
+---     this plugin is triggered immediately.
+---  2. Otherwise, this plugin is queued in `states[target]`. When `target` is about
+---     to be loaded, `M.before(target)` triggers `lze.trigger_load()` for all queued plugins.
 local M = {
   spec_field = 'load_before',
   set_lazy = true,
 }
 
----@type table<string, string[]>
+---@type table<string, string[]> Mapping of target plugin name -> list of plugins to load before it
 local states = {}
 
----Called when a plugin spec has `load_before`
+---Called when a plugin spec defines `load_before`.
 ---@param plugin lze.Plugin
----@return fun()?
+---@return fun()? Callback to trigger load immediately if target is already loaded
 function M.add(plugin)
   local load_before = plugin.load_before
   if not load_before then return end
@@ -35,20 +44,18 @@ function M.add(plugin)
     end
   end
 
-  -- Record that `plugin.name` must load before `target`
+  -- Record that `plugin.name` must load before each target plugin
   for _, target in ipairs(targets) do
-    if states[target] == nil then
-      states[target] = {}
-    end
+    states[target] = states[target] or {}
     if not vim.tbl_contains(states[target], plugin.name) then
       table.insert(states[target], plugin.name)
     end
   end
 end
 
----Called before target plugin `name` is loaded.
+---Called by `lze` immediately before target plugin `name` is loaded.
 ---Triggers all plugins registered to load before it.
----@param name string
+---@param name string Target plugin name
 function M.before(name)
   if states[name] then
     local plugins = states[name]
@@ -57,6 +64,7 @@ function M.before(name)
   end
 end
 
+---Cleanup internal state table
 function M.cleanup()
   states = {}
 end

@@ -1,5 +1,4 @@
 {
-  lib,
   self,
   ...
 }:
@@ -259,7 +258,7 @@
             autoload -Uz bracketed-paste-url-magic
             zle -N bracketed-paste bracketed-paste-url-magic
 
-            up() {
+            function up() {
               local d=""
               # If no argument is provided, default to 1 level up
               local limit=${"1:-1"}
@@ -271,13 +270,17 @@
               cd "$d"
             }
 
-            listening() {
+            function mkcd () {
+                 mkdir "$1" && cd "$1"
+             }
+
+            function listening() {
               lsof -i -n -P | grep --color=auto \
                 --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} TCP |
                 grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox} LISTEN
             }
 
-            extract() {
+            function extract() {
               if [ -f "$1" ]; then
                 case "$1" in
                 *.tar.bz2) tar xjf "$1" ;;
@@ -299,31 +302,31 @@
             }
 
             # Force double quotes around any video URL for MP3 conversio
-            yt-mp3() {
+            function yt-mp3() {
                 yt-dlp -x --audio-format mp3 "$1"
             }
 
             # Force double quotes around any video URL for FLAC conversion
-            yt-flac() {
+            function yt-flac() {
                 yt-dlp -x --audio-format flac --audio-quality 0 "$1"
             }
 
             # Download playlist as sequential tracks wrapped in a folder
-            yt-album() {
+            function yt-album() {
                 yt-dlp -x --audio-format mp3 -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" "$1"
             }
 
             # Absolute highest video quality combined as MKV
-            yt-best() {
+            function yt-best() {
                 yt-dlp -f bestvideo+bestaudio --merge-output-format mkv "$1"
             }
 
             # Download subtitles only without the underlying video stream
-            yt-subs() {
+            function yt-subs() {
                 yt-dlp --write-subs --write-auto-subs --skip-download "$1"
             }
 
-            spf() {
+            function spf() {
                 os=$(uname -s)
 
                 # Linux
@@ -356,8 +359,6 @@
             zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd -la --color=always $realpath'
             zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -la --color=always $realpath'
             zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
-
-
 
             function zvm_after_init() {
               zvm_bindkey viins '^R' fzf-history-widget

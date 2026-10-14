@@ -68,6 +68,7 @@ return {
     },
 
     { '<leader>s`', function() CommonPickers.snippets() end, desc = 'Snippets' },
+    { '<leader>sp', function() CommonPickers.plugins() end, desc = 'Plugins (lze)' },
 
     -- Todo comments picker
     {

@@ -5,11 +5,16 @@
   ...
 }:
 {
-  # References
-  # https://nixos.org/manual/nixpkgs/unstable/#neovim-custom-configuration
-  # https://github.com/nix-community/neovim-nightly-overlay
-  # https://github.com/lumen-oss/lz.n
-  # https://nix-community.github.io/nix-wrapper-modules/wrapperModules/neovim.html
+  # ===========================================================================
+  # Neovim NixOS Module & Wrapper Architecture
+  # ===========================================================================
+  # References:
+  # - Wrapper Modules: https://nix-community.github.io/nix-wrapper-modules/wrapperModules/neovim.html
+  # - Neovim Nightly Overlay: https://github.com/nix-community/neovim-nightly-overlay
+  # - lze Lazy Loading: https://github.com/BirdeeHub/lze
+  # - lzextras Extensions: https://github.com/BirdeeHub/lzextras
+  # - Nixpkgs Neovim Config: https://nixos.org/manual/nixpkgs/unstable/#neovim-custom-configuration
+  # ===========================================================================
   flake.wrappers.neovim =
     {
       config,
@@ -20,10 +25,13 @@
       ...
     }:
     let
-
+      # -----------------------------------------------------------------------
+      # External Packages & Custom Derivations
+      # -----------------------------------------------------------------------
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
 
+      # Custom build of kdl-lsp from GitHub
       kdl-lsp = pkgs.rustPlatform.buildRustPackage {
         pname = "kdl-lsp";
         version = "0.1.0";
@@ -87,45 +95,30 @@
     {
       imports = [ wlib.wrapperModules.neovim ];
 
-      # This allows us to put plugins in our flake inputs
-      #  inputs.vim-plugins-lze = {
-      #   url = "github:BirdeeHub/lze";
-      #    flake = false;
-      #  };
+      # -----------------------------------------------------------------------
+      # Flake Input Plugins Auto-builder
+      # Automatically turns any flake input named `vim-plugins-<name>` into a
+      # derivation accessible via `config.nvim-lib.neovimPlugins.<name>`.
+      # -----------------------------------------------------------------------
       options.nvim-lib.neovimPlugins = lib.mkOption {
         readOnly = true;
         type = lib.types.attrsOf wlib.types.stringable;
-        # Makes plugins autobuilt from our inputs available with
-        # `config.nvim-lib.neovimPlugins.<name_without_prefix>`
         default = config.nvim-lib.pluginsFromPrefix "vim-plugins-" inputs;
       };
 
-      # Nightly Neovim via the overlay input (verified: .packages.<sys>.neovim).
-      # Exposed by this flake input
-      # inputs.neovim-nightly-overlay = {
-      #   url = "github:nix-community/neovim-nightly-overlay";
-      #   inputs.nixpkgs.follows = "nixpkgs";
-      # };
+      # Neovim Nightly binary from neovim-nightly-overlay
       config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
 
-      # The config directory. `mkDefault` so the devshell variant can override it.
+      # Binary name exposed on PATH
       config.binName = lib.mkDefault "nvim";
 
-      # If you want to install multiple neovim derivations via home.packages or environment.systemPackages
-      # in order to prevent path collisions:
-
-      # set this to true:
-      # config.settings.dont_link = true;
-
-      # you can also use an impure path!
-      # config.settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
-      config.settings.config_directory = lib.mkDefault ../../../config/nvim;
-      # If you do that, it will not be provisioned by nix, but it will have normal reload for quick edits!
-      # config.settings.config_directory =
-      #   if config.settings.dev then
-      #     lib.generators.mkLuaInline "(vim.env.NEOVIM_DIR or vim.fn.getcwd())"
-      #   else
-      #     ../../../config/nvim;
+      # The config directory.
+      # By default, reads dynamically from the live out-of-store symlink at
+      # `vim.fn.stdpath('config')` (or `$NVIM_DEV_CONFIG` when set in dev environments).
+      # This enables instant hot-reloading when editing dotfiles without requiring a nix rebuild.
+      config.settings.config_directory = lib.mkDefault (
+        lib.generators.mkLuaInline "(vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config'))"
+      );
 
       # vellum.nvim's Node renderer (render/browser.mjs) launches Puppeteer. It
       # is built without its bundled Chrome, so point it at Nix's Chromium.
@@ -150,7 +143,12 @@
         description = "Colorscheme to load (drives which plugin gets installed).";
       };
 
-      # Colourscheme plugin chosen by the option above.
+      # -----------------------------------------------------------------------
+      # Plugin Specifications (`config.specs`)
+      # Categorized plugin declarations managed by nix-wrapper-modules & lze.
+      # -----------------------------------------------------------------------
+
+      # Colorscheme plugin chosen by config.settings.colorscheme
       config.specs.colorscheme = {
         lazy = true;
         data = builtins.getAttr config.settings.colorscheme (
@@ -163,31 +161,16 @@
         );
       };
 
-      # If the defaults are fine, you can just provide the `.data` field
-      # In this case, a list of specs, instead of a single plugin like above
+      # Core lazy loader engine: lze & lzextras
       config.specs.lze = [
-        # if defaults is fine, you can just provide the `.data` field
         config.nvim-lib.neovimPlugins.lze
-        # but these can be specs too!
         {
-          # these ones can't take lists though
           data = config.nvim-lib.neovimPlugins.lzextras;
-          # things can target any spec that has a name.
           name = "lzextras";
-          # now something else can be after = [ "lzextras" ]
-          # the spec name is not the plugin name.
-          # to override the plugin name, use `pname`
-          # You could run something before your main init.lua like this
-          # before = [ "INIT_MAIN" ];
-          # You can include configuration and translated nix values here as well!
-          # type = "lua"; # | "fnl" | "vim"
-          # info = { };
-          # config = ''
-          #   local info, pname, lazy = ...
-          # '';
         }
       ];
 
+      # Nix language support tools
       config.specs.nix = {
         data = null;
         runtimePkgs = with pkgs; [
@@ -197,7 +180,7 @@
         ];
       };
 
-      # You can use the before and after fields to run them before or after other specs or spec of lists of specs
+      # Lua language support tools
       config.specs.lua = {
         after = [ "general" ];
         lazy = true;
@@ -283,6 +266,7 @@
           blink-cmp # Flake input
           blink-lib # Flake input
           blink-compat
+          blink-copilot
           blink-ripgrep-nvim
           blink-emoji-nvim
           blink-nerdfont-nvim
@@ -315,6 +299,9 @@
         ];
 
         runtimePkgs = with pkgs; [
+          # Copilot LSP
+          copilot-language-server
+
           # CLI tools
           lazygit
           tree-sitter
@@ -378,42 +365,31 @@
 
       };
 
-      # These are from the tips and tricks section of the neovim wrapper docs!
-      # https://nix-community.github.io/nix-wrapper-modules/neovim.html#tips-and-tricks
-      # We could put these in another module and import them here instead!
-
-      # This submodule modifies both levels of your specs
+      # -----------------------------------------------------------------------
+      # Spec Modifiers (`specMods`) & PATH Collection
+      # Extends plugin specifications with a custom `runtimePkgs` field so
+      # language servers, formatters, and tools associated with a spec are
+      # automatically collected onto PATH only when that spec is enabled.
+      # Reference: https://nix-community.github.io/nix-wrapper-modules/neovim.html#tips-and-tricks
+      # -----------------------------------------------------------------------
       config.specMods =
         {
-          # When this module is ran in an inner list,
-          # this will contain `config` of the parent spec
           parentSpec ? null,
-          # and this will contain `options`
-          # otherwise they will be `null`
           parentOpts ? null,
           parentName ? null,
-          # and then config from this one, as normal
           config,
-          # and the other module arguments.
           ...
         }:
         {
-          # you could use this to change defaults for the specs
-          # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
-          # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
-          # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
-          # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
-          # or something more interesting like:
-          # add a runtimePkgs field to the specs themselves
           options.runtimePkgs = options.runtimePkgs // {
             description = ''
-              A runtimePkgs spec field to put packages on the PATH
-              If the spec is disabled, this value will not be included in the resulting neovim derivation
+              A runtimePkgs spec field to put packages on PATH.
+              If the spec is disabled, these packages are omitted from the wrapper derivation.
             '';
           };
-          # You could do this too
-          # config.before = lib.mkDefault [ "INIT_MAIN" ];
         };
+
+      # Collect all runtimePkgs defined across active specs into the wrapper PATH
       config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
 
       options.settings.extraCats = lib.mkOption {

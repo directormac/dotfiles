@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.1.0",
+  "lastChangelogVersion": "1.2.0",
   "packages": [
     "git:github.com/Rahularya01/pi-antigravity",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
@@ -13,9 +13,13 @@
     "showTerminalProgress": true
   },
   "modelThinkingLevels": {
-    "antigravity/gemini-3.8-flash": "medium"
+    "antigravity/gemini-3.8-flash": "high"
   },
   "defaultProvider": "antigravity",
   "defaultModel": "gemini-3.8-flash",
-  "quietStartup": true
+  "quietStartup": true,
+  "steeringMode": "one-at-a-time",
+  "collapseChangelog": true,
+  "enableInstallTelemetry": false,
+  "defaultProjectTrust": "ask"
 }

@@ -1,4 +1,11 @@
 ---@type lze.Handler
+---Custom `opts` handler for `lze`.
+---Provides LazyVim-style automatic `.setup(opts)` execution:
+---  1. Resolves `opts` (static table, function(plugin) -> table, or `true` for `{}`).
+---  2. Heuristically discovers the plugin's entrypoint module name using common naming conventions:
+---     (e.g., "gitsigns.nvim" -> "gitsigns", "nvim-treesitter" -> "nvim-treesitter", "harpoon2" -> "harpoon").
+---  3. Automatically calls `require(mod).setup(opts)` before running any user-provided `after` hook.
+---  4. Respects `plugin.setup = false` to opt out of automatic setup calls.
 local M = {
   spec_field = 'opts',
   set_lazy = false,
@@ -37,6 +44,7 @@ local function find_module(pname, main)
     pname:gsub('^nvim%-', ''):gsub('%.nvim$', ''),
     (pname:gsub('%-', '_')),
     pname:gsub('%-.*', ''),
+    pname:gsub('%d+$', ''),
   }
 
   for _, modname in ipairs(candidates) do
