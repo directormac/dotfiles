@@ -262,6 +262,7 @@
           persistence-nvim
           vim-startuptime
           cord-nvim
+          config.nvim-lib.neovimPlugins.wakatime
 
           # Navigation & Editing
           flash-nvim

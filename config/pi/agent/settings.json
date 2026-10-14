@@ -1,0 +1,21 @@
+{
+  "lastChangelogVersion": "1.1.0",
+  "packages": [
+    "git:github.com/Rahularya01/pi-antigravity",
+    "https://github.com/XYenon/catppuccin-pi-coding-agent",
+    "git:github.com/ayagmar/pi-extmgr",
+    "git:github.com/nicobailon/pi-web-access",
+    "npm:@narumitw/pi-starship",
+    "git:github.com/tmonk/pi-goal-x"
+  ],
+  "theme": "catppuccin-mocha-mauve",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "modelThinkingLevels": {
+    "antigravity/gemini-3.8-flash": "medium"
+  },
+  "defaultProvider": "antigravity",
+  "defaultModel": "gemini-3.8-flash",
+  "quietStartup": true
+}

@@ -2015,6 +2015,7 @@
         "vim-plugins-oil-git-nvim": "vim-plugins-oil-git-nvim",
         "vim-plugins-showkeys": "vim-plugins-showkeys",
         "vim-plugins-tuxedo-nvim": "vim-plugins-tuxedo-nvim",
+        "vim-plugins-wakatime": "vim-plugins-wakatime",
         "workmux": "workmux",
         "wrappers": "wrappers",
         "zen-browser": "zen-browser",
@@ -2647,6 +2648,22 @@
       "original": {
         "owner": "IogaMaster",
         "repo": "tuxedo.nvim",
+        "type": "github"
+      }
+    },
+    "vim-plugins-wakatime": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786361784,
+        "narHash": "sha256-49ckAWTbDEIb0fyTpCpTot5weG861k0le9MmdJiPoSU=",
+        "owner": "wakatime",
+        "repo": "vim-wakatime",
+        "rev": "9f8a1d3b9c6f3a948988a0896b3227c1e1f74a58",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wakatime",
+        "repo": "vim-wakatime",
         "type": "github"
       }
     },

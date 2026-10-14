@@ -123,7 +123,7 @@
         bitwarden
 
         devtools
-        opencode
+        ai
         rmpd
 
         gaming

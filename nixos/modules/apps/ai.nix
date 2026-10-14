@@ -5,12 +5,16 @@
 }:
 {
 
-  flake.homeModules.opencode =
+  flake.homeModules.ai =
     {
       pkgs,
       config,
       ...
     }:
+    let
+      pi-config-path = ".pi/agent";
+      pi-config-source-path = "${config.preferences.dotsConfigPath}/pi/agent";
+    in
     {
 
       stylix.targets = {
@@ -60,6 +64,16 @@
         package = pkgs.llm-agents.pi;
       };
 
+      home.file = {
+        "${pi-config-path}/settings.json" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${pi-config-source-path}/settings.json";
+          force = true;
+        };
+        "${pi-config-path}/extensions/plan-mode" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${pi-config-source-path}/extensions/plan-mode";
+        };
+      };
+
       home.packages = with pkgs.llm-agents; [
         rtk # https://www.rtk-ai.app/docs/
         ctx # https://ctx.rs/
@@ -80,11 +94,11 @@
 
     };
 
-  flake.nixosModules.opencode = { config, ... }: {
+  flake.nixosModules.ai = { config, ... }: {
 
     home-manager.users.${config.preferences.user.name} = {
       imports = with self.homeModules; [
-        opencode
+        ai
       ];
     };
 

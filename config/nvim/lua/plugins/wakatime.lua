@@ -1,0 +1,6 @@
+return {
+  {
+    'wakatime',
+    lazy = false,
+  },
+}

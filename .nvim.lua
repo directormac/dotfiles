@@ -47,3 +47,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- vim.treesitter.language.add('python', { path = "" })
 vim.treesitter.language.register("tmux", { "conf", "tmux" })
+
+vim.lsp.enable("copilot")

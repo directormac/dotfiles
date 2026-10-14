@@ -55,6 +55,16 @@
           mutableSettings = true;
         };
 
+        go = {
+          enable = true;
+          env = {
+            GOPATH = [
+              "${config.home.homeDirectory}/.config/go"
+            ];
+          };
+
+        };
+
       };
 
       home.packages =
@@ -65,7 +75,6 @@
           # nodejs-slim_26
 
           viteplus
-          go
           bun
           cargo
           rustc

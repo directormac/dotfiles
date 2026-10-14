@@ -14,6 +14,7 @@
         '';
 
         packages = [
+          pkgs.python3
           config.agenix-rekey.package
           config.treefmt.build.wrapper
           self'.packages.tmux

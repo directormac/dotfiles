@@ -58,6 +58,11 @@
       flake = false;
     };
 
+    vim-plugins-wakatime = {
+      url = "github:wakatime/vim-wakatime";
+      flake = false;
+    };
+
     vim-plugins-nvim-float = {
       url = "github:mikevskater/nvim-float";
       flake = false;
