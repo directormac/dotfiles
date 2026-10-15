@@ -220,6 +220,8 @@
           "oc" = "opencode";
           "oc2" = "opencode2";
           "ocx" = "opencode --auto";
+          "pingcf" = "ping 1.1.1.1";
+          "pinggg" = "ping google.com";
           "rmr" = "rm -r";
           "t" = "tv --layout portrait --hide-preview --input-position bottom";
           "tls" = "tmux ls";
