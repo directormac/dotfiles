@@ -1,6 +1,7 @@
 result
 *.qcow2
 tmp
+.pi
 
 # Devenv
 .devenv*
