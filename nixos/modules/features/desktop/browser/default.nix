@@ -6,6 +6,7 @@
       imports = [
         self.homeModules.zen-browser
         self.homeModules.firefox
+        self.homeModules.librewolf
       ];
     };
 

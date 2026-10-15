@@ -1,9 +1,7 @@
-{ self, ... }:
 {
   flake.homeModules.firefox =
     {
       pkgs,
-      config,
       lib,
       ...
     }:
@@ -71,13 +69,11 @@
 
           search = common.search;
 
-          userChrome = ''
-            :root {
-              --tab-border-radius: 0px !important;
-              --border-radius-small: 0px !important;
-              --border-radius-medium: 0px !important;
-            }
-          '';
+          userChrome =
+            # css
+            ''
+              * { border-radius: 0px !important; }
+            '';
         };
       };
     };
