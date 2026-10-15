@@ -7,64 +7,77 @@
     }:
     let
       common = import ./_common { inherit pkgs lib; };
+
+      customAddons = common.extensions.customAddons;
     in
     {
-      stylix.targets.firefox = {
-        enable = true;
-        profileNames = [ "default" ];
-      };
 
       programs.firefox = {
         enable = true;
         nativeMessagingHosts = common.nativeMessagingHosts;
 
-        policies = common.policies // {
-          # Full ephemeral sanitization on exit
-          SanitizeOnShutdown = {
-            Cache = true;
-            Cookies = true;
-            Downloads = true;
-            FormData = true;
-            History = true;
-            Sessions = true;
-            SiteSettings = true;
-            Locked = true;
-          };
-          DisableFormHistory = true;
-          PasswordManagerEnabled = false;
-          OfferToSaveLogins = false;
-          OfferToSaveLoginsDefault = false;
-        };
+        globalExtensions = [
+          # Add vanilla / custom plugins here.
+          {
+            package = customAddons.volume-control-boost-volume;
+            settings = {
+              private_browsing = true;
+            };
+          }
+        ]
+        # Sourced from rycee
+        # https://nur.nix-community.org/repos/rycee/
+        ++ (with common.extensions.rycee-firefox-addons; [
+
+          catppuccin-mocha-mauve
+          github-file-icons
+          fake-filler
+          tweaks-for-youtube
+          sponsorblock
+          {
+            package = ublock-origin;
+            settings = {
+              private_browsing = true;
+            };
+          }
+          {
+            package = darkreader;
+            settings = {
+              private_browsing = true;
+            };
+          }
+          {
+            package = sidebery;
+            settings = {
+              private_browsing = true;
+            };
+          }
+          {
+            package = vimium-c;
+            settings = {
+              private_browsing = true;
+            };
+          }
+          {
+            package = clearurls;
+            settings = {
+              private_browsing = true;
+            };
+          }
+        ]);
 
         profiles.default = {
           isDefault = true;
-          settings = {
-            # Zero-history / ephemeral browsing settings
-            "privacy.history.custom" = true;
-            "privacy.sanitize.sanitizeOnShutdown" = true;
-            "privacy.clearOnShutdown.cache" = true;
-            "privacy.clearOnShutdown.cookies" = true;
-            "privacy.clearOnShutdown.downloads" = true;
-            "privacy.clearOnShutdown.formdata" = true;
-            "privacy.clearOnShutdown.history" = true;
-            "privacy.clearOnShutdown.offlineApps" = true;
-            "privacy.clearOnShutdown.sessions" = true;
-            "privacy.clearOnShutdown.siteSettings" = true;
-
-            "browser.formfill.enable" = false;
-            "places.history.enabled" = false;
-            "browser.cache.disk.enable" = false;
-            "browser.cache.memory.enable" = true;
-            "browser.sessionstore.resume_from_crash" = false;
-            "browser.sessionstore.max_resumed_crashes" = 0;
-            "browser.sessionstore.privacy_level" = 2;
-
-            "extensions.allowPrivateBrowsingByDefault" = true;
-          };
 
           extensions = {
-            packages = common.extensions.packages;
-            settings = { };
+            force = true;
+            settings = {
+              "vimium-c@gdh1995.cn" = {
+                force = true;
+                settings = common.extensions.vimiumCSettings;
+              };
+            }
+            // common.extensions.settings;
           };
 
           search = common.search;
@@ -72,6 +85,7 @@
           userChrome =
             # css
             ''
+              #TabsToolbar { display: none !important; }
               * { border-radius: 0px !important; }
             '';
         };

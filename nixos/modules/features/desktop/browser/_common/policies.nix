@@ -2,45 +2,36 @@
 # References:
 # https://mozilla.github.io/policy-templates/
 # https://github.com/luisnquin/nixos-config/blob/main/home/modules/programs/browser/zen/policies-config.nix
-let
-  mkExtensionSettings = builtins.mapAttrs (
-    _: pluginId: {
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
-      installation_mode = "force_installed";
-      private_browsing = true;
-      allowed_types = [
-        "extension"
-        "theme"
-      ];
-    }
-  );
-in
 {
-  ExtensionSettings =
-    mkExtensionSettings {
-      "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}" = "catppuccin-mocha-mauve-git";
-      "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" = "github-file-icons";
-      "{934e4b4a-2961-47d1-b507-4a91ac962cc3}" = "volume-control-boost-volume";
-    }
-    // {
-      "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-        default_area = "navbar";
-        private_browsing = true;
-      };
-      "addon@darkreader.org" = {
-        default_area = "navbar";
-        private_browsing = true;
-      };
-      "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
-        private_browsing = true;
-      };
-      "uBlock0@raymondhill.net" = {
-        private_browsing = true;
-      };
-      "sponsorBlocker@ajay.app" = {
-        private_browsing = true;
-      };
+  ExtensionSettings = {
+    "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}" = {
+      default_area = "navbar";
+      private_browsing = true;
     };
+    "addon@darkreader.org" = {
+      default_area = "navbar";
+      private_browsing = true;
+    };
+    "{3c078156-979c-498b-8990-85f7987dd929}" = {
+      default_area = "navbar";
+      private_browsing = true;
+    };
+    "uBlock0@raymondhill.net" = {
+      default_area = "menupanel";
+      private_browsing = true;
+    };
+    "sponsorBlocker@ajay.app" = {
+      default_area = "menupanel";
+      private_browsing = true;
+    };
+    "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+      default_area = "navbar";
+      private_browsing = true;
+    };
+    "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+      private_browsing = true;
+    };
+  };
 
   DontCheckDefaultBrowser = true;
   HardwareAcceleration = true;
@@ -80,6 +71,15 @@ in
   Preferences = {
     "browser.tabs.warnOnClose" = {
       Value = false;
+    };
+  };
+
+  # 3rd-party Extension Policies
+  "3rdparty".Extensions."uBlock0@raymondhill.net" = {
+    toAdd = {
+      trustedSiteDirectives = [
+        "github.com"
+      ];
     };
   };
 }
