@@ -1,20 +1,49 @@
-# Hyprland Wayland Compositor Aspect
+# Hyprland Wayland Compositor Leaf Aspect
 {
   core,
-  inputs,
+  den,
   lib,
   ...
 }:
 {
-  core.hyprland = {
+  den.aspects.desktop.hyprland = {
+    settings = {
+      enableUWSM = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enable UWSM session wrapper for Hyprland";
+      };
+
+      cardDevice = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Primary or multi-GPU device string (e.g. /dev/dri/card2:/dev/dri/card1)";
+      };
+    };
+
     nixos =
-      { pkgs, lib, ... }:
       {
-        programs.uwsm.enable = lib.mkDefault true;
+        host ? null,
+        pkgs,
+        lib,
+        ...
+      }:
+      let
+        cfg = host.settings.desktop.hyprland or host.settings.core.hyprland or {
+          enableUWSM = true;
+          cardDevice = null;
+        };
+      in
+      {
+        programs.uwsm.enable = lib.mkDefault cfg.enableUWSM;
         programs.hyprland = {
           enable = lib.mkDefault true;
-          withUWSM = lib.mkDefault true;
+          withUWSM = lib.mkDefault cfg.enableUWSM;
           xwayland.enable = lib.mkDefault true;
+        };
+
+        environment.sessionVariables = lib.mkIf (cfg.cardDevice != null) {
+          AQ_DRM_DEVICES = cfg.cardDevice;
         };
 
         environment.systemPackages = with pkgs; [
@@ -24,6 +53,14 @@
           playerctl
           xdg-utils
         ];
+
+        virtualisation.vmVariant = {
+          environment.sessionVariables = {
+            HYPRLAND_IS_VM = "1";
+            HYPRLAND_MOD = "ALT";
+          };
+          services.xserver.desktopManager.xterm.enable = false;
+        };
       };
 
     homeManager =
@@ -52,8 +89,4 @@
     ];
   };
 
-  # Attach to workstation aspect
-  core.workstation.includes = [
-    core.hyprland
-  ];
 }

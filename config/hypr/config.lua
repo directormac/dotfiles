@@ -28,7 +28,8 @@ end
 
 _G.cfg = cfg or {}
 
-_G.modkey = 'SUPER'
+_G.modkey = os.getenv('HYPRLAND_MOD') or 'SUPER'
+-- _G.modkey = 'SUPER'
 
 -- APPLICATIONS --
 local applications = {

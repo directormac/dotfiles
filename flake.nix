@@ -46,7 +46,19 @@
       url = "github:saghen/blink.lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dag.url = "github:denful/dag";
+    dankcalendar = {
+      url = "github:AvengeMedia/dankcalendar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     den.url = "github:denful/den";
     den-diagram.url = "github:denful/den-diagram";
     devenv.url = "github:cachix/devenv";
@@ -54,10 +66,20 @@
       url = "file+file:///dev/null";
       flake = false;
     };
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    direnv-instant.url = "github:Mic92/direnv-instant";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
     files.url = "github:sini/files";
     flake-aspects.url = "github:denful/flake-aspects";
     flake-file.url = "github:denful/flake-file";
@@ -84,28 +106,59 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:denful/import-tree";
+    lazyvim.url = "github:pfassina/lazyvim-nix";
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
+    mangowm = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mise-nix.url = "github:wadackel/mise-nix";
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-doom-emacs-unstraightened = {
+      url = "github:marienz/nix-doom-emacs-unstraightened";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-unit.url = "github:nix-community/nix-unit";
+    nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
     nix2container.url = "github:nlewo/nix2container";
+    nixcord = {
+      url = "github:4evy/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixfmt-rs.url = "github:Mic92/nixfmt-rs";
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixpkgs-lib.follows = "nixpkgs";
     nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nur.url = "github:nix-community/NUR";
     pedantix.url = "github:swarsel/pedantix";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
+    tmux-remux.url = "github:noamsto/tmux-remux";
+    torlink.url = "github:baairon/torlink";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     vim-plugins-lze = {
       url = "github:BirdeeHub/lze";
@@ -139,6 +192,7 @@
       url = "github:wakatime/vim-wakatime";
       flake = false;
     };
+    workmux.url = "github:raine/workmux";
     wrappers = {
       url = "github:nix-community/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -147,5 +201,6 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zennotes.url = "github:ZenNotes/zennotes";
   };
 }

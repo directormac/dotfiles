@@ -1,6 +1,10 @@
-{ lib, den, ... }:
 {
-  den.default.homeManager.home.stateVersion = "26.05";
+  lib,
+  den,
+  inputs,
+  ...
+}:
+{
 
   den.default.includes = [
     # System
@@ -48,52 +52,18 @@
     # configures `self'` for the host's OS. When included in a `user` or `home`
     # aspect, it configures `self'` for the corresponding Home Manager configuration.
     den.batteries.self'
-
-    # Recursively imports non-dendritic .nix files depending on their Nix configuration `class`.
-    # This can be used to help migrating from huge existing setups.
-    # ```
-    #   # this is at <repo>/modules/non-dendritic.nix
-    #   den.aspects.my-laptop.includes = [
-    #     (den.import-tree.host ../non-dendritic)
-    #   ]
-    # ```
-    # With following structure, it will automatically load modules depending on their class.
-    # ```
-    #     <repo>/
-    #       modules/
-    #         non-dendritic.nix # configures this aspect
-    #       non-dendritic/ # name is just an example here
-    #         hosts/
-    #           my-laptop/
-    #             _nixos/          # a directory for `nixos` class
-    #               auto-generated-hardware.nix # any nixos module
-    #             _darwin/
-    #               foo.nix
-    #             _homeManager/
-    #               me.nix
-    # ```
-    # ## Requirements
-    #   - inputs.import-tree
-    # ## Usage
-    #   this aspect can be included explicitly on any aspect:
-    #       # example: will import ./disko/_nixos files automatically.
-    #       den.aspects.my-disko.includes = [ (den.import-tree ./disko/) ];
-    #   or it can be default imported per host/user/home:
-    #       # load from ./hosts/<host>/_nixos
-    #       den.default.includes = [ (den.import-tree.host ./hosts) ];
-    #       # load from ./users/<user>/{_homeManager, _nixos}
-    #       den.default.includes = [ (den.import-tree.user ./users) ];
-    #       # load from ./homes/<home>/_homeManager
-    #       den.default.includes = [ (den.import-tree.home ./homes) ];
-    #   you are also free to create your own auto-imports layout following the implementation of these.
+    den.aspects.core.nixpkgs
   ];
 
   den.default.nixos.boot.zfs.forceImportRoot = lib.mkDefault false;
   den.default.nixos.system.stateVersion = "26.05";
   den.default.nixos.nixpkgs.config.allowUnfree = lib.mkDefault true;
+  den.default.nixos.nixpkgs.overlays = [ inputs.self.overlays.default ];
   den.default.nixos.home-manager.useGlobalPkgs = lib.mkDefault true;
   den.default.nixos.home-manager.useUserPackages = lib.mkDefault true;
+
   # Enable Home Manager by default for all declared users
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
+  den.default.homeManager.home.stateVersion = "26.05";
 }

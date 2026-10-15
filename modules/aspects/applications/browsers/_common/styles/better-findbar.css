@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Better Find Bar - Native userChrome CSS snippet
+   Replaces the 'Better Find Bar' mod (a6335949-4465-4b71-926c-4a52d34bc9c0)
+   with self-contained floating findbar styling.
+   ========================================================================== */
+
+:root {
+	--var-findbar-transform-translateY: 150px;
+	--var-findbar-transform-translateX: 0%;
+	--var-findbar-position-top: auto;
+	--var-findbar-position-bottom: 20px;
+	--var-findbar-position-left: auto;
+	--var-findbar-position-right: 20px;
+	--var-findbar-background-color: var(--zen-colors-primary, var(--toolbar-bgcolor, #1e1e2e));
+	--var-findbar-text-color: var(--toolbar-color, currentColor);
+	--var-findbar-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+findbar {
+	display: flex !important;
+
+	border-radius: 8px !important;
+	margin: 0px !important;
+
+	width: 90% !important;
+	max-width: 650px !important;
+	min-width: 320px !important;
+
+	height: auto !important;
+
+	position: fixed !important;
+	top: var(--var-findbar-position-top);
+	bottom: var(--var-findbar-position-bottom);
+	left: var(--var-findbar-position-left);
+	right: var(--var-findbar-position-right);
+	transform: translateX(var(--var-findbar-transform-translateX)) translateY(0);
+
+	overflow: unset !important;
+	box-shadow: var(--var-findbar-box-shadow);
+
+	background: var(--var-findbar-background-color) !important;
+	color: var(--var-findbar-text-color) !important;
+	border: 1px solid
+		color-mix(
+			in hsl,
+			var(--var-findbar-background-color) 75%,
+			var(--var-findbar-text-color)
+		) !important;
+
+	transition: transform 0.35s ease, opacity 0.3s ease !important;
+
+	visibility: visible !important;
+	opacity: 1 !important;
+
+	& .findbar-container {
+		flex-wrap: wrap;
+		overflow-x: auto !important;
+		height: auto !important;
+		row-gap: 8px;
+		padding: 6px 8px !important;
+
+		& > :first-child {
+			width: 100% !important;
+		}
+
+		& .findbar-textbox {
+			flex-grow: 1;
+			border-radius: 6px !important;
+			background: var(--var-findbar-background-color) !important;
+			color: var(--var-findbar-text-color) !important;
+			border: 1px solid
+				color-mix(
+					in hsl,
+					var(--var-findbar-background-color),
+					var(--var-findbar-text-color) 50%
+				) !important;
+
+			&[status="notfound"] {
+				background-color: color-mix(
+					in srgb,
+					var(--var-findbar-background-color),
+					#f38ba8 50%
+				) !important;
+				color: inherit;
+			}
+		}
+
+		& .findbar-textbox:focus {
+			outline: 1px solid
+				color-mix(
+					in hsl,
+					var(--var-findbar-background-color),
+					var(--var-findbar-text-color) 75%
+				) !important;
+			outline-offset: -1px !important;
+		}
+	}
+
+	&[hidden] {
+		transform: translateX(var(--var-findbar-transform-translateX)) translateY(var(--var-findbar-transform-translateY)) !important;
+		opacity: 0 !important;
+		pointer-events: none !important;
+	}
+
+	@starting-style {
+		transform: translateX(var(--var-findbar-transform-translateX)) translateY(var(--var-findbar-transform-translateY));
+		opacity: 0;
+	}
+}

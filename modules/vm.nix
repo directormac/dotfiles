@@ -70,8 +70,8 @@ in
             enable = true;
           };
 
-          # Ensure user artifex has password in VM for SSH testing
-          users.users.artifex.password = "12345";
+          # Ensure user artifex has initialPassword in VM for SSH testing without conflicting with users.users.artifex.initialPassword
+          users.users.artifex.initialPassword = lib.mkVMOverride "12345";
 
           virtualisation = {
             cores = lib.mkDefault 4;
@@ -139,29 +139,6 @@ in
       };
     };
 
-  den.aspects.nixos.includes = [
-    core.vm
-    (den.batteries.vm-autologin "artifex")
-  ];
-
-  # Host sandbox: lightweight testbed host
-  den.aspects.sandbox = {
-    includes = [
-      core.vm.gui
-      (den.batteries.vm-autologin "artifex")
-    ];
-
-    nixos = {
-      networking.hostName = "sandbox";
-      system.stateVersion = "26.05";
-    };
-  };
-
-  # Host super and nixos get core.vm and vm-autologin
-  den.aspects.super.includes = [
-    core.vm
-    (den.batteries.vm-autologin "artifex")
-  ];
 
   perSystem =
     { pkgs, ... }:

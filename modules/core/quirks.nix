@@ -16,6 +16,10 @@
     description = "Firewall TCP/UDP port declarations";
   };
 
+  den.quirks.nixpkgs-overlays = {
+    description = "nixpkgs overlays collected from aspects";
+  };
+
   den.quirks.persist = {
     description = "System paths persisted on /persist";
   };

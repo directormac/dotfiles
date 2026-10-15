@@ -1,0 +1,220 @@
+# Steam Gaming Aspect
+{ den, ... }:
+{
+  den.aspects.applications.gaming.steam = {
+    nixos =
+      {
+        lib,
+        pkgs,
+        host,
+        ...
+      }:
+      let
+        hasNvidiaPrimeOnLaptop =
+          (host ? hasAspect)
+          && (den.aspects.hardware ? gpu)
+          && (den.aspects.hardware.gpu ? nvidia-prime)
+          && (den.aspects.hardware ? laptop)
+          && host.hasAspect den.aspects.hardware.gpu.nvidia-prime
+          && host.hasAspect den.aspects.hardware.laptop;
+      in
+      {
+        nix.settings = {
+          substituters = [ "https://nix-gaming.cachix.org" ];
+          trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+        };
+
+        environment.systemPackages = with pkgs; [
+          steam-run
+          wine
+          winetricks
+          wineWow64Packages.staging
+          wineWow64Packages.waylandFull
+        ];
+
+        hardware = {
+          steam-hardware.enable = true;
+          graphics.enable32Bit = true;
+        };
+
+        virtualisation.vmVariant = {
+          programs.steam.enable = lib.mkVMOverride false;
+        };
+
+        programs = {
+          appimage.enable = true;
+          appimage.binfmt = true;
+
+          steam = {
+            enable = true;
+            remotePlay.openFirewall = true;
+            dedicatedServer.openFirewall = true;
+            localNetworkGameTransfers.openFirewall = true;
+            protontricks.enable = true;
+
+            package = pkgs.steam.override {
+              # Raw shell appended to the FHS profile. extraEnv is not usable
+              # here: it goes through lib.toShellVars, which single-quotes.
+              # https://vronlinux.org/docs/distros/nixos/
+              extraProfile = ''
+                # Without this, an XR title launched from Steam cannot see the
+                # host OpenXR runtime and fails to reach Monado/WiVRn.
+                export PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES=1
+                # VRChat and friends otherwise misreport the timezone.
+                unset TZ
+              '';
+
+              extraEnv = {
+                MANGOHUD = true;
+                OBS_VKCAPTURE = true;
+                PROTON_ENABLE_WAYLAND = true;
+                PROTON_ENABLE_HDR = true;
+                PROTON_USE_NTSYNC = true;
+                PROTON_USE_WOW64 = true;
+                RADV_TEX_ANISO = 16;
+                PULSE_SINK = "Game";
+              }
+              // lib.optionalAttrs hasNvidiaPrimeOnLaptop {
+                NV_PRIME_RENDER_OFFLOAD = "1";
+                "__NV_PRIME_RENDER_OFFLOAD_PROVIDER" = "NVIDIA-G0";
+                "__GLX_VENDOR_LIBRARY_NAME" = "nvidia";
+                "__VK_LAYER_NV_optimus" = "NVIDIA_only";
+              };
+              extraPkgs =
+                pkgs':
+                let
+                  inherit (pkgs') lib;
+                  mkDeps =
+                    pkgsSet: with pkgsSet; [
+                      qt6.qtwayland
+                      xdg-utils
+                      libx11
+                      libxext
+                      libxrender
+                      libxi
+                      libxinerama
+                      libxcursor
+                      libxscrnsaver
+                      libsm
+                      libice
+                      libxcb
+                      libxrandr
+                      libxkbcommon
+                      freetype
+                      fontconfig
+                      glib
+                      libpng
+                      libpulseaudio
+                      libvorbis
+                      libkrb5
+                      keyutils
+                      libglvnd
+                      libdrm
+                      vulkan-tools
+                      vulkan-loader
+                      vulkan-validation-layers
+                      vulkan-extension-layer
+                      (lib.getLib stdenv.cc.cc)
+                    ];
+                in
+                mkDeps pkgs';
+
+              extraLibraries =
+                p: with p; [
+                  atk
+                ];
+            };
+
+            extraCompatPackages =
+              [
+                pkgs.proton-ge-bin
+              ]
+              ++ lib.optionals (pkgs ? proton-cachyos-x86_64_v3) [
+                pkgs.proton-cachyos-x86_64_v3
+              ];
+
+            gamescopeSession = {
+              enable = true;
+
+              env = {
+                DXVK_HDR = "1";
+              };
+
+              args = [
+                "--rt"
+                "--expose-wayland"
+                "--hdr-enabled"
+                "--hdr-itm-enabled"
+                "--hdr-debug-force-output"
+                "--xwayland-count 2"
+                "-W 3840"
+                "-H 2160"
+                "-r 120"
+              ];
+            };
+          };
+        };
+      };
+
+    homeManager =
+      {
+        host,
+        pkgs,
+        lib,
+        ...
+      }:
+      lib.mkIf (!((host ? hasAspect) && host.hasAspect den.aspects.applications.gaming.steam)) {
+        home.packages = [
+          (pkgs.steam.override {
+            extraEnv = {
+              MANGOHUD = true;
+              OBS_VKCAPTURE = true;
+              PROTON_ENABLE_WAYLAND = true;
+              PROTON_ENABLE_HDR = true;
+              PROTON_USE_NTSYNC = true;
+              PROTON_USE_WOW64 = true;
+              RADV_TEX_ANISO = 16;
+              PULSE_SINK = "Game";
+            };
+            extraPkgs =
+              pkgs': with pkgs'; [
+                qt6.qtwayland
+                xdg-utils
+                libx11
+                libxext
+                libxrender
+                libxi
+                libxinerama
+                libxcursor
+                libxscrnsaver
+                libsm
+                libice
+                libxcb
+                libxrandr
+                libxkbcommon
+                freetype
+                fontconfig
+                glib
+                libpng
+                libpulseaudio
+                libvorbis
+                libkrb5
+                keyutils
+                libglvnd
+                libdrm
+                vulkan-tools
+                vulkan-loader
+                vulkan-validation-layers
+                vulkan-extension-layer
+                (lib.getLib stdenv.cc.cc)
+              ];
+            extraLibraries = p: with p; [ atk ];
+          })
+        ];
+      };
+
+    cacheHome.directories = [
+      ".local/share/Steam"
+    ];
+  };
+}

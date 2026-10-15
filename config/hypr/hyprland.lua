@@ -26,12 +26,21 @@ hl.env('QT_QPA_PLATFORM', 'wayland')
 hl.env('XDG_MENU_PREFIX', 'hyprland-')
 
 -- https://wiki.hypr.land/configuring/extra/multi-gpu/
--- GPU configuration is also set via Nix for declarative management
--- if cfg.hostname == 'super' then
---   hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
--- end
+-- GPU configuration is guarded so VM testing or non-multi-GPU hosts don't crash Aquamarine
+local function file_exists(path)
+  local f = io.open(path, 'r')
+  if f then
+    f:close()
+    return true
+  end
+  return false
+end
 
-hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
+if cfg.hostname == 'super' and file_exists('/dev/dri/card2') and file_exists('/dev/dri/card1') then
+  hl.env('AQ_DRM_DEVICES', '/dev/dri/card2:/dev/dri/card1')
+elseif not file_exists('/dev/dri/card2') then
+  hl.env('WLR_NO_HARDWARE_CURSORS', '1')
+end
 
 -- Set programs that you use
 local apps = cfg.applications
@@ -46,9 +55,11 @@ local apps = cfg.applications
 -- Or execute your favorite apps at launch like this:
 --
 
+local is_vm = os.getenv('HYPRLAND_IS_VM') == '1' or os.getenv('IS_VM') == '1'
+
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
-  hl.exec_cmd('dms run')
+  if not is_vm then hl.exec_cmd('dms run') end
 
   -- Optional: Clipboard history
   hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')
@@ -71,10 +82,12 @@ require('bindings')
 require('lookandfeel')
 require('rules')
 
--- DMS Include Configs
-require('dms.binds')
-require('dms.binds-user')
-require('dms.layout')
-require('dms.windowrules')
-require('dms.outputs')
-require('dms.cursor')
+-- DMS Include Configs (guarded for non-VM environments)
+if not is_vm then
+  require('dms.binds')
+  require('dms.binds-user')
+  require('dms.layout')
+  require('dms.windowrules')
+  require('dms.outputs')
+  require('dms.cursor')
+end
