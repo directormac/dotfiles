@@ -27,48 +27,35 @@
 # 4. Finish & Merge:
 #    $ workmux merge                    -> Rebase & merge into main
 # ------------------------------------------------------------------------------
-
 # Custom session & window prefix for this repository
 window_prefix: "dotfiles-"
-
 # Mode: session by default (creates dedicated tmux session per worktree)
 mode: session
-
 # Return to 'main' session when closing/removing this worktree session
 default_session: main
-
 agent: agyx
-
 # ------------------------------------------------------------------------------
 # Session Windows (4 Windows per Worktree)
 # ------------------------------------------------------------------------------
 windows:
   # Window 1: Editor
-  - 
-    panes:
+  - panes:
       - command: nvim
         focus: true
-
   # Window 2: AI Coding Agent
-  - 
-    panes:
+  - panes:
       - command: clear
-
   # Window 3: Git
-  - 
-    panes:
+  - panes:
       - command: lazygit
         focus: true
       - command: workmux dashboard -t worktrees
         split: vertical
         percentage: 50
-
   # Window 4: Agent
-  - 
-    panes:
+  - panes:
       - command: <agent>
         focus: true
-
 # ------------------------------------------------------------------------------
 # Project Named Layouts
 # ------------------------------------------------------------------------------
