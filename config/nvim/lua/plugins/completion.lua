@@ -4,13 +4,13 @@ local trigger_text = ';'
 return {
   { 'blink.lib', load_before = { 'blink.cmp' } },
   { 'blink.compat', load_before = { 'blink.cmp' } },
-  { 'blink-copilot', on_require = { 'blink-copilot' } },
-  { 'blink-cmp-dictionary', on_require = { 'blink-cmp-dictionary' } },
-  { 'blink-cmp-env', on_require = { 'blink-cmp-env' } },
-  { 'blink-cmp-git', on_require = { 'blink-cmp-git' } },
-  { 'blink-emoji.nvim', on_require = { 'blink-emoji' } },
-  { 'blink-nerdfont.nvim', on_require = { 'blink-nerdfont' } },
-  { 'blink-ripgrep.nvim', on_require = { 'blink-ripgrep' } },
+  { 'blink-copilot', load_before = { 'blink.cmp' }, on_require = { 'blink-copilot' } },
+  { 'blink-cmp-dictionary', load_before = { 'blink.cmp' }, on_require = { 'blink-cmp-dictionary' } },
+  { 'blink-cmp-env', load_before = { 'blink.cmp' }, on_require = { 'blink-cmp-env' } },
+  { 'blink-cmp-git', load_before = { 'blink.cmp' }, on_require = { 'blink-cmp-git' } },
+  { 'blink-emoji.nvim', load_before = { 'blink.cmp' }, on_require = { 'blink-emoji' } },
+  { 'blink-nerdfont.nvim', load_before = { 'blink.cmp' }, on_require = { 'blink-nerdfont' } },
+  { 'blink-ripgrep.nvim', load_before = { 'blink.cmp' }, on_require = { 'blink-ripgrep' } },
 
   {
     'colorful-menu.nvim',
@@ -21,6 +21,19 @@ return {
   {
     'blink.cmp',
     event = { 'InsertEnter', 'CmdlineEnter' },
+    -- before = function()
+    --   nixInfo.lze.trigger_load({
+    --     'blink.lib',
+    --     'blink.compat',
+    --     'blink-copilot',
+    --     'blink-cmp-dictionary',
+    --     'blink-cmp-env',
+    --     'blink-cmp-git',
+    --     'blink-emoji.nvim',
+    --     'blink-nerdfont.nvim',
+    --     'blink-ripgrep.nvim',
+    --   })
+    -- end,
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -33,6 +46,16 @@ return {
       end,
       keymap = {
         preset = 'default',
+        ['<A-1>'] = { function(cmp) cmp.accept({ index = 1 }) end },
+        ['<A-2>'] = { function(cmp) cmp.accept({ index = 2 }) end },
+        ['<A-3>'] = { function(cmp) cmp.accept({ index = 3 }) end },
+        ['<A-4>'] = { function(cmp) cmp.accept({ index = 4 }) end },
+        ['<A-5>'] = { function(cmp) cmp.accept({ index = 5 }) end },
+        ['<A-6>'] = { function(cmp) cmp.accept({ index = 6 }) end },
+        ['<A-7>'] = { function(cmp) cmp.accept({ index = 7 }) end },
+        ['<A-8>'] = { function(cmp) cmp.accept({ index = 8 }) end },
+        ['<A-9>'] = { function(cmp) cmp.accept({ index = 9 }) end },
+        ['<A-0>'] = { function(cmp) cmp.accept({ index = 10 }) end },
         ['<C-Tab>'] = { 'select_and_accept' },
         ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
         ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
