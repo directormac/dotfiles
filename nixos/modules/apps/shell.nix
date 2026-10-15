@@ -194,7 +194,8 @@
           "age" = "rage";
           "agyx" = "agy  --dangerously-skip-permissions";
           "c" = "clear";
-          "cat" = "bat";
+          "cat" = "bat -pp";
+          "less" = "bat";
           "cd" = "z";
           "cda" = "zoxide add";
           "cdq" = "zoxide query";
@@ -213,9 +214,9 @@
           "ls" = "lsd";
           "lt" = "lsd --tree";
           "lzg" = "lazygit";
-          "man" = "man -P bat -p";
           "nixdev" = "nix develop";
           "nsh" = "nix-shell -p";
+          "nho" = "nh os";
           "oc" = "opencode";
           "oc2" = "opencode2";
           "ocx" = "opencode --auto";
@@ -247,12 +248,19 @@
         sessionVariables = {
           EDITOR = "nvim";
           BROWSER = "zen-beta";
+
+          MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+          MANROFFOPT = "-c";
+
+          # Neovim as MANPAGER
+          # MANPAGER= "nvim +Man!";
+
           # https://stacker.news/items/948469
           NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
         };
 
         initContent =
-          # sh
+          # zsh
           ''
             # Quote URLs on paste only (does not wrap typing / self-insert)
             autoload -Uz bracketed-paste-url-magic
