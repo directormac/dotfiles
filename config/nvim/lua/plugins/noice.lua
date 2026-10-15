@@ -1,8 +1,11 @@
 return {
   {
+    'nui.nvim',
+    load_before = { 'noice.nvim' },
+  },
+  {
     'noice.nvim',
     event = 'DeferredUIEnter',
-    enabled = false,
     keys = {
       { '<leader>sn', '', desc = '+noice' },
       {
@@ -38,10 +41,6 @@ return {
       },
     },
     opts = {
-      -- Disable Noice's popupmenu UI so it never hijacks Neovim's completion menu.
-      -- When enabled, Noice takes over `ext_popupmenu` and renders completion items
-      -- in an intrusive floating window in the middle of the screen instead of letting
-      -- blink.cmp / native completion render anchored directly at the cursor.
       notify = {
         enabled = false,
       },

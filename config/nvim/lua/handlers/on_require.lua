@@ -75,7 +75,10 @@ function M.add(plugin)
     return
   end
 
-  states[plugin.name] = mod_paths
+  local pname = plugin.name or plugin[1]
+  if not pname then return end
+
+  states[pname] = mod_paths
 end
 
 return M

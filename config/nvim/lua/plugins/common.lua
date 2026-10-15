@@ -51,10 +51,6 @@ return {
     'plenary.nvim',
     on_require = { 'plenary' },
   },
-  -- {
-  --   'nui.nvim',
-  --   on_require = { 'nui' },
-  -- },
   {
     'nvim-nio',
     on_require = { 'nio' },

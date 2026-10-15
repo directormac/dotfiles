@@ -177,6 +177,7 @@
           nixd
           nil
           nixfmt
+          statix
         ];
       };
 
@@ -221,10 +222,9 @@
           nvim-lspconfig
           nvim-lint
           nvim-surround
+          nvim-treesitter-context
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
-          nvim-treesitter
-          nvim-treesitter-context
           otter-nvim
           SchemaStore-nvim
           treesj
@@ -237,7 +237,6 @@
           one-small-step-for-vimkind
 
           # Utils
-          lazydev-nvim
           mini-nvim
           noice-nvim
           nui-nvim
@@ -316,16 +315,6 @@
           # [lint.lua](../../../config/nvim/lua/plugins/lint.lua)
           # [conform.lua](../../../config/nvim/lua/plugins/conform.lua)
           # -----------------------------------------------------------------------
-
-          # nix
-          nixd
-          nil
-          nixfmt
-          statix
-
-          # lua
-          lua-language-server
-          stylua
 
           # shell
           bash-language-server
@@ -457,9 +446,11 @@
                 else
                   null;
             };
-          allPlugins = config.specs.general.data ++ [
+          allPlugins = lib.flatten [
+            config.specs.general.data
             config.specs.colorscheme.data
             (config.specs.lze.data or config.specs.lze)
+            (config.specs.lua.data or [ ])
           ];
         in
         {
@@ -475,10 +466,16 @@
             (map (m: lib.nameValuePair m.name m))
             builtins.listToAttrs
           ];
-          runtime_pkgs = map (p: {
-            name = p.pname or p.name;
-            version = p.version or null;
-          }) config.runtimePkgs;
+          runtime_pkgs = map (
+            p:
+            let
+              drv = p.data or p;
+            in
+            {
+              name = drv.pname or drv.name or null;
+              version = drv.version or null;
+            }
+          ) config.runtimePkgs;
         };
 
     };

@@ -23,9 +23,6 @@ config/nvim/
 │   │   ├── load_before.lua  # Inter-plugin dependency ordering (load before target)
 │   │   ├── on_require.lua   # Fast-path module require interception via package.loaders
 │   │   └── rtp.lua          # Sourcing of after/plugin and ftdetect for opt plugins
-│   ├── pickers/             # Snacks.picker extensions
-│   │   ├── common.lua       # Common picker entrypoints (snippets, plugins)
-│   │   └── lze-plugins.lua  # Interactive picker for inspecting lze plugins & Nix metadata
 │   └── plugins/             # Pure declarative lze plugin specs (*.lua)
 │       ├── completion.lua   # blink.cmp, luasnip, colorful-menu, copilot
 │       ├── noice.lua        # noice.nvim UI, cmdline, message routing, hover
@@ -133,7 +130,7 @@ Language servers are registered natively in [`lua/plugins/lsp.lua`](lua/plugins/
 
 ## Plugin Inspection Picker
 
-Run `<leader>fp` or call `require('pickers.common').plugins()` to open the interactive `lze` plugins picker:
+Run `<leader>sp` or call `Snacks.picker.plugins()` to open the interactive `lze` plugins picker:
 - Displays all installed plugins, their lazy/loaded state, load order, and active triggers.
 - Shows Nix derivation metadata (upstream Git commit revision, date, repository URL, version).
 - Allows toggling plugin details, inspecting source specifications, and verifying lazy-loading behavior.

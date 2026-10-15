@@ -1,5 +1,4 @@
 local Utils = require('utils')
-local CommonPickers = require('pickers.common')
 
 local exclude = {
   '**/.secrets/**',
@@ -67,21 +66,11 @@ return {
       desc = 'Undo History',
     },
 
-    { '<leader>s`', function() CommonPickers.snippets() end, desc = 'Snippets' },
-    { '<leader>sp', function() CommonPickers.plugins() end, desc = 'Plugins (lze)' },
+    { '<leader>s`', function() Snacks.picker.snippets() end, desc = 'Snippets' },
+    { '<leader>sp', function() Snacks.picker.plugins() end, desc = 'Plugins (lze)' },
 
     -- Todo comments picker
-    {
-      '<leader>st',
-      function()
-        if not Snacks.picker.sources.todo_comments then
-          local ok, todo_snacks = pcall(require, 'todo-comments.snacks')
-          if ok and todo_snacks.source then Snacks.picker.sources.todo_comments = todo_snacks.source end
-        end
-        Snacks.picker.pick('todo_comments', {})
-      end,
-      desc = 'Search Todos',
-    },
+    { '<leader>st', function() Snacks.picker.todo_comments() end, desc = 'Search Todos' },
   },
   opts = {
     -- Documentation https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
@@ -171,6 +160,32 @@ return {
         },
         zoxide = {},
         man = {},
+
+        -- Custom sources
+        plugins = {
+          title = 'Plugins (lze)',
+          config = function(opts) return require('plugins.snacks.sources.plugins').setup(opts) end,
+        },
+        snippets = {
+          title = 'Snippets',
+          layout = { preset = 'vscode' },
+          config = function(opts) return require('plugins.snacks.sources.snippets').setup(opts) end,
+        },
+        todo_comments = {
+          title = 'Todo Comments',
+          config = function(opts)
+            if not package.loaded['todo-comments'] then
+              if nixInfo and nixInfo.lze then
+                nixInfo.lze.trigger_load('todo-comments.nvim')
+              elseif package.loaded['lze'] then
+                require('lze').trigger_load('todo-comments.nvim')
+              end
+            end
+            local ok, todo_snacks = pcall(require, 'todo-comments.snacks')
+            if ok and todo_snacks.source then return vim.tbl_deep_extend('force', opts, todo_snacks.source) end
+            return opts
+          end,
+        },
       },
     },
   },

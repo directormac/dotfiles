@@ -2,6 +2,7 @@ return {
   {
     'nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
+    on_require = { 'lspconfig' },
     after = function()
       require('lsp_handlers').setup()
 

@@ -23,6 +23,9 @@ function M.add(plugin)
   local load_before = plugin.load_before
   if not load_before then return end
 
+  local pname = plugin.name or plugin[1]
+  if not pname then return end
+
   ---@type string[]
   local targets = {}
   if type(load_before) == 'table' then
@@ -39,16 +42,16 @@ function M.add(plugin)
   for _, target in ipairs(targets) do
     if lze.state(target) == false then
       return function()
-        lze.trigger_load(plugin.name)
+        lze.trigger_load(pname)
       end
     end
   end
 
-  -- Record that `plugin.name` must load before each target plugin
+  -- Record that `pname` must load before each target plugin
   for _, target in ipairs(targets) do
     states[target] = states[target] or {}
-    if not vim.tbl_contains(states[target], plugin.name) then
-      table.insert(states[target], plugin.name)
+    if not vim.tbl_contains(states[target], pname) then
+      table.insert(states[target], pname)
     end
   end
 end

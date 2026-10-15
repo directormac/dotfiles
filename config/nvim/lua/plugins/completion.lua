@@ -1,27 +1,36 @@
--- blink.cmp with colorful-menu renderers, luasnip, and cmp-cmdline.
+-- blink.cmp with colorful-menu renderers, luasnip fast-trigger, and cmp-cmdline.
+local trigger_text = ';'
+
 return {
   { 'blink.lib', load_before = { 'blink.cmp' } },
   { 'blink.compat', load_before = { 'blink.cmp' } },
-  { 'blink-copilot', load_before = { 'blink.cmp' } },
-  { 'blink-cmp-dictionary', load_before = { 'blink.cmp' } },
-  { 'blink-cmp-env', load_before = { 'blink.cmp' } },
-  { 'blink-cmp-git', load_before = { 'blink.cmp' } },
-  { 'blink-emoji.nvim', load_before = { 'blink.cmp' } },
-  { 'blink-nerdfont.nvim', load_before = { 'blink.cmp' } },
-  { 'blink-ripgrep.nvim', load_before = { 'blink.cmp' } },
+  { 'blink-copilot', on_require = { 'blink-copilot' } },
+  { 'blink-cmp-dictionary', on_require = { 'blink-cmp-dictionary' } },
+  { 'blink-cmp-env', on_require = { 'blink-cmp-env' } },
+  { 'blink-cmp-git', on_require = { 'blink-cmp-git' } },
+  { 'blink-emoji.nvim', on_require = { 'blink-emoji' } },
+  { 'blink-nerdfont.nvim', on_require = { 'blink-nerdfont' } },
+  { 'blink-ripgrep.nvim', on_require = { 'blink-ripgrep' } },
 
-  -- {
-  --   'colorful-menu.nvim',
-  --   load_before = { 'blink.cmp' },
-  --   on_require = { 'colorful-menu' },
-  -- },
+  {
+    'colorful-menu.nvim',
+    load_before = { 'blink.cmp' },
+    on_require = { 'colorful-menu' },
+  },
 
   {
     'blink.cmp',
-    event = { 'InsertEnter', 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
+    event = { 'InsertEnter', 'CmdlineEnter' },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      enabled = function()
+        local ft = vim.bo[0].filetype
+        if ft == 'snacks_picker_input' or ft == 'TelescopePrompt' or ft == 'minifiles' or ft == 'dap-repl' then
+          return false
+        end
+        return true
+      end,
       keymap = {
         preset = 'default',
         ['<C-Tab>'] = { 'select_and_accept' },
@@ -31,9 +40,10 @@ return {
         ['<C-p>'] = { 'select_prev', 'fallback' },
         ['<CR>'] = { 'accept', 'fallback' },
         ['<C-k>'] = {}, -- Handled by Noice signature help
-        -- Ripgrep is manual-only (see `sources.providers.ripgrep`) so it needs an
-        -- explicit keymap to be reachable at all.
-        -- ['<C-g>'] = { function(cmp) cmp.show({ providers = { 'ripgrep' } }) end },
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+        ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
+        ['<C-g>'] = { function(cmp) cmp.show({ providers = { 'ripgrep' } }) end },
       },
       appearance = {
         nerd_font_variant = 'mono',
@@ -63,8 +73,6 @@ return {
       fuzzy = {
         -- The order here IS the priority: `exact` wins outright, then the fuzzy
         -- score (which is where every `score_offset` competes), then `sortText`.
-        -- NOTE: `sources.default` order does not set priority -- provider ids are
-        -- collected with `vim.tbl_keys`, so that order is arbitrary.
         sorts = {
           'exact',
           'score',
@@ -77,39 +85,26 @@ return {
           border = 'single',
         },
       },
+
       completion = {
         menu = {
           border = 'single',
           winblend = 0,
-          -- draw = {
-          --   -- We don't need label_description now because label and label_description are already
-          --   -- combined together in label by colorful-menu.nvim.
-          --   columns = { { 'kind_icon' }, { 'label', gap = 1 } },
-          --   components = {
-          --     label = {
-          --       width = { fill = true, max = 60 },
-          --       text = function(ctx)
-          --         local highlights_info = require('colorful-menu').blink_highlights(ctx)
-          --         if highlights_info ~= nil then
-          --           -- Or you want to add more item to label
-          --           return highlights_info.label
-          --         else
-          --           return ctx.label
-          --         end
-          --       end,
-          --       highlight = function(ctx)
-          --         local highlights = {}
-          --         local highlights_info = require('colorful-menu').blink_highlights(ctx)
-          --         if highlights_info ~= nil then highlights = highlights_info.highlights end
-          --         for _, idx in ipairs(ctx.label_matched_indices) do
-          --           table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
-          --         end
-          --         -- Do something else
-          --         return highlights
-          --       end,
-          --     },
-          --   },
-          -- },
+          draw = {
+            columns = { { 'kind_icon' }, { 'label', gap = 1 }, { 'kind' }, { 'source_name' } },
+            components = {
+              label = {
+                width = { fill = true, max = 60 },
+                text = function(ctx) return require('colorful-menu').blink_components_text(ctx) end,
+                highlight = function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end,
+              },
+              source_name = {
+                width = { max = 10 },
+                text = function(ctx) return '[' .. ctx.source_name .. ']' end,
+                highlight = 'BlinkCmpGhostText',
+              },
+            },
+          },
         },
         documentation = {
           auto_show = true,
@@ -135,19 +130,67 @@ return {
           'copilot',
         },
         providers = {
-          -- `score_offset` is additive to the fuzzy score, so it can only shift a
-          -- source relative to the spread of fuzzy scores. Negative values on the
-          -- noise-generators below are the real fix -- they match almost any keyword.
+          -- Fast snippet trigger with ';' character prefix.
+          -- Snippets are hidden during standard coding to avoid polluting LSP completions,
+          -- and appear instantly upon typing ';' at start-of-line or after whitespace/delimiters.
           snippets = {
-            score_offset = 20,
-            min_keyword_length = 3,
-            should_show_items = function(ctx) return ctx.trigger.initial_kind ~= 'trigger_character' end,
+            score_offset = 85,
+            min_keyword_length = 0,
+            override = {
+              get_trigger_characters = function() return { trigger_text } end,
+            },
+            should_show_items = function(ctx)
+              local col = ctx and ctx.cursor and ctx.cursor[2] or vim.api.nvim_win_get_cursor(0)[2]
+              local line = ctx and ctx.line or vim.api.nvim_get_current_line()
+              local before_cursor = line:sub(1, col)
+              return before_cursor:match('^%s*' .. trigger_text .. '%w*$') ~= nil
+                or before_cursor:match('[%s%({%[]' .. trigger_text .. '%w*$') ~= nil
+            end,
+            transform_items = function(_, items)
+              local line = vim.api.nvim_get_current_line()
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              local before_cursor = line:sub(1, col)
+              local start_pos, end_pos = before_cursor:find(trigger_text .. '[^' .. trigger_text .. ']*$')
+              if start_pos then
+                for _, item in ipairs(items) do
+                  if not item.trigger_text_modified then
+                    ---@diagnostic disable-next-line: inject-field
+                    item.trigger_text_modified = true
+                    item.textEdit = {
+                      newText = item.insertText or item.label,
+                      range = {
+                        start = { line = vim.fn.line('.') - 1, character = start_pos - 1 },
+                        ['end'] = { line = vim.fn.line('.') - 1, character = end_pos },
+                      },
+                    }
+                  end
+                end
+              end
+              return items
+            end,
           },
           path = {
             score_offset = 25,
+            opts = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
+              show_hidden_files_by_default = true,
+            },
           },
           lsp = {
             score_offset = 40,
+            should_show_items = function(ctx)
+              -- Suppress LSP if user is triggering snippets with ';'
+              if ctx.trigger.character == trigger_text then return false end
+              -- Suppress LSP if user is typing ':' at start of line or after space (emoji/nerdfont trigger)
+              if ctx.trigger.character == ':' then
+                local col = ctx.cursor[2]
+                local before_colon = ctx.line:sub(1, col - 1)
+                if before_colon:match('^%s*$') or before_colon:match('%s$') then return false end
+              end
+              return true
+            end,
           },
           buffer = {
             score_offset = -10,
@@ -194,7 +237,6 @@ return {
             module = 'blink-ripgrep',
             -- Deliberately NOT in `sources.default`: searching the whole project on
             -- every keystroke is too expensive. Type `<C-g>` to open it manually.
-            -- To re-enable it automatically, add 'ripgrep' to `sources.default`.
             score_offset = -30,
             min_keyword_length = 4,
             async = true,
@@ -202,7 +244,6 @@ return {
             ---@type blink-ripgrep.Options
             opts = {
               prefix_min_len = 4,
-              -- Requires snacks.nvim, which is already loaded.
               toggles = {
                 on_off = '<leader>tg',
               },
@@ -211,7 +252,6 @@ return {
               },
             },
           },
-          -- TODO: Needs more configuration
           -- https://github.com/Kaiser-Yang/blink-cmp-dictionary/
           dictionary = {
             name = 'Dictionary',
@@ -222,19 +262,20 @@ return {
           emoji = {
             name = 'Emoji',
             module = 'blink-emoji',
-            score_offset = -40,
-            min_keyword_length = 3,
+            score_offset = 95,
+            min_keyword_length = 0,
+            opts = { insert = true },
           },
           nerdfont = {
             name = 'Nerd Fonts',
             module = 'blink-nerdfont',
-            score_offset = -45,
-            min_keyword_length = 3,
+            score_offset = 90,
+            min_keyword_length = 0,
+            opts = { insert = true },
           },
           git = {
             module = 'blink-cmp-git',
             name = 'Git',
-            -- only enable this source when filetype is gitcommit, markdown, or 'octo'
             enabled = function()
               return vim.tbl_contains({
                 'octo',

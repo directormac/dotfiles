@@ -36,6 +36,8 @@ local function find_module(pname, main)
     if ok and type(mod) == 'table' and type(mod.setup) == 'function' then return mod end
   end
 
+  if not pname then return nil end
+
   local candidates = {
     pname,
     pname:gsub('%.nvim$', ''),
@@ -65,7 +67,8 @@ function M.modify(plugin)
   plugin.after = function(p)
     local opts = resolve_opts(p.opts, p)
     if opts ~= nil and p.setup ~= false then
-      local mod = find_module(p.name, p.main)
+      local name = p.name or p[1]
+      local mod = find_module(name, p.main)
       if mod and type(mod.setup) == 'function' then
         if not mod.did_setup then mod.setup(opts) end
       end
