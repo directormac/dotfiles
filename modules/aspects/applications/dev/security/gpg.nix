@@ -1,5 +1,4 @@
 # GPG & GPG-Agent Aspect
-_:
 {
   den.aspects.applications.dev.security.gpg = {
     homeManager =

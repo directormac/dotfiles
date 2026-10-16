@@ -1,5 +1,4 @@
 # Sesh Tmux Session Manager Aspect
-_:
 {
   den.aspects.applications.dev.mux.sesh = {
     nixos =
@@ -10,70 +9,68 @@ _:
         ];
       };
 
-    homeManager =
-      _:
-      {
-        programs.sesh = {
-          settings = {
-            session = [
-              {
-                name = "Dotfiles";
-                path = "~/.dotfiles";
-              }
-              {
-                name = "Config";
-                path = "~/.dotfiles/config";
-              }
-              {
-                name = "Default";
-                path = "~/";
-              }
-            ];
+    homeManager = {
+      programs.sesh = {
+        settings = {
+          session = [
+            {
+              name = "Dotfiles";
+              path = "~/.dotfiles";
+            }
+            {
+              name = "Config";
+              path = "~/.dotfiles/config";
+            }
+            {
+              name = "Default";
+              path = "~/";
+            }
+          ];
 
-            wildcard = [
-              {
-                pattern = "~/Projects/*";
+          wildcard = [
+            {
+              pattern = "~/Projects/*";
 
-                windows = [
-                  "editor"
-                  "terminal"
-                ];
-              }
-              {
-                pattern = "~/Code/.worktrees/*/*";
+              windows = [
+                "editor"
+                "terminal"
+              ];
+            }
+            {
+              pattern = "~/Code/.worktrees/*/*";
 
-                windows = [
-                  "editor"
-                  "terminal"
-                  "lazygit"
-                ];
-              }
-            ];
+              windows = [
+                "editor"
+                "terminal"
+                "lazygit"
+              ];
+            }
+          ];
 
-            window = [
-              {
-                name = "editor";
-                startup_script = "nvim";
-              }
-              {
-                name = "terminal";
-                startup_script = "clear";
-              }
-              {
-                name = "lazygit";
-                startup_script = "lazygit";
-              }
-              {
-                name = "agent";
-                startup_script = "agy";
-              }
-            ];
-          };
-
-          enable = true;
-          enableAlias = true;
+          window = [
+            {
+              name = "editor";
+              startup_script = "nvim";
+            }
+            {
+              name = "terminal";
+              startup_script = "clear";
+            }
+            {
+              name = "lazygit";
+              startup_script = "lazygit";
+            }
+            {
+              name = "agent";
+              startup_script = "agy";
+            }
+          ];
         };
+
+        enable = true;
+        enableAlias = true;
       };
+    };
 
     nixpkgs-overlays = _: [
       (_final: prev: {

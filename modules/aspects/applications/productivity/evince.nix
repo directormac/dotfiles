@@ -1,5 +1,4 @@
 # Evince Document Viewer Aspect
-_:
 {
   den.aspects.applications.productivity.evince = {
     homeManager =

@@ -1,5 +1,5 @@
 # C/C++ & LLVM Toolchain Aspect
-_: {
+{
   den.aspects.applications.dev.tools.sqlite = {
     nixos =
       { pkgs, ... }:

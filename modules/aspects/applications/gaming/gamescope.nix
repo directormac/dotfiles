@@ -1,5 +1,4 @@
 # Gamescope Micro-Compositor Aspect
-_:
 {
   den.aspects.applications.gaming.gamescope = {
     nixos =

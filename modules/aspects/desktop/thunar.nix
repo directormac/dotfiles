@@ -1,5 +1,4 @@
 # Thunar File Manager & Plugins Leaf Aspect
-_:
 {
   den.aspects.desktop.thunar = {
     nixos =

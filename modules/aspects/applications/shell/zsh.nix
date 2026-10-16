@@ -1,5 +1,4 @@
 # Zsh Interactive Shell Leaf Aspect
-_:
 {
   den.aspects.applications.shell.zsh = {
     nixos =

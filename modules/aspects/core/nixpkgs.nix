@@ -1,9 +1,13 @@
 # Core Nixpkgs Aspect: Unfree, Local & Stable Overlays, and Aspect Overlays Collector
 {
   inputs,
+  rootPath,
   withSystem,
   ...
 }:
+let
+  sharedOverlays = builtins.attrValues (import (rootPath + "/pkgs/overlays.nix") { inherit inputs; });
+in
 {
   den.aspects.core.nixpkgs = {
     nixos =
@@ -15,18 +19,14 @@
         };
       };
 
-    nixpkgs-overlays = _: [
-      # Local packages as pkgs.local
-      (final: _prev: {
-        local = withSystem final.stdenv.hostPlatform.system ({ config, ... }: config.packages);
-      })
-      # Stable packages as pkgs.stable
-      (final: _prev: {
-        stable = import inputs.nixpkgs-stable {
-          inherit (final.stdenv.hostPlatform) system;
-          config.allowUnfree = true;
-        };
-      })
-    ];
+    nixpkgs-overlays =
+      _:
+      sharedOverlays
+      ++ [
+        # Local packages as pkgs.local
+        (final: _prev: {
+          local = withSystem final.stdenv.hostPlatform.system ({ config, ... }: config.packages);
+        })
+      ];
   };
 }

@@ -3,7 +3,9 @@
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
-  modifications = _final: _prev: {
+  modifications = final: prev: {
+    nixfmt = inputs.nixfmt-rs.packages.${final.stdenv.hostPlatform.system}.default or prev.nixfmt;
+    nixfmt-rfc-style = final.nixfmt;
   };
 
   # Thread the gen-lsp flake source to pkgs-by-name so pkgs/by-name/gen-lsp-mcp
@@ -18,6 +20,7 @@
   stable-packages = final: _prev: {
     stable = import inputs.nixpkgs-stable {
       inherit (final.stdenv.hostPlatform) system;
+      config.allowUnfree = true;
     };
   };
 }

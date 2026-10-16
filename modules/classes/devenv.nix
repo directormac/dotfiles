@@ -1,31 +1,29 @@
-{ den, ... }:
+{
+  config,
+  den,
+  ...
+}:
 let
-  devenv =
-    {
-      lib,
-      aspect-chain,
-      class,
-      ...
-    }:
-    den.batteries.forward {
-      adaptArgs = { config, ... }: config.allModuleArgs;
-      each = lib.singleton class;
-      fromAspect = _: lib.last aspect-chain;
-      fromClass = _: "devenv";
-      intoClass = _: "flake-parts";
+  inherit (den.lib.policy) route;
+in
+{
+  den.classes.devenv = {
+    description = "Forwarder for aspect devenv configuration into flake-parts devenv default shell";
+  };
 
-      intoPath = _: [
+  den.policies.devenv-to-flake-parts = _: [
+    (route {
+      adaptArgs = { config, ... }: config.allModuleArgs;
+      fromClass = "devenv";
+      intoClass = "flake-parts";
+
+      path = [
         "devenv"
         "shells"
         "default"
       ];
-    };
-in
-{
-  den.classes.devenv = {
-    description = "Forwarder for /cache (host: environment.persistence, user: home.persistence)";
-  };
+    })
+  ];
 
-  den.schema.flake-parts.includes = [ devenv ];
-
+  den.schema.flake-parts.includes = [ config.den.policies.devenv-to-flake-parts ];
 }

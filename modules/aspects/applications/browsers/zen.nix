@@ -53,16 +53,17 @@
         ];
 
         programs.zen-browser = lib.mkIf (inputs ? zen-browser) {
+          inherit (common) nativeMessagingHosts;
+          inherit (common) policies;
           enable = true;
 
           env = {
             MOZ_ENABLE_WAYLAND = "1";
           };
 
-          inherit (common) nativeMessagingHosts;
-          inherit (common) policies;
-
           profiles.default = {
+            inherit (common) search;
+
             settings = {
               "browser.tabs.insertAfterCurrent" = false;
               "browser.tabs.insertAfterCurrentExceptPinned" = false;
@@ -230,8 +231,6 @@
               enable = true;
               flavor = "Mocha";
             };
-
-            inherit (common) search;
 
             spaceRouting = {
               defaultExternalRoute = "most-recent-space";

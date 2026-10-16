@@ -17,6 +17,8 @@ icons:
   workmux: ""
   omp: "󰏿"
   pi: "󰏿"
+  nh: " "
+  nix: " "
 
 
 icons-regex:

@@ -1,9 +1,8 @@
 # Development Role: editors, AI agents, language runtimes, git, multiplexers, and shell tools
-{ den, ... }:
+{ config, den, ... }:
 {
   den.aspects.roles.dev = {
     includes = with den.aspects.applications; [
-      # Editors & IDEs
       dev.editor.neovim
       dev.editor.helix
       dev.editor.vim
@@ -40,9 +39,16 @@
       dev.lang.nix
       dev.lang.python
       dev.lang.cc
-
+      dev.lang.shell
+      dev.lang.markdown
+      dev.lang.data
+      dev.lang.kdl
       # Tools
       dev.tools.sqlite
+      dev.tools.mise
+      dev.tools.direnv
+      dev.tools.devenv
+      dev.tools.treefmt
 
       # Developer Networking & Security
       dev.networking.winbox
@@ -55,8 +61,6 @@
       dev.security.sops
 
       # Shell Utilities, Fuzzy Finders & File Managers
-      dev.shell.direnv
-      dev.shell.mise
       dev.shell.television
       dev.shell.starship
       dev.shell.zoxide
@@ -70,4 +74,6 @@
       shell.superfile
     ];
   };
+
+  den.schema.flake-parts.includes = [ config.den.aspects.roles.dev ];
 }

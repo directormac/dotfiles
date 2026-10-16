@@ -56,7 +56,7 @@
         home.username = "artifex";
       };
 
-    provides.to-hosts.nixos = _: { };
+    provides.to-hosts.nixos = { };
 
     secrets =
       let

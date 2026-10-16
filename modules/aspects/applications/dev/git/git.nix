@@ -1,5 +1,4 @@
 # Git Aspect
-_:
 {
   den.aspects.applications.dev.git.git = {
     homeManager =

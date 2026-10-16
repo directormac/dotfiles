@@ -1,5 +1,4 @@
 # MPV Media Player Leaf Aspect
-_:
 {
   den.aspects.applications.media.mpv = {
     nixos =

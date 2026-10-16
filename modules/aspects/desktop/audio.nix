@@ -1,5 +1,4 @@
 # Desktop Low-Latency PipeWire Audio Leaf Aspect
-_:
 {
   den.aspects.desktop.audio = {
     nixos =

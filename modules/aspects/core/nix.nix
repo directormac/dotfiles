@@ -1,5 +1,4 @@
 # Core Nix Daemon, Caches, GC & AutoUpgrade Aspect
-_:
 {
   den.aspects.core.nix = {
     nixos =

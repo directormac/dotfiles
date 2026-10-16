@@ -1,5 +1,4 @@
 # Chromium & Google Chrome Browser Leaf Aspect
-_:
 {
   den.aspects.applications.browsers.chromium = {
     nixos =

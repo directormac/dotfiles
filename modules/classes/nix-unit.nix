@@ -1,28 +1,11 @@
 {
+  config,
   den,
   inputs,
   ...
 }:
 let
-  tests =
-    {
-      lib,
-      aspect-chain,
-      class,
-      ...
-    }:
-    den.batteries.forward {
-      adaptArgs = { config, ... }: config.allModuleArgs;
-      each = lib.singleton class;
-      fromAspect = _: lib.last aspect-chain;
-      fromClass = _: "tests";
-      intoClass = _: "flake-parts";
-
-      intoPath = _: [
-        "nix-unit"
-        "tests"
-      ];
-    };
+  inherit (den.lib.policy) route;
 in
 {
   flake-file.inputs = {
@@ -34,13 +17,33 @@ in
     (inputs.nix-unit.modules.flake.default or { })
   ];
 
-  den.schema.flake-parts.includes = [ tests ];
+  den.classes.tests = {
+    description = "Forwarder for aspect unit tests into flake-parts nix-unit";
+  };
+
+  den.policies.tests-to-flake-parts = _: [
+    (route {
+      adaptArgs = { config, ... }: config.allModuleArgs;
+      collectSubtree = true;
+      fromClass = "tests";
+      intoClass = "flake-parts";
+
+      path = [
+        "nix-unit"
+        "tests"
+      ];
+    })
+  ];
+
+  den.schema.flake-parts.includes = [ config.den.policies.tests-to-flake-parts ];
 
   perSystem =
     { lib, ... }:
     lib.optionalAttrs (inputs ? nix-unit) {
       nix-unit = {
-        inherit inputs;
+        inputs = lib.filterAttrs (
+          _: input: input ? outPath && builtins.readFileType input.outPath == "directory"
+        ) inputs;
       };
 
       nix-unit.allowNetwork = true;

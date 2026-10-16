@@ -1,5 +1,4 @@
 # Core Documentation & Man Pages Aspect
-_:
 {
   den.aspects.core.documentation = {
     nixos =

@@ -1,5 +1,4 @@
 # Core Boot & Kernel Aspect
-_:
 {
   den.aspects.core.boot = {
     nixos =

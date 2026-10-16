@@ -17,7 +17,12 @@
         environment.systemPackages = [
           (pkgs.local.tmux or pkgs.tmux)
         ]
-        ++ lib.optional (pkgs ? local && pkgs.local ? tmuxx) pkgs.local.tmuxx;
+        ++ lib.optional (pkgs ? local && pkgs.local ? tmuxx) pkgs.local.tmuxx
+        ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
+          pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
+          pkgs.nur.repos.Freed-Wu.tmux-language-server
+          pkgs.nur.repos.Freed-Wu.termux-language-server
+        ];
       };
 
     homeManager =

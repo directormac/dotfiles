@@ -1,32 +1,16 @@
 # Development shell providing tools for working with this configuration:
 # Enter with `nix develop` or via direnv.
+# Flake inputs declared at aspect level
 { inputs, ... }: {
   flake-file = {
     inputs = {
-      devenv.url = "github:cachix/devenv";
 
-      # devenv needs the project directory. Without this it falls back to `builtins.getEnv "PWD"`, which is empty under pure
-      #  evaluation.
-      # /dev/null` keeps the declaration host-independent (since `.devenv/root` is gitignored); `.envrc` overrides it
-      #  per-checkout.
       devenv-root = {
         flake = false;
         url = "file+file:///dev/null";
       };
 
       make-shell.url = "github:nicknovitski/make-shell";
-      mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
-      nix2container.url = "github:nlewo/nix2container";
-    };
-
-    nixConfig = {
-      extra-substituters = [
-        "https://devenv.cachix.org"
-      ];
-
-      extra-trusted-public-keys = [
-        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      ];
     };
   };
 
@@ -51,7 +35,7 @@
         devenv.root =
           let
             devenvRootEnv = builtins.getEnv "DEVENV_ROOT";
-            devenvRootFile = builtins.readFile inputs.devenv-root.outPath;
+            devenvRootFile = if inputs ? devenv-root then builtins.readFile inputs.devenv-root.outPath else "";
             pwd = builtins.getEnv "PWD";
           in
           if devenvRootFile != "" then
@@ -115,6 +99,12 @@
           pkgs.nil
           pkgs.nixd
           pkgs.taplo
+          pkgs.marksman
+          pkgs.yaml-language-server
+          pkgs.bash-language-server
+
+          # Testing
+          pkgs.nix-unit
         ]
         ++ lib.optionals (config ? treefmt) [
           config.treefmt.build.programs.pedantix
@@ -218,6 +208,11 @@
           sandbox = {
             description = "Run sandbox in a QEMU VM";
             exec = "nix run .#vm-sandbox \"$@\"";
+          };
+
+          test = {
+            description = "Run nix-unit unit tests defined across aspects";
+            exec = "${pkgs.nix-unit}/bin/nix-unit --flake .#tests.systems.\$(${pkgs.nix}/bin/nix eval --raw --impure --expr builtins.currentSystem) \"$@\"";
           };
 
           treefmt = {

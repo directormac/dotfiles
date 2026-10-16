@@ -9,7 +9,7 @@
     mise-nix.url = "github:wadackel/mise-nix";
   };
 
-  den.aspects.applications.dev.shell.mise = {
+  den.aspects.applications.dev.tools.mise = {
     homeManager =
       {
         config,

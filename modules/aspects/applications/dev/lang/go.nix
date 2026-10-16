@@ -1,5 +1,4 @@
 # Go Language Aspect
-_:
 {
   den.aspects.applications.dev.lang.go = {
     homeManager =

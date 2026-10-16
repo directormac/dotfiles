@@ -1,5 +1,4 @@
 # Virtualization Podman & Lazydocker Leaf Aspect
-_:
 {
   den.aspects.virtualization.podman = {
     nixos =

@@ -1,5 +1,4 @@
 # Core Security, PAM, Polkit, GNOME Keyring & Sudo-rs Aspect
-_:
 {
   den.aspects.core.security = {
     nixos =

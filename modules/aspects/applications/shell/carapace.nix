@@ -1,5 +1,4 @@
 # Carapace Multi-Shell Completion Engine Leaf Aspect
-_:
 {
   den.aspects.applications.shell.carapace = {
     homeManager =

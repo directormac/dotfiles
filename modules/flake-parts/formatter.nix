@@ -153,10 +153,6 @@
 
         settings = {
           global.excludes = [
-            # Ignore this as its handled by "flake-file.formatter"
-            "flake.nix"
-            "README.md"
-
             "LICENSE"
             "config/*"
             "nixos/*"

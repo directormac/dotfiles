@@ -1,5 +1,4 @@
 # Hardware Power Management & Trim (tuned, upower, fstrim) Aspect
-_:
 {
   den.aspects.hardware.power = {
     nixos =

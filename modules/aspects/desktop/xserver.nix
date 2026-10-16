@@ -1,5 +1,4 @@
 # Desktop XServer Base & QtWayland Leaf Aspect
-_:
 {
   den.aspects.desktop.xserver = {
     nixos =

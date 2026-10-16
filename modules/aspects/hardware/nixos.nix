@@ -1,5 +1,4 @@
 # Hardware Configuration for Host "nixos"
-_:
 {
   den.aspects.hardware.nixos = {
     nixos =

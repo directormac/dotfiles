@@ -1,5 +1,4 @@
 # Desktop GTK, DConf & Bookmarks Leaf Aspect
-_:
 {
   den.aspects.desktop.gtk = {
     nixos =

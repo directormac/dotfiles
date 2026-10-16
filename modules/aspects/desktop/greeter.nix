@@ -56,6 +56,8 @@
         ];
 
         programs.silentSDDM = lib.mkIf (inputs ? silentSDDM) {
+          inherit (cfg) theme;
+
           settings = {
             "General" = {
               "animated-background-placeholder" = "";
@@ -83,8 +85,6 @@
           profileIcons = lib.optionalAttrs (config.users.users ? artifex) {
             artifex = avatarPath;
           };
-
-          inherit (cfg) theme;
         };
 
         services.displayManager = {

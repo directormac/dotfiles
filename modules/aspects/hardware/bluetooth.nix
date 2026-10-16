@@ -1,5 +1,4 @@
 # Hardware Bluetooth Aspect
-_:
 {
   den.aspects.hardware.bluetooth = {
     nixos =

@@ -1,5 +1,4 @@
 # GitHub CLI Aspect
-_:
 {
   den.aspects.applications.dev.git.github = {
     homeManager =

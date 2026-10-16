@@ -1,5 +1,4 @@
 # Kitty Terminal Emulator Leaf Aspect
-_:
 {
   den.aspects.applications.terminals.kitty = {
     nixos =

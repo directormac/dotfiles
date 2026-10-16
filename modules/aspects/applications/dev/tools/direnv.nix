@@ -9,7 +9,7 @@
     direnv-instant.url = "github:Mic92/direnv-instant";
   };
 
-  den.aspects.applications.dev.shell.direnv = {
+  den.aspects.applications.dev.tools.direnv = {
     homeManager =
       {
         config,

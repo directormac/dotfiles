@@ -1,6 +1,7 @@
 # Starship Prompt Aspect
 {
   den.aspects.applications.dev.shell.starship = {
+
     nixos = {
       programs.starship.enable = true;
     };

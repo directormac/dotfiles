@@ -1,5 +1,4 @@
 # Yazi Terminal File Manager Leaf Aspect
-_:
 {
   den.aspects.applications.shell.yazi = {
     homeManager =
@@ -34,35 +33,39 @@ _:
           enableFishIntegration = true;
           enableZshIntegration = true;
 
-          plugins = {
-            mount = pkgs.yaziPlugins.mount;
-            git = pkgs.yaziPlugins.git;
-            mdv-previewer = pkgs.fetchFromGitHub {
-              owner = "WhoSowSee";
-              repo = "mdv-previewer.yazi";
-              rev = "099ebba";
-              hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
-            };
-          };
-
           extraPackages = with pkgs; [
             util-linux
             udisks
           ];
+
+          plugins = {
+            git = pkgs.yaziPlugins.git;
+
+            mdv-previewer = pkgs.fetchFromGitHub {
+              hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
+              owner = "WhoSowSee";
+              repo = "mdv-previewer.yazi";
+              rev = "099ebba";
+            };
+
+            mount = pkgs.yaziPlugins.mount;
+          };
         };
 
         xdg.configFile = builtins.listToAttrs (
-          map (name: {
-            name = "yazi/${name}";
-            value.source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/yazi/${name}";
-          }) [
-            "yazi.toml"
-            "keymap.toml"
-            "theme.toml"
-            "init.lua"
-            "package.toml"
-            "Catppuccin-Mocha.tmTheme"
-          ]
+          map
+            (name: {
+              name = "yazi/${name}";
+              value.source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/yazi/${name}";
+            })
+            [
+              "yazi.toml"
+              "keymap.toml"
+              "theme.toml"
+              "init.lua"
+              "package.toml"
+              "Catppuccin-Mocha.tmTheme"
+            ]
         );
       };
 

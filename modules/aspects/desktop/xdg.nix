@@ -1,15 +1,12 @@
 # XDG Portal, Mime Types, and User Directories Leaf Aspect
-_:
 {
   den.aspects.desktop.xdg = {
-    nixos =
-      _:
-      {
-        environment.pathsToLink = [
-          "/share/xdg-desktop-portal"
-          "/share/applications"
-        ];
-      };
+    nixos = {
+      environment.pathsToLink = [
+        "/share/xdg-desktop-portal"
+        "/share/applications"
+      ];
+    };
 
     homeManager =
       {

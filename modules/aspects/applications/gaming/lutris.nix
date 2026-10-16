@@ -1,5 +1,4 @@
 # Lutris Game Manager Aspect
-_:
 {
   den.aspects.applications.gaming.lutris = {
     homeManager =

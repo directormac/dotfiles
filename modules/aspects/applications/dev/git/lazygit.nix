@@ -1,5 +1,4 @@
 # Lazygit TUI Git Client Aspect
-_:
 {
   den.aspects.applications.dev.git.lazygit = {
     homeManager =

@@ -47,15 +47,10 @@
     description = "NixOS Workstation";
     isWorkstation = true;
 
-    provides.to-users.homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = with pkgs; [
-          htop
-          ripgrep
-          fd
-        ];
-      };
+    provides.to-users.homeManager = _: {
+      home.packages = [
+      ];
+    };
   };
 
   den.hosts.x86_64-linux.nixos = {

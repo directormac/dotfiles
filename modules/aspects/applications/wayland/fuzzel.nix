@@ -1,5 +1,4 @@
 # Fuzzel Wayland Application Launcher Leaf Aspect
-_:
 {
   den.aspects.applications.wayland.fuzzel = {
     nixos =

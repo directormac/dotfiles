@@ -1,5 +1,4 @@
 # Hardware Graphics Intel Leaf Aspect
-_:
 {
   den.aspects.hardware.graphics.intel = {
     nixos =

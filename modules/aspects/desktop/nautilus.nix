@@ -1,5 +1,4 @@
 # Nautilus File Manager, Python Extensions, Scripts & Thumbnailers Leaf Aspect
-_:
 {
   den.aspects.desktop.nautilus = {
     nixos =
@@ -38,7 +37,7 @@ _:
         };
       };
 
-    homeManager = _: {
+    homeManager = {
       dconf.settings = {
         "org/gnome/desktop/thumbnail-cache" = {
           maximum-age = 30;

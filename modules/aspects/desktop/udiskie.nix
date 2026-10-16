@@ -1,5 +1,4 @@
 # Desktop Removable Media & GVFS / Udiskie Automount Leaf Aspect
-_:
 {
   den.aspects.desktop.udiskie = {
     nixos =
@@ -20,7 +19,7 @@ _:
         };
       };
 
-    homeManager = _: {
+    homeManager = {
       services.udiskie = {
         settings = {
           device_config = [

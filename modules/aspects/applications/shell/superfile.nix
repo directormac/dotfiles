@@ -1,5 +1,4 @@
 # Superfile Terminal File Manager Leaf Aspect
-_:
 {
   den.aspects.applications.shell.superfile = {
     nixos =

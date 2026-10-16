@@ -5,18 +5,6 @@ vim.lsp.config("tmux_ls", {
 	root_markers = { ".git", ".tmux.conf", "tmux.conf" },
 })
 
--- vim.lsp.config("lua_ls", {
--- 	settings = {
--- 		Lua = {
--- 			signatureHelp = { enabled = true },
--- 			diagnostics = {
--- 				globals = { "nixInfo", "vim", "Snacks", "lzn", "Util", "Icons" },
--- 				disable = { "missing-fields" },
--- 			},
--- 		},
--- 	},
--- })
-
 -- 2. Enable it globally (automatically attaches when filetype matches)
 vim.lsp.enable("tmux_ls")
 
@@ -55,13 +43,26 @@ vim.lsp.enable("copilot")
 
 require("conform").setup({
 	formatters_by_ft = {
-		nix = { "treefmt" },
+		nix = { "treefmt", "nix_fmt", stop_after_first = true },
+		lua = { "treefmt", "stylua", stop_after_first = true },
+		toml = { "treefmt", "taplo", stop_after_first = true },
+		markdown = { "treefmt", "mdformat", stop_after_first = true },
+		yaml = { "treefmt", "yamlfmt", stop_after_first = true },
+		sh = { "treefmt", "shfmt", stop_after_first = true },
+		bash = { "treefmt", "shfmt", stop_after_first = true },
+		json = { "treefmt", "oxfmt", stop_after_first = true },
+		jsonc = { "treefmt", "oxfmt", stop_after_first = true },
 	},
 	formatters = {
 		treefmt = {
-			command = "treefmt",
-			-- Tell conform that the project root is flake.nix / .git, NOT treefmt.toml:
 			cwd = require("conform.util").root_file({ "flake.nix", ".git" }),
+			require_cwd = true,
+		},
+		nix_fmt = {
+			command = "nix",
+			args = { "fmt", "--", "$FILENAME" },
+			stdin = false,
+			cwd = require("conform.util").root_file({ "flake.nix" }),
 			require_cwd = true,
 		},
 	},
@@ -105,4 +106,8 @@ vim.lsp.enable({
 	"nixd",
 	"taplo",
 	"nil_ls",
+	"bashls",
+	"yamlls",
+	"marksman",
+	"jsonls",
 })

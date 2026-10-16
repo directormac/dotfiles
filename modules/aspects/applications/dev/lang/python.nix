@@ -1,5 +1,4 @@
 # Nix Developer Tools Aspect
-_:
 {
   den.aspects.applications.dev.lang.python = {
     nixos =

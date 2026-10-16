@@ -1,5 +1,4 @@
 # Bottles Wine Prefix Manager Aspect
-_:
 {
   den.aspects.applications.gaming.bottles = {
     homeManager =

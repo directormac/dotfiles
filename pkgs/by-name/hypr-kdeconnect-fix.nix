@@ -1,27 +1,34 @@
 {
   lib,
-  stdenv,
-  fetchFromGitHub,
   cmake,
+  fetchFromGitHub,
+  libei,
+  libxkbcommon,
   ninja,
   pkg-config,
   qt6,
+  stdenv,
   wayland,
   wayland-scanner,
-  libxkbcommon,
-  libei,
 }:
 
 stdenv.mkDerivation {
-  pname = "hypr-kdeconnect-fix";
-  version = "0.1.0-unstable-2026-10-03";
+  buildInputs = [
+    qt6.qtbase
+    wayland
+    libxkbcommon
+    libei
+  ];
 
-  src = fetchFromGitHub {
-    owner = "gfhdhytghd";
-    repo = "hypr-kdeconnect-fix";
-    rev = "362b904235c1b1d679eef73cbd5ad08d313d8954";
-    hash = "sha256-fswdn3iq1iCXALLWC/p5EgRYbHIMgNHWEhxEtbHtCFY=";
-  };
+  nativeBuildInputs = [
+    cmake
+    ninja
+    pkg-config
+    qt6.wrapQtAppsHook
+    wayland-scanner
+  ];
+
+  pname = "hypr-kdeconnect-fix";
 
   # Whitelist Valent app IDs alongside official KDE Connect app IDs and NixOS paths
   postPatch = ''
@@ -34,20 +41,14 @@ stdenv.mkDerivation {
                      'if (executablePath.contains(QStringLiteral("valent"))) return true; return senderPid == kdeConnectOwnerPid || senderPid == kdeConnectDaemonOwnerPid;'
   '';
 
-  nativeBuildInputs = [
-    cmake
-    ninja
-    pkg-config
-    qt6.wrapQtAppsHook
-    wayland-scanner
-  ];
+  src = fetchFromGitHub {
+    hash = "sha256-fswdn3iq1iCXALLWC/p5EgRYbHIMgNHWEhxEtbHtCFY=";
+    owner = "gfhdhytghd";
+    repo = "hypr-kdeconnect-fix";
+    rev = "362b904235c1b1d679eef73cbd5ad08d313d8954";
+  };
 
-  buildInputs = [
-    qt6.qtbase
-    wayland
-    libxkbcommon
-    libei
-  ];
+  version = "0.1.0-unstable-2026-10-03";
 
   meta = with lib; {
     description = "RemoteDesktop portal bridge for KDE Connect / Valent remote input on Hyprland";

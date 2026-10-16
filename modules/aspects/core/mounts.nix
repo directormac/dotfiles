@@ -1,5 +1,4 @@
 # Core Filesystem Mounts (SMB Fileserver & Local NTFS Resources) Aspect
-_:
 {
   den.aspects.core.mounts = {
     nixos =

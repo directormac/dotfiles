@@ -1,5 +1,4 @@
 # Hardware Laptop Leaf Aspect
-_:
 {
   den.aspects.hardware.laptop = {
     nixos =

@@ -1,5 +1,4 @@
 # VLC Media Player & Custom Desktop Actions Leaf Aspect
-_:
 {
   den.aspects.applications.media.vlc = {
     nixos =
@@ -10,7 +9,7 @@ _:
         ];
       };
 
-    homeManager = _: {
+    homeManager = {
       xdg.desktopEntries = {
         vlc-enqueue = {
           categories = [

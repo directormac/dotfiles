@@ -1,5 +1,4 @@
 # Vivid LS_COLORS Generator Aspect
-_:
 {
   den.aspects.applications.dev.shell.vivid = {
     homeManager =

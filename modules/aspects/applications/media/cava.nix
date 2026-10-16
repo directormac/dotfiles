@@ -1,5 +1,4 @@
 # Cava Audio Visualizer Leaf Aspect
-_:
 {
   den.aspects.applications.media.cava = {
     nixos =

@@ -1,5 +1,4 @@
 # mpvpaper Video Wallpaper Aspect
-_:
 {
   den.aspects.applications.media.mpvpaper = {
     homeManager =

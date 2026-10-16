@@ -1,21 +1,24 @@
-{ den, ... }:
+{
+  config,
+  den,
+  ...
+}:
 let
-  files =
-    {
-      lib,
-      aspect-chain,
-      class,
-      ...
-    }:
-    den.batteries.forward {
-      adaptArgs = { config, ... }: config.allModuleArgs;
-      each = lib.singleton class;
-      fromAspect = _: lib.last aspect-chain;
-      fromClass = _: "files";
-      intoClass = _: "flake-parts";
-      intoPath = _: [ "files" ];
-    };
+  inherit (den.lib.policy) route;
 in
 {
-  den.schema.flake-parts.includes = [ files ];
+  den.classes.files = {
+    description = "Forwarder for aspect files into flake-parts files";
+  };
+
+  den.policies.files-to-flake-parts = _: [
+    (route {
+      adaptArgs = { config, ... }: config.allModuleArgs;
+      fromClass = "files";
+      intoClass = "flake-parts";
+      path = [ "files" ];
+    })
+  ];
+
+  den.schema.flake-parts.includes = [ config.den.policies.files-to-flake-parts ];
 }

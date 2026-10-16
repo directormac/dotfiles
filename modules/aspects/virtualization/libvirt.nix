@@ -1,5 +1,4 @@
 # Virtualization Libvirt / QEMU / Virt-Manager Leaf Aspect
-_:
 {
   den.aspects.virtualization.libvirt = {
     nixos =

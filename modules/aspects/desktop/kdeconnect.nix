@@ -1,8 +1,7 @@
 # Desktop KDE Connect Leaf Aspect
-_:
 {
   den.aspects.desktop.kdeconnect = {
-    homeManager = _: {
+    homeManager = {
       services.kdeconnect = {
         enable = true;
         indicator = true;

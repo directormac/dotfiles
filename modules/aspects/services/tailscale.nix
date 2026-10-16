@@ -1,5 +1,4 @@
 # Service Tailscale VPN Aspect
-_:
 {
   den.aspects.services.tailscale = {
     nixos =

@@ -1,5 +1,4 @@
 # WireGuard Tools Aspect
-_:
 {
   den.aspects.applications.dev.networking.wireguard = {
     nixos =

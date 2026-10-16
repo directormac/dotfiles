@@ -1,5 +1,4 @@
 # Virtualization Waydroid Leaf Aspect
-_:
 {
   den.aspects.virtualization.waydroid = {
     nixos =

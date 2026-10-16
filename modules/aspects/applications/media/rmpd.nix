@@ -1,5 +1,4 @@
 # RMPD (Rust Music Player Daemon) & RMPC Leaf Aspect
-_:
 {
   den.aspects.applications.media.rmpd = {
     nixos =

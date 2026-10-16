@@ -1,5 +1,4 @@
 # Core Networking, Firewall & NetworkManager Aspect
-_:
 {
   den.aspects.core.networking = {
     nixos =

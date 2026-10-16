@@ -1,5 +1,4 @@
 # Hardware Input (libinput & uinput) Aspect
-_:
 {
   den.aspects.hardware.input = {
     nixos =

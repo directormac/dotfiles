@@ -1,5 +1,4 @@
 # C/C++ & LLVM Toolchain Aspect
-_:
 {
   den.aspects.applications.dev.lang.cc = {
     nixos =

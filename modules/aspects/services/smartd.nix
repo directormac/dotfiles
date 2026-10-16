@@ -1,5 +1,4 @@
 # Service Smartd Disk Health Monitoring Aspect
-_:
 {
   den.aspects.services.smartd = {
     nixos =

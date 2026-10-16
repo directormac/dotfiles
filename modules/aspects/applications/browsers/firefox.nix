@@ -26,6 +26,7 @@
       in
       {
         programs.firefox = {
+          inherit (common) nativeMessagingHosts;
           enable = true;
 
           globalExtensions = [
@@ -80,9 +81,9 @@
             }
           ]);
 
-          inherit (common) nativeMessagingHosts;
-
           profiles.default = {
+            inherit (common) search;
+
             extensions = {
               settings = {
                 "vimium-c@gdh1995.cn" = {
@@ -96,7 +97,6 @@
             };
 
             isDefault = true;
-            inherit (common) search;
 
             userChrome =
               # css

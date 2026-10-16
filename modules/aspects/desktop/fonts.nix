@@ -1,5 +1,4 @@
 # Desktop Fonts Leaf Aspect
-_:
 {
   den.aspects.desktop.fonts = {
     nixos =

@@ -1,12 +1,14 @@
 # Neovim Nightly & Modular Lua Wrapper Aspect
 {
   lib,
+  den,
   inputs,
   self,
   ...
 }:
 {
   flake-file.inputs = {
+
     blink-cmp = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:saghen/blink.cmp";
@@ -61,9 +63,21 @@
       flake = false;
       url = "github:wakatime/vim-wakatime";
     };
+
   };
 
   den.aspects.applications.dev.editor.neovim = {
+    includes = with den.aspects.applications.dev; [
+      lang.nix
+      lang.lua
+      lang.shell
+      lang.markdown
+      lang.data
+      lang.kdl
+      lang.node
+      lang.elixir
+    ];
+
     nixos =
       { pkgs, ... }:
       {
@@ -71,22 +85,9 @@
           EDITOR = "nvim";
         };
 
-        environment.systemPackages =
-          with pkgs;
-          [
-            tree-sitter
-            nixfmt
-            stylua
-            lua-language-server
-            bash-language-server
-            nixd
-            nil
-          ]
-          ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
-            pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
-            pkgs.nur.repos.Freed-Wu.tmux-language-server
-            pkgs.nur.repos.Freed-Wu.termux-language-server
-          ];
+        environment.systemPackages = with pkgs; [
+          tree-sitter
+        ];
 
         imports = [ self.wrappers.neovim.install ];
       };
@@ -173,21 +174,6 @@
     let
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
-      # Custom build of kdl-lsp from GitHub
-      kdl-lsp = pkgs.rustPlatform.buildRustPackage {
-        buildAndTestSubdir = "tools/kdl-lsp";
-        cargoHash = "sha256-lAmfaH3SpX0Al2VuT+V/0K5+KpwV0uIKZV0idoUy08w=";
-        pname = "kdl-lsp";
-
-        src = pkgs.fetchFromGitHub {
-          hash = "sha256-Fx6yjh/JmCxrQWWkqJRQwCoeWRQ6OZPm3zHpPLaUYMQ=";
-          owner = "kdl-org";
-          repo = "kdl-rs";
-          rev = "7de9eb2f4879f3f86157bf2345c93ed52db88e7a";
-        };
-
-        version = "0.1.0";
-      };
       vellum-nvim = pkgs.vimUtils.buildVimPlugin {
         doCheck = false;
         pname = "vellum.nvim";
@@ -359,16 +345,14 @@
         lib.generators.mkLuaInline "(vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config'))"
       );
 
-      config.specMods =
-        _:
-        {
-          options.runtimePkgs = options.runtimePkgs // {
-            description = ''
-              A runtimePkgs spec field to put packages on PATH.
-              If the spec is disabled, these packages are omitted from the wrapper derivation.
-            '';
-          };
+      config.specMods = _: {
+        options.runtimePkgs = options.runtimePkgs // {
+          description = ''
+            A runtimePkgs spec field to put packages on PATH.
+            If the spec is disabled, these packages are omitted from the wrapper derivation.
+          '';
         };
+      };
 
       config.specs.colorscheme = {
         data = builtins.getAttr config.settings.colorscheme (
@@ -384,6 +368,7 @@
       };
 
       config.specs.general = {
+        # Handlers
         after = [ "lze" ];
 
         data = with pkgs.vimPlugins; [
@@ -481,62 +466,12 @@
 
         runtimePkgs = with pkgs; [
           copilot-language-server
-
           lazygit
           tree-sitter
           ripgrep
           fd
           lua5_1
           nodejs
-
-          # shell
-          bash-language-server
-          shfmt
-          shellcheck
-
-          # markdown
-          marksman
-          markdownlint-cli2
-
-          # toml
-          taplo
-
-          # yaml
-          yaml-language-server
-          yamlfmt
-
-          # kdl
-          kdlfmt
-          kdl-lsp
-
-          # json
-          vscode-json-languageserver
-
-          # Web
-          emmet-language-server
-          beam29Packages.expert
-          elixir-ls
-          typescript
-          oxfmt
-          oxlint
-          tailwindcss-language-server
-          svelte-language-server
-          astro-language-server
-        ];
-      };
-
-      config.specs.lua = {
-        after = [ "general" ];
-
-        data = with pkgs.vimPlugins; [
-          lazydev-nvim
-        ];
-
-        lazy = true;
-
-        runtimePkgs = with pkgs; [
-          lua-language-server
-          stylua
         ];
       };
 
@@ -548,16 +483,6 @@
         }
       ];
 
-      config.specs.nix = {
-        data = null;
-
-        runtimePkgs = with pkgs; [
-          nixd
-          nil
-          nixfmt
-          statix
-        ];
-      };
     };
 
   perSystem =

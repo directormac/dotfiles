@@ -1,5 +1,4 @@
 # Cliphist Wayland Clipboard History Leaf Aspect
-_:
 {
   den.aspects.applications.wayland.cliphist = {
     nixos =

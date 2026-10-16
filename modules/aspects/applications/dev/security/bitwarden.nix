@@ -1,5 +1,4 @@
 # Bitwarden & RBW Password Manager Aspect
-_:
 {
   den.aspects.applications.dev.security.bitwarden = {
     homeManager =

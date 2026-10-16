@@ -1,5 +1,4 @@
 # Tuxedo CLI Todo / Task Management Aspect
-_:
 {
   den.aspects.applications.productivity.tuxedo = {
     nixos =

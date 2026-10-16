@@ -1,5 +1,4 @@
 # Vim Editor Aspect
-_:
 {
   den.aspects.applications.dev.editor.vim = {
     homeManager =

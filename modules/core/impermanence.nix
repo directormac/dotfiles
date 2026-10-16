@@ -102,7 +102,7 @@
 
   # Btrfs rollback aspect: wipes ephemeral root and restores root-blank snapshot on early boot
   den.aspects.impermanence.rollback-btrfs = {
-    nixos = _: {
+    nixos = {
       boot.initrd.systemd.services.rollback-root = {
         after = [ "initrd-root-device.target" ];
         before = [ "sysroot.mount" ];

@@ -1,5 +1,4 @@
 # LocalSend Local File Sharing Aspect
-_:
 {
   den.aspects.applications.productivity.localsend = {
     nixos =

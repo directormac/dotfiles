@@ -14,11 +14,11 @@
 #         [1:editor (nvim), 2:agent (agy), 3:term, 4:git (lazygit)]
 #
 # 2. Start Quickfix Worktree (Window Mode from main):
-#    $ workmux add <branch> --mode window --base main -l quickfix
-#      Example: $ workmux add fix-zsh-alias --mode window --base main -l quickfix
+#      Example:
+#        $ workmux add fix-zsh-alias --mode window --base main -l quickfix
 #      (Or using shell alias: $ wmq fix-zsh-alias)
-#      -> Creates worktree branched from main as a single window inside current session
-#      -> Opens focused Neovim without creating 4 windows
+#      -> Creates worktree branched from main as a single window inside
+#         current session
 #
 # 3. Use Custom Layouts:
 #    $ workmux add <branch> -l duo      -> Split screen (nvim + agy)

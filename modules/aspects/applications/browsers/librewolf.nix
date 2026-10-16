@@ -26,6 +26,8 @@
       in
       {
         programs.librewolf = {
+          inherit (common) nativeMessagingHosts;
+          inherit (common) policies;
           enable = true;
 
           globalExtensions = [
@@ -81,10 +83,9 @@
             }
           ]);
 
-          inherit (common) nativeMessagingHosts;
-          inherit (common) policies;
-
           profiles.default = {
+            inherit (common) search;
+
             settings = {
               "browser.ml.chat.enabled" = true;
               "browser.ml.chat.sidebar" = true;
@@ -201,7 +202,6 @@
             };
 
             isDefault = true;
-            inherit (common) search;
 
             userChrome =
               # css

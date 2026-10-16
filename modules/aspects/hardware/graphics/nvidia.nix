@@ -1,5 +1,4 @@
 # Hardware Graphics NVIDIA Leaf Aspect
-_:
 {
   den.aspects.hardware.graphics.nvidia = {
     nixos =
@@ -85,13 +84,13 @@ _:
             let
               base = config.boot.kernelPackages.nvidiaPackages.latest;
             in
-            base.overrideAttrs (_: {
+            base.overrideAttrs {
               passthru = base.passthru // {
                 open = base.open.overrideAttrs (o: {
                   postPatch = builtins.replaceStrings [ "--replace-fail" ] [ "--replace-warn" ] (o.postPatch or "");
                 });
               };
-            });
+            };
 
           powerManagement.enable = true;
         };

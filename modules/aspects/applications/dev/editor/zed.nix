@@ -1,5 +1,4 @@
 # Zed Editor Aspect
-_:
 {
   den.aspects.applications.dev.editor.zed = {
     homeManager =

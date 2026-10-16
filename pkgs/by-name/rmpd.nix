@@ -1,6 +1,6 @@
 {
-  autoPatchelfHook,
   alsa-lib,
+  autoPatchelfHook,
   chromaprint,
   dbus,
   fetchurl,
@@ -10,16 +10,6 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "rmpd";
-  version = "0.11.1";
-
-  src = fetchurl {
-    url = "https://github.com/M0Rf30/rmpd/releases/download/${version}/rmpd-${version}-x86_64-unknown-linux-gnu.tar.gz";
-    hash = "sha256-jPYlX1Dc8xuYDx8NjcDOX8d7UjSa2x3ig0006+2BQ8Y=";
-  };
-
-  sourceRoot = ".";
-  nativeBuildInputs = [ autoPatchelfHook ];
   buildInputs = [
     alsa-lib
     chromaprint
@@ -33,4 +23,15 @@ stdenv.mkDerivation rec {
     cp rmpd $out/bin/
     chmod +x $out/bin/rmpd
   '';
+
+  nativeBuildInputs = [ autoPatchelfHook ];
+  pname = "rmpd";
+  sourceRoot = ".";
+
+  src = fetchurl {
+    hash = "sha256-jPYlX1Dc8xuYDx8NjcDOX8d7UjSa2x3ig0006+2BQ8Y=";
+    url = "https://github.com/M0Rf30/rmpd/releases/download/${version}/rmpd-${version}-x86_64-unknown-linux-gnu.tar.gz";
+  };
+
+  version = "0.11.1";
 }

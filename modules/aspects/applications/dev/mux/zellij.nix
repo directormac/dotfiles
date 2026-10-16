@@ -1,5 +1,4 @@
 # Zellij Terminal Multiplexer Aspect
-_:
 {
   den.aspects.applications.dev.mux.zellij = {
     homeManager =

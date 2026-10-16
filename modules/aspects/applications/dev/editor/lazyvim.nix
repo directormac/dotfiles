@@ -1,5 +1,4 @@
 # LazyVim Editor Aspect
-_:
 {
   flake-file.inputs = {
     lazyvim = {

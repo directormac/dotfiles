@@ -5,11 +5,9 @@
 }:
 {
   den.aspects.desktop.niri = {
-    nixos =
-      _:
-      {
-        programs.niri.enable = lib.mkDefault true;
-      };
+    nixos = {
+      programs.niri.enable = lib.mkDefault true;
+    };
 
     homeManager =
       {

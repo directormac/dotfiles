@@ -1,5 +1,4 @@
 # Hardware Graphics AMD Leaf Aspect
-_:
 {
   den.aspects.hardware.graphics.amd = {
     nixos =
