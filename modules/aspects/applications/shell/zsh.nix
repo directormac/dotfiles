@@ -138,6 +138,8 @@
         home.packages = with pkgs; [
           lsd
           zsh-list-keys-tv
+          sqlite
+          (pkgs.local.zsh-skim-histdb or pkgs.zsh-skim-histdb)
         ];
 
         programs.zsh = {
@@ -174,6 +176,9 @@
           initContent =
             # zsh
             ''
+              # zsh-histdb configuration
+              export HISTDB_FILE="${config.home.homeDirectory}/.local/share/zsh/history.db"
+
               autoload -Uz bracketed-paste-url-magic
               zle -N bracketed-paste bracketed-paste-url-magic
 
@@ -294,6 +299,16 @@
               name = "fzf-tab";
               src = pkgs.zsh-fzf-tab;
             }
+            {
+              file = "sqlite-history.zsh";
+              name = "zsh-histdb";
+              src = "${pkgs.local.zsh-histdb or pkgs.zsh-histdb}/share/zsh-histdb";
+            }
+            {
+              file = "zsh-histdb-skim.plugin.zsh";
+              name = "zsh-histdb-skim";
+              src = "${pkgs.local.zsh-skim-histdb or pkgs.zsh-skim-histdb}/share/zsh-histdb-skim";
+            }
           ];
 
           sessionVariables = {
@@ -410,6 +425,7 @@
     persistHome = {
       directories = [
         ".local/share/zsh"
+        ".histdb"
       ];
 
       files = [

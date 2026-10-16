@@ -7,11 +7,6 @@
         nix = {
           settings = {
             accept-flake-config = true;
-
-            access-tokens = lib.mkIf (config ? age && config.age.secrets ? github_api_key) [
-              "!include ${config.age.secrets.github_api_key.path}"
-            ];
-
             auto-optimise-store = true;
 
             experimental-features = [
@@ -44,6 +39,10 @@
             use-xdg-base-directories = true;
           };
 
+          extraOptions = lib.mkIf (config ? age && config.age.secrets ? github_api_key) ''
+            !include /run/nix-access-tokens.conf
+          '';
+
           gc = {
             options = "--delete-older-than 10d";
             automatic = true;
@@ -55,6 +54,17 @@
             dates = [ "05:00" ];
           };
         };
+
+        system.activationScripts.nixAccessTokens =
+          lib.mkIf (config ? age && config.age.secrets ? github_api_key)
+            (
+              lib.stringAfter [ "agenixInstall" ] ''
+                if [ -f "${config.age.secrets.github_api_key.path}" ]; then
+                  echo "extra-access-tokens = github.com=$(cat "${config.age.secrets.github_api_key.path}")" > /run/nix-access-tokens.conf
+                  chmod 0444 /run/nix-access-tokens.conf
+                fi
+              ''
+            );
 
         system.autoUpgrade = {
           dates = "02:00";
