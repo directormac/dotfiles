@@ -1,5 +1,5 @@
 # Service Avahi mDNS Aspect
-{ den, ... }:
+_:
 {
   den.aspects.services.avahi = {
     nixos =

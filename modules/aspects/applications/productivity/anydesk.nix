@@ -1,5 +1,5 @@
 # AnyDesk Remote Desktop Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.productivity.anydesk = {
     homeManager =

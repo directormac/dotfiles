@@ -1,17 +1,13 @@
 # Core Users & Home Manager Base Settings Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.users = {
-    nixos =
-      _:
-      {
-        home-manager.backupFileExtension = "backup";
-      };
+    nixos = _: {
+      home-manager.backupFileExtension = "backup";
+    };
 
-    homeManager =
-      _:
-      {
-        home.sessionPath = [ "$HOME/.local/bin" ];
-      };
+    homeManager = _: {
+      home.sessionPath = [ "$HOME/.local/bin" ];
+    };
   };
 }

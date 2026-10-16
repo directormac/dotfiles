@@ -1,12 +1,12 @@
 # Core Boot & Kernel Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.boot = {
     nixos =
       {
-        host,
         lib,
         pkgs,
+        host,
         ...
       }:
       {
@@ -18,6 +18,7 @@
               "amdgpu"
               "i915"
             ];
+
             verbose = lib.mkDefault false;
           };
 

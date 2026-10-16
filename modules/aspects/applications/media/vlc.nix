@@ -1,5 +1,5 @@
 # VLC Media Player & Custom Desktop Actions Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.media.vlc = {
     nixos =
@@ -10,44 +10,48 @@
         ];
       };
 
-    homeManager =
-      _:
-      {
-        xdg.desktopEntries = {
-          vlc-new-window = {
-            name = "Open in New VLC Window";
-            genericName = "Media Player (New Window)";
-            exec = "vlc --no-one-instance --no-one-instance-when-started-from-file %U";
-            icon = "vlc";
-            terminal = false;
-            type = "Application";
-            categories = [
-              "AudioVideo"
-              "Player"
-            ];
-            mimeType = [
-              "video/*"
-              "audio/*"
-            ];
-          };
+    homeManager = _: {
+      xdg.desktopEntries = {
+        vlc-enqueue = {
+          categories = [
+            "AudioVideo"
+            "Player"
+          ];
 
-          vlc-enqueue = {
-            name = "Add to VLC Playlist";
-            genericName = "Media Player (Enqueue)";
-            exec = "vlc --one-instance --playlist-enqueue %U";
-            icon = "vlc";
-            terminal = false;
-            type = "Application";
-            categories = [
-              "AudioVideo"
-              "Player"
-            ];
-            mimeType = [
-              "video/*"
-              "audio/*"
-            ];
-          };
+          exec = "vlc --one-instance --playlist-enqueue %U";
+          genericName = "Media Player (Enqueue)";
+          icon = "vlc";
+
+          mimeType = [
+            "video/*"
+            "audio/*"
+          ];
+
+          name = "Add to VLC Playlist";
+          terminal = false;
+          type = "Application";
+        };
+
+        vlc-new-window = {
+          categories = [
+            "AudioVideo"
+            "Player"
+          ];
+
+          exec = "vlc --no-one-instance --no-one-instance-when-started-from-file %U";
+          genericName = "Media Player (New Window)";
+          icon = "vlc";
+
+          mimeType = [
+            "video/*"
+            "audio/*"
+          ];
+
+          name = "Open in New VLC Window";
+          terminal = false;
+          type = "Application";
         };
       };
+    };
   };
 }

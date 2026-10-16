@@ -1,8 +1,7 @@
 # Workmux Git Worktree Multiplexer Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -39,8 +38,34 @@
       {
         home.packages = lib.optional (workmuxPkg != null) workmuxPkg;
 
-        xdg.configFile."workmux/config.yaml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/workmux/config.yaml";
+        xdg.configFile."television/cable/git-worktrees.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "git-worktrees"
+            description = "List and switch between git worktrees"
+            requirements = ["git"]
+
+            [source]
+            command = "git worktree list --porcelain | grep '^worktree' | cut -d' ' -f2-"
+
+            [preview]
+            command = "cd '{}' && git log --oneline -10 --color=always && echo && git status --short"
+
+            [keybindings]
+            enter = "actions:cd"
+            ctrl-d = "actions:remove"
+
+            [actions.cd]
+            description = "Change to the selected worktree"
+            command = "cd {} && $SHELL"
+            mode = "execute"
+
+            [actions.remove]
+            description = "Remove the selected worktree"
+            command = "git worktree remove {}"
+            mode = "execute"
+          '';
 
         # Television cable for workmux
         xdg.configFile."television/cable/workmux.toml".text =
@@ -72,34 +97,8 @@
             mode = "fork"
           '';
 
-        xdg.configFile."television/cable/git-worktrees.toml".text =
-          # toml
-          ''
-            [metadata]
-            name = "git-worktrees"
-            description = "List and switch between git worktrees"
-            requirements = ["git"]
-
-            [source]
-            command = "git worktree list --porcelain | grep '^worktree' | cut -d' ' -f2-"
-
-            [preview]
-            command = "cd '{}' && git log --oneline -10 --color=always && echo && git status --short"
-
-            [keybindings]
-            enter = "actions:cd"
-            ctrl-d = "actions:remove"
-
-            [actions.cd]
-            description = "Change to the selected worktree"
-            command = "cd {} && $SHELL"
-            mode = "execute"
-
-            [actions.remove]
-            description = "Remove the selected worktree"
-            command = "git worktree remove {}"
-            mode = "execute"
-          '';
+        xdg.configFile."workmux/config.yaml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/workmux/config.yaml";
       };
   };
 }

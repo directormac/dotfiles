@@ -47,39 +47,34 @@
 
         programs.television = {
           enable = true;
-          enableZshIntegration = true;
           enableBashIntegration = true;
+          enableZshIntegration = true;
         };
 
         systemd.user.services.update-cli-caches = {
-          Unit.Description = "Update tldr pages and television channels";
           Service = {
-            Type = "oneshot";
             ExecStart = [
               "${pkgs.tealdeer}/bin/tldr --update"
               "${pkgs.television}/bin/tv update-channels"
             ];
+
+            Type = "oneshot";
           };
+
+          Unit.Description = "Update tldr pages and television channels";
         };
 
         systemd.user.timers.update-cli-caches = {
-          Unit.Description = "Weekly tldr/television cache update";
           Install.WantedBy = [ "timers.target" ];
+
           Timer = {
             OnCalendar = "weekly";
             Persistent = true;
             RandomizedDelaySec = "1h";
           };
+
+          Unit.Description = "Weekly tldr/television cache update";
         };
-
-        xdg.configFile."television/config.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/config.toml";
-
-        xdg.configFile."television/tv-slim.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/tv-slim.toml";
-
-        xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/themes/catppuccin-mocha-mauve.toml";
 
         xdg.configFile."television/cable/flake-inputs".text =
           # toml
@@ -99,17 +94,49 @@
             mode = "execute"
           '';
 
-        # Unified Nix search
-        xdg.configFile."television/cable/nix.toml".text =
+        # Hyprland clients
+        xdg.configFile."television/cable/hypr-clients.toml".text =
           # toml
           ''
             [metadata]
-            name = "nix"
-            description = "Fuzzy search Nixpkgs packages, NixOS options, and Home Manager options"
-            requirements = ["nix-search-tv"]
+            name = "hypr-clients"
+            description = "Fuzzy search Hyprland windows with JSON preview"
+            requirements = ["hyprctl", "jq"]
 
             [source]
-            command = "${pkgs.nix-search-tv}/bin/nix-search-tv print"
+            command = "hyprctl clients -j | jq -r '.[] | [.workspace.id, .class, .title, .address] | @tsv'"
+            display = "{split:\t:0}  │  {split:\t:1}"
+            output = "{split:\t:3}"
+
+            [preview]
+            command = "hyprctl clients -j | jq -r --arg addr '{}' '.[] | select(.address == $addr) | \"Class: \" + .class, \"Initial Class: \" + .initialClass, \"Title: \" + .title, \"Initial Title: \" + .initialTitle, \"Workspace: \" + (.workspace.id | tostring) + \" (\" + .workspace.name + \")\", \"PID: \" + (.pid | tostring), \"Floating: \" + (.floating | tostring), \"Monitor: \" + (.monitor | tostring), \"Size: \" + (.size[0] | tostring) + \"x\" + (.size[1] | tostring), \"At: \" + (.at[0] | tostring) + \", \" + (.at[1] | tostring), \"Address: \" + .address'"
+
+            [keybindings]
+            enter = "actions:print_json"
+            ctrl-f = "actions:focus"
+
+            [actions.print_json]
+            description = "Print selected client JSON to stdout"
+            command = "hyprctl clients -j | jq --arg addr '{}' '.[] | select(.address == $addr)'"
+            mode = "execute"
+
+            [actions.focus]
+            description = "Focus the selected window"
+            command = "hyprctl dispatch focuswindow address:{}"
+            mode = "execute"
+          '';
+
+        # Nix options only
+        xdg.configFile."television/cable/nix-options.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "nix-options"
+            description = "Fuzzy search NixOS and Home Manager options via nix-search-tv"
+            requirements = ["nix-search-tv", "grep"]
+
+            [source]
+            command = "${pkgs.nix-search-tv}/bin/nix-search-tv print | ${pkgs.gnugrep}/bin/grep -E '^(nixos/|home-manager/)'"
             display = "{split:/ :0}  │  {split:/ :1}"
             output = "{split:/ :1}"
 
@@ -120,21 +147,15 @@
             enter = "actions:copy"
             ctrl-y = "actions:copy"
             ctrl-s = "actions:source"
-            ctrl-h = "actions:homepage"
 
             [actions.copy]
-            description = "Copy package/option name to clipboard"
+            description = "Copy option name to clipboard"
             command = "echo -n '{split:/ :1}' | wl-copy"
             mode = "execute"
 
             [actions.source]
-            description = "Open source declaration in browser"
+            description = "Open option declaration in browser"
             command = "url=$(${pkgs.nix-search-tv}/bin/nix-search-tv source '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
-            mode = "fork"
-
-            [actions.homepage]
-            description = "Open homepage in browser"
-            command = "url=$(${pkgs.nix-search-tv}/bin/nix-search-tv homepage '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
             mode = "fork"
           '';
 
@@ -177,17 +198,17 @@
             mode = "fork"
           '';
 
-        # Nix options only
-        xdg.configFile."television/cable/nix-options.toml".text =
+        # Unified Nix search
+        xdg.configFile."television/cable/nix.toml".text =
           # toml
           ''
             [metadata]
-            name = "nix-options"
-            description = "Fuzzy search NixOS and Home Manager options via nix-search-tv"
-            requirements = ["nix-search-tv", "grep"]
+            name = "nix"
+            description = "Fuzzy search Nixpkgs packages, NixOS options, and Home Manager options"
+            requirements = ["nix-search-tv"]
 
             [source]
-            command = "${pkgs.nix-search-tv}/bin/nix-search-tv print | ${pkgs.gnugrep}/bin/grep -E '^(nixos/|home-manager/)'"
+            command = "${pkgs.nix-search-tv}/bin/nix-search-tv print"
             display = "{split:/ :0}  │  {split:/ :1}"
             output = "{split:/ :1}"
 
@@ -198,15 +219,21 @@
             enter = "actions:copy"
             ctrl-y = "actions:copy"
             ctrl-s = "actions:source"
+            ctrl-h = "actions:homepage"
 
             [actions.copy]
-            description = "Copy option name to clipboard"
+            description = "Copy package/option name to clipboard"
             command = "echo -n '{split:/ :1}' | wl-copy"
             mode = "execute"
 
             [actions.source]
-            description = "Open option declaration in browser"
+            description = "Open source declaration in browser"
             command = "url=$(${pkgs.nix-search-tv}/bin/nix-search-tv source '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+            mode = "fork"
+
+            [actions.homepage]
+            description = "Open homepage in browser"
+            command = "url=$(${pkgs.nix-search-tv}/bin/nix-search-tv homepage '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
             mode = "fork"
           '';
 
@@ -250,37 +277,14 @@
             mode = "execute"
           '';
 
-        # Hyprland clients
-        xdg.configFile."television/cable/hypr-clients.toml".text =
-          # toml
-          ''
-            [metadata]
-            name = "hypr-clients"
-            description = "Fuzzy search Hyprland windows with JSON preview"
-            requirements = ["hyprctl", "jq"]
+        xdg.configFile."television/config.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/config.toml";
 
-            [source]
-            command = "hyprctl clients -j | jq -r '.[] | [.workspace.id, .class, .title, .address] | @tsv'"
-            display = "{split:\t:0}  │  {split:\t:1}"
-            output = "{split:\t:3}"
+        xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/themes/catppuccin-mocha-mauve.toml";
 
-            [preview]
-            command = "hyprctl clients -j | jq -r --arg addr '{}' '.[] | select(.address == $addr) | \"Class: \" + .class, \"Initial Class: \" + .initialClass, \"Title: \" + .title, \"Initial Title: \" + .initialTitle, \"Workspace: \" + (.workspace.id | tostring) + \" (\" + .workspace.name + \")\", \"PID: \" + (.pid | tostring), \"Floating: \" + (.floating | tostring), \"Monitor: \" + (.monitor | tostring), \"Size: \" + (.size[0] | tostring) + \"x\" + (.size[1] | tostring), \"At: \" + (.at[0] | tostring) + \", \" + (.at[1] | tostring), \"Address: \" + .address'"
-
-            [keybindings]
-            enter = "actions:print_json"
-            ctrl-f = "actions:focus"
-
-            [actions.print_json]
-            description = "Print selected client JSON to stdout"
-            command = "hyprctl clients -j | jq --arg addr '{}' '.[] | select(.address == $addr)'"
-            mode = "execute"
-
-            [actions.focus]
-            description = "Focus the selected window"
-            command = "hyprctl dispatch focuswindow address:{}"
-            mode = "execute"
-          '';
+        xdg.configFile."television/tv-slim.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/tv-slim.toml";
       };
 
     persistHome.directories = [

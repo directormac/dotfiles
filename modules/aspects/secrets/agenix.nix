@@ -1,8 +1,6 @@
 # Secrets Management via Agenix & Agenix-Rekey Leaf Aspect
 {
   lib,
-  core,
-  den,
   inputs,
   ...
 }:

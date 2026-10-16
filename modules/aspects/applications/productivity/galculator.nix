@@ -1,5 +1,5 @@
 # Galculator Calculator Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.productivity.galculator = {
     homeManager =

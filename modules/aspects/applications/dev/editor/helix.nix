@@ -1,5 +1,5 @@
 # Helix Editor Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.editor.helix = {
     homeManager =
@@ -12,10 +12,8 @@
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
       in
       {
+        home.file.".config/helix".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/helix";
         programs.helix.enable = true;
-
-        home.file.".config/helix".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/helix";
       };
 
     persistHome.directories = [

@@ -1,5 +1,5 @@
 # Lua Language Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.lang.lua = {
     homeManager =

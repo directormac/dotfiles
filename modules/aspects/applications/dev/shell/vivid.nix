@@ -1,5 +1,5 @@
 # Vivid LS_COLORS Generator Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.shell.vivid = {
     homeManager =
@@ -8,11 +8,11 @@
         home.packages = [ pkgs.vivid ];
 
         programs.vivid = {
-          enable = true;
-          enableZshIntegration = true;
-          enableBashIntegration = true;
           activeTheme = "catppuccin-mocha";
           colorMode = "24-bit";
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
         };
       };
   };

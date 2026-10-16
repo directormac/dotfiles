@@ -1,8 +1,7 @@
 # Node.js, Bun, Deno & VitePlus Language Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {

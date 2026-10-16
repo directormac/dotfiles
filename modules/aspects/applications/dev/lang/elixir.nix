@@ -1,5 +1,5 @@
 # Elixir & BEAM Language Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.lang.elixir = {
     homeManager =

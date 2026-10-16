@@ -1,5 +1,5 @@
 # Kitty Terminal Emulator Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.terminals.kitty = {
     nixos =
@@ -22,8 +22,8 @@
       in
       {
         home.file.".config/kitty" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/kitty";
           recursive = true;
+          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/kitty";
         };
 
         home.packages = [

@@ -1,5 +1,5 @@
 # SSH Client Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.security.ssh = {
     homeManager = {

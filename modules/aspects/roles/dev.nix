@@ -41,6 +41,9 @@
       dev.lang.python
       dev.lang.cc
 
+      # Tools
+      dev.tools.sqlite
+
       # Developer Networking & Security
       dev.networking.winbox
       dev.networking.wireguard

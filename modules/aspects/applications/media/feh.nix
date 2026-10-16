@@ -1,5 +1,5 @@
 # feh Image Viewer Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.media.feh = {
     homeManager =

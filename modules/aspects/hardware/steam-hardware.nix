@@ -1,5 +1,5 @@
 # Hardware Steam & Gamepad Udev Rules Aspect
-{ den, ... }:
+_:
 {
   den.aspects.hardware.steam-hardware = {
     nixos =

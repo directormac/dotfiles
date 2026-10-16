@@ -1,9 +1,9 @@
 # Hardware Bluetooth Aspect
-{ den, ... }:
+_:
 {
   den.aspects.hardware.bluetooth = {
     nixos =
-      { host, lib, ... }:
+      { lib, host, ... }:
       {
         hardware.bluetooth.enable = lib.mkDefault true;
         services.blueman.enable = lib.mkDefault (host.isWorkstation or true);

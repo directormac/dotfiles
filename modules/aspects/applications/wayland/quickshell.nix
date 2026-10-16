@@ -1,5 +1,5 @@
 # Quickshell Wayland Desktop Shell Toolkit Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.wayland.quickshell = {
     nixos =

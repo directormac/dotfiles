@@ -1,8 +1,7 @@
 # Antigravity CLI AI Agent Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -16,18 +15,17 @@
       }:
       let
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-        llmPkgs =
-          pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
+        llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
+        home.file.".gemini/antigravity-cli/settings.json" = {
+          force = true;
+          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/antigravity-cli/settings.json";
+        };
+
         programs.antigravity-cli = lib.mkIf (llmPkgs ? antigravity-cli) {
           enable = true;
           package = llmPkgs.antigravity-cli;
-        };
-
-        home.file.".gemini/antigravity-cli/settings.json" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/antigravity-cli/settings.json";
-          force = true;
         };
       };
 

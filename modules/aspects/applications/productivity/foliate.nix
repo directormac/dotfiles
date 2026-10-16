@@ -1,5 +1,5 @@
 # Foliate E-Book Reader Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.productivity.foliate = {
     homeManager =

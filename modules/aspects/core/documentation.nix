@@ -1,17 +1,18 @@
 # Core Documentation & Man Pages Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.documentation = {
     nixos =
       { pkgs, ... }:
       {
         documentation = {
-          enable = true;
-          doc.enable = true;
           dev.enable = true;
+          doc.enable = true;
+          enable = true;
+
           man = {
-            enable = true;
             cache.enable = true;
+            enable = true;
           };
         };
 

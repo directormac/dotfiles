@@ -7,11 +7,12 @@
         home.packages = [ pkgs.fzf ];
 
         programs.fzf = {
-          enable = true;
+          changeDirWidget = {
+            options = [ ];
+            command = "fd --type d --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
+          };
+
           colors = { };
-          enableBashIntegration = true;
-          enableZshIntegration = true;
-          tmux.enableShellIntegration = true;
 
           defaultOptions = [
             "--prompt='> '"
@@ -30,25 +31,27 @@
             "--color=border:#6C7086,label:#CDD6F4,query:#F5E0DC"
           ];
 
-          changeDirWidget = {
-            command = "fd --type d --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
-            options = [ ];
-          };
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
 
           fileWidget = {
-            command = "fd --type f --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
             options = [ ];
+            command = "fd --type f --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
           };
 
           historyWidget = {
-            command = null;
             options = [
               "--layout=reverse"
               "--bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'"
               "--color header:italic"
               "--header 'Press CTRL-Y to copy command into clipboard'"
             ];
+
+            command = null;
           };
+
+          tmux.enableShellIntegration = true;
         };
       };
   };

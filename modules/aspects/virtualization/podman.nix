@@ -1,24 +1,25 @@
 # Virtualization Podman & Lazydocker Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.virtualization.podman = {
     nixos =
       { lib, pkgs, ... }:
       {
-        virtualisation.podman = {
-          enable = lib.mkDefault true;
-          dockerCompat = true;
-          dockerSocket.enable = true;
-          autoPrune = {
-            enable = true;
-            dates = "weekly";
-          };
-        };
-
         environment.systemPackages = with pkgs; [
           podman-compose
           lazydocker
         ];
+
+        virtualisation.podman = {
+          autoPrune = {
+            dates = "weekly";
+            enable = true;
+          };
+
+          dockerCompat = true;
+          dockerSocket.enable = true;
+          enable = lib.mkDefault true;
+        };
       };
   };
 }

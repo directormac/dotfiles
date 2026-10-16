@@ -16,59 +16,31 @@
       let
         facterCards = lib.attrByPath [ "facter" "report" "hardware" "graphics_card" ] [ ] config;
         facterSounds = lib.attrByPath [ "facter" "report" "hardware" "sound" ] [ ] config;
-
-        nvidiaCard = lib.lists.findFirst (
-          card:
-          (card ? vendor && card.vendor ? name && card.vendor.name == "nVidia Corporation")
-          || (card ? vendor && card.vendor ? hex && card.vendor.hex == "10de")
-        ) null facterCards;
-
-        nvidiaGpuDeviceID =
-          if nvidiaCard != null && nvidiaCard ? vendor && nvidiaCard ? device then
-            "${nvidiaCard.vendor.hex}:${nvidiaCard.device.hex}"
-          else
-            "10de:2203";
-
         nvidiaAudioController = lib.lists.findFirst (
           card:
           (card ? vendor && card.vendor ? name && card.vendor.name == "nVidia Corporation")
           || (card ? vendor && card.vendor ? hex && card.vendor.hex == "10de")
         ) null facterSounds;
-
         nvidiaAudioDeviceID =
-          if nvidiaAudioController != null && nvidiaAudioController ? vendor && nvidiaAudioController ? device then
+          if
+            nvidiaAudioController != null && nvidiaAudioController ? vendor && nvidiaAudioController ? device
+          then
             "${nvidiaAudioController.vendor.hex}:${nvidiaAudioController.device.hex}"
           else
             "10de:1aef";
+        nvidiaCard = lib.lists.findFirst (
+          card:
+          (card ? vendor && card.vendor ? name && card.vendor.name == "nVidia Corporation")
+          || (card ? vendor && card.vendor ? hex && card.vendor.hex == "10de")
+        ) null facterCards;
+        nvidiaGpuDeviceID =
+          if nvidiaCard != null && nvidiaCard ? vendor && nvidiaCard ? device then
+            "${nvidiaCard.vendor.hex}:${nvidiaCard.device.hex}"
+          else
+            "10de:2203";
       in
       {
-        services.udev.extraRules = ''
-          SUBSYSTEM=="vfio", OWNER="root", GROUP="kvm"
-          SUBSYSTEM=="kvmfr", OWNER="root", GROUP="kvm", MODE="0660"
-        '';
-
-        systemd.services.nvidia-powerd.enable = false;
-
         boot = {
-          kernelParams = [
-            "vfio-pci.ids=${nvidiaGpuDeviceID},${nvidiaAudioDeviceID}"
-            "vfio_iommu_type1.allow_unsafe_interrupts=1"
-            "kvm.ignore_msrs=1"
-            "kvm.report_ignored_msrs=0"
-            "pcie_acs_override=downstream,multifunction"
-          ];
-
-          initrd.kernelModules = [
-            "vfio_pci"
-            "vfio"
-            "vfio_iommu_type1"
-            "kvmfr"
-          ];
-
-          extraModulePackages = [
-            config.boot.kernelPackages.kvmfr
-          ];
-
           blacklistedKernelModules = [
             "nvidia"
             "nvidia_modeset"
@@ -88,12 +60,38 @@
             blacklist nouveau
             options nouveau modeset=0
           '';
+
+          extraModulePackages = [
+            config.boot.kernelPackages.kvmfr
+          ];
+
+          initrd.kernelModules = [
+            "vfio_pci"
+            "vfio"
+            "vfio_iommu_type1"
+            "kvmfr"
+          ];
+
+          kernelParams = [
+            "vfio-pci.ids=${nvidiaGpuDeviceID},${nvidiaAudioDeviceID}"
+            "vfio_iommu_type1.allow_unsafe_interrupts=1"
+            "kvm.ignore_msrs=1"
+            "kvm.report_ignored_msrs=0"
+            "pcie_acs_override=downstream,multifunction"
+          ];
         };
 
         environment.systemPackages = with pkgs; [
           looking-glass-client
           pciutils
         ];
+
+        services.udev.extraRules = ''
+          SUBSYSTEM=="vfio", OWNER="root", GROUP="kvm"
+          SUBSYSTEM=="kvmfr", OWNER="root", GROUP="kvm", MODE="0660"
+        '';
+
+        systemd.services.nvidia-powerd.enable = false;
       };
   };
 }

@@ -1,5 +1,5 @@
 # Vim Editor Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.editor.vim = {
     homeManager =
@@ -13,8 +13,7 @@
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
       in
       {
-        home.file.".config/vim".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/vim";
+        home.file.".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/vim";
 
         programs.vim = {
           enable = true;

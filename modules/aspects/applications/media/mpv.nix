@@ -1,5 +1,5 @@
 # MPV Media Player Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.media.mpv = {
     nixos =
@@ -18,19 +18,24 @@
           pkgs.mpvc
         ];
 
-        stylix.targets.mpv.enable = lib.mkDefault true;
-
         programs.mpv = {
-          enable = true;
           config = {
-            profile = "high-quality";
-            ytdl-format = "bestvideo+bestaudio";
+            border = false;
             cache = "yes";
             demuxer-max-bytes = "400M";
             osc = false;
-            border = false;
+            profile = "high-quality";
+            ytdl-format = "bestvideo+bestaudio";
           };
+
+          enable = true;
+
           package = pkgs.mpv.override {
+            mpv-unwrapped = pkgs.mpv-unwrapped.override {
+              ffmpeg = pkgs.ffmpeg-full;
+              waylandSupport = true;
+            };
+
             scripts = with pkgs.mpvScripts; [
               autoload
               autosub
@@ -43,12 +48,10 @@
               webtorrent-mpv-hook
               youtube-upnext
             ];
-            mpv-unwrapped = pkgs.mpv-unwrapped.override {
-              waylandSupport = true;
-              ffmpeg = pkgs.ffmpeg-full;
-            };
           };
         };
+
+        stylix.targets.mpv.enable = lib.mkDefault true;
       };
 
     persistHome.directories = [

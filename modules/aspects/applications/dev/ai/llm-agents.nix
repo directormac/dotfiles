@@ -1,18 +1,11 @@
 # LLM Agents Suite Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   den.aspects.applications.dev.ai.llm-agents = {
-    nixpkgs-overlays =
-      _:
-      lib.optionals (inputs ? llm-agents && inputs.llm-agents ? overlays) [
-        inputs.llm-agents.overlays.shared-nixpkgs
-      ];
-
     homeManager =
       { pkgs, ... }:
       let
@@ -35,5 +28,11 @@
           }
         );
       };
+
+    nixpkgs-overlays =
+      _:
+      lib.optionals (inputs ? llm-agents && inputs.llm-agents ? overlays) [
+        inputs.llm-agents.overlays.shared-nixpkgs
+      ];
   };
 }

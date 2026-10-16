@@ -1,16 +1,14 @@
 # MangoWM Dynamic Tiling Wayland Compositor Leaf Aspect
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
     mangowm = {
-      url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:mangowm/mango";
     };
   };
 
@@ -24,20 +22,21 @@
 
         programs.mango.enable = lib.mkIf (inputs ? mangowm) true;
 
-        xdg.portal.wlr = {
-          enable = true;
-          settings = {
-            screencast = {
-              max_fps = 60;
-              chooser_type = "simple";
-              chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
-            };
-          };
-        };
-
         systemd.user.services.xdg-desktop-portal-wlr.path = with pkgs; [
           slurp
         ];
+
+        xdg.portal.wlr = {
+          settings = {
+            screencast = {
+              chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
+              chooser_type = "simple";
+              max_fps = 60;
+            };
+          };
+
+          enable = true;
+        };
       };
 
     homeManager =
@@ -51,24 +50,47 @@
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
       in
       {
+        home.file.".config/mango/bind.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/bind.toml";
+
+        home.file.".config/mango/config.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/config.toml";
+
+        home.file.".config/mango/rule.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/rule.toml";
+
+        home.file.".config/mango/tag.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/tag.toml";
+
+        home.packages = with pkgs; [
+          slurp
+          wl-clipboard
+          libnotify
+        ];
+
         imports = lib.optionals (inputs ? mangowm) [
           inputs.mangowm.hmModules.mango
         ];
 
-        wayland.windowManager.mango = lib.mkIf (inputs ? mangowm) {
-          enable = true;
-          systemd = {
-            enable = true;
-            xdgAutostart = true;
-            variables = [
-              "--all"
-            ];
-            extraCommands = [
-              "systemctl --user reset-failed"
-              "systemctl --user start mango-session.target"
-            ];
+        systemd.user.services.mango-session-shutdown = {
+          Install = {
+            WantedBy = [ "mango-session.target" ];
           };
 
+          Service = {
+            ExecStop = "${pkgs.systemd}/bin/systemctl --user --no-block stop graphical-session-pre.target mango-session.target";
+            RemainAfterExit = true;
+            Type = "oneshot";
+          };
+
+          Unit = {
+            DefaultDependencies = false;
+            Description = "Clean up graphical-session targets when Mango WM exits";
+            StopWhenUnneeded = true;
+          };
+        };
+
+        wayland.windowManager.mango = lib.mkIf (inputs ? mangowm) {
           settings = {
             source_optional = [
               "./config.toml"
@@ -83,16 +105,24 @@
               wl-paste --watch cliphist store &
               wl-paste --type image --watch cliphist store &
             '';
-        };
 
-        home.file.".config/mango/config.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/config.toml";
-        home.file.".config/mango/bind.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/bind.toml";
-        home.file.".config/mango/rule.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/rule.toml";
-        home.file.".config/mango/tag.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/tag.toml";
+          enable = true;
+
+          systemd = {
+            enable = true;
+
+            extraCommands = [
+              "systemctl --user reset-failed"
+              "systemctl --user start mango-session.target"
+            ];
+
+            variables = [
+              "--all"
+            ];
+
+            xdgAutostart = true;
+          };
+        };
 
         xdg.configFile."television/cable/mango-clients.toml".text =
           # toml
@@ -133,28 +163,6 @@
             chooser_type=simple
             chooser_cmd=${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or
           '';
-
-        home.packages = with pkgs; [
-          slurp
-          wl-clipboard
-          libnotify
-        ];
-
-        systemd.user.services.mango-session-shutdown = {
-          Unit = {
-            Description = "Clean up graphical-session targets when Mango WM exits";
-            DefaultDependencies = false;
-            StopWhenUnneeded = true;
-          };
-          Service = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            ExecStop = "${pkgs.systemd}/bin/systemctl --user --no-block stop graphical-session-pre.target mango-session.target";
-          };
-          Install = {
-            WantedBy = [ "mango-session.target" ];
-          };
-        };
       };
 
     persistHome.directories = [

@@ -1,5 +1,5 @@
 # Git Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.git.git = {
     homeManager =
@@ -11,27 +11,6 @@
         ];
 
         programs.git = {
-          enable = true;
-
-          lfs = {
-            enable = true;
-            skipSmudge = true;
-          };
-
-          ignores = [
-            "*.o"
-            "*.out"
-            "*.result"
-            "result"
-            ".env"
-            "*.env"
-            ".secrets/master.age"
-            ".DS_Store"
-            "Thumbs.db"
-            "*~"
-            "*.swp"
-          ];
-
           settings = {
             alias = {
               af = "!git add $(git ls-files -m -o --exclude-standard | sk -m)";
@@ -67,6 +46,27 @@
               email = "mac@mkra.dev";
               name = "Mark Asena";
             };
+          };
+
+          enable = true;
+
+          ignores = [
+            "*.o"
+            "*.out"
+            "*.result"
+            "result"
+            ".env"
+            "*.env"
+            ".secrets/master.age"
+            ".DS_Store"
+            "Thumbs.db"
+            "*~"
+            "*.swp"
+          ];
+
+          lfs = {
+            enable = true;
+            skipSmudge = true;
           };
         };
       };

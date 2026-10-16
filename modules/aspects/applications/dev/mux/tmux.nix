@@ -1,8 +1,7 @@
 # Tmux Aspect with Plugins, Status Bar, and Systemd Socket Autostart
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -12,17 +11,6 @@
   };
 
   den.aspects.applications.dev.mux.tmux = {
-    nixpkgs-overlays =
-      _:
-      lib.optionals (inputs ? tmux-nerd-font-window-name) [
-        (final: prev: {
-          tmuxPlugins = prev.tmuxPlugins // {
-            tmux-nerd-font-window-name =
-              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default;
-          };
-        })
-      ];
-
     nixos =
       { pkgs, ... }:
       {
@@ -40,66 +28,46 @@
         ...
       }:
       let
-        tmuxPkg = pkgs.local.tmux or pkgs.tmux;
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         dotfilesTmux = "${dotsPath}/tmux";
-
+        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         kanjiIndex = "#{?#{==:#I,1},一,#{==:#I,2},二,#{==:#I,3},三,#{==:#I,4},四,#{==:#I,5},五,#{==:#I,6},六,#{==:#I,7},七,#{==:#I,8},八,#{==:#I,9},九,#{==:#I,10},十,#I}";
-        windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󱚟*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
-
         tmux-fzf-links = pkgs.tmuxPlugins.mkTmuxPlugin {
           pluginName = "tmux-fzf-links";
-          version = "1.5.1";
           rtpFilePath = "fzf-links.tmux";
+
           src = pkgs.fetchFromGitHub {
             owner = "alberti42";
             repo = "tmux-fzf-links";
-            tag = "1.5.1";
             sha256 = "1jb9zvnzn494m03b6kizazpibdhqvfjywy9shs1p838jafbn6f5c";
+            tag = "1.5.1";
           };
-        };
 
+          version = "1.5.1";
+        };
         tmux-menus = pkgs.tmuxPlugins.mkTmuxPlugin {
           pluginName = "tmux-menus";
-          version = "0-unstable-2026-10-02";
           rtpFilePath = "menus.tmux";
+
           src = pkgs.fetchFromGitHub {
+            hash = "sha256-C2rFzuR12ap2ytX03XaBycNia3vzaexFdOFM3qrSsUw=";
             owner = "jaclu";
             repo = "tmux-menus";
             rev = "30a18ec5e949db228f1596937880e494a7be49ef";
-            hash = "sha256-C2rFzuR12ap2ytX03XaBycNia3vzaexFdOFM3qrSsUw=";
           };
+
+          version = "0-unstable-2026-10-02";
         };
+        tmuxPkg = pkgs.local.tmux or pkgs.tmux;
+        windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󱚟*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
       in
       {
-        xdg.configFile = {
-          "tmux/tmux-nerd-font-window-name.yml".source =
-            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/tmux-nerd-font-window-name.yml";
-
-          "tmux/status.tmux.conf".source =
-            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/status.tmux.conf";
-
-          "tmux/scripts" = {
-            source = config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/scripts";
-            force = true;
-          };
-        };
-
         programs.tmux = {
-          enable = true;
-          package = tmuxPkg;
-          prefix = "C-a";
-          shortcut = "a";
-          clock24 = true;
-          baseIndex = 1;
-          keyMode = "vi";
-          focusEvents = true;
           aggressiveResize = true;
-          mouse = true;
-          escapeTime = 100;
-          historyLimit = 1000000;
+          baseIndex = 1;
+          clock24 = true;
           customPaneNavigationAndResize = true;
-          terminal = "tmux-256color";
+          enable = true;
+          escapeTime = 100;
 
           extraConfig =
             # sh
@@ -186,18 +154,24 @@
               source -F "$HOME/.config/tmux/status.tmux.conf"
             '';
 
+          focusEvents = true;
+          historyLimit = 1000000;
+          keyMode = "vi";
+          mouse = true;
+          package = tmuxPkg;
+
           plugins = [
             {
-              plugin = pkgs.tmuxPlugins.tmux-nerd-font-window-name;
               extraConfig =
                 # sh
                 ''
                   set -g @tmux-nerd-font-window-name-config-file "$HOME/.config/tmux/tmux-nerd-font-window-name.yml"
                   set -g automatic-rename-format "#{window_icon}"
                 '';
+
+              plugin = pkgs.tmuxPlugins.tmux-nerd-font-window-name;
             }
             {
-              plugin = tmux-fzf-links;
               extraConfig =
                 # sh
                 ''
@@ -206,20 +180,22 @@
                   set -g @fzf-links-browser-open-cmd "zen-beta '%url'"
                   set -g @fzf-links-editor-open-cmd "tmux new-window -n 'nvim' nvim +%line '%file'"
                 '';
+
+              plugin = tmux-fzf-links;
             }
             {
-              plugin = tmux-menus;
               extraConfig =
                 # sh
                 ''
                   set -g @menus_use_cache "No"
                   set -g @menus_trigger '\'
                 '';
+
+              plugin = tmux-menus;
             }
           ]
           ++ (with pkgs.tmuxPlugins; [
             {
-              plugin = catppuccin;
               extraConfig =
                 # sh
                 ''
@@ -242,9 +218,10 @@
                   set -g @catppuccin_window_current_number ""
                   set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold]  ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] ${windowIcon} }"
                 '';
+
+              plugin = catppuccin;
             }
             {
-              plugin = resurrect;
               extraConfig =
                 # sh
                 ''
@@ -258,28 +235,32 @@
                   set -g @resurrect-save "C-S"
                   set -g @resurrect-restore "C-R"
                 '';
+
+              plugin = resurrect;
             }
             {
-              plugin = continuum;
               extraConfig =
                 # sh
                 ''
                   set -g @continuum-save-interval "5"
                   set -g @continuum-restore "on"
                 '';
+
+              plugin = continuum;
             }
           ]);
+
+          prefix = "C-a";
+          shortcut = "a";
+          terminal = "tmux-256color";
         };
 
         systemd.user.services.tmux-server = {
-          Unit = {
-            Description = "tmux server (continuum auto-restore)";
-            Documentation = "man:tmux(1)";
-            After = [ "graphical-session.target" ];
-          };
+          Install.WantedBy = [ "graphical-session.target" ];
+
           Service = {
-            Type = lib.mkDefault "forking";
             Environment = [ "TMUX_TMPDIR=%t" ];
+
             ExecStart = lib.mkDefault "${pkgs.writeShellScript "tmux-server" ''
               if [ -z "''${WAYLAND_DISPLAY:-}" ]; then
                 i=0
@@ -299,11 +280,42 @@
               fi
               exec ${tmuxPkg}/bin/tmux start-server
             ''}";
+
             KillMode = lib.mkDefault "mixed";
+            Type = lib.mkDefault "forking";
           };
-          Install.WantedBy = [ "graphical-session.target" ];
+
+          Unit = {
+            After = [ "graphical-session.target" ];
+            Description = "tmux server (continuum auto-restore)";
+            Documentation = "man:tmux(1)";
+          };
+        };
+
+        xdg.configFile = {
+          "tmux/scripts" = {
+            force = true;
+            source = config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/scripts";
+          };
+
+          "tmux/status.tmux.conf".source =
+            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/status.tmux.conf";
+
+          "tmux/tmux-nerd-font-window-name.yml".source =
+            config.lib.file.mkOutOfStoreSymlink "${dotfilesTmux}/tmux-nerd-font-window-name.yml";
         };
       };
+
+    nixpkgs-overlays =
+      _:
+      lib.optionals (inputs ? tmux-nerd-font-window-name) [
+        (final: prev: {
+          tmuxPlugins = prev.tmuxPlugins // {
+            tmux-nerd-font-window-name =
+              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default;
+          };
+        })
+      ];
 
     persistHome.directories = [
       ".local/share/tmux"

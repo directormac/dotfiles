@@ -1,21 +1,18 @@
 # Ghostty Terminal Emulator Leaf Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
     ghostty = {
-      url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:ghostty-org/ghostty";
     };
   };
 
   den.aspects.applications.terminals.ghostty = {
-    nixpkgs-overlays = _: lib.optional (inputs ? ghostty && inputs.ghostty ? overlays && inputs.ghostty.overlays ? default) inputs.ghostty.overlays.default;
-
     nixos =
       { pkgs, ... }:
       {
@@ -34,26 +31,33 @@
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
       in
       {
-        programs.ghostty = {
-          enable = true;
-          enableZshIntegration = true;
-          enableBashIntegration = true;
-          installBatSyntax = true;
-          installVimSyntax = true;
-        };
-
         home.file.".config/ghostty" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/ghostty";
           recursive = true;
+          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/ghostty";
         };
 
         home.file.".local/bin/gshader" = {
+          executable = true;
+
           text = ''
             #!/usr/bin/env bash
             exec ${dotsPath}/ghostty/shader.sh "$@"
           '';
-          executable = true;
+        };
+
+        programs.ghostty = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+          installBatSyntax = true;
+          installVimSyntax = true;
         };
       };
+
+    nixpkgs-overlays =
+      _:
+      lib.optional (
+        inputs ? ghostty && inputs.ghostty ? overlays && inputs.ghostty.overlays ? default
+      ) inputs.ghostty.overlays.default;
   };
 }

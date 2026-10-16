@@ -1,13 +1,13 @@
 # GitHub CLI Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.git.github = {
     homeManager =
       { pkgs, ... }:
       {
         programs.gh = {
-          enable = true;
           settings.git_protocol = "ssh";
+          enable = true;
 
           extensions = with pkgs; [
             gh-dash

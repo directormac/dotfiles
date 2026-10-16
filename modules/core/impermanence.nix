@@ -36,6 +36,11 @@
       programs.fuse.userAllowOther = true;
     };
 
+    cacheHome.directories = [
+      "Downloads"
+      ".local/share/nix"
+    ];
+
     # Sane default home persistence directories
     persistHome.directories = [
       "Desktop"
@@ -53,11 +58,6 @@
         directory = ".local/share/keyrings";
         mode = "0700";
       }
-    ];
-
-    cacheHome.directories = [
-      "Downloads"
-      ".local/share/nix"
     ];
   };
 
@@ -102,36 +102,34 @@
 
   # Btrfs rollback aspect: wipes ephemeral root and restores root-blank snapshot on early boot
   den.aspects.impermanence.rollback-btrfs = {
-    nixos =
-      _:
-      {
-        boot.initrd.systemd.services.rollback-root = {
-          after = [ "initrd-root-device.target" ];
-          before = [ "sysroot.mount" ];
-          description = "Roll the root subvolume back to empty snapshot";
+    nixos = _: {
+      boot.initrd.systemd.services.rollback-root = {
+        after = [ "initrd-root-device.target" ];
+        before = [ "sysroot.mount" ];
+        description = "Roll the root subvolume back to empty snapshot";
 
-          script = ''
-            if [ ! -b /dev/disk/by-label/nixos ]; then
-              echo "No btrfs filesystem labeled 'nixos' found (e.g. running in test VM), skipping rollback."
-              exit 0
-            fi
-            mkdir -p /mnt-btrfs
-            mount -t btrfs -o subvol=/ /dev/disk/by-label/nixos /mnt-btrfs
-            if [ -e /mnt-btrfs/root ]; then
-              # Delete any nested subvolumes under root first
-              btrfs subvolume list -o /mnt-btrfs/root | cut -f9 -d' ' | while read -r subvol; do
-                btrfs subvolume delete "/mnt-btrfs/$subvol"
-              done
-              btrfs subvolume delete /mnt-btrfs/root
-            fi
-            btrfs subvolume snapshot /mnt-btrfs/root-blank /mnt-btrfs/root
-            umount /mnt-btrfs
-          '';
+        script = ''
+          if [ ! -b /dev/disk/by-label/nixos ]; then
+            echo "No btrfs filesystem labeled 'nixos' found (e.g. running in test VM), skipping rollback."
+            exit 0
+          fi
+          mkdir -p /mnt-btrfs
+          mount -t btrfs -o subvol=/ /dev/disk/by-label/nixos /mnt-btrfs
+          if [ -e /mnt-btrfs/root ]; then
+            # Delete any nested subvolumes under root first
+            btrfs subvolume list -o /mnt-btrfs/root | cut -f9 -d' ' | while read -r subvol; do
+              btrfs subvolume delete "/mnt-btrfs/$subvol"
+            done
+            btrfs subvolume delete /mnt-btrfs/root
+          fi
+          btrfs subvolume snapshot /mnt-btrfs/root-blank /mnt-btrfs/root
+          umount /mnt-btrfs
+        '';
 
-          serviceConfig.Type = "oneshot";
-          unitConfig.DefaultDependencies = "no";
-          wantedBy = [ "initrd.target" ];
-        };
+        serviceConfig.Type = "oneshot";
+        unitConfig.DefaultDependencies = "no";
+        wantedBy = [ "initrd.target" ];
       };
+    };
   };
 }

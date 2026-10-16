@@ -1,12 +1,12 @@
 # Service Tailscale VPN Aspect
-{ den, ... }:
+_:
 {
   den.aspects.services.tailscale = {
     nixos =
       { lib, pkgs, ... }:
       {
-        services.tailscale.enable = lib.mkDefault true;
         environment.systemPackages = [ pkgs.tailscale ];
+        services.tailscale.enable = lib.mkDefault true;
       };
   };
 }

@@ -1,15 +1,14 @@
 # Vesktop (Nixcord) Discord Client Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
     nixcord = {
-      url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:4evy/nixcord";
     };
   };
 
@@ -22,9 +21,6 @@
         ];
 
         programs.nixcord = lib.mkIf (inputs ? nixcord) {
-          enable = true;
-          discord.enable = false;
-          vesktop.enable = true;
           config.plugins = {
             biggerStreamPreview.enable = true;
             fakeNitro.enable = true;
@@ -32,13 +28,18 @@
             pictureInPicture.enable = true;
             showHiddenChannels.enable = true;
           };
-          quickCss = "body { --font-primary: monospace; }";
+
           config.useQuickCss = true;
+          discord.enable = false;
+          enable = true;
+          quickCss = "body { --font-primary: monospace; }";
+          vesktop.enable = true;
         };
 
         stylix.targets = {
           nixcord = {
             enable = true;
+
             extraCss = ''
               /* Override Stylix mapping blurple to base0B (green) -> use Mauve */
               :root {
@@ -50,6 +51,7 @@
               }
             '';
           };
+
           vencord.enable = true;
           vesktop.enable = true;
         };

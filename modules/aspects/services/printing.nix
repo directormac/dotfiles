@@ -1,5 +1,5 @@
 # Service CUPS Printing Aspect
-{ den, ... }:
+_:
 {
   den.aspects.services.printing = {
     nixos =

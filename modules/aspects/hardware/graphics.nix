@@ -4,6 +4,12 @@
     nixos =
       { lib, pkgs, ... }:
       {
+        environment.systemPackages = with pkgs; [
+          clinfo
+          libva-utils
+          vulkan-tools
+        ];
+
         hardware.graphics = {
           enable = lib.mkDefault true;
           enable32Bit = lib.mkDefault true;
@@ -17,12 +23,6 @@
         services.xserver.videoDrivers = lib.mkDefault [
           "amdgpu"
           "modesetting"
-        ];
-
-        environment.systemPackages = with pkgs; [
-          clinfo
-          libva-utils
-          vulkan-tools
         ];
       };
   };

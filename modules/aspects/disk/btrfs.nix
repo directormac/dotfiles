@@ -1,6 +1,5 @@
 # Disko Btrfs Subvolume Layout Aspect
 {
-  den,
   lib,
   inputs,
   ...

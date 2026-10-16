@@ -1,27 +1,23 @@
 # Zsh Interactive Shell Leaf Aspect
-{
-  core,
-  den,
-  lib,
-  ...
-}:
+_:
 {
   den.aspects.applications.shell.zsh = {
     nixos =
       { lib, pkgs, ... }:
       {
         environment.pathsToLink = [ "/share/zsh" ];
+
         environment.systemPackages = with pkgs; [
           tree
         ];
 
         programs.zsh = {
-          enable = lib.mkDefault true;
-          enableCompletion = true;
-          enableBashCompletion = true;
           autosuggestions.enable = false;
-          syntaxHighlighting.enable = false;
+          enable = lib.mkDefault true;
+          enableBashCompletion = true;
+          enableCompletion = true;
           histSize = 100000;
+          syntaxHighlighting.enable = false;
         };
 
         users.defaultUserShell = pkgs.zsh;
@@ -145,65 +141,8 @@
           zsh-list-keys-tv
         ];
 
-        xdg.configFile."television/cable/zsh-keys.toml".text =
-          # toml
-          ''
-            [metadata]
-            name = "zsh-keys"
-            description = "Fuzzy search zsh keybindings across viins, vicmd, and visual modes"
-            requirements = ["zsh", "gawk"]
-
-            [source]
-            command = "${zsh-list-keys-tv}/bin/zsh-list-keys-tv"
-            display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
-            output = "{split:\t:1}"
-
-            [preview]
-            command = "echo -e '╭── Zsh Keybinding Details ───────────\n│ Key:         {split:\t:0}\n│ Mode / Map:  {split:\t:2}\n│ Raw Zsh:     {split:\t:3}\n╰──────────────────────────────────────\n\nWidget / Action:\n{split:\t:1}\n\nDescription:\n{split:\t:4}\n\nConfig Snippet (copy to shell.nix):\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
-
-            [keybindings]
-            enter = "actions:info"
-            ctrl-y = "actions:copy_snippet"
-            alt-y = "actions:copy_key"
-
-            [actions.info]
-            description = "Echo widget name"
-            command = "echo '{split:\t:1}'"
-            mode = "execute"
-
-            [actions.copy_snippet]
-            description = "Copy config snippet (zvm_bindkey ...) to clipboard"
-            command = "echo -n \"zvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}\" | wl-copy"
-            mode = "execute"
-
-            [actions.copy_key]
-            description = "Copy raw key to clipboard"
-            command = "echo -n '{split:\t:3}' | wl-copy"
-            mode = "execute"
-          '';
-
-        xdg.configFile."zsh/extra.zsh".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/zsh/extra.zsh";
-
-        xdg.configFile."fsh".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/fsh";
-
         programs.zsh = {
-          enable = true;
-          enableCompletion = true;
           autosuggestion.enable = true;
-          syntaxHighlighting.enable = false;
-
-          history = {
-            size = 100000;
-            ignoreAllDups = true;
-            path = "${config.home.homeDirectory}/.zsh_history";
-            ignorePatterns = [
-              "rm *"
-              "pkill *"
-              "cp *"
-            ];
-          };
 
           completionInit =
             # sh
@@ -212,71 +151,25 @@
               autoload -U compinit && compinit
             '';
 
-          shellAliases = {
-            "age" = "rage";
-            "agyx" = "agy  --dangerously-skip-permissions";
-            "c" = "clear";
-            "cat" = "bat -pp";
-            "less" = "bat";
-            "cd" = "z";
-            "cda" = "zoxide add";
-            "cdq" = "zoxide query";
-            "cdr" = "zoxide remove";
-            "ci" = "zi";
-            "dotfiles" = "cd ~/.dotfiles";
-            "du" = "dust";
-            "find" = "fd";
-            "flake" = "nix flake";
-            "grab" = "ghgrab --cwd";
-            "grep" = "rg";
-            "l" = "lsd -a";
-            "la" = "lsd -la";
-            "ll" = "lsd -l";
-            "logs" = "journalctl --user -f -n 50";
-            "ls" = "lsd";
-            "lt" = "lsd --tree";
-            "lzg" = "lazygit";
-            "nixdev" = "nix develop";
-            "nsh" = "nix-shell -p";
-            "nho" = "nh os";
-            "oc" = "opencode";
-            "oc2" = "opencode2";
-            "ocx" = "opencode --auto";
-            "pingcf" = "ping 1.1.1.1";
-            "pinggg" = "ping google.com";
-            "rmr" = "rm -r";
-            "t" = "tv --layout portrait --hide-preview --input-position bottom";
-            "tls" = "tmux ls";
-            "tn" = "sesh connect .";
-            "todo" = "tuxedo";
-            "top" = "btop";
-            "ts" = "sesh last";
-            "tvk" = "tv zsh-keys";
-            "v" = "nvim";
-            "vi" = "vim";
-            "wh" = "which";
-            "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
-            "wm" = "workmux";
-            "wma" = "workmux add";
-            "wmd" = "workmux dashboard -t worktrees";
-            "wml" = "workmux list";
-            "wmm" = "workmux merge";
-            "wmo" = "workmux open";
-            "wmq" = "workmux add --mode window --base main -l quickfix";
-            "wms" = "workmux sidebar";
-            "wmw" = "workmux add --mode window --base main -l agent-only";
-            "y" = "yazi";
-            "zen" = "zen-beta";
+          enable = true;
+          enableCompletion = true;
+
+          fastSyntaxHighlighting = {
+            enable = true;
+            theme = "XDG:catppuccin-mocha";
           };
 
-          sessionVariables = {
-            EDITOR = "nvim";
-            BROWSER = "zen-beta";
+          history = {
+            ignoreAllDups = true;
 
-            MANPAGER = "sh -c 'col -bx | bat -l man -p'";
-            MANROFFOPT = "-c";
+            ignorePatterns = [
+              "rm *"
+              "pkill *"
+              "cp *"
+            ];
 
-            NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
+            path = "${config.home.homeDirectory}/.zsh_history";
+            size = 100000;
           };
 
           initContent =
@@ -393,28 +286,133 @@
 
           plugins = [
             {
+              file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
               name = "zsh-vi-mode";
               src = pkgs.zsh-vi-mode;
-              file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
             }
             {
+              file = "share/fzf-tab/fzf-tab.plugin.zsh";
               name = "fzf-tab";
               src = pkgs.zsh-fzf-tab;
-              file = "share/fzf-tab/fzf-tab.plugin.zsh";
             }
           ];
 
-          fastSyntaxHighlighting = {
-            enable = true;
-            theme = "XDG:catppuccin-mocha";
+          sessionVariables = {
+            BROWSER = "zen-beta";
+            EDITOR = "nvim";
+            MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+            MANROFFOPT = "-c";
+            NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
           };
+
+          shellAliases = {
+            "age" = "rage";
+            "agyx" = "agy  --dangerously-skip-permissions";
+            "c" = "clear";
+            "cat" = "bat -pp";
+            "cd" = "z";
+            "cda" = "zoxide add";
+            "cdq" = "zoxide query";
+            "cdr" = "zoxide remove";
+            "ci" = "zi";
+            "dotfiles" = "cd ~/.dotfiles";
+            "du" = "dust";
+            "find" = "fd";
+            "flake" = "nix flake";
+            "grab" = "ghgrab --cwd";
+            "grep" = "rg";
+            "l" = "lsd -a";
+            "la" = "lsd -la";
+            "less" = "bat";
+            "ll" = "lsd -l";
+            "logs" = "journalctl --user -f -n 50";
+            "ls" = "lsd";
+            "lt" = "lsd --tree";
+            "lzg" = "lazygit";
+            "nho" = "nh os";
+            "nixdev" = "nix develop";
+            "nsh" = "nix-shell -p";
+            "oc" = "opencode";
+            "oc2" = "opencode2";
+            "ocx" = "opencode --auto";
+            "pingcf" = "ping 1.1.1.1";
+            "pinggg" = "ping google.com";
+            "rmr" = "rm -r";
+            "t" = "tv --layout portrait --hide-preview --input-position bottom";
+            "tls" = "tmux ls";
+            "tn" = "sesh connect .";
+            "todo" = "tuxedo";
+            "top" = "btop";
+            "ts" = "sesh last";
+            "tvk" = "tv zsh-keys";
+            "v" = "nvim";
+            "vi" = "vim";
+            "wh" = "which";
+            "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
+            "wm" = "workmux";
+            "wma" = "workmux add";
+            "wmd" = "workmux dashboard -t worktrees";
+            "wml" = "workmux list";
+            "wmm" = "workmux merge";
+            "wmo" = "workmux open";
+            "wmq" = "workmux add --mode window --base main -l quickfix";
+            "wms" = "workmux sidebar";
+            "wmw" = "workmux add --mode window --base main -l agent-only";
+            "y" = "yazi";
+            "zen" = "zen-beta";
+          };
+
+          syntaxHighlighting.enable = false;
         };
+
+        xdg.configFile."fsh".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/fsh";
+
+        xdg.configFile."television/cable/zsh-keys.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "zsh-keys"
+            description = "Fuzzy search zsh keybindings across viins, vicmd, and visual modes"
+            requirements = ["zsh", "gawk"]
+
+            [source]
+            command = "${zsh-list-keys-tv}/bin/zsh-list-keys-tv"
+            display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
+            output = "{split:\t:1}"
+
+            [preview]
+            command = "echo -e '╭── Zsh Keybinding Details ───────────\n│ Key:         {split:\t:0}\n│ Mode / Map:  {split:\t:2}\n│ Raw Zsh:     {split:\t:3}\n╰──────────────────────────────────────\n\nWidget / Action:\n{split:\t:1}\n\nDescription:\n{split:\t:4}\n\nConfig Snippet (copy to shell.nix):\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
+
+            [keybindings]
+            enter = "actions:info"
+            ctrl-y = "actions:copy_snippet"
+            alt-y = "actions:copy_key"
+
+            [actions.info]
+            description = "Echo widget name"
+            command = "echo '{split:\t:1}'"
+            mode = "execute"
+
+            [actions.copy_snippet]
+            description = "Copy config snippet (zvm_bindkey ...) to clipboard"
+            command = "echo -n \"zvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}\" | wl-copy"
+            mode = "execute"
+
+            [actions.copy_key]
+            description = "Copy raw key to clipboard"
+            command = "echo -n '{split:\t:3}' | wl-copy"
+            mode = "execute"
+          '';
+
+        xdg.configFile."zsh/extra.zsh".source =
+          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/zsh/extra.zsh";
       };
 
     persistHome = {
       directories = [
         ".local/share/zsh"
       ];
+
       files = [
         ".zsh_history"
       ];

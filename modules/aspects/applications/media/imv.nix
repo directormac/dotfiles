@@ -1,5 +1,5 @@
 # imv Image Viewer Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.media.imv = {
     homeManager =

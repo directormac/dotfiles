@@ -1,23 +1,22 @@
 # Desktop Low-Latency PipeWire Audio Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.desktop.audio = {
     nixos =
       { lib, pkgs, ... }:
       {
-        services = {
-          pulseaudio.enable = false;
+        environment.systemPackages = [
+          pkgs.pavucontrol
+        ];
 
+        services = {
           pipewire = {
-            enable = lib.mkDefault true;
             alsa.enable = true;
             alsa.support32Bit = true;
-            pulse.enable = true;
-            jack.enable = true;
+            enable = lib.mkDefault true;
 
             extraConfig.pipewire."92-low-latency" = {
               "context.properties" = {
-                "default.clock.rate" = 44100;
                 "default.clock.allowed-rates" = [
                   44100
                   48000
@@ -28,32 +27,36 @@
                   352800
                   384000
                 ];
-                "default.clock.quantum" = 512;
-                "default.clock.min-quantum" = 32;
+
                 "default.clock.max-quantum" = 2048;
+                "default.clock.min-quantum" = 32;
+                "default.clock.quantum" = 512;
+                "default.clock.rate" = 44100;
               };
             };
 
             extraConfig.pipewire-pulse."92-low-latency" = {
               context.modules = [
                 {
-                  name = "libpipewire-module-protocol-pulse";
                   args = {
-                    "pulse.min.req" = "32/44100";
                     "pulse.default.req" = "512/44100";
+                    "pulse.max.quantum" = "2048/44100";
                     "pulse.max.req" = "2048/44100";
                     "pulse.min.quantum" = "32/44100";
-                    "pulse.max.quantum" = "2048/44100";
+                    "pulse.min.req" = "32/44100";
                   };
+
+                  name = "libpipewire-module-protocol-pulse";
                 }
               ];
             };
-          };
-        };
 
-        environment.systemPackages = [
-          pkgs.pavucontrol
-        ];
+            jack.enable = true;
+            pulse.enable = true;
+          };
+
+          pulseaudio.enable = false;
+        };
       };
   };
 }

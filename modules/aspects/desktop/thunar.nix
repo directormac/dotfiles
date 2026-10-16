@@ -1,12 +1,10 @@
 # Thunar File Manager & Plugins Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.desktop.thunar = {
     nixos =
       { pkgs, ... }:
       {
-        programs.xfconf.enable = true;
-
         environment.systemPackages = with pkgs; [
           thunar
           thunar-archive-plugin
@@ -15,6 +13,8 @@
           thunar-vcs-plugin
           thunar-shares-plugin
         ];
+
+        programs.xfconf.enable = true;
       };
   };
 }

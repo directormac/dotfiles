@@ -1,7 +1,7 @@
 # Direnv & Direnv-Instant Aspect
 {
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -30,12 +30,13 @@
         };
 
         programs.direnv-instant = lib.mkIf (inputs ? direnv-instant) {
-          enable = true;
           settings = {
+            debug_log = "/tmp/direnv-instant.log";
             mux_delay = 2;
             use_cache = true;
-            debug_log = "/tmp/direnv-instant.log";
           };
+
+          enable = true;
         };
 
         xdg.configFile."direnv/direnv.toml".source =

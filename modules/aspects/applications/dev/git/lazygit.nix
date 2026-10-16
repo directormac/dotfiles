@@ -1,5 +1,5 @@
 # Lazygit TUI Git Client Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.git.lazygit = {
     homeManager =
@@ -13,9 +13,7 @@
       in
       {
         programs.lazygit.enable = true;
-
-        xdg.configFile."lazygit".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/lazygit";
+        xdg.configFile."lazygit".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/lazygit";
       };
 
     persistHome.directories = [

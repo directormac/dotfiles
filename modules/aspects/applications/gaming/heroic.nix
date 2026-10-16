@@ -1,5 +1,5 @@
 # Heroic Games Launcher Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.gaming.heroic = {
     homeManager =

@@ -1,5 +1,5 @@
 # Core Nix Daemon, Caches, GC & AutoUpgrade Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.nix = {
     nixos =
@@ -8,11 +8,12 @@
         nix = {
           settings = {
             accept-flake-config = true;
-            auto-optimise-store = true;
 
             access-tokens = lib.mkIf (config ? age && config.age.secrets ? github_api_key) [
               "!include ${config.age.secrets.github_api_key.path}"
             ];
+
+            auto-optimise-store = true;
 
             experimental-features = [
               "nix-command"
@@ -57,12 +58,14 @@
         };
 
         system.autoUpgrade = {
-          enable = lib.mkDefault true;
           dates = "02:00";
+          enable = lib.mkDefault true;
+
           flags = [
             "update"
             "nixpkgs"
           ];
+
           randomizedDelaySec = "45min";
         };
       };

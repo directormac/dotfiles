@@ -1,12 +1,12 @@
 # Core Networking, Firewall & NetworkManager Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.networking = {
     nixos =
       {
-        host,
         lib,
         pkgs,
+        host,
         ...
       }:
       {

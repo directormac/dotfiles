@@ -1,7 +1,7 @@
 # Mise & Pitchfork Runtime Manager Aspect
 {
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -10,12 +10,6 @@
   };
 
   den.aspects.applications.dev.shell.mise = {
-    nixpkgs-overlays =
-      _:
-      lib.optionals (inputs ? mise-nix && inputs.mise-nix ? overlays) [
-        inputs.mise-nix.overlays.default
-      ];
-
     homeManager =
       {
         config,
@@ -44,6 +38,12 @@
           "mise/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mise/config.toml";
         };
       };
+
+    nixpkgs-overlays =
+      _:
+      lib.optionals (inputs ? mise-nix && inputs.mise-nix ? overlays) [
+        inputs.mise-nix.overlays.default
+      ];
 
     persistHome.directories = [
       ".local/share/mise"

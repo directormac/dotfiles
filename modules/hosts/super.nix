@@ -1,22 +1,10 @@
 # Host "super": Primary interactive workstation
 {
-  core,
   den,
-  lib,
   ...
 }:
 {
-  den.hosts.x86_64-linux.super = {
-    description = "Super Workstation";
-    isWorkstation = true;
-    users.artifex = { };
-    settings.desktop.hyprland.cardDevice = "/dev/dri/card2:/dev/dri/card1";
-  };
-
   den.aspects.super = {
-    description = "Super Workstation";
-    isWorkstation = true;
-
     includes = with den.aspects; [
       roles.default
       roles.workstation
@@ -42,6 +30,7 @@
           "usb_storage"
           "sd_mod"
         ];
+
         boot.kernelModules = [ "kvm-intel" ];
         boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
         boot.loader.systemd-boot.enable = lib.mkDefault true;
@@ -57,6 +46,9 @@
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       };
 
+    description = "Super Workstation";
+    isWorkstation = true;
+
     provides.to-users.homeManager =
       { pkgs, ... }:
       {
@@ -66,5 +58,12 @@
           fd
         ];
       };
+  };
+
+  den.hosts.x86_64-linux.super = {
+    settings.desktop.hyprland.cardDevice = "/dev/dri/card2:/dev/dri/card1";
+    description = "Super Workstation";
+    isWorkstation = true;
+    users.artifex = { };
   };
 }

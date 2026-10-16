@@ -1,25 +1,26 @@
 # Desktop XServer Base & QtWayland Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.desktop.xserver = {
     nixos =
       { lib, pkgs, ... }:
       {
-        services.xserver = {
-          enable = lib.mkDefault true;
-          exportConfiguration = true;
-          excludePackages = [ pkgs.xterm ];
-          xkb = {
-            layout = "us";
-            variant = "";
-          };
-        };
-
         environment.systemPackages = with pkgs; [
           qt5.qtwayland
           qt6.qtwayland
           wev
         ];
+
+        services.xserver = {
+          enable = lib.mkDefault true;
+          excludePackages = [ pkgs.xterm ];
+          exportConfiguration = true;
+
+          xkb = {
+            layout = "us";
+            variant = "";
+          };
+        };
       };
   };
 }

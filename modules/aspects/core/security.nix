@@ -1,22 +1,25 @@
 # Core Security, PAM, Polkit, GNOME Keyring & Sudo-rs Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.security = {
     nixos =
       {
-        host,
         lib,
         pkgs,
+        host,
         ...
       }:
       let
         isWorkstation = host.isWorkstation or true;
       in
       {
-        environment.systemPackages = lib.optionals isWorkstation (with pkgs; [
-          polkit_gnome
-          seahorse
-        ]);
+        environment.systemPackages = lib.optionals isWorkstation (
+          with pkgs;
+          [
+            polkit_gnome
+            seahorse
+          ]
+        );
 
         security = {
           pam.services = {

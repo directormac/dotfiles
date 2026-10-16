@@ -1,38 +1,38 @@
 # DankMaterialShell (DMS) Desktop Environment Leaf Aspect
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
     dankcalendar = {
+      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:AvengeMedia/dankcalendar";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
+
     danksearch = {
-      url = "github:AvengeMedia/danksearch";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AvengeMedia/danksearch";
     };
+
+    dgop = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AvengeMedia/dgop";
+    };
+
+    dms = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AvengeMedia/DankMaterialShell";
+    };
+
+    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
   };
 
   den.aspects.desktop.dms = {
     nixos =
       { pkgs, ... }:
       {
-        security.pam.services.dankshell = { };
-
         environment.systemPackages =
           (lib.optionals (inputs ? dgop) [
             inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -43,6 +43,8 @@
             gpu-screen-recorder
             amdgpu_top
           ]);
+
+        security.pam.services.dankshell = { };
       };
 
     homeManager =
@@ -52,6 +54,8 @@
         ...
       }:
       let
+        dmsDir = ../../../config/DankMaterialShell;
+        dmsFiles = if builtins.pathExists dmsDir then builtins.readDir dmsDir else { };
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         linkDank =
           name: _:
@@ -67,10 +71,10 @@
               ".config/DankMaterialShell/${name}".source =
                 config.lib.file.mkOutOfStoreSymlink "${dotsPath}/DankMaterialShell/${name}";
             };
-        dmsDir = ../../../config/DankMaterialShell;
-        dmsFiles = if builtins.pathExists dmsDir then builtins.readDir dmsDir else { };
       in
       {
+        home.file = lib.concatMapAttrs linkDank dmsFiles;
+
         imports =
           (lib.optionals (inputs ? dms) [
             inputs.dms.homeModules.dank-material-shell
@@ -85,55 +89,56 @@
             inputs.dms-plugin-registry.nixosModules.default
           ]);
 
-        home.file = lib.concatMapAttrs linkDank dmsFiles;
-
-        stylix.targets = {
-          dank-calendar.enable = lib.mkDefault true;
+        programs.dank-calendar = lib.mkIf (inputs ? dankcalendar) {
+          enable = true;
         };
 
         programs.dank-material-shell = lib.mkIf (inputs ? dms) {
           enable = true;
-          managePluginSettings = true;
-          enableSystemMonitoring = true;
-          enableVPN = true;
-          enableDynamicTheming = true;
           enableAudioWavelength = true;
           enableCalendarEvents = true;
+          enableDynamicTheming = true;
+          enableSystemMonitoring = true;
+          enableVPN = true;
+          managePluginSettings = true;
 
           plugins = {
+            ambientSound.enable = true;
+            amdGpuMonitor.enable = true;
+            cavaVisualizer.enable = true;
             dankActions.enable = true;
             dankGifSearch.enable = true;
             dankHooks.enable = true;
             dankKDEConnect.enable = true;
             dankLauncherKeys.enable = true;
-            dankPomodoroTimer.enable = true;
-            dankStickerSearch.enable = true;
             dankNotepadModule.enable = true;
+            dankPomodoroTimer.enable = true;
+            dankRssWidget.enable = true;
+            dankStickerSearch.enable = true;
             dankVault.enable = true;
             emojiLauncher.enable = true;
-            screenkey.enable = true;
-            ambientSound.enable = true;
-            amdGpuMonitor.enable = true;
-            dankRssWidget.enable = true;
             pureLyrics.enable = true;
-            cavaVisualizer.enable = true;
+
             quickCapture = {
-              enable = true;
               settings = {
                 "delete_screenshots_on_close" = false;
+                "doneAction" = "clipboard";
                 "export_compress" = true;
                 "export_format" = "png";
                 "includeCursor" = false;
+                "menuRightClickAction" = "copy";
                 "recordingFormat" = "mp4";
                 "recordingFramerate" = "60";
                 "recordingQuality" = "very_high";
                 "recordingScreenTarget" = "focused";
                 "resetLastRegion" = true;
                 "skipConfirm" = true;
-                "doneAction" = "clipboard";
-                "menuRightClickAction" = "copy";
               };
+
+              enable = true;
             };
+
+            screenkey.enable = true;
           };
         };
 
@@ -141,8 +146,8 @@
           enable = true;
         };
 
-        programs.dank-calendar = lib.mkIf (inputs ? dankcalendar) {
-          enable = true;
+        stylix.targets = {
+          dank-calendar.enable = lib.mkDefault true;
         };
       };
   };

@@ -1,5 +1,5 @@
 # Foot Terminal Emulator Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.terminals.foot = {
     nixos =

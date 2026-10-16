@@ -1,8 +1,7 @@
 # GitHub Copilot CLI & Language Server Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -10,8 +9,7 @@
     homeManager =
       { pkgs, ... }:
       let
-        llmPkgs =
-          pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
+        llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
         home.packages = lib.attrValues (

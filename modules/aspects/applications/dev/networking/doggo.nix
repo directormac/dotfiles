@@ -1,5 +1,5 @@
 # Doggo DNS Client Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.networking.doggo = {
     nixos =

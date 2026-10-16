@@ -1,16 +1,13 @@
 # User: artifex
 {
-  den,
   lib,
+  den,
   ...
 }:
 {
   den.aspects.artifex = {
     includes =
-      let
-        inherit (den.lib) __findFile;
-      in
-      with den.aspects;
+
       [
         # Projects user-relevant classes (like homeManager) from the host's aspect tree onto users who opt in
         den.batteries.host-aspects
@@ -22,17 +19,6 @@
         den.batteries.primary-user
       ];
 
-    secrets =
-      let
-        pwdSecret = ../../.. + "/.secrets/users/artifex/password.age";
-      in
-      lib.optionalAttrs (builtins.pathExists pwdSecret) {
-        "password-artifex" = {
-          mode = "0400";
-          rekeyFile = pwdSecret;
-        };
-      };
-
     nixos =
       { config, ... }:
       let
@@ -40,13 +26,15 @@
       in
       {
         users.users.artifex = {
-          linger = true;
           description = "artifex's account";
+
           extraGroups = [
             "kvm"
             "libvirtd"
             "render"
           ];
+
+          linger = true;
         }
         // (
           if hasPwdSecret then
@@ -64,10 +52,21 @@
       { pkgs, ... }:
       {
         home.homeDirectory = "/home/artifex";
-        home.username = "artifex";
         home.packages = [ pkgs.htop ];
+        home.username = "artifex";
       };
 
     provides.to-hosts.nixos = _: { };
+
+    secrets =
+      let
+        pwdSecret = ../../.. + "/.secrets/users/artifex/password.age";
+      in
+      lib.optionalAttrs (builtins.pathExists pwdSecret) {
+        "password-artifex" = {
+          mode = "0400";
+          rekeyFile = pwdSecret;
+        };
+      };
   };
 }

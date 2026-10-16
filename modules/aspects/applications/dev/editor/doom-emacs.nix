@@ -1,15 +1,13 @@
 # Doom Emacs Editor Aspect
 {
-  den,
   inputs,
-  lib,
   ...
 }:
 {
   flake-file.inputs = {
     nix-doom-emacs-unstraightened = {
-      url = "github:marienz/nix-doom-emacs-unstraightened";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:marienz/nix-doom-emacs-unstraightened";
     };
   };
 

@@ -1,6 +1,5 @@
 # Herdr Multiplexer Aspect: LLM Agents management service and out-of-store config symlink
 {
-  den,
   inputs,
   ...
 }:

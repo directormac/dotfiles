@@ -1,20 +1,19 @@
 # Stylix System-wide Theming Leaf Aspect (Catppuccin Mocha) with KDE Color Scheme & Custom Papirus Icons
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     catppuccin = {
-      url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:catppuccin/nix";
+    };
+
+    stylix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/stylix";
     };
   };
 
@@ -25,75 +24,78 @@
         zenDarkSvg = ../../../config/zen-dark.svg;
       in
       {
-        imports = lib.optionals (inputs ? stylix) [
-          inputs.stylix.nixosModules.stylix
-        ];
-
         environment.pathsToLink = [
           "/share/color-schemes"
         ];
 
-        stylix = lib.mkIf (inputs ? stylix) {
-          enable = true;
-          polarity = "dark";
-          autoEnable = false;
+        imports = lib.optionals (inputs ? stylix) [
+          inputs.stylix.nixosModules.stylix
+        ];
 
+        stylix = lib.mkIf (inputs ? stylix) {
+          autoEnable = false;
           base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
           cursor = {
-            package = pkgs.catppuccin-cursors.mochaMauve;
             name = "catppuccin-mocha-mauve-cursors";
+            package = pkgs.catppuccin-cursors.mochaMauve;
             size = 24;
           };
 
+          enable = true;
+
+          fonts = {
+            emoji = {
+              name = "Noto Color Emoji";
+              package = pkgs.noto-fonts-color-emoji;
+            };
+
+            monospace = {
+              name = "Fira Mono Nerd Font";
+              package = pkgs.nerd-fonts.fira-mono;
+            };
+
+            sansSerif = {
+              name = "Noto Sans";
+              package = pkgs.noto-fonts;
+            };
+
+            serif = {
+              name = "Noto Serif";
+              package = pkgs.noto-fonts;
+            };
+          };
+
           icons = {
-            enable = true;
             dark = "Papirus-Dark";
+            enable = true;
             light = "Papirus-Light";
+
             package = (pkgs.papirus-icon-theme.override { color = "violet"; }).overrideAttrs (oldAttrs: {
-              postInstall =
-                (oldAttrs.postInstall or "")
-                + ''
-                  DARK_ZEN_SVG="${zenDarkSvg}"
-                  if [ -f "$DARK_ZEN_SVG" ]; then
-                    for size in 16x16 22x22 24x24 32x32 48x48 64x64 128x128 scalable; do
-                      if [ -d "$out/share/icons/Papirus/$size/apps" ]; then
-                        cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-browser.svg"
-                        cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-icon.svg"
-                      fi
-                      if [ -d "$out/share/icons/Papirus-Dark/$size/apps" ]; then
-                        cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-browser.svg"
-                        cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-icon.svg"
-                      fi
-                    done
-                  fi
-                '';
+              postInstall = (oldAttrs.postInstall or "") + ''
+                DARK_ZEN_SVG="${zenDarkSvg}"
+                if [ -f "$DARK_ZEN_SVG" ]; then
+                  for size in 16x16 22x22 24x24 32x32 48x48 64x64 128x128 scalable; do
+                    if [ -d "$out/share/icons/Papirus/$size/apps" ]; then
+                      cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-browser.svg"
+                      cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus/$size/apps/zen-icon.svg"
+                    fi
+                    if [ -d "$out/share/icons/Papirus-Dark/$size/apps" ]; then
+                      cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-browser.svg"
+                      cp -f "$DARK_ZEN_SVG" "$out/share/icons/Papirus-Dark/$size/apps/zen-icon.svg"
+                    fi
+                  done
+                fi
+              '';
             });
           };
 
-          fonts = {
-            serif = {
-              package = pkgs.noto-fonts;
-              name = "Noto Serif";
-            };
-            sansSerif = {
-              package = pkgs.noto-fonts;
-              name = "Noto Sans";
-            };
-            monospace = {
-              package = pkgs.nerd-fonts.fira-mono;
-              name = "Fira Mono Nerd Font";
-            };
-            emoji = {
-              package = pkgs.noto-fonts-color-emoji;
-              name = "Noto Color Emoji";
-            };
-          };
+          polarity = "dark";
 
           targets = {
+            chromium.enable = true;
             console.enable = true;
             plymouth.enable = true;
-            chromium.enable = true;
           };
         };
       };
@@ -105,13 +107,6 @@
           if config ? lib && config.lib ? stylix && config.lib.stylix ? colors then
             let
               inherit (config.lib.stylix) colors;
-              mkColorTriple =
-                name:
-                lib.concatStringsSep "," [
-                  colors."${name}-rgb-r"
-                  colors."${name}-rgb-g"
-                  colors."${name}-rgb-b"
-                ];
               colors' = builtins.listToAttrs (
                 map (num: {
                   name = "base0${lib.toHexString num}";
@@ -132,6 +127,13 @@
                 ForegroundNeutral=${base0D}
                 ForegroundPositive=${base0B}
               '';
+              mkColorTriple =
+                name:
+                lib.concatStringsSep "," [
+                  colors."${name}-rgb-r"
+                  colors."${name}-rgb-g"
+                  colors."${name}-rgb-b"
+                ];
             in
             ''
               [General]
@@ -193,19 +195,22 @@
       in
       {
         stylix = lib.mkIf (inputs ? stylix) {
-          enable = true;
           autoEnable = false;
+          enable = true;
 
           targets = {
-            kde.enable = lib.mkDefault true;
             gtk.enable = lib.mkDefault true;
+            kde.enable = lib.mkDefault true;
             qt.enable = lib.mkDefault true;
             x11.enable = lib.mkDefault true;
           };
         };
 
         xdg.configFile."kdeglobals".text = lib.mkIf (kdeglobalsContent != "") kdeglobalsContent;
-        xdg.dataFile."color-schemes/Stylix.colors".text = lib.mkIf (kdeglobalsContent != "") kdeglobalsContent;
+
+        xdg.dataFile."color-schemes/Stylix.colors".text = lib.mkIf (
+          kdeglobalsContent != ""
+        ) kdeglobalsContent;
       };
   };
 

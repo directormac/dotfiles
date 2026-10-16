@@ -1,8 +1,7 @@
 # Pi Coding Agent Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -20,6 +19,17 @@
       in
       {
 
+        home.file = {
+          ".pi/agent/extensions/plan-mode" = {
+            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/extensions/plan-mode";
+          };
+
+          ".pi/agent/settings.json" = {
+            force = true;
+            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/settings.json";
+          };
+        };
+
         home.packages = lib.attrValues (
           lib.filterAttrs (_: v: v != null) {
             inherit (llmPkgs)
@@ -32,16 +42,6 @@
         programs.pi-coding-agent = lib.mkIf (llmPkgs ? pi) {
           enable = true;
           package = llmPkgs.pi;
-        };
-
-        home.file = {
-          ".pi/agent/settings.json" = {
-            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/settings.json";
-            force = true;
-          };
-          ".pi/agent/extensions/plan-mode" = {
-            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/extensions/plan-mode";
-          };
         };
       };
 

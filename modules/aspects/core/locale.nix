@@ -1,5 +1,5 @@
 # Core Locale & Timezone Aspect
-{ den, ... }:
+_:
 {
   den.aspects.core.locale = {
     nixos =

@@ -1,8 +1,7 @@
 # ZenNotes Note-Taking Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {

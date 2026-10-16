@@ -6,6 +6,8 @@
 }:
 {
 
+  den.default.homeManager.home.stateVersion = "26.05";
+
   den.default.includes = [
     # System
     # den.batteries.define-user
@@ -56,14 +58,11 @@
   ];
 
   den.default.nixos.boot.zfs.forceImportRoot = lib.mkDefault false;
-  den.default.nixos.system.stateVersion = "26.05";
-  den.default.nixos.nixpkgs.config.allowUnfree = lib.mkDefault true;
-  den.default.nixos.nixpkgs.overlays = [ inputs.self.overlays.default ];
   den.default.nixos.home-manager.useGlobalPkgs = lib.mkDefault true;
   den.default.nixos.home-manager.useUserPackages = lib.mkDefault true;
-
+  den.default.nixos.nixpkgs.config.allowUnfree = lib.mkDefault true;
+  den.default.nixos.nixpkgs.overlays = [ inputs.self.overlays.default ];
+  den.default.nixos.system.stateVersion = "26.05";
   # Enable Home Manager by default for all declared users
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
-
-  den.default.homeManager.home.stateVersion = "26.05";
 }

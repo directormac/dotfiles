@@ -1,9 +1,5 @@
 # Chromium & Google Chrome Browser Leaf Aspect
-{
-  core,
-  den,
-  ...
-}:
+_:
 {
   den.aspects.applications.browsers.chromium = {
     nixos =
@@ -15,23 +11,28 @@
 
         programs.chromium = {
           enable = true;
+
           extraOpts = {
             ExtensionSettings = {
-              "ddkjiahejlhfcafbddmgiahcphecmpfh" = {
-                toolbar_pin = "default_unpinned";
-              }; # uBlock Origin Lite
               "dbepggeogbaibhgnhhndojpepiihcmeb" = {
                 toolbar_pin = "default_unpinned";
               }; # Vimium
+
+              "ddkjiahejlhfcafbddmgiahcphecmpfh" = {
+                toolbar_pin = "default_unpinned";
+              }; # uBlock Origin Lite
+
               "eimadpbcbfnmbkopoojfekhnkhdbieeh" = {
                 toolbar_pin = "force_pinned";
               }; # Dark Reader
-              "nngceckbapebfimnlniiiahkandclblb" = {
-                toolbar_pin = "force_pinned";
-              }; # Bitwarden
+
               "mnjggcdmjocbbbhaepdhchncahnbgone" = {
                 toolbar_pin = "force_pinned";
               }; # SponsorBlock
+
+              "nngceckbapebfimnlniiiahkandclblb" = {
+                toolbar_pin = "force_pinned";
+              }; # Bitwarden
             };
           };
         };
@@ -50,20 +51,20 @@
       in
       {
         programs.chromium = {
+          commandLineArgs = sharedArgs;
           enable = true;
           package = pkgs.chromium;
-          commandLineArgs = sharedArgs;
         };
       };
-
-    persistHome.directories = [
-      ".config/chromium"
-      ".config/google-chrome"
-    ];
 
     cacheHome.directories = [
       ".cache/chromium"
       ".cache/google-chrome"
+    ];
+
+    persistHome.directories = [
+      ".config/chromium"
+      ".config/google-chrome"
     ];
   };
 

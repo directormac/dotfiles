@@ -1,55 +1,54 @@
 # Display Manager & Greeter Leaf Aspect (SilentSDDM Catppuccin)
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
     silentSDDM = {
-      url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:uiriansan/SilentSDDM";
     };
   };
 
   den.aspects.desktop.greeter = {
     settings = {
       defaultSession = lib.mkOption {
-        type = lib.types.str;
         default = "hyprland-uwsm";
         description = "Default Wayland/X11 session for display manager";
+        type = lib.types.str;
       };
 
       theme = lib.mkOption {
-        type = lib.types.str;
         default = "catppuccin-mocha";
         description = "SilentSDDM theme";
+        type = lib.types.str;
       };
 
       wallpaper = lib.mkOption {
-        type = lib.types.str;
         default = "anime_girl_holding_tea_1080p.mp4";
         description = "Background image or video file name in config/wallpapers/";
+        type = lib.types.str;
       };
     };
 
     nixos =
       {
-        host ? null,
         config,
         lib,
+        host ? null,
         ...
       }:
       let
-        cfg = host.settings.desktop.greeter or host.settings.core.greeter or {
-          defaultSession = "hyprland-uwsm";
-          theme = "catppuccin-mocha";
-          wallpaper = "anime_girl_holding_tea_1080p.mp4";
-        };
-        wallpaperPath = ../../../config/wallpapers + "/${cfg.wallpaper}";
         avatarPath = ../../../config/avatar.jpg;
+        cfg =
+          host.settings.desktop.greeter or host.settings.core.greeter or {
+            defaultSession = "hyprland-uwsm";
+            theme = "catppuccin-mocha";
+            wallpaper = "anime_girl_holding_tea_1080p.mp4";
+          };
+        wallpaperPath = ../../../config/wallpapers + "/${cfg.wallpaper}";
       in
       {
         imports = lib.optionals (inputs ? silentSDDM) [
@@ -57,37 +56,44 @@
         ];
 
         programs.silentSDDM = lib.mkIf (inputs ? silentSDDM) {
-          enable = true;
-          theme = cfg.theme;
-          backgrounds = {
-            output = wallpaperPath;
-          };
-          profileIcons = lib.optionalAttrs (config.users.users ? artifex) {
-            artifex = avatarPath;
-          };
           settings = {
             "General" = {
               "animated-background-placeholder" = "";
               "background-fill-mode" = "fill";
             };
+
+            "LockScreen" = {
+              background = cfg.wallpaper;
+              display = false;
+              use-background-color = false;
+            };
+
             "LoginScreen" = {
               background = cfg.wallpaper;
               use-background-color = false;
             };
-            "LockScreen" = {
-              display = false;
-              background = cfg.wallpaper;
-              use-background-color = false;
-            };
           };
+
+          backgrounds = {
+            output = wallpaperPath;
+          };
+
+          enable = true;
+
+          profileIcons = lib.optionalAttrs (config.users.users ? artifex) {
+            artifex = avatarPath;
+          };
+
+          inherit (cfg) theme;
         };
 
         services.displayManager = {
           defaultSession = lib.mkOverride 900 cfg.defaultSession;
+
           sddm = {
+            autoNumlock = true;
             enable = lib.mkDefault true;
             wayland.enable = lib.mkDefault true;
-            autoNumlock = true;
           };
         };
       };

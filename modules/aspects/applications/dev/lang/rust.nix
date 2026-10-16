@@ -1,5 +1,5 @@
 # Rust Language Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.lang.rust = {
     homeManager =

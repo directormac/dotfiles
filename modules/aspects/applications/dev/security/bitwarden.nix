@@ -1,5 +1,5 @@
 # Bitwarden & RBW Password Manager Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.security.bitwarden = {
     homeManager =
@@ -16,10 +16,11 @@
         ];
 
         programs.rbw = {
-          enable = true;
           settings = {
             email = user.email or "markasena@gmail.com";
           };
+
+          enable = true;
         };
       };
 

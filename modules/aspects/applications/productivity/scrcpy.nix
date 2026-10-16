@@ -1,5 +1,5 @@
 # scrcpy & Android Tools Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.productivity.scrcpy = {
     homeManager =

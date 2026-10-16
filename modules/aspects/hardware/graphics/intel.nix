@@ -1,31 +1,17 @@
 # Hardware Graphics Intel Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.hardware.graphics.intel = {
     nixos =
       { pkgs, ... }:
       {
-        services.xserver.videoDrivers = [ "modesetting" ];
-
-        hardware.graphics = {
-          enable = true;
-          extraPackages = [
-            pkgs.intel-media-driver
-            pkgs.intel-ocl
-            pkgs.vpl-gpu-rt
-            pkgs.intel-compute-runtime
-            pkgs.intel-vaapi-driver
-            pkgs.libvdpau-va-gl
-          ];
-        };
-
         boot.kernelParams = [
           "i915.enable_guc=3"
         ];
 
         environment.sessionVariables = {
-          VDPAU_DRIVER = "va_gl";
           LIBVA_DRIVER_NAME = "iHD";
+          VDPAU_DRIVER = "va_gl";
         };
 
         environment.systemPackages = [
@@ -38,6 +24,21 @@
           pkgs.vulkan-tools
           pkgs.libva-utils
         ];
+
+        hardware.graphics = {
+          enable = true;
+
+          extraPackages = [
+            pkgs.intel-media-driver
+            pkgs.intel-ocl
+            pkgs.vpl-gpu-rt
+            pkgs.intel-compute-runtime
+            pkgs.intel-vaapi-driver
+            pkgs.libvdpau-va-gl
+          ];
+        };
+
+        services.xserver.videoDrivers = [ "modesetting" ];
       };
   };
 }

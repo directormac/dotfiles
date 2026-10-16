@@ -1,5 +1,5 @@
 # Gamescope Micro-Compositor Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.gaming.gamescope = {
     nixos =
@@ -10,13 +10,14 @@
         ];
 
         programs.gamescope = {
-          enable = true;
-          capSysNice = true;
-          package = pkgs.gamescope;
           args = [
             "--rt"
             "--expose-wayland"
           ];
+
+          capSysNice = true;
+          enable = true;
+          package = pkgs.gamescope;
         };
       };
   };

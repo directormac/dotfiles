@@ -50,9 +50,9 @@
       devenv.shells.default = {
         devenv.root =
           let
+            devenvRootEnv = builtins.getEnv "DEVENV_ROOT";
             devenvRootFile = builtins.readFile inputs.devenv-root.outPath;
             pwd = builtins.getEnv "PWD";
-            devenvRootEnv = builtins.getEnv "DEVENV_ROOT";
           in
           if devenvRootFile != "" then
             devenvRootFile

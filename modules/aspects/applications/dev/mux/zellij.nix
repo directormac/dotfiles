@@ -1,5 +1,5 @@
 # Zellij Terminal Multiplexer Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.mux.zellij = {
     homeManager =
@@ -10,19 +10,32 @@
       }:
       let
         zjstatusHintsWasm = pkgs.fetchurl {
-          url = "https://github.com/b0o/zjstatus-hints/releases/latest/download/zjstatus-hints.wasm";
           sha256 = "sha256-k2xV6QJcDtvUNCE4PvwVG9/ceOkk+Wa/6efGgr7IcZ0=";
+          url = "https://github.com/b0o/zjstatus-hints/releases/latest/download/zjstatus-hints.wasm";
         };
       in
       {
-        stylix.targets.zellij.enable = true;
-        xdg.configFile."zellij/plugins/zjstatus-hints.wasm".source = zjstatusHintsWasm;
-
         programs.zellij = {
+          attachExistingSession = false;
           enable = true;
           enableBashIntegration = false;
           enableZshIntegration = false;
-          attachExistingSession = false;
+
+          extraConfig = ''
+            plugins {
+                zjstatus-hints location="file:${config.xdg.configHome}/zellij/plugins/zjstatus-hints.wasm" {
+                    max_length 0
+                    overflow_str "..."
+                    pipe_name "zjstatus_hints"
+                    hide_in_base_mode false
+                }
+            }
+
+            load_plugins {
+                zjstatus-hints
+            }
+          '';
+
           layouts = {
             default =
               # kdl
@@ -104,22 +117,10 @@
             zjframes
             workspace
           ];
-
-          extraConfig = ''
-            plugins {
-                zjstatus-hints location="file:${config.xdg.configHome}/zellij/plugins/zjstatus-hints.wasm" {
-                    max_length 0
-                    overflow_str "..."
-                    pipe_name "zjstatus_hints"
-                    hide_in_base_mode false
-                }
-            }
-
-            load_plugins {
-                zjstatus-hints
-            }
-          '';
         };
+
+        stylix.targets.zellij.enable = true;
+        xdg.configFile."zellij/plugins/zjstatus-hints.wasm".source = zjstatusHintsWasm;
       };
 
     persistHome.directories = [

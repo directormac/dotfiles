@@ -1,5 +1,5 @@
 # GPG & GPG-Agent Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.security.gpg = {
     homeManager =
@@ -8,24 +8,20 @@
         programs.gpg.enable = true;
 
         services.gpg-agent = {
-          enable = true;
-          pinentry.package = pkgs.pinentry-all;
-
           defaultCacheTtl = 10800;
-          maxCacheTtl = 10800;
-
-          enableSshSupport = true;
           defaultCacheTtlSsh = 10800;
+          enable = true;
+          enableBashIntegration = true;
+          enableSshSupport = true;
+          enableZshIntegration = true;
+          maxCacheTtl = 10800;
           maxCacheTtlSsh = 10800;
-
           noAllowExternalCache = true;
+          pinentry.package = pkgs.pinentry-all;
 
           sshKeys = [
             "E9A28495202EB6723965F5C42E0855AA109CF7D1"
           ];
-
-          enableZshIntegration = true;
-          enableBashIntegration = true;
         };
       };
 

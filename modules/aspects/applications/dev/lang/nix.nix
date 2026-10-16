@@ -1,5 +1,5 @@
 # Nix Developer Tools Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.lang.nix = {
     nixos =

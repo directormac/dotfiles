@@ -1,5 +1,5 @@
 # Core CLI Utilities & System Inspection Tools Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.shell.cli-utils = {
     nixos =

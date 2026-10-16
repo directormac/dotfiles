@@ -1,52 +1,71 @@
 # Core NH Wrapper Aspect: Dynamic git worktree detection for nh
 {
+  lib,
   den,
   self,
-  lib,
   ...
 }:
 {
+  den.aspects.core.nh = {
+    nixos =
+      {
+        config,
+        pkgs,
+        ...
+      }:
+      {
+        environment.systemPackages = with pkgs; [
+          nix-output-monitor
+          nvd
+        ];
+
+        imports = lib.optional (self ? wrappers && self.wrappers ? nh) self.wrappers.nh.install;
+
+        programs.nh = {
+          enable = true;
+          flake = null;
+          package = if config ? wrappers && config.wrappers ? nh then config.wrappers.nh.wrapper else pkgs.nh;
+        };
+      };
+  };
+
   flake.wrappers.nh =
     {
       config,
-      wlib,
       lib,
       pkgs,
+      wlib,
       ...
     }:
     {
       imports = [ wlib.modules.default ];
 
       options.dotfilesPath = lib.mkOption {
-        type = lib.types.str;
         default = "$HOME/.dotfiles";
         description = "Main dotfiles checkout; fallback flake root.";
+        type = lib.types.str;
       };
 
       options.worktreesPath = lib.mkOption {
-        type = lib.types.str;
         default = "$HOME/Code/.worktrees/.dotfiles";
         description = "Directory holding the dotfiles git worktrees, one per branch.";
+        type = lib.types.str;
       };
 
-      config.package = pkgs.nh;
-      config.runtimePkgs = with pkgs; [
-        nix-output-monitor
-        nvd
-        git
-        tmux
-        coreutils
-      ];
       config.env = {
         NH_NOM = {
           data = "1";
           esc-fn = toString;
         };
+
         NH_SEARCH_CHANNEL = {
           data = "unstable";
           esc-fn = toString;
         };
       };
+
+      config.package = pkgs.nh;
+
       config.runShell = [
         ''
           # Trigger dynamic detection if NH_FLAKE is empty, invalid, or points to the base flake
@@ -84,34 +103,15 @@
           fi
         ''
       ];
+
+      config.runtimePkgs = with pkgs; [
+        nix-output-monitor
+        nvd
+        git
+        tmux
+        coreutils
+      ];
     };
-
-  den.aspects.core.nh = {
-    nixos =
-      {
-        config,
-        pkgs,
-        ...
-      }:
-      {
-        imports = lib.optional (self ? wrappers && self.wrappers ? nh) self.wrappers.nh.install;
-
-        programs.nh = {
-          enable = true;
-          package =
-            if config ? wrappers && config.wrappers ? nh then
-              config.wrappers.nh.wrapper
-            else
-              pkgs.nh;
-          flake = null;
-        };
-
-        environment.systemPackages = with pkgs; [
-          nix-output-monitor
-          nvd
-        ];
-      };
-  };
 
   # Exposes flake apps under the name of each host / home for building with nh.
   perSystem =

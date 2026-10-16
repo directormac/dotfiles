@@ -1,5 +1,5 @@
 # Tuxedo CLI Todo / Task Management Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.productivity.tuxedo = {
     nixos =
@@ -20,8 +20,7 @@
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
       in
       {
-        home.file.".config/tuxedo".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/tuxedo";
+        home.file.".config/tuxedo".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/tuxedo";
       };
   };
 }

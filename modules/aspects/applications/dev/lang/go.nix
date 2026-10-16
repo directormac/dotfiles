@@ -1,5 +1,5 @@
 # Go Language Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.lang.go = {
     homeManager =
@@ -7,6 +7,7 @@
       {
         programs.go = {
           enable = true;
+
           env = {
             GOPATH = [
               "${config.home.homeDirectory}/.config/go"

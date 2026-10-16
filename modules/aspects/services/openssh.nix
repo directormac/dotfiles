@@ -1,5 +1,5 @@
 # Service OpenSSH Daemon Aspect
-{ den, ... }:
+_:
 {
   den.aspects.services.openssh = {
     nixos =

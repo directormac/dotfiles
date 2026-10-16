@@ -1,10 +1,16 @@
 # Desktop Fonts Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.desktop.fonts = {
     nixos =
       { pkgs, ... }:
       {
+        fonts.fontconfig.defaultFonts = {
+          monospace = [ "Fira Mono Nerd Font" ];
+          sansSerif = [ "Noto Sans" ];
+          serif = [ "Noto Serif" ];
+        };
+
         fonts.packages = with pkgs; [
           nerd-fonts.fira-code
           nerd-fonts.fira-mono
@@ -17,12 +23,6 @@
           unifont
           cm_unicode
         ];
-
-        fonts.fontconfig.defaultFonts = {
-          serif = [ "Noto Serif" ];
-          sansSerif = [ "Noto Sans" ];
-          monospace = [ "Fira Mono Nerd Font" ];
-        };
       };
   };
 }

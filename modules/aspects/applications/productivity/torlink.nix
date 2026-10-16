@@ -1,8 +1,7 @@
 # TorLink Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {

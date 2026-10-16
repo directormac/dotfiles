@@ -1,6 +1,5 @@
 # Fish Shell Leaf Aspect
 {
-  core,
   den,
   ...
 }:

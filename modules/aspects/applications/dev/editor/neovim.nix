@@ -1,59 +1,161 @@
 # Neovim Nightly & Modular Lua Wrapper Aspect
 {
-  self,
-  den,
-  inputs,
   lib,
+  inputs,
+  self,
   ...
 }:
 {
   flake-file.inputs = {
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    blink-cmp = {
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:saghen/blink.cmp";
     };
 
-    blink-cmp = {
-      url = "github:saghen/blink.cmp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     blink-lib = {
-      url = "github:saghen/blink.lib";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:saghen/blink.lib";
+    };
+
+    neovim-nightly-overlay = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/neovim-nightly-overlay";
     };
 
     vim-plugins-lze = {
+      flake = false;
       url = "github:BirdeeHub/lze";
-      flake = false;
     };
+
     vim-plugins-lzextras = {
+      flake = false;
       url = "github:BirdeeHub/lzextras";
-      flake = false;
     };
-    vim-plugins-oil-git-nvim = {
-      url = "github:malewicz1337/oil-git.nvim";
-      flake = false;
-    };
+
     vim-plugins-nvim-colorpicker = {
+      flake = false;
       url = "github:mikevskater/nvim-colorpicker";
-      flake = false;
     };
-    vim-plugins-wakatime = {
-      url = "github:wakatime/vim-wakatime";
-      flake = false;
-    };
+
     vim-plugins-nvim-float = {
+      flake = false;
       url = "github:mikevskater/nvim-float";
-      flake = false;
     };
-    vim-plugins-tuxedo-nvim = {
-      url = "github:IogaMaster/tuxedo.nvim";
+
+    vim-plugins-oil-git-nvim = {
       flake = false;
+      url = "github:malewicz1337/oil-git.nvim";
     };
+
     vim-plugins-showkeys = {
-      url = "github:nvzone/showkeys";
       flake = false;
+      url = "github:nvzone/showkeys";
     };
+
+    vim-plugins-tuxedo-nvim = {
+      flake = false;
+      url = "github:IogaMaster/tuxedo.nvim";
+    };
+
+    vim-plugins-wakatime = {
+      flake = false;
+      url = "github:wakatime/vim-wakatime";
+    };
+  };
+
+  den.aspects.applications.dev.editor.neovim = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.sessionVariables = {
+          EDITOR = "nvim";
+        };
+
+        environment.systemPackages =
+          with pkgs;
+          [
+            tree-sitter
+            nixfmt
+            stylua
+            lua-language-server
+            bash-language-server
+            nixd
+            nil
+          ]
+          ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
+            pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
+            pkgs.nur.repos.Freed-Wu.tmux-language-server
+            pkgs.nur.repos.Freed-Wu.termux-language-server
+          ];
+
+        imports = [ self.wrappers.neovim.install ];
+      };
+
+    homeManager =
+      {
+        config,
+        user,
+        ...
+      }:
+      let
+        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
+      in
+      {
+        home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/nvim";
+
+        home.sessionVariables = {
+          EDITOR = "nvim";
+          VISUAL = "nvim";
+        };
+
+        imports = [ self.wrappers.neovim.install ];
+        wrappers.neovim.enable = true;
+
+        xdg.desktopEntries = {
+          neovim = {
+            categories = [
+              "Utility"
+              "TextEditor"
+              "Development"
+            ];
+
+            comment = "Manage text files";
+            exec = "ghostty --class=com.neovim.editor -e nvim %F";
+            genericName = "Text Editor";
+            icon = "nvim";
+
+            mimeType = [
+              "text/plain"
+              "text/x-chdr"
+              "text/x-csrc"
+              "text/x-c++hdr"
+              "text/x-c++src"
+              "text/csv"
+              "application/json"
+              "application/x-zerosize"
+            ];
+
+            name = "Neovim";
+            terminal = false;
+            type = "Application";
+          };
+
+          nvim = {
+            settings = {
+              NoDisplay = "true";
+            };
+
+            exec = "nvim %F";
+            name = "Neovim";
+            type = "Application";
+          };
+        };
+      };
+
+    persistHome.directories = [
+      ".local/share/nvim"
+      ".local/state/nvim"
+    ];
   };
 
   # ===========================================================================
@@ -62,147 +164,228 @@
   flake.wrappers.neovim =
     {
       config,
-      wlib,
       lib,
       pkgs,
       options,
+      wlib,
       ...
     }:
     let
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
-
       # Custom build of kdl-lsp from GitHub
       kdl-lsp = pkgs.rustPlatform.buildRustPackage {
+        buildAndTestSubdir = "tools/kdl-lsp";
+        cargoHash = "sha256-lAmfaH3SpX0Al2VuT+V/0K5+KpwV0uIKZV0idoUy08w=";
         pname = "kdl-lsp";
-        version = "0.1.0";
+
         src = pkgs.fetchFromGitHub {
+          hash = "sha256-Fx6yjh/JmCxrQWWkqJRQwCoeWRQ6OZPm3zHpPLaUYMQ=";
           owner = "kdl-org";
           repo = "kdl-rs";
           rev = "7de9eb2f4879f3f86157bf2345c93ed52db88e7a";
-          hash = "sha256-Fx6yjh/JmCxrQWWkqJRQwCoeWRQ6OZPm3zHpPLaUYMQ=";
         };
-        cargoHash = "sha256-lAmfaH3SpX0Al2VuT+V/0K5+KpwV0uIKZV0idoUy08w=";
-        buildAndTestSubdir = "tools/kdl-lsp";
-      };
 
-      vellumSrc = pkgs.fetchFromGitHub {
-        owner = "zFrenesy";
-        repo = "vellum.nvim";
-        rev = "910b79e76f5a3389e55a64da9b6816cb9e89a64e";
-        hash = "sha256-WKbnohPgZOQd1klxXXDGKbZeMSNQmjEuYTi+sL+zMgA=";
+        version = "0.1.0";
       };
+      vellum-nvim = pkgs.vimUtils.buildVimPlugin {
+        doCheck = false;
+        pname = "vellum.nvim";
 
-      vellum-render = pkgs.buildNpmPackage {
-        pname = "vellum-render";
+        postInstall = ''
+          cp -r ${vellum-render}/lib/node_modules/vellum-render/node_modules \
+            $out/render/node_modules
+        '';
+
+        src = vellumSrc;
         version = "unstable-2026-10-13";
-        src = "${vellumSrc}/render";
-        npmDepsHash = "sha256-Zcitez2/UGHu4Reux1XwTBwLMzyMDg17Ywa6QXWGTYQ=";
+      };
+      vellum-render = pkgs.buildNpmPackage {
         dontNpmBuild = true;
-        npmFlags = [ "--ignore-scripts" ];
         env.PUPPETEER_SKIP_DOWNLOAD = "true";
+
         installPhase = ''
           runHook preInstall
           mkdir -p $out/lib/node_modules/vellum-render
           cp -r node_modules $out/lib/node_modules/vellum-render/node_modules
           runHook postInstall
         '';
-      };
 
-      vellum-nvim = pkgs.vimUtils.buildVimPlugin {
-        pname = "vellum.nvim";
+        npmDepsHash = "sha256-Zcitez2/UGHu4Reux1XwTBwLMzyMDg17Ywa6QXWGTYQ=";
+        npmFlags = [ "--ignore-scripts" ];
+        pname = "vellum-render";
+        src = "${vellumSrc}/render";
         version = "unstable-2026-10-13";
-        src = vellumSrc;
-        doCheck = false;
-        postInstall = ''
-          cp -r ${vellum-render}/lib/node_modules/vellum-render/node_modules \
-            $out/render/node_modules
-        '';
+      };
+      vellumSrc = pkgs.fetchFromGitHub {
+        hash = "sha256-WKbnohPgZOQd1klxXXDGKbZeMSNQmjEuYTi+sL+zMgA=";
+        owner = "zFrenesy";
+        repo = "vellum.nvim";
+        rev = "910b79e76f5a3389e55a64da9b6816cb9e89a64e";
       };
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
 
       options.nvim-lib.neovimPlugins = lib.mkOption {
+        default = config.nvim-lib.pluginsFromPrefix "vim-plugins-" inputs;
         readOnly = true;
         type = lib.types.attrsOf wlib.types.stringable;
-        default = config.nvim-lib.pluginsFromPrefix "vim-plugins-" inputs;
       };
 
-      config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+      options.nvim-lib.pluginsFromPrefix = lib.mkOption {
+        default =
+          prefix: inputs:
+          lib.pipe inputs [
+            builtins.attrNames
+            (builtins.filter (s: lib.hasPrefix prefix s))
+            (map (
+              input:
+              let
+                name = lib.removePrefix prefix input;
+              in
+              {
+                inherit name;
+                value = config.nvim-lib.mkPlugin name inputs.${input};
+              }
+            ))
+            builtins.listToAttrs
+          ];
+
+        readOnly = true;
+        type = lib.types.raw;
+      };
+
+      options.settings.cats = lib.mkOption {
+        default = (builtins.mapAttrs (_: v: v.enable) config.specs) // config.settings.extraCats;
+        readOnly = true;
+        type = lib.types.attrsOf lib.types.bool;
+      };
+
+      options.settings.colorscheme = lib.mkOption {
+        default = "catppuccin";
+        description = "Colorscheme to load (drives which plugin gets installed).";
+        type = lib.types.str;
+      };
+
+      options.settings.dev = lib.mkOption {
+        default = false;
+        description = "Read the config directory live from the current working directory for quick iteration.";
+        type = lib.types.bool;
+      };
+
+      options.settings.extraCats = lib.mkOption {
+        default = { };
+        description = "Additional categories to expose to Lua via nixInfo.has_cat()";
+        type = lib.types.attrsOf lib.types.bool;
+      };
+
+      options.settings.profiler = lib.mkOption {
+        default = false;
+        description = "Enable snacks.nvim startup profiler via wrapper environment.";
+        type = lib.types.bool;
+      };
 
       config.binName = lib.mkDefault "nvim";
+      config.env.PROFILER = lib.mkIf config.settings.profiler "1";
+      config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+
+      config.info =
+        let
+          allPlugins = lib.flatten [
+            config.specs.general.data
+            config.specs.colorscheme.data
+            (config.specs.lze.data or config.specs.lze)
+            (config.specs.lua.data or [ ])
+          ];
+          extractMeta =
+            raw:
+            let
+              p = raw.data or raw;
+              pname =
+                if p ? pname && p.pname != null then
+                  p.pname
+                else if p ? name && p.name != null then
+                  p.name
+                else
+                  null;
+            in
+            {
+              name = pname;
+
+              repo =
+                if p ? src && p.src ? owner && p.src ? repo then
+                  "${p.src.owner}/${p.src.repo}"
+                else if p ? src && p.src ? gitRepoUrl then
+                  p.src.gitRepoUrl
+                else
+                  null;
+
+              rev = if p ? src && p.src ? rev then p.src.rev else null;
+              version = p.version or null;
+            };
+        in
+        {
+          flake = {
+            date = self.lastModifiedDate or null;
+            nixpkgs_version = pkgs.lib.version;
+            rev = self.shortRev or self.dirtyShortRev or "dirty";
+            system = pkgs.stdenv.hostPlatform.system;
+          };
+
+          plugins_meta = lib.pipe allPlugins [
+            (map extractMeta)
+            (builtins.filter (m: m.name != null))
+            (map (m: lib.nameValuePair m.name m))
+            builtins.listToAttrs
+          ];
+
+          runtime_pkgs = map (
+            p:
+            let
+              drv = p.data or p;
+            in
+            {
+              name = drv.pname or drv.name or null;
+              version = drv.version or null;
+            }
+          ) config.runtimePkgs;
+        };
+
+      config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+      config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
 
       config.settings.config_directory = lib.mkDefault (
         lib.generators.mkLuaInline "(vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config'))"
       );
 
-      config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
-
-      options.settings.dev = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Read the config directory live from the current working directory for quick iteration.";
-      };
-
-      options.settings.profiler = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable snacks.nvim startup profiler via wrapper environment.";
-      };
-      config.env.PROFILER = lib.mkIf config.settings.profiler "1";
-
-      options.settings.colorscheme = lib.mkOption {
-        type = lib.types.str;
-        default = "catppuccin";
-        description = "Colorscheme to load (drives which plugin gets installed).";
-      };
+      config.specMods =
+        _:
+        {
+          options.runtimePkgs = options.runtimePkgs // {
+            description = ''
+              A runtimePkgs spec field to put packages on PATH.
+              If the spec is disabled, these packages are omitted from the wrapper derivation.
+            '';
+          };
+        };
 
       config.specs.colorscheme = {
-        lazy = true;
         data = builtins.getAttr config.settings.colorscheme (
           with pkgs.vimPlugins;
           {
             catppuccin = catppuccin-nvim;
-            tokyonight = tokyonight-nvim;
             onedark = onedarkpro-nvim;
+            tokyonight = tokyonight-nvim;
           }
         );
-      };
 
-      config.specs.lze = [
-        config.nvim-lib.neovimPlugins.lze
-        {
-          data = config.nvim-lib.neovimPlugins.lzextras;
-          name = "lzextras";
-        }
-      ];
-
-      config.specs.nix = {
-        data = null;
-        runtimePkgs = with pkgs; [
-          nixd
-          nil
-          nixfmt
-          statix
-        ];
-      };
-
-      config.specs.lua = {
-        after = [ "general" ];
         lazy = true;
-        data = with pkgs.vimPlugins; [
-          lazydev-nvim
-        ];
-        runtimePkgs = with pkgs; [
-          lua-language-server
-          stylua
-        ];
       };
 
       config.specs.general = {
         after = [ "lze" ];
-        lazy = true;
+
         data = with pkgs.vimPlugins; [
           {
             data = snacks-nvim;
@@ -294,6 +477,8 @@
           codecompanion-nvim
         ];
 
+        lazy = true;
+
         runtimePkgs = with pkgs; [
           copilot-language-server
 
@@ -340,116 +525,39 @@
         ];
       };
 
-      config.specMods =
-        {
-          parentSpec ? null,
-          parentOpts ? null,
-          parentName ? null,
-          config,
-          ...
-        }:
-        {
-          options.runtimePkgs = options.runtimePkgs // {
-            description = ''
-              A runtimePkgs spec field to put packages on PATH.
-              If the spec is disabled, these packages are omitted from the wrapper derivation.
-            '';
-          };
-        };
+      config.specs.lua = {
+        after = [ "general" ];
 
-      config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
+        data = with pkgs.vimPlugins; [
+          lazydev-nvim
+        ];
 
-      options.settings.extraCats = lib.mkOption {
-        type = lib.types.attrsOf lib.types.bool;
-        default = { };
-        description = "Additional categories to expose to Lua via nixInfo.has_cat()";
+        lazy = true;
+
+        runtimePkgs = with pkgs; [
+          lua-language-server
+          stylua
+        ];
       };
 
-      options.settings.cats = lib.mkOption {
-        readOnly = true;
-        type = lib.types.attrsOf lib.types.bool;
-        default = (builtins.mapAttrs (_: v: v.enable) config.specs) // config.settings.extraCats;
-      };
-
-      options.nvim-lib.pluginsFromPrefix = lib.mkOption {
-        type = lib.types.raw;
-        readOnly = true;
-        default =
-          prefix: inputs:
-          lib.pipe inputs [
-            builtins.attrNames
-            (builtins.filter (s: lib.hasPrefix prefix s))
-            (map (
-              input:
-              let
-                name = lib.removePrefix prefix input;
-              in
-              {
-                inherit name;
-                value = config.nvim-lib.mkPlugin name inputs.${input};
-              }
-            ))
-            builtins.listToAttrs
-          ];
-      };
-
-      config.info =
-        let
-          extractMeta =
-            raw:
-            let
-              p = raw.data or raw;
-              pname =
-                if p ? pname && p.pname != null then
-                  p.pname
-                else if p ? name && p.name != null then
-                  p.name
-                else
-                  null;
-            in
-            {
-              name = pname;
-              version = p.version or null;
-              rev = if p ? src && p.src ? rev then p.src.rev else null;
-              repo =
-                if p ? src && p.src ? owner && p.src ? repo then
-                  "${p.src.owner}/${p.src.repo}"
-                else if p ? src && p.src ? gitRepoUrl then
-                  p.src.gitRepoUrl
-                else
-                  null;
-            };
-          allPlugins = lib.flatten [
-            config.specs.general.data
-            config.specs.colorscheme.data
-            (config.specs.lze.data or config.specs.lze)
-            (config.specs.lua.data or [ ])
-          ];
-        in
+      config.specs.lze = [
+        config.nvim-lib.neovimPlugins.lze
         {
-          flake = {
-            rev = self.shortRev or self.dirtyShortRev or "dirty";
-            date = self.lastModifiedDate or null;
-            nixpkgs_version = pkgs.lib.version;
-            system = pkgs.stdenv.hostPlatform.system;
-          };
-          plugins_meta = lib.pipe allPlugins [
-            (map extractMeta)
-            (builtins.filter (m: m.name != null))
-            (map (m: lib.nameValuePair m.name m))
-            builtins.listToAttrs
-          ];
-          runtime_pkgs = map (
-            p:
-            let
-              drv = p.data or p;
-            in
-            {
-              name = drv.pname or drv.name or null;
-              version = drv.version or null;
-            }
-          ) config.runtimePkgs;
-        };
+          data = config.nvim-lib.neovimPlugins.lzextras;
+          name = "lzextras";
+        }
+      ];
+
+      config.specs.nix = {
+        data = null;
+
+        runtimePkgs = with pkgs; [
+          nixd
+          nil
+          nixfmt
+          statix
+        ];
+      };
     };
 
   perSystem =
@@ -462,96 +570,4 @@
         }).wrap
           { inherit pkgs; };
     };
-
-  den.aspects.applications.dev.editor.neovim = {
-    nixos =
-      { pkgs, ... }:
-      {
-        imports = [ self.wrappers.neovim.install ];
-
-        environment.sessionVariables = {
-          EDITOR = "nvim";
-        };
-
-        environment.systemPackages =
-          with pkgs;
-          [
-            tree-sitter
-            nixfmt
-            stylua
-            lua-language-server
-            bash-language-server
-            nixd
-            nil
-          ]
-          ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
-            pkgs.nur.repos.Freed-Wu.tree-sitter-tmux
-            pkgs.nur.repos.Freed-Wu.tmux-language-server
-            pkgs.nur.repos.Freed-Wu.termux-language-server
-          ];
-      };
-
-    homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
-      {
-        imports = [ self.wrappers.neovim.install ];
-
-        wrappers.neovim.enable = true;
-
-        home.sessionVariables = {
-          EDITOR = "nvim";
-          VISUAL = "nvim";
-        };
-
-        home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/nvim";
-
-        xdg.desktopEntries = {
-          neovim = {
-            name = "Neovim";
-            genericName = "Text Editor";
-            comment = "Manage text files";
-            exec = "ghostty --class=com.neovim.editor -e nvim %F";
-            terminal = false;
-            type = "Application";
-            icon = "nvim";
-            categories = [
-              "Utility"
-              "TextEditor"
-              "Development"
-            ];
-            mimeType = [
-              "text/plain"
-              "text/x-chdr"
-              "text/x-csrc"
-              "text/x-c++hdr"
-              "text/x-c++src"
-              "text/csv"
-              "application/json"
-              "application/x-zerosize"
-            ];
-          };
-
-          nvim = {
-            name = "Neovim";
-            exec = "nvim %F";
-            type = "Application";
-            settings = {
-              NoDisplay = "true";
-            };
-          };
-        };
-      };
-
-    persistHome.directories = [
-      ".local/share/nvim"
-      ".local/state/nvim"
-    ];
-  };
 }

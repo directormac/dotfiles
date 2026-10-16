@@ -1,5 +1,5 @@
 # Service Samba WSDD Network Discovery Aspect
-{ den, ... }:
+_:
 {
   den.aspects.services.samba = {
     nixos =

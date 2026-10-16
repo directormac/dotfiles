@@ -1,5 +1,5 @@
 # MTR Network Diagnostic Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.networking.mtr = {
     nixos = {

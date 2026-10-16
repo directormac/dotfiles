@@ -1,5 +1,5 @@
 # Fcitx5 Input Method Framework Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.wayland.fcitx5 = {
     nixos =

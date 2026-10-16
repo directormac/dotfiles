@@ -1,16 +1,14 @@
 # Noctalia Desktop Shell Leaf Aspect
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
   flake-file.inputs = {
     noctalia = {
-      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia";
     };
   };
 
@@ -18,6 +16,8 @@
     nixos =
       { pkgs, ... }:
       {
+        environment.systemPackages = with pkgs; [ gpu-screen-recorder ];
+
         imports = lib.optionals (inputs ? noctalia) [
           inputs.noctalia.nixosModules.default
         ];
@@ -26,21 +26,32 @@
           enable = true;
           recommendedServices.enable = true;
         };
-
-        environment.systemPackages = with pkgs; [ gpu-screen-recorder ];
       };
 
     homeManager =
       { config, ... }:
       {
-        stylix.targets = {
-          noctalia.enable = true;
-        };
-
         programs.noctalia = lib.mkIf (inputs ? noctalia) {
-          enable = true;
-
           settings = {
+            bar = {
+              background_opacity = 0;
+              contact_shadow = false;
+              font_family = "NotoMono NF";
+              margin_ends = 0;
+              radius_bottom_left = 0;
+              radius_bottom_right = 0;
+              shadow = false;
+            };
+
+            dock = {
+              shadow = false;
+            };
+
+            notification = {
+              enabled = true;
+              position = "top-right";
+            };
+
             plugins = {
               enabled = [
                 "noctalia/timer"
@@ -64,6 +75,10 @@
               };
             };
 
+            sysmon = {
+              enabled = true;
+            };
+
             theme = {
               bultin = "Catppuccin";
               custom_palette = "stylix";
@@ -71,37 +86,14 @@
               source = "custom";
             };
 
-            dock = {
-              shadow = false;
-            };
-
-            bar = {
-              background_opacity = 0;
-              font_family = "NotoMono NF";
-              margin_ends = 0;
-              radius_bottom_left = 0;
-              radius_bottom_right = 0;
-              shadow = false;
-              contact_shadow = false;
+            wallpaper = {
+              automation.enable = true;
+              directory = "${config.home.homeDirectory}/.config/wallpapers";
             };
 
             weather = {
               enabled = true;
               unit = "metric";
-            };
-
-            sysmon = {
-              enabled = true;
-            };
-
-            notification = {
-              enabled = true;
-              position = "top-right";
-            };
-
-            wallpaper = {
-              directory = "${config.home.homeDirectory}/.config/wallpapers";
-              automation.enable = true;
             };
 
             widget = {
@@ -112,6 +104,12 @@
               };
             };
           };
+
+          enable = true;
+        };
+
+        stylix.targets = {
+          noctalia.enable = true;
         };
       };
   };

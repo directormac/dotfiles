@@ -1,8 +1,7 @@
 # OpenCode AI Coding Agent Aspect
 {
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -10,35 +9,38 @@
     homeManager =
       { pkgs, ... }:
       let
-        llmPkgs =
-          pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
+        llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
-        stylix.targets.opencode.enable = true;
-
         programs.opencode = lib.mkIf (llmPkgs ? opencode) {
-          enable = true;
-          package = llmPkgs.opencode;
           settings = {
             autoshare = false;
             autoupdate = true;
+
             permission = {
+              edit = {
+                "/nix/store/**" = "deny";
+              };
+
               external_directory = {
                 "/nix/store/**" = "allow";
                 "/tmp/**" = "allow";
               };
+
               read = {
-                "$HOME/.dotfiles" = "allow";
                 "$HOME/.config" = "allow";
-                "/nix/store/**" = "allow";
+                "$HOME/.dotfiles" = "allow";
                 "*.env" = "deny";
-              };
-              edit = {
-                "/nix/store/**" = "deny";
+                "/nix/store/**" = "allow";
               };
             };
           };
+
+          enable = true;
+          package = llmPkgs.opencode;
         };
+
+        stylix.targets.opencode.enable = true;
       };
 
     persistHome.directories = [

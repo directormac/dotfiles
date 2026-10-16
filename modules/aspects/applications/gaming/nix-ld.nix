@@ -1,15 +1,13 @@
 # Nix-LD & Nix-Index Aspect: Run unpatched dynamic binaries on NixOS
 {
-  den,
   inputs,
-  lib,
   ...
 }:
 {
   flake-file.inputs = {
     nix-index-database = {
-      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nix-index-database";
     };
   };
 
@@ -17,17 +15,15 @@
     nixos =
       { lib, pkgs, ... }:
       {
-        imports = lib.optionals (inputs ? nix-index-database) [
-          inputs.nix-index-database.nixosModules.nix-index
-        ];
-
         environment.systemPackages = [
           pkgs.nix-index
         ];
 
-        programs.command-not-found.enable = lib.mkDefault false;
+        imports = lib.optionals (inputs ? nix-index-database) [
+          inputs.nix-index-database.nixosModules.nix-index
+        ];
 
-        programs.nix-index-database.comma.enable = lib.mkIf (inputs ? nix-index-database) true;
+        programs.command-not-found.enable = lib.mkDefault false;
 
         programs.nix-index = {
           enable = lib.mkDefault true;
@@ -35,9 +31,7 @@
           enableZshIntegration = true;
         };
 
-        programs.zsh.interactiveShellInit = ''
-          source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-        '';
+        programs.nix-index-database.comma.enable = lib.mkIf (inputs ? nix-index-database) true;
 
         programs.nix-ld = {
           enable = lib.mkDefault true;
@@ -77,6 +71,10 @@
             zstd
           ];
         };
+
+        programs.zsh.interactiveShellInit = ''
+          source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+        '';
       };
 
     cacheHome.directories = [

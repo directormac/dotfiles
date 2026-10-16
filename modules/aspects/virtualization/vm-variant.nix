@@ -1,6 +1,5 @@
 # Virtualization VM-Variant Aspect: QEMU test VM environment configuration
 {
-  lib,
   den,
   ...
 }:
@@ -16,13 +15,16 @@ let
   };
 in
 {
+  den.aspects.virtualization.vm-bootable = {
+    gui = installer "graphical-base";
+    tui = installer "minimal";
+  };
+
   den.aspects.virtualization.vm-variant = {
     nixos =
       { lib, ... }:
       {
         virtualisation.vmVariant = {
-          virtualisation.qemu.enableSharedMemory = true;
-
           fileSystems."/cache" = lib.mkVMOverride {
             options = [
               "defaults"
@@ -75,6 +77,8 @@ in
             memorySize = lib.mkDefault 4096;
           };
 
+          virtualisation.qemu.enableSharedMemory = true;
+
           # Mount live dotfiles directory and development worktrees from the host into the VM
           # Preserves exact paths for git worktrees while providing ~/.dotfiles fallback
           virtualisation.sharedDirectories = {
@@ -101,11 +105,6 @@ in
       virtualization.vm-variant
       virtualization.vm-bootable.tui
     ];
-  };
-
-  den.aspects.virtualization.vm-bootable = {
-    gui = installer "graphical-base";
-    tui = installer "minimal";
   };
 
   den.aspects.virtualization.xfce-desktop.nixos =

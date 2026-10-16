@@ -1,5 +1,5 @@
 # SOPS, Rage & SecretSpec Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.security.sops = {
     nixos =

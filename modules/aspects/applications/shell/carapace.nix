@@ -1,5 +1,5 @@
 # Carapace Multi-Shell Completion Engine Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.shell.carapace = {
     homeManager =
@@ -7,12 +7,14 @@
       {
         programs.carapace = {
           enable = true;
-          enableZshIntegration = true;
           enableBashIntegration = true;
+          enableZshIntegration = true;
+
           environment = {
             CARAPACE_BRIDGES = "zsh,bash";
             CARAPACE_MATCH = true;
           };
+
           extraPackages = with pkgs; [
             carapace-bridge
           ];

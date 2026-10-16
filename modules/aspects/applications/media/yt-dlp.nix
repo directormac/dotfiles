@@ -1,5 +1,5 @@
 # yt-dlp Video Downloader Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.media.yt-dlp = {
     nixos =

@@ -1,30 +1,28 @@
 # Desktop GTK, DConf & Bookmarks Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.desktop.gtk = {
     nixos =
       {
-        pkgs,
         lib,
+        pkgs,
         ...
       }:
       let
-        theme-name = "catppuccin-mocha-mauve-standard+default";
-        theme-package = pkgs.catppuccin-gtk.override {
-          accents = [ "mauve" ];
-          size = "standard";
-          variant = "mocha";
-        };
-
-        icon-theme-package = pkgs.papirus-icon-theme;
-        icon-theme-name = "Papirus-Dark";
-
         gtksettings = ''
           [Settings]
           gtk-icon-theme-name = ${icon-theme-name}
           gtk-theme-name = ${theme-name}
           gtk-application-prefer-dark-theme = 1
         '';
+        icon-theme-name = "Papirus-Dark";
+        icon-theme-package = pkgs.papirus-icon-theme;
+        theme-name = "catppuccin-mocha-mauve-standard+default";
+        theme-package = pkgs.catppuccin-gtk.override {
+          accents = [ "mauve" ];
+          size = "standard";
+          variant = "mocha";
+        };
       in
       {
         environment = {
@@ -43,16 +41,18 @@
 
         programs.dconf = {
           enable = lib.mkDefault true;
+
           profiles.user.databases = [
             {
-              lockAll = false;
               settings = {
                 "org/gnome/desktop/interface" = {
+                  color-scheme = "prefer-dark";
                   gtk-theme = theme-name;
                   icon-theme = icon-theme-name;
-                  color-scheme = "prefer-dark";
                 };
               };
+
+              lockAll = false;
             }
           ];
         };
@@ -61,8 +61,15 @@
     homeManager =
       { config, ... }:
       {
+        dconf.settings = {
+          "org/gnome/desktop/privacy" = {
+            remember-recent-files = false;
+          };
+        };
+
         gtk = {
           enable = true;
+
           gtk3.bookmarks = [
             "file://${config.home.homeDirectory}/Code Code"
             "file://${config.home.homeDirectory}/Projects Projects"
@@ -70,12 +77,6 @@
             "file:///mnt/local/resources Resources(SSD)"
             "file:///mnt/network/fileserver Fileserver"
           ];
-        };
-
-        dconf.settings = {
-          "org/gnome/desktop/privacy" = {
-            remember-recent-files = false;
-          };
         };
       };
   };

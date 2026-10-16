@@ -1,21 +1,10 @@
 # Host "nixos": Secondary / standard interactive workstation
 {
-  core,
   den,
-  lib,
   ...
 }:
 {
-  den.hosts.x86_64-linux.nixos = {
-    description = "NixOS Workstation";
-    isWorkstation = true;
-    users.artifex = { };
-  };
-
   den.aspects.nixos = {
-    description = "NixOS Workstation";
-    isWorkstation = true;
-
     includes = with den.aspects; [
       roles.default
       roles.workstation
@@ -39,6 +28,7 @@
           "usb_storage"
           "sd_mod"
         ];
+
         boot.kernelModules = [ "kvm-intel" ];
         boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
         boot.loader.systemd-boot.enable = lib.mkDefault true;
@@ -54,6 +44,9 @@
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       };
 
+    description = "NixOS Workstation";
+    isWorkstation = true;
+
     provides.to-users.homeManager =
       { pkgs, ... }:
       {
@@ -63,5 +56,11 @@
           fd
         ];
       };
+  };
+
+  den.hosts.x86_64-linux.nixos = {
+    description = "NixOS Workstation";
+    isWorkstation = true;
+    users.artifex = { };
   };
 }

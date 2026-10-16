@@ -1,5 +1,5 @@
 # GameMode Performance Optimizer Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.gaming.gamemode = {
     nixos = {

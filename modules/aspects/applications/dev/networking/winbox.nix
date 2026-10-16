@@ -1,5 +1,5 @@
 # WinBox MikroTik Router Administration Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.networking.winbox = {
     nixos =

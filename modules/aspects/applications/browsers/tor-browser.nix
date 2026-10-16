@@ -1,5 +1,5 @@
 # Tor Browser Leaf Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.browsers.tor-browser = {
     nixos =

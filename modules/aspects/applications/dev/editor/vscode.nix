@@ -1,5 +1,5 @@
 # VS Code & SQLite Browser Aspect
-{ den, ... }:
+_:
 {
   den.aspects.applications.dev.editor.vscode = {
     homeManager =

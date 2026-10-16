@@ -1,9 +1,7 @@
 # Firefox Browser Leaf Aspect
 {
-  core,
-  den,
-  inputs,
   lib,
+  inputs,
   ...
 }:
 {
@@ -18,8 +16,8 @@
 
     homeManager =
       {
-        pkgs,
         lib,
+        pkgs,
         ...
       }:
       let
@@ -29,14 +27,14 @@
       {
         programs.firefox = {
           enable = true;
-          nativeMessagingHosts = common.nativeMessagingHosts;
 
           globalExtensions = [
             {
-              package = customAddons.volume-control-boost-volume;
               settings = {
                 private_browsing = true;
               };
+
+              package = customAddons.volume-control-boost-volume;
             }
           ]
           ++ (with common.extensions.rycee-firefox-addons; [
@@ -46,52 +44,59 @@
             tweaks-for-youtube
             sponsorblock
             {
+              settings = {
+                private_browsing = true;
+              };
+
               package = ublock-origin;
+            }
+            {
               settings = {
                 private_browsing = true;
               };
-            }
-            {
+
               package = darkreader;
+            }
+            {
               settings = {
                 private_browsing = true;
               };
-            }
-            {
+
               package = sidebery;
+            }
+            {
               settings = {
                 private_browsing = true;
               };
-            }
-            {
+
               package = vimium-c;
-              settings = {
-                private_browsing = true;
-              };
             }
             {
-              package = clearurls;
               settings = {
                 private_browsing = true;
               };
+
+              package = clearurls;
             }
           ]);
 
-          profiles.default = {
-            isDefault = true;
+          inherit (common) nativeMessagingHosts;
 
+          profiles.default = {
             extensions = {
-              force = true;
               settings = {
                 "vimium-c@gdh1995.cn" = {
-                  force = true;
                   settings = common.extensions.vimiumCSettings;
+                  force = true;
                 };
               }
               // common.extensions.settings;
+
+              force = true;
             };
 
-            search = common.search;
+            isDefault = true;
+            inherit (common) search;
 
             userChrome =
               # css
@@ -103,13 +108,13 @@
         };
       };
 
+    cacheHome.directories = [
+      ".cache/mozilla"
+    ];
+
     persistHome.directories = [
       ".config/mozilla"
       ".mozilla"
-    ];
-
-    cacheHome.directories = [
-      ".cache/mozilla"
     ];
   };
 
