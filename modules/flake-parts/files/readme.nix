@@ -26,7 +26,7 @@
         # markdown
         ''
           ## Quick Links
-
+          - [Awesome Nix](https://github.com/nix-community/awesome-nix)
           - [Den Documentation](https://den.denful.dev)
           - [NixOS Options Search](https://search.nixos.org/options?channel=unstable)
           - [Home Manager Options](https://home-manager-options.extranix.com/)
