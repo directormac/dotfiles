@@ -26,6 +26,7 @@
           zip
 
           # CLI Goodies
+          skim
           dust
           fd
           file
@@ -44,6 +45,9 @@
       { pkgs, ... }:
       {
         home.packages = with pkgs; [
+          fff
+          fff-mcp
+          skim
           bottom
           duf
           dust
