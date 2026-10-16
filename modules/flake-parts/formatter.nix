@@ -31,10 +31,9 @@
       # package wrapped with my desired configuration.
       # Reference: https://flake.parts/options/flake-parts#opt-perSystem.formatter
       formatter = config.treefmt.build.wrapper;
+      packages.fmt = config.treefmt.build.wrapper;
+      packages.treefmt = config.treefmt.build.wrapper;
 
-      # packages.fmt = self'.formatter;
-
-      # packages.fmt = config.treefmt.build.wrapper;
       # This automatically adds a hook which uses prek. .
       # NOTE: Wire this up in consideration of the whole repo's hook
       # more tools like devenv might want to control this. . .

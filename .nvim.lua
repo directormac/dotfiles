@@ -49,3 +49,60 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.treesitter.language.register("tmux", { "conf", "tmux" })
 
 vim.lsp.enable("copilot")
+
+-- Read more here https://swarsel.github.io/pedantix/configuration.html
+-- or type `:h exrc`
+
+require("conform").setup({
+	formatters_by_ft = {
+		nix = { "treefmt" },
+	},
+	formatters = {
+		treefmt = {
+			command = "treefmt",
+			-- Tell conform that the project root is flake.nix / .git, NOT treefmt.toml:
+			cwd = require("conform.util").root_file({ "flake.nix", ".git" }),
+			require_cwd = true,
+		},
+	},
+})
+
+---@type vim.lsp.Config
+vim.lsp.config("nil_ls", {
+	---@type lspconfig.settings.nil_ls
+	settings = {
+		formatting = {
+			command = { "treefmt" },
+		},
+	},
+})
+
+---@type vim.lsp.Config
+vim.lsp.config("nixd", {
+	---@type lspconfig.settings.nixd
+	settings = {
+		nixd = {
+			nixpkgs = {
+				expr = "import (builtins.getFlake (toString ./.)).inputs.nixpkgs { }",
+			},
+			formatting = {
+				command = { "treefmt" },
+			},
+			options = {
+				nixos = {
+					expr = '(let flake = builtins.getFlake (toString ./.); pkgs = import flake.inputs.nixpkgs { }; in (pkgs.lib.evalModules { modules = (import "${flake.inputs.nixpkgs}/nixos/modules/module-list.nix") ++ [ ({...}: { nixpkgs.hostPlatform = builtins.currentSystem;} ) ] ; })).options',
+				},
+				home_manager = {
+					expr = '(let flake = builtins.getFlake (toString ./.); pkgs = import flake.inputs.nixpkgs { }; lib = import "${flake.inputs.home-manager}/modules/lib/stdlib-extended.nix" pkgs.lib; in (lib.evalModules { modules = (import "${flake.inputs.home-manager}/modules/modules.nix") { inherit lib pkgs; check = false; }; })).options',
+				},
+			},
+		},
+	},
+})
+
+vim.lsp.enable({
+	"lua_ls",
+	"nixd",
+	"taplo",
+	"nil_ls",
+})

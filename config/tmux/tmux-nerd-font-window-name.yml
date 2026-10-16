@@ -6,18 +6,26 @@ config:
   always-show-fallback-name: false
 
 icons:
+  # Keep exact 1-to-1 matches here for performance and simplicity
   tmux: ""
   tuxedo: ""
   tv: "󰠹"
   sesh: "⚡"
   neovim: ""
-  nix: " "
-  nh: " "
-  agy: "󱚟 "
-  agyx: "󱚟 "
-  opencode: "󱚟 "
-  opencode2: "󱚟 "
-  ocx: "󱚟 "
-  claude: "󱚟 "
-  pi: "󰏿 "
+  claude: " "
+  bun: " "
   workmux: ""
+
+
+icons-regex:
+  # node.*codex matches anything starting with node and ending with codex
+  "node.*codex": " "
+  # ^(...) matches the exact word. The '?' makes the preceding letter/number optional.
+  "^(agyx?|opencode2?|ocx)$": " "
+  "^(nix|nh|flake)$": " "
+  "^(pi|omp|omo)$": "󰏿 "
+
+# names-regex:
+  # Rename the window nicely if show-name: true is ever enabled
+  # "node.*codex": "codex"
+  # "^(agyx?|opencode2?|ocx)$": "opencode"

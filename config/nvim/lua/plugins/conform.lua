@@ -2,6 +2,7 @@ return {
 
   {
     'conform.nvim',
+    on_require = { 'conform' },
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {

@@ -109,6 +109,12 @@
 
           pkgs.nix-search-tv
           pkgs.fzf
+
+          # Language Servers (for this repo)
+          pkgs.lua-language-server
+          pkgs.nil
+          pkgs.nixd
+          pkgs.taplo
         ]
         ++ lib.optionals (config ? treefmt) [
           config.treefmt.build.programs.pedantix
@@ -214,6 +220,11 @@
             exec = "nix run .#vm-sandbox \"$@\"";
           };
 
+          treefmt = {
+            description = "Format all files";
+            exec = "${config.treefmt.build.wrapper}/bin/treefmt \"$@\"";
+          };
+
           vm = {
             description = "Run default VM";
             exec = "nix run .#vm \"$@\"";
@@ -243,10 +254,6 @@
             description = "Regenerate root flake.nix using flake-file";
             exec = "nix run .#write-flake \"$@\"";
           };
-          # treefmt = {
-          #   description = "Format all files";
-          #   exec = "${config.treefmt.build.wrapper}/bin/treefmt \"$@\"";
-          # };
 
         };
       };

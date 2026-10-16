@@ -22,7 +22,7 @@
     nixos =
       { config, ... }:
       let
-        hasPwdSecret = builtins.pathExists (../../.. + "/.secrets/users/artifex/password.age");
+        hasPwdSecret = builtins.pathExists (../.. + "/.secrets/users/artifex/password.age");
       in
       {
         users.users.artifex = {
@@ -60,7 +60,7 @@
 
     secrets =
       let
-        pwdSecret = ../../.. + "/.secrets/users/artifex/password.age";
+        pwdSecret = ../.. + "/.secrets/users/artifex/password.age";
       in
       lib.optionalAttrs (builtins.pathExists pwdSecret) {
         "password-artifex" = {
