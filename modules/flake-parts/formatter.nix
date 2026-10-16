@@ -1,8 +1,20 @@
 {
   inputs,
+  withSystem,
   ...
 }:
 {
+  flake-file.formatter =
+    pkgs:
+    let
+      treefmt = withSystem pkgs.stdenv.hostPlatform.system (
+        { config, ... }: config.treefmt.build.wrapper
+      );
+    in
+    pkgs.writeShellScriptBin "treefmt-flake" ''
+      export HOME=$(mktemp -d)
+      exec ${treefmt}/bin/treefmt --no-cache "$@"
+    '';
 
   flake-file.inputs = {
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
