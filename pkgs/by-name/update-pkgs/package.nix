@@ -11,19 +11,20 @@
 # held on a cilium pre-release; nix-update would downgrade it to latest stable).
 # Name them explicitly with an appropriate --version to bump them anyway.
 {
-  writeShellApplication,
-  nix-update,
-  nix,
   jq,
+  nix,
+  nix-update,
+  writeShellApplication,
 }:
 writeShellApplication {
   name = "update-pkgs";
-  meta.description = "Update custom package sources via nix-update";
+
   runtimeInputs = [
     nix-update
     nix
     jq
   ];
+
   text = ''
     pinned=(
       cni-plugin-cilium
@@ -72,4 +73,6 @@ writeShellApplication {
     done
     exit $rc
   '';
+
+  meta.description = "Update custom package sources via nix-update";
 }

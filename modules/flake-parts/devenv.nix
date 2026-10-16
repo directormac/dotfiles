@@ -24,7 +24,7 @@
       config,
       lib,
       pkgs,
-    self',
+      self',
       ...
     }:
     lib.optionalAttrs (inputs ? devenv) {

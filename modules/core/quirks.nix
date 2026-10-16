@@ -20,12 +20,12 @@
     description = "Codium/VSCode user settings declarations";
   };
 
-  den.quirks.homeManagerModules = {
-    description = "Home Manager modules contributed by aspects";
-  };
-
   den.quirks.firewall = {
     description = "Firewall TCP/UDP port declarations";
+  };
+
+  den.quirks.homeManagerModules = {
+    description = "Home Manager modules contributed by aspects";
   };
 
   den.quirks.nixpkgs-overlays = {

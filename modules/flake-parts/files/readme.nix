@@ -1,72 +1,17 @@
 {
-  dag,
   config,
   lib,
+  dag,
   ...
 }:
 {
   options.flake.readme = lib.mkOption {
-    type = lib.types.lazyAttrsOf lib.types.unspecified;
     default = { };
     description = "DAG of sections to assemble into README.md";
+    type = lib.types.lazyAttrsOf lib.types.unspecified;
   };
 
   config = {
-    flake.readme.header =
-      dag.entryBefore [ "links" ]
-        # markdown
-        ''
-          # Den Dotfiles Configuration
-
-          A modern, pure-leaf dendritic NixOS and Home Manager configuration powered by [Den](https://den.denful.dev), [flake-file](https://github.com/denful/flake-file), [devenv](https://devenv.sh), and [agenix-rekey](https://github.com/oddlama/agenix-rekey).
-        '';
-
-    flake.readme.links =
-      dag.entryBetween [ "disallow-warnings" ] [ "header" ]
-        # markdown
-        ''
-          ## Quick Links
-          - [Awesome Nix](https://github.com/nix-community/awesome-nix)
-          - [Den Documentation](https://den.denful.dev)
-          - [NixOS Options Search](https://search.nixos.org/options?channel=unstable)
-          - [Home Manager Options](https://home-manager-options.extranix.com/)
-          - [devenv Documentation](https://devenv.sh/)
-          - [flake-parts Documentation](https://flake.parts/)
-        '';
-
-    flake.readme.disallow-warnings =
-      dag.entryBetween [ "files" ] [ "links" ]
-        # markdown
-        ''
-          ## Evaluation Configuration
-
-          This repository configures `nixConfig` for strict, safe, and cached builds:
-
-          ```nix
-          nixConfig = {
-            accept-flake-config = true;
-            allow-import-from-derivation = true;
-            auto-optimise-store = true;
-            lazy-trees = true;
-            show-trace = true;
-          };
-          ```
-        '';
-
-    flake.readme.files =
-      dag.entryBetween [ "automatic-import" ] [ "disallow-warnings" ]
-        # markdown
-        ''
-          ## Generated Files
-
-          The following files in this repository are generated and managed
-          using [the files flake-parts module](https://github.com/sini/files):
-
-          - `README.md`
-          - `.workmux.yaml`
-          - `.nvim.lua`
-        '';
-
     flake.readme.automatic-import =
       dag.entryBetween [ "den" ] [ "files" ]
         # markdown
@@ -140,42 +85,6 @@
           `autostart` `cache` `cacheHome` `codium-extensions` `codium-settings` `firewall` `homeManagerModules` `nixpkgs-overlays` `persist` `persistHome` `secrets` `secretsHome`
         '';
 
-    flake.readme.hosts =
-      dag.entryBetween [ "devenv" ] [ "den" ]
-        # markdown
-        ''
-          ## Topology & Hosts
-
-          Hosts and user topologies are declared in [`modules/hosts/`](modules/hosts):
-
-          | Host | Architecture | User | Roles & Aspects |
-          |------|--------------|------|-----------------|
-          | **`nixos`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `hardware.nixos`, `secrets.agenix` |
-          | **`super`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `impermanence`, `secrets.agenix` |
-          | **`sandbox`** | `x86_64-linux` | `artifex` | `roles.default`, `applications.gaming.nix-ld` (Isolated testbed host for rapid VM testing) |
-        '';
-
-    flake.readme.devenv =
-      dag.entryBetween [ "deployment" ] [ "hosts" ]
-        # markdown
-        ''
-          ## Development Environment (`devenv` + `direnv`)
-
-          The repository includes a reproducible developer environment configured in [`modules/flake-parts/devenv.nix`](modules/flake-parts/devenv.nix) and integrated via `.envrc`.
-
-          ### Activation
-
-          1. Ensure [direnv](https://direnv.net/) and [nix-direnv](https://github.com/nix-community/nix-direnv) are installed.
-          2. Allow the environment in the repo root:
-             ```bash
-             direnv allow
-             ```
-          3. Alternatively, enter the shell manually:
-             ```bash
-             nix develop
-             ```
-        '';
-
     flake.readme.deployment =
       dag.entryAfter [ "devenv" ]
         # markdown
@@ -202,6 +111,97 @@
           ```bash
           nix run .#write-topology
           ```
+        '';
+
+    flake.readme.devenv =
+      dag.entryBetween [ "deployment" ] [ "hosts" ]
+        # markdown
+        ''
+          ## Development Environment (`devenv` + `direnv`)
+
+          The repository includes a reproducible developer environment configured in [`modules/flake-parts/devenv.nix`](modules/flake-parts/devenv.nix) and integrated via `.envrc`.
+
+          ### Activation
+
+          1. Ensure [direnv](https://direnv.net/) and [nix-direnv](https://github.com/nix-community/nix-direnv) are installed.
+          2. Allow the environment in the repo root:
+             ```bash
+             direnv allow
+             ```
+          3. Alternatively, enter the shell manually:
+             ```bash
+             nix develop
+             ```
+        '';
+
+    flake.readme.disallow-warnings =
+      dag.entryBetween [ "files" ] [ "links" ]
+        # markdown
+        ''
+          ## Evaluation Configuration
+
+          This repository configures `nixConfig` for strict, safe, and cached builds:
+
+          ```nix
+          nixConfig = {
+            accept-flake-config = true;
+            allow-import-from-derivation = true;
+            auto-optimise-store = true;
+            lazy-trees = true;
+            show-trace = true;
+          };
+          ```
+        '';
+
+    flake.readme.files =
+      dag.entryBetween [ "automatic-import" ] [ "disallow-warnings" ]
+        # markdown
+        ''
+          ## Generated Files
+
+          The following files in this repository are generated and managed
+          using [the files flake-parts module](https://github.com/sini/files):
+
+          - `README.md`
+          - `.workmux.yaml`
+          - `.nvim.lua`
+        '';
+
+    flake.readme.header =
+      dag.entryBefore [ "links" ]
+        # markdown
+        ''
+          # Den Dotfiles Configuration
+
+          A modern, pure-leaf dendritic NixOS and Home Manager configuration powered by [Den](https://den.denful.dev), [flake-file](https://github.com/denful/flake-file), [devenv](https://devenv.sh), and [agenix-rekey](https://github.com/oddlama/agenix-rekey).
+        '';
+
+    flake.readme.hosts =
+      dag.entryBetween [ "devenv" ] [ "den" ]
+        # markdown
+        ''
+          ## Topology & Hosts
+
+          Hosts and user topologies are declared in [`modules/hosts/`](modules/hosts):
+
+          | Host | Architecture | User | Roles & Aspects |
+          |------|--------------|------|-----------------|
+          | **`nixos`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `hardware.nixos`, `secrets.agenix` |
+          | **`super`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `impermanence`, `secrets.agenix` |
+          | **`sandbox`** | `x86_64-linux` | `artifex` | `roles.default`, `applications.gaming.nix-ld` (Isolated testbed host for rapid VM testing) |
+        '';
+
+    flake.readme.links =
+      dag.entryBetween [ "disallow-warnings" ] [ "header" ]
+        # markdown
+        ''
+          ## Quick Links
+          - [Awesome Nix](https://github.com/nix-community/awesome-nix)
+          - [Den Documentation](https://den.denful.dev)
+          - [NixOS Options Search](https://search.nixos.org/options?channel=unstable)
+          - [Home Manager Options](https://home-manager-options.extranix.com/)
+          - [devenv Documentation](https://devenv.sh/)
+          - [flake-parts Documentation](https://flake.parts/)
         '';
 
     perSystem = _: {

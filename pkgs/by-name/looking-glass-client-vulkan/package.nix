@@ -1,67 +1,45 @@
 {
-  stdenv,
   lib,
-  fetchFromGitHub,
-  pkg-config,
   cmake,
-  freefont_ttf,
-  spice-protocol,
-  nettle,
-  libbfd,
-  fontconfig,
-  libffi,
   expat,
+  fetchFromGitHub,
+  fontconfig,
+  freefont_ttf,
+  glslang,
   libGL,
-  nanosvg,
   libX11,
-  libxkbcommon,
-  libXext,
-  libXrandr,
-  libXi,
   libXScrnSaver,
-  libXinerama,
   libXcursor,
-  libXpresent,
   libXdmcp,
+  libXext,
+  libXi,
+  libXinerama,
+  libXpresent,
+  libXrandr,
+  libbfd,
+  libffi,
+  libsamplerate,
+  libxkbcommon,
+  luajit,
+  nanosvg,
+  nettle,
+  pipewire,
+  pkg-config,
+  pulseaudio,
+  spice-protocol,
+  stdenv,
+  vulkan-headers,
+  vulkan-loader,
   wayland,
   wayland-protocols,
   wayland-scanner,
-  luajit,
-  vulkan-loader,
-  vulkan-headers,
-  glslang,
-  pipewire,
-  pulseaudio,
-  libsamplerate,
   openGLSupport ? true,
-  xorgSupport ? true,
-  waylandSupport ? true,
   pipewireSupport ? true,
   pulseSupport ? true,
+  waylandSupport ? true,
+  xorgSupport ? true,
 }:
 stdenv.mkDerivation (finalAttrs: {
-  pname = "looking-glass-client-vulkan";
-  version = "B5.0.1";
-
-  src = fetchFromGitHub {
-    owner = "sini";
-    repo = "LookingGlass";
-    rev = "d731c0570e9332cf543f5b4807dc83b8f405509c";
-    hash = "sha256-xN8L1PYM3KGIz4wkWporVzOMRqeox6BQYlAcbxD/6dk=";
-    fetchSubmodules = true;
-  };
-
-  patches = [
-    ./nanosvg-unvendor.diff
-    ./verbose-cimgui.patch
-  ];
-
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-    wayland-scanner
-  ];
-
   buildInputs = [
     libX11
     libGL
@@ -117,6 +95,24 @@ stdenv.mkDerivation (finalAttrs: {
   # Suppress class-memaccess warning in imgui_impl_vulkan.cpp (upstream code)
   env.NIX_CFLAGS_COMPILE = "-Wno-error=class-memaccess";
 
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+    wayland-scanner
+  ];
+
+  patches = [
+    ./nanosvg-unvendor.diff
+    ./verbose-cimgui.patch
+  ];
+
+  pname = "looking-glass-client-vulkan";
+
+  postInstall = ''
+    mkdir -p $out/share/pixmaps
+    cp $src/resources/lg-logo.png $out/share/pixmaps
+  '';
+
   postUnpack = ''
     echo ${finalAttrs.src.rev} > source/VERSION
     # Apply cimgui vulkan ImVector fix before changing sourceRoot
@@ -124,13 +120,21 @@ stdenv.mkDerivation (finalAttrs: {
     export sourceRoot="source/client"
   '';
 
-  postInstall = ''
-    mkdir -p $out/share/pixmaps
-    cp $src/resources/lg-logo.png $out/share/pixmaps
-  '';
+  src = fetchFromGitHub {
+    fetchSubmodules = true;
+    hash = "sha256-xN8L1PYM3KGIz4wkWporVzOMRqeox6BQYlAcbxD/6dk=";
+    owner = "sini";
+    repo = "LookingGlass";
+    rev = "d731c0570e9332cf543f5b4807dc83b8f405509c";
+  };
+
+  version = "B5.0.1";
 
   meta = with lib; {
     description = "KVM Frame Relay (KVMFR) implementation";
+    homepage = "https://looking-glass.io/";
+    license = licenses.gpl2Plus;
+
     longDescription = ''
       Looking Glass is an open source application that allows the use of a KVM
       (Kernel-based Virtual Machine) configured for VGA PCI Pass-through
@@ -138,14 +142,15 @@ stdenv.mkDerivation (finalAttrs: {
       step required to move away from dual booting with other operating systems
       for legacy programs that require high performance graphics.
     '';
-    homepage = "https://looking-glass.io/";
-    license = licenses.gpl2Plus;
+
     mainProgram = "looking-glass-client";
+
     maintainers = with maintainers; [
       alexbakker
       babbaj
       j-brn
     ];
+
     platforms = [ "x86_64-linux" ];
   };
 })

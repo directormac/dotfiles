@@ -1,8 +1,8 @@
 # Codium / VSCode / Antigravity IDE Aspect Variants
 {
+  lib,
   den,
   inputs,
-  lib,
   ...
 }:
 {
@@ -13,18 +13,91 @@
     };
   };
 
+  # Antigravity IDE variant
+  den.aspects.applications.dev.editor.codium.antigravity = {
+    includes = [
+      den.aspects.applications.dev.editor.codium.core
+      (den.batteries.unfree [ "antigravity-ide" ])
+    ];
+
+    homeManager =
+      {
+        lib,
+        pkgs,
+        codium-extensions ? [ ],
+        codium-settings ? [ ],
+        ...
+      }:
+      let
+        resolvedExtensions = lib.unique (
+          lib.flatten (map (ext: if lib.isFunction ext then ext { inherit pkgs; } else ext) codium-extensions)
+        );
+      in
+      {
+        disabledModules = [ "programs/antigravity.nix" ];
+
+        imports = [
+          (import (inputs.home-manager.outPath + "/modules/programs/vscode/mkVscodeModule.nix") {
+            dataFolderName = ".antigravity-ide";
+
+            modulePath = [
+              "programs"
+              "antigravity"
+            ];
+
+            name = "Antigravity IDE";
+            nameShort = "Antigravity IDE";
+            packageName = "antigravity-ide";
+            skipVersionCheck = true;
+          })
+        ];
+
+        programs.antigravity = {
+          enable = true;
+          mutableExtensionsDir = false;
+
+          profiles.default = {
+            extensions = resolvedExtensions;
+            userSettings = lib.mkMerge codium-settings;
+          };
+        };
+      };
+
+    homeManagerModules = [
+      (
+        { ... }:
+        {
+          disabledModules = [ "programs/antigravity.nix" ];
+
+          imports = [
+            (import (inputs.home-manager.outPath + "/modules/programs/vscode/mkVscodeModule.nix") {
+              dataFolderName = ".antigravity-ide";
+
+              modulePath = [
+                "programs"
+                "antigravity"
+              ];
+
+              name = "Antigravity IDE";
+              nameShort = "Antigravity IDE";
+              packageName = "antigravity-ide";
+              skipVersionCheck = true;
+            })
+          ];
+        }
+      )
+    ];
+
+    persistHome = {
+      directories = [
+        ".antigravity-ide"
+        ".config/Antigravity IDE"
+      ];
+    };
+  };
+
   # Core shared configuration, settings, and extensions for VSCode/Codium variants
   den.aspects.applications.dev.editor.codium.core = {
-
-    nixpkgs-overlays =
-      _:
-      lib.optionals (
-        inputs ? nix-vscode-extensions
-        && inputs.nix-vscode-extensions ? overlays
-        && inputs.nix-vscode-extensions.overlays ? default
-      ) [
-        inputs.nix-vscode-extensions.overlays.default
-      ];
 
     homeManager =
       { pkgs, ... }:
@@ -33,63 +106,6 @@
           pkgs.prettier
         ];
       };
-
-    codium-settings = [
-      {
-        "catppuccin-icons.hidesExplorerArrows" = false;
-        "catppuccin-icons.specificFolders" = true;
-        "catppuccin-icons.monochrome" = false;
-        "chat.mcp.autostart" = "newAndOutdated";
-        "claudeCode.preferredLocation" = "panel";
-        "projectManager.git" = {
-          baseFolders = [
-            "~/Code"
-          ];
-          maxDepthRecursion = 5;
-        };
-        "cSpell.userWords" = [
-          "shellcheck"
-          "Vulkan"
-          "Xwayland"
-        ];
-        "direnv.restart.automatic" = true;
-        "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
-        "editor.fontLigatures" = true;
-        "editor.fontWeight" = "400";
-        "editor.guides.bracketPairs" = true;
-        "editor.guides.bracketPairsHorizontal" = true;
-        "editor.inlineSuggest.enabled" = true;
-        "editor.renderWhitespace" = "all";
-        "editor.rulers" = [
-          80
-          120
-        ];
-        "editor.semanticHighlighting.enabled" = true;
-        "explorer.confirmDragAndDrop" = false;
-        "extensions.autoCheckUpdates" = false;
-        "extensions.ignoreRecommendations" = true;
-        "[xml]"."editor.defaultFormatter" = "DotJoshJohnson.xml";
-        "files.insertFinalNewline" = true;
-        "files.trimTrailingWhitespace" = true;
-        "git.openRepositoryInParentFolders" = "always";
-        "github.copilot.chat.agent.thinkingTool" = true;
-        "github.copilot.chat.codesearch.enabled" = true;
-        "githubPullRequests.pullBranch" = "never";
-        "partialDiff.enableTelemetry" = false;
-        "redhat.telemetry.enabled" = false;
-        "security.workspace.trust.untrustedFiles" = "open";
-        "telemetry.feedback.enabled" = false;
-        "telemetry.telemetryLevel" = "off";
-        "terminal.integrated.scrollback" = 10240;
-        "terminal.integrated.copyOnSelection" = true;
-        "terminal.integrated.cursorBlinking" = true;
-        "update.mode" = "none";
-        "vsicons.dontShowNewVersionMessage" = true;
-        "workbench.tree.indent" = 20;
-        "workbench.startupEditor" = "none";
-        "workbench.editor.empty.hint" = "hidden";
-      }
-    ];
 
     codium-extensions =
       { pkgs, ... }:
@@ -133,87 +149,87 @@
         pkgs.vscode-marketplace.zainchen.json
         pkgs.vscode-marketplace.eamodio.gitlens
       ];
-  };
 
-  # Antigravity IDE variant
-  den.aspects.applications.dev.editor.codium.antigravity = {
-    includes = [
-      den.aspects.applications.dev.editor.codium.core
-      (den.batteries.unfree [ "antigravity-ide" ])
-    ];
-
-    homeManagerModules = [
-      (
-        { ... }:
-        {
-          disabledModules = [ "programs/antigravity.nix" ];
-
-          imports = [
-            (import (inputs.home-manager.outPath + "/modules/programs/vscode/mkVscodeModule.nix") {
-              modulePath = [
-                "programs"
-                "antigravity"
-              ];
-              name = "Antigravity IDE";
-              packageName = "antigravity-ide";
-              nameShort = "Antigravity IDE";
-              dataFolderName = ".antigravity-ide";
-              skipVersionCheck = true;
-            })
-          ];
-        }
-      )
-    ];
-
-    homeManager =
+    codium-settings = [
       {
-        codium-settings ? [ ],
-        codium-extensions ? [ ],
-        lib,
-        pkgs,
-        ...
-      }:
-      let
-        resolvedExtensions = lib.unique (
-          lib.flatten (
-            map (ext: if lib.isFunction ext then ext { inherit pkgs; } else ext) codium-extensions
-          )
-        );
-      in
-      {
-        disabledModules = [ "programs/antigravity.nix" ];
+        "[xml]"."editor.defaultFormatter" = "DotJoshJohnson.xml";
 
-        imports = [
-          (import (inputs.home-manager.outPath + "/modules/programs/vscode/mkVscodeModule.nix") {
-            modulePath = [
-              "programs"
-              "antigravity"
-            ];
-            name = "Antigravity IDE";
-            packageName = "antigravity-ide";
-            nameShort = "Antigravity IDE";
-            dataFolderName = ".antigravity-ide";
-            skipVersionCheck = true;
-          })
+        "cSpell.userWords" = [
+          "shellcheck"
+          "Vulkan"
+          "Xwayland"
         ];
 
-        programs.antigravity = {
-          enable = true;
-          mutableExtensionsDir = false;
-          profiles.default = {
-            userSettings = lib.mkMerge codium-settings;
-            extensions = resolvedExtensions;
-          };
-        };
-      };
+        "catppuccin-icons.hidesExplorerArrows" = false;
+        "catppuccin-icons.monochrome" = false;
+        "catppuccin-icons.specificFolders" = true;
+        "chat.mcp.autostart" = "newAndOutdated";
+        "claudeCode.preferredLocation" = "panel";
+        "direnv.restart.automatic" = true;
+        "editor.bracketPairColorization.independentColorPoolPerBracketType" = true;
+        "editor.fontLigatures" = true;
+        "editor.fontWeight" = "400";
+        "editor.guides.bracketPairs" = true;
+        "editor.guides.bracketPairsHorizontal" = true;
+        "editor.inlineSuggest.enabled" = true;
+        "editor.renderWhitespace" = "all";
 
-    persistHome = {
-      directories = [
-        ".antigravity-ide"
-        ".config/Antigravity IDE"
-      ];
-    };
+        "editor.rulers" = [
+          80
+          120
+        ];
+
+        "editor.semanticHighlighting.enabled" = true;
+        "explorer.confirmDragAndDrop" = false;
+        "extensions.autoCheckUpdates" = false;
+        "extensions.ignoreRecommendations" = true;
+        "files.insertFinalNewline" = true;
+        "files.trimTrailingWhitespace" = true;
+        "git.openRepositoryInParentFolders" = "always";
+        "github.copilot.chat.agent.thinkingTool" = true;
+        "github.copilot.chat.codesearch.enabled" = true;
+        "githubPullRequests.pullBranch" = "never";
+        "partialDiff.enableTelemetry" = false;
+
+        "projectManager.git" = {
+          baseFolders = [
+            "~/Code"
+          ];
+
+          maxDepthRecursion = 5;
+        };
+
+        "redhat.telemetry.enabled" = false;
+        "security.workspace.trust.untrustedFiles" = "open";
+        "telemetry.feedback.enabled" = false;
+        "telemetry.telemetryLevel" = "off";
+        "terminal.integrated.copyOnSelection" = true;
+        "terminal.integrated.cursorBlinking" = true;
+        "terminal.integrated.scrollback" = 10240;
+        "update.mode" = "none";
+        "vsicons.dontShowNewVersionMessage" = true;
+        "workbench.editor.empty.hint" = "hidden";
+        "workbench.startupEditor" = "none";
+        "workbench.tree.indent" = 20;
+      }
+    ];
+
+    nixpkgs-overlays =
+      _:
+      lib.optionals
+        (
+          inputs ? nix-vscode-extensions
+          && inputs.nix-vscode-extensions ? overlays
+          && inputs.nix-vscode-extensions.overlays ? default
+        )
+        [
+          inputs.nix-vscode-extensions.overlays.default
+        ];
   };
+
+  # Default codium alias to vscode variant
+  den.aspects.applications.dev.editor.codium.default =
+    den.aspects.applications.dev.editor.codium.vscode;
 
   # Standard VSCode variant
   den.aspects.applications.dev.editor.codium.vscode = {
@@ -223,26 +239,25 @@
 
     homeManager =
       {
-        codium-settings ? [ ],
-        codium-extensions ? [ ],
         lib,
         pkgs,
+        codium-extensions ? [ ],
+        codium-settings ? [ ],
         ...
       }:
       let
         resolvedExtensions = lib.unique (
-          lib.flatten (
-            map (ext: if lib.isFunction ext then ext { inherit pkgs; } else ext) codium-extensions
-          )
+          lib.flatten (map (ext: if lib.isFunction ext then ext { inherit pkgs; } else ext) codium-extensions)
         );
       in
       {
         programs.vscode = {
           enable = true;
           mutableExtensionsDir = false;
+
           profiles.default = {
-            userSettings = lib.mkMerge codium-settings;
             extensions = resolvedExtensions;
+            userSettings = lib.mkMerge codium-settings;
           };
         };
       };
@@ -257,8 +272,4 @@
       ];
     };
   };
-
-  # Default codium alias to vscode variant
-  den.aspects.applications.dev.editor.codium.default =
-    den.aspects.applications.dev.editor.codium.vscode;
 }

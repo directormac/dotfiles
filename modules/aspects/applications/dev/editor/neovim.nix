@@ -34,11 +34,6 @@
       url = "github:BirdeeHub/lzextras";
     };
 
-    vim-plugins-org-nvim = {
-      url = "github:xheisenbugx/org.nvim";
-      flake = false;
-    };
-
     vim-plugins-nvim-colorpicker = {
       flake = false;
       url = "github:mikevskater/nvim-colorpicker";
@@ -52,6 +47,11 @@
     vim-plugins-oil-git-nvim = {
       flake = false;
       url = "github:malewicz1337/oil-git.nvim";
+    };
+
+    vim-plugins-org-nvim = {
+      flake = false;
+      url = "github:xheisenbugx/org.nvim";
     };
 
     vim-plugins-showkeys = {

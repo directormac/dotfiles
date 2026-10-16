@@ -1,62 +1,41 @@
 {
-  stdenv,
   lib,
-  fetchFromGitHub,
-  pkg-config,
   cmake,
-  freefont_ttf,
-  spice-protocol,
-  nettle,
-  libbfd,
-  fontconfig,
-  libffi,
   expat,
+  fetchFromGitHub,
+  fontconfig,
+  freefont_ttf,
   libGL,
-  nanosvg,
   libX11,
-  libxkbcommon,
-  libXext,
-  libXrandr,
-  libXi,
   libXScrnSaver,
-  libXinerama,
   libXcursor,
-  libXpresent,
   libXdmcp,
+  libXext,
+  libXi,
+  libXinerama,
+  libXpresent,
+  libXrandr,
+  libbfd,
+  libffi,
+  libsamplerate,
+  libxkbcommon,
+  nanosvg,
+  nettle,
+  pipewire,
+  pkg-config,
+  pulseaudio,
+  spice-protocol,
+  stdenv,
   wayland,
   wayland-protocols,
   wayland-scanner,
-  pipewire,
-  pulseaudio,
-  libsamplerate,
   openGLSupport ? true,
-  xorgSupport ? true,
-  waylandSupport ? true,
   pipewireSupport ? true,
   pulseSupport ? true,
+  waylandSupport ? true,
+  xorgSupport ? true,
 }:
 stdenv.mkDerivation (finalAttrs: {
-  pname = "looking-glass-client";
-  version = "B7";
-
-  src = fetchFromGitHub {
-    owner = "gnif";
-    repo = "LookingGlass";
-    rev = "53bfb6547f2b7abd6c183192e13a57068c1677ea";
-    hash = "sha256-SakFCEXPsJW3zmNpmklK8ZCGpcJzJ/4v7TJDpjWqVeA=";
-    fetchSubmodules = true;
-  };
-
-  patches = [
-    ./nanosvg-unvendor.diff
-  ];
-
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-    wayland-scanner
-  ];
-
   buildInputs = [
     libX11
     libGL
@@ -103,18 +82,43 @@ stdenv.mkDerivation (finalAttrs: {
   ++ lib.optionals (!pulseSupport) [ "-DENABLE_PULSEAUDIO=no" ]
   ++ lib.optionals (!pipewireSupport) [ "-DENABLE_PIPEWIRE=no" ];
 
-  postUnpack = ''
-    echo ${finalAttrs.src.rev} > source/VERSION
-    export sourceRoot="source/client"
-  '';
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+    wayland-scanner
+  ];
+
+  patches = [
+    ./nanosvg-unvendor.diff
+  ];
+
+  pname = "looking-glass-client";
 
   postInstall = ''
     mkdir -p $out/share/pixmaps
     cp $src/resources/lg-logo.png $out/share/pixmaps
   '';
 
+  postUnpack = ''
+    echo ${finalAttrs.src.rev} > source/VERSION
+    export sourceRoot="source/client"
+  '';
+
+  src = fetchFromGitHub {
+    fetchSubmodules = true;
+    hash = "sha256-SakFCEXPsJW3zmNpmklK8ZCGpcJzJ/4v7TJDpjWqVeA=";
+    owner = "gnif";
+    repo = "LookingGlass";
+    rev = "53bfb6547f2b7abd6c183192e13a57068c1677ea";
+  };
+
+  version = "B7";
+
   meta = with lib; {
     description = "KVM Frame Relay (KVMFR) implementation";
+    homepage = "https://looking-glass.io/";
+    license = licenses.gpl2Plus;
+
     longDescription = ''
       Looking Glass is an open source application that allows the use of a KVM
       (Kernel-based Virtual Machine) configured for VGA PCI Pass-through
@@ -122,14 +126,15 @@ stdenv.mkDerivation (finalAttrs: {
       step required to move away from dual booting with other operating systems
       for legacy programs that require high performance graphics.
     '';
-    homepage = "https://looking-glass.io/";
-    license = licenses.gpl2Plus;
+
     mainProgram = "looking-glass-client";
+
     maintainers = with maintainers; [
       alexbakker
       babbaj
       j-brn
     ];
+
     platforms = [ "x86_64-linux" ];
   };
 })

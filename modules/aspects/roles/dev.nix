@@ -44,7 +44,7 @@
       dev.lang.markdown
       dev.lang.data
       dev.lang.kdl
-      
+
       # Treesitter
       dev.lang.grammars
 

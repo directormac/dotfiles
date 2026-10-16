@@ -1,14 +1,12 @@
 {
-  writeShellApplication,
   nix-output-monitor,
+  writeShellApplication,
 }:
 writeShellApplication {
-  name = "nix-flake-build";
-  meta.description = "Build a host configuration";
-
   excludeShellChecks = [ "SC2068" ];
-
+  name = "nix-flake-build";
   runtimeInputs = [ nix-output-monitor ];
+
   text = ''
     APPLY=false
     OPTIONS=()
@@ -78,4 +76,6 @@ writeShellApplication {
       fi
     fi
   '';
+
+  meta.description = "Build a host configuration";
 }

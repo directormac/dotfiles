@@ -74,11 +74,12 @@
 
         windowsVmScript = pkgs.writeShellApplication {
           name = "windows-vm";
-          meta.description = "Declarative manager and launcher for the Windows Looking Glass VM";
+
           runtimeInputs = [
             pkgs.libvirt
             pkgs.qemu
           ];
+
           text = ''
             case "''${1:-run}" in
               define)
@@ -114,6 +115,8 @@
                 ;;
             esac
           '';
+
+          meta.description = "Declarative manager and launcher for the Windows Looking Glass VM";
         };
       in
       {

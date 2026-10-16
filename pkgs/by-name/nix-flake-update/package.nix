@@ -1,17 +1,18 @@
 {
-  writeShellApplication,
   gh,
   jq,
   nix,
+  writeShellApplication,
 }:
 writeShellApplication {
   name = "nix-flake-update";
-  meta.description = "Update flake inputs with GitHub access token";
+
   runtimeInputs = [
     gh
     jq
     nix
   ];
+
   text = ''
     excludes=()
 
@@ -75,4 +76,6 @@ writeShellApplication {
       nix flake update --option access-tokens "$ACCESS_TOKEN" "''${update_args[@]}"
     fi
   '';
+
+  meta.description = "Update flake inputs with GitHub access token";
 }

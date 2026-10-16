@@ -52,12 +52,13 @@
           plugins = {
             git = pkgs.yaziPlugins.git;
 
-            mdv-previewer = inputs.yazi-plugin-mdv-previewer or (pkgs.fetchFromGitHub {
-              hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
-              owner = "WhoSowSee";
-              repo = "mdv-previewer.yazi";
-              rev = "099ebba";
-            });
+            mdv-previewer =
+              inputs.yazi-plugin-mdv-previewer or (pkgs.fetchFromGitHub {
+                hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
+                owner = "WhoSowSee";
+                repo = "mdv-previewer.yazi";
+                rev = "099ebba";
+              });
 
             mount = pkgs.yaziPlugins.mount;
           };

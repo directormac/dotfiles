@@ -26,6 +26,7 @@ stdenv.mkDerivation rec {
       };
 
   strictDeps = true;
+
   version =
     if zsh-histdb-src != null then
       "0-unstable-${zsh-histdb-src.lastModifiedDate or "latest"}"
