@@ -4,11 +4,12 @@
   den.aspects.roles.dev = {
     includes = with den.aspects.applications; [
       dev.editor.neovim
+      dev.editor.codium.default
+      dev.editor.codium.antigravity
       dev.editor.helix
       dev.editor.vim
       # dev.editor.lazyvim
       dev.editor.doom-emacs
-      dev.editor.vscode
       dev.editor.zed
 
       # AI Coding Agents
@@ -43,6 +44,10 @@
       dev.lang.markdown
       dev.lang.data
       dev.lang.kdl
+      
+      # Treesitter
+      dev.lang.grammars
+
       # Tools
       dev.tools.sqlite
       dev.tools.mise
