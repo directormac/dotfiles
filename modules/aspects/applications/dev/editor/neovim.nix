@@ -34,6 +34,11 @@
       url = "github:BirdeeHub/lzextras";
     };
 
+    vim-plugins-org-nvim = {
+      url = "github:xheisenbugx/org.nvim";
+      flake = false;
+    };
+
     vim-plugins-nvim-colorpicker = {
       flake = false;
       url = "github:mikevskater/nvim-colorpicker";
@@ -390,6 +395,7 @@
           nvim-lspconfig
           nvim-lint
           nvim-surround
+          nvim-autopairs
           nvim-treesitter-context
           nvim-treesitter-textobjects
           nvim-treesitter.withAllGrammars
@@ -413,6 +419,7 @@
           vim-startuptime
           cord-nvim
           config.nvim-lib.neovimPlugins.wakatime
+          config.nvim-lib.neovimPlugins.org-nvim
 
           # Navigation & Editing
           flash-nvim

@@ -139,6 +139,7 @@ return {
         },
       },
       sources = {
+        per_filetype = { org = { inherit_defaults = true, "org" } },
         default = {
           'lsp',
           'path',
@@ -310,6 +311,7 @@ return {
             --- @type blink-cmp-git.Options
             opts = {},
           },
+org = { name = "Org", module = "org.completion.blink" }
         },
       },
     },

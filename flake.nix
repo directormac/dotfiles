@@ -44,7 +44,12 @@
     };
 
     den.url = "github:denful/den";
-    den-diagram.url = "github:denful/den-diagram";
+
+    den-diagram = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:denful/den-diagram";
+    };
+
     devenv.url = "github:cachix/devenv";
 
     devenv-root = {
@@ -137,6 +142,12 @@
 
     nix-unit.url = "github:nix-community/nix-unit";
     nix-vite-plus.url = "github:ryoppippi/nix-vite-plus";
+
+    nix-vscode-extensions = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nix-vscode-extensions";
+    };
+
     nix2container.url = "github:nlewo/nix2container";
 
     nixcord = {
@@ -212,6 +223,11 @@
     vim-plugins-oil-git-nvim = {
       flake = false;
       url = "github:malewicz1337/oil-git.nvim";
+    };
+
+    vim-plugins-org-nvim = {
+      flake = false;
+      url = "github:xheisenbugx/org.nvim";
     };
 
     vim-plugins-showkeys = {
