@@ -26,6 +26,12 @@
           type = lib.types.str;
         };
 
+        options.secretPath = lib.mkOption {
+          default = ../.. + "/.secrets/users/${user.name}";
+          description = "Per-user secret directory.";
+          type = lib.types.path;
+        };
+
         options.settings = lib.mkOption {
           default = { };
           description = "Per-aspect typed settings for users";

@@ -46,9 +46,4 @@
       ".local/share/herdr"
     ];
   };
-
-  # Backward compatibility alias
-  den.aspects.applications.dev.ai.herdr.includes = [
-    den.aspects.applications.dev.mux.herdr
-  ];
 }

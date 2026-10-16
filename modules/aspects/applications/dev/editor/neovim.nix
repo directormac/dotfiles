@@ -510,8 +510,7 @@
           VISUAL = "nvim";
         };
 
-        home.file.".config/nvim".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/nvim";
+        home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/nvim";
 
         xdg.desktopEntries = {
           neovim = {

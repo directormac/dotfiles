@@ -104,7 +104,8 @@
       };
 
     persistHome.directories = [
-      ".mozilla/firefox"
+      ".config/mozilla"
+      ".mozilla"
     ];
 
     cacheHome.directories = [

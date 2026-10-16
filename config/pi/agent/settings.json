@@ -1,12 +1,15 @@
 {
-  "lastChangelogVersion": "1.2.0",
+  "lastChangelogVersion": "1.3.0",
   "packages": [
     "git:github.com/Rahularya01/pi-antigravity",
     "https://github.com/XYenon/catppuccin-pi-coding-agent",
     "git:github.com/ayagmar/pi-extmgr",
     "git:github.com/nicobailon/pi-web-access",
-    "npm:@narumitw/pi-starship",
-    "git:github.com/tmonk/pi-goal-x"
+    "git:github.com/tmonk/pi-goal-x",
+    "git:github.com/danielvm-git/bigpowers",
+    "npm:@estebanforge/pi-rtk-optimizer",
+    "npm:@estebanforge/pi-token-cost-ledger",
+    "git:github.com/lmilojevicc/pi-zentui"
   ],
   "theme": "catppuccin-mocha-mauve",
   "terminal": {

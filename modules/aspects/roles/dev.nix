@@ -2,71 +2,69 @@
 { den, ... }:
 {
   den.aspects.roles.dev = {
-    includes = with den.aspects; [
+    includes = with den.aspects.applications; [
       # Editors & IDEs
-      applications.dev.editor.neovim
-      applications.dev.editor.helix
-      applications.dev.editor.vim
-      # applications.dev.editor.lazyvim
-      applications.dev.editor.doom-emacs
-      applications.dev.editor.vscode
-      applications.dev.editor.zed
+      dev.editor.neovim
+      dev.editor.helix
+      dev.editor.vim
+      # dev.editor.lazyvim
+      dev.editor.doom-emacs
+      dev.editor.vscode
+      dev.editor.zed
 
       # AI Coding Agents
-      applications.dev.ai.llm-agents
-      applications.dev.ai.opencode
-      applications.dev.ai.pi
-      applications.dev.ai.antigravity
-      applications.dev.ai.copilot
+      dev.ai.llm-agents
+      dev.ai.opencode
+      dev.ai.pi
+      dev.ai.antigravity
+      dev.ai.copilot
 
       # Version Control
-      applications.dev.git.git
-      applications.dev.git.github
-      applications.dev.git.lazygit
+      dev.git.git
+      dev.git.github
+      dev.git.lazygit
 
       # Terminal Multiplexers & Session Managers
-      applications.dev.mux.tmux
-      applications.dev.mux.zellij
-      applications.dev.mux.sesh
-      applications.dev.mux.workmux
-      applications.dev.mux.herdr
+      dev.mux.tmux
+      dev.mux.zellij
+      dev.mux.sesh
+      dev.mux.workmux
+      dev.mux.herdr
 
       # Language Toolchains & Runtimes
-      applications.dev.lang.go
-      applications.dev.lang.rust
-      applications.dev.lang.node
-      applications.dev.lang.elixir
-      applications.dev.lang.lua
-      applications.dev.lang.nix
-      applications.dev.lang.cc
+      dev.lang.go
+      dev.lang.rust
+      dev.lang.node
+      dev.lang.elixir
+      dev.lang.lua
+      dev.lang.nix
+      dev.lang.python
+      dev.lang.cc
 
       # Developer Networking & Security
-      applications.dev.networking.winbox
-      applications.dev.networking.wireguard
-      applications.dev.networking.mtr
-      applications.dev.networking.doggo
-      applications.dev.security.bitwarden
-      applications.dev.security.gpg
-      applications.dev.security.ssh
-      applications.dev.security.sops
+      dev.networking.winbox
+      dev.networking.wireguard
+      dev.networking.mtr
+      dev.networking.doggo
+      dev.security.bitwarden
+      dev.security.gpg
+      dev.security.ssh
+      dev.security.sops
 
       # Shell Utilities, Fuzzy Finders & File Managers
-      applications.dev.shell.direnv
-      applications.dev.shell.mise
-      applications.dev.shell.television
-      applications.dev.shell.starship
-      applications.dev.shell.zoxide
-      applications.dev.shell.fzf
-      applications.dev.shell.bat
-      applications.dev.shell.btop
-      applications.dev.shell.vivid
-      applications.dev.shell.fastfetch
-      applications.dev.shell.tealdeer
-      applications.shell.yazi
-      applications.shell.superfile
+      dev.shell.direnv
+      dev.shell.mise
+      dev.shell.television
+      dev.shell.starship
+      dev.shell.zoxide
+      dev.shell.fzf
+      dev.shell.bat
+      dev.shell.btop
+      dev.shell.vivid
+      dev.shell.fastfetch
+      dev.shell.tealdeer
+      shell.yazi
+      shell.superfile
     ];
   };
-
-  # Backward compatibility aliases
-  den.aspects.dev.includes = [ den.aspects.roles.dev ];
 }

@@ -24,7 +24,7 @@
 
       hardware.nixos
       secrets.agenix
-      core.vm
+      virtualization.vm-variant
       (den.batteries.vm-autologin "artifex")
     ];
 

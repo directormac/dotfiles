@@ -19,7 +19,7 @@
     includes = with den.aspects; [
       roles.default
       applications.gaming.nix-ld
-      core.vm.gui
+      virtualization.vm-variant.gui
       (den.batteries.vm-autologin "artifex")
     ];
 

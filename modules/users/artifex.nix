@@ -22,8 +22,22 @@
         den.batteries.primary-user
       ];
 
+    secrets =
+      let
+        pwdSecret = ../../.. + "/.secrets/users/artifex/password.age";
+      in
+      lib.optionalAttrs (builtins.pathExists pwdSecret) {
+        "password-artifex" = {
+          mode = "0400";
+          rekeyFile = pwdSecret;
+        };
+      };
+
     nixos =
-      { ... }:
+      { config, ... }:
+      let
+        hasPwdSecret = builtins.pathExists (../../.. + "/.secrets/users/artifex/password.age");
+      in
       {
         users.users.artifex = {
           linger = true;
@@ -33,8 +47,17 @@
             "libvirtd"
             "render"
           ];
-          initialPassword = "12345";
-        };
+        }
+        // (
+          if hasPwdSecret then
+            {
+              hashedPasswordFile = config.age.secrets."password-artifex".path;
+            }
+          else
+            {
+              initialPassword = "12345";
+            }
+        );
       };
 
     homeManager =

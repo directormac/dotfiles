@@ -10,13 +10,21 @@
         ...
       }:
       let
-        hasNvidiaPrimeOnLaptop =
+        hasAspect =
+          aspect:
           (host ? hasAspect)
-          && (den.aspects.hardware ? gpu)
-          && (den.aspects.hardware.gpu ? nvidia-prime)
-          && (den.aspects.hardware ? laptop)
-          && host.hasAspect den.aspects.hardware.gpu.nvidia-prime
-          && host.hasAspect den.aspects.hardware.laptop;
+          && aspect != null
+          && host.hasAspect aspect;
+
+        hasNvidia =
+          hasAspect (den.aspects.hardware.graphics.nvidia or null);
+
+        hasNvidiaPrime =
+          hasAspect (den.aspects.hardware.graphics.nvidia-prime or null)
+          || (hasNvidia && hasAspect (den.aspects.hardware.laptop or null));
+
+        hasAmd =
+          hasAspect (den.aspects.hardware.graphics.amd or null);
       in
       {
         nix.settings = {
@@ -71,10 +79,12 @@
                 PROTON_ENABLE_HDR = true;
                 PROTON_USE_NTSYNC = true;
                 PROTON_USE_WOW64 = true;
-                RADV_TEX_ANISO = 16;
                 PULSE_SINK = "Game";
               }
-              // lib.optionalAttrs hasNvidiaPrimeOnLaptop {
+              // lib.optionalAttrs (!hasNvidia || hasAmd) {
+                RADV_TEX_ANISO = 16;
+              }
+              // lib.optionalAttrs hasNvidiaPrime {
                 NV_PRIME_RENDER_OFFLOAD = "1";
                 "__NV_PRIME_RENDER_OFFLOAD_PROVIDER" = "NVIDIA-G0";
                 "__GLX_VENDOR_LIBRARY_NAME" = "nvidia";
@@ -163,6 +173,23 @@
         lib,
         ...
       }:
+      let
+        hasAspect =
+          aspect:
+          (host ? hasAspect)
+          && aspect != null
+          && host.hasAspect aspect;
+
+        hasNvidia =
+          hasAspect (den.aspects.hardware.graphics.nvidia or null);
+
+        hasNvidiaPrime =
+          hasAspect (den.aspects.hardware.graphics.nvidia-prime or null)
+          || (hasNvidia && hasAspect (den.aspects.hardware.laptop or null));
+
+        hasAmd =
+          hasAspect (den.aspects.hardware.graphics.amd or null);
+      in
       lib.mkIf (!((host ? hasAspect) && host.hasAspect den.aspects.applications.gaming.steam)) {
         home.packages = [
           (pkgs.steam.override {
@@ -173,8 +200,16 @@
               PROTON_ENABLE_HDR = true;
               PROTON_USE_NTSYNC = true;
               PROTON_USE_WOW64 = true;
-              RADV_TEX_ANISO = 16;
               PULSE_SINK = "Game";
+            }
+            // lib.optionalAttrs (!hasNvidia || hasAmd) {
+              RADV_TEX_ANISO = 16;
+            }
+            // lib.optionalAttrs hasNvidiaPrime {
+              NV_PRIME_RENDER_OFFLOAD = "1";
+              "__NV_PRIME_RENDER_OFFLOAD_PROVIDER" = "NVIDIA-G0";
+              "__GLX_VENDOR_LIBRARY_NAME" = "nvidia";
+              "__VK_LAYER_NV_optimus" = "NVIDIA_only";
             };
             extraPkgs =
               pkgs': with pkgs'; [

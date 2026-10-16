@@ -77,6 +77,4 @@
       ".local/share/fish"
     ];
   };
-
-  den.aspects.fish.includes = [ den.aspects.applications.shell.fish ];
 }

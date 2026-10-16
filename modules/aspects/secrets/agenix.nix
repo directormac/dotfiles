@@ -23,7 +23,23 @@ in
 
   den.aspects.secrets.agenix = {
     nixos =
-      { config, pkgs, ... }:
+      {
+        config,
+        pkgs,
+        secrets ? [ ],
+        ...
+      }:
+      let
+        collectedSecrets = lib.foldl' lib.recursiveUpdate { } secrets;
+        defaultSecrets = lib.optionalAttrs (config.networking.hostName != "sandbox") {
+          fileserver-smb-secrets = {
+            mode = "0600";
+            rekeyFile = repoRoot + "/.secrets/fileserver-smb-secrets.age";
+          };
+
+          github_api_key.rekeyFile = repoRoot + "/.secrets/github_api_key.age";
+        };
+      in
       {
         age.identityPaths = [
           "/persist/etc/ssh/ssh_host_ed25519_key"
@@ -51,14 +67,7 @@ in
           storageMode = "local";
         };
 
-        age.secrets = lib.mkIf (config.networking.hostName != "sandbox") {
-          fileserver-smb-secrets = {
-            mode = "0600";
-            rekeyFile = repoRoot + "/.secrets/fileserver-smb-secrets.age";
-          };
-
-          github_api_key.rekeyFile = repoRoot + "/.secrets/github_api_key.age";
-        };
+        age.secrets = defaultSecrets // collectedSecrets;
 
         environment.systemPackages = [
           (inputs.agenix-rekey.packages.${pkgs.stdenv.hostPlatform.system}.default or pkgs.age)
@@ -75,7 +84,24 @@ in
       };
 
     homeManager =
-      { config, pkgs, ... }:
+      {
+        config,
+        pkgs,
+        secretsHome ? [ ],
+        ...
+      }:
+      let
+        collectedSecretsHome = lib.foldl' lib.recursiveUpdate { } secretsHome;
+        defaultHomeSecrets = {
+          github_api_key.rekeyFile = repoRoot + "/.secrets/github_api_key.age";
+
+          private_ssh_key = {
+            mode = "0600";
+            path = "${config.home.homeDirectory}/.ssh/mac_mkra_dev";
+            rekeyFile = repoRoot + "/.secrets/mac_mkra_dev.age";
+          };
+        };
+      in
       {
         age = {
           identityPaths = [ "${config.home.homeDirectory}/.config/agenix/key.txt" ];
@@ -87,15 +113,7 @@ in
             storageMode = "local";
           };
 
-          secrets = {
-            github_api_key.rekeyFile = repoRoot + "/.secrets/github_api_key.age";
-
-            private_ssh_key = {
-              mode = "0600";
-              path = "${config.home.homeDirectory}/.ssh/mac_mkra_dev";
-              rekeyFile = repoRoot + "/.secrets/mac_mkra_dev.age";
-            };
-          };
+          secrets = defaultHomeSecrets // collectedSecretsHome;
         };
 
         home.packages = [

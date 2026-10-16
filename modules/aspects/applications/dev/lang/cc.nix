@@ -10,6 +10,7 @@
           gcc
           binutils
           llvm
+          llvm-manpages
         ];
       };
   };

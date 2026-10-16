@@ -25,7 +25,6 @@
               rtk
               ctx
               cli-proxy-api
-              omo-ai
               opencode2
               opencodex
               terminal-browser

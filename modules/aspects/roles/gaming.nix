@@ -14,7 +14,4 @@
       applications.gaming.bottles
     ];
   };
-
-  # Backward compatibility aliases
-  den.aspects.gaming.includes = [ den.aspects.roles.gaming ];
 }

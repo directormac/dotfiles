@@ -16,10 +16,19 @@
       }:
       let
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-        llmPkgs =
-          pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
+        llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
+
+        home.packages = lib.attrValues (
+          lib.filterAttrs (_: v: v != null) {
+            inherit (llmPkgs)
+              omo-ai
+              omp
+              ;
+          }
+        );
+
         programs.pi-coding-agent = lib.mkIf (llmPkgs ? pi) {
           enable = true;
           package = llmPkgs.pi;

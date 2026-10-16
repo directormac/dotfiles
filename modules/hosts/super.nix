@@ -24,7 +24,7 @@
       roles.gaming
 
       secrets.agenix
-      core.vm
+      virtualization.vm-variant
       (den.batteries.vm-autologin "artifex")
 
       disk.btrfs

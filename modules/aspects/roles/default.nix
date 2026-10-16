@@ -35,6 +35,4 @@
       applications.shell.cli-utils
     ];
   };
-
-  # Compatibility alias
 }

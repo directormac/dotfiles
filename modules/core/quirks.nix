@@ -27,4 +27,12 @@
   den.quirks.persistHome = {
     description = "User home paths persisted on /persist";
   };
+
+  den.quirks.secrets = {
+    description = "Agenix system secrets declared by aspects";
+  };
+
+  den.quirks.secretsHome = {
+    description = "Agenix user/home secrets declared by aspects";
+  };
 }

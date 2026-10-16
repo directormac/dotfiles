@@ -210,7 +210,7 @@
       };
 
     persistHome.directories = [
-      ".librewolf"
+      ".config/librewolf"
     ];
 
     cacheHome.directories = [

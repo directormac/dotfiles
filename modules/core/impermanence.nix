@@ -35,6 +35,30 @@
       # Allow users to mount persistent bind mounts with fuse
       programs.fuse.userAllowOther = true;
     };
+
+    # Sane default home persistence directories
+    persistHome.directories = [
+      "Desktop"
+      "Documents"
+      "Music"
+      "Pictures"
+      "Public"
+      "Templates"
+      "Videos"
+      {
+        directory = ".ssh";
+        mode = "0700";
+      }
+      {
+        directory = ".local/share/keyrings";
+        mode = "0700";
+      }
+    ];
+
+    cacheHome.directories = [
+      "Downloads"
+      ".local/share/nix"
+    ];
   };
 
   # Collector aspect: reads the four persistence quirks and passes merged unique lists to impermanence

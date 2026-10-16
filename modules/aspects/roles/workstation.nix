@@ -69,7 +69,4 @@
       virtualization.waydroid
     ];
   };
-
-  # Backward compatibility aliases
-  den.aspects.workstation.includes = [ den.aspects.roles.workstation ];
 }

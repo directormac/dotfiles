@@ -51,8 +51,17 @@
         devenv.root =
           let
             devenvRootFile = builtins.readFile inputs.devenv-root.outPath;
+            pwd = builtins.getEnv "PWD";
+            devenvRootEnv = builtins.getEnv "DEVENV_ROOT";
           in
-          if devenvRootFile != "" then devenvRootFile else toString ../..;
+          if devenvRootFile != "" then
+            devenvRootFile
+          else if devenvRootEnv != "" then
+            devenvRootEnv
+          else if pwd != "" then
+            pwd
+          else
+            "/home/artifex/.dotfiles";
 
         # https://devenv.sh/basics/
         enterShell = ''

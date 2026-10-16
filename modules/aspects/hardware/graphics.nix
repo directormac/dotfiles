@@ -1,5 +1,4 @@
 # Hardware Graphics & GPU Acceleration Aspect
-{ den, ... }:
 {
   den.aspects.hardware.graphics = {
     nixos =

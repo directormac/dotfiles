@@ -391,7 +391,7 @@
       };
 
     persistHome.directories = [
-      ".zen"
+      ".config/zen"
     ];
 
     cacheHome.directories = [
