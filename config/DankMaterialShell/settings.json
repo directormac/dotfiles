@@ -212,7 +212,6 @@
       "enabled": true,
       "w": 5,
       "h": 1,
-      "footerW": 5,
       "col": 3,
       "row": 1
     },
@@ -239,8 +238,8 @@
       "w": 1,
       "h": 1,
       "small": true,
-      "footer": true,
-      "footerEnd": true
+      "col": 7,
+      "row": 7
     }
   ],
   "bluetoothMprisEnabled": true,
@@ -652,7 +651,7 @@
     }
   },
   "barInsetPaddingSyncAll": true,
-  "configVersion": 40,
+  "configVersion": 42,
   "workspaceNameIcons": {
     "special": {
       "type": "icon",

@@ -1,0 +1,3 @@
+formatter:
+  type: basic
+  escape_unicode: false

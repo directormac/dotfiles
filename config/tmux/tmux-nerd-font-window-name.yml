@@ -15,15 +15,17 @@ icons:
   claude: " "
   bun: " "
   workmux: ""
+  omp: "󰏿"
+  pi: "󰏿"
 
 
 icons-regex:
   # node.*codex matches anything starting with node and ending with codex
   "node.*codex": " "
   # ^(...) matches the exact word. The '?' makes the preceding letter/number optional.
-  "^(agyx?|opencode2?|ocx)$": " "
+  "^(agyx?|opencode2?|ocx|codex)$": " "
   "^(nix|nh|flake)$": " "
-  "^(pi|omp|omo)$": "󰏿 "
+  "^(pi|omp|omo)$": "󰏿"
 
 # names-regex:
   # Rename the window nicely if show-name: true is ever enabled
