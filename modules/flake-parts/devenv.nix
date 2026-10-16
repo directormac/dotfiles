@@ -24,6 +24,7 @@
       config,
       lib,
       pkgs,
+    self',
       ...
     }:
     lib.optionalAttrs (inputs ? devenv) {
@@ -74,6 +75,8 @@
 
         # https://devenv.sh/packages/
         packages = [
+          self'.packages.nvim-dev
+
           # Secrets
           pkgs.age
           pkgs.secretspec
