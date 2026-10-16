@@ -6,6 +6,7 @@
   modifications = final: prev: {
     nixfmt = inputs.nixfmt-rs.packages.${final.stdenv.hostPlatform.system}.default or prev.nixfmt;
     nixfmt-rfc-style = final.nixfmt;
+    zsh-histdb-src = inputs.zsh-histdb-src or null;
   };
 
   # Thread the gen-lsp flake source to pkgs-by-name so pkgs/by-name/gen-lsp-mcp

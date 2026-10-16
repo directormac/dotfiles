@@ -9,7 +9,9 @@
     "git:github.com/danielvm-git/bigpowers",
     "npm:@estebanforge/pi-rtk-optimizer",
     "npm:@estebanforge/pi-token-cost-ledger",
-    "git:github.com/lmilojevicc/pi-zentui"
+    "git:github.com/lmilojevicc/pi-zentui",
+    "npm:pi-rtk-optimizer",
+    "npm:@ff-labs/pi-fff"
   ],
   "theme": "catppuccin-mocha-mauve",
   "terminal": {

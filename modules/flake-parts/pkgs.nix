@@ -7,6 +7,10 @@
 {
   flake-file.inputs = {
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    zsh-histdb-src = {
+      flake = false;
+      url = "github:larkery/zsh-histdb";
+    };
   };
 
   imports = [

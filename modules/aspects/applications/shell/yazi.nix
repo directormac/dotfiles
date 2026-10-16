@@ -1,5 +1,16 @@
 # Yazi Terminal File Manager Leaf Aspect
 {
+  inputs,
+  ...
+}:
+{
+  flake-file.inputs = {
+    yazi-plugin-mdv-previewer = {
+      flake = false;
+      url = "github:WhoSowSee/mdv-previewer.yazi";
+    };
+  };
+
   den.aspects.applications.shell.yazi = {
     homeManager =
       {
@@ -41,12 +52,12 @@
           plugins = {
             git = pkgs.yaziPlugins.git;
 
-            mdv-previewer = pkgs.fetchFromGitHub {
+            mdv-previewer = inputs.yazi-plugin-mdv-previewer or (pkgs.fetchFromGitHub {
               hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
               owner = "WhoSowSee";
               repo = "mdv-previewer.yazi";
               rev = "099ebba";
-            };
+            });
 
             mount = pkgs.yaziPlugins.mount;
           };
@@ -73,5 +84,4 @@
       ".local/state/yazi"
     ];
   };
-
 }

@@ -6,8 +6,20 @@
 }:
 {
   flake-file.inputs = {
+    tmux-fzf-links = {
+      flake = false;
+      url = "github:alberti42/tmux-fzf-links";
+    };
+    tmux-menus = {
+      flake = false;
+      url = "github:jaclu/tmux-menus";
+    };
     tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
     tmux-remux.url = "github:noamsto/tmux-remux";
+    tmux-src = {
+      flake = false;
+      url = "github:tmux/tmux";
+    };
   };
 
   den.aspects.applications.dev.mux.tmux = {
@@ -40,12 +52,12 @@
           pluginName = "tmux-fzf-links";
           rtpFilePath = "fzf-links.tmux";
 
-          src = pkgs.fetchFromGitHub {
+          src = inputs.tmux-fzf-links or (pkgs.fetchFromGitHub {
             owner = "alberti42";
             repo = "tmux-fzf-links";
             sha256 = "1jb9zvnzn494m03b6kizazpibdhqvfjywy9shs1p838jafbn6f5c";
             tag = "1.5.1";
-          };
+          });
 
           version = "1.5.1";
         };
@@ -53,14 +65,14 @@
           pluginName = "tmux-menus";
           rtpFilePath = "menus.tmux";
 
-          src = pkgs.fetchFromGitHub {
+          src = inputs.tmux-menus or (pkgs.fetchFromGitHub {
             hash = "sha256-C2rFzuR12ap2ytX03XaBycNia3vzaexFdOFM3qrSsUw=";
             owner = "jaclu";
             repo = "tmux-menus";
             rev = "30a18ec5e949db228f1596937880e494a7be49ef";
-          };
+          });
 
-          version = "0-unstable-2026-10-02";
+          version = "0-unstable-${inputs.tmux-menus.lastModifiedDate or "2026-10-02"}";
         };
         tmuxPkg = pkgs.local.tmux or pkgs.tmux;
         windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󱚟*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
@@ -355,14 +367,14 @@
           mv $man/share/man/man1/tmux.1 $man/share/man/man1/tmuxx.1
         '';
 
-        src = pkgs.fetchFromGitHub {
+        src = inputs.tmux-src or (pkgs.fetchFromGitHub {
           hash = "sha256-xUYIpIOKzfd34+KlwQjPhmfE1qUbDJ8IvcL0bZy5CH8=";
           owner = "tmux";
           repo = "tmux";
           rev = "2b5b538152a1ecdeac4c080f77f6af062349bdb7";
-        };
+        });
 
-        version = "0-unstable-2026-10-05";
+        version = "0-unstable-${inputs.tmux-src.lastModifiedDate or "2026-10-05"}";
 
         meta = oldAttrs.meta // {
           mainProgram = "tmuxx";

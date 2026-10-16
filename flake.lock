@@ -1541,11 +1541,11 @@
         "treefmt-nix": "treefmt-nix_4"
       },
       "locked": {
-        "lastModified": 1792123574,
-        "narHash": "sha256-Nfg3uuj6SrYd95vB2acYHLvQfjs9L2WZwMgkaKsQyOs=",
+        "lastModified": 1792149628,
+        "narHash": "sha256-z6OJhOCXlLXdP1GdqS+6wLe/blU6KGZFrib+b/nxYE8=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "64f24d6169b8e5996e0c3a3ae696bdf11806b34e",
+        "rev": "e85b99217baf13a38fc887b31338b1833f1159c0",
         "type": "github"
       },
       "original": {
@@ -2512,8 +2512,11 @@
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "silentSDDM": "silentSDDM",
         "stylix": "stylix",
+        "tmux-fzf-links": "tmux-fzf-links",
+        "tmux-menus": "tmux-menus",
         "tmux-nerd-font-window-name": "tmux-nerd-font-window-name",
         "tmux-remux": "tmux-remux",
+        "tmux-src": "tmux-src",
         "torlink": "torlink",
         "treefmt-nix": "treefmt-nix_10",
         "vim-plugins-lze": "vim-plugins-lze",
@@ -2526,8 +2529,10 @@
         "vim-plugins-wakatime": "vim-plugins-wakatime",
         "workmux": "workmux",
         "wrappers": "wrappers",
+        "yazi-plugin-mdv-previewer": "yazi-plugin-mdv-previewer",
         "zen-browser": "zen-browser",
-        "zennotes": "zennotes"
+        "zennotes": "zennotes",
+        "zsh-histdb-src": "zsh-histdb-src"
       }
     },
     "rust-overlay": {
@@ -2783,6 +2788,38 @@
         "type": "github"
       }
     },
+    "tmux-fzf-links": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789741919,
+        "narHash": "sha256-h4dVtdcy88RqvoO0D6u9OicOJdF5aYrVinQoylRPt5U=",
+        "owner": "alberti42",
+        "repo": "tmux-fzf-links",
+        "rev": "2073c217b2144557d47ba5f30630fb3d8f92a748",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alberti42",
+        "repo": "tmux-fzf-links",
+        "type": "github"
+      }
+    },
+    "tmux-menus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789700494,
+        "narHash": "sha256-3Q06pQ+17dkms4XYYyYQR8JTVlkc62th05kN0NZwCHY=",
+        "owner": "jaclu",
+        "repo": "tmux-menus",
+        "rev": "1c3372d489a10907d2dff7731e0a10246b7a6a81",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jaclu",
+        "repo": "tmux-menus",
+        "type": "github"
+      }
+    },
     "tmux-nerd-font-window-name": {
       "inputs": {
         "nixpkgs": "nixpkgs_16"
@@ -2819,6 +2856,22 @@
       "original": {
         "owner": "noamsto",
         "repo": "tmux-remux",
+        "type": "github"
+      }
+    },
+    "tmux-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792160794,
+        "narHash": "sha256-Zowjq0GCfsSp8SF1/AzDHvpb8cQ5+cma/kw8DHlbmK0=",
+        "owner": "tmux",
+        "repo": "tmux",
+        "rev": "bfb01dcb54c06c019fe8ec035b59df3790f562a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tmux",
+        "repo": "tmux",
         "type": "github"
       }
     },
@@ -3229,6 +3282,22 @@
         "type": "github"
       }
     },
+    "yazi-plugin-mdv-previewer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792098806,
+        "narHash": "sha256-yzzo32b0sh1DIBwfFGnZPJ1QO/xM3oSPNqJO9Ry4Vb0=",
+        "owner": "WhoSowSee",
+        "repo": "mdv-previewer.yazi",
+        "rev": "1c71b8eaabf35519b8eaa9297b47942ee7d99807",
+        "type": "github"
+      },
+      "original": {
+        "owner": "WhoSowSee",
+        "repo": "mdv-previewer.yazi",
+        "type": "github"
+      }
+    },
     "zen-browser": {
       "inputs": {
         "home-manager": "home-manager_5",
@@ -3316,6 +3385,22 @@
         "owner": "jcollie",
         "ref": "v0.9.0",
         "repo": "zon2nix",
+        "type": "github"
+      }
+    },
+    "zsh-histdb-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789750202,
+        "narHash": "sha256-w1HsIkhsB6iG6yFBpiNcyXPiuPprkoQ49wO1jfWRExs=",
+        "owner": "larkery",
+        "repo": "zsh-histdb",
+        "rev": "27b719a993414321135ddaf73f9a4ecf785bd8c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "larkery",
+        "repo": "zsh-histdb",
         "type": "github"
       }
     }

@@ -168,8 +168,24 @@
       url = "github:nix-community/stylix";
     };
 
+    tmux-fzf-links = {
+      flake = false;
+      url = "github:alberti42/tmux-fzf-links";
+    };
+
+    tmux-menus = {
+      flake = false;
+      url = "github:jaclu/tmux-menus";
+    };
+
     tmux-nerd-font-window-name.url = "github:joshmedeski/tmux-nerd-font-window-name";
     tmux-remux.url = "github:noamsto/tmux-remux";
+
+    tmux-src = {
+      flake = false;
+      url = "github:tmux/tmux";
+    };
+
     torlink.url = "github:baairon/torlink";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -220,12 +236,22 @@
       url = "github:nix-community/nix-wrapper-modules";
     };
 
+    yazi-plugin-mdv-previewer = {
+      flake = false;
+      url = "github:WhoSowSee/mdv-previewer.yazi";
+    };
+
     zen-browser = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:0xc000022070/zen-browser-flake";
     };
 
     zennotes.url = "github:ZenNotes/zennotes";
+
+    zsh-histdb-src = {
+      flake = false;
+      url = "github:larkery/zsh-histdb";
+    };
   };
 
   nixConfig = {
