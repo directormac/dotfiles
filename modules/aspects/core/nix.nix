@@ -44,15 +44,30 @@
           '';
 
           gc = {
-            options = "--delete-older-than 10d";
-            automatic = true;
-            dates = "00:01";
+            automatic = false;
           };
 
           optimise = {
             automatic = true;
             dates = [ "05:00" ];
           };
+        };
+
+        programs.nh = {
+          clean = {
+            enable = lib.mkDefault true;
+            extraArgs = lib.mkDefault "--keep-since 4d --keep 3";
+          };
+
+          enable = lib.mkDefault true;
+
+          flake =
+            let
+              primaryUser = lib.findFirst (u: u.isNormalUser) null (builtins.attrValues config.users.users);
+            in
+            lib.mkDefault (
+              if primaryUser != null then "${primaryUser.home}/.dotfiles" else "/home/artifex/.dotfiles"
+            );
         };
 
         system.activationScripts.nixAccessTokens =

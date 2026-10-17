@@ -22,8 +22,20 @@
         imports = lib.optional (self ? wrappers && self.wrappers ? nh) self.wrappers.nh.install;
 
         programs.nh = {
+          clean = {
+            enable = lib.mkDefault true;
+            extraArgs = lib.mkDefault "--keep-since 4d --keep 3";
+          };
+
           enable = true;
-          flake = null;
+
+          flake = lib.mkDefault (
+            let
+              primaryUser = lib.findFirst (u: u.isNormalUser) null (builtins.attrValues config.users.users);
+            in
+            if primaryUser != null then "${primaryUser.home}/.dotfiles" else "/home/artifex/.dotfiles"
+          );
+
           package = if config ? wrappers && config.wrappers ? nh then config.wrappers.nh.wrapper else pkgs.nh;
         };
       };
