@@ -6,6 +6,10 @@
       {
         home.packages = [ pkgs.zoxide ];
 
+        home.sessionVariables = {
+          _ZO_EXCLUDE_DIRS = "$HOME:$HOME/Code/.worktrees/*:$HOME/Code/.worktrees";
+        };
+
         programs.zoxide = {
           enable = true;
           enableBashIntegration = true;

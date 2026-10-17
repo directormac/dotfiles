@@ -25,7 +25,6 @@
       {
         environment.systemPackages = [
           pkgs.devenv
-          pkgs.secretspec
         ];
 
         nix.settings = {
@@ -39,14 +38,19 @@
         };
       };
 
-    homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [
-          pkgs.devenv
-          pkgs.secretspec
-        ];
+    homeManager = {
+
+      programs.devenv = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
       };
+
+      # programs.secretspec = {
+      #   enable = true;
+      # };
+
+    };
 
     # persistHome.directories = [
     #   ".local/share/devenv"

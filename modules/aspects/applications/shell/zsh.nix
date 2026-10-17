@@ -47,11 +47,11 @@
           ++ histdb.packages;
 
         programs.zsh = {
-          autosuggestion.enable = true;
           inherit (completion) completionInit;
+          inherit (completion) fastSyntaxHighlighting;
+          autosuggestion.enable = true;
           enable = true;
           enableCompletion = true;
-          inherit (completion) fastSyntaxHighlighting;
 
           history = {
             ignoreAllDups = true;
@@ -75,7 +75,6 @@
                 zvm_bindkey viins '^[[9;5u' autosuggest-accept
               }
 
-              eval "$(devenv hook zsh)"
               source $XDG_CONFIG_HOME/zsh/extra.zsh
             '';
 

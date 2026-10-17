@@ -1,6 +1,6 @@
 # Custom Interactive Shell Functions for Zsh
 { config }:
- # sh
+# sh
 ''
   autoload -Uz bracketed-paste-url-magic
   zle -N bracketed-paste bracketed-paste-url-magic
@@ -19,6 +19,54 @@
   function mkcd () {
     mkdir -p "$1" && cd "$1"
   }
+  function dev-off() {
+    # 1. Direnv & Devenv
+    export SKIP_DIRENV=1
+    typeset -g __DIRENV_INSTANT_ENV_FILE=""
+    unset IN_NIX_SHELL name DEVENV_PROFILE DEVENV_ROOT DEVENV_STATE DEVENV_DOTFILE DEVENV_RUNTIME DEVENV_TASKS DEVENV_TASK_FILE DEVENV_FLAKE_SHELL PROFILER
+    eval "$(cd /tmp && direnv export zsh 2>/dev/null)"
+
+    # 2. Mise
+    if (( $+commands[mise] )); then
+      mise deactivate 2>/dev/null
+    fi
+
+    echo "Default shell active (devenv, direnv, mise disabled)"
+  }
+  alias pure-shell=dev-off
+  alias default-shell=dev-off
+  alias defshell=dev-off
+  alias direnv-off=dev-off
+
+  function dev-on() {
+    # 1. Restore Direnv & Devenv
+    unset SKIP_DIRENV
+    if (( $+functions[_orig_direnv_hook] )); then
+      _orig_direnv_hook
+    fi
+    direnv reload 2>/dev/null
+
+    # 2. Restore Mise
+    if (( $+commands[mise] )); then
+      eval "$(command mise activate zsh 2>/dev/null)"
+    fi
+
+    echo "Dev shell active (devenv, direnv, mise re-enabled)"
+  }
+  alias dev-shell=dev-on
+  alias direnv-on=dev-on
+
+  # Intercept direnv / direnv-instant hook so SKIP_DIRENV=1 prevents background re-evaluation
+  if (( $+functions[_direnv_hook] )); then
+    functions[_orig_direnv_hook]="$functions[_direnv_hook]"
+    _direnv_hook() {
+      if [[ "$SKIP_DIRENV" == "1" ]]; then
+        return 0
+      fi
+      _orig_direnv_hook "$@"
+    }
+  fi
+
 
   function listening() {
     lsof -i -n -P | grep --color=auto \
