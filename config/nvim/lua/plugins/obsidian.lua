@@ -1,6 +1,5 @@
 return {
   'obsidian',
   cmd = { 'Obsidian' },
-opts = {
-},
+  opts = {},
 }
