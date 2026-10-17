@@ -70,7 +70,8 @@
               bindkey '^[[27;5;9~' autosuggest-accept
               bindkey '^[[1;5I' autosuggest-accept
               bindkey '^[[9;5u' autosuggest-accept
-
+              bindkey '^o' _fzf_super_search_widget
+              bindkey '^h' fzf-man-widget
               function zvm_after_init() {
                 ${histdb.zvmKeybindings}
 
@@ -81,6 +82,12 @@
                 zvm_bindkey vicmd '^[[27;5;9~' autosuggest-accept
                 zvm_bindkey vicmd '^[[1;5I' autosuggest-accept
                 zvm_bindkey vicmd '^[[9;5u' autosuggest-accept
+
+                # Super search (Ctrl-O) and Man/TLDR (Ctrl-H)
+                zvm_bindkey viins '^o' _fzf_super_search_widget
+                zvm_bindkey vicmd '^o' _fzf_super_search_widget
+                zvm_bindkey viins '^h' fzf-man-widget
+                zvm_bindkey vicmd '^h' fzf-man-widget
               }
               source $XDG_CONFIG_HOME/zsh/extra.zsh
             '';
