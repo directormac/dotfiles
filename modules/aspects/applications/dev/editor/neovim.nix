@@ -73,6 +73,8 @@
 
   den.aspects.applications.dev.editor.neovim = {
     includes = with den.aspects.applications.dev; [
+      editor.neovim-vellum
+      editor.neovim-org
       lang.nix
       lang.lua
       lang.shell
@@ -190,41 +192,7 @@
     let
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
-      vellum-nvim = pkgs.vimUtils.buildVimPlugin {
-        doCheck = false;
-        pname = "vellum.nvim";
-
-        postInstall = ''
-          cp -r ${vellum-render}/lib/node_modules/vellum-render/node_modules \
-            $out/render/node_modules
-        '';
-
-        src = vellumSrc;
-        version = "unstable-2026-10-13";
-      };
-      vellum-render = pkgs.buildNpmPackage {
-        dontNpmBuild = true;
-        env.PUPPETEER_SKIP_DOWNLOAD = "true";
-
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out/lib/node_modules/vellum-render
-          cp -r node_modules $out/lib/node_modules/vellum-render/node_modules
-          runHook postInstall
-        '';
-
-        npmDepsHash = "sha256-Zcitez2/UGHu4Reux1XwTBwLMzyMDg17Ywa6QXWGTYQ=";
-        npmFlags = [ "--ignore-scripts" ];
-        pname = "vellum-render";
-        src = "${vellumSrc}/render";
-        version = "unstable-2026-10-13";
-      };
-      vellumSrc = pkgs.fetchFromGitHub {
-        hash = "sha256-WKbnohPgZOQd1klxXXDGKbZeMSNQmjEuYTi+sL+zMgA=";
-        owner = "zFrenesy";
-        repo = "vellum.nvim";
-        rev = "910b79e76f5a3389e55a64da9b6816cb9e89a64e";
-      };
+      vellum-nvim = import ./_vellum.nix { inherit pkgs; };
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
@@ -429,6 +397,7 @@
           persistence-nvim
           vim-startuptime
           cord-nvim
+          obsidian-nvim
           config.nvim-lib.neovimPlugins.wakatime
           config.nvim-lib.neovimPlugins.org-nvim
 

@@ -67,7 +67,6 @@
           mdformat.enable = true;
           shellcheck.enable = true;
           statix.enable = true;
-          stylua.enable = true;
           taplo.enable = true;
           toml-sort.enable = true;
           yamlfmt.enable = true;
@@ -166,6 +165,22 @@
             top-level-blank-lines = 1;
             top-level-blank-lines-depth = 2;
 
+          };
+
+        };
+
+        programs.stylua = {
+          enable = true;
+
+          settings = {
+            collapse_simple_statement = "Always";
+            column_width = 120;
+            indent_type = "Spaces";
+            indent_width = 2;
+            line_endings = "Unix";
+            quote_style = "AutoPreferSingle";
+            # call_parentheses = "None"
+            sort_requires.enabled = true;
           };
 
         };

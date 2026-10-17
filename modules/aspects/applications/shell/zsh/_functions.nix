@@ -236,7 +236,7 @@
         continue
       fi
       has_file=1
-      if [[ "$arg" != *.md && "$arg" != *.markdown && "$arg" != *.MD && "$arg" != *.mdown ]]; then
+      if [[ "$arg" != *.md && "$arg" != *.markdown && "$arg" != *.MD && "$arg" != *.mdown && "$arg" != *.mdx ]]; then
         all_md=0
         break
       fi

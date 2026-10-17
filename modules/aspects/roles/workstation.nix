@@ -62,6 +62,7 @@
       applications.productivity.localsend
       applications.productivity.anydesk
       applications.productivity.scrcpy
+      applications.productivity.obsidian
 
       # Virtualization
       virtualization.libvirt

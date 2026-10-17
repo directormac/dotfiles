@@ -29,6 +29,7 @@ return {
         rules = {
           { pattern = 'harpoon', icon = '󰛢 ', color = 'green' },
           { pattern = 'oil', icon = '󱧫 ', color = 'blue' },
+          { pattern = 'org', icon = ' ', color = 'green' },
         },
       },
       --@type wk.Spec
@@ -67,7 +68,7 @@ return {
           { 'gx', desc = 'Open with system app' },
         },
 
-        { '<leader>o', group = 'Oil Explorer' },
+        { '<leader>o', group = 'Org' },
       },
     },
     keys = {

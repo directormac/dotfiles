@@ -24,6 +24,7 @@
   "logs" = "journalctl --user -f -n 50";
   "ls" = "lsd";
   "lt" = "lsd --tree";
+  "lzd" = "lazydocker";
   "lzg" = "lazygit";
   "nho" = "nh os";
   "nixdev" = "nix develop";
@@ -34,7 +35,10 @@
   "pingcf" = "ping 1.1.1.1";
   "pinggg" = "ping google.com";
   "rmr" = "rm -r";
-  "t" = "TV_CMD=\"tv --layout portrait --hide-preview --input-position top\" tv --layout portrait --hide-preview --input-position top";
+
+  "t" =
+    "TV_CMD=\"tv --layout portrait --hide-preview --input-position top\" tv --layout portrait --hide-preview --input-position top";
+
   "tls" = "tmux ls";
   "tn" = "sesh connect .";
   "todo" = "tuxedo";

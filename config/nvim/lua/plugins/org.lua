@@ -1,6 +1,6 @@
 return {
   'org-nvim',
-  event = 'DeferredUIEnter',
+  cmd = { 'Org' },
   opts = {
     org_directory = "~/Notes",
     agenda_files = { "~/Notes/**/*.org"},
