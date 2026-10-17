@@ -2,9 +2,9 @@
 # -------------------------------------------
 # Defaults:
 # ---------
-#  Linux:   `$HOME/.config/television/config.toml`
-#  macOS:   `$HOME/.config/television/config.toml`
-#  Windows: `%LocalAppData%\television\config\config.toml`
+# Linux:   `$HOME/.config/television/config.toml`
+# macOS:   `$HOME/.config/television/config.toml`
+# Windows: `%LocalAppData%\television\config\config.toml`
 #
 # XDG dirs:
 # ---------
@@ -39,80 +39,6 @@ global_history = false
 # length (one typo per 4 characters, capped at 2)
 typo_resistance = true
 
-[ui]
-# How much space to allocate for the UI (in percentage of the screen)
-# ┌─────────────────────────┐
-# │     Terminal screen     │
-# │  ┌───────────────────┐  │
-# │  │                   │  │
-# │  │  Television UI    │  │
-# │  │                   │  │
-# │  └───────────────────┘  │
-# │                         │
-# └─────────────────────────┘
-ui_scale = 100
-# What orientation should tv be (landscape or portrait)
-orientation = "landscape"
-# The theme to use for the UI
-# A list of builtin themes can be found in the `themes` directory of the television
-# repository. You may also create your own theme by creating a new file in a `themes`
-# directory in your configuration directory (see the `config.toml` location above).
-theme = "catppuccin-mocha-mauve.toml"
-
-# Feature-specific configurations
-# Each feature can have its own configuration section
-[ui.input_bar]
-# Where to place the input bar in the UI (top or bottom)
-position = "top"
-# The input prompt string (empty by default: no prompt at all)
-prompt = "❯"
-# header = "{}"
-# padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
-border_type = "none" # https://docs.rs/ratatui/latest/ratatui/widgets/block/enum.BorderType.html#variants
-
-[ui.status_bar]
-hidden = false
-
-[ui.results_panel]
-border_type = "none"
-# padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
-
-[ui.preview_panel]
-# Preview panel size (percentage of screen width/height)
-size = 50
-#header = ""
-#footer = ""
-scrollbar = false
-border_type = "none"
-# padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
-hidden = false
-
-[ui.help_panel]
-# Whether to split the help panel by categories
-show_categories = true
-hidden = true
-
-[ui.remote_control]
-# Whether to show channel descriptions in remote control mode
-show_channel_descriptions = true
-# Whether to sort channels alphabetically
-sort_alphabetically = true
-# disabled = false
-
-# Theme color overrides
-# ---------------------
-# You can override specific colors from the selected theme by adding them here.
-# This allows you to customize the appearance without creating a full theme file.
-# Colors can be specified as ANSI color names (e.g., "red", "bright-blue") or
-# as hex values (e.g., "#ff0000", "#1e1e2e").
-#
-# Example overrides:
-# [ui.theme_overrides]
-# background = "#000000"
-# text_fg = "#ffffff"
-# selection_bg = "#444444"
-# match_fg = "#ff0000"
-
 # Keybindings and Events
 # ----------------------------------------------------------------------------
 #
@@ -121,7 +47,6 @@ sort_alphabetically = true
 # ------------------
 esc = "quit"
 ctrl-c = "quit"
-
 # Navigation and selection
 # -----------------------
 down = "select_next_entry"
@@ -130,30 +55,25 @@ ctrl-j = "select_next_entry"
 up = "select_prev_entry"
 ctrl-p = "select_prev_entry"
 ctrl-k = "select_prev_entry"
-
 # History navigation
 # -----------------
 ctrl-up = "select_prev_history"
 ctrl-down = "select_next_history"
-
 # Multi-selection
 # --------------
 tab = "toggle_selection"
 backtab = "toggle_selection_all"
 enter = "confirm_selection"
-
 # Preview panel control
 # --------------------
 pagedown = "scroll_preview_half_page_down"
 pageup = "scroll_preview_half_page_up"
 ctrl-f = "cycle_previews"
-
 # Data operations
 # --------------
 ctrl-y = "copy_entry_to_clipboard"
 ctrl-r = "reload_source"
 ctrl-s = "cycle_sources"
-
 # UI Features
 # ----------
 ctrl-t = "toggle_remote_control"
@@ -162,7 +82,6 @@ ctrl-o = "toggle_preview"
 ctrl-h = "toggle_help"
 f12 = "toggle_status_bar"
 ctrl-l = "toggle_layout"
-
 # Input field actions
 # ----------------------------------------
 backspace = "delete_prev_char"
@@ -176,14 +95,6 @@ ctrl-a = "go_to_input_start"
 end = "go_to_input_end"
 ctrl-e = "go_to_input_end"
 
-# Shell integration
-# ----------------------------------------------------------------------------
-#
-# The shell integration feature allows you to use television as a picker for
-# your shell commands (as well as your shell history with <CTRL-R>).
-# E.g. typing `git checkout <CTRL-T>` will open television with a list of
-# branches to choose from.
-
 [shell_integration]
 # This specifies the default fallback channel if no other channel is matched.
 fallback_channel = "files"
@@ -193,9 +104,9 @@ fallback_channel = "files"
 # by the corresponding commands.
 # Example: say you want the following commands to trigger the following channels
 # when pressing <CTRL-T>:
-#          `git checkout`  should trigger the `git-branches` channel
-#          `ls`            should trigger the `dirs` channel
-#          `cat` and `cp`  should trigger the `files` channel
+# `git checkout`  should trigger the `git-branches` channel
+# `ls`            should trigger the `dirs` channel
+# `cat` and `cp`  should trigger the `files` channel
 #
 # You would add the following to your configuration file:
 # ```
@@ -227,7 +138,7 @@ fallback_channel = "files"
   "unzip",
   "gzip",
   "gunzip",
-  "xz",
+  "xz"
 ]
 "git-diff" = ["git add", "git restore"]
 "git-branch" = [
@@ -237,12 +148,17 @@ fallback_channel = "files"
   "git merge",
   "git rebase",
   "git pull",
-  "git push",
+  "git push"
 ]
 "git-log" = ["git log", "git show"]
 "docker-images" = ["docker run"]
 "git-repos" = ["nvim", "code", "hx", "git clone"]
-"herdr-sessions" = ["herdr session", "herdr --session", "herdr session attach", "h session"]
+"herdr-sessions" = [
+  "herdr session",
+  "herdr --session",
+  "herdr session attach",
+  "h session"
+]
 "herdr-worktrees" = ["herdr worktree", "h worktree"]
 "herdr-workspaces" = ["herdr workspace", "h workspace"]
 "herdr-agents" = ["herdr agent", "h agent"]
@@ -250,7 +166,10 @@ fallback_channel = "files"
 "workmux" = ["workmux"]
 "sesh" = ["sesh connect", "sesh"]
 "cliphist" = ["cliphist decode", "cliphist delete", "clip"]
-"hypr-clients" = ["hyprctl dispatch focuswindow", "hyprctl dispatch closewindow"]
+"hypr-clients" = [
+  "hyprctl dispatch focuswindow",
+  "hyprctl dispatch closewindow"
+]
 "hypr-workspaces" = ["hyprctl dispatch workspace"]
 "mango-clients" = ["mmsg dispatch focus_window", "mmsg dispatch close_window"]
 "mango-tags" = ["mmsg dispatch tag"]
@@ -261,12 +180,75 @@ fallback_channel = "files"
 "mpv-playlist" = ["mpvc", "mpvc -J", "tv-mpv-playlist"]
 "mpv-history" = ["mpv"]
 "yt-dlp" = ["yt-dlp", "tv-ytdl"]
-
+"nix-generations" = [
+  "nix-generations",
+  "nixos-rebuild list-generations",
+  "nh os generations",
+  "tv-generations"
+]
 
 [shell_integration.keybindings]
 # controls which key binding should trigger tv
 # for shell autocomplete
-"smart_autocomplete" = "alt-t" #Default ctrl-t 
+"smart_autocomplete" = "alt-t" # Default ctrl-t
 # controls which keybinding should trigger tv
 # for command history
-"command_history" = "alt-r" #Default ctrl-r
+"command_history" = "alt-r" # Default ctrl-r
+
+[ui]
+# How much space to allocate for the UI (in percentage of the screen)
+# ┌─────────────────────────┐
+# │     Terminal screen     │
+# │  ┌───────────────────┐  │
+# │  │                   │  │
+# │  │  Television UI    │  │
+# │  │                   │  │
+# │  └───────────────────┘  │
+# │                         │
+# └─────────────────────────┘
+ui_scale = 100
+# What orientation should tv be (landscape or portrait)
+orientation = "landscape"
+# The theme to use for the UI
+# A list of builtin themes can be found in the `themes` directory of the television
+# repository. You may also create your own theme by creating a new file in a `themes`
+# directory in your configuration directory (see the `config.toml` location above).
+theme = "catppuccin-mocha-mauve.toml"
+
+[ui.help_panel]
+# Whether to split the help panel by categories
+show_categories = true
+hidden = true
+
+# Feature-specific configurations
+# Each feature can have its own configuration section
+[ui.input_bar]
+# Where to place the input bar in the UI (top or bottom)
+position = "top"
+# The input prompt string (empty by default: no prompt at all)
+prompt = "❯"
+# header = "{}"
+# padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
+border_type = "none" # https://docs.rs/ratatui/latest/ratatui/widgets/block/enum.BorderType.html#variants
+
+[ui.preview_panel]
+# Preview panel size (percentage of screen width/height)
+size = 50
+# header = ""
+# footer = ""
+scrollbar = false
+border_type = "none"
+# padding = {"left": 0, "right": 0, "top": 0, "bottom": 0}
+hidden = false
+
+[ui.remote_control]
+# Whether to show channel descriptions in remote control mode
+show_channel_descriptions = true
+# Whether to sort channels alphabetically
+sort_alphabetically = true
+
+[ui.results_panel]
+border_type = "none"
+
+[ui.status_bar]
+hidden = false

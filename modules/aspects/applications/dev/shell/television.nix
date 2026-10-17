@@ -4,11 +4,20 @@
     nixos =
       { pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [
-          television
-          nix-search-tv
-          jq
-        ];
+        environment.systemPackages =
+          with pkgs;
+          [
+            television
+            nix-search-tv
+            jq
+          ]
+          ++ (lib.optionals (pkgs ? local) (
+            with pkgs.local;
+            [
+              rebuild-switch
+              nix-generations
+            ]
+          ));
       };
 
     homeManager =
@@ -190,10 +199,19 @@
         '';
       in
       {
-        home.packages = with pkgs; [
-          nix-search-tv
-          tv-history-delete
-        ];
+        home.packages =
+          with pkgs;
+          [
+            nix-search-tv
+            tv-history-delete
+          ]
+          ++ (lib.optionals (pkgs ? local) (
+            with pkgs.local;
+            [
+              rebuild-switch
+              nix-generations
+            ]
+          ));
 
         programs.television = {
           enable = true;
@@ -477,6 +495,65 @@
             [actions.stop]
             description = "Stop playback"
             command = "playerctl -p '{}' stop"
+            mode = "execute"
+          '';
+
+        # NixOS system generations management cable
+        xdg.configFile."television/cable/nix-generations.toml".text =
+          let
+            nixGenBin =
+              if pkgs ? local && pkgs.local ? nix-generations then
+                "${pkgs.local.nix-generations}/bin/nix-generations"
+              else
+                "nix-generations";
+          in
+          # toml
+          ''
+            [metadata]
+            name = "nix-generations"
+            description = "Fuzzy search, preview, switch, and delete NixOS system generations"
+            requirements = ["nix-generations"]
+
+            [source]
+            command = "${nixGenBin} list"
+            display = "[{split:\t:0}] {split:\t:1} {split:\t:2}  │  {split:\t:3}"
+            output = "{split:\t:0}"
+            no_sort = true
+            frecency = false
+
+            [preview]
+            command = "${nixGenBin} preview '{split:\t:0}'"
+
+            [keybindings]
+            enter = "actions:switch"
+            ctrl-b = "actions:boot"
+            ctrl-d = "actions:delete"
+            ctrl-o = "actions:delete-older"
+            ctrl-y = "actions:copy"
+
+            [actions.switch]
+            description = "Switch active system to selected generation"
+            command = "${nixGenBin} switch '{split:\t:0}'"
+            mode = "execute"
+
+            [actions.boot]
+            description = "Set selected generation as boot default"
+            command = "${nixGenBin} boot '{split:\t:0}'"
+            mode = "execute"
+
+            [actions.delete]
+            description = "Delete selected generation"
+            command = "${nixGenBin} delete '{split:\t:0}'"
+            mode = "execute"
+
+            [actions.delete-older]
+            description = "Delete older generations (clean with keep count or older than selected)"
+            command = "${nixGenBin} delete-older '{split:\t:0}'"
+            mode = "execute"
+
+            [actions.copy]
+            description = "Copy store path to clipboard"
+            command = "echo -n '{split:\t:4}' | wl-copy"
             mode = "execute"
           '';
 

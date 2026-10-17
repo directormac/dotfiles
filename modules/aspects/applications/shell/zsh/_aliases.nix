@@ -28,6 +28,9 @@
   "lzg" = "lazygit";
   "lzm" = "lazymark";
   "nho" = "nh os";
+  "nhg" = "tv nix-generations";
+  "generations" = "tv nix-generations";
+  "rebuild" = "rebuild-switch";
   "nixdev" = "nix develop";
   "nsh" = "nix-shell -p";
   "oc" = "opencode";
