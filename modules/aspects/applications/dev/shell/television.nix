@@ -38,6 +38,49 @@
             exit 1
           fi
         '';
+
+        tv-hypr-client-preview = pkgs.writeShellScript "tv-hypr-client-preview" ''
+          addr="$1"
+          ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg addr "$addr" '
+            .[] | select(.address == $addr) |
+            "╭── Window: \(.title) ───\n" +
+            "│ Class:       \(.class) (\(.initialClass))\n" +
+            "│ Workspace:   \(.workspace.name) (id: \(.workspace.id))\n" +
+            "│ Monitor:     \(.monitor)\n" +
+            "│ Address:     \(.address)\n" +
+            "│ PID:         \(.pid)\n" +
+            "│ Floating:    \(.floating)\n" +
+            "│ Fullscreen:  \(.fullscreen)\n" +
+            "│ Size:        \(.size[0])x\(.size[1])\n" +
+            "│ Position:    \(.at[0]),\(.at[1])\n" +
+            "╰────────────────────────────────────────"
+          '
+        '';
+
+        tv-hypr-workspace-preview = pkgs.writeShellScript "tv-hypr-workspace-preview" ''
+          ws_id="$1"
+          ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$ws_id" '
+            [ .[] | select((.workspace.id|tostring) == $id) ] as $clients |
+            "╭── Workspace ID: " + $id + " (" + ($clients[0].workspace.name // "") + ") ───\n" +
+            "│ Windows: " + ($clients | length | tostring) + "\n" +
+            "├── Clients ─────────────────────────────\n" +
+            (if ($clients | length) == 0 then "│ (No windows)\n" else
+              ($clients | map("│ • [" + .class + "] " + .title) | join("\n")) + "\n"
+            end) +
+            "╰────────────────────────────────────────"
+          '
+        '';
+
+        tv-media-player-preview = pkgs.writeShellScript "tv-media-player-preview" ''
+          p="$1"
+          echo -e "╭── Media Player: $p ────────────────────────"
+          echo -e "│ Status:   $(playerctl -p "$p" status 2>/dev/null)"
+          echo -e "│ Title:    $(playerctl -p "$p" metadata title 2>/dev/null)"
+          echo -e "│ Artist:   $(playerctl -p "$p" metadata artist 2>/dev/null)"
+          echo -e "│ Album:    $(playerctl -p "$p" metadata album 2>/dev/null)"
+          echo -e "│ Position: $(playerctl -p "$p" position 2>/dev/null)s"
+          echo -e "╰────────────────────────────────────────────"
+        '';
       in
       {
         home.packages = with pkgs; [
@@ -76,21 +119,32 @@
           Unit.Description = "Weekly tldr/television cache update";
         };
 
-        xdg.configFile."television/cable/flake-inputs".text =
+        xdg.configFile."television/cable/flake-inputs.toml".text =
           # toml
           ''
             [metadata]
             name = "flake-inputs"
             description = "Interactively select and update Nix flake inputs"
+            requirements = ["nix", "jq"]
 
             [source]
-            command = "nix flake metadata --json | jq -r '.locks.nodes.root.inputs | keys[]'"
+            command = "nix flake metadata --json 2>/dev/null | jq -r '.locks.nodes.root.inputs | keys[]'"
+
+            [preview]
+            command = "nix flake metadata --json 2>/dev/null | jq --arg k '{}' '.locks.nodes[$k] // .locks.nodes.root.inputs[$k]'"
 
             [keybindings]
             enter = "actions:update"
+            ctrl-y = "actions:copy"
 
             [actions.update]
+            description = "Update selected flake input"
             command = "nix flake update {}"
+            mode = "execute"
+
+            [actions.copy]
+            description = "Copy input name to clipboard"
+            command = "echo -n '{}' | wl-copy"
             mode = "execute"
           '';
 
@@ -100,29 +154,130 @@
           ''
             [metadata]
             name = "hypr-clients"
-            description = "Fuzzy search Hyprland windows with JSON preview"
+            description = "Fuzzy search and manage Hyprland windows"
             requirements = ["hyprctl", "jq"]
 
             [source]
-            command = "hyprctl clients -j | jq -r '.[] | [.workspace.id, .class, .title, .address] | @tsv'"
-            display = "{split:\t:0}  │  {split:\t:1}"
+            command = "hyprctl clients -j 2>/dev/null | jq -r '.[] | [(.workspace.name // (.workspace.id|tostring)), .class, .title, .address] | @tsv'"
+            display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}"
             output = "{split:\t:3}"
 
             [preview]
-            command = "hyprctl clients -j | jq -r --arg addr '{}' '.[] | select(.address == $addr) | \"Class: \" + .class, \"Initial Class: \" + .initialClass, \"Title: \" + .title, \"Initial Title: \" + .initialTitle, \"Workspace: \" + (.workspace.id | tostring) + \" (\" + .workspace.name + \")\", \"PID: \" + (.pid | tostring), \"Floating: \" + (.floating | tostring), \"Monitor: \" + (.monitor | tostring), \"Size: \" + (.size[0] | tostring) + \"x\" + (.size[1] | tostring), \"At: \" + (.at[0] | tostring) + \", \" + (.at[1] | tostring), \"Address: \" + .address'"
+            command = "${tv-hypr-client-preview} '{}'"
 
             [keybindings]
-            enter = "actions:print_json"
-            ctrl-f = "actions:focus"
-
-            [actions.print_json]
-            description = "Print selected client JSON to stdout"
-            command = "hyprctl clients -j | jq --arg addr '{}' '.[] | select(.address == $addr)'"
-            mode = "execute"
+            enter = "actions:focus"
+            ctrl-x = "actions:close_window"
+            ctrl-d = "actions:close_window"
+            ctrl-f = "actions:toggle_floating"
+            ctrl-m = "actions:fullscreen"
+            ctrl-y = "actions:copy_title"
+            ctrl-p = "actions:print_json"
 
             [actions.focus]
             description = "Focus the selected window"
             command = "hyprctl dispatch focuswindow address:{}"
+            mode = "execute"
+
+            [actions.close_window]
+            description = "Close the selected window"
+            command = "hyprctl dispatch closewindow address:{}"
+            mode = "execute"
+
+            [actions.toggle_floating]
+            description = "Toggle floating mode for window"
+            command = "hyprctl dispatch togglefloating address:{}"
+            mode = "execute"
+
+            [actions.fullscreen]
+            description = "Toggle fullscreen for window"
+            command = "hyprctl dispatch fullscreen 1 address:{}"
+            mode = "execute"
+
+            [actions.copy_title]
+            description = "Copy window title to clipboard"
+            command = "hyprctl clients -j 2>/dev/null | jq -r --arg addr '{}' '.[] | select(.address == $addr) | .title' | wl-copy"
+            mode = "execute"
+
+            [actions.print_json]
+            description = "Print selected client JSON to stdout"
+            command = "hyprctl clients -j 2>/dev/null | jq --arg addr '{}' '.[] | select(.address == $addr)'"
+            mode = "execute"
+          '';
+
+        # Hyprland workspaces
+        xdg.configFile."television/cable/hypr-workspaces.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "hypr-workspaces"
+            description = "Fuzzy search and switch Hyprland workspaces"
+            requirements = ["hyprctl", "jq"]
+
+            [source]
+            command = "hyprctl workspaces -j 2>/dev/null | jq -r '.[] | [(.id|tostring), .name, .monitor, (.windows|tostring), (.lastwindowtitle // \"None\")] | @tsv'"
+            display = "[WS {split:\t:0}: {split:\t:1}]  │  Monitor: {split:\t:2}  │  Windows: {split:\t:3}  │  {split:\t:4}"
+            output = "{split:\t:0}"
+
+            [preview]
+            command = "${tv-hypr-workspace-preview} '{}'"
+
+            [keybindings]
+            enter = "actions:switch"
+            ctrl-y = "actions:copy_id"
+
+            [actions.switch]
+            description = "Switch to this workspace"
+            command = "hyprctl dispatch workspace {}"
+            mode = "execute"
+
+            [actions.copy_id]
+            description = "Copy workspace ID to clipboard"
+            command = "echo -n '{}' | wl-copy"
+            mode = "execute"
+          '';
+
+        # Media player controls
+        xdg.configFile."television/cable/media-players.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "media-players"
+            description = "Inspect and control MPRIS media players via playerctl"
+            requirements = ["playerctl"]
+
+            [source]
+            command = "playerctl -a metadata --format '{{playerName}}\t{{status}}\t{{title}}\t{{artist}}' 2>/dev/null"
+            display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}  -  {split:\t:3}"
+            output = "{split:\t:0}"
+
+            [preview]
+            command = "${tv-media-player-preview} '{}'"
+
+            [keybindings]
+            enter = "actions:play_pause"
+            ctrl-n = "actions:next"
+            ctrl-p = "actions:previous"
+            ctrl-s = "actions:stop"
+
+            [actions.play_pause]
+            description = "Play / Pause playback"
+            command = "playerctl -p '{}' play-pause"
+            mode = "execute"
+
+            [actions.next]
+            description = "Skip to next track"
+            command = "playerctl -p '{}' next"
+            mode = "execute"
+
+            [actions.previous]
+            description = "Return to previous track"
+            command = "playerctl -p '{}' previous"
+            mode = "execute"
+
+            [actions.stop]
+            description = "Stop playback"
+            command = "playerctl -p '{}' stop"
             mode = "execute"
           '';
 

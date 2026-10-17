@@ -47,11 +47,11 @@
           ++ histdb.packages;
 
         programs.zsh = {
-          autosuggestion.enable = true;
           inherit (completion) completionInit;
+          inherit (completion) fastSyntaxHighlighting;
+          autosuggestion.enable = true;
           enable = true;
           enableCompletion = true;
-          inherit (completion) fastSyntaxHighlighting;
 
           history = {
             ignoreAllDups = true;
