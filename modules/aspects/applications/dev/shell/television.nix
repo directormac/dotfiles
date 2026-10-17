@@ -366,6 +366,77 @@
             mode = "execute"
           '';
 
+        xdg.configFile."television/cable/mdless.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "mdless"
+            description = "Browse and page markdown files using mdless"
+            requirements = ["mdcat", "fd"]
+
+            [source]
+            command = "fd --type f -e md -e markdown -e mdx -e mdown"
+
+            [preview]
+            command = "${pkgs.mdcat}/bin/mdcat --columns $COLUMNS '{}'"
+
+            [keybindings]
+            enter = "actions:page"
+            ctrl-e = "actions:edit"
+            ctrl-y = "actions:copy"
+
+            [actions.page]
+            description = "Page markdown file with mdless"
+            command = "${pkgs.mdcat}/bin/mdless '{}'"
+            mode = "execute"
+
+            [actions.edit]
+            description = "Edit markdown file in $EDITOR"
+            command = "''${EDITOR:-nvim} '{}'"
+            mode = "execute"
+
+            [actions.copy]
+            description = "Copy file path to clipboard"
+            command = "echo -n '{}' | wl-copy"
+            mode = "execute"
+          '';
+
+        # Markdown picker channels using mdcat / mdless
+        xdg.configFile."television/cable/mdpick.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "mdpick"
+            description = "Fuzzy search and preview markdown files with mdcat"
+            requirements = ["mdcat", "fd"]
+
+            [source]
+            command = "fd --type f -e md -e markdown -e mdx -e mdown"
+
+            [preview]
+            command = "${pkgs.mdcat}/bin/mdcat --columns $COLUMNS '{}'"
+
+            [keybindings]
+            enter = "actions:view"
+            ctrl-e = "actions:edit"
+            ctrl-y = "actions:copy"
+
+            [actions.view]
+            description = "View markdown with mdless"
+            command = "${pkgs.mdcat}/bin/mdless '{}'"
+            mode = "execute"
+
+            [actions.edit]
+            description = "Edit markdown file in $EDITOR"
+            command = "''${EDITOR:-nvim} '{}'"
+            mode = "execute"
+
+            [actions.copy]
+            description = "Copy file path to clipboard"
+            command = "echo -n '{}' | wl-copy"
+            mode = "execute"
+          '';
+
         # Media player controls
         xdg.configFile."television/cable/media-players.toml".text =
           # toml

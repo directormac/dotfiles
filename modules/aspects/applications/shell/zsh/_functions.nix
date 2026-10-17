@@ -242,12 +242,13 @@
       fi
     done
 
-    # If all file arguments are markdown files and output is to terminal, use mdcat
+    # If all file arguments are markdown files and output is to terminal, use mdcat with pager
     if [ $has_file -eq 1 ] && [ $all_md -eq 1 ] && [ -t 1 ]; then
-      mdcat "$@"
+      mdcat -p "$@"
     else
       command bat -pp "$@"
     fi
   }
+
   zle -N tv-history-slim-widget
 ''
