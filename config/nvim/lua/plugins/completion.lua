@@ -78,6 +78,8 @@ return {
       cmdline = {
         keymap = {
           preset = 'inherit',
+          ['<CR>'] = { 'accept_and_enter', 'fallback' },
+          ['<C-y>'] = { 'select_and_accept' },
         },
         enabled = true,
         completion = {
@@ -139,7 +141,7 @@ return {
         },
       },
       sources = {
-        per_filetype = { org = { inherit_defaults = true, "org" } },
+        per_filetype = { org = { inherit_defaults = true, 'org' } },
         default = {
           'lsp',
           'path',
@@ -311,7 +313,7 @@ return {
             --- @type blink-cmp-git.Options
             opts = {},
           },
-org = { name = "Org", module = "org.completion.blink" }
+          org = { name = 'Org', module = 'org.completion.blink' },
         },
       },
     },
