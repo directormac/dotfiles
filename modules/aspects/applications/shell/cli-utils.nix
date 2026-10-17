@@ -45,8 +45,6 @@
       { pkgs, ... }:
       {
         home.packages = with pkgs; [
-          fff
-          fff-mcp
           skim
           bottom
           duf

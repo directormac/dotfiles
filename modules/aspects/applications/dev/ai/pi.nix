@@ -30,14 +30,17 @@
           };
         };
 
-        home.packages = lib.attrValues (
+        home.packages = [
+          pkgs.fff-mcp
+        ]
+        ++ (lib.attrValues (
           lib.filterAttrs (_: v: v != null) {
             inherit (llmPkgs)
               omo-ai
               omp
               ;
           }
-        );
+        ));
 
         programs.pi-coding-agent = lib.mkIf (llmPkgs ? pi) {
           enable = true;
