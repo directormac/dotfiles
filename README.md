@@ -10,6 +10,60 @@ A modern, pure-leaf dendritic NixOS and Home Manager configuration powered by [D
 - [devenv Documentation](https://devenv.sh/)
 - [flake-parts Documentation](https://flake.parts/)
 
+## Features
+
+- **Dendritic Aspect Architecture**: Pure leaf aspects powered by [Den](https://den.denful.dev), composable roles, and zero-boilerplate automatic discovery.
+- **Root Impermanence & Rollback**: Ephemeral Btrfs root subvolume rolled back to clean snapshot on boot with explicit persistence paths under `/persist` and `/cache`.
+- **Automated Garbage Collection (`nh`)**: Background weekly system cleanup via `programs.nh.clean` with configurable retention (`--keep-since 4d --keep 3`).
+- **Smart Rebuild Switch & Rollback Protection**: `rebuild-switch` labels each generation with `<branch>-<scope>-<rev>-<timestamp>` and automatically rolls back if activation fails so broken configurations never persist.
+- **Interactive Generation Management**: `nix-generations` CLI and Television channel (`tv nix-generations`, alias `nhg`) with real-time bootspec metadata, closure diffs, and pruning controls.
+- **Television Cable Suite**: Dedicated channels for git worktrees, branches, cliphist, zsh-histdb, systemd units, flake inputs, NixOS options, and packages.
+- **Standardized Local Packages**: Custom package suite organized under standard Nix `pkgs/by-name/<pkgname>/package.nix` hierarchy.
+
+## General Workflow & Commands
+
+This repository includes custom tools and scripts in `pkgs/by-name` to streamline daily maintenance and development.
+
+### 1. System Rebuild & Deployment
+
+| Command | Description |
+| :--- | :--- |
+| `rebuild-switch` *(or `rebuild`)* | Build and activate NixOS with lazygit-style commit label (`<branch>-<scope>-<rev>-<timestamp>`). Automatically reverts and deletes generation on failure. |
+| `nh os switch` *(or `nho switch`)* | Standard system switch using `nh`. |
+| `nh os test` *(or `nho test`)* | Build and activate system in a transient generation without setting boot default. |
+| `nh os build` *(or `nho build`)* | Build system toplevel derivation without activating. |
+| `nix-flake-build [host] [--apply]` | Build system configurations with `nix-output-monitor` (`nom`) and optional deployment switch. |
+
+### 2. NixOS Generation Management
+
+| Command | Description |
+| :--- | :--- |
+| `tv nix-generations` *(or `nhg`, `generations`)* | Fuzzy search, inspect closure diffs, switch, and delete system generations via Television. |
+| `nix-generations list` | Print tab-separated table of generations with active indicators and labels. |
+| `nix-generations preview <num>` | Detailed bootspec inspection, kernel info, and package closure diff against active system. |
+| `nix-generations switch <num>` | Activate and switch to specified generation number. |
+| `nix-generations boot <num>` | Set specified generation as bootloader default without immediate activation. |
+| `nix-generations delete <num>` | Delete single generation (prevents deleting active generation). |
+| `nix-generations delete-older [count/num]` | Prune older generations keeping latest count or strictly older than generation number. |
+
+### 3. Package & Flake Updates
+
+| Command | Description |
+| :--- | :--- |
+| `nix-flake-update [-e <input>]` | Update flake inputs authenticated via GitHub token, with optional `-e` / `--exclude` flags. |
+| `update-pkgs [pkg...]` | Automatically bump versions, hashes, and cargo/vendor dependencies in `pkgs/by-name` via `nix-update`. |
+| `nh clean all --keep <count>` | Trigger manual garbage collection keeping the latest N generations. |
+
+### 4. Repository & Codebase Synchronization
+
+| Command | Description |
+| :--- | :--- |
+| `nix run .#write-flake` | Regenerate `flake.nix` inputs and outputs from `modules/flake-parts/flake-file.nix`. |
+| `nix run .#write-files` | Synchronize generated files (`README.md`, `.workmux.yaml`, `.nvim.lua`). |
+| `nix run .#write-topology` | Regenerate system topology documentation in `TOPOLOGY.md`. |
+| `nix fmt modules/ pkgs/` | Format all Nix modules and packages according to project conventions. |
+| `nix flake check --no-build` | Validate all host configurations, checks, packages, and apps. |
+
 ## Evaluation Configuration
 
 This repository configures `nixConfig` for strict, safe, and cached builds:
@@ -102,7 +156,7 @@ Hosts and user topologies are declared in [`modules/hosts/`](modules/hosts):
 
 | Host | Architecture | User | Roles & Aspects |
 |------|--------------|------|-----------------|
-| **`nixos`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `hardware.nixos`, `secrets.agenix` |
+| **`nixos`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `hardware.nixos`, `impermanence`, `secrets.agenix` |
 | **`super`** | `x86_64-linux` | `artifex` | `roles.default`, `roles.workstation`, `roles.dev`, `roles.gaming`, `impermanence`, `secrets.agenix` |
 | **`sandbox`** | `x86_64-linux` | `artifex` | `roles.default`, `applications.gaming.nix-ld` (Isolated testbed host for rapid VM testing) |
 
@@ -133,8 +187,14 @@ nh os build
 # Test build in a transient generation
 nh os test
 
-# Switch system generation and activate
+# Switch system generation and activate (with git-labeled generation & rollback protection)
+rebuild-switch # or: rebuild
+
+# Standard switch via nh
 nh os switch
+
+# Manage, inspect, and prune generations interactively with Television
+tv nix-generations # or: nhg, generations
 ```
 
 ## Diagrams & Topology
