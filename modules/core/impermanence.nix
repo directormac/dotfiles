@@ -50,6 +50,10 @@
       "Public"
       "Templates"
       "Videos"
+      "Code"
+      "Projects"
+      "Notes"
+      ".dotfiles"
       {
         directory = ".ssh";
         mode = "0700";

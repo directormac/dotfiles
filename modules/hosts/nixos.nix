@@ -15,6 +15,8 @@
       secrets.agenix
       virtualization.vm-variant
       (den.batteries.vm-autologin "artifex")
+
+      impermanence
     ];
 
     nixos =
