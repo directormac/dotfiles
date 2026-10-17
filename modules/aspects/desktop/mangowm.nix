@@ -48,6 +48,30 @@
       }:
       let
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
+        tv-mango-client-preview = pkgs.writeShellScript "tv-mango-client-preview" ''
+          id="$1"
+          mmsg get all-clients 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$id" '
+            .clients[] | select((.id|tostring) == $id) |
+            "╭── Mango Window: \(.title // "Untitled") ───\n" +
+            "│ ID:          \(.id)\n" +
+            "│ App ID:      \(.appid // "N/A")\n" +
+            "│ Workspace:   \(.workspace // "N/A")\n" +
+            "│ Floating:    \(.is_floating // false)\n" +
+            "│ Fullscreen:  \(.is_fullscreen // false)\n" +
+            "╰────────────────────────────────────────"
+          '
+        '';
+
+        tv-mango-tags-preview = pkgs.writeShellScript "tv-mango-tags-preview" ''
+          tag_idx="$1"
+          mmsg get all-tags 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg idx "$tag_idx" '
+            .tags[] | select((.index|tostring) == $idx) |
+            "╭── Mango Tag: \(.index) (Monitor: \(.monitor)) ───\n" +
+            "│ Focused: \(.is_focused // false)\n" +
+            "│ Clients: \(.clients | length)\n" +
+            "╰────────────────────────────────────────"
+          '
+        '';
       in
       {
         home.file.".config/mango/bind.toml".source =
@@ -129,29 +153,79 @@
           ''
             [metadata]
             name = "mango-clients"
-            description = "Manage active window manager clients with a detailed preview"
+            description = "Manage active MangoWM window clients (focus, close, float, fullscreen)"
+            requirements = ["mmsg", "jq"]
 
             [source]
-            command = "mmsg get all-clients | jq -r '.clients[] | \"\\(.id) │ \\(.appid) │ \\(.title)\"'"
+            command = "mmsg get all-clients 2>/dev/null | jq -r '.clients[] | [(.id|tostring), (.appid // \"unknown\"), (.title // \"\")] | @tsv'"
+            display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}"
+            output = "{split:\t:0}"
 
             [preview]
-            command = "WINDOW_ID=$(echo '{}' | cut -d'│' -f1 | tr -d ' '); mmsg get all-clients | jq -r --arg id \"$WINDOW_ID\" '.clients[] | select(.id == $id) | \"🆔 Window ID:   \\(.id)\\n🚀 Application: \\(.appid)\\n📋 Window Title: \\(.title)\\n📌 Workspace:    \\(.workspace // \"N/A\")\\n🔍 Floating:     \\(.is_floating // \"false\")\\n✨ Fullscreen:   \\(.is_fullscreen // \"false\")\"'"
+            command = "${tv-mango-client-preview} '{}'"
 
             [keybindings]
             enter = "actions:focus"
+            ctrl-x = "actions:close_window"
+            ctrl-d = "actions:close_window"
+            ctrl-f = "actions:toggle_floating"
+            ctrl-m = "actions:fullscreen"
             ctrl-y = "actions:copy_info"
-            ctrl-x = "actions:kill_client"
 
             [actions.focus]
-            command = "mmsg dispatch focus_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
+            description = "Focus the selected window"
+            command = "mmsg dispatch focus_window {}"
+            mode = "execute"
+
+            [actions.close_window]
+            description = "Close the selected window"
+            command = "mmsg dispatch close_window {}"
+            mode = "execute"
+
+            [actions.toggle_floating]
+            description = "Toggle floating mode for window"
+            command = "mmsg dispatch togglefloating client,{}"
+            mode = "execute"
+
+            [actions.fullscreen]
+            description = "Toggle fullscreen for window"
+            command = "mmsg dispatch togglefullscreen client,{}"
             mode = "execute"
 
             [actions.copy_info]
-            command = "echo '{}' | cut -d'│' -f2,3 | tr -d ' ' | wl-copy"
+            description = "Copy window info to clipboard"
+            command = "mmsg get client '{}' 2>/dev/null | jq -r '.title // .appid' | wl-copy"
+            mode = "execute"
+          '';
+
+        xdg.configFile."television/cable/mango-tags.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "mango-tags"
+            description = "Fuzzy search and switch MangoWM workspace tags"
+            requirements = ["mmsg", "jq"]
+
+            [source]
+            command = "mmsg get all-tags 2>/dev/null | jq -r '.tags[] | [.monitor, (.index|tostring), (if .is_focused then \"Focused\" else \"Idle\" end), (.clients|length|tostring)] | @tsv'"
+            display = "[{split:\t:0}] Tag {split:\t:1}  │  {split:\t:2}  │  Clients: {split:\t:3}"
+            output = "{split:\t:1}"
+
+            [preview]
+            command = "${tv-mango-tags-preview} '{}'"
+
+            [keybindings]
+            enter = "actions:switch"
+            ctrl-y = "actions:copy_tag"
+
+            [actions.switch]
+            description = "Switch to this workspace tag"
+            command = "mmsg dispatch tag {}"
             mode = "execute"
 
-            [actions.kill_client]
-            command = "mmsg dispatch close_window $(echo '{}' | cut -d'│' -f1 | tr -d ' ')"
+            [actions.copy_tag]
+            description = "Copy tag index to clipboard"
+            command = "echo -n '{}' | wl-copy"
             mode = "execute"
           '';
 

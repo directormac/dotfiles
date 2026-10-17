@@ -37,7 +37,7 @@ global_history = false
 # Whether fuzzy matching tolerates typos (default: false)
 # When true, every fuzzy pattern gets a typo budget that scales with its
 # length (one typo per 4 characters, capped at 2)
-typo_resistance = false
+typo_resistance = true
 
 [ui]
 # How much space to allocate for the UI (in percentage of the screen)
@@ -242,6 +242,25 @@ fallback_channel = "files"
 "git-log" = ["git log", "git show"]
 "docker-images" = ["docker run"]
 "git-repos" = ["nvim", "code", "hx", "git clone"]
+"herdr-sessions" = ["herdr session", "herdr --session", "herdr session attach", "h session"]
+"herdr-worktrees" = ["herdr worktree", "h worktree"]
+"herdr-workspaces" = ["herdr workspace", "h workspace"]
+"herdr-agents" = ["herdr agent", "h agent"]
+"git-worktrees" = ["git worktree"]
+"workmux" = ["workmux"]
+"sesh" = ["sesh connect", "sesh"]
+"cliphist" = ["cliphist decode", "cliphist delete", "clip"]
+"hypr-clients" = ["hyprctl dispatch focuswindow", "hyprctl dispatch closewindow"]
+"hypr-workspaces" = ["hyprctl dispatch workspace"]
+"mango-clients" = ["mmsg dispatch focus_window", "mmsg dispatch close_window"]
+"mango-tags" = ["mmsg dispatch tag"]
+"nix-pkgs" = ["nix run", "nix profile install", "nix-shell -p"]
+"flake-inputs" = ["nix flake update"]
+"systemd-units" = ["systemctl", "journalctl"]
+"media-players" = ["playerctl"]
+"mpv-playlist" = ["mpvc", "mpvc -J", "tv-mpv-playlist"]
+"mpv-history" = ["mpv"]
+"yt-dlp" = ["yt-dlp", "tv-ytdl"]
 
 
 [shell_integration.keybindings]

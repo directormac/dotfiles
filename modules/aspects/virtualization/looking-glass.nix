@@ -1,6 +1,5 @@
 # Looking Glass KVM Frame Relay Client Aspect
-_:
-{
+_: {
   den.aspects.virtualization.looking-glass = {
     nixos =
       {
@@ -30,24 +29,22 @@ _:
         ];
       };
 
-    homeManager =
-      _:
-      {
-        xdg.configFile."looking-glass/client.ini".text = ''
-          [app]
-          shmFile=/dev/kvmfr0
+    homeManager = _: {
+      xdg.configFile."looking-glass/client.ini".text = ''
+        [app]
+        shmFile=/dev/kvmfr0
 
-          [win]
-          fullScreen=no
-          showFPS=yes
+        [win]
+        fullScreen=no
+        showFPS=yes
 
-          [input]
-          escapeKey=KEY_RIGHTCTRL
-          autoCapture=yes
+        [input]
+        escapeKey=KEY_RIGHTCTRL
+        autoCapture=yes
 
-          [spice]
-          enable=yes
-        '';
-      };
+        [spice]
+        enable=yes
+      '';
+    };
   };
 }
