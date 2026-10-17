@@ -11,26 +11,44 @@
         programs.chromium = {
           enable = true;
 
+          extensions = [
+            "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+            "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
+            "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
+            "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
+            "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
+          ];
+
           extraOpts = {
             ExtensionSettings = {
               "dbepggeogbaibhgnhhndojpepiihcmeb" = {
+                installation_mode = "force_installed";
                 toolbar_pin = "default_unpinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
               }; # Vimium
 
               "ddkjiahejlhfcafbddmgiahcphecmpfh" = {
+                installation_mode = "force_installed";
                 toolbar_pin = "default_unpinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
               }; # uBlock Origin Lite
 
               "eimadpbcbfnmbkopoojfekhnkhdbieeh" = {
+                installation_mode = "force_installed";
                 toolbar_pin = "force_pinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
               }; # Dark Reader
 
               "mnjggcdmjocbbbhaepdhchncahnbgone" = {
+                installation_mode = "force_installed";
                 toolbar_pin = "force_pinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
               }; # SponsorBlock
 
               "nngceckbapebfimnlniiiahkandclblb" = {
+                installation_mode = "force_installed";
                 toolbar_pin = "force_pinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
               }; # Bitwarden
             };
           };
@@ -52,6 +70,15 @@
         programs.chromium = {
           commandLineArgs = sharedArgs;
           enable = true;
+
+          extensions = [
+            { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
+            { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # uBlock Origin Lite
+            { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # Dark Reader
+            { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # SponsorBlock
+            { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+          ];
+
           package = pkgs.chromium;
         };
       };
