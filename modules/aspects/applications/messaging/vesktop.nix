@@ -59,6 +59,7 @@
 
     persistHome.directories = [
       ".config/vesktop"
+      ".config/Vencord"
     ];
   };
 }

@@ -174,6 +174,11 @@
     persistHome.directories = [
       ".local/share/nvim"
       ".local/state/nvim"
+      ".wakatime"
+    ];
+
+    persistHome.files = [
+      ".wakatime.cfg"
     ];
   };
 

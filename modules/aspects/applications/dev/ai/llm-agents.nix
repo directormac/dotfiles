@@ -35,5 +35,15 @@
       lib.optionals (inputs ? llm-agents && inputs.llm-agents ? overlays) [
         inputs.llm-agents.overlays.shared-nixpkgs
       ];
+
+    persistHome.directories = [
+      ".ctx"
+      ".claude"
+      ".codex"
+      ".kimi-code"
+      ".agents"
+      ".config/rtk"
+      ".local/share/rtk"
+    ];
   };
 }

@@ -227,6 +227,7 @@
     ];
 
     persistHome.directories = [
+      ".librewolf"
       ".config/librewolf"
     ];
   };

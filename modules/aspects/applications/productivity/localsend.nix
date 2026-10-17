@@ -13,5 +13,9 @@
           openFirewall = true;
         };
       };
+
+    persistHome.directories = [
+      ".local/share/org.localsend.localsend_app"
+    ];
   };
 }

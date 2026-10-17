@@ -8,5 +8,9 @@
           (pkgs.bottles.override { removeWarningPopup = true; })
         ];
       };
+
+    persistHome.directories = [
+      ".local/share/bottles"
+    ];
   };
 }

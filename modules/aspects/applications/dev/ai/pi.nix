@@ -50,6 +50,8 @@
 
     persistHome.directories = [
       ".pi"
+      ".omo"
+      ".omp"
     ];
   };
 }

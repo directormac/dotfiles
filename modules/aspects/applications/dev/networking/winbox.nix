@@ -18,5 +18,9 @@
           });
         };
       };
+
+    persistHome.directories = [
+      ".local/share/MikroTik"
+    ];
   };
 }

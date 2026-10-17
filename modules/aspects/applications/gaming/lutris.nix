@@ -8,5 +8,10 @@
           pkgs.lutris
         ];
       };
+
+    persistHome.directories = [
+      ".local/share/lutris"
+      ".config/lutris"
+    ];
   };
 }

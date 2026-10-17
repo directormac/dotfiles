@@ -7,5 +7,10 @@
         indicator = true;
       };
     };
+
+    persistHome.directories = [
+      ".config/kdeconnect"
+      ".config/valent"
+    ];
   };
 }

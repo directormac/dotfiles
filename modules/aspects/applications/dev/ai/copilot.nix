@@ -21,5 +21,10 @@
           }
         );
       };
+
+    persistHome.directories = [
+      ".copilot"
+      ".config/github-copilot"
+    ];
   };
 }

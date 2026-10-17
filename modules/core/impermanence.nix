@@ -54,6 +54,7 @@
       "Projects"
       "Notes"
       ".dotfiles"
+      "Work"
       {
         directory = ".ssh";
         mode = "0700";

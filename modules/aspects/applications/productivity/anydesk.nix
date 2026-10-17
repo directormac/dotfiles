@@ -8,5 +8,9 @@
           pkgs.anydesk
         ];
       };
+
+    persistHome.directories = [
+      ".anydesk"
+    ];
   };
 }

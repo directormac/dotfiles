@@ -68,6 +68,8 @@
 
     persistHome.directories = [
       ".local/share/opencode"
+      ".config/opencode"
+      ".config/ai.opencode.desktop"
     ];
   };
 }

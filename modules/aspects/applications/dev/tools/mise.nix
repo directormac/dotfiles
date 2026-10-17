@@ -47,6 +47,11 @@
 
     persistHome.directories = [
       ".local/share/mise"
+      ".local/state/mise"
+    ];
+
+    cacheHome.directories = [
+      ".cache/mise"
     ];
   };
 }

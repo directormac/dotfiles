@@ -236,6 +236,7 @@
 
     cacheHome.directories = [
       ".local/share/Steam"
+      ".steam"
     ];
   };
 }

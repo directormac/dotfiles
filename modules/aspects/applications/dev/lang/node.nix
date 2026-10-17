@@ -42,7 +42,17 @@ in
       in
       {
         home.packages = (webPkgs pkgs) ++ lib.optional (viteplus != null) viteplus;
+        home.sessionPath = [
+          "$HOME/.local/share/vite-plus/bin"
+        ];
       };
+
+    persistHome.directories = [
+      ".config/vite-plus"
+      ".local/share/vite-plus"
+      ".bun"
+      ".npm"
+    ];
   };
 
   flake.wrappers.neovim =

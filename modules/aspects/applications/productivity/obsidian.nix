@@ -15,5 +15,9 @@
 
         };
       };
+
+    persistHome.directories = [
+      ".config/obsidian"
+    ];
   };
 }

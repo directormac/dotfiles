@@ -48,5 +48,18 @@
           };
         };
       };
+
+    persist = [
+      {
+        directories = [
+          "/var/lib/waydroid"
+        ];
+      }
+    ];
+
+    persistHome.directories = [
+      ".local/share/waydroid"
+      ".local/share/waydroid-helper"
+    ];
   };
 }
