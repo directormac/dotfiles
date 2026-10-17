@@ -34,6 +34,8 @@
       imports = [ inputs.impermanence.nixosModules.impermanence ];
       # Allow users to mount persistent bind mounts with fuse
       programs.fuse.userAllowOther = true;
+
+      # systemd.user.tmpfiled.rules = [ "d %h/.local/share/Trash 0700 - - 7d" ];
     };
 
     cacheHome.directories = [
@@ -53,8 +55,8 @@
       "Code"
       "Projects"
       "Notes"
-      ".dotfiles"
       "Work"
+      ".dotfiles"
       {
         directory = ".ssh";
         mode = "0700";
@@ -100,8 +102,15 @@
         };
       in
       {
-        home.persistence."/cache" = merge cacheHome;
-        home.persistence."/persist" = merge persistHome;
+        home.persistence."/cache" = (merge cacheHome) // {
+          allowTrash = true;
+          hideMounts = true;
+        };
+
+        home.persistence."/persist" = (merge persistHome) // {
+          allowTrash = true;
+          hideMounts = true;
+        };
       };
   };
 
