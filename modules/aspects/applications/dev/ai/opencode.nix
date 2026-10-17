@@ -12,10 +12,19 @@
         llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
+
+        home.packages = lib.attrValues (
+          lib.filterAttrs (_: v: v != null) {
+            inherit (llmPkgs)
+              opencode2
+              ;
+          }
+        );
+
         programs.opencode = lib.mkIf (llmPkgs ? opencode) {
           settings = {
             autoshare = false;
-            autoupdate = true;
+            autoupdate = false;
 
             permission = {
               edit = {
@@ -34,10 +43,24 @@
                 "/nix/store/**" = "allow";
               };
             };
+
+            # plugins is a top-level property, not inside permission
+            plugins = [
+              # https://github.com/darrenhinde/OpenAgentsControl
+              "opencode-goal-plugin@0.11.0"
+              "opencode-conductor"
+              "micode"
+              "openportal"
+              "oh-my-opencode"
+              "opencode-supermemory"
+              "opencode-pty"
+              "opencode-websearch-cited"
+            ];
           };
 
           enable = true;
           package = llmPkgs.opencode;
+          web.enable = true;
         };
 
         stylix.targets.opencode.enable = true;

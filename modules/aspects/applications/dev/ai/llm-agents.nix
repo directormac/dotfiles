@@ -18,12 +18,13 @@
               rtk
               ctx
               cli-proxy-api
-              opencode2
-              opencodex
               terminal-browser
               agent-browser
-              kimi-code
-              codex
+              # opencodex
+              # kimi-code
+              # codex
+              # agent-deck
+              # agentsview
               ;
           }
         );

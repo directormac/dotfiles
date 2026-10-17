@@ -11,7 +11,8 @@
     "npm:@estebanforge/pi-token-cost-ledger",
     "git:github.com/lmilojevicc/pi-zentui",
     "npm:pi-rtk-optimizer",
-    "npm:@ff-labs/pi-fff"
+    "npm:@ff-labs/pi-fff",
+    "npm:opencode-pi"
   ],
   "theme": "catppuccin-mocha-mauve",
   "terminal": {
