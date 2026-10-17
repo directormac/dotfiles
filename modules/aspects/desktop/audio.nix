@@ -57,5 +57,9 @@
           pulseaudio.enable = false;
         };
       };
+
+    persistHome.directories = [
+      ".local/state/wireplumber"
+    ];
   };
 }

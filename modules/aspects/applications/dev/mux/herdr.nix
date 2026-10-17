@@ -93,7 +93,8 @@
           Service = {
             ExecStart = "${herdrPkg}/bin/herdr server";
             KillMode = "mixed";
-            Type = "forking";
+            Restart = "on-failure";
+            Type = "simple";
           };
 
           Unit = {
@@ -276,7 +277,9 @@
       };
 
     persistHome.directories = [
+      ".config/herdr"
       ".local/share/herdr"
+      ".local/state/herdr"
     ];
   };
 }

@@ -20,6 +20,7 @@
 
     persistHome.directories = [
       ".config/gh"
+      ".config/gh-dash"
     ];
   };
 }

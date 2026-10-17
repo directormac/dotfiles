@@ -20,5 +20,9 @@
           enable = lib.mkDefault true;
         };
       };
+
+    persistHome.directories = [
+      ".config/lazydocker"
+    ];
   };
 }

@@ -42,6 +42,7 @@
       ".codex"
       ".kimi-code"
       ".agents"
+      ".cline"
       ".config/rtk"
       ".local/share/rtk"
     ];

@@ -52,6 +52,7 @@
       ".pi"
       ".omo"
       ".omp"
+      ".config/pi"
     ];
   };
 }

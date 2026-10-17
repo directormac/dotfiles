@@ -42,5 +42,10 @@
           };
         };
       };
+
+    persistHome.directories = [
+      ".config/superfile"
+      ".local/state/superfile"
+    ];
   };
 }

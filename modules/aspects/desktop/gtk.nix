@@ -78,5 +78,9 @@
           ];
         };
       };
+
+    persistHome.directories = [
+      ".config/dconf"
+    ];
   };
 }

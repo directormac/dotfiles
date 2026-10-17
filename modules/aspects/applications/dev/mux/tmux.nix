@@ -172,8 +172,17 @@
               set-hook -gw pane-died 'display-message "⚠️ Pane #{hook_pane} exited with failure! Press any key to close, or Prefix + r to respawn."'
               set-hook -g session-window-changed 'run-shell -b "tmux set-option -q -u -w -t \"#{hook_old_window}\" synchronize-panes"'
 
+              # Keep tmux server alive without open sessions so systemd service stays running
+              # and continuum auto-restore has time to restore sessions on boot
+              set -s exit-empty off
+
+              # Save on client detach as well as periodic interval
+              set-hook -ga client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh quiet"'
+
               set -g @window_icon "${windowIcon}"
               source -F "$HOME/.config/tmux/status.tmux.conf"
+              # Re-apply continuum auto-save interpolation so status.tmux.conf resetting status-right does not erase it
+              run-shell "${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux"
             '';
 
           focusEvents = true;
@@ -303,7 +312,12 @@
               exec ${tmuxPkg}/bin/tmux start-server
             ''}";
 
+            ExecStop = "${pkgs.writeShellScript "tmux-stop" ''
+              ${tmuxPkg}/bin/tmux run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh 2>/dev/null || true
+            ''}";
+
             KillMode = lib.mkDefault "mixed";
+            Restart = lib.mkDefault "on-failure";
             Type = lib.mkDefault "forking";
           };
 

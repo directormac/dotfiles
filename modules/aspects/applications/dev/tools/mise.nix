@@ -39,6 +39,10 @@
         };
       };
 
+    cacheHome.directories = [
+      ".cache/mise"
+    ];
+
     nixpkgs-overlays =
       _:
       lib.optionals (inputs ? mise-nix && inputs.mise-nix ? overlays) [
@@ -48,10 +52,6 @@
     persistHome.directories = [
       ".local/share/mise"
       ".local/state/mise"
-    ];
-
-    cacheHome.directories = [
-      ".cache/mise"
     ];
   };
 }

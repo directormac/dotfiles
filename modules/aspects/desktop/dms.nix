@@ -150,6 +150,11 @@
           dank-calendar.enable = lib.mkDefault true;
         };
       };
+
+    persistHome.directories = [
+      ".local/state/DankMaterialShell"
+      ".local/state/dankcal"
+    ];
   };
 
 }

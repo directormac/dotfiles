@@ -208,9 +208,11 @@
         "terminal.integrated.scrollback" = 10240;
         "update.mode" = "none";
         "vsicons.dontShowNewVersionMessage" = true;
+        "workbench.colorTheme" = "Catppuccin Mocha";
         "workbench.editor.empty.hint" = "hidden";
         "workbench.startupEditor" = "none";
         "workbench.tree.indent" = 20;
+
       }
     ];
 

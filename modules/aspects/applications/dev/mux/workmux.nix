@@ -170,5 +170,10 @@
         xdg.configFile."workmux/config.yaml".source =
           config.lib.file.mkOutOfStoreSymlink "${dotsPath}/workmux/config.yaml";
       };
+
+    persistHome.directories = [
+      ".config/workmux"
+      ".local/state/workmux"
+    ];
   };
 }
