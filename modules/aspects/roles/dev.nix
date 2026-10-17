@@ -74,6 +74,7 @@
       dev.shell.fzf
       dev.shell.bat
       dev.shell.mdcat
+      dev.shell.lazymark
       dev.shell.lumen
       dev.shell.btop
       dev.shell.vivid

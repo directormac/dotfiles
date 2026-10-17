@@ -26,6 +26,7 @@
   "lt" = "lsd --tree";
   "lzd" = "lazydocker";
   "lzg" = "lazygit";
+  "lzm" = "lazymark";
   "nho" = "nh os";
   "nixdev" = "nix develop";
   "nsh" = "nix-shell -p";
