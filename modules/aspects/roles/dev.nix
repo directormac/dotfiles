@@ -71,6 +71,8 @@
       dev.shell.zoxide
       dev.shell.fzf
       dev.shell.bat
+      dev.shell.mdcat
+      dev.shell.lumen
       dev.shell.btop
       dev.shell.vivid
       dev.shell.fastfetch
