@@ -205,15 +205,14 @@
 
     local current_prompt="$LBUFFER"
     local output
-    local slim_config="''${XDG_CONFIG_HOME:-$HOME/.config}/television/tv-slim.toml"
     local hist_db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
 
     if [[ -f "$hist_db" ]]; then
       output=$(sqlite3 -batch -noheader "$hist_db" "select distinct argv from commands order by id desc" | \
-        tv --config-file "$slim_config" --input "$current_prompt" --inline)
+        tv --layout portrait --hide-preview --input-position top --input "$current_prompt" --inline)
     else
       output=$(history -n -1 0 | \
-        tv --config-file "$slim_config" --input "$current_prompt" --inline)
+        tv --layout portrait --hide-preview --input-position top --input "$current_prompt" --inline)
     fi
 
     zle reset-prompt
@@ -222,6 +221,33 @@
       LBUFFER="$output"
     fi
     _enable_bracketed_paste 2>/dev/null
+  }
+
+  function cat() {
+    if [ $# -eq 0 ]; then
+      command bat -pp
+      return
+    fi
+
+    local all_md=1
+    local has_file=0
+    for arg in "$@"; do
+      if [[ "$arg" =~ ^- ]]; then
+        continue
+      fi
+      has_file=1
+      if [[ "$arg" != *.md && "$arg" != *.markdown && "$arg" != *.MD && "$arg" != *.mdown ]]; then
+        all_md=0
+        break
+      fi
+    done
+
+    # If all file arguments are markdown files and output is to terminal, use mdcat
+    if [ $has_file -eq 1 ] && [ $all_md -eq 1 ] && [ -t 1 ]; then
+      mdcat "$@"
+    else
+      command bat -pp "$@"
+    fi
   }
   zle -N tv-history-slim-widget
 ''

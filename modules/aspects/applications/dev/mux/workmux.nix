@@ -27,6 +27,30 @@
       }:
       let
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
+        tv-git-worktree-preview = pkgs.writeShellScript "tv-git-worktree-preview" ''
+          branch="$1"
+          head="$2"
+          path="$3"
+          echo -e "╭── Git Worktree: $branch ($head) ───"
+          echo -e "│ Path: $path"
+          echo -e "├── Git Status ────────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
+          echo -e "├── Recent Commits ────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" log --oneline -8 --color=always 2>/dev/null || true
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
+        tv-workmux-preview = pkgs.writeShellScript "tv-workmux-preview" ''
+          handle="$1"
+          branch="$2"
+          path="$3"
+          echo -e "╭── Workmux Worktree: $handle ($branch) ───"
+          echo -e "│ Path: $path"
+          echo -e "├── Git Status ────────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
+          echo -e "├── Recent Commits ────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" log --oneline -8 --color=always 2>/dev/null || true
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
         workmuxPkg =
           if pkgs ? llm-agents && pkgs.llm-agents ? workmux then
             pkgs.llm-agents.workmux
@@ -52,28 +76,13 @@
             output = "{split:\t:2}"
 
             [preview]
-            command = '''bash -c '
-              path="{}"
-              branch="{split:\t:0}"
-              head="{split:\t:1}"
-              echo -e "╭── Git Worktree: $branch ($head) ───"
-              echo -e "│ Path: $path"
-              echo -e "├── Git Status ────────────────────────────────────"
-              git -C "$path" status --short 2>/dev/null
-              echo -e "├── Recent Commits ────────────────────────────────"
-              git -C "$path" log --oneline -8 --color=always 2>/dev/null
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-git-worktree-preview} '{split:\t:0}' '{split:\t:1}' '{}'"
 
             [keybindings]
             enter = "actions:cd"
             ctrl-e = "actions:edit"
-            ctrl-t = "actions:open_terminal"
-            ctrl-h = "actions:open_herdr"
-            ctrl-w = "actions:open_workmux"
-            ctrl-y = "actions:copy_path"
             ctrl-d = "actions:remove"
-
+            ctrl-y = "actions:copy_path"
             [actions.cd]
             description = "Switch into this worktree shell"
             command = "cd '{}' && $SHELL"
@@ -125,26 +134,13 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = '''bash -c '
-              handle="{}"
-              branch="{split:\t:1}"
-              path="{split:\t:2}"
-              echo -e "╭── Workmux Worktree: $handle ($branch) ───"
-              echo -e "│ Path: $path"
-              echo -e "├── Git Status ────────────────────────────────────"
-              git -C "$path" status --short 2>/dev/null
-              echo -e "├── Recent Commits ────────────────────────────────"
-              git -C "$path" log --oneline -8 --color=always 2>/dev/null
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-workmux-preview} '{}' '{split:\t:1}' '{split:\t:2}'"
 
             [keybindings]
             enter = "actions:open"
             ctrl-e = "actions:edit"
-            ctrl-t = "actions:open_terminal"
             ctrl-d = "actions:close"
             ctrl-y = "actions:copy_path"
-
             [actions.open]
             description = "Open or switch to selected worktree in tmux"
             command = "workmux open '{}'"

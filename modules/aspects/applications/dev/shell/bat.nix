@@ -16,7 +16,7 @@
             ];
 
             pager = "less --RAW-CONTROL-CHARS --quit-if-one-screen --mouse";
-            paging = "never";
+            paging = "auto";
             theme = "Catppuccin Mocha";
           };
 

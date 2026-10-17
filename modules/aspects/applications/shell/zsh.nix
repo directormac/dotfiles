@@ -66,15 +66,22 @@
               ${functions}
               ${completion.fzfTabZstyle}
 
+              # Autosuggest Accept Keybindings (standard zle)
+              bindkey '^[[27;5;9~' autosuggest-accept
+              bindkey '^[[1;5I' autosuggest-accept
+              bindkey '^[[9;5u' autosuggest-accept
+
               function zvm_after_init() {
                 ${histdb.zvmKeybindings}
 
-                # Autosuggest Accept Keybindings (Ctrl+Tab only)
+                # Autosuggest Accept Keybindings (Ctrl+Tab in viins & vicmd)
                 zvm_bindkey viins '^[[27;5;9~' autosuggest-accept
                 zvm_bindkey viins '^[[1;5I' autosuggest-accept
                 zvm_bindkey viins '^[[9;5u' autosuggest-accept
+                zvm_bindkey vicmd '^[[27;5;9~' autosuggest-accept
+                zvm_bindkey vicmd '^[[1;5I' autosuggest-accept
+                zvm_bindkey vicmd '^[[9;5u' autosuggest-accept
               }
-
               source $XDG_CONFIG_HOME/zsh/extra.zsh
             '';
 
@@ -95,7 +102,7 @@
           sessionVariables = {
             BROWSER = "zen-beta";
             EDITOR = "nvim";
-            MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+            MANPAGER = "sh -c 'col -bx | bat -l man -p --paging=always'";
             MANROFFOPT = "-c";
             NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
           };

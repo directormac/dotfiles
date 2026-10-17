@@ -17,6 +17,69 @@
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
+
+        tv-herdr-agent-preview = pkgs.writeShellScript "tv-herdr-agent-preview" ''
+          agent="$1"
+          status="$2"
+          pane="$3"
+          cwd="$4"
+          title="$5"
+          echo -e "╭── Herdr Agent: $agent ──────────────────────────"
+          echo -e "│ Status: $status"
+          echo -e "│ Pane:   $pane"
+          echo -e "│ CWD:    $cwd"
+          echo -e "│ Title:  $title"
+          echo -e "├── Recent Output ─────────────────────────────────"
+          ${herdrPkg}/bin/herdr agent read "$agent" --lines 30 2>/dev/null || \
+            ${herdrPkg}/bin/herdr pane read "$pane" --lines 30 2>/dev/null || true
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
+
+        tv-herdr-session-preview = pkgs.writeShellScript "tv-herdr-session-preview" ''
+          name="$1"
+          sess=$(${herdrPkg}/bin/herdr session list --json 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg n "$name" '.sessions[]? | select(.name == $n)')
+          running=$(echo "$sess" | ${pkgs.jq}/bin/jq -r '.running // false')
+          dir=$(echo "$sess" | ${pkgs.jq}/bin/jq -r '.session_dir // ""')
+          sock=$(echo "$sess" | ${pkgs.jq}/bin/jq -r '.socket_path // ""')
+          echo -e "╭── Herdr Session: $name ──────────────────────────"
+          echo -e "│ Status:    $([ "$running" = "true" ] && echo "🟢 Running" || echo "⚪ Stopped")"
+          echo -e "│ Directory: $dir"
+          echo -e "│ Socket:    $sock"
+          if [ "$running" = "true" ]; then
+            echo -e "├── Workspaces ────────────────────────────────────"
+            ${herdrPkg}/bin/herdr --session "$name" workspace list 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.workspaces[]? | "│  • [\(.workspace_id)] \(.label) (tabs: \(.tab_count), panes: \(.pane_count), agent: \(.agent_status))"'
+            echo -e "├── Tabs ──────────────────────────────────────────"
+            ${herdrPkg}/bin/herdr --session "$name" tab list 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.tabs[]? | "│  • [\(.tab_id)] \(.label) (panes: \(.pane_count))"'
+          else
+            echo -e "│ (Session is stopped. Press Enter to start or attach)"
+          fi
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
+
+        tv-herdr-workspace-preview = pkgs.writeShellScript "tv-herdr-workspace-preview" ''
+          ws="$1"
+          echo -e "╭── Herdr Workspace: $ws ──────────────────────────"
+          ${herdrPkg}/bin/herdr workspace get "$ws" 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.workspace | "│ Label:    \(.label)\n│ Focused:  \(.focused)\n│ Worktree: \(.worktree.checkout_path // "None")"'
+          echo -e "├── Tabs ──────────────────────────────────────────"
+          ${herdrPkg}/bin/herdr tab list --workspace "$ws" 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.tabs[]? | "│  • [\(.tab_id)] \(.label) (panes: \(.pane_count), agent: \(.agent_status))"'
+          echo -e "├── Panes & Agents ────────────────────────────────"
+          ${herdrPkg}/bin/herdr pane list --workspace "$ws" 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.panes[]? | "│  • [\(.pane_id)] \(.label) (agent: \(.agent // "none"), cwd: \(.cwd))"'
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
+
+        tv-herdr-worktree-preview = pkgs.writeShellScript "tv-herdr-worktree-preview" ''
+          branch="$1"
+          status="$2"
+          path="$3"
+          echo -e "╭── Herdr Worktree: $branch ──────────────────────────"
+          echo -e "│ Status: $status"
+          echo -e "│ Path:   $path"
+          echo -e "├── Git Status ────────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
+          echo -e "├── Recent Commits ────────────────────────────────"
+          ${pkgs.git}/bin/git -C "$path" log --oneline -8 --color=always 2>/dev/null || true
+          echo -e "╰──────────────────────────────────────────────────"
+        '';
       in
       {
         home.file.".config/herdr/config.toml".source =
@@ -54,28 +117,12 @@
             output = "{split:\t:4}"
 
             [preview]
-            command = '''bash -c '
-              agent="{split:\t:0}"
-              status="{split:\t:1}"
-              pane="{}"
-              cwd="{split:\t:5}"
-              title="{split:\t:6}"
-              echo -e "╭── Herdr Agent: $agent ──────────────────────────"
-              echo -e "│ Status: $status"
-              echo -e "│ Pane:   $pane"
-              echo -e "│ CWD:    $cwd"
-              echo -e "│ Title:  $title"
-              echo -e "├── Recent Output ─────────────────────────────────"
-              herdr agent read "$agent" --lines 30 2>/dev/null || herdr pane read "$pane" --lines 30 2>/dev/null
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-herdr-agent-preview} '{split:\t:0}' '{split:\t:1}' '{}' '{split:\t:5}' '{split:\t:6}'"
 
             [keybindings]
             enter = "actions:focus"
-            ctrl-k = "actions:interrupt"
-            ctrl-w = "actions:wait"
+            ctrl-d = "actions:interrupt"
             ctrl-y = "actions:copy_agent"
-
             [actions.focus]
             description = "Focus pane running this agent"
             command = "herdr pane focus '{}'"
@@ -111,31 +158,10 @@
             output = "{split:\t:1}"
 
             [preview]
-            command = '''bash -c '
-              name="{}"
-              sess=$(herdr session list --json 2>/dev/null | jq -r --arg n "$name" ".sessions[] | select(.name == \$n)")
-              running=$(echo "$sess" | jq -r ".running")
-              dir=$(echo "$sess" | jq -r ".session_dir")
-              sock=$(echo "$sess" | jq -r ".socket_path")
-              echo -e "╭── Herdr Session: $name ──────────────────────────"
-              echo -e "│ Status:    $([ "$running" = "true" ] && echo "🟢 Running" || echo "⚪ Stopped")"
-              echo -e "│ Directory: $dir"
-              echo -e "│ Socket:    $sock"
-              if [ "$running" = "true" ]; then
-                echo -e "├── Workspaces ────────────────────────────────────"
-                herdr --session "$name" workspace list 2>/dev/null | jq -r ".result.workspaces[]? | \"│  • [\(.workspace_id)] \(.label) (tabs: \(.tab_count), panes: \(.pane_count), agent: \(.agent_status))\""
-                echo -e "├── Tabs ──────────────────────────────────────────"
-                herdr --session "$name" tab list 2>/dev/null | jq -r ".result.tabs[]? | \"│  • [\(.tab_id)] \(.label) (panes: \(.pane_count))\""
-              else
-                echo -e "│ (Session is stopped. Press Enter to start or attach)"
-              fi
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-herdr-session-preview} '{}'"
 
             [keybindings]
             enter = "actions:attach"
-            ctrl-t = "actions:open_terminal"
-            ctrl-s = "actions:stop"
             ctrl-d = "actions:delete"
             ctrl-y = "actions:copy_name"
 
@@ -179,23 +205,12 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = '''bash -c '
-              ws="{}"
-              echo -e "╭── Herdr Workspace: $ws ──────────────────────────"
-              herdr workspace get "$ws" 2>/dev/null | jq -r ".result.workspace | \"│ Label:    \(.label)\n│ Focused:  \(.focused)\n│ Worktree: \(.worktree.checkout_path // \"None\")\""
-              echo -e "├── Tabs ──────────────────────────────────────────"
-              herdr tab list --workspace "$ws" 2>/dev/null | jq -r ".result.tabs[]? | \"│  • [\(.tab_id)] \(.label) (panes: \(.pane_count), agent: \(.agent_status))\""
-              echo -e "├── Panes & Agents ────────────────────────────────"
-              herdr pane list --workspace "$ws" 2>/dev/null | jq -r ".result.panes[]? | \"│  • [\(.pane_id)] \(.label) (agent: \(.agent // \"none\"), cwd: \(.cwd))\""
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-herdr-workspace-preview} '{}'"
 
             [keybindings]
             enter = "actions:focus"
-            ctrl-x = "actions:close"
             ctrl-d = "actions:close"
             ctrl-y = "actions:copy_id"
-
             [actions.focus]
             description = "Focus this Herdr workspace"
             command = "herdr workspace focus '{}'"
@@ -226,27 +241,13 @@
             output = "{split:\t:2}"
 
             [preview]
-            command = '''bash -c '
-              branch="{split:\t:0}"
-              status="{split:\t:1}"
-              path="{}"
-              echo -e "╭── Herdr Worktree: $branch ──────────────────────────"
-              echo -e "│ Status: $status"
-              echo -e "│ Path:   $path"
-              echo -e "├── Git Status ────────────────────────────────────"
-              git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
-              echo -e "├── Recent Commits ────────────────────────────────"
-              git -C "$path" log --oneline -8 --color=always 2>/dev/null
-              echo -e "╰──────────────────────────────────────────────────"
-            ' '''
+            command = "${tv-herdr-worktree-preview} '{split:\t:0}' '{split:\t:1}' '{}'"
 
             [keybindings]
             enter = "actions:open"
             ctrl-e = "actions:edit"
-            ctrl-t = "actions:open_terminal"
             ctrl-d = "actions:remove"
             ctrl-y = "actions:copy_path"
-
             [actions.open]
             description = "Open or switch to this worktree in Herdr"
             command = "herdr worktree open --path '{}' --focus"

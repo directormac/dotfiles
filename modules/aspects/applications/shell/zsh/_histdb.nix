@@ -37,7 +37,7 @@ in
       export HISTDB_FILE="${config.home.homeDirectory}/.local/share/zsh/history.db"
       export HISTDB_DEFAULT_TAB="Everywhere"
       export HISTDB_PREVIEW="down:35%:wrap"
-      export HISTDB_COLOR="fg:#cdd6f4,bg:default,matched:#cba6f7,matched_bg:default,current:#cdd6f4,current_bg:#313244,current_match:#f5c2e7,current_match_bg:#313244,info:#cba6f7,prompt:#cba6f7,cursor:#cba6f7,selected:#b4befe,header:#cba6f7,border:#6c7086,query:#cdd6f4"
+      export HISTDB_COLOR="fg:#cdd6f4,bg:-1,matched:#cba6f7,matched_bg:-1,current:#cdd6f4,current_bg:#313244,current_match:#f5c2e7,current_match_bg:#313244,info:#cba6f7,prompt:#cba6f7,cursor:#cba6f7,selected:#b4befe,header:#cba6f7,border:#6c7086,query:#cdd6f4"
       export HISTDB_TABULATE_CMD=(column -t -s $'\x1f')
 
       # Exclude sensitive / noisy commands from histdb SQLite logging
@@ -74,21 +74,21 @@ in
   zvmKeybindings =
     # zsh
     ''
-      # Primary: Interactive SQLite history search via zsh-histdb-skim (Catppuccin Mocha Mauve + bottom preview)
-      zvm_bindkey viins '^R' histdb-skim-widget
-      zvm_bindkey vicmd '^R' histdb-skim-widget
+      # Primary: Interactive SQLite history search via fzf (histdb-fzf)
+      zvm_bindkey viins '^R' _fzf_histdb_widget
+      zvm_bindkey vicmd '^R' _fzf_histdb_widget
 
-      # Television Slim history search via Ctrl+Shift+R
+      # Secondary: Interactive SQLite history search via zsh-histdb-skim (Ctrl+Alt+R)
+      zvm_bindkey viins '^[^R' histdb-skim-widget
+      zvm_bindkey vicmd '^[^R' histdb-skim-widget
+
+      # Tertiary: Television Slim history search via Ctrl+Shift+R
       zvm_bindkey viins '^[[27;6;114~' tv-history-slim-widget
       zvm_bindkey viins '^[[114;6u' tv-history-slim-widget
       zvm_bindkey viins '^[[82;6u' tv-history-slim-widget
       zvm_bindkey vicmd '^[[27;6;114~' tv-history-slim-widget
       zvm_bindkey vicmd '^[[114;6u' tv-history-slim-widget
       zvm_bindkey vicmd '^[[82;6u' tv-history-slim-widget
-
-      # Fallback: Real FZF history search via Ctrl+Alt+R
-      zvm_bindkey viins '^[^R' _fzf_histdb_widget
-      zvm_bindkey vicmd '^[^R' _fzf_histdb_widget
     '';
 
   persistDirectories = [

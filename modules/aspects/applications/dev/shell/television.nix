@@ -20,25 +20,134 @@
       }:
       let
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-
-        tv-history-delete = pkgs.writeShellScriptBin "tv-history-delete" ''
-          target="$1"
-          histfile="''${HISTFILE:-$HOME/.zsh_history}"
-          if [ -z "$target" ] || [ ! -f "$histfile" ]; then
-            echo "No target or history file found." >&2
-            exit 1
-          fi
-          tmp_file=$(mktemp "$histfile.tmp.XXXXXX")
-          if ${pkgs.gnugrep}/bin/grep -Fxv "$target" "$histfile" > "$tmp_file"; then
-            mv "$tmp_file" "$histfile"
-            echo "Deleted from history: $target"
+        tv-channel-enter = pkgs.writeShellScript "tv-channel-enter" ''
+          chan="$1"
+          if [ -n "$TV_CMD" ]; then
+            cmd_args="''${TV_CMD#tv }"
+            exec ${pkgs.television}/bin/tv $cmd_args "$chan"
           else
-            rm -f "$tmp_file"
-            echo "Entry not found in history." >&2
-            exit 1
+            exec ${pkgs.television}/bin/tv "$chan"
           fi
         '';
+        tv-histdb-preview = pkgs.writeShellScript "tv-histdb-preview" ''
+                    cmd="$1"
+                    last_run="$2"
+                    last_dir="$3"
+                    db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
 
+                    echo -e "╭── Command: $cmd ─────────────────────────────────"
+                    if [ -n "$last_run" ] && [ "$last_run" != "-" ]; then
+                      echo -e "│ Last run:  $last_run"
+                    fi
+                    if [ -n "$last_dir" ] && [ "$last_dir" != "~" ]; then
+                      echo -e "│ Directory: $last_dir"
+                    fi
+
+                    if [ -f "$db" ] && [ -n "$cmd" ]; then
+                      echo -e "├── Recent Runs (zsh-histdb) ──────────────────────"
+                      ${pkgs.python3}/bin/python3 -c '
+          import sys, sqlite3
+          db_path, cmd = sys.argv[1], sys.argv[2]
+          try:
+              conn = sqlite3.connect(db_path)
+              cur = conn.cursor()
+              cur.execute("""
+                  SELECT
+                      datetime(history.start_time, "unixepoch", "localtime"),
+                      history.duration,
+                      history.exit_status,
+                      places.dir
+                  FROM history
+                  JOIN commands ON history.command_id = commands.id
+                  JOIN places ON history.place_id = places.id
+                  WHERE commands.argv = ?
+                  ORDER BY history.start_time DESC
+                  LIMIT 5
+              """, (cmd,))
+              rows = cur.fetchall()
+              for row in rows:
+                  time_str, dur, status, d = row
+                  status_str = "ok" if status == 0 else f"err {status}" if status is not None else "?"
+                  dur_str = f"{dur}s" if dur is not None else "0s"
+                  print(f"│ • {time_str} ({status_str}, {dur_str}) in {d}")
+              conn.close()
+          except Exception:
+              pass
+          ' "$db" "$cmd"
+                    fi
+                    echo -e "├── Actions ───────────────────────────────────────"
+                    echo -e "│ • Enter:  Execute command"
+                    echo -e "│ • Ctrl-y: Copy command to clipboard"
+                    echo -e "│ • Ctrl-d: Delete entry from history database"
+                    echo -e "╰──────────────────────────────────────────────────"
+        '';
+        tv-histdb-source = pkgs.writeShellScript "tv-histdb-source" ''
+          db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
+          if [ -f "$db" ]; then
+            ${pkgs.sqlite}/bin/sqlite3 -batch -noheader -separator $'\t' "$db" "
+              SELECT
+                replace(replace(commands.argv, char(10), ' '), char(13), ' '),
+                datetime(max(history.start_time), 'unixepoch', 'localtime'),
+                places.dir
+              FROM history
+              JOIN commands ON history.command_id = commands.id
+              JOIN places ON history.place_id = places.id
+              GROUP BY commands.argv
+              ORDER BY max(history.start_time) DESC;
+            " 2>/dev/null
+          elif [ -f "''${HISTFILE:-$HOME/.zsh_history}" ]; then
+            ${pkgs.gnused}/bin/sed '1!G;h;$!d' "''${HISTFILE:-$HOME/.zsh_history}" | ${pkgs.gawk}/bin/awk -F';' '{cmd=$0; sub(/^:[^;]*;/, "", cmd); print cmd "\t-\t~"}'
+          fi
+        '';
+        tv-history-delete = pkgs.writeShellScriptBin "tv-history-delete" ''
+                    target="$1"
+                    if [ -z "$target" ]; then
+                      echo "No target command provided." >&2
+                      exit 1
+                    fi
+
+                    db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
+                    deleted=0
+
+                    if [ -f "$db" ]; then
+                      if ${pkgs.python3}/bin/python3 -c '
+          import sys, sqlite3
+          db_path, cmd = sys.argv[1], sys.argv[2]
+          try:
+              conn = sqlite3.connect(db_path)
+              cur = conn.cursor()
+              cur.execute("DELETE FROM history WHERE command_id IN (SELECT id FROM commands WHERE argv = ?)", (cmd,))
+              cur.execute("DELETE FROM commands WHERE argv = ?", (cmd,))
+              conn.commit()
+              conn.close()
+          except Exception:
+              sys.exit(1)
+          ' "$db" "$target"; then
+                        deleted=1
+                      fi
+                    fi
+
+                    histfile="''${HISTFILE:-$HOME/.zsh_history}"
+                    if [ -f "$histfile" ]; then
+                      tmp_file=$(mktemp "$histfile.tmp.XXXXXX")
+                      ${pkgs.gawk}/bin/awk -v exact="$target" '
+                        $0 == exact { next }
+                        {
+                          raw = $0
+                          stripped = raw
+                          if (sub(/^:[ \t]*[0-9]+:[0-9]+;/, "", stripped) && stripped == exact) next
+                          print raw
+                        }
+                      ' "$histfile" > "$tmp_file" && mv "$tmp_file" "$histfile" && deleted=1
+                    fi
+
+                    if [ "$deleted" -eq 1 ]; then
+                      echo "Deleted from history: $target"
+                    else
+                      echo "History entry not found: $target" >&2
+                      exit 1
+                    fi
+        '';
         tv-hypr-client-preview = pkgs.writeShellScript "tv-hypr-client-preview" ''
           addr="$1"
           ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg addr "$addr" '
@@ -56,7 +165,6 @@
             "╰────────────────────────────────────────"
           '
         '';
-
         tv-hypr-workspace-preview = pkgs.writeShellScript "tv-hypr-workspace-preview" ''
           ws_id="$1"
           ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$ws_id" '
@@ -70,7 +178,6 @@
             "╰────────────────────────────────────────"
           '
         '';
-
         tv-media-player-preview = pkgs.writeShellScript "tv-media-player-preview" ''
           p="$1"
           echo -e "╭── Media Player: $p ────────────────────────"
@@ -118,6 +225,31 @@
 
           Unit.Description = "Weekly tldr/television cache update";
         };
+
+        # Television channel switcher cable with dynamic $TV_CMD propagation
+        xdg.configFile."television/cable/channels.toml".text =
+          # toml
+          ''
+            [metadata]
+            name = "channels"
+            description = "Select a television channel"
+            requirements = ["tv", "bat"]
+
+            [source]
+            command = ["tv list-channels"]
+
+            [preview]
+            command = "bat -pn --color always ''${TELEVISION_CONFIG:-''${XDG_CONFIG_HOME:-$HOME/.config}/television}/cable/{}.toml"
+            shell = "bash"
+
+            [keybindings]
+            enter = "actions:channel-enter"
+
+            [actions.channel-enter]
+            description = "Enter a television channel"
+            command = "${tv-channel-enter} '{}'"
+            mode = "execute"
+          '';
 
         xdg.configFile."television/cable/flake-inputs.toml".text =
           # toml
@@ -167,13 +299,10 @@
 
             [keybindings]
             enter = "actions:focus"
-            ctrl-x = "actions:close_window"
             ctrl-d = "actions:close_window"
             ctrl-f = "actions:toggle_floating"
             ctrl-m = "actions:fullscreen"
             ctrl-y = "actions:copy_title"
-            ctrl-p = "actions:print_json"
-
             [actions.focus]
             description = "Focus the selected window"
             command = "hyprctl dispatch focuswindow address:{}"
@@ -256,10 +385,9 @@
 
             [keybindings]
             enter = "actions:play_pause"
-            ctrl-n = "actions:next"
-            ctrl-p = "actions:previous"
-            ctrl-s = "actions:stop"
-
+            ctrl-q = "actions:next"
+            ctrl-b = "actions:previous"
+            ctrl-d = "actions:stop"
             [actions.play_pause]
             description = "Play / Pause playback"
             command = "playerctl -p '{}' play-pause"
@@ -392,24 +520,24 @@
             mode = "fork"
           '';
 
-        # Enhanced zsh history with deletion
+        # Enhanced zsh history backed by zsh-histdb SQLite
         xdg.configFile."television/cable/zsh-history.toml".text =
           # toml
           ''
             [metadata]
             name = "zsh-history"
-            description = "Search shell history with options to execute or delete"
-            requirements = ["zsh", "sed", "grep"]
+            description = "Fuzzy search, execute, and manage shell command history from zsh-histdb"
+            requirements = ["sqlite3", "zsh"]
 
             [source]
-            command = "${pkgs.gnused}/bin/sed '1!G;h;$!d' ''${HISTFILE:-''${HOME}/.zsh_history}"
-            display = "{split:;:1..}"
-            output = "{split:;:1..}"
+            command = "${tv-histdb-source}"
+            display = "[{split:\t:1}]  {split:\t:0}  │  {split:\t:2}"
+            output = "{split:\t:0}"
             no_sort = true
             frecency = false
 
             [preview]
-            command = "echo -e '╭── History Entry ─────────────────────\n│ Command: {split:;:1..}\n│ Raw:     {}\n╰──────────────────────────────────────'"
+            command = "${tv-histdb-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}'"
 
             [keybindings]
             enter = "actions:execute"
@@ -418,17 +546,17 @@
 
             [actions.execute]
             description = "Execute the selected command"
-            command = "zsh -c '{split:;:1..}'"
+            command = "zsh -c '{split:\t:0}'"
             mode = "execute"
 
             [actions.copy]
             description = "Copy command to clipboard"
-            command = "echo -n '{split:;:1..}' | wl-copy"
+            command = "echo -n '{split:\t:0}' | wl-copy"
             mode = "execute"
 
             [actions.delete]
-            description = "Delete this entry from ~/.zsh_history"
-            command = "${tv-history-delete}/bin/tv-history-delete '{}'"
+            description = "Delete this command entry from zsh-histdb"
+            command = "${tv-history-delete}/bin/tv-history-delete '{split:\t:0}'"
             mode = "execute"
           '';
 

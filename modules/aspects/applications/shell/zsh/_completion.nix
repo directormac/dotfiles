@@ -16,12 +16,15 @@
       zstyle ':fzf-tab:*' fzf-min-height 10
       zstyle ':fzf-tab:*' fzf-flags --height=~50%
       zstyle ':fzf-tab:*' switch-group '<' '>'
+      zstyle ':fzf-tab:*' query-string ""
+      zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
       zstyle ':fzf-tab:complete:_zlua:*' query-string input
       zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd -la --color=always $realpath'
       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -la --color=always $realpath'
       zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
+      zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'if [ -d $realpath ]; then lsd -la --color=always $realpath; else bat -pp --color=always $realpath 2>/dev/null || cat $realpath; fi'
+      zstyle ':fzf-tab:complete:(cat|bat):*' popup-pad 30 0
     '';
-
   fastSyntaxHighlighting = {
     enable = true;
     theme = "XDG:catppuccin-mocha";

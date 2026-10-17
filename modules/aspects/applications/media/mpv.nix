@@ -68,10 +68,11 @@
           ${pkgs.mpvc}/bin/mpvc -f "│ Status:   %status% | Track %position%/%playlistlength% | %time%/%length% (%percentage%%)\n│ Volume:   %volume%% (Muted: %muted%)\n│ Track:    %artist% - %title%" 2>/dev/null || echo "│ (Unable to query live playback stats)"
           echo -e "├── Keybindings ───────────────────────────────────"
           echo -e "│ • Enter:   Jump & play this track"
-          echo -e "│ • Ctrl-p:  Toggle Play/Pause"
+          echo -e "│ • Ctrl-q:  Toggle Play/Pause"
           echo -e "│ • Ctrl-d:  Remove from playlist"
-          echo -e "│ • Ctrl-s:  Stop playback"
+          echo -e "│ • Ctrl-b:  Previous track"
           echo -e "│ • Ctrl-y:  Copy track URL/path"
+          echo -e "│ • Ctrl-x:  Action picker (Next, Stop, etc.)"
           echo -e "╰──────────────────────────────────────────────────"
         '';
         tv-mpv-playlist-source = pkgs.writeShellScript "tv-mpv-playlist-source" ''
@@ -138,12 +139,33 @@
           echo -e "│ Video ID: $id"
           echo -e "│ URL:      $url"
           echo -e "├── Actions ───────────────────────────────"
-          echo -e "│ • Enter:  Download best quality video"
-          echo -e "│ • Ctrl-a: Download audio only (mp3)"
-          echo -e "│ • Ctrl-p: Stream directly in MPV"
+          echo -e "│ • Enter:  Stream directly in MPV"
+          echo -e "│ • Ctrl-d: Download best quality video"
           echo -e "│ • Ctrl-q: Add to active MPV playlist"
           echo -e "│ • Ctrl-y: Copy video URL"
+          echo -e "│ • Ctrl-x: Action picker (Download audio, etc.)"
           echo -e "╰──────────────────────────────────────────"
+        '';
+        tv-ytdl-source = pkgs.writeShellScript "tv-ytdl-source" ''
+          url="''${YT_URL:-}"
+          if [ -z "$url" ]; then
+            clip=$(${pkgs.wl-clipboard}/bin/wl-paste 2>/dev/null || true)
+            if [[ "$clip" =~ ^https?://[^[:space:]]+$ ]]; then
+              url="$clip"
+            fi
+          fi
+
+          if [ -z "$url" ]; then
+            url="ytsearch20:nixos linux"
+          elif [[ ! "$url" =~ ^https?:// ]] && [[ ! "$url" =~ ^[a-z]+search[0-9]*: ]]; then
+            url="ytsearch20:$url"
+          fi
+
+          exec ${pkgs.yt-dlp}/bin/yt-dlp "$url" \
+            --flat-playlist \
+            --no-warnings \
+            --print '%(id)s	%(title)s	%(uploader)s	%(duration_string)s	%(webpage_url)s' \
+            2>/dev/null
         '';
       in
       {
@@ -262,13 +284,10 @@
 
             [keybindings]
             enter = "actions:play"
-            ctrl-p = "actions:toggle"
+            ctrl-q = "actions:toggle"
             ctrl-d = "actions:remove"
-            ctrl-s = "actions:stop"
-            ctrl-n = "actions:next"
             ctrl-b = "actions:prev"
             ctrl-y = "actions:copy"
-
             [actions.play]
             description = "Jump to and play this playlist track"
             command = "${pkgs.mpvc}/bin/mpvc -J '{}'"
@@ -314,7 +333,7 @@
             requirements = ["yt-dlp"]
 
             [source]
-            command = "url=\"''${YT_URL:-$(wl-paste 2>/dev/null)}\"; if [ -z \"$url\" ]; then url=\"ytsearch20:nixos linux\"; fi; yt-dlp \"$url\" --flat-playlist --print '%(id)s\t%(title)s\t%(uploader)s\t%(duration_string)s\t%(webpage_url)s' 2>/dev/null"
+            command = "${tv-ytdl-source}"
             display = "{split:\t:1}  │  {split:\t:2}  ({split:\t:3})"
             output = "{split:\t:4}"
 
@@ -322,21 +341,17 @@
             command = "${tv-ytdl-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}' '{split:\t:3}' '{}'"
 
             [keybindings]
-            enter = "actions:download"
-            ctrl-a = "actions:download_audio"
-            ctrl-p = "actions:stream_mpv"
+            enter = "actions:stream_mpv"
+            ctrl-d = "actions:download"
             ctrl-q = "actions:queue_mpv"
             ctrl-y = "actions:copy_url"
-
             [actions.download]
             description = "Download best quality video to ~/Downloads"
-            command = "yt-dlp -P \"~/Downloads\" '{}'"
-            mode = "execute"
+            command = "yt-dlp -P \"$HOME/Downloads\" '{}'"
 
             [actions.download_audio]
             description = "Extract and download audio (mp3) to ~/Downloads"
-            command = "yt-dlp -x --audio-format mp3 -P \"~/Downloads\" '{}'"
-            mode = "execute"
+            command = "yt-dlp -x --audio-format mp3 -P \"$HOME/Downloads\" '{}'"
 
             [actions.stream_mpv]
             description = "Stream video in MPV"

@@ -2,7 +2,12 @@
 {
   den.aspects.applications.dev.shell.fzf = {
     homeManager =
-      { pkgs, ... }:
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
       {
         home.packages = [ pkgs.fzf ];
 
@@ -12,9 +17,27 @@
             command = "fd --type d --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
           };
 
-          colors = { };
+          colors = with config.lib.stylix.colors.withHashtag; {
+            bg = lib.mkForce "-1";
+            "bg+" = lib.mkForce "-1";
+            border = lib.mkDefault base03;
+            fg = lib.mkForce base05;
+            "fg+" = lib.mkForce base05;
+            gutter = lib.mkDefault "-1";
+            header = lib.mkForce base08;
+            hl = lib.mkForce base08;
+            "hl+" = lib.mkForce base08;
+            info = lib.mkForce base0E;
+            label = lib.mkDefault base05;
+            marker = lib.mkForce base07;
+            pointer = lib.mkForce base0E;
+            prompt = lib.mkForce base0E;
+            query = lib.mkDefault base06;
+            spinner = lib.mkForce base06;
+          };
 
           defaultOptions = [
+            "--layout=reverse"
             "--prompt='> '"
             "--marker='>'"
             "--pointer='◆'"
@@ -25,10 +48,6 @@
             "--separator='─'"
             "--padding='1'"
             "--highlight-line"
-            "--color=fg:#CDD6F4,fg+:#CDD6F4,bg:-1,bg+:-1"
-            "--color=hl:#F38BA8,hl+:#F38BA8,info:#CBA6F7,marker:#B4BEFE"
-            "--color=prompt:#CBA6F7,spinner:#F5E0DC,pointer:#CBA6F7,header:#F38BA8"
-            "--color=border:#6C7086,label:#CDD6F4,query:#F5E0DC"
           ];
 
           enable = true;
@@ -53,6 +72,8 @@
 
           tmux.enableShellIntegration = true;
         };
+
+        stylix.targets.fzf.enable = lib.mkDefault true;
       };
   };
 }

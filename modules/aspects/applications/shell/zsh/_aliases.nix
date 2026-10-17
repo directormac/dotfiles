@@ -3,7 +3,6 @@
   "age" = "rage";
   "agyx" = "agy  --dangerously-skip-permissions";
   "c" = "clear";
-  "cat" = "bat -pp";
   "cd" = "z";
   "cda" = "zoxide add";
   "cdq" = "zoxide query";
@@ -35,7 +34,7 @@
   "pingcf" = "ping 1.1.1.1";
   "pinggg" = "ping google.com";
   "rmr" = "rm -r";
-  "t" = "tv --layout portrait --hide-preview --input-position bottom";
+  "t" = "TV_CMD=\"tv --layout portrait --hide-preview --input-position top\" tv --layout portrait --hide-preview --input-position top";
   "tls" = "tmux ls";
   "tn" = "sesh connect .";
   "todo" = "tuxedo";
