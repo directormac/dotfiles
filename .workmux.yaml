@@ -33,7 +33,7 @@ window_prefix: "dotfiles-"
 mode: session
 # Return to 'main' session when closing/removing this worktree session
 default_session: main
-agent: agyx
+agent: omp
 # ------------------------------------------------------------------------------
 # Session Windows (4 Windows per Worktree)
 # ------------------------------------------------------------------------------

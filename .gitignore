@@ -13,5 +13,6 @@ devenv.local.yaml
 
 # pre-commit
 .pre-commit-config.yaml
+.treefmt.toml
 
 .secrets/master.age

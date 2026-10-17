@@ -143,12 +143,14 @@ layouts:
 # Agent & AI Integration
 # ------------------------------------------------------------------------------
 # Default agent used for '<agent>' placeholder
-agent: agy
+agent: omp
 
 # Named agent profiles (used via <agent:name> or --agent <name>)
 # --dangerously-skip-permissions
 agents:
   agy: agy
+  omp: omp
+  pi: pi
   oc: opencode
   agyx:
     type: agy

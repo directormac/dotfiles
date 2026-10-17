@@ -23,18 +23,28 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Auto-reload files changed outside of Neovim when Neovim gains focus
 local _checktime_timer = nil
-vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI', 'TermClose', 'TermLeave' }, {
   group = vim.api.nvim_create_augroup('auto_checktime', { clear = true }),
   callback = function()
-    if _checktime_timer then
-      _checktime_timer:stop()
-      _checktime_timer:close()
-      _checktime_timer = nil
+    if vim.fn.getcmdwintype() == '' and vim.bo.buftype ~= 'nofile' then
+      if _checktime_timer then
+        _checktime_timer:stop()
+        _checktime_timer:close()
+        _checktime_timer = nil
+      end
+      _checktime_timer = vim.defer_fn(function()
+        _checktime_timer = nil
+        vim.cmd('checktime')
+      end, 200)
     end
-    _checktime_timer = vim.defer_fn(function()
-      _checktime_timer = nil
-      if vim.o.buftype ~= 'nofile' then vim.cmd('checktime') end
-    end, 200)
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileChangedShellPost', {
+  group = vim.api.nvim_create_augroup('auto_checktime_notify', { clear = true }),
+  callback = function(event)
+    local file = vim.fn.fnamemodify(event.file or vim.api.nvim_buf_get_name(event.buf), ':~:.')
+    vim.notify('File changed externally, buffer reloaded: ' .. file, vim.log.levels.INFO, { title = 'Autoread' })
   end,
 })
 

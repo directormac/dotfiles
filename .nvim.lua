@@ -42,8 +42,14 @@ vim.lsp.enable("copilot")
 -- or type `:h exrc`
 
 require("conform").setup({
+	format_on_save = function()
+		if not vim.g.auto_format then
+			return
+		end
+		return { timeout_ms = 5000, lsp_format = "fallback" }
+	end,
 	formatters_by_ft = {
-		nix = { "treefmt", "nix_fmt", stop_after_first = true },
+		nix = { "treefmt", "nixfmt", stop_after_first = true },
 		lua = { "treefmt", "stylua", stop_after_first = true },
 		toml = { "treefmt", "taplo", stop_after_first = true },
 		markdown = { "treefmt", "mdformat", stop_after_first = true },
@@ -52,19 +58,6 @@ require("conform").setup({
 		bash = { "treefmt", "shfmt", stop_after_first = true },
 		json = { "treefmt", "oxfmt", stop_after_first = true },
 		jsonc = { "treefmt", "oxfmt", stop_after_first = true },
-	},
-	formatters = {
-		treefmt = {
-			cwd = require("conform.util").root_file({ "flake.nix", ".git" }),
-			require_cwd = true,
-		},
-		nix_fmt = {
-			command = "nix",
-			args = { "fmt", "--", "$FILENAME" },
-			stdin = false,
-			cwd = require("conform.util").root_file({ "flake.nix" }),
-			require_cwd = true,
-		},
 	},
 })
 

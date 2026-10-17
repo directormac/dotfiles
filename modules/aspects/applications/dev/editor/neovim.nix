@@ -99,15 +99,10 @@
 
     homeManager =
       {
-        config,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
-        home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/nvim";
+        home.file.".config/nvim".source = ../../../../../config/nvim;
 
         home.sessionVariables = {
           EDITOR = "nvim";
@@ -156,6 +151,22 @@
             type = "Application";
           };
         };
+      };
+
+    devenv =
+      { pkgs, ... }:
+      {
+        env.PROFILER = "1";
+
+        packages = [
+          (
+            (self.wrappers.neovim.apply {
+              settings.config_directory = lib.generators.mkLuaInline "((vim.env.DEVENV_ROOT or vim.env.PWD) .. '/config/nvim')";
+              binName = "nvim";
+            }).wrap
+            { inherit pkgs; }
+          )
+        ];
       };
 
     persistHome.directories = [
@@ -492,14 +503,4 @@
 
     };
 
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.nvim-dev =
-        (self.wrappers.neovim.apply {
-          binName = "nvim";
-          settings.config_directory = lib.generators.mkLuaInline "(vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config'))";
-        }).wrap
-          { inherit pkgs; };
-    };
 }

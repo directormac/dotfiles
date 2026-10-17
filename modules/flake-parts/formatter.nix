@@ -37,7 +37,14 @@
       system,
       ...
     }:
+
     lib.optionalAttrs (inputs ? treefmt-nix) {
+
+      # Create a treefmt file
+      files.file = lib.mkIf (inputs ? files) {
+        ".treefmt.toml".source = config.treefmt.build.configFile;
+      };
+
       # Provide a formatter package for `nix fmt`. Setting this
       # to `config.treefmt.build.wrapper` will use the treefmt
       # package wrapped with my desired configuration.

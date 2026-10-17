@@ -25,6 +25,7 @@
       {
         environment.systemPackages = [
           pkgs.devenv
+          pkgs.secretspec
         ];
 
         nix.settings = {
@@ -43,6 +44,7 @@
       {
         home.packages = [
           pkgs.devenv
+          pkgs.secretspec
         ];
       };
 
