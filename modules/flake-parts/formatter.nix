@@ -188,7 +188,7 @@
         settings = {
           global.excludes = [
             "LICENSE"
-            "config/*"
+            "config/archived/**"
             "nixos/*"
             "docs/*"
             ".secrets/**"
