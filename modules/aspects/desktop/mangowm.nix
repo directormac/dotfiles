@@ -52,13 +52,11 @@
           id="$1"
           mmsg get all-clients 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$id" '
             .clients[] | select((.id|tostring) == $id) |
-            "╭── Mango Window: \(.title // "Untitled") ───\n" +
-            "│ ID:          \(.id)\n" +
-            "│ App ID:      \(.appid // "N/A")\n" +
-            "│ Workspace:   \(.workspace // "N/A")\n" +
-            "│ Floating:    \(.is_floating // false)\n" +
-            "│ Fullscreen:  \(.is_fullscreen // false)\n" +
-            "╰────────────────────────────────────────"
+            "\(.title // "Untitled")\n" +
+            "id: \(.id)\n" +
+            "app: \(.appid // "N/A")\n" +
+            "workspace: \(.workspace // "N/A")\n" +
+            "floating: \(.is_floating // false) | fullscreen: \(.is_fullscreen // false)"
           '
         '';
 
@@ -66,10 +64,9 @@
           tag_idx="$1"
           mmsg get all-tags 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg idx "$tag_idx" '
             .tags[] | select((.index|tostring) == $idx) |
-            "╭── Mango Tag: \(.index) (Monitor: \(.monitor)) ───\n" +
-            "│ Focused: \(.is_focused // false)\n" +
-            "│ Clients: \(.clients | length)\n" +
-            "╰────────────────────────────────────────"
+            "tag \(.index) (monitor: \(.monitor))\n" +
+            "focused: \(.is_focused // false)\n" +
+            "clients: \(.clients | length)"
           '
         '';
       in
@@ -162,7 +159,7 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = "${tv-mango-client-preview} '{}'"
+            command = "${tv-mango-client-preview} '{split:\t:0}'"
 
             [keybindings]
             enter = "actions:focus"
@@ -174,27 +171,27 @@
 
             [actions.focus]
             description = "Focus the selected window"
-            command = "mmsg dispatch focus_window {}"
+            command = "mmsg dispatch focus_window '{split:\t:0}'"
             mode = "execute"
 
             [actions.close_window]
             description = "Close the selected window"
-            command = "mmsg dispatch close_window {}"
+            command = "mmsg dispatch close_window '{split:\t:0}'"
             mode = "execute"
 
             [actions.toggle_floating]
             description = "Toggle floating mode for window"
-            command = "mmsg dispatch togglefloating client,{}"
+            command = "mmsg dispatch togglefloating client,'{split:\t:0}'"
             mode = "execute"
 
             [actions.fullscreen]
             description = "Toggle fullscreen for window"
-            command = "mmsg dispatch togglefullscreen client,{}"
+            command = "mmsg dispatch togglefullscreen client,'{split:\t:0}'"
             mode = "execute"
 
             [actions.copy_info]
             description = "Copy window info to clipboard"
-            command = "mmsg get client '{}' 2>/dev/null | jq -r '.title // .appid' | wl-copy"
+            command = "echo -n '{split:\t:2}' | wl-copy"
             mode = "execute"
           '';
 
@@ -212,7 +209,7 @@
             output = "{split:\t:1}"
 
             [preview]
-            command = "${tv-mango-tags-preview} '{}'"
+            command = "${tv-mango-tags-preview} '{split:\t:1}'"
 
             [keybindings]
             enter = "actions:switch"
@@ -220,12 +217,12 @@
 
             [actions.switch]
             description = "Switch to this workspace tag"
-            command = "mmsg dispatch tag {}"
+            command = "mmsg dispatch tag '{split:\t:1}'"
             mode = "execute"
 
             [actions.copy_tag]
             description = "Copy tag index to clipboard"
-            command = "echo -n '{}' | wl-copy"
+            command = "echo -n '{split:\t:1}' | wl-copy"
             mode = "execute"
           '';
 

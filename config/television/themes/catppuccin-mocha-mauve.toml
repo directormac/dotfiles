@@ -1,6 +1,7 @@
 # general
 
-background = '#1e1e2e'
+# background = '#1e1e2e'
+background = 'none'
 border_fg = '#45475a'
 text_fg = '#cdd6f4'
 dimmed_text_fg = '#6c7086'

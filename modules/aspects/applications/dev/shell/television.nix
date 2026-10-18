@@ -46,16 +46,14 @@
                     last_dir="$3"
                     db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
 
-                    echo -e "╭── Command: $cmd ─────────────────────────────────"
+                    echo "$cmd"
                     if [ -n "$last_run" ] && [ "$last_run" != "-" ]; then
-                      echo -e "│ Last run:  $last_run"
-                    fi
-                    if [ -n "$last_dir" ] && [ "$last_dir" != "~" ]; then
-                      echo -e "│ Directory: $last_dir"
+                      echo "last run: $last_run in $last_dir"
                     fi
 
                     if [ -f "$db" ] && [ -n "$cmd" ]; then
-                      echo -e "├── Recent Runs (zsh-histdb) ──────────────────────"
+                      echo ""
+                      echo "recent runs"
                       ${pkgs.python3}/bin/python3 -c '
           import sys, sqlite3
           db_path, cmd = sys.argv[1], sys.argv[2]
@@ -80,17 +78,12 @@
                   time_str, dur, status, d = row
                   status_str = "ok" if status == 0 else f"err {status}" if status is not None else "?"
                   dur_str = f"{dur}s" if dur is not None else "0s"
-                  print(f"│ • {time_str} ({status_str}, {dur_str}) in {d}")
+                  print(f"  {time_str} ({status_str}, {dur_str}) in {d}")
               conn.close()
           except Exception:
               pass
           ' "$db" "$cmd"
                     fi
-                    echo -e "├── Actions ───────────────────────────────────────"
-                    echo -e "│ • Enter:  Execute command"
-                    echo -e "│ • Ctrl-y: Copy command to clipboard"
-                    echo -e "│ • Ctrl-d: Delete entry from history database"
-                    echo -e "╰──────────────────────────────────────────────────"
         '';
         tv-histdb-source = pkgs.writeShellScript "tv-histdb-source" ''
           db="''${HISTDB_FILE:-$HOME/.local/share/zsh/history.db}"
@@ -163,41 +156,37 @@
           addr="$1"
           ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg addr "$addr" '
             .[] | select(.address == $addr) |
-            "╭── Window: \(.title) ───\n" +
-            "│ Class:       \(.class) (\(.initialClass))\n" +
-            "│ Workspace:   \(.workspace.name) (id: \(.workspace.id))\n" +
-            "│ Monitor:     \(.monitor)\n" +
-            "│ Address:     \(.address)\n" +
-            "│ PID:         \(.pid)\n" +
-            "│ Floating:    \(.floating)\n" +
-            "│ Fullscreen:  \(.fullscreen)\n" +
-            "│ Size:        \(.size[0])x\(.size[1])\n" +
-            "│ Position:    \(.at[0]),\(.at[1])\n" +
-            "╰────────────────────────────────────────"
+            "\(.title)\n" +
+            "class: \(.class) (\(.initialClass))\n" +
+            "workspace: \(.workspace.name) (id: \(.workspace.id))\n" +
+            "monitor: \(.monitor)\n" +
+            "address: \(.address)\n" +
+            "pid: \(.pid)\n" +
+            "floating: \(.floating) | fullscreen: \(.fullscreen)\n" +
+            "size: \(.size[0])x\(.size[1]) at \(.at[0]),\(.at[1])"
           '
         '';
         tv-hypr-workspace-preview = pkgs.writeShellScript "tv-hypr-workspace-preview" ''
           ws_id="$1"
           ${pkgs.hyprland or "hyprctl"}/bin/hyprctl clients -j 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$ws_id" '
             [ .[] | select((.workspace.id|tostring) == $id) ] as $clients |
-            "╭── Workspace ID: " + $id + " (" + ($clients[0].workspace.name // "") + ") ───\n" +
-            "│ Windows: " + ($clients | length | tostring) + "\n" +
-            "├── Clients ─────────────────────────────\n" +
-            (if ($clients | length) == 0 then "│ (No windows)\n" else
-              ($clients | map("│ • [" + .class + "] " + .title) | join("\n")) + "\n"
-            end) +
-            "╰────────────────────────────────────────"
+            "workspace " + $id + " (" + ($clients[0].workspace.name // "") + ")\n" +
+            "windows: " + ($clients | length | tostring) + "\n\n" +
+            "clients\n" +
+            (if ($clients | length) == 0 then "  (no windows)\n" else
+              ($clients | map("  [" + .class + "] " + .title) | join("\n")) + "\n"
+            end)
           '
         '';
         tv-media-player-preview = pkgs.writeShellScript "tv-media-player-preview" ''
           p="$1"
-          echo -e "╭── Media Player: $p ────────────────────────"
-          echo -e "│ Status:   $(playerctl -p "$p" status 2>/dev/null)"
-          echo -e "│ Title:    $(playerctl -p "$p" metadata title 2>/dev/null)"
-          echo -e "│ Artist:   $(playerctl -p "$p" metadata artist 2>/dev/null)"
-          echo -e "│ Album:    $(playerctl -p "$p" metadata album 2>/dev/null)"
-          echo -e "│ Position: $(playerctl -p "$p" position 2>/dev/null)s"
-          echo -e "╰────────────────────────────────────────────"
+          echo "player: $p"
+          echo "status: $(playerctl -p "$p" status 2>/dev/null)"
+          echo "title:  $(playerctl -p "$p" metadata title 2>/dev/null)"
+          echo "artist: $(playerctl -p "$p" metadata artist 2>/dev/null)"
+          echo "album:  $(playerctl -p "$p" metadata album 2>/dev/null)"
+          pos=$(playerctl -p "$p" position 2>/dev/null)
+          [ -n "$pos" ] && echo "position: ''${pos}s"
         '';
       in
       {
@@ -214,6 +203,11 @@
               nix-generations
             ]
           ));
+
+        programs.nix-search-tv = {
+          enable = true;
+          enableTelevisionIntegration = true;
+        };
 
         programs.television = {
           enable = true;
@@ -315,7 +309,7 @@
             output = "{split:\t:3}"
 
             [preview]
-            command = "${tv-hypr-client-preview} '{}'"
+            command = "${tv-hypr-client-preview} '{split:\t:3}'"
 
             [keybindings]
             enter = "actions:focus"
@@ -325,32 +319,32 @@
             ctrl-y = "actions:copy_title"
             [actions.focus]
             description = "Focus the selected window"
-            command = "hyprctl dispatch focuswindow address:{}"
+            command = "hyprctl dispatch focuswindow address:{split:\t:3}"
             mode = "execute"
 
             [actions.close_window]
             description = "Close the selected window"
-            command = "hyprctl dispatch closewindow address:{}"
+            command = "hyprctl dispatch closewindow address:{split:\t:3}"
             mode = "execute"
 
             [actions.toggle_floating]
             description = "Toggle floating mode for window"
-            command = "hyprctl dispatch togglefloating address:{}"
+            command = "hyprctl dispatch togglefloating address:{split:\t:3}"
             mode = "execute"
 
             [actions.fullscreen]
             description = "Toggle fullscreen for window"
-            command = "hyprctl dispatch fullscreen 1 address:{}"
+            command = "hyprctl dispatch fullscreen 1 address:{split:\t:3}"
             mode = "execute"
 
             [actions.copy_title]
             description = "Copy window title to clipboard"
-            command = "hyprctl clients -j 2>/dev/null | jq -r --arg addr '{}' '.[] | select(.address == $addr) | .title' | wl-copy"
+            command = "echo -n '{split:\t:2}' | wl-copy"
             mode = "execute"
 
             [actions.print_json]
             description = "Print selected client JSON to stdout"
-            command = "hyprctl clients -j 2>/dev/null | jq --arg addr '{}' '.[] | select(.address == $addr)'"
+            command = "hyprctl clients -j 2>/dev/null | jq --arg addr '{split:\t:3}' '.[] | select(.address == $addr)'"
             mode = "execute"
           '';
 
@@ -369,7 +363,7 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = "${tv-hypr-workspace-preview} '{}'"
+            command = "${tv-hypr-workspace-preview} '{split:\t:0}'"
 
             [keybindings]
             enter = "actions:switch"
@@ -377,12 +371,12 @@
 
             [actions.switch]
             description = "Switch to this workspace"
-            command = "hyprctl dispatch workspace {}"
+            command = "hyprctl dispatch workspace {split:\t:0}"
             mode = "execute"
 
             [actions.copy_id]
             description = "Copy workspace ID to clipboard"
-            command = "echo -n '{}' | wl-copy"
+            command = "echo -n '{split:\t:0}' | wl-copy"
             mode = "execute"
           '';
 
@@ -472,7 +466,7 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = "${tv-media-player-preview} '{}'"
+            command = "${tv-media-player-preview} '{split:\t:0}'"
 
             [keybindings]
             enter = "actions:play_pause"
@@ -481,22 +475,22 @@
             ctrl-d = "actions:stop"
             [actions.play_pause]
             description = "Play / Pause playback"
-            command = "playerctl -p '{}' play-pause"
+            command = "playerctl -p '{split:\t:0}' play-pause"
             mode = "execute"
 
             [actions.next]
             description = "Skip to next track"
-            command = "playerctl -p '{}' next"
+            command = "playerctl -p '{split:\t:0}' next"
             mode = "execute"
 
             [actions.previous]
             description = "Return to previous track"
-            command = "playerctl -p '{}' previous"
+            command = "playerctl -p '{split:\t:0}' previous"
             mode = "execute"
 
             [actions.stop]
             description = "Stop playback"
-            command = "playerctl -p '{}' stop"
+            command = "playerctl -p '{split:\t:0}' stop"
             mode = "execute"
           '';
 

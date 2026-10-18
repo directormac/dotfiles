@@ -40,19 +40,14 @@
           date="$1"
           dur="$2"
           file="$3"
-          echo -e "╭── MPV History Entry ─────────────────────────────"
-          echo -e "│ File:     $file"
-          echo -e "│ Watched:  $date"
-          echo -e "│ Duration: $dur"
+
+          echo "$file"
+          echo "watched: $date ($dur mins)"
           if [ -f "$file" ]; then
-            echo -e "├── File Details ──────────────────────────────────"
-            ls -lh "$file" 2>/dev/null | awk '{print "│ Size:     " $5 "\n│ Modified: " $6 " " $7 " " $8}'
+            echo ""
+            echo "file details"
+            ls -lh "$file" 2>/dev/null | awk '{print "size:     " $5 "\nmodified: " $6 " " $7 " " $8}'
           fi
-          echo -e "├── Actions ───────────────────────────────────────"
-          echo -e "│ • Enter:  Play file in MPV"
-          echo -e "│ • Ctrl-q: Add to active MPV playlist"
-          echo -e "│ • Ctrl-y: Copy file path to clipboard"
-          echo -e "╰──────────────────────────────────────────────────"
         '';
         tv-mpv-playlist = pkgs.writeShellScriptBin "tv-mpv-playlist" ''
           ${pkgs.television}/bin/tv mpv-playlist
@@ -61,19 +56,16 @@
           idx="$1"
           title="$2"
           file="$3"
-          echo -e "╭── MPV Playlist Track: #$idx ────────────────────────"
-          echo -e "│ Title:    $title"
-          echo -e "│ Path/URL: $file"
-          echo -e "├── Live Player Status ────────────────────────────"
-          ${pkgs.mpvc}/bin/mpvc -f "│ Status:   %status% | Track %position%/%playlistlength% | %time%/%length% (%percentage%%)\n│ Volume:   %volume%% (Muted: %muted%)\n│ Track:    %artist% - %title%" 2>/dev/null || echo "│ (Unable to query live playback stats)"
-          echo -e "├── Keybindings ───────────────────────────────────"
-          echo -e "│ • Enter:   Jump & play this track"
-          echo -e "│ • Ctrl-q:  Toggle Play/Pause"
-          echo -e "│ • Ctrl-d:  Remove from playlist"
-          echo -e "│ • Ctrl-b:  Previous track"
-          echo -e "│ • Ctrl-y:  Copy track URL/path"
-          echo -e "│ • Ctrl-x:  Action picker (Next, Stop, etc.)"
-          echo -e "╰──────────────────────────────────────────────────"
+
+          echo "#$idx: $title"
+          echo "$file"
+
+          status=$(${pkgs.mpvc}/bin/mpvc -f "%status% | %position%/%playlistlength% | %time%/%length% (%percentage%%) | vol %volume%%" 2>/dev/null || true)
+          if [ -n "$status" ]; then
+            echo ""
+            echo "status"
+            echo "$status"
+          fi
         '';
         tv-mpv-playlist-source = pkgs.writeShellScript "tv-mpv-playlist-source" ''
           ${pkgs.python3}/bin/python3 -c '
@@ -133,18 +125,16 @@
           channel="$3"
           duration="$4"
           url="$5"
-          echo -e "╭── Video: $title ──────────────────────────"
-          echo -e "│ Channel:  $channel"
-          echo -e "│ Duration: $duration"
-          echo -e "│ Video ID: $id"
-          echo -e "│ URL:      $url"
-          echo -e "├── Actions ───────────────────────────────"
-          echo -e "│ • Enter:  Stream directly in MPV"
-          echo -e "│ • Ctrl-d: Download best quality video"
-          echo -e "│ • Ctrl-q: Add to active MPV playlist"
-          echo -e "│ • Ctrl-y: Copy video URL"
-          echo -e "│ • Ctrl-x: Action picker (Download audio, etc.)"
-          echo -e "╰──────────────────────────────────────────"
+
+          echo "$title"
+          [ -n "$channel" ] && echo "channel:  $channel"
+          [ -n "$duration" ] && echo "duration: $duration"
+          [ -n "$id" ] && echo "id:       $id"
+          if [ -n "$url" ]; then
+            echo ""
+            echo "url"
+            echo "$url"
+          fi
         '';
         tv-ytdl-source = pkgs.writeShellScript "tv-ytdl-source" ''
           url="''${YT_URL:-}"
@@ -243,7 +233,7 @@
             output = "{split:\t:2}"
 
             [preview]
-            command = "${tv-mpv-history-preview} '{split:\t:0}' '{split:\t:1}' '{}'"
+            command = "${tv-mpv-history-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}'"
 
             [keybindings]
             enter = "actions:play"
@@ -252,17 +242,17 @@
 
             [actions.play]
             description = "Play file in MPV"
-            command = "mpv '{}'"
+            command = "mpv '{split:\t:2}'"
             mode = "fork"
 
             [actions.queue]
             description = "Add file to active MPV playlist"
-            command = "${pkgs.mpvc}/bin/mpvc -a '{}'"
+            command = "${pkgs.mpvc}/bin/mpvc -a '{split:\t:2}'"
             mode = "execute"
 
             [actions.copy]
             description = "Copy file path to clipboard"
-            command = "echo -n '{}' | wl-copy"
+            command = "echo -n '{split:\t:2}' | wl-copy"
             mode = "execute"
           '';
 
@@ -290,7 +280,7 @@
             ctrl-y = "actions:copy"
             [actions.play]
             description = "Jump to and play this playlist track"
-            command = "${pkgs.mpvc}/bin/mpvc -J '{}'"
+            command = "${pkgs.mpvc}/bin/mpvc -J '{split:\t:0}'"
             mode = "execute"
 
             [actions.toggle]
@@ -300,9 +290,8 @@
 
             [actions.remove]
             description = "Remove track from playlist"
-            command = "echo '{\"command\": [\"playlist-remove\", {}]}' | ${pkgs.socat}/bin/socat - /tmp/mpvsocket 2>/dev/null"
+            command = "echo '{\"command\": [\"playlist-remove\", {split:\t:0}]}' | ${pkgs.socat}/bin/socat - /tmp/mpvsocket 2>/dev/null"
             mode = "execute"
-
             [actions.stop]
             description = "Stop playback"
             command = "${pkgs.mpvc}/bin/mpvc -s"
@@ -338,7 +327,7 @@
             output = "{split:\t:4}"
 
             [preview]
-            command = "${tv-ytdl-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}' '{split:\t:3}' '{}'"
+            command = "${tv-ytdl-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}' '{split:\t:3}' '{split:\t:4}'"
 
             [keybindings]
             enter = "actions:stream_mpv"
@@ -347,25 +336,25 @@
             ctrl-y = "actions:copy_url"
             [actions.download]
             description = "Download best quality video to ~/Downloads"
-            command = "yt-dlp -P \"$HOME/Downloads\" '{}'"
+            command = "yt-dlp -P \"$HOME/Downloads\" '{split:\t:4}'"
 
             [actions.download_audio]
             description = "Extract and download audio (mp3) to ~/Downloads"
-            command = "yt-dlp -x --audio-format mp3 -P \"$HOME/Downloads\" '{}'"
+            command = "yt-dlp -x --audio-format mp3 -P \"$HOME/Downloads\" '{split:\t:4}'"
 
             [actions.stream_mpv]
             description = "Stream video in MPV"
-            command = "mpv '{}'"
+            command = "mpv '{split:\t:4}'"
             mode = "fork"
 
             [actions.queue_mpv]
             description = "Add video to active MPV playlist"
-            command = "${pkgs.mpvc}/bin/mpvc -a '{}'"
+            command = "${pkgs.mpvc}/bin/mpvc -a '{split:\t:4}'"
             mode = "execute"
 
             [actions.copy_url]
             description = "Copy video URL to clipboard"
-            command = "echo -n '{}' | wl-copy"
+            command = "echo -n '{split:\t:4}' | wl-copy"
             mode = "execute"
           '';
       };

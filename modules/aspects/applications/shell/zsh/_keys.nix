@@ -121,7 +121,7 @@ let
       output = "{split:\t:1}"
 
       [preview]
-      command = "echo -e '╭── Zsh Keybinding Details ───────────\n│ Key:         {split:\t:0}\n│ Mode / Map:  {split:\t:2}\n│ Raw Zsh:     {split:\t:3}\n╰──────────────────────────────────────\n\nWidget / Action:\n{split:\t:1}\n\nDescription:\n{split:\t:4}\n\nConfig Snippet (copy to shell.nix):\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
+      command = "echo -e '{split:\t:0} (map: {split:\t:2})\nraw: {split:\t:3}\n\nwidget\n{split:\t:1}\n\ndescription\n{split:\t:4}\n\nsnippet\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
 
       [keybindings]
       enter = "actions:info"

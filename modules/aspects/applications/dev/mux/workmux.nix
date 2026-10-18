@@ -31,25 +31,29 @@
           branch="$1"
           head="$2"
           path="$3"
-          echo -e "╭── Git Worktree: $branch ($head) ───"
-          echo -e "│ Path: $path"
-          echo -e "├── Git Status ────────────────────────────────────"
+
+          echo "$branch ($head)"
+          echo "path: $path"
+          echo ""
+          echo "git status"
           ${pkgs.git}/bin/git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
-          echo -e "├── Recent Commits ────────────────────────────────"
-          ${pkgs.git}/bin/git -C "$path" log --oneline -8 --color=always 2>/dev/null || true
-          echo -e "╰──────────────────────────────────────────────────"
+          echo ""
+          echo "recent commits"
+          ${pkgs.git}/bin/git -C "$path" log --oneline -5 --color=always 2>/dev/null || true
         '';
         tv-workmux-preview = pkgs.writeShellScript "tv-workmux-preview" ''
           handle="$1"
           branch="$2"
           path="$3"
-          echo -e "╭── Workmux Worktree: $handle ($branch) ───"
-          echo -e "│ Path: $path"
-          echo -e "├── Git Status ────────────────────────────────────"
+
+          echo "$handle ($branch)"
+          echo "path: $path"
+          echo ""
+          echo "git status"
           ${pkgs.git}/bin/git -C "$path" status --short 2>/dev/null || echo "Not a git directory"
-          echo -e "├── Recent Commits ────────────────────────────────"
-          ${pkgs.git}/bin/git -C "$path" log --oneline -8 --color=always 2>/dev/null || true
-          echo -e "╰──────────────────────────────────────────────────"
+          echo ""
+          echo "recent commits"
+          ${pkgs.git}/bin/git -C "$path" log --oneline -5 --color=always 2>/dev/null || true
         '';
         workmuxPkg =
           if pkgs ? llm-agents && pkgs.llm-agents ? workmux then
@@ -76,7 +80,7 @@
             output = "{split:\t:2}"
 
             [preview]
-            command = "${tv-git-worktree-preview} '{split:\t:0}' '{split:\t:1}' '{}'"
+            command = "${tv-git-worktree-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}'"
 
             [keybindings]
             enter = "actions:cd"
@@ -85,22 +89,22 @@
             ctrl-y = "actions:copy_path"
             [actions.cd]
             description = "Switch into this worktree shell"
-            command = "cd '{}' && $SHELL"
+            command = "cd '{split:\t:2}' && $SHELL"
             mode = "execute"
 
             [actions.edit]
             description = "Open worktree directory in editor"
-            command = "''${EDITOR:-nvim} '{}'"
+            command = "''${EDITOR:-nvim} '{split:\t:2}'"
             mode = "execute"
 
             [actions.open_terminal]
             description = "Open new Ghostty terminal in worktree"
-            command = "ghostty --working-directory='{}'"
+            command = "ghostty --working-directory='{split:\t:2}'"
             mode = "fork"
 
             [actions.open_herdr]
             description = "Open worktree in Herdr workspace"
-            command = "herdr worktree open --path '{}' --focus"
+            command = "herdr worktree open --path '{split:\t:2}' --focus"
             mode = "execute"
 
             [actions.open_workmux]
@@ -110,12 +114,12 @@
 
             [actions.copy_path]
             description = "Copy worktree path to clipboard"
-            command = "echo -n '{}' | wl-copy"
+            command = "echo -n '{split:\t:2}' | wl-copy"
             mode = "execute"
 
             [actions.remove]
             description = "Remove this Git worktree"
-            command = "git worktree remove '{}'"
+            command = "git worktree remove '{split:\t:2}'"
             mode = "execute"
           '';
 
@@ -134,7 +138,7 @@
             output = "{split:\t:0}"
 
             [preview]
-            command = "${tv-workmux-preview} '{}' '{split:\t:1}' '{split:\t:2}'"
+            command = "${tv-workmux-preview} '{split:\t:0}' '{split:\t:1}' '{split:\t:2}'"
 
             [keybindings]
             enter = "actions:open"
@@ -143,7 +147,7 @@
             ctrl-y = "actions:copy_path"
             [actions.open]
             description = "Open or switch to selected worktree in tmux"
-            command = "workmux open '{}'"
+            command = "workmux open '{split:\t:0}'"
             mode = "fork"
 
             [actions.edit]
@@ -158,7 +162,7 @@
 
             [actions.close]
             description = "Close the selected worktree window/session"
-            command = "workmux close '{}'"
+            command = "workmux close '{split:\t:0}'"
             mode = "fork"
 
             [actions.copy_path]

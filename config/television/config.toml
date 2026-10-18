@@ -64,11 +64,11 @@ ctrl-down = "select_next_history"
 tab = "toggle_selection"
 backtab = "toggle_selection_all"
 enter = "confirm_selection"
-# Preview panel control
-# --------------------
 pagedown = "scroll_preview_half_page_down"
 pageup = "scroll_preview_half_page_up"
-ctrl-f = "cycle_previews"
+ctrl-f = "scroll_preview_half_page_down"
+ctrl-b = "scroll_preview_half_page_up"
+ctrl-F = "cycle_previews"
 # Data operations
 # --------------
 ctrl-y = "copy_entry_to_clipboard"
@@ -78,7 +78,7 @@ ctrl-s = "cycle_sources"
 # ----------
 ctrl-t = "toggle_remote_control"
 ctrl-x = "toggle_action_picker"
-ctrl-o = "toggle_preview"
+alt-p = "toggle_preview" # Default: ctrl-o
 ctrl-h = "toggle_help"
 f12 = "toggle_status_bar"
 ctrl-l = "toggle_layout"
@@ -208,7 +208,7 @@ fallback_channel = "files"
 # └─────────────────────────┘
 ui_scale = 100
 # What orientation should tv be (landscape or portrait)
-orientation = "landscape"
+orientation = "portrait"
 # The theme to use for the UI
 # A list of builtin themes can be found in the `themes` directory of the television
 # repository. You may also create your own theme by creating a new file in a `themes`
@@ -233,7 +233,7 @@ border_type = "none" # https://docs.rs/ratatui/latest/ratatui/widgets/block/enum
 
 [ui.preview_panel]
 # Preview panel size (percentage of screen width/height)
-size = 50
+size = 40
 # header = ""
 # footer = ""
 scrollbar = false
