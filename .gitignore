@@ -1,7 +1,10 @@
+# Do not edit edit gitignore.nix
 result
 *.qcow2
 tmp
-.pi
+.pi/goals
+.pi/.goals-pool-snapshot.json
+.opencode/goals
 
 # Devenv
 .devenv*
