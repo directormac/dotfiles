@@ -16,7 +16,13 @@ vim.api.nvim_create_autocmd(
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function() vim.highlight.on_yank() end,
+  callback = function()
+    if vim.hl and vim.hl.hl_op then
+      vim.hl.hl_op()
+    else
+      pcall(vim.highlight.on_yank)
+    end
+  end,
   group = highlight_group,
   pattern = '*',
 })

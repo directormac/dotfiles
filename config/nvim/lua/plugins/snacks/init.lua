@@ -8,6 +8,11 @@ local spec = {
     ---@class snacks.profiler.Config
     profiler = {
       enabled = true,
+      filter_mod = {
+        ['^vim%.lsp'] = false,
+        ['^gitsigns'] = false,
+        ['^conform'] = false,
+      },
     },
   },
   keys = {

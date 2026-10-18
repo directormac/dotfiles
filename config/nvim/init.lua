@@ -1,33 +1,66 @@
 -- Ordering only. Layout:
 --   lua/          options, keymaps, autocmds, diagnostics, utils, handlers
 --   lua/plugins/  one file per plugin, returning pure lze specs (return { ... })
---   lsp/          server settings, merged by vim.lsp.config (see :h lsp-config-merge)
---   ftplugin/     filetype settings      after/  overrides, applied last
+--   after/        overrides (applied last): after/lsp/, after/ftplugin/, after/snippets/, after/queries/
 vim.g.mapleader = ' '
 vim.g.maplocalleader = '\\'
 
 _G._startup_time = vim.uv.hrtime()
 vim.loader.enable() -- <- bytecode caching
 
+-- Guard treesitter get_node_text against Index out of bounds during rapid buffer changes
+if vim.treesitter and vim.treesitter.get_node_text then
+  local orig_get_node_text = vim.treesitter.get_node_text
+  vim.treesitter.get_node_text = function(node, source, opts)
+    local ok, res = pcall(orig_get_node_text, node, source, opts)
+    if ok then return res end
+    return ''
+  end
+end
+
+-- Fix Snacks profiler trace to preserve multiple return values across nil holes in LuaJIT
+local function patch_snacks_profiler()
+  local ok, core = pcall(require, 'snacks.profiler.core')
+  if ok and core and not core._trace_patched then
+    core._trace_patched = true
+    local hrtime = (vim.uv or vim.loop).hrtime
+    local function capture(...) return select('#', ...), { ... } end
+    core.trace = function(opts, caller, ...)
+      local start = hrtime()
+      local thread = tostring(coroutine.running() or 'main')
+      local pid = core.pids[thread] or 0
+      core.id = core.id + 1
+      core.pids[thread] = core.id
+      local entry = { id = core.id, start = start, pid = pid, ref = caller, opts = opts }
+      core.events[#core.events + 1] = entry
+      local n, ret = capture(pcall(opts.fn, ...))
+      core.pids[thread] = pid
+      entry.stop = hrtime()
+      if not ret[1] then error(ret[2]) end
+      return select(2, unpack(ret, 1, n))
+    end
+  end
+end
+patch_snacks_profiler()
+
 -- [[ Startup Profiling ]]
 -- Profile Neovim startup if PROFILER=1 or PROF=1 is set in the environment
 if vim.env.PROFILER == '1' or vim.env.PROF == '1' then
   -- Nix wrapper installs snacks.nvim as a startup plugin (lazy = false in
   -- neovim.nix), so it's already on the runtimepath here. No rtp append needed.
-  require('snacks.profiler').startup({
-    startup = {
-      event = 'VimEnter',
-      -- event = 'DeferredUIEnter', -- stop profiling at this event
-    },
-  })
-  -- local ok, profiler = pcall(require, "snacks.profiler")
-  -- if ok and profiler then
-  -- 	profiler.startup({
-  -- 		startup = {
-  -- 			event = "VimEnter",
-  -- 		},
-  -- 	})
-  -- end
+  local ok, profiler = pcall(require, 'snacks.profiler')
+  if ok and profiler then
+    profiler.startup({
+      startup = {
+        event = 'VimEnter',
+      },
+      filter_mod = {
+        ['^vim%.lsp'] = false,
+        ['^gitsigns'] = false,
+        ['^conform'] = false,
+      },
+    })
+  end
 end
 
 do

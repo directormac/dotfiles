@@ -64,6 +64,7 @@ function M.modify(plugin)
   if plugin.opts == nil then return plugin end
 
   local orig_after = plugin.after
+  local orig_config = plugin.config
   plugin.after = function(p)
     local opts = resolve_opts(p.opts, p)
     if opts ~= nil and p.setup ~= false then
@@ -75,6 +76,7 @@ function M.modify(plugin)
     end
 
     if orig_after then orig_after(p) end
+    if orig_config then orig_config(p, opts) end
   end
 
   return plugin

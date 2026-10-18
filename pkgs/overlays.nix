@@ -4,6 +4,86 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    mermaid-cli =
+      if inputs ? mermaid-rs-renderer then
+        final.symlinkJoin {
+          name = "mermaid-cli-${final.mermaid-rs-renderer.version or "rs"}";
+
+          paths = [
+            final.mermaid-rs-renderer
+            (final.writeShellScriptBin "mmdc" ''
+              set -euo pipefail
+
+              args=()
+              format="svg"
+
+              while [[ $# -gt 0 ]]; do
+                case "$1" in
+                  -o|--output)
+                    output="$2"
+                    args+=("$1" "$2")
+                    if [[ "$output" == *.png ]]; then
+                      format="png"
+                    elif [[ "$output" == *.svg ]]; then
+                      format="svg"
+                    fi
+                    shift 2
+                    ;;
+                  -o=*|--output=*)
+                    output="''${1#*=}"
+                    args+=("$1")
+                    if [[ "$output" == *.png ]]; then
+                      format="png"
+                    elif [[ "$output" == *.svg ]]; then
+                      format="svg"
+                    fi
+                    shift
+                    ;;
+                  -e|--outputFormat)
+                    format="$2"
+                    shift 2
+                    ;;
+                  -e=*|--outputFormat=*)
+                    format="''${1#*=}"
+                    shift
+                    ;;
+                  -b|--backgroundColor)
+                    shift 2
+                    ;;
+                  -b=*|--backgroundColor=*)
+                    shift
+                    ;;
+                  -s|--scale)
+                    shift 2
+                    ;;
+                  -s=*|--scale=*)
+                    shift
+                    ;;
+                  *)
+                    args+=("$1")
+                    shift
+                    ;;
+                esac
+              done
+
+              exec "${final.mermaid-rs-renderer}/bin/mmdr" -e "$format" "''${args[@]}"
+            '')
+          ];
+
+          meta = (final.mermaid-rs-renderer.meta or { }) // {
+            mainProgram = "mmdc";
+          };
+        }
+      else
+        prev.mermaid-cli;
+
+    mermaid-rs-renderer =
+      if inputs ? mermaid-rs-renderer then
+        inputs.mermaid-rs-renderer.packages.${final.stdenv.hostPlatform.system}.default
+      else
+        prev.mermaid-cli;
+
+    mmdr = final.mermaid-rs-renderer;
     nixfmt = inputs.nixfmt-rs.packages.${final.stdenv.hostPlatform.system}.default or prev.nixfmt;
     nixfmt-rfc-style = final.nixfmt;
     zsh-histdb-src = inputs.zsh-histdb-src or null;

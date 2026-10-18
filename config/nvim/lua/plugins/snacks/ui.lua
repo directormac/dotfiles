@@ -51,7 +51,6 @@ return {
     animate = { enable = true },
     bigfile = { enable = true },
     health = { enable = true },
-    image = { enable = true },
     input = { enable = true },
     quickfile = { enable = true },
     scope = { enable = true },

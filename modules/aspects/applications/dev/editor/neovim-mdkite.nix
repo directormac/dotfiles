@@ -1,4 +1,4 @@
-# Minimal Neovim Markdown Viewer with Vellum & FFF
+# Minimal Neovim Markdown Viewer with Mdkite & FFF
 {
   inputs,
   self,
@@ -12,24 +12,26 @@
     };
   };
 
-  den.aspects.applications.dev.editor.neovim-vellum = {
+  den.aspects.applications.dev.editor.neovim-mdkite = {
     homeManager =
       { ... }:
       {
-        imports = [ self.wrappers.neovim-vellum.install ];
-        wrappers.neovim-vellum.enable = true;
+        imports = [ self.wrappers.neovim-mdkite.install ];
+        wrappers.neovim-mdkite.enable = true;
       };
   };
 
-  flake.wrappers.neovim-vellum =
+  flake.wrappers.neovim-mdkite =
     {
+      config,
       pkgs,
       wlib,
       ...
     }:
     let
-      vellum-nvim = import ./_vellum.nix { inherit pkgs; };
-      vellumConfigDir = pkgs.writeTextDir "init.lua" /* lua */ ''
+      kitehost-nvim = config.nvim-lib.mkPlugin "kitehost-nvim" inputs.vim-plugins-kitehost-nvim;
+      mdkite-nvim = config.nvim-lib.mkPlugin "mdkite-nvim" inputs.vim-plugins-mdkite-nvim;
+      mdkiteConfigDir = pkgs.writeTextDir "init.lua" /* lua */ ''
         vim.g.mapleader = ' '
         vim.g.maplocalleader = ' '
 
@@ -60,10 +62,16 @@
           statusline.setup({ use_icons = true })
         end
 
-        -- Vellum setup
-        local ok_vellum, vellum = pcall(require, 'vellum')
-        if ok_vellum and vellum.setup then
-          vellum.setup({})
+        -- Mdkite setup
+        local ok_mdkite, mdkite = pcall(require, 'mdkite')
+        if ok_mdkite and mdkite.setup then
+          mdkite.setup({
+            instance_mode = 'takeover',
+            open_browser = true,
+            mermaid_renderer = 'rust',
+            default_theme = 'dark',
+            debounce_ms = 200,
+          })
         end
 
         -- FFF setup with markdown-only restriction
@@ -136,18 +144,54 @@
           if ok_fff then require('fff').live_grep() end
         end, { desc = 'Live Grep Markdown (fff)' })
 
+        -- Toggle Mdkite preview
         vim.keymap.set('n', '<leader>v', function()
-          if ok_vellum then require('vellum').toggle() end
-        end, { desc = 'Toggle Vellum Preview' })
+          if ok_mdkite then require('mdkite').toggle() end
+        end, { desc = 'Toggle MdKite Preview' })
 
-        -- Auto-open Vellum live side preview on markdown files
+        vim.keymap.set('n', '<leader>mp', function()
+          if ok_mdkite then require('mdkite').toggle() end
+        end, { desc = 'Toggle MdKite Preview' })
+
+        -- Preview markdown with mdcat in terminal bottom window
+        local function preview_markdown_mdcat()
+          local file = vim.api.nvim_buf_get_name(0)
+          local tmpfile = nil
+          if file == "" or vim.bo.modified then
+            tmpfile = vim.fn.tempname() .. ".md"
+            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+            vim.fn.writefile(lines, tmpfile)
+            file = tmpfile
+          end
+
+          local height = math.max(12, math.floor(vim.o.lines * 0.35))
+          vim.cmd("botright " .. height .. "split")
+          local win = vim.api.nvim_get_current_win()
+          local term_cmd = string.format("mdcat -p %s", vim.fn.shellescape(file))
+          if tmpfile then
+            term_cmd = string.format("mdcat -p %s; rm -f %s", vim.fn.shellescape(file), vim.fn.shellescape(tmpfile))
+          end
+
+          vim.fn.termopen(term_cmd, {
+            on_exit = function()
+              if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+            end,
+          })
+          vim.cmd("startinsert")
+        end
+
+        vim.keymap.set('n', '<leader>mc', preview_markdown_mdcat, {
+          desc = 'Preview Markdown with mdcat (bottom window)',
+        })
+
+        -- Auto-open MdKite live preview on markdown files
         vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufEnter' }, {
           pattern = { '*.md', '*.markdown' },
           callback = function(ev)
             vim.schedule(function()
               if vim.api.nvim_buf_is_valid(ev.buf) and vim.bo[ev.buf].filetype == 'markdown' then
-                if ok_vellum then
-                  pcall(vellum.open)
+                if ok_mdkite then
+                  pcall(mdkite.start)
                 end
               end
             end)
@@ -167,20 +211,24 @@
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
-      config.binName = "nvim-vellum";
-      config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+      config.binName = "nvim-mdkite";
       config.package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
 
       config.runtimePkgs = with pkgs; [
-        nodejs
-        chromium
+        mermaid-cli
+        mdcat
         ripgrep
         fd
       ];
 
-      config.settings.aliases = [ "vellum" ];
+      config.settings.aliases = [
+        "nvim-vellum"
+        "mdkite"
+        "vellum"
+      ];
+
       config.settings.block_normal_config = true;
-      config.settings.config_directory = vellumConfigDir;
+      config.settings.config_directory = mdkiteConfigDir;
       config.settings.dont_link = true;
 
       config.specs.colorscheme = {
@@ -190,7 +238,8 @@
 
       config.specs.general = {
         data = with pkgs.vimPlugins; [
-          vellum-nvim
+          mdkite-nvim
+          kitehost-nvim
           fff-nvim
           plenary-nvim
           mini-nvim

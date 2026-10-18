@@ -122,6 +122,11 @@
       url = "github:mangowm/mango";
     };
 
+    mermaid-rs-renderer = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:1jehuang/mermaid-rs-renderer";
+    };
+
     mise-nix.url = "github:wadackel/mise-nix";
     mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
 
@@ -200,6 +205,11 @@
     torlink.url = "github:WarlaxZ/torlink";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
+    vim-plugins-kitehost-nvim = {
+      flake = false;
+      url = "github:selimacerbas/kitehost.nvim";
+    };
+
     vim-plugins-lze = {
       flake = false;
       url = "github:BirdeeHub/lze";
@@ -208,6 +218,11 @@
     vim-plugins-lzextras = {
       flake = false;
       url = "github:BirdeeHub/lzextras";
+    };
+
+    vim-plugins-mdkite-nvim = {
+      flake = false;
+      url = "github:selimacerbas/mdkite.nvim";
     };
 
     vim-plugins-nvim-colorpicker = {

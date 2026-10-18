@@ -40,6 +40,7 @@ return {
         mode = { 'i', 'n', 's' },
       },
     },
+
     opts = {
       notify = {
         enabled = false,
@@ -53,8 +54,8 @@ return {
           view = 'mini',
         },
         override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
         },
         hover = {
           enabled = true,

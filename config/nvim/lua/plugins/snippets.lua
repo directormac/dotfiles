@@ -18,16 +18,20 @@ return {
       -- Load friendly-snippets from runtimepath
       require('luasnip.loaders.from_vscode').lazy_load()
 
-      -- Load custom snippets from config snippets/ directory
+      -- Load custom snippets from config after/snippets/ and snippets/ directories
       local cfg_dir = (_G.nixInfo and _G.nixInfo(nil, 'settings', 'config_directory'))
         or vim.env.NVIM_DEV_CONFIG
         or vim.fn.stdpath('config')
-      local snippet_dir = cfg_dir .. '/snippets'
+      local snippet_dirs = {}
+      for _, sub in ipairs({ 'after/snippets', 'snippets' }) do
+        local dir = cfg_dir .. '/' .. sub
+        if vim.uv.fs_stat(dir) then table.insert(snippet_dirs, dir) end
+      end
       require('luasnip.loaders.from_vscode').lazy_load({
-        paths = { snippet_dir },
+        paths = snippet_dirs,
       })
       require('luasnip.loaders.from_lua').lazy_load({
-        paths = { snippet_dir },
+        paths = snippet_dirs,
       })
 
       -- Keymaps to abort/unlink an active snippet session cleanly

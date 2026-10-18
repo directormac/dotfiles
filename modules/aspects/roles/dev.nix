@@ -4,7 +4,7 @@
   den.aspects.roles.dev = {
     includes = with den.aspects.applications; [
       dev.editor.neovim
-      dev.editor.neovim-vellum
+      dev.editor.neovim-mdkite
       dev.editor.neovim-org
       dev.editor.codium.default
       dev.editor.codium.antigravity
@@ -76,7 +76,7 @@
       dev.shell.fzf
       dev.shell.bat
       dev.shell.mdcat
-      dev.shell.mdv
+      dev.shell.mermaid
       dev.shell.lazymark
       dev.shell.lumen
       dev.shell.hunk

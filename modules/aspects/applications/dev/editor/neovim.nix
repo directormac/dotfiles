@@ -19,9 +19,19 @@
       url = "github:saghen/blink.lib";
     };
 
+    mermaid-rs-renderer = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:1jehuang/mermaid-rs-renderer";
+    };
+
     neovim-nightly-overlay = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/neovim-nightly-overlay";
+    };
+
+    vim-plugins-kitehost-nvim = {
+      flake = false;
+      url = "github:selimacerbas/kitehost.nvim";
     };
 
     vim-plugins-lze = {
@@ -32,6 +42,11 @@
     vim-plugins-lzextras = {
       flake = false;
       url = "github:BirdeeHub/lzextras";
+    };
+
+    vim-plugins-mdkite-nvim = {
+      flake = false;
+      url = "github:selimacerbas/mdkite.nvim";
     };
 
     vim-plugins-nvim-colorpicker = {
@@ -73,7 +88,7 @@
 
   den.aspects.applications.dev.editor.neovim = {
     includes = with den.aspects.applications.dev; [
-      editor.neovim-vellum
+      editor.neovim-mdkite
       editor.neovim-org
       lang.nix
       lang.lua
@@ -194,7 +209,6 @@
     let
       blink-cmp = inputs.blink-cmp.packages.${pkgs.stdenv.hostPlatform.system}.blink-cmp;
       blink-lib = inputs.blink-lib.packages.${pkgs.stdenv.hostPlatform.system}.blink-lib;
-      vellum-nvim = import ./_vellum.nix { inherit pkgs; };
     in
     {
       imports = [ wlib.wrapperModules.neovim ];
@@ -260,7 +274,6 @@
 
       config.binName = lib.mkDefault "nvim";
       config.env.PROFILER = lib.mkIf config.settings.profiler "1";
-      config.env.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
 
       config.info =
         let
@@ -445,7 +458,8 @@
           render-markdown-nvim
           config.nvim-lib.neovimPlugins.nvim-float
           config.nvim-lib.neovimPlugins.showkeys
-          vellum-nvim
+          config.nvim-lib.neovimPlugins.mdkite-nvim
+          config.nvim-lib.neovimPlugins.kitehost-nvim
 
           # AI
           codecompanion-nvim
@@ -461,6 +475,8 @@
           fd
           lua5_1
           nodejs
+          mermaid-cli
+          mdcat
         ];
       };
 
