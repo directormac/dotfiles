@@ -1,4 +1,6 @@
 # LLM Agents Suite Aspect
+# https://github.com/numtide/llm-agents.nix
+# https://numtide.github.io/llm-agents.nix/
 {
   lib,
   inputs,

@@ -2,7 +2,6 @@ setupVersion: 2
 modelRoles:
   plan: google-antigravity/gemini-3.8-flash:high
   default: google-antigravity/gemini-3.8-flash:high
-  web: web/parallel
 theme:
   dark: dark-catppuccin
   light: dark-catppuccin

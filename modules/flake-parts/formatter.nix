@@ -69,7 +69,6 @@
           statix.enable = true;
           taplo.enable = true;
           toml-sort.enable = true;
-          yamlfmt.enable = true;
           yamllint.enable = true;
         };
 
@@ -181,6 +180,18 @@
             quote_style = "AutoPreferSingle";
             # call_parentheses = "None"
             sort_requires.enabled = true;
+          };
+
+        };
+
+        programs.yamlfmt = {
+          enable = true;
+
+          settings = {
+            formatter = {
+              escape_unicode = false;
+              type = "basic";
+            };
           };
 
         };

@@ -1,4 +1,6 @@
 # Television Fuzzy Finder Aspect with Custom Cables and Cache Update Timer
+# https://github.com/alexpasmantier/television
+# https://alexpasmantier.github.io/television/
 {
   den.aspects.applications.dev.shell.television = {
     nixos =
