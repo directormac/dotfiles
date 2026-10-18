@@ -11,7 +11,10 @@ end
 local function open_in_ghostty(url)
   if vim.fn.executable('terminal-browser') == 1 then
     if vim.fn.executable('ghostty') == 1 then
-      vim.fn.jobstart({ 'ghostty', '--title=Mdkite Preview (terminal-browser)', '-e', 'terminal-browser', url }, { detach = true })
+      vim.fn.jobstart(
+        { 'ghostty', '--title=Mdkite Preview (terminal-browser)', '-e', 'terminal-browser', url },
+        { detach = true }
+      )
     else
       vim.fn.jobstart({ 'terminal-browser', url }, { detach = true })
     end
