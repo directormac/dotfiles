@@ -24,3 +24,17 @@ contextPromotion:
   enabled: true
 astGrep:
   enabled: true
+github:
+  enabled: true
+worktree:
+  onStart: ask
+  base: ~/Code/.worktrees
+speech:
+  enabled: true
+  mode: assistant
+startup:
+  checkUpdate: false
+  setupWizard: false
+  quiet: true
+autoResume: false
+doubleEscapeAction: rewind
