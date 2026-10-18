@@ -32,7 +32,7 @@
         programs.direnv-instant = lib.mkIf (inputs ? direnv-instant) {
           settings = {
             debug_log = "/tmp/direnv-instant.log";
-            mux_delay = 2;
+            mux_delay = 4;
             use_cache = true;
           };
 
@@ -43,7 +43,7 @@
           config.lib.file.mkOutOfStoreSymlink "${dotsPath}/direnv/direnv.toml";
       };
 
-    persistHome.directories = [
+    cacheHome.directories = [
       ".local/share/direnv"
     ];
   };

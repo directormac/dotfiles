@@ -152,6 +152,8 @@
       };
 
     persistHome.directories = [
+      ".config/danksearch"
+      ".local/share/dankcal"
       ".local/state/DankMaterialShell"
       ".local/state/dankcal"
     ];

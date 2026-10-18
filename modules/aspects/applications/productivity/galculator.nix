@@ -8,5 +8,13 @@
           pkgs.galculator
         ];
       };
+
+    cacheHome.directories = [
+      ".local/share/qalculate"
+    ];
+
+    persistHome.directories = [
+      ".config/galculator"
+    ];
   };
 }

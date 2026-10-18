@@ -112,6 +112,10 @@
           noctalia.enable = true;
         };
       };
+
+    persistHome.directories = [
+      ".local/state/noctalia"
+    ];
   };
 
 }

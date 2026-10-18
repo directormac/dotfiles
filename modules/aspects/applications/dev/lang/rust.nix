@@ -9,5 +9,10 @@
           rustc
         ];
       };
+
+    cacheHome.directories = [
+      ".cargo"
+      ".rustup"
+    ];
   };
 }

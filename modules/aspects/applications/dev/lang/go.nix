@@ -15,7 +15,7 @@
         };
       };
 
-    persistHome.directories = [
+    cacheHome.directories = [
       ".config/go"
     ];
   };

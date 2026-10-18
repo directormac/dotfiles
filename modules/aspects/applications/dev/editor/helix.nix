@@ -25,9 +25,5 @@
         home.file.".config/helix".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/helix";
         programs.helix.enable = true;
       };
-
-    persistHome.directories = [
-      ".local/share/helix"
-    ];
   };
 }

@@ -41,6 +41,7 @@
 
     cacheHome.directories = [
       ".cache/mise"
+      ".local/share/mise"
     ];
 
     nixpkgs-overlays =
@@ -50,7 +51,6 @@
       ];
 
     persistHome.directories = [
-      ".local/share/mise"
       ".local/state/mise"
     ];
   };

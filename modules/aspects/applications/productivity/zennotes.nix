@@ -17,5 +17,13 @@
           inputs.zennotes.packages.${pkgs.stdenv.hostPlatform.system}.zennotes-desktop
         ];
       };
+
+    cacheHome.directories = [
+      ".config/ZenNotes"
+    ];
+
+    persistHome.directories = [
+      ".config/zennotes"
+    ];
   };
 }

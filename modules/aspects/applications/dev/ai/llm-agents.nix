@@ -38,6 +38,7 @@
 
     persistHome.directories = [
       ".ctx"
+      ".local/state/ctx"
       ".claude"
       ".codex"
       ".kimi-code"
