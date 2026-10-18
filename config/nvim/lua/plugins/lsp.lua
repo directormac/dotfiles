@@ -18,6 +18,7 @@ return {
         'jsonls',
         'marksman',
         'yamlls',
+        'rust_analyzer',
 
         -- Web Developlment
         'tsc',
