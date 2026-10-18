@@ -12,14 +12,18 @@
         llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
-        home.packages = lib.attrValues (
-          lib.filterAttrs (_: v: v != null) {
-            inherit (llmPkgs)
-              copilot-cli
-              copilot-language-server
-              ;
-          }
-        );
+        home.packages =
+          lib.attrValues (
+            lib.filterAttrs (_: v: v != null) {
+              inherit (llmPkgs)
+                copilot-cli
+                copilot-language-server
+                ;
+            }
+          )
+          ++ [
+            pkgs.github-mcp-server
+          ];
       };
 
     persistHome.directories = [

@@ -118,21 +118,6 @@ in
           (inputs.agenix-rekey.packages.${pkgs.stdenv.hostPlatform.system}.default or pkgs.age)
         ];
 
-        # Dont expose API keys to env vars
-        # home.sessionVariablesExtra = ''
-        #   if [ -f "${config.age.secrets.github_api_key.path}" ]; then
-        #     export GITHUB_API_KEY="$(cat "${config.age.secrets.github_api_key.path}")"
-        #     export GITHUB_TOKEN="$GITHUB_API_KEY"
-        #     export GH_TOKEN="$GITHUB_API_KEY"
-        #     export NIX_CONFIG="extra-access-tokens = github.com=$GITHUB_API_KEY''${NIX_CONFIG:+ $NIX_CONFIG}"
-        #     if [ ! -f "${config.home.homeDirectory}/.config/nix/nix.conf" ] || ! grep -q "extra-access-tokens" "${config.home.homeDirectory}/.config/nix/nix.conf" 2>/dev/null; then
-        #       mkdir -p "${config.home.homeDirectory}/.config/nix"
-        #       echo "extra-access-tokens = github.com=$GITHUB_API_KEY" > "${config.home.homeDirectory}/.config/nix/nix.conf"
-        #       chmod 0600 "${config.home.homeDirectory}/.config/nix/nix.conf"
-        #     fi
-        #   fi
-        # '';
-
         imports = [
           (inputs.agenix.homeManagerModules.default or { })
           (inputs.agenix-rekey.homeManagerModules.default or { })
