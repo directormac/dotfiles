@@ -48,13 +48,7 @@
             plugins = [
               # https://github.com/darrenhinde/OpenAgentsControl
               "opencode-goal-plugin@0.11.0"
-              "opencode-conductor"
-              "micode"
-              "openportal"
-              "oh-my-opencode"
               "opencode-supermemory"
-              "opencode-pty"
-              "opencode-websearch-cited"
             ];
           };
 
