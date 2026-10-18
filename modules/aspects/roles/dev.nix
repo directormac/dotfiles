@@ -20,6 +20,7 @@
       dev.ai.pi
       dev.ai.antigravity
       dev.ai.copilot
+      dev.ai.mcp
 
       # Version Control
       dev.git.git
