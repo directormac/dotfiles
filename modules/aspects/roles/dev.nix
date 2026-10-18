@@ -21,6 +21,7 @@
       dev.ai.antigravity
       dev.ai.copilot
       dev.ai.mcp
+      dev.ai.vox
 
       # Version Control
       dev.git.git
