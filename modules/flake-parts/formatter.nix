@@ -58,6 +58,9 @@
       # more tools like devenv might want to control this. . .
       #
       # pre-commit.settings.hooks.treefmt.enable = true;
+
+      # Known formatters
+      # https://treefmt.com/formatters/
       treefmt = {
         inherit (config.flake-root) projectRootFile;
         enableDefaultExcludes = true;

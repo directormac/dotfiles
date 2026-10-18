@@ -56,6 +56,13 @@
           alias vm-super="nix run .#vm-super"
         '';
 
+        languages = {
+          lua = {
+            enable = true;
+            lsp.enable = true;
+          };
+        };
+
         # https://devenv.sh/tests/
         # enterTest = ''
         #   echo "Running tests"
@@ -66,12 +73,10 @@
         # git-hooks.hooks = {
         #   # treefmt.enable = true;
         # };
-
         # languages = {
         #   lua.enable = true;
         #   nix.enable = true;
         # };
-
         # https://devenv.sh/packages/
         packages = [
 

@@ -76,6 +76,7 @@
       dev.shell.fzf
       dev.shell.bat
       dev.shell.mdcat
+      dev.shell.mdv
       dev.shell.lazymark
       dev.shell.lumen
       dev.shell.hunk
