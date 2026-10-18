@@ -2526,6 +2526,7 @@
         "nur": "nur",
         "pedantix": "pedantix",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
+        "rust-overlay": "rust-overlay_2",
         "silentSDDM": "silentSDDM",
         "stylix": "stylix",
         "tmux-fzf-links": "tmux-fzf-links",
@@ -2567,6 +2568,26 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "860d7c835ab91bfc8972b67092f5f2db8e9390a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792307278,
+        "narHash": "sha256-wJgFFtw/vlzsjWrQFmTn40TTkSkqHM4XXN0nh4q4uMk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "42076d1c6a0fb405ed04f9a674e4a8f69de62ba3",
         "type": "github"
       },
       "original": {

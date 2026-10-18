@@ -174,6 +174,11 @@
     pedantix.url = "github:swarsel/pedantix";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
 
+    rust-overlay = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:oxalica/rust-overlay";
+    };
+
     silentSDDM = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:uiriansan/SilentSDDM";
