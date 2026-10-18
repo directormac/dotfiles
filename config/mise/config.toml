@@ -1,50 +1,23 @@
-#:schema https://mise.jdx.dev/schema/mise.json
-
-# References
-# [cli](https://mise.jdx.dev/cli/)
-# [toml](https://toml.io/en/v1.1.0)
-# [tera](https://mise.jdx.dev/templates.html#template-rendering)
-# [configuration](https://mise.jdx.dev/configuration.html#configuration)
-
-# Config files are located in `config/mise/config.d`
-# This file is for some custom overrides 
-# [Configuration Heirarchy](https://mise.jdx.dev/configuration.html#visual-configuration-hierarchy)
-# [Tools](https://mise.jdx.dev/dev-tools/#dev-tools)
-# [Versions](https://mise-versions.jdx.dev/)
-# [github backend](https://mise.jdx.dev/dev-tools/backends/github.html)
-# [http](https://mise.jdx.dev/dev-tools/backends/http.html)
-
-# [settings](./conf.d/00-settings.toml)
-# [bootstrap](./conf.d/01-bootstrap.toml)
-# [dotfiles](./conf.d/02-dotfiles.toml)
-
-# [Settings](https://mise.jdx.dev/configuration/settings.html#settings)
-[settings]
-
-auto_update = true
-experimental = true
-lockfile = true
-
-auto_env = true
-
-dotfiles.root = "~/.dotfiles"
-dotfiles.default_mode = "symlink"
-
-trusted_config_paths = ['~/.dotfiles/config', '~/Code']
-
-not_found_auto_install = true
-
-# [idiomatic version files](https://mise.jdx.dev/configuration.html#idiomatic-version-files)
-idiomatic_version_file_enable_tools = []
-npm = { package_manager = "bun" }
-
-#minimum_release_age = "0"
-minimum_release_age_excludes = ["bun", "node", "expert", "pnpm"]
-
-task.output = "prefix"
+# :schema https://mise.jdx.dev/schema/mise.json
 
 # [Tools Deps](https://mise.jdx.dev/dev-tools/deps.html#deps)
 [deps]
 
-
 [hooks] # [Hooks](https://mise.jdx.dev/hooks.html#hooks)
+
+# [Settings](https://mise.jdx.dev/configuration/settings.html#settings)
+[settings]
+auto_update = true
+experimental = true
+lockfile = true
+auto_env = true
+trusted_config_paths = ['~/.dotfiles/config', '~/Code']
+not_found_auto_install = true
+# [idiomatic version files](https://mise.jdx.dev/configuration.html#idiomatic-version-files)
+idiomatic_version_file_enable_tools = []
+npm = {package_manager = "bun"}
+# minimum_release_age = "0"
+minimum_release_age_excludes = ["bun", "node", "expert", "pnpm"]
+dotfiles.root = "~/.dotfiles"
+dotfiles.default_mode = "symlink"
+task.output = "prefix"

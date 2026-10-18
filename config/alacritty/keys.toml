@@ -13,7 +13,6 @@ action = "ReceiveChar"
 key = "1"
 mods = "Control"
 
-
 [[keyboard.bindings]]
 action = "ReceiveChar"
 key = "2"
@@ -24,30 +23,25 @@ action = "ReceiveChar"
 key = "3"
 mods = "Control"
 
-
 [[keyboard.bindings]]
 action = "ReceiveChar"
 key = "4"
 mods = "Control"
-
 
 [[keyboard.bindings]]
 action = "ReceiveChar"
 key = "5"
 mods = "Control"
 
-
 [[keyboard.bindings]]
 action = "ReceiveChar"
 key = "6"
 mods = "Control"
 
-
 [[keyboard.bindings]]
 action = "ReceiveChar"
 key = "7"
 mods = "Control"
-
 
 [[keyboard.bindings]]
 action = "ReceiveChar"

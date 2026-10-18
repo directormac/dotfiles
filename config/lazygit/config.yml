@@ -1,22 +1,17 @@
 disableStartupPopups: true
-
 gui:
   tabWidth: 4
   sidePanelWidth: 0.4
   commandLogSize: 20
   border: single
   statusPanelView: allBranchesLog
-
   nerdFontsVersion: "3"
   # Config relating to colors and styles.
   # See https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md#color-attributes
 
-
   theme:
-
     authorColors:
       "*": "#b4befe"
-
     activeBorderColor:
       - "#cba6f7"
       - bold
@@ -42,5 +37,4 @@ gui:
       - "#f38ba8"
     defaultFgColor:
       - "#cdd6f4"
-
 notARepository: "quit"

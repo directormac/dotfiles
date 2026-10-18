@@ -1,7 +1,10 @@
+[axisbind.default]
+"SUPER+UP" = "viewtoleft_have_client"
+"SUPER+DOWN" = "viewtoright_have_client"
+
 [bind.default]
 # Reload config
 "SUPER+r" = "reload_config"
-
 # Applications
 "SUPER+Return" = "spawn,ghostty +new-window"
 "SUPER+SHIFT+Return" = "spawn,ghostty --class=com.ghostty.float"
@@ -10,7 +13,6 @@
 "SUPER+d" = "spawn,which-key"
 "CTRL+ALT+comma" = "spawn,pavucontrol"
 "CTRL+ALT+m" = "spawn,ghostty --class=com.ghostty.float -e rmpc"
-
 # DMS (DankMaterialShell) Integration
 "SUPER+space" = "spawn,dms ipc call spotlight toggle"
 "SUPER+v" = "spawn,dms ipc call clipboard toggle"
@@ -19,13 +21,11 @@
 "SUPER+Alt+l" = "spawn,dms ipc call lock lock"
 "SUPER+SHIFT+Escape" = "spawn,dms ipc powermenu toggle"
 "SUPER+Escape" = "toggleoverview"
-
 # DMS QuickCapture Screenshots
 "Print" = "spawn,dms ipc call quickCapture screenshot region copy"
 "CTRL+Print" = "spawn,dms ipc call quickCapture screenshot full copy"
 "ALT+Print" = "spawn,dms ipc call quickCapture screenshot window copy"
 "SHIFT+Print" = "spawn,dms ipc call quickCapture screenshot region edit"
-
 # Window Management
 "SUPER+SHIFT+q" = "killclient,"
 "SUPER+SHIFT+space" = "togglefloating,"
@@ -41,7 +41,6 @@
 "SUPER+SHIFT+i" = "restore_minimized"
 "ALT+z" = "toggle_scratchpad"
 "ALT+Tab" = "togglejump,"
-
 # Switch Window Focus (Directional & Stack)
 "SUPER+Tab" = "focusstack,next"
 "SUPER+Left" = "focusdir,left"
@@ -52,7 +51,6 @@
 "SUPER+l" = "focusdir,right"
 "SUPER+k" = "focusdir,up"
 "SUPER+j" = "focusdir,down"
-
 # Move Window (Re-insert / Swap)
 "SUPER+SHIFT+Left" = "move_client,left"
 "SUPER+SHIFT+Right" = "move_client,right"
@@ -62,7 +60,6 @@
 "SUPER+SHIFT+l" = "move_client,right"
 "SUPER+SHIFT+k" = "move_client,up"
 "SUPER+SHIFT+j" = "move_client,down"
-
 # Swap Window (Explicit Exchange)
 "SUPER+CTRL+Left" = "exchange_client,left"
 "SUPER+CTRL+Right" = "exchange_client,right"
@@ -72,23 +69,19 @@
 "SUPER+CTRL+l" = "exchange_client,right"
 "SUPER+CTRL+k" = "exchange_client,up"
 "SUPER+CTRL+j" = "exchange_client,down"
-
 # Floating Window Position
 "CTRL+SHIFT+Left" = "movewin,-50,+0"
 "CTRL+SHIFT+Right" = "movewin,+50,+0"
 "CTRL+SHIFT+Up" = "movewin,+0,-50"
 "CTRL+SHIFT+Down" = "movewin,+0,+50"
-
 # Floating Window Size
 "CTRL+ALT+Left" = "resizewin,-50,+0"
 "CTRL+ALT+Right" = "resizewin,+50,+0"
 "CTRL+ALT+Up" = "resizewin,+0,-50"
 "CTRL+ALT+Down" = "resizewin,+0,+50"
-
 # Layout Sizing
 "SUPER+equal" = "setmfact,+0.05"
 "SUPER+minus" = "setmfact,-0.05"
-
 # Scroller Layout
 "ALT+e" = "set_proportion,1.0"
 "ALT+x" = "switch_proportion_preset,"
@@ -96,15 +89,12 @@
 "alt+super+ctrl+Right" = "scroller_stack,right"
 "alt+super+ctrl+Up" = "scroller_stack,up"
 "alt+super+ctrl+Down" = "scroller_stack,down"
-
 # Layout Switching
 "SUPER+n" = "switch_layout"
 "alt+shift+Return" = "dwindle_toggle_split_direction"
-
 # Tag Switch
 "CTRL+Left" = "viewtoleft_have_client,0"
 "CTRL+Right" = "viewtoright_have_client,0"
-
 # Split Tag Bindings Across Monitors
 # Monitor 1 (DP-2): Tags 1-5
 "SUPER+1" = "viewcrossmon,1,DP-2"
@@ -112,25 +102,21 @@
 "SUPER+3" = "viewcrossmon,3,DP-2"
 "SUPER+4" = "viewcrossmon,4,DP-2"
 "SUPER+5" = "viewcrossmon,5,DP-2"
-
 # Monitor 2 (DP-3): Tags 6-9
 "SUPER+6" = "viewcrossmon,6,DP-3"
 "SUPER+7" = "viewcrossmon,7,DP-3"
 "SUPER+8" = "viewcrossmon,8,DP-3"
 "SUPER+9" = "viewcrossmon,9,DP-3"
-
 # Move Window to Tag on Specific Monitor
 "SUPER+SHIFT+1" = "tagcrossmon,1,DP-2"
 "SUPER+SHIFT+2" = "tagcrossmon,2,DP-2"
 "SUPER+SHIFT+3" = "tagcrossmon,3,DP-2"
 "SUPER+SHIFT+4" = "tagcrossmon,4,DP-2"
 "SUPER+SHIFT+5" = "tagcrossmon,5,DP-2"
-
 "SUPER+SHIFT+6" = "tagcrossmon,6,DP-3"
 "SUPER+SHIFT+7" = "tagcrossmon,7,DP-3"
 "SUPER+SHIFT+8" = "tagcrossmon,8,DP-3"
 "SUPER+SHIFT+9" = "tagcrossmon,9,DP-3"
-
 # Monitor Navigation
 "alt+shift+Left" = "focusmon,left"
 "alt+shift+Right" = "focusmon,right"
@@ -138,11 +124,16 @@
 "alt+shift+l" = "focusmon,right"
 "SUPER+Alt+Left" = "tagmon,left"
 "SUPER+Alt+Right" = "tagmon,right"
-
 # Gaps
 "ALT+SHIFT+x" = "incgaps,1"
 "ALT+SHIFT+z" = "incgaps,-1"
 "ALT+SHIFT+r" = "togglegaps"
+
+# Multi-action bindings (tag + focus monitor)
+[bind.default.conflict]
+"SUPER+SHIFT+o" = ["tagmon,next", "focusmon,next"]
+"SUPER+SHIFT+period" = ["tagmon,right", "focusmon,right"]
+"SUPER+SHIFT+comma" = ["tagmon,left", "focusmon,left"]
 
 # Multimedia Controls (active even when locked)
 [bind.default.lock]
@@ -155,29 +146,6 @@
 "XF86AudioNext" = "spawn,playerctl next"
 "SUPER+XF86AudioNext" = "spawn,playerctl position +5"
 
-# Multi-action bindings (tag + focus monitor)
-[bind.default.conflict]
-"SUPER+SHIFT+o" = [
-  "tagmon,next",
-  "focusmon,next",
-]
-"SUPER+SHIFT+period" = [
-  "tagmon,right",
-  "focusmon,right",
-]
-"SUPER+SHIFT+comma" = [
-  "tagmon,left",
-  "focusmon,left",
-]
-
-[mousebind.default]
-"SUPER+btn_left" = "moveresize,curmove"
-"SUPER+btn_right" = "moveresize,curresize"
-
-[axisbind.default]
-"SUPER+UP" = "viewtoleft_have_client"
-"SUPER+DOWN" = "viewtoright_have_client"
-
 [gesturebind.default]
 "none+left+3" = "focusdir,left"
 "none+right+3" = "focusdir,right"
@@ -187,3 +155,7 @@
 "none+left+4" = "viewnext_have_client"
 "none+up+4" = "enteroverview"
 "none+down+4" = "leaveoverview"
+
+[mousebind.default]
+"SUPER+btn_left" = "moveresize,curmove"
+"SUPER+btn_right" = "moveresize,curresize"

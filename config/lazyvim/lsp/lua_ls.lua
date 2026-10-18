@@ -64,16 +64,16 @@
 --- * [Lua.workspace.library](https://luals.github.io/wiki/settings/#workspacelibrary)
 
 local root_markers1 = {
-  ".emmyrc.json",
-  ".luarc.json",
-  ".luarc.jsonc",
+  '.emmyrc.json',
+  '.luarc.json',
+  '.luarc.jsonc',
 }
 local root_markers2 = {
-  ".luacheckrc",
-  ".stylua.toml",
-  "stylua.toml",
-  "selene.toml",
-  "selene.yml",
+  '.luacheckrc',
+  '.stylua.toml',
+  'stylua.toml',
+  'selene.toml',
+  'selene.yml',
 }
 
 -- vim.pack.add({ 'https://github.com/folke/lazydev.nvim' })
@@ -99,13 +99,13 @@ local root_markers2 = {
 
 ---@type vim.lsp.Config
 return {
-  cmd = { "lua-language-server" },
-  filetypes = { "lua" },
-  root_markers = vim.fn.has("nvim-0.11.3") == 1 and { root_markers1, root_markers2, { ".git" } }
-    or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { ".git" }),
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = vim.fn.has('nvim-0.11.3') == 1 and { root_markers1, root_markers2, { '.git' } }
+    or vim.list_extend(vim.list_extend(root_markers1, root_markers2), { '.git' }),
   on_attach = function(client, buf_id)
     -- Reduce very long list of triggers for better 'mini.completion' experience
-    client.server_capabilities.completionProvider.triggerCharacters = { ".", ":", "#", "(" }
+    client.server_capabilities.completionProvider.triggerCharacters = { '.', ':', '#', '(' }
 
     -- Use this function to define buffer-local mappings and behavior that depend
     -- on attached client or only makes sense if there is language server attached.
@@ -116,20 +116,20 @@ return {
       codeLens = { enable = true },
       hint = {
         enable = true,
-        semicolon = "Disable",
+        semicolon = 'Disable',
 
-        arrayIndex = "Disable",
-        paramName = "Disable",
+        arrayIndex = 'Disable',
+        paramName = 'Disable',
         paramType = true,
         setType = false,
       },
       completion = {
-        callSnippet = "Replace",
+        callSnippet = 'Replace',
       },
       doc = {
-        privateName = { "^_" },
+        privateName = { '^_' },
       },
-      runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+      runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
       workspace = {
         checkThirdParty = false,
         -- Don't analyze code from submodules

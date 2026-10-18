@@ -4,36 +4,33 @@ config:
   fallback-icon: ""
   multi-pane-icon: ""
   always-show-fallback-name: false
-
 icons:
   # Keep exact 1-to-1 matches here for performance and simplicity
   tmux: ""
   tuxedo: ""
-  tv: "󰠹"
+  tv: "\U000F0839"
   sesh: "⚡"
   neovim: ""
   claude: " "
   bun: " "
   workmux: ""
-  omp: "󰏿"
-  pi: "󰏿"
+  omp: "\U000F03FF"
+  pi: "\U000F03FF"
   nh: " "
   nix: " "
   agy: " "
   opencode: " "
   opencode2: " "
   copilot: " "
-
-
 icons-regex:
   # node.*codex matches anything starting with node and ending with codex
   "node.*codex": " "
   # ^(...) matches the exact word. The '?' makes the preceding letter/number optional.
   "^(agyx?|opencode2?|ocx|codex)$": " "
   "^(nix|nh|flake)$": " "
-  "^(pi|omp|omo)$": "󰏿"
+  "^(pi|omp|omo)$": "\U000F03FF"
 
 # names-regex:
-  # Rename the window nicely if show-name: true is ever enabled
-  # "node.*codex": "codex"
-  # "^(agyx?|opencode2?|ocx)$": "opencode"
+# Rename the window nicely if show-name: true is ever enabled
+# "node.*codex": "codex"
+# "^(agyx?|opencode2?|ocx)$": "opencode"

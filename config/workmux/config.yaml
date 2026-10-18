@@ -35,79 +35,60 @@
 #    $ workmux merge                  (Alias: wmm) - Rebase & merge into main
 #    $ workmux remove <branch>        (Alias: workmux rm) - Discard without merging
 # ------------------------------------------------------------------------------
-
 nerdfont: true
 auto_update_check: false
-
 # ------------------------------------------------------------------------------
 # Git Configuration
 # ------------------------------------------------------------------------------
 # Automatically base new worktrees from main/master regardless of current branch
 base_branch: auto
-
 # Fast-forward rebase merge strategy
 merge_strategy: rebase
-
 # Keep worktree and branch after merge by default (cleanup manually or with --cleanup)
 merge_keep: true
-
 # ------------------------------------------------------------------------------
 # Paths & Naming
 # ------------------------------------------------------------------------------
 # Centralized directory for worktrees, namespaced by repository name
 worktree_dir: "~/Code/.worktrees/{project}"
-
 # Prefix for tmux window and session names
 window_prefix: "wm-{project}"
-
 # ------------------------------------------------------------------------------
 # Tmux & Session Mode (Default)
 # ------------------------------------------------------------------------------
 # Mode: "session" creates an isolated tmux session per worktree (with its own windows)
 # Mode: "window" creates windows within the current session
 mode: session
-
 # Return to the primary 'main' session when a worktree session is closed/merged
 default_session: main
-
 # Auto-apply agent status icons in tmux window formats (managed directly in tmux/catppuccin config)
 status_format: false
-
 status_icons:
   working: "🤖"
   waiting: "💬"
   done: "✅"
-
 # ------------------------------------------------------------------------------
 # Default Windows (Session Mode: 4 Windows per Worktree)
 # Note: 'windows' is mutually exclusive with root-level 'panes'
 # ------------------------------------------------------------------------------
 windows:
   # Window 1: Editor
-  - 
-    panes:
+  - panes:
       - command: nvim
         focus: true
-
   # Window 2: AI Coding Agent
-  - 
-    panes:
+  - panes:
       - command: clear
-
   # Window 3: Git
-  - 
-    panes:
+  - panes:
       - command: lazygit
         focus: true
       - command: workmux dashboard -t worktrees
         split: horizontal
         percentage: 50
-
   # Window 4: Agent
-  - 
-    panes:
+  - panes:
       - command: <agent>
-
 # ------------------------------------------------------------------------------
 # Named Layouts (Selectable via `-l` / `--layout <name>`)
 # ------------------------------------------------------------------------------
@@ -117,7 +98,6 @@ layouts:
     panes:
       - command: nvim
         focus: true
-
   # Duo: Split screen with Neovim on left (60%) and AI Agent on right (40%)
   duo:
     panes:
@@ -126,25 +106,21 @@ layouts:
       - command: <agent>
         split: vertical
         percentage: 40
-
   # Agent Only: Single pane running the configured AI agent
   agent-only:
     panes:
       - command: <agent>
         focus: true
-
   # Terminal Only: Single clean shell
   terminal:
     panes:
       - command: clear
         focus: true
-
 # ------------------------------------------------------------------------------
 # Agent & AI Integration
 # ------------------------------------------------------------------------------
 # Default agent used for '<agent>' placeholder
 agent: omp
-
 # Named agent profiles (used via <agent:name> or --agent <name>)
 # --dangerously-skip-permissions
 agents:
@@ -160,7 +136,6 @@ agents:
     type: opencode
     args:
       - --auto
-
 # ------------------------------------------------------------------------------
 # Sidebar Configuration
 # ------------------------------------------------------------------------------

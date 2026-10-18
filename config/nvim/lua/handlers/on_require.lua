@@ -34,9 +34,7 @@ end
 
 ---Called before plugin `name` loads: clear any pending on_require state for it
 ---@param name string
-function M.before(name)
-  states[name] = nil
-end
+function M.before(name) states[name] = nil end
 
 ---Initialize handler by registering the loader in package.loaders / package.searchers
 function M.init()

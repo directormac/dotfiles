@@ -19,7 +19,9 @@ return {
       require('luasnip.loaders.from_vscode').lazy_load()
 
       -- Load custom snippets from config snippets/ directory
-      local cfg_dir = (_G.nixInfo and _G.nixInfo(nil, 'settings', 'config_directory')) or vim.env.NVIM_DEV_CONFIG or vim.fn.stdpath('config')
+      local cfg_dir = (_G.nixInfo and _G.nixInfo(nil, 'settings', 'config_directory'))
+        or vim.env.NVIM_DEV_CONFIG
+        or vim.fn.stdpath('config')
       local snippet_dir = cfg_dir .. '/snippets'
       require('luasnip.loaders.from_vscode').lazy_load({
         paths = { snippet_dir },

@@ -1,42 +1,14 @@
-#:schema https://starship.rs/config-schema.json
-
-# [Config](https://starship.rs/config/)
-# [Custom](https://starship.rs/config/#custom-commands)
-# [Advance](https://starship.rs/advanced-config/)
-# [Showcase](https://github.com/starship/starship/discussions/1107)
+# :schema https://starship.rs/config-schema.json
 
 add_newline = true
 palette = "catppuccin_mocha"
 continuation_prompt = '▶▶ '
 scan_timeout = 1000
 command_timeout = 5000
-
-# format = """$all\
-# $line_break\
-# $directory$fill$cmd_duration$jobs$time\
-# $line_break\
-# $character"""
-
 format = """
 $directory $all$fill$cmd_duration$jobs$time\
 $line_break\
 $character"""
-
-# right_format = """$cmd_duration $jobs $time"""
-
-[nodejs]
-format = "[$symbol($version )]($style)"
-
-[fill]
-symbol = " "
-
-[directory]
-style = "fg:mauve"
-read_only = " "
-truncation_length = 4
-truncate_to_repo = false
-# truncation_symbol = "~/"
-truncation_symbol = "../"
 
 [character]
 success_symbol = '[❯](mauve)'
@@ -47,28 +19,6 @@ vimcmd_replace_one_symbol = '[](bold mauve)'
 vimcmd_replace_symbol = '[](bold mauve)'
 vimcmd_visual_symbol = '[](bold yellow)'
 
-[git_branch]
-symbol = " "
-format = "[$symbol$branch]($style) "
-style = "green"
-
-[jobs]
-symbol = ""
-style = "bold red"
-number_threshold = 1
-format = "[$symbol]($style)"
-
-[git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-style = "cyan"
-
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
-
-[git_metrics]
-disabled = false
-
 [cmd_duration]
 show_milliseconds = true
 format = "[ in $duration ]($style)"
@@ -77,19 +27,38 @@ disabled = false
 show_notifications = true
 min_time_to_notify = 60000
 
-[time]
+[custom.stunnel]
+when = "ps aux | grep stunnel | grep -v grep"
+command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')"
+style = "red"
+format = "[TUNNEL OPEN for $output]($style)"
+
+[directory]
+style = "fg:mauve"
+read_only = " "
+truncation_length = 4
+truncate_to_repo = false
+# truncation_symbol = "~/"
+truncation_symbol = "../"
+
+[fill]
+symbol = " "
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "green"
+
+[git_metrics]
 disabled = false
-style = "bold green"
-format = '[ $time ]($style)'
 
-[memory_usage]
-symbol = " "
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
-[rust]
-symbol = " "
-
-[mise]
-disabled = false
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "cyan"
 
 [hostname]
 ssh_only = false
@@ -98,34 +67,20 @@ trim_at = "-"
 style = "bold dimmed white"
 disabled = true
 
-[username]
-style_user = "bold dimmed blue"
-show_always = false
+[jobs]
+symbol = ""
+style = "bold red"
+number_threshold = 1
+format = "[$symbol]($style)"
 
-[custom.stunnel]
-when = "ps aux | grep stunnel | grep -v grep"
-command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')"
-style = "red"
-format = "[TUNNEL OPEN for $output]($style)"
+[memory_usage]
+symbol = " "
 
+[mise]
+disabled = false
 
-# [custom.ssh_no_keys]
-# description = "SSH missing keys"
-# when = "ssh-add -l | grep -q 'no identities'"
-# command = "echo 🚫"
-# format = "$symbol[$output]($style) "
-# shell = ["bash", "--noprofile", "--norc"]
-# symbol = "🔑"
-# style = "bold fg:red"
-
-# [custom.ssh_keys]
-# description = "SSH key count"
-# when = "ssh-add -l | grep -v -q 'no identities'"
-# command = "ssh-add -l | grep -v 'no identities' | wc -l"
-# format = "$symbol[$output]($style) "
-# shell = ["bash", "--noprofile", "--norc"]
-# symbol = "🔑"
-# style = "bold fg:green"
+[nodejs]
+format = "[$symbol($version )]($style)"
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
@@ -154,3 +109,15 @@ surface0 = "#313244"
 base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
+
+[rust]
+symbol = " "
+
+[time]
+disabled = false
+style = "bold green"
+format = '[ $time ]($style)'
+
+[username]
+style_user = "bold dimmed blue"
+show_always = false

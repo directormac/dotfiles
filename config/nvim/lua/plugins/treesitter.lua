@@ -3,13 +3,9 @@
 -- Custom predicate for TOML query injections (mise task scripts)
 vim.treesitter.query.add_predicate('is-mise?', function(_, _, bufnr, _)
   local b = tonumber(bufnr) or 0
-  if b == 0 then
-    b = vim.api.nvim_get_current_buf()
-  end
+  if b == 0 then b = vim.api.nvim_get_current_buf() end
 
-  if vim.b[b] and vim.b[b]._mise_checked ~= nil then
-    return vim.b[b]._is_mise_file
-  end
+  if vim.b[b] and vim.b[b]._mise_checked ~= nil then return vim.b[b]._is_mise_file end
 
   local filepath = vim.api.nvim_buf_get_name(b)
   if filepath == '' then

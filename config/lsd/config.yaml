@@ -1,6 +1,5 @@
 # LSD Configuration
 # See https://github.com/lsd-rs/lsd#configurations
-
 classic: false
 blocks:
   - permission

@@ -1,4 +1,7 @@
 # Layer Rules
+
+[rule]
+
 [[rule.layer_rule]]
 animation_type_open = "zoom"
 layer_name = "rofi"
@@ -26,7 +29,6 @@ no_focus = 1
 app_id = "^$"
 title = "^$"
 
-# Window Rules: Floating Applications (50% size, centered)
 [[rule.window_rule]]
 is_floating = 1
 width = 0.5
@@ -135,7 +137,6 @@ width = 0.5
 height = 0.5
 app_id = "^com\\.superfile\\.fm$"
 
-# Window Rules: DMS Components
 [[rule.window_rule]]
 is_floating = 1
 app_id = "^com\\.danklinux\\.dms$"
@@ -148,14 +149,12 @@ app_id = "^dcal$"
 is_floating = 1
 title = "^dcal$"
 
-# Window Rules: Waydroid Sub-applications
 [[rule.window_rule]]
 is_floating = 1
 width = 0.5
 height = 0.5
 app_id = "^waydroid\\.com\\..*"
 
-# Window Rules: Virtualization
 [[rule.window_rule]]
 is_floating = 1
 width = 0.5
@@ -168,7 +167,6 @@ width = 0.5
 height = 0.5
 app_id = "^qemu$"
 
-# Window Rules: Dialogs & Security Pickers
 [[rule.window_rule]]
 is_floating = 1
 width = 0.5
@@ -179,7 +177,6 @@ title = "^Select what to share.*$"
 is_floating = 1
 app_id = "^pinentry.*$"
 
-# Window Rules: Browser Extension Popups (Firefox & Zen)
 [[rule.window_rule]]
 is_floating = 1
 width = 800

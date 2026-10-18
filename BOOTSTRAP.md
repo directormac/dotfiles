@@ -58,11 +58,11 @@ nixos = {
 ```
 
 ### Step 3.3: Option B — Custom or Multi-Disk Hardware Layout
-If your machine has a custom partition layout or existing filesystems (like `modules/aspects/hardware/nixos.nix`), generate a hardware scan and create `modules/aspects/hardware/<new-machine>.nix`:
+If your machine has a custom partition layout or existing filesystems (like `modules/hosts/nixos/hardware.nix`), generate a hardware scan and place the hardware configuration under `modules/hosts/<new-machine>/hardware.nix`:
 ```bash
 nixos-generate-config --root /mnt --show-hardware-config
 ```
-Wrap the generated config in a leaf aspect under `modules/aspects/hardware/<new-machine>.nix`:
+Wrap the generated config in a leaf aspect under `modules/hosts/<new-machine>/hardware.nix`:
 ```nix
 # Hardware Configuration for Host "<new-machine>"
 {
@@ -184,6 +184,19 @@ Every host in this repository is defined by a single file in [`modules/hosts/`](
 
         networking.hostName = "new-machine";
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+        # Point OpenSSH host keys directly to persistent storage
+        services.openssh.hostKeys = [
+          {
+            path = "/persist/etc/ssh/ssh_host_ed25519_key";
+            type = "ed25519";
+          }
+          {
+            bits = 4096;
+            path = "/persist/etc/ssh/ssh_host_rsa_key";
+            type = "rsa";
+          }
+        ];
       };
 
     description = "New Machine Workstation";
@@ -215,9 +228,11 @@ Every host in this repository is defined by a single file in [`modules/hosts/`](
 }
 ```
 
-After creating `modules/hosts/new-machine.nix` (and any hardware file), **stage the file in Git** so Nix flake evaluation can see it:
+After creating `modules/hosts/new-machine.nix` (and `modules/hosts/new-machine/hardware.nix` if using Option B), **stage the file(s) in Git** so Nix flake evaluation can see them:
 ```bash
 git add -N modules/hosts/new-machine.nix
+# If using custom hardware:
+# git add -N modules/hosts/new-machine/hardware.nix
 ```
 
 ## 5. Choosing Roles & Aspects
@@ -274,10 +289,9 @@ den.aspects.my-server = {
 Because `secrets.agenix` decrypts host secrets using `/persist/etc/ssh/ssh_host_ed25519_key`:
 1. After mounting the target filesystems at `/mnt` (Step 7.1 below), generate the host SSH key directly on `/mnt/persist`:
    ```bash
-   sudo mkdir -p /mnt/persist/etc/ssh /mnt/etc/ssh
+   sudo mkdir -p /mnt/persist/etc/ssh
    sudo ssh-keygen -t ed25519 -N "" -f /mnt/persist/etc/ssh/ssh_host_ed25519_key
    sudo ssh-keygen -t rsa -b 4096 -N "" -f /mnt/persist/etc/ssh/ssh_host_rsa_key
-   sudo cp -a /mnt/persist/etc/ssh/* /mnt/etc/ssh/
    ```
 2. Copy the new host's public key into the repository for `agenix-rekey`:
    ```bash

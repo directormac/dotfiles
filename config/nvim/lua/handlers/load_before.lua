@@ -41,18 +41,14 @@ function M.add(plugin)
   -- If any target plugin is already loaded, trigger this plugin immediately
   for _, target in ipairs(targets) do
     if lze.state(target) == false then
-      return function()
-        lze.trigger_load(pname)
-      end
+      return function() lze.trigger_load(pname) end
     end
   end
 
   -- Record that `pname` must load before each target plugin
   for _, target in ipairs(targets) do
     states[target] = states[target] or {}
-    if not vim.tbl_contains(states[target], pname) then
-      table.insert(states[target], pname)
-    end
+    if not vim.tbl_contains(states[target], pname) then table.insert(states[target], pname) end
   end
 end
 
@@ -68,8 +64,6 @@ function M.before(name)
 end
 
 ---Cleanup internal state table
-function M.cleanup()
-  states = {}
-end
+function M.cleanup() states = {} end
 
 return M

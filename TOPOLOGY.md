@@ -103,17 +103,17 @@ sequenceDiagram
 
 | Pipe | Scope Boundary | Producers | Collectors |
 | ------ | ---------------- | ----------- | ------------ |
-| cache | flake-system: system=x86_64-linux | nixos, super |  |
-| cacheHome | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
-| codium-extensions | flake-system: system=x86_64-linux | nixos, super |  |
-| codium-settings | flake-system: system=x86_64-linux | nixos, super |  |
-| devenv | flake-system: system=x86_64-linux | nixos, super |  |
-| homeManagerModules | flake-system: system=x86_64-linux | nixos, super |  |
-| isWorkstation | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
-| nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
-| persist | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
-| persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
-| tests | flake-system: system=x86_64-linux | nixos, super |  |
+| cache | flake-system: system=x86_64-linux | nixos, super | |
+| cacheHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
+| codium-extensions | flake-system: system=x86_64-linux | nixos, super | |
+| codium-settings | flake-system: system=x86_64-linux | nixos, super | |
+| devenv | flake-system: system=x86_64-linux | nixos, super | |
+| homeManagerModules | flake-system: system=x86_64-linux | nixos, super | |
+| isWorkstation | flake-system: system=x86_64-linux | nixos, sandbox, super | |
+| nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super | |
+| persist | flake-system: system=x86_64-linux | nixos, sandbox, super | |
+| persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
+| tests | flake-system: system=x86_64-linux | nixos, super | |
 
 ## Policies
 

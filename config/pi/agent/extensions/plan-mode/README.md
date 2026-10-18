@@ -20,8 +20,8 @@ Read-only exploration mode for safe code analysis.
 ## Usage
 
 1. Enable plan mode with `/plan` or `--plan` flag
-2. Ask the agent to analyze code and create a plan
-3. The agent should output a numbered plan under a `Plan:` header:
+1. Ask the agent to analyze code and create a plan
+1. The agent should output a numbered plan under a `Plan:` header:
 
 ```
 Plan:
@@ -31,8 +31,8 @@ Plan:
 ```
 
 4. Choose "Execute the plan" when prompted
-5. During execution, the agent marks steps complete with `[DONE:n]` tags
-6. Progress widget shows completion status
+1. During execution, the agent marks steps complete with `[DONE:n]` tags
+1. Progress widget shows completion status
 
 ## How It Works
 

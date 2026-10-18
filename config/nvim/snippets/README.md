@@ -2,7 +2,7 @@
 
 This directory contains custom user snippets managed by [LuaSnip](https://github.com/L3MON4D3/LuaSnip) and served through [blink.cmp](https://github.com/Saghen/blink.cmp) in [`lua/plugins/completion.lua`](../lua/plugins/completion.lua).
 
----
+______________________________________________________________________
 
 ## Architecture Overview
 
@@ -27,10 +27,10 @@ This directory contains custom user snippets managed by [LuaSnip](https://github
 ```
 
 1. **`friendly-snippets`**: Prepackaged community snippet collection provided via Nix and loaded automatically from Neovim's `runtimepath`.
-2. **Custom VS Code JSON Snippets**: Any `*.json` file declared in [`package.json`](./package.json).
-3. **Custom LuaSnip Lua Snippets**: Any `<filetype>.lua` file in this directory loaded via `luasnip.loaders.from_lua`.
+1. **Custom VS Code JSON Snippets**: Any `*.json` file declared in [`package.json`](./package.json).
+1. **Custom LuaSnip Lua Snippets**: Any `<filetype>.lua` file in this directory loaded via `luasnip.loaders.from_lua`.
 
----
+______________________________________________________________________
 
 ## 1. Adding VS Code Format Snippets (`.json`)
 
@@ -111,13 +111,14 @@ Open [`package.json`](./package.json) and add an entry:
 
 For snippets available across all languages (like `all.json` or `global.json`), use `"language": ["all"]`.
 
----
+______________________________________________________________________
 
 ## 2. Adding LuaSnip Native Snippets (`.lua`)
 
 Lua format allows programmable snippets with Lua functions, dynamic trees, and conditional logic.
 
 ### How it works
+
 Any `<filetype>.lua` file placed in this directory (e.g. `lua.lua`, `python.lua`, `all.lua`) is automatically loaded by `require('luasnip.loaders.from_lua').lazy_load()`. **No `package.json` entry is required for `.lua` files.**
 
 ### File Structure
@@ -178,14 +179,14 @@ return {
 | `sn(nil, { ... })`| Snippet Node | Encapsulates a group of nodes inside dynamic/choice nodes. |
 | `d(1, fn, {deps})`| Dynamic Node | Dynamically returns a `snippet_node` based on previous input. |
 
----
+______________________________________________________________________
 
 ## 3. Working with `friendly-snippets`
 
 - **Inspection & Triggers**: You can browse the triggers and snippets provided by `friendly-snippets` on the [friendly-snippets documentation site](https://github.com/rafamadriz/friendly-snippets/tree/main/snippets) or by searching in Neovim completion.
 - **Overriding & Shadowing**: If your custom snippet shares the exact same `prefix` as a friendly-snippet, both will appear in the completion menu. To ensure your custom snippet takes precedence, add `"luasnip": { "priority": 2000 }` to give it a higher score offset.
 
----
+______________________________________________________________________
 
 ## 4. Keymaps & Completion Integration
 
@@ -198,7 +199,7 @@ Configured in [`lua/plugins/completion.lua`](../lua/plugins/completion.lua):
 | `<CR>` | Insert | Accept completion item / expand snippet |
 | `<C-Tab>` | Insert | Select and accept snippet |
 
----
+______________________________________________________________________
 
 ## References & Official Docs
 
