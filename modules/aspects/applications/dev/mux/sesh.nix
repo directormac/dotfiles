@@ -69,6 +69,7 @@
 
         enable = true;
         enableAlias = true;
+        enableTmuxIntegration = false;
       };
     };
 
