@@ -139,6 +139,7 @@
             };
 
             screenkey.enable = true;
+            voxtypeActivityOverlay.enable = true;
           };
         };
 
