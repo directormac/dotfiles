@@ -31,6 +31,20 @@ hl.window_rule({
   no_focus = true,
 })
 
+-- Only inhibit idle when fullscreen (e.g. video playback in fullscreen),
+-- allowing displays to idle/sleep when playing music or background audio in a window.
+hl.window_rule({
+  name = 'idle-inhibit-fullscreen-browsers',
+  match = { class = '^(zen|zen-beta|firefox|chromium|google-chrome)$' },
+  idle_inhibit = 'fullscreen',
+})
+
+hl.window_rule({
+  name = 'idle-inhibit-fullscreen-media',
+  match = { class = '^(mpv|vlc|vesktop|discord|steam)$' },
+  idle_inhibit = 'fullscreen',
+})
+
 local floating_apps = {
   'bitwarden',
   'feh',

@@ -301,8 +301,9 @@
       "cursorHideTimeout": 0
     }
   },
-  "acMonitorTimeout": 1200,
+  "acMonitorTimeout": 600,
   "acLockTimeout": 900,
+  "acPostLockMonitorTimeout": 30,
   "acSuspendTimeout": 1800,
   "muxUseCustomCommand": true,
   "matugenTemplateGtk": false,
@@ -658,5 +659,6 @@
       "value": "dashboard"
     }
   },
-  "notificationFocusedMonitor": true
+  "notificationFocusedMonitor": true,
+  "desktopContextMenu": "off"
 }
