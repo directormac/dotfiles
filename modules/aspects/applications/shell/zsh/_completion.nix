@@ -10,6 +10,14 @@
   fzfTabZstyle =
     # zsh
     ''
+      # Forgiving completion: case-insensitive matching everywhere
+      # (cd p now matches "projects" and "Projects")
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+      # Include hidden files/dirs in all completions (cd, cat, vim, ...)
+      # and in interactive globs (echo *, ...)
+      setopt globdots
+
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
       zstyle ':completion:*:descriptions' format '[%d]'
       zstyle ':fzf-tab:*' fzf-pad 4
