@@ -6,7 +6,8 @@
 }:
 {
   flake-file.inputs = {
-    torlink.url = "github:baairon/torlink";
+    # torlink.url = "github:baairon/torlink";
+    torlink.url = "github:WarlaxZ/torlink";
   };
 
   den.aspects.applications.productivity.torlink = {

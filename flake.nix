@@ -197,7 +197,7 @@
       url = "github:tmux/tmux";
     };
 
-    torlink.url = "github:baairon/torlink";
+    torlink.url = "github:WarlaxZ/torlink";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     vim-plugins-lze = {
