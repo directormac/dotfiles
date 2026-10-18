@@ -48,11 +48,15 @@ in
         ];
       };
 
-    persistHome.directories = [
-      ".config/vite-plus"
+    cacheHome.directories = [
       ".local/share/vite-plus"
       ".bun"
       ".npm"
+    ];
+
+    persistHome.directories = [
+      ".config/vite-plus"
+      ".local/state/vite-plus"
     ];
   };
 

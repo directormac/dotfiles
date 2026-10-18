@@ -51,6 +51,7 @@
         dotfilesTmux = "${dotsPath}/tmux";
         dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         kanjiIndex = "#{?#{==:#I,1},一,#{==:#I,2},二,#{==:#I,3},三,#{==:#I,4},四,#{==:#I,5},五,#{==:#I,6},六,#{==:#I,7},七,#{==:#I,8},八,#{==:#I,9},九,#{==:#I,10},十,#I}";
+        resurrectDir = "${config.home.homeDirectory}/.local/state/tmux/resurrect";
         tmux-fzf-links = pkgs.tmuxPlugins.mkTmuxPlugin {
           pluginName = "tmux-fzf-links";
           rtpFilePath = "fzf-links.tmux";
@@ -80,6 +81,87 @@
           version = "0-unstable-${inputs.tmux-menus.lastModifiedDate or "2026-10-02"}";
         };
         tmuxPkg = pkgs.local.tmux or pkgs.tmux;
+        tmuxResurrectRestore = pkgs.writeShellScript "tmux-resurrect-restore" ''
+          export PATH="${
+            lib.makeBinPath [
+              tmuxPkg
+              pkgs.coreutils
+              pkgs.findutils
+              pkgs.gnugrep
+              pkgs.gnused
+              pkgs.gawk
+              pkgs.procps
+              pkgs.util-linux
+              pkgs.diffutils
+            ]
+          }:$PATH"
+          resurrect_dir="${resurrectDir}"
+          mkdir -p "$resurrect_dir"
+
+          exec 9>"$resurrect_dir/.restore.lock"
+          ${pkgs.util-linux}/bin/flock -n 9 || exit 0
+
+          # Self-heal `last` symlink before restore if missing, dangling, or empty
+          if [ ! -f "$resurrect_dir/last" ] || ! grep -q '^pane' "$resurrect_dir/last" 2>/dev/null; then
+            for candidate in $(ls -1t "$resurrect_dir"/tmux_resurrect_*.txt 2>/dev/null); do
+              if grep -q '^pane' "$candidate" 2>/dev/null; then
+                ln -sf "$(basename "$candidate")" "$resurrect_dir/last"
+                break
+              fi
+            done
+          fi
+
+          if [ -f "$resurrect_dir/last" ] && grep -q '^pane' "$resurrect_dir/last" 2>/dev/null; then
+            ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/restore.sh "$@"
+            ${tmuxPkg}/bin/tmux set-option -gq "@continuum-save-last-timestamp" "$(date +%s)" 2>/dev/null || true
+          fi
+        '';
+        tmuxResurrectSave = pkgs.writeShellScript "tmux-resurrect-save" ''
+          export PATH="${
+            lib.makeBinPath [
+              tmuxPkg
+              pkgs.coreutils
+              pkgs.findutils
+              pkgs.gnugrep
+              pkgs.gnused
+              pkgs.gawk
+              pkgs.procps
+              pkgs.util-linux
+              pkgs.diffutils
+            ]
+          }:$PATH"
+          resurrect_dir="${resurrectDir}"
+          mkdir -p "$resurrect_dir"
+
+          # Serialize all save operations so concurrent saves never race on `last`
+          exec 9>"$resurrect_dir/.save.lock"
+          ${pkgs.util-linux}/bin/flock -n 9 || exit 0
+
+          # Refuse to save when server has no live panes (e.g., empty server or teardown)
+          pane_count="$(${tmuxPkg}/bin/tmux list-panes -a 2>/dev/null | wc -l | tr -d ' ')"
+          if [ -z "$pane_count" ] || [ "$pane_count" -eq 0 ]; then
+            exit 0
+          fi
+
+          # Avoid same-second collision with `last` where save.sh's `files_differ`
+          # compares the freshly overwritten file against `last` (itself) and deletes it
+          now_file="tmux_resurrect_$(date +"%Y%m%dT%H%M%S").txt"
+          if [ -L "$resurrect_dir/last" ] && [ "$(readlink "$resurrect_dir/last")" = "$now_file" ]; then
+            sleep 1
+          fi
+
+          ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh "$@"
+
+          # Self-heal `last` symlink if missing, dangling, or pointing to a file without panes
+          if [ ! -f "$resurrect_dir/last" ] || ! grep -q '^pane' "$resurrect_dir/last" 2>/dev/null; then
+            for candidate in $(ls -1t "$resurrect_dir"/tmux_resurrect_*.txt 2>/dev/null); do
+              if grep -q '^pane' "$candidate" 2>/dev/null; then
+                ln -sf "$(basename "$candidate")" "$resurrect_dir/last"
+                break
+              fi
+            done
+          fi
+        '';
         windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󱚟*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
       in
       {
@@ -176,12 +258,21 @@
               # and continuum auto-restore has time to restore sessions on boot
               set -s exit-empty off
 
-              # Save on client detach as well as periodic interval
-              set-hook -ga client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh quiet"'
+              # Override resurrect save/restore scripts and bindings with lock-protected self-healing wrappers
+              set -g @resurrect-save-script-path "${tmuxResurrectSave}"
+              set -g @resurrect-restore-script-path "${tmuxResurrectRestore}"
+              bind-key C-S run-shell "${tmuxResurrectSave}"
+              bind-key C-R run-shell "${tmuxResurrectRestore}"
+
+              # Save on client detach as well as periodic interval (use -g, not -ga, so config reloads do not duplicate hooks)
+              set-hook -g client-detached "run-shell -b '${tmuxResurrectSave} quiet'"
 
               set -g @window_icon "${windowIcon}"
               source -F "$HOME/.config/tmux/status.tmux.conf"
-              # Re-apply continuum auto-save interpolation so status.tmux.conf resetting status-right does not erase it
+              # Configure and run continuum once after status.tmux.conf so status-right interpolation is preserved
+              # and continuum_restore.sh is only spawned once on startup
+              set -g @continuum-save-interval "5"
+              set -g @continuum-restore "on"
               run-shell "${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux"
             '';
 
@@ -259,25 +350,14 @@
                   set -g @resurrect-strategy-vim "session"
                   set -g @resurrect-strategy-nvim "session"
                   set -g @resurrect-processes "lazydocker lazygit yazi"
-                  resurrect_dir=$HOME/.local/state/tmux/resurrect/
-                  set -g @resurrect-dir $resurrect_dir
-                  set -g @resurrect-hook-post-save-all "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g' $(readlink -f $resurrect_dir/last)"
+                  set -g @resurrect-dir "${resurrectDir}"
+                  set -g @resurrect-hook-post-save-layout "sed -i 's| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g; s|/nix/store/.*/bin/||g'"
 
                   set -g @resurrect-save "C-S"
                   set -g @resurrect-restore "C-R"
                 '';
 
               plugin = resurrect;
-            }
-            {
-              extraConfig =
-                # sh
-                ''
-                  set -g @continuum-save-interval "5"
-                  set -g @continuum-restore "on"
-                '';
-
-              plugin = continuum;
             }
           ]);
 
@@ -309,14 +389,18 @@
                 sock=$(ls -t /tmp/.X11-unix/X* 2>/dev/null | head -1)
                 [ -n "$sock" ] && export DISPLAY=":''${sock##*X}"
               fi
-              exec ${tmuxPkg}/bin/tmux start-server
+              ${tmuxPkg}/bin/tmux start-server
+              if ! ${tmuxPkg}/bin/tmux list-sessions >/dev/null 2>&1; then
+                ${tmuxResurrectRestore} >/dev/null 2>&1 || true
+              fi
             ''}";
 
             ExecStop = "${pkgs.writeShellScript "tmux-stop" ''
-              ${tmuxPkg}/bin/tmux run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh 2>/dev/null || true
+              ${tmuxPkg}/bin/tmux run-shell "${tmuxResurrectSave} quiet" 2>/dev/null || true
             ''}";
 
             KillMode = lib.mkDefault "mixed";
+            RemainAfterExit = lib.mkDefault true;
             Restart = lib.mkDefault "on-failure";
             Type = lib.mkDefault "forking";
           };
@@ -325,6 +409,8 @@
             After = [ "graphical-session.target" ];
             Description = "tmux server (continuum auto-restore)";
             Documentation = "man:tmux(1)";
+            X-RestartIfChanged = false;
+            X-StopIfChanged = false;
           };
         };
 

@@ -8,5 +8,10 @@
           pkgs.fcitx5
         ];
       };
+
+    persistHome.directories = [
+      ".config/fcitx5"
+      ".local/share/fcitx5"
+    ];
   };
 }

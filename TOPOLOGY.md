@@ -84,7 +84,7 @@ sequenceDiagram
 
 - **0** environments, **3** hosts, **1** users
 - Scope chain: flake → flake-system → host → user
-- Trace entries: 544
+- Trace entries: 557
 
 ## Environments
 
@@ -95,7 +95,7 @@ sequenceDiagram
 
 | Host | Aspect Count | Aspects |
 | ------ | -------------- | --------- |
-| nixos | 6 | define-user/artifex@nixos, host/resolve(dev), hostname/os, inputs'/os, nixos, self'/os |
+| nixos | 7 | define-user/artifex@nixos, host/resolve(dev), hostname/os, impermanence, inputs'/os, nixos, self'/os |
 | sandbox | 5 | define-user/artifex@sandbox, hostname/os, inputs'/os, sandbox, self'/os |
 | super | 7 | define-user/artifex@super, host/resolve(dev), hostname/os, impermanence, inputs'/os, self'/os, super |
 
@@ -103,12 +103,17 @@ sequenceDiagram
 
 | Pipe | Scope Boundary | Producers | Collectors |
 | ------ | ---------------- | ----------- | ------------ |
-| cacheHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| isWorkstation | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| persist | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| tests | flake-system: system=x86_64-linux | nixos, super | |
+| cache | flake-system: system=x86_64-linux | nixos, super |  |
+| cacheHome | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
+| codium-extensions | flake-system: system=x86_64-linux | nixos, super |  |
+| codium-settings | flake-system: system=x86_64-linux | nixos, super |  |
+| devenv | flake-system: system=x86_64-linux | nixos, super |  |
+| homeManagerModules | flake-system: system=x86_64-linux | nixos, super |  |
+| isWorkstation | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
+| nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
+| persist | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
+| persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super |  |
+| tests | flake-system: system=x86_64-linux | nixos, super |  |
 
 ## Policies
 

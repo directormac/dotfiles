@@ -10,5 +10,9 @@
 
         stylix.targets.foliate.enable = true;
       };
+
+    persistHome.directories = [
+      ".local/share/com.github.johnfactotum.Foliate"
+    ];
   };
 }

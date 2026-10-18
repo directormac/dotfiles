@@ -52,8 +52,8 @@
 
     };
 
-    # persistHome.directories = [
-    #   ".local/share/devenv"
-    # ];
+    cacheHome.directories = [
+      ".local/share/devenv"
+    ];
   };
 }

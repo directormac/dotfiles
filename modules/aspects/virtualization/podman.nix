@@ -21,6 +21,14 @@
         };
       };
 
+    cache.directories = [
+      "/var/lib/containers"
+    ];
+
+    cacheHome.directories = [
+      ".local/share/containers"
+    ];
+
     persistHome.directories = [
       ".config/lazydocker"
     ];

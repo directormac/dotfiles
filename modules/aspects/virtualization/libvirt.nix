@@ -36,5 +36,9 @@
           };
         };
       };
+
+    persist.directories = [
+      "/var/lib/libvirt"
+    ];
   };
 }

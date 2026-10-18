@@ -52,5 +52,10 @@
         };
       };
     };
+
+    persistHome.directories = [
+      ".config/vlc"
+      ".local/share/vlc"
+    ];
   };
 }

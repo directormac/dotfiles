@@ -68,6 +68,7 @@
 
     persistHome.directories = [
       ".local/share/opencode"
+      ".local/state/opencode"
       ".config/opencode"
       ".config/ai.opencode.desktop"
     ];

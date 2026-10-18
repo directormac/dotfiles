@@ -8,5 +8,9 @@
           pkgs.heroic
         ];
       };
+
+    persistHome.directories = [
+      ".config/heroic"
+    ];
   };
 }

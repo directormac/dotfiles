@@ -9,20 +9,14 @@ let
     pkgs:
     let
       libdatachannel = pkgs.fetchFromGitHub {
+        fetchSubmodules = true;
+        hash = "sha256-rr3au3JMqLd/sjNtXtXY2mcuW0CeOgG+Xj2RgEQCWys=";
         owner = "paullouisageneau";
         repo = "libdatachannel";
         tag = "v0.24.5";
-        fetchSubmodules = true;
-        hash = "sha256-rr3au3JMqLd/sjNtXtXY2mcuW0CeOgG+Xj2RgEQCWys=";
       };
 
       libdatachannelBuildDeps = pkgs.stdenv.mkDerivation {
-        name = "libdatachannel-build-deps";
-        nativeBuildInputs = [
-          pkgs.nodejs_22
-          pkgs.cacert
-        ];
-
         buildPhase = ''
           export HOME=$(mktemp -d)
           export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
@@ -33,26 +27,28 @@ let
           cp -r node_modules $out/
         '';
 
-        dontUnpack = true;
         dontInstall = true;
-        outputHashMode = "recursive";
+        dontUnpack = true;
+        name = "libdatachannel-build-deps";
+
+        nativeBuildInputs = [
+          pkgs.nodejs_22
+          pkgs.cacert
+        ];
+
         outputHash = "sha256-Psa2R99JFUHGCA3DsrKFYgC1D7KIY+Va/kDGuiRi/CQ=";
+        outputHashMode = "recursive";
       };
     in
     pkgs.buildNpmPackage {
-      pname = "torlink";
-      version = "2.2.0";
-      src = inputs.torlink;
       __structuredAttrs = true;
-      strictDeps = true;
-
+      buildInputs = [ pkgs.openssl ];
+      dontUseCmakeConfigure = true;
+      nativeBuildInputs = [ pkgs.cmake ];
       nodejs = pkgs.nodejs_22;
       npmDepsHash = "sha256-ff51LO8a87Y3VI38J2TLEIcIOkohr81OTGpBp7UO3Nc=";
       npmFlags = [ "--ignore-scripts" ];
-
-      nativeBuildInputs = [ pkgs.cmake ];
-      buildInputs = [ pkgs.openssl ];
-      dontUseCmakeConfigure = true;
+      pname = "torlink";
 
       postBuild = ''
         node scripts/postbuild.cjs
@@ -89,6 +85,10 @@ let
           }
       '';
 
+      src = inputs.torlink;
+      strictDeps = true;
+      version = "2.2.0";
+
       meta = {
         description = "Torlink is a torrent finder that lives in your terminal, with zero setup and nothing to configure.";
         homepage = "https://github.com/WarlaxZ/torlink";
@@ -111,6 +111,10 @@ in
           (torlinkPkg pkgs)
         ];
       };
+
+    persistHome.directories = [
+      ".config/torlink"
+      ".local/share/torlink"
+    ];
   };
 }
-

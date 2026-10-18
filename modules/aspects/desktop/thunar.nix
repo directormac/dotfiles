@@ -15,5 +15,10 @@
 
         programs.xfconf.enable = true;
       };
+
+    persistHome.directories = [
+      ".config/Thunar"
+      ".config/xfce4"
+    ];
   };
 }

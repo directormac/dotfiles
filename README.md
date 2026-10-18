@@ -59,8 +59,8 @@ This repository includes custom tools and scripts in `pkgs/by-name` to streamlin
 | Command | Description |
 | :--- | :--- |
 | `nix run .#write-flake` | Regenerate `flake.nix` inputs and outputs from `modules/flake-parts/flake-file.nix`. |
-| `nix run .#write-files` | Synchronize generated files (`README.md`, `.workmux.yaml`, `.nvim.lua`). |
-| `nix run .#write-topology` | Regenerate system topology documentation in `TOPOLOGY.md`. |
+| `nix run .#write-files` | Synchronize generated files (`README.md`, `AGENTS.md`, `BOOTSTRAP.md`, `.workmux.yaml`, `.nvim.lua`). |
+| `nix run .#diagrams.write-topology` | Regenerate system topology documentation in `TOPOLOGY.md`. |
 | `nix fmt modules/ pkgs/` | Format all Nix modules and packages according to project conventions. |
 | `nix flake check --no-build` | Validate all host configurations, checks, packages, and apps. |
 
@@ -84,6 +84,8 @@ The following files in this repository are generated and managed
 using [the files flake-parts module](https://github.com/sini/files):
 
 - `README.md`
+- `AGENTS.md`
+- `BOOTSTRAP.md`
 - `.workmux.yaml`
 - `.nvim.lua`
 
@@ -150,6 +152,74 @@ modules/
 Cross-cutting concerns collected from aspects and aggregated at host/user scope:
 `autostart` `cache` `cacheHome` `codium-extensions` `codium-settings` `firewall` `homeManagerModules` `nixpkgs-overlays` `persist` `persistHome` `secrets` `secretsHome`
 
+## Impermanence: `persist` vs `cache`
+
+System and user state persistence is managed declaratively in [`modules/core/impermanence.nix`](modules/core/impermanence.nix) via four Den quirks (`persist`, `cache`, `persistHome`, `cacheHome`) aggregated by `den.aspects.impermanence.collect`.
+
+On boot, `den.aspects.impermanence.rollback-btrfs` rolls the root subvolume (`/`) back to a read-only `root-blank` snapshot in `initrd` (controlled by `settings.impermanence.wipeRootOnBoot = true`, with optional `/home` rollback via `settings.impermanence.wipeHomeOnBoot = false`), while `den.aspects.impermanence.tmpfs` mounts `/tmp` on `tmpfs`.
+
+### The Four Persistence Quirks
+
+| Quirk | Target Mount | Scope | Purpose |
+| :--- | :--- | :--- | :--- |
+| **`persist`** | `/persist` | NixOS (`environment.persistence."/persist"`) | Critical, irreplaceable system state, identity keys, and service databases. |
+| **`cache`** | `/cache` | NixOS (`environment.persistence."/cache"`) | Regenerable system caches, temporary build artifacts, and container image layers. |
+| **`persistHome`** | `/persist` | Home Manager (`home.persistence."/persist"`) | Irreplaceable user data, credentials, app configs, shell/session history, and editor state. |
+| **`cacheHome`** | `/cache` | Home Manager (`home.persistence."/cache"`) | Re-downloadable or regenerable user caches, language toolchains, package registries, and game libraries. |
+
+### Differentiating `persistHome` vs `cacheHome` (and `persist` vs `cache`)
+
+When auditing an application that writes to `~/.config`, `~/.local/share`, `~/.local/state`, or `/var/lib`, classify each directory by **whether losing it causes data/identity loss (`persist` / `persistHome`) or merely a re-download/rebuild (`cache` / `cacheHome`)**:
+
+| Category | Quirk | Examples in Repository |
+| :--- | :--- | :--- |
+| **Identity, Keys & Secrets** | `persist` / `persistHome` | `/etc/machine-id`, `/etc/ssh/ssh_host_*_key`, `/var/lib/systemd/credential.secret`, `.ssh` (`0700`), `.gnupg`, `.config/agenix`, `.local/share/keyrings` |
+| **System & Network State** | `persist` | `/var/log`, `/var/lib/nixos`, `/etc/NetworkManager/system-connections`, `/var/lib/NetworkManager`, `/var/lib/tailscale`, `/var/lib/bluetooth`, `/var/lib/libvirt` |
+| **Sessions, History & Databases** | `persistHome` | `.local/state/tmux` (resurrect), `.local/share/zsh` & `.histdb`, `.local/share/zoxide`, `.local/share/television`, `.local/state/nvim` & `.local/share/nvim`, `.local/share/opencode` & `.local/state/opencode`, `.local/share/dankcal` |
+| **Mutable App Configurations** | `persistHome` | Browser profiles (`.config/zen`, `.mozilla`, `.config/chromium`), `.config/VSCodium`, `.config/vesktop`, `.config/obsidian`, `.config/fcitx5`, `.config/vlc`, `.config/torlink`, `.config/zennotes`, `.config/Thunar` |
+| **Language & Package Caches** | `cacheHome` | `.npm`, `.bun`, `.local/share/vite-plus`, `.cargo`, `.rustup`, `.config/go`, `.cache/uv`, `.local/share/uv`, `.local/share/mise`, `.cache/mise`, `.local/share/nix` |
+| **Env & Tooling Caches** | `cacheHome` | `.local/share/direnv`, `.local/share/devenv`, `.cache/nix-index`, `.local/share/qalculate`, `Downloads`, `.cache` |
+| **Browser & Electron Caches** | `cacheHome` | `.cache/zen`, `.cache/mozilla`, `.cache/librewolf`, `.cache/chromium`, `.config/ZenNotes` (Electron GPU/code cache) |
+| **Containers & Game Bulk Data** | `cache` / `cacheHome` | `/var/lib/containers`, `.local/share/containers`, `.local/share/Steam`, `.steam` |
+
+### Declaring Persistence in a Leaf Aspect
+
+Each leaf aspect under `modules/aspects/` declares its own persistence paths alongside its NixOS and Home Manager configuration:
+
+```nix
+{
+  den.aspects.applications.example = {
+    nixos = { ... };
+    homeManager = { ... };
+
+    # System-level state (/persist and /cache)
+    persist = {
+      directories = [ "/var/lib/example" ];
+      files = [ "/etc/example/host.key" ];
+    };
+    cache.directories = [ "/var/cache/example" ];
+
+    # User-level state (/persist/home/<user> and /cache/home/<user>)
+    persistHome = {
+      directories = [
+        ".config/example"
+        ".local/state/example"
+        {
+          directory = ".local/share/example-secrets";
+          mode = "0700";
+        }
+      ];
+      files = [ ".example_history" ];
+    };
+
+    cacheHome.directories = [
+      ".cache/example"
+      ".local/share/example/toolchains"
+    ];
+  };
+}
+```
+
 ## Topology & Hosts
 
 Hosts and user topologies are declared in [`modules/hosts/`](modules/hosts):
@@ -202,5 +272,5 @@ tv nix-generations # or: nhg, generations
 Generate fleet visualization diagrams and update `TOPOLOGY.md`:
 
 ```bash
-nix run .#write-topology
+nix run .#diagrams.write-topology
 ```

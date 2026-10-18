@@ -276,5 +276,9 @@
         };
       };
     };
+
+    persistHome.directories = [
+      ".local/share/nautilus"
+    ];
   };
 }

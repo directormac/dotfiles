@@ -9,5 +9,10 @@
           uv
         ];
       };
+
+    cacheHome.directories = [
+      ".cache/uv"
+      ".local/share/uv"
+    ];
   };
 }
