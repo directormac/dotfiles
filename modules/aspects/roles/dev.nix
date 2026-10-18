@@ -77,6 +77,7 @@
       dev.shell.mdcat
       dev.shell.lazymark
       dev.shell.lumen
+      dev.shell.hunk
       dev.shell.btop
       dev.shell.vivid
       dev.shell.fastfetch
