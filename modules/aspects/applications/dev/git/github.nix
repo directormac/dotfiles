@@ -20,7 +20,11 @@
         # '';
 
         programs.gh = {
-          settings.git_protocol = "ssh";
+
+          settings = {
+            git_protocol = "ssh";
+          };
+
           enable = true;
 
           extensions = with pkgs; [
@@ -30,6 +34,11 @@
             gh-stack
             gh-markdown-preview
           ];
+
+          gitCredentialHelper = {
+            enable = true;
+          };
+
         };
 
       };
