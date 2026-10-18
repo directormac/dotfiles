@@ -41,6 +41,7 @@
     cacheHome.directories = [
       "Downloads"
       ".local/share/nix"
+      ".cache"
     ];
 
     # Sane default home persistence directories
