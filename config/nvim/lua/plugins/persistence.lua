@@ -1,5 +1,6 @@
 return {
   'persistence.nvim',
+  event = 'BufReadPre',
   on_require = { 'persistence' },
   keys = {
 
