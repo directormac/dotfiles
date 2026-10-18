@@ -82,7 +82,8 @@ return {
     layout = {
       prompt_position = 'top',
       preview_position = 'right',
-      preview_size = 0.4,
+      preview_size = 0.6,
+      show_path_first = true,
       flex = { wrap = 'bottom' },
     },
     preview = {
