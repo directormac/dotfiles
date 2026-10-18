@@ -20,6 +20,11 @@
       {
 
         home.file = {
+          ".omp/agent/config.yml" = {
+            force = true;
+            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/omp/agent/config.yml";
+          };
+
           ".pi/agent/extensions/plan-mode" = {
             source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/extensions/plan-mode";
           };

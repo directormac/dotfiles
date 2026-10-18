@@ -1,0 +1,27 @@
+setupVersion: 2
+modelRoles:
+  plan: google-antigravity/gemini-3.8-flash:high
+  default: google-antigravity/gemini-3.8-flash:high
+  web: web/parallel
+theme:
+  dark: dark-catppuccin
+  light: dark-catppuccin
+memory:
+  backend: mnemopi
+plan:
+  autosave: true
+  defaultOnStartup: false
+statusLine:
+  preset: default
+  contextLine: annotated
+  sessionAccent: false
+  transparent: true
+terminal:
+  showProgress: true
+branchSummary:
+  enabled: true
+extendedContext: true
+contextPromotion:
+  enabled: true
+astGrep:
+  enabled: true
