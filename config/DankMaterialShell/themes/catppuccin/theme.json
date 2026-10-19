@@ -556,33 +556,21 @@
     "dark": {
       "level": "AA",
       "minRatio": 5.65,
-      "worstPair": [
-        "surfaceVariantText",
-        "surfaceContainerHigh"
-      ],
+      "worstPair": ["surfaceVariantText", "surfaceContainerHigh"],
       "body": {
         "level": "AA",
         "minRatio": 5.65,
-        "worstPair": [
-          "surfaceVariantText",
-          "surfaceContainerHigh"
-        ]
+        "worstPair": ["surfaceVariantText", "surfaceContainerHigh"]
       },
       "accent": {
         "level": "AAA",
         "minRatio": 8.07,
-        "worstPair": [
-          "primaryText",
-          "primary"
-        ]
+        "worstPair": ["primaryText", "primary"]
       },
       "nonText": {
         "level": "AA",
         "minRatio": 7.08,
-        "worstPair": [
-          "error",
-          "surfaceContainer"
-        ]
+        "worstPair": ["error", "surfaceContainer"]
       },
       "variants": {
         "frappe-blue": "fail",
@@ -652,33 +640,21 @@
     "light": {
       "level": "fail",
       "minRatio": 3.2,
-      "worstPair": [
-        "surfaceVariantText",
-        "surfaceContainerHigh"
-      ],
+      "worstPair": ["surfaceVariantText", "surfaceContainerHigh"],
       "body": {
         "level": "fail",
         "minRatio": 3.2,
-        "worstPair": [
-          "surfaceVariantText",
-          "surfaceContainerHigh"
-        ]
+        "worstPair": ["surfaceVariantText", "surfaceContainerHigh"]
       },
       "accent": {
         "level": "fail",
         "minRatio": 4.45,
-        "worstPair": [
-          "primary",
-          "surfaceContainer"
-        ]
+        "worstPair": ["primary", "surfaceContainer"]
       },
       "nonText": {
         "level": "fail",
         "minRatio": 2.45,
-        "worstPair": [
-          "warning",
-          "surfaceContainer"
-        ]
+        "worstPair": ["warning", "surfaceContainer"]
       },
       "variants": {
         "latte-blue": "fail",

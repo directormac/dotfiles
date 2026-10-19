@@ -1,29 +1,17 @@
 {
   "Code Block": {
     "prefix": "cb",
-    "body": [
-      "```${1:language}",
-      "$0",
-      "```"
-    ],
+    "body": ["```${1:language}", "$0", "```"],
     "description": "Triple backtick code block"
   },
   "Svelte Code Block": {
     "prefix": "cbsv",
-    "body": [
-      "```svelte",
-      "$0",
-      "```"
-    ],
+    "body": ["```svelte", "$0", "```"],
     "description": "Svelte code block"
   },
   "Elixir Code Block": {
     "prefix": "cbex",
-    "body": [
-      "```elixir",
-      "$0",
-      "```"
-    ],
+    "body": ["```elixir", "$0", "```"],
     "description": "Elixir code block"
   },
   "Link": {

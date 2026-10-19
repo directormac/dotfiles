@@ -21,34 +21,41 @@ modules/
 │   ├── applications/        # Leaf aspects for CLI, TUI, and GUI apps (browsers, dev, gaming, media, messaging, productivity, shell, terminals, wayland)
 │   ├── core/                # System foundation leaves (boot, documentation, locale, mounts, networking, nh, nix, nixpkgs, security, users)
 │   ├── desktop/             # Compositors (hyprland, niri, mangowm, dms, noctalia) and desktop services (audio, fonts, greeter, gtk, kdeconnect, nautilus, stylix, thunar, udiskie, xdg, xserver)
-│   ├── disk/                # Disko declarative partitioning layouts (btrfs.nix)
-│   ├── hardware/            # Hardware profiles and GPU/input/power leaves (bluetooth, graphics/*, input, laptop, nixos, power, steam-hardware)
+│   ├── disk/                # Disko declarative partitioning layouts (btrfs.nix with `settings.device`)
+│   ├── hardware/            # Hardware profiles and GPU/input/power leaves (bluetooth, graphics/*, input, laptop, power, steam-hardware)
 │   ├── roles/               # Role aggregators (default, workstation, dev, gaming)
 │   ├── secrets/             # Secret management (agenix.nix)
 │   ├── services/            # System daemons (avahi, openssh, printing, samba, smartd, tailscale)
 │   └── virtualization/      # Containers & VMs (libvirt, podman, waydroid, vm-variant, looking-glass, windows-vm)
-├── classes/                 # Den class forwarders (devenv, files, formatter, nix-unit)
-├── core/                    # Framework wiring (impermanence, capabilities, policies, quirks, settings, _settings-type)
-├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap}.nix)
-├── hosts/                   # Host declarations (nixos.nix, super.nix, sandbox.nix)
+├── classes/                 # Custom Den class routes (devenv, files, formatter/treefmt, nix-unit `tests`)
+├── core/                    # Framework wiring (dotfiles, impermanence, capabilities, policies, quirks, settings, _settings-type)
+├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap,envrc,gitignore}.nix)
+├── hosts/                   # Host declarations (nixos.nix, nixos/hardware.nix, super.nix, sandbox.nix)
 └── users/                   # User declarations (artifex.nix)
 pkgs/
 ├── overlays.nix             # Auto-discovers pkgs/by-name/* into `pkgs.local.<name>` and top-level `pkgs.<name>`
 └── by-name/<pkg>/package.nix
-config/                      # Live mutable/out-of-store application configs symlinked via `user.dotsConfigPath`
+config/                      # Live mutable/out-of-store application configs linked via `config.lib.dots.link`
 ```
 
-### Entity & Aspect Model
-- **Leaf Aspects (`den.aspects.<category>...<name>`)**: Self-contained feature modules. A single leaf aspect can define:
-  - `nixos`: NixOS module configuration
-  - `homeManager`: Home Manager module configuration
-  - `includes`: List of other aspects to include
-  - `settings`: Typed per-aspect options exposed at `host.settings.<aspect-path>` and `user.settings.<aspect-path>` (powered by `modules/core/settings.nix`)
-  - `flake-file.inputs`: Flake inputs required by the aspect
-  - **Quirks (Pipe Data)**: `persist`, `cache`, `persistHome`, `cacheHome`, `autostart`, `firewall`, `nixpkgs-overlays`, `homeManagerModules`, `codium-extensions`, `codium-settings`, `secrets`, `secretsHome`
-- **Roles (`den.aspects.roles.{default,workstation,dev,gaming}`)**: Pure composition aspects that group leaf aspects via `includes`.
-- **Hosts (`modules/hosts/<host>.nix`)**: Define both `den.aspects.<host>` (which includes roles, hardware, disk, secrets, and `impermanence`) and `den.hosts.<system>.<host>` (which binds users and host settings).
-- **Users (`modules/users/<user>.nix`)**: Define `den.aspects.<user>` using `den.batteries.host-aspects`, `den.batteries.primary-user`, and `(den.batteries.user-shell "zsh")`.
+### Den Entity, Scope & Aspect Model
+- **Choosing a Den Mechanism**:
+  | Goal | Den Mechanism |
+  | :--- | :--- |
+  | Bundle aspects so one brings others | `includes = [ ... ]` on the aspect |
+  | Configure OS / Home Manager | Class keys: `nixos`, `darwin`, `os` (platform-agnostic OS), `user` (`users.users.<name>`), `homeManager` |
+  | Vary config by host or user | Class module taking `{ host, ... }` / `{ user, ... }`, or a parametric aspect |
+  | Apply an aspect to every entity | `den.schema.<kind>.includes` (`host`, `user`, `home`, `flake-parts`), or `den.default.includes` for all |
+  | Per-aspect typed tunables | `settings.<opt> = lib.mkOption { ... }` on the aspect, read as `host.settings.<aspect>.<opt>` or `user.settings.<aspect>.<opt>` (`modules/core/settings.nix` + `modules/core/_settings-type.nix`) |
+  | Gate config on another aspect | Structural introspection: `host.hasAspect den.aspects.<path>` / `user.hasAspect den.aspects.<path>` inside `lib.mkIf` |
+  | Share structured data across aspects | Quirks (`den.quirks.<name>` in `modules/core/quirks.nix`); cross scopes via `den.lib.policy.pipe.expose` / `pipe.collect` (`modules/core/policies.nix`) |
+  | Forward custom class into another class | `den.classes.<name>` + `den.lib.policy.route` (`modules/classes/*.nix`) |
+- **Scope Isolation & Where Config Lands**:
+  - **Host scope** walks `den.aspects.<host>`, its `includes`, and `den.schema.host.includes`, delivering `nixos`, `darwin`, and `os`. `homeManager` keys on host-included aspects reach users only when the user opts in via `den.batteries.host-aspects` (which `artifex` includes) or via `provides.to-users`.
+  - **User scope** walks `den.aspects.<user>`, its `includes`, and `den.schema.user.includes`, delivering `homeManager` to `home-manager.users.<name>` and `user` to `users.users.<name>` (`den.schema.user.classes = [ "user" "homeManager" ]` in `modules/defaults.nix`). Inside a `user` class module, `osConfig` (or `config`) accesses the host's OS config.
+  - **Never use untargeted `nixos` on a user aspect** (Den issue `#694`): use the `user` class for the user's own OS account (`modules/users/artifex.nix`), `provides.to-hosts.nixos` / `provides.<host>.nixos` for explicit host OS changes, and `den.policies.project-user-quirks` (`pipe.expose` in `modules/core/policies.nix`) for user-emitted system quirks (`nixpkgs-overlays`, `persist`, `cache`, `firewall`, `secrets`).
+- **Quirks (Pipe Data)**: `persist`, `cache`, `persistHome`, `cacheHome`, `autostart`, `firewall`, `nixpkgs-overlays`, `homeManagerModules`, `codium-extensions`, `codium-settings`, `secrets`, `secretsHome`.
+- **Batteries in `den.default.includes`**: `den.batteries.define-user` (automatically creates `users.users.<name>` and sets `home.username` / `home.homeDirectory`), `den.batteries.hostname` (sets `networking.hostName` from `den.hosts.<system>.<name>`), `den.batteries.inputs'`, and `den.batteries.self'`.
 
 ## 2. Generated Files & Synchronization Invariants
 
@@ -60,10 +67,13 @@ Several root files are generated declaratively. **NEVER** edit generated target 
 | `README.md` | `modules/flake-parts/files/readme.nix` (`flake.readme.*` DAG) | `nix run .#write-files` |
 | `AGENTS.md` | `modules/flake-parts/files/agents.nix` (`flake.agents.*` DAG) | `nix run .#write-files` |
 | `BOOTSTRAP.md` | `modules/flake-parts/files/bootstrap.nix` (`flake.bootstrap.*` DAG) | `nix run .#write-files` |
+| `.envrc` | `modules/flake-parts/files/envrc.nix` (`flake.dot-envrc.*` DAG) | `nix run .#write-files` |
+| `.gitignore` | `modules/flake-parts/files/gitignore.nix` (`flake.dot-gitignore.*` DAG) | `nix run .#write-files` |
 | `.workmux.yaml` | `modules/aspects/applications/dev/mux/workmux.nix` | `nix run .#write-files` |
-| `.nvim.lua` | `modules/aspects/applications/dev/editor/neovim.nix` | `nix run .#write-files` |
 | `.treefmt.toml` | `modules/flake-parts/formatter.nix` | `nix run .#write-files` |
 | `TOPOLOGY.md` | `modules/flake-parts/diagrams.nix` | `nix run .#diagrams.write-topology` |
+
+> **Note:** `.nvim.lua` at the repository root is a hand-maintained project-local Neovim `exrc` file (not generated by `write-files`).
 
 ### Adding a New Generated Markdown File
 Follow the pattern in `modules/flake-parts/files/readme.nix`:
@@ -87,20 +97,31 @@ Root (`/`) is rolled back to an empty Btrfs snapshot (`root-blank`) on every boo
     - System: `/var/tmp`, `/srv`, `/var/lib/containers`.
     - User: `Downloads`, `.cache`, `.local/share/nix`, `.local/share/direnv`, `.local/share/devenv`, `.local/share/mise` & `.cache/mise`, `.npm`, `.bun`, `.local/share/vite-plus`, `.cargo`, `.rustup`, `.config/go`, `.cache/uv` & `.local/share/uv`, `.cache/nix-index`, browser caches (`.cache/zen`, `.cache/mozilla`, `.cache/chromium`), Electron caches (`.config/ZenNotes`), `.local/share/containers`, `.local/share/Steam` & `.steam`.
 
-### Impermanence Pitfalls to Avoid
+### Impermanence, Browser, Tmux & Formatter Invariants
 1. **Do NOT bind-mount directories managed purely as Home Manager store symlinks**:
    - If Home Manager creates symlinks inside a directory (e.g., `xdg.dataFile."helix/runtime/grammars"`), bind-mounting the parent directory in `persistHome` causes `hm-activate` to fail with `rmdir: failed to remove directory '...': Device or resource busy` when cleaning orphan links.
-2. **Out-of-Store Live Config Symlinks (`config/`)**:
-   - Configs that should remain live-editable without rebuilding NixOS live in `config/<app>` and are symlinked via:
+2. **Automatic Subpath Deduplication (`modules/core/impermanence.nix`)**:
+   - `den.aspects.impermanence.collect` normalizes relative home paths (stripping any accidental `~/` prefix or trailing `/`) and automatically filters out subdirectories whose parent directory is already persisted in the same pool (e.g., `.cache/<app>` under `.cache`), preventing duplicate self-bind-mounts.
+3. **Worktree-Aware Live Config Symlinks (`modules/core/dotfiles.nix`)**:
+   - Configs that remain live-editable without rebuilding NixOS live in `config/<app>` and **MUST** be linked via the central Home Manager helpers defined in `modules/core/dotfiles.nix` (never repeat `let dotsPath = ...` in aspects):
      ```nix
-     let
-       dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-     in
+     { config, ... }:
      {
-       xdg.configFile."<app>".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/<app>";
+       xdg.configFile."<app>".source = config.lib.dots.link "<app>";
+       # Or for plain path strings inside scripts:
+       # exec ${config.lib.dots.path "<app>/run.sh"} "$@"
      }
      ```
-   - Because `.dotfiles` is persisted via `persistHome`, out-of-store symlinks into `config/` are automatically persistent and do **not** need a duplicate `persistHome` entry for `.config/<app>`.
+   - `config.dots.configPath` defaults to `user.dotsConfigPath` (`modules/core/settings.nix`), which resolves `$DOTFILES_ROOT` / `$NH_FLAKE` when evaluated with `--impure` (exported automatically by `rebuild-switch` and the `nh` wrapper in `modules/aspects/core/nh.nix` when working inside a git worktree under `~/Code/.worktrees/.dotfiles/<branch>`) and falls back to `/home/<user>/.dotfiles/config` under pure evaluation.
+   - Because `.dotfiles` and `Code` are persisted via `persistHome`, out-of-store symlinks into `config/` are automatically persistent and do **not** need a duplicate `persistHome` entry for `.config/<app>`.
+4. **Browser Authentication & Keyring Persistence**:
+   - Gecko browsers (`zen.nix`, `firefox.nix`, `librewolf.nix`) share `common.sessionSettings` from `modules/aspects/applications/browsers/_common/default.nix` (`browser.startup.page = 3`, `privacy.sanitize.sanitizeOnShutdown = false`, `privacy.clearOnShutdown* = false`, and `services.sync.prefs.sync.privacy.* = false`) so session cookies and site storage survive reboots and LibreWolf's defaults are never synced over Firefox Sync.
+   - Chromium and Google Chrome (`chromium.nix`) pass `--password-store=gnome-libsecret` and persist `.pki` alongside `.config/chromium` and `.config/google-chrome`, while `modules/aspects/core/security.nix` enables `enableGnomeKeyring = true` on `sddm`, `greetd`, `gdm`, and `login` PAM services so cookie encryption keys stay unlocked across boots.
+5. **Tmux Resurrect & Continuum Session Restore (`modules/aspects/applications/dev/mux/tmux/`)**:
+   - Save and restore use lock-protected, self-healing wrappers (`resurrectSaveScript` and `resurrectRestoreScript` in `tmux.nix`) that refuse to save 0-pane servers during shutdown teardown, avoid same-second `save.sh` filename collisions that delete `last`, and repair `last` if dangling or empty.
+   - `systemd.user.services.tmux-server` (`_systemd.nix`) runs `resurrectRestoreScript` in `ExecStartPost` via `tmux run-shell` (which populates `$TMUX` so `restore.sh` resolves the server socket).
+6. **Neovim `conform.nvim` & `treefmt` Invariant (`modules/flake-parts/formatter.nix`)**:
+   - **NEVER** add `**/.conform.*` or `**/_*` to `treefmt`'s `settings.global.excludes`. `conform.nvim` invokes `treefmt` with `stdin = false` on temporary `.conform.<id>.<filename>` files next to the buffer; excluding `**/.conform.*` causes `treefmt` to skip every file saved in Neovim.
 
 ## 4. Flake Inputs, Overlays & Local Packages
 
@@ -129,7 +150,7 @@ nix eval .#nixosConfigurations.sandbox.config.system.build.toplevel.drvPath
 # 1. Regenerate flake.nix if flake-file.inputs changed
 nix run .#write-flake
 
-# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, .workmux.yaml, .nvim.lua
+# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, .envrc, .gitignore, .workmux.yaml, .treefmt.toml
 nix run .#write-files
 
 # 3. Regenerate TOPOLOGY.md if hosts, aspects, or quirks changed

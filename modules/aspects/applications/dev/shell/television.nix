@@ -26,11 +26,9 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         tv-channel-enter = pkgs.writeShellScript "tv-channel-enter" ''
           chan="$1"
           if [ -n "$TV_CMD" ]; then
@@ -704,14 +702,12 @@
             mode = "execute"
           '';
 
-        xdg.configFile."television/config.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/config.toml";
+        xdg.configFile."television/config.toml".source = config.lib.dots.link "television/config.toml";
 
         xdg.configFile."television/themes/catppuccin-mocha-mauve.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/themes/catppuccin-mocha-mauve.toml";
+          config.lib.dots.link "television/themes/catppuccin-mocha-mauve.toml";
 
-        xdg.configFile."television/tv-slim.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/television/tv-slim.toml";
+        xdg.configFile."television/tv-slim.toml".source = config.lib.dots.link "television/tv-slim.toml";
       };
 
     persistHome.directories = [

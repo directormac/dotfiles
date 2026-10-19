@@ -1,10 +1,19 @@
 # Policies: define entity relations and data flow routing
 { den, ... }:
 {
-  # Expose user-contributed nixpkgs-overlays to the host scope when sharing global pkgs
-  den.policies.project-user-overlays = _: [
-    (den.lib.policy.pipe.from "nixpkgs-overlays" [ den.lib.policy.pipe.expose ])
-  ];
+  # Expose user-contributed system quirks up to the host scope (see guides/quirks-cross-scope.mdx)
+  den.policies.project-user-quirks =
+    _:
+    let
+      inherit (den.lib.policy) pipe;
+    in
+    map (q: pipe.from q [ pipe.expose ]) [
+      "nixpkgs-overlays"
+      "persist"
+      "cache"
+      "firewall"
+      "secrets"
+    ];
 
-  den.schema.user.includes = [ den.policies.project-user-overlays ];
+  den.schema.user.includes = [ den.policies.project-user-quirks ];
 }

@@ -10,8 +10,8 @@
         ];
 
         programs.obsidian = {
-          cli.enable = true;
           enable = true;
+          cli.enable = true;
 
         };
       };

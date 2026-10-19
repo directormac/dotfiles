@@ -1,11 +1,10 @@
 { pkgs }:
 let
+  inherit (rycee-firefox-addons) buildFirefoxXpiAddon;
+  normalizeVimiumVal = v: if builtins.isList v then builtins.concatStringsSep "\n" v else v;
   rycee-firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
-  buildFirefoxXpiAddon = rycee-firefox-addons.buildFirefoxXpiAddon;
-
   # Helper to parse and normalize Vimium C JSON backup into storage.local schema
   vimiumCRaw = builtins.fromJSON (builtins.readFile ./vimium-c.json);
-  normalizeVimiumVal = v: if builtins.isList v then builtins.concatStringsSep "\n" v else v;
   vimiumCSettings = builtins.mapAttrs (_: normalizeVimiumVal) (
     removeAttrs vimiumCRaw [
       "name"
@@ -17,32 +16,51 @@ let
 
 in
 {
-  catppuccin-mocha-mauve = rycee-firefox-addons.catppuccin-mocha-mauve;
+  inherit (rycee-firefox-addons) catppuccin-mocha-mauve;
+  inherit rycee-firefox-addons;
+  inherit vimiumCSettings;
 
   customAddons = {
     volume-control-boost-volume = buildFirefoxXpiAddon {
-      pname = "volume-control-boost-volume";
-      version = "6.20";
       addonId = "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/5098066/volume_control_boost_volume-6.20.xpi";
+      pname = "volume-control-boost-volume";
       sha256 = "sha256-mPRJmdW+VeoIOAZn8IMYw+VaX0VKZr4my9+NL/XyqRk=";
+      url = "https://addons.mozilla.org/firefox/downloads/file/5098066/volume_control_boost_volume-6.20.xpi";
+      version = "6.20";
+
       meta = with pkgs.lib; {
-        homepage = "https://github.com/Chaython/volumecontrol";
         description = "Adds a volume control for the current site, that can also boost the volume beyond the normal range.";
+        homepage = "https://github.com/Chaython/volumecontrol";
         license = licenses.mit;
+
         mozPermissions = [
           "storage"
           "activeTab"
           "<all_urls>"
         ];
+
         platforms = platforms.all;
       };
     };
   };
 
-  rycee-firefox-addons = rycee-firefox-addons;
+  extensionButtons = {
+    "nav-bar" = [
+      "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}" # Volume Control
+      "addon@darkreader.org" # Dark Reader
+      "{3c078156-979c-498b-8990-85f7987dd929}" # Sidebery
+    ];
 
-  vimiumCSettings = vimiumCSettings;
+    "unified-extensions-area" = [
+      "uBlock0@raymondhill.net" # uBlock Origin
+      "sponsorBlocker@ajay.app" # SponsorBlock
+      "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" # github-file-icons
+      "{74145f27-f039-47ce-a470-a662b129930a}" # ClearURLs
+      "vimium-c@gdh1995.cn" # Vimium C
+      "{7efbd09d-90ad-47fa-b91a-08c472bdf566}" # fake-filler
+      "{84c8edb0-65ca-43a5-bc53-0e80f41486e1}" # tweaks-for-youtube
+    ];
+  };
 
   packages = with rycee-firefox-addons; [
     bitwarden
@@ -57,12 +75,13 @@ in
     # Dark Reader declarative configuration
     "addon@darkreader.org" = {
       force = true;
+
       settings = {
-        schemeVersion = 2;
+        disabledFor = [ "github.com" ];
         enabled = true;
         enabledByDefault = true;
         enabledFor = [ ];
-        disabledFor = [ "github.com" ];
+        schemeVersion = 2;
         siteList = [ "github.com" ];
         syncSettings = false;
       };
@@ -71,9 +90,10 @@ in
     # ClearURLs declarative configuration
     "{74145f27-f039-47ce-a470-a662b129930a}" = {
       force = true;
+
       settings = {
-        badged_color = "#7b383a";
         badgedStatus = true;
+        badged_color = "#7b383a";
         domainBlocking = false;
         eTagFiltering = true;
         hashURL = "https://rules2.clearurls.xyz/rules.minify.hash";
@@ -87,22 +107,5 @@ in
         statisticsStatus = true;
       };
     };
-  };
-
-  extensionButtons = {
-    "nav-bar" = [
-      "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}" # Volume Control
-      "addon@darkreader.org" # Dark Reader
-      "{3c078156-979c-498b-8990-85f7987dd929}" # Sidebery
-    ];
-    "unified-extensions-area" = [
-      "uBlock0@raymondhill.net" # uBlock Origin
-      "sponsorBlocker@ajay.app" # SponsorBlock
-      "{85860b32-02a8-431a-b2b1-40fbd64c9c69}" # github-file-icons
-      "{74145f27-f039-47ce-a470-a662b129930a}" # ClearURLs
-      "vimium-c@gdh1995.cn" # Vimium C
-      "{7efbd09d-90ad-47fa-b91a-08c472bdf566}" # fake-filler
-      "{84c8edb0-65ca-43a5-bc53-0e80f41486e1}" # tweaks-for-youtube
-    ];
   };
 }

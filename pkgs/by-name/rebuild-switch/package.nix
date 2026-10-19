@@ -24,6 +24,7 @@ writeShellApplication {
     GIT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$HOME/.dotfiles")"
     export NH_FLAKE="''${NH_FLAKE:-$GIT_ROOT}"
     export NH_OS_FLAKE="''${NH_OS_FLAKE:-$NH_FLAKE}"
+    export DOTFILES_ROOT="''${DOTFILES_ROOT:-$NH_FLAKE}"
 
 
     # Extract branch, sanitized for NixOS label characters: letters, numbers, ':', '_', '.', '-'

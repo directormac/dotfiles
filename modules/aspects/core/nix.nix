@@ -54,12 +54,12 @@
         };
 
         programs.nh = {
+          enable = lib.mkDefault true;
+
           clean = {
             enable = lib.mkDefault true;
             extraArgs = lib.mkDefault "--keep-since 4d --keep 3";
           };
-
-          enable = lib.mkDefault true;
 
           flake =
             let

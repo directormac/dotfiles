@@ -22,18 +22,11 @@
       };
 
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
+      { config, ... }:
       {
         home.file.".config/ghostty" = {
           recursive = true;
-          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/ghostty";
+          source = config.lib.dots.link "ghostty";
         };
 
         home.file.".local/bin/gshader" = {
@@ -41,7 +34,7 @@
 
           text = ''
             #!/usr/bin/env bash
-            exec ${dotsPath}/ghostty/shader.sh "$@"
+            exec ${config.lib.dots.path "ghostty/shader.sh"} "$@"
           '';
         };
 

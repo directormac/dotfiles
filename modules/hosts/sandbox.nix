@@ -12,13 +12,7 @@
       (den.batteries.vm-autologin "artifex")
     ];
 
-    nixos = {
-      networking.hostName = "sandbox";
-      system.stateVersion = "26.05";
-    };
-
     description = "NixOS Sandbox Testbed";
-    isWorkstation = false;
   };
 
   den.hosts.x86_64-linux.sandbox = {

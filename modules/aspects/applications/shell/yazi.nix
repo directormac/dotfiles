@@ -16,12 +16,8 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
         home.packages = with pkgs; [
           file
@@ -68,7 +64,7 @@
           map
             (name: {
               name = "yazi/${name}";
-              value.source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/yazi/${name}";
+              value.source = config.lib.dots.link "yazi/${name}";
             })
             [
               "yazi.toml"

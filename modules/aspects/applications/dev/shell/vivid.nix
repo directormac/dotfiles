@@ -7,9 +7,9 @@
         home.packages = [ pkgs.vivid ];
 
         programs.vivid = {
+          enable = true;
           activeTheme = "catppuccin-mocha";
           colorMode = "24-bit";
-          enable = true;
           enableBashIntegration = true;
           enableZshIntegration = true;
         };

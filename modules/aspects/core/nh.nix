@@ -22,12 +22,12 @@
         imports = lib.optional (self ? wrappers && self.wrappers ? nh) self.wrappers.nh.install;
 
         programs.nh = {
+          enable = true;
+
           clean = {
             enable = lib.mkDefault true;
             extraArgs = lib.mkDefault "--keep-since 4d --keep 3";
           };
-
-          enable = true;
 
           flake = lib.mkDefault (
             let
@@ -107,6 +107,7 @@
             fi
 
             export NH_FLAKE="''${__nh_target:-${config.dotfilesPath}}"
+            export DOTFILES_ROOT="''${DOTFILES_ROOT:-$NH_FLAKE}"
 
             if [[ "$NH_FLAKE" == "${config.worktreesPath}/"* ]]; then
               __wt_display="''${NH_FLAKE#${config.worktreesPath}/}"

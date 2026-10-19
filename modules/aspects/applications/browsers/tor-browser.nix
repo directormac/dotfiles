@@ -8,5 +8,10 @@
           pkgs.tor-browser
         ];
       };
+
+    persistHome.directories = [
+      ".local/share/torbrowser"
+      ".tor project"
+    ];
   };
 }

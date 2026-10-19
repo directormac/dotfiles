@@ -270,10 +270,13 @@ hl.bind('CTRL + ALT + m', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float -e 
 hl.bind(modkey .. ' + D', hl.dsp.exec_cmd('which-key'))
 hl.bind(modkey .. ' + SPACE', hl.dsp.exec_cmd('dms ipc call spotlight toggle'))
 
-
 -- Voice Dictation (Voxtype) & Transcription (Voxterm)
 hl.bind(modkey .. ' + V', hl.dsp.exec_cmd('voxtype record toggle'), { desc = 'Toggle voice dictation' })
-hl.bind(modkey .. ' + SHIFT + V', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float -e voxterm', cfg.floating_centered_wr), { desc = 'Voice transcription TUI' })
+hl.bind(
+  modkey .. ' + SHIFT + V',
+  hl.dsp.exec_cmd('ghostty --class=com.ghostty.float -e voxterm', cfg.floating_centered_wr),
+  { desc = 'Voice transcription TUI' }
+)
 hl.bind(modkey .. ' + ALT + V', hl.dsp.exec_cmd('voxtype record cancel'), { desc = 'Cancel voice dictation' })
 hl.bind(modkey .. ' + Escape', hl.dsp.exec_cmd('dms ipc call hypr toggleOverview'))
 

@@ -317,7 +317,7 @@ sudo nix --experimental-features "nix-command flakes" \
 ```
 
 ### Step 7.2: Place the Dotfiles Repository into Persistent Home Storage
-Out-of-store config symlinks (`user.dotsConfigPath = "/home/artifex/.dotfiles/config"`) and `impermanence` (`persistHome.directories = [ ".dotfiles" ]`) expect the repository at `/persist/home/artifex/.dotfiles` (bind-mounted to `/home/artifex/.dotfiles`):
+Out-of-store config symlinks (`config.lib.dots.link` backed by `user.dotsConfigPath`) and `impermanence` (`persistHome.directories = [ ".dotfiles" ]`) expect the repository at `/persist/home/artifex/.dotfiles` (bind-mounted to `/home/artifex/.dotfiles`):
 ```bash
 sudo mkdir -p /mnt/persist/home/artifex /mnt/home/artifex /mnt/cache/home/artifex
 sudo cp -a /tmp/dotfiles /mnt/persist/home/artifex/.dotfiles

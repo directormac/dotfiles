@@ -5,6 +5,8 @@
       { pkgs, ... }:
       {
         programs.btop = {
+          enable = true;
+
           settings = {
             disable_presets = "Off";
             force_tty = false;
@@ -17,7 +19,6 @@
             vim_keys = true;
           };
 
-          enable = true;
           package = pkgs.btop.override { rocmSupport = true; };
         };
 

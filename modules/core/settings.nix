@@ -21,8 +21,18 @@
       { user, ... }:
       {
         options.dotsConfigPath = lib.mkOption {
-          default = "/home/${user.name}/.dotfiles/config";
-          description = "Absolute path to the live dotfiles config/ directory for out-of-store symlinks.";
+          # `$DOTFILES_ROOT` / `$NH_FLAKE` are visible under `--impure` (`rebuild-switch` and
+          # the `nh` wrapper in `modules/aspects/core/nh.nix` set them to the active git
+          # worktree); pure evaluation keeps the main checkout.
+          default =
+            let
+              envRoot = builtins.getEnv "DOTFILES_ROOT";
+              nhRoot = builtins.getEnv "NH_FLAKE";
+              root = if envRoot != "" then envRoot else nhRoot;
+            in
+            if root != "" then "${root}/config" else "/home/${user.name}/.dotfiles/config";
+
+          description = "Absolute path to the live dotfiles config/ directory for out-of-store symlinks. Consumed through `config.lib.dots` (modules/core/dotfiles.nix).";
           type = lib.types.str;
         };
 

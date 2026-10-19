@@ -43,11 +43,9 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         tv-mango-client-preview = pkgs.writeShellScript "tv-mango-client-preview" ''
           id="$1"
           mmsg get all-clients 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg id "$id" '
@@ -71,17 +69,10 @@
         '';
       in
       {
-        home.file.".config/mango/bind.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/bind.toml";
-
-        home.file.".config/mango/config.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/config.toml";
-
-        home.file.".config/mango/rule.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/rule.toml";
-
-        home.file.".config/mango/tag.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mango/tag.toml";
+        home.file.".config/mango/bind.toml".source = config.lib.dots.link "mango/bind.toml";
+        home.file.".config/mango/config.toml".source = config.lib.dots.link "mango/config.toml";
+        home.file.".config/mango/rule.toml".source = config.lib.dots.link "mango/rule.toml";
+        home.file.".config/mango/tag.toml".source = config.lib.dots.link "mango/tag.toml";
 
         home.packages = with pkgs; [
           slurp

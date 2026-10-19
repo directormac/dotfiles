@@ -3,7 +3,5 @@
   "description": "Omarchy Copy URL clipboard host",
   "path": "__HOST_PATH__",
   "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://bgpiichlckmfanooecilcjemknkcpngb/"
-  ]
+  "allowed_origins": ["chrome-extension://bgpiichlckmfanooecilcjemknkcpngb/"]
 }

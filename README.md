@@ -59,7 +59,7 @@ This repository includes custom tools and scripts in `pkgs/by-name` to streamlin
 | Command | Description |
 | :--- | :--- |
 | `nix run .#write-flake` | Regenerate `flake.nix` inputs and outputs from `modules/flake-parts/flake-file.nix`. |
-| `nix run .#write-files` | Synchronize generated files (`README.md`, `AGENTS.md`, `BOOTSTRAP.md`, `.workmux.yaml`, `.nvim.lua`). |
+| `nix run .#write-files` | Synchronize generated files (`README.md`, `AGENTS.md`, `BOOTSTRAP.md`, `.envrc`, `.gitignore`, `.workmux.yaml`, `.treefmt.toml`). |
 | `nix run .#diagrams.write-topology` | Regenerate system topology documentation in `TOPOLOGY.md`. |
 | `nix fmt modules/ pkgs/` | Format all Nix modules and packages according to project conventions. |
 | `nix flake check --no-build` | Validate all host configurations, checks, packages, and apps. |
@@ -86,8 +86,10 @@ using [the files flake-parts module](https://github.com/sini/files):
 - `README.md`
 - `AGENTS.md`
 - `BOOTSTRAP.md`
+- `.envrc`
+- `.gitignore`
 - `.workmux.yaml`
-- `.nvim.lua`
+- `.treefmt.toml`
 
 ## Automatic Import
 

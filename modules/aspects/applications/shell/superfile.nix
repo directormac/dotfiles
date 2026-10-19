@@ -45,6 +45,7 @@
 
     persistHome.directories = [
       ".config/superfile"
+      ".local/share/superfile"
       ".local/state/superfile"
     ];
   };

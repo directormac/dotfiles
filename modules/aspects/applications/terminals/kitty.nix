@@ -13,16 +13,12 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
         home.file.".config/kitty" = {
           recursive = true;
-          source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/kitty";
+          source = config.lib.dots.link "kitty";
         };
 
         home.packages = [

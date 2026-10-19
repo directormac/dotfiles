@@ -1,6 +1,42 @@
 # Zsh Keybindings Inspector & Television Cable Integration
 { pkgs }:
 let
+  televisionCableToml =
+    # toml
+    ''
+      [metadata]
+      name = "zsh-keys"
+      description = "Fuzzy search zsh keybindings across viins, vicmd, and visual modes"
+      requirements = ["zsh", "gawk"]
+
+      [source]
+      command = "${zsh-list-keys-tv}/bin/zsh-list-keys-tv"
+      display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
+      output = "{split:\t:1}"
+
+      [preview]
+      command = "echo -e '{split:\t:0} (map: {split:\t:2})\nraw: {split:\t:3}\n\nwidget\n{split:\t:1}\n\ndescription\n{split:\t:4}\n\nsnippet\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
+
+      [keybindings]
+      enter = "actions:info"
+      ctrl-y = "actions:copy_snippet"
+      alt-y = "actions:copy_key"
+
+      [actions.info]
+      description = "Echo widget name"
+      command = "echo '{split:\t:1}'"
+      mode = "execute"
+
+      [actions.copy_snippet]
+      description = "Copy config snippet (zvm_bindkey ...) to clipboard"
+      command = "echo -n \"zvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}\" | wl-copy"
+      mode = "execute"
+
+      [actions.copy_key]
+      description = "Copy raw key to clipboard"
+      command = "echo -n '{split:\t:3}' | wl-copy"
+      mode = "execute"
+    '';
   zsh-list-keys-tv = pkgs.writeShellScriptBin "zsh-list-keys-tv" ''
     ${pkgs.zsh}/bin/zsh -i -c '
       for km in viins vicmd visual; do
@@ -106,43 +142,6 @@ let
       }
     '
   '';
-
-  televisionCableToml =
-    # toml
-    ''
-      [metadata]
-      name = "zsh-keys"
-      description = "Fuzzy search zsh keybindings across viins, vicmd, and visual modes"
-      requirements = ["zsh", "gawk"]
-
-      [source]
-      command = "${zsh-list-keys-tv}/bin/zsh-list-keys-tv"
-      display = "{split:\t:0}  │  {split:\t:1}  [{split:\t:2}]"
-      output = "{split:\t:1}"
-
-      [preview]
-      command = "echo -e '{split:\t:0} (map: {split:\t:2})\nraw: {split:\t:3}\n\nwidget\n{split:\t:1}\n\ndescription\n{split:\t:4}\n\nsnippet\nzvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}'"
-
-      [keybindings]
-      enter = "actions:info"
-      ctrl-y = "actions:copy_snippet"
-      alt-y = "actions:copy_key"
-
-      [actions.info]
-      description = "Echo widget name"
-      command = "echo '{split:\t:1}'"
-      mode = "execute"
-
-      [actions.copy_snippet]
-      description = "Copy config snippet (zvm_bindkey ...) to clipboard"
-      command = "echo -n \"zvm_bindkey {split:\t:2} {split:\t:3} {split:\t:1}\" | wl-copy"
-      mode = "execute"
-
-      [actions.copy_key]
-      description = "Copy raw key to clipboard"
-      command = "echo -n '{split:\t:3}' | wl-copy"
-      mode = "execute"
-    '';
 in
 {
   inherit zsh-list-keys-tv televisionCableToml;

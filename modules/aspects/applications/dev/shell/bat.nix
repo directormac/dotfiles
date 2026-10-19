@@ -7,6 +7,8 @@
         home.packages = [ pkgs.bat ];
 
         programs.bat = {
+          enable = true;
+
           config = {
             italic-text = "always";
 
@@ -19,8 +21,6 @@
             paging = "auto";
             theme = "Catppuccin Mocha";
           };
-
-          enable = true;
         };
       };
   };

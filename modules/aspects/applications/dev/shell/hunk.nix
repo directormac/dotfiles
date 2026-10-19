@@ -6,19 +6,15 @@
       {
         pkgs,
         # config,
-        # user,
         ...
       }:
-      # let
-      #   dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      # in
       {
         home.packages = with pkgs; [
           hunk
         ];
 
         # xdg.configFile."hunk/config.toml".source =
-        #   config.lib.file.mkOutOfStoreSymlink "${dotsPath}/hunk/config.toml";
+        #   config.lib.dots.link "hunk/config.toml";
 
         xdg.configFile."hunk/config.toml".text =
           # toml

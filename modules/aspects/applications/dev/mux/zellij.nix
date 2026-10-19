@@ -15,8 +15,8 @@
       in
       {
         programs.zellij = {
-          attachExistingSession = false;
           enable = true;
+          attachExistingSession = false;
           enableBashIntegration = false;
           enableZshIntegration = false;
 

@@ -11,6 +11,8 @@
 
     homeManager = {
       programs.sesh = {
+        enable = true;
+
         settings = {
           session = [
             {
@@ -67,7 +69,6 @@
           ];
         };
 
-        enable = true;
         enableAlias = true;
         enableTmuxIntegration = false;
       };

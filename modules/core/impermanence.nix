@@ -179,10 +179,20 @@
         ...
       }:
       let
-        merge = entries: {
-          directories = lib.unique (lib.concatMap (e: e.directories or [ ]) entries);
-          files = lib.unique (lib.concatMap (e: e.files or [ ]) entries);
-        };
+        dirPath = d: lib.removeSuffix "/" (if builtins.isAttrs d then d.directory else d);
+        flatten = lib.concatMap (e: if builtins.isList e then e else [ e ]);
+        merge =
+          entries:
+          let
+            dirStrings = map dirPath rawDirs;
+            flat = flatten entries;
+            isSubpath = p: builtins.any (parent: parent != p && lib.hasPrefix "${parent}/" p) dirStrings;
+            rawDirs = lib.unique (lib.concatMap (e: e.directories or [ ]) flat);
+          in
+          {
+            directories = builtins.filter (d: !isSubpath (dirPath d)) rawDirs;
+            files = lib.unique (lib.concatMap (e: e.files or [ ]) flat);
+          };
       in
       {
         environment.persistence."/cache" = merge cache;
@@ -197,10 +207,22 @@
         ...
       }:
       let
-        merge = entries: {
-          directories = lib.unique (lib.concatMap (e: e.directories or [ ]) entries);
-          files = lib.unique (lib.concatMap (e: e.files or [ ]) entries);
-        };
+        dirPath =
+          d: lib.removeSuffix "/" (lib.removePrefix "~/" (if builtins.isAttrs d then d.directory else d));
+        flatten = lib.concatMap (e: if builtins.isList e then e else [ e ]);
+        merge =
+          entries:
+          let
+            dirStrings = map dirPath rawDirs;
+            flat = flatten entries;
+            isSubpath = p: builtins.any (parent: parent != p && lib.hasPrefix "${parent}/" p) dirStrings;
+            rawDirs = lib.unique (map normalizeDir (lib.concatMap (e: e.directories or [ ]) flat));
+          in
+          {
+            directories = builtins.filter (d: !isSubpath (dirPath d)) rawDirs;
+            files = lib.unique (lib.concatMap (e: e.files or [ ]) flat);
+          };
+        normalizeDir = d: if builtins.isAttrs d then d // { directory = dirPath d; } else dirPath d;
       in
       {
         home.persistence."/cache" = (merge cacheHome) // {

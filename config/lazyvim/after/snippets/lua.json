@@ -4,10 +4,6 @@
     "body": "local $1 = $0"
   },
   "Remove prefixes": {
-    "prefix": [
-      "lfu",
-      "ll",
-      "lpca"
-    ]
+    "prefix": ["lfu", "ll", "lpca"]
   }
 }

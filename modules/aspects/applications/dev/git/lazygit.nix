@@ -2,17 +2,10 @@
 {
   den.aspects.applications.dev.git.lazygit = {
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
+      { config, ... }:
       {
         programs.lazygit.enable = true;
-        xdg.configFile."lazygit".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/lazygit";
+        xdg.configFile."lazygit".source = config.lib.dots.link "lazygit";
       };
 
     persistHome.directories = [

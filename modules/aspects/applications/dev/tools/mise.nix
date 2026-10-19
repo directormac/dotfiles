@@ -14,12 +14,8 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
         home.packages = with pkgs; [
           mise
@@ -34,8 +30,8 @@
         };
 
         xdg.configFile = {
-          "mise/.miserc.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mise/.miserc.toml";
-          "mise/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/mise/config.toml";
+          "mise/.miserc.toml".source = config.lib.dots.link "mise/.miserc.toml";
+          "mise/config.toml".source = config.lib.dots.link "mise/config.toml";
         };
       };
 

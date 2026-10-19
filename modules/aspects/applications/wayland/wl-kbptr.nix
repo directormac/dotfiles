@@ -17,20 +17,11 @@
       };
 
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
+      { config, ... }:
       {
         imports = lib.optional (self ? wrappers && self.wrappers ? wl-kbptr) self.wrappers.wl-kbptr.install;
         wrappers.wl-kbptr.enable = true;
-
-        xdg.configFile."wl-kbptr/config".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/wl-kbptr/config";
+        xdg.configFile."wl-kbptr/config".source = config.lib.dots.link "wl-kbptr/config";
       };
   };
 

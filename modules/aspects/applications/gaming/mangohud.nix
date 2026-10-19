@@ -3,6 +3,8 @@
   den.aspects.applications.gaming.mangohud = {
     homeManager = {
       programs.mangohud = {
+        enable = true;
+
         settings = {
           core_load = false;
           cpu_mhz = true;
@@ -45,7 +47,6 @@
           vsync = 2;
         };
 
-        enable = true;
         enableSessionWide = true;
 
         settingsPerApplication = {

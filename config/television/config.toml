@@ -78,7 +78,7 @@ ctrl-s = "cycle_sources"
 # ----------
 ctrl-t = "toggle_remote_control"
 ctrl-x = "toggle_action_picker"
-alt-p = "toggle_preview" # Default: ctrl-o
+alt-p = "toggle_preview"         # Default: ctrl-o
 ctrl-h = "toggle_help"
 f12 = "toggle_status_bar"
 ctrl-l = "toggle_layout"
@@ -138,7 +138,7 @@ fallback_channel = "files"
   "unzip",
   "gzip",
   "gunzip",
-  "xz"
+  "xz",
 ]
 "git-diff" = ["git add", "git restore"]
 "git-branch" = [
@@ -148,7 +148,7 @@ fallback_channel = "files"
   "git merge",
   "git rebase",
   "git pull",
-  "git push"
+  "git push",
 ]
 "git-log" = ["git log", "git show"]
 "docker-images" = ["docker run"]
@@ -157,7 +157,7 @@ fallback_channel = "files"
   "herdr session",
   "herdr --session",
   "herdr session attach",
-  "h session"
+  "h session",
 ]
 "herdr-worktrees" = ["herdr worktree", "h worktree"]
 "herdr-workspaces" = ["herdr workspace", "h workspace"]
@@ -168,7 +168,7 @@ fallback_channel = "files"
 "cliphist" = ["cliphist decode", "cliphist delete", "clip"]
 "hypr-clients" = [
   "hyprctl dispatch focuswindow",
-  "hyprctl dispatch closewindow"
+  "hyprctl dispatch closewindow",
 ]
 "hypr-workspaces" = ["hyprctl dispatch workspace"]
 "mango-clients" = ["mmsg dispatch focus_window", "mmsg dispatch close_window"]
@@ -184,7 +184,7 @@ fallback_channel = "files"
   "nix-generations",
   "nixos-rebuild list-generations",
   "nh os generations",
-  "tv-generations"
+  "tv-generations",
 ]
 
 [shell_integration.keybindings]

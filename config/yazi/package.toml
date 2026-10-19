@@ -1,3 +1,6 @@
+[flavor]
+deps = []
+
 [[plugin.deps]]
 use = "WhoSowSee/mdv-previewer"
 rev = "099ebba"
@@ -12,6 +15,3 @@ hash = "b95f898e6dc60b52edbc415952e14395"
 use = "yazi-rs/plugins:git"
 rev = "c591a36"
 hash = "5bb0bfab901d3601c370eafdd66edd31"
-
-[flavor]
-deps = []

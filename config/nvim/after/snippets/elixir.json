@@ -48,10 +48,7 @@
     "scope": "source.elixir"
   },
   "dmac": {
-    "prefix": [
-      "dmac",
-      "defmac"
-    ],
+    "prefix": ["dmac", "defmac"],
     "body": "defmacro $1 do\n\t$0\nend",
     "description": "defmacro",
     "scope": "source.elixir"
@@ -75,10 +72,7 @@
     "scope": "source.elixir"
   },
   "dmod": {
-    "prefix": [
-      "dmod",
-      "defmod"
-    ],
+    "prefix": ["dmod", "defmod"],
     "comments": [
       "Generates the namespace for a file.",
       "e.g. A file with the path `lib/foo/bar/baz/boing.ex` would resolve to Foo.Bar.Baz.Boing."
@@ -451,10 +445,7 @@
     "scope": "source.elixir"
   },
   "ExUnit": {
-    "prefix": [
-      "ex_unit",
-      "exu"
-    ],
+    "prefix": ["ex_unit", "exu"],
     "body": [
       "defmodule ${RELATIVE_FILEPATH/^([^\\/\\\\]+[\\/\\\\])|(\\.ex|\\.exs)$|([^._\\/\\\\]+)|_|([\\/\\\\])/${3:/capitalize}${4:+.}/g} do",
       "\tuse ExUnit.Case",
@@ -471,33 +462,19 @@
   },
   "wt": {
     "prefix": "wt",
-    "body": [
-      "with $1 do",
-      "\t$0",
-      "end"
-    ],
+    "body": ["with $1 do", "\t$0", "end"],
     "description": "with",
     "scope": "source.elixir"
   },
   "wte": {
     "prefix": "wte",
-    "body": [
-      "with $1 do",
-      "\t$0",
-      "else",
-      "\t$2 -> $3",
-      "end"
-    ],
+    "body": ["with $1 do", "\t$0", "else", "\t$2 -> $3", "end"],
     "description": "with/else",
     "scope": "source.elixir"
   },
   "LiveSvelte Sigil": {
     "prefix": "lsve",
-    "body": [
-      "~V\"\"\"",
-      "$0",
-      "\"\"\""
-    ],
+    "body": ["~V\"\"\"", "$0", "\"\"\""],
     "description": "LiveSvelte ~V sigil"
   },
   "Ash Resource": {
@@ -564,12 +541,7 @@
   },
   "Ash Read Action": {
     "prefix": "ashread",
-    "body": [
-      "read :${1:name} do",
-      "\tdescription \"${2:Description}\"",
-      "\t$0",
-      "end"
-    ],
+    "body": ["read :${1:name} do", "\tdescription \"${2:Description}\"", "\t$0", "end"],
     "description": "Ash Read Action"
   },
   "Ash Update Action": {
@@ -584,11 +556,7 @@
   },
   "Ash Destroy Action": {
     "prefix": "ashdestroy",
-    "body": [
-      "destroy :${1:name} do",
-      "\tdescription \"${2:Description}\"",
-      "end"
-    ],
+    "body": ["destroy :${1:name} do", "\tdescription \"${2:Description}\"", "end"],
     "description": "Ash Destroy Action"
   },
   "Ash Belongs To": {

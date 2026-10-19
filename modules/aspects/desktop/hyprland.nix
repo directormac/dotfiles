@@ -68,12 +68,8 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
         home.packages = with pkgs; [
           hyprlauncher
@@ -81,7 +77,7 @@
           hyprland-preview-share-picker
         ];
 
-        xdg.configFile."hypr".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/hypr";
+        xdg.configFile."hypr".source = config.lib.dots.link "hypr";
       };
 
     persistHome.directories = [

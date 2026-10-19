@@ -6,30 +6,6 @@ let
   skimHistdbPkg = pkgs.local.zsh-skim-histdb or pkgs.zsh-skim-histdb;
 in
 {
-  packages = [
-    pkgs.sqlite
-    skimHistdbPkg
-    histdbPkg
-  ];
-
-  plugins = [
-    {
-      name = "zsh-histdb";
-      file = "sqlite-history.zsh";
-      src = "${histdbPkg}/share/zsh-histdb";
-    }
-    {
-      name = "zsh-histdb-fzf";
-      file = "histdb-fzf.zsh";
-      src = "${histdbPkg}/share/zsh-histdb";
-    }
-    {
-      name = "zsh-histdb-skim";
-      file = "zsh-histdb-skim.plugin.zsh";
-      src = "${skimHistdbPkg}/share/zsh-histdb-skim";
-    }
-  ];
-
   initContent =
     # zsh
     ''
@@ -71,6 +47,35 @@ in
       ZSH_AUTOSUGGEST_STRATEGY=(histdb_top_here history completion)
     '';
 
+  packages = [
+    pkgs.sqlite
+    skimHistdbPkg
+    histdbPkg
+  ];
+
+  persistDirectories = [
+    ".local/share/zsh"
+    ".histdb"
+  ];
+
+  plugins = [
+    {
+      file = "sqlite-history.zsh";
+      name = "zsh-histdb";
+      src = "${histdbPkg}/share/zsh-histdb";
+    }
+    {
+      file = "histdb-fzf.zsh";
+      name = "zsh-histdb-fzf";
+      src = "${histdbPkg}/share/zsh-histdb";
+    }
+    {
+      file = "zsh-histdb-skim.plugin.zsh";
+      name = "zsh-histdb-skim";
+      src = "${skimHistdbPkg}/share/zsh-histdb-skim";
+    }
+  ];
+
   zvmKeybindings =
     # zsh
     ''
@@ -90,9 +95,4 @@ in
       zvm_bindkey vicmd '^[[114;6u' tv-history-slim-widget
       zvm_bindkey vicmd '^[[82;6u' tv-history-slim-widget
     '';
-
-  persistDirectories = [
-    ".local/share/zsh"
-    ".histdb"
-  ];
 }

@@ -51,12 +51,12 @@ in
 
           # Enable SSH inside test VMs for remote access testing
           services.openssh = {
+            enable = true;
+
             settings = {
               PasswordAuthentication = true;
               PermitRootLogin = "yes";
             };
-
-            enable = true;
           };
 
           # Ensure user artifex has initialPassword in VM for SSH testing without conflicting with users.users.artifex.initialPassword
@@ -111,17 +111,17 @@ in
     { lib, ... }:
     {
       services.displayManager = {
-        defaultSession = lib.mkDefault "xfce";
         enable = true;
+        defaultSession = lib.mkDefault "xfce";
       };
 
       services.xserver = {
+        enable = true;
+
         desktopManager = {
           xfce.enable = true;
           xterm.enable = false;
         };
-
-        enable = true;
       };
     };
 }

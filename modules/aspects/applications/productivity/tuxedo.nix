@@ -10,16 +10,9 @@
       };
 
     homeManager =
+      { config, ... }:
       {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
-      {
-        home.file.".config/tuxedo".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/tuxedo";
+        home.file.".config/tuxedo".source = config.lib.dots.link "tuxedo";
       };
   };
 }

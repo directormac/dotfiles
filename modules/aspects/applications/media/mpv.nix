@@ -168,6 +168,8 @@
         ];
 
         programs.mpv = {
+          enable = true;
+
           bindings = {
             "DEL" = "script-message-to delete_current_file delete-file";
             "ctrl+V" = "script-message-to misc load-from-clipboard append";
@@ -184,8 +186,6 @@
             profile = "high-quality";
             ytdl-format = "bestvideo+bestaudio";
           };
-
-          enable = true;
 
           package = pkgs.mpv.override {
             mpv-unwrapped = pkgs.mpv-unwrapped.override {

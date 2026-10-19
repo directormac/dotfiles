@@ -13,9 +13,9 @@
   },
   "commands": {
     "copy-url": {
-      "suggested_key": {"default": "Alt+Shift+L"},
+      "suggested_key": { "default": "Alt+Shift+L" },
       "description": "Copy URL"
     }
   },
-  "background": {"service_worker": "background-4.js"}
+  "background": { "service_worker": "background-4.js" }
 }

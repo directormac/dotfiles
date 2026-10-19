@@ -57,6 +57,7 @@
 
         programs.silentSDDM = lib.mkIf (inputs ? silentSDDM) {
           inherit (cfg) theme;
+          enable = true;
 
           settings = {
             "General" = {
@@ -80,8 +81,6 @@
             output = wallpaperPath;
           };
 
-          enable = true;
-
           profileIcons = lib.optionalAttrs (config.users.users ? artifex) {
             artifex = avatarPath;
           };
@@ -91,8 +90,8 @@
           defaultSession = lib.mkOverride 900 cfg.defaultSession;
 
           sddm = {
-            autoNumlock = true;
             enable = lib.mkDefault true;
+            autoNumlock = true;
             wayland.enable = lib.mkDefault true;
           };
         };

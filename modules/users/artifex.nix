@@ -19,48 +19,16 @@
         den.batteries.primary-user
       ];
 
-    nixos =
-      { config, ... }:
-      let
-        hasPwdSecret = builtins.pathExists (../.. + "/.secrets/users/artifex/password.age");
-      in
-      {
-        users.users.artifex = {
-          description = "artifex's account";
-
-          extraGroups = [
-            "kvm"
-            "libvirtd"
-            "render"
-          ];
-
-          linger = true;
-        }
-        // (
-          if hasPwdSecret then
-            {
-              hashedPasswordFile = config.age.secrets."password-artifex".path;
-            }
-          else
-            {
-              initialPassword = "12345";
-            }
-        );
-      };
-
     homeManager =
       { pkgs, ... }:
       {
-        home.homeDirectory = "/home/artifex";
         home.packages = [ pkgs.htop ];
-        home.username = "artifex";
       };
 
-    provides.to-hosts.nixos = { };
-
     secrets =
+      { user, ... }:
       let
-        pwdSecret = ../.. + "/.secrets/users/artifex/password.age";
+        pwdSecret = user.secretPath + "/password.age";
       in
       lib.optionalAttrs (builtins.pathExists pwdSecret) {
         "password-artifex" = {
@@ -68,5 +36,38 @@
           rekeyFile = pwdSecret;
         };
       };
+
+    # Configure the user's own OS account via the `user` class (`users.users.artifex`)
+    # rather than untargeted `nixos` (see explanation/where-config-lands.mdx #694).
+    user =
+      {
+        osConfig,
+        user,
+        ...
+      }:
+      let
+        hasPwdSecret = builtins.pathExists (user.secretPath + "/password.age");
+      in
+      {
+        description = "artifex's account";
+
+        extraGroups = [
+          "kvm"
+          "libvirtd"
+          "render"
+        ];
+
+        linger = true;
+      }
+      // (
+        if hasPwdSecret then
+          {
+            hashedPasswordFile = osConfig.age.secrets."password-artifex".path;
+          }
+        else
+          {
+            initialPassword = "12345";
+          }
+      );
   };
 }

@@ -10,9 +10,9 @@
 
         services = {
           pipewire = {
+            enable = lib.mkDefault true;
             alsa.enable = true;
             alsa.support32Bit = true;
-            enable = lib.mkDefault true;
 
             extraConfig.pipewire."92-low-latency" = {
               "context.properties" = {

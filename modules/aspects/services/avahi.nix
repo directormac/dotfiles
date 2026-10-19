@@ -5,8 +5,8 @@
       { lib, ... }:
       {
         services.avahi = {
-          browseDomains = [ ];
           enable = lib.mkDefault true;
+          browseDomains = [ ];
           nssmdns4 = lib.mkDefault true;
         };
       };

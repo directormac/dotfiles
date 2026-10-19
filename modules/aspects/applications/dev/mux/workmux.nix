@@ -22,11 +22,9 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         tv-git-worktree-preview = pkgs.writeShellScript "tv-git-worktree-preview" ''
           branch="$1"
           head="$2"
@@ -171,8 +169,7 @@
             mode = "execute"
           '';
 
-        xdg.configFile."workmux/config.yaml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/workmux/config.yaml";
+        xdg.configFile."workmux/config.yaml".source = config.lib.dots.link "workmux/config.yaml";
       };
 
     persistHome.directories = [

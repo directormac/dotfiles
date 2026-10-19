@@ -10,6 +10,8 @@
         ];
 
         programs.git = {
+          enable = true;
+
           settings = {
             alias = {
               af = "!git add $(git ls-files -m -o --exclude-standard | sk -m)";
@@ -46,8 +48,6 @@
               name = "Mark Asena";
             };
           };
-
-          enable = true;
 
           ignores = [
             "*.o"

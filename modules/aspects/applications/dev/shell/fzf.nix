@@ -12,9 +12,11 @@
         home.packages = [ pkgs.fzf ];
 
         programs.fzf = {
+          enable = true;
+
           changeDirWidget = {
-            options = [ ];
             command = "fd --type d --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
+            options = [ ];
           };
 
           colors = with config.lib.stylix.colors.withHashtag; {
@@ -50,24 +52,23 @@
             "--highlight-line"
           ];
 
-          enable = true;
           enableBashIntegration = true;
           enableZshIntegration = true;
 
           fileWidget = {
-            options = [ ];
             command = "fd --type f --strip-cwd-prefix --hidden --no-ignore --follow --exclude .git";
+            options = [ ];
           };
 
           historyWidget = {
+            command = null;
+
             options = [
               "--layout=reverse"
               "--bind 'ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'"
               "--color header:italic"
               "--header 'Press CTRL-Y to copy command into clipboard'"
             ];
-
-            command = null;
           };
 
           tmux.enableShellIntegration = true;

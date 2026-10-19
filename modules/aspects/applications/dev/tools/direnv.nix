@@ -11,14 +11,7 @@
 
   den.aspects.applications.dev.tools.direnv = {
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
+      { config, ... }:
       {
         imports = lib.optionals (inputs ? direnv-instant) [
           inputs.direnv-instant.homeModules.direnv-instant
@@ -26,21 +19,23 @@
 
         programs.direnv = {
           enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
           nix-direnv.enable = true;
         };
 
         programs.direnv-instant = lib.mkIf (inputs ? direnv-instant) {
+          enable = true;
+
           settings = {
             debug_log = "/tmp/direnv-instant.log";
             mux_delay = 4;
             use_cache = true;
           };
-
-          enable = true;
         };
 
-        xdg.configFile."direnv/direnv.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/direnv/direnv.toml";
+        xdg.configFile."direnv/direnv.toml".source = config.lib.dots.link "direnv/direnv.toml";
+
       };
 
     cacheHome.directories = [

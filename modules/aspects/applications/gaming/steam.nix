@@ -41,8 +41,8 @@
           appimage.enable = true;
 
           steam = {
-            dedicatedServer.openFirewall = true;
             enable = true;
+            dedicatedServer.openFirewall = true;
 
             extraCompatPackages = [
               pkgs.proton-ge-bin
@@ -52,6 +52,8 @@
             ];
 
             gamescopeSession = {
+              enable = true;
+
               args = [
                 "--rt"
                 "--expose-wayland"
@@ -63,8 +65,6 @@
                 "-H 2160"
                 "-r 120"
               ];
-
-              enable = true;
 
               env = {
                 DXVK_HDR = "1";

@@ -6,15 +6,9 @@
   "description": "Make WhatsApp Web follow the system theme and collapse its chat list in narrow windows, this extension is installed by Omarchy",
   "content_scripts": [
     {
-      "matches": [
-        "https://web.whatsapp.com/*"
-      ],
-      "css": [
-        "whatsapp.css"
-      ],
-      "js": [
-        "system-theme.js"
-      ],
+      "matches": ["https://web.whatsapp.com/*"],
+      "css": ["whatsapp.css"],
+      "js": ["system-theme.js"],
       "run_at": "document_start"
     }
   ]

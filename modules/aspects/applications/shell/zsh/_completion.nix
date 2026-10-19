@@ -7,6 +7,11 @@
       autoload -U compinit && compinit
     '';
 
+  fastSyntaxHighlighting = {
+    enable = true;
+    theme = "XDG:catppuccin-mocha";
+  };
+
   fzfTabZstyle =
     # zsh
     ''
@@ -33,8 +38,4 @@
       zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'if [ -d $realpath ]; then lsd -la --color=always $realpath; else bat -pp --color=always $realpath 2>/dev/null || cat $realpath; fi'
       zstyle ':fzf-tab:complete:(cat|bat):*' popup-pad 30 0
     '';
-  fastSyntaxHighlighting = {
-    enable = true;
-    theme = "XDG:catppuccin-mocha";
-  };
 }

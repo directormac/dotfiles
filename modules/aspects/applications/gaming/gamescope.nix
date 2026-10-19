@@ -9,13 +9,14 @@
         ];
 
         programs.gamescope = {
+          enable = true;
+
           args = [
             "--rt"
             "--expose-wayland"
           ];
 
           capSysNice = true;
-          enable = true;
           package = pkgs.gamescope;
         };
       };

@@ -5,14 +5,10 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
-        home.file.".config/vim".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/vim";
+        home.file.".config/vim".source = config.lib.dots.link "vim";
 
         programs.vim = {
           enable = true;

@@ -7,14 +7,7 @@
     };
 
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
+      { config, ... }:
       {
         programs.starship = {
           enable = true;
@@ -23,8 +16,7 @@
           enableZshIntegration = true;
         };
 
-        xdg.configFile."starship.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/starship/starship.toml";
+        xdg.configFile."starship.toml".source = config.lib.dots.link "starship/starship.toml";
       };
   };
 }

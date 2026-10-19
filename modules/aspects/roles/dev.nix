@@ -57,6 +57,7 @@
       dev.tools.mise
       dev.tools.direnv
       dev.tools.devenv
+      dev.tools.devbox
       dev.tools.treefmt
 
       # Developer Networking & Security

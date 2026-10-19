@@ -21,16 +21,18 @@
 
     homeManager = {
       services.udiskie = {
+        enable = true;
+
         settings = {
           device_config = [
             {
+              match = {
+                device_file = "/dev/loop*";
+              };
+
               options = {
                 detach = true;
                 eject = true;
-              };
-
-              match = {
-                device_file = "/dev/loop*";
               };
             }
           ];
@@ -51,8 +53,6 @@
             udisks_version = 2;
           };
         };
-
-        enable = true;
       };
     };
   };

@@ -63,6 +63,10 @@
   den.default.nixos.nixpkgs.config.allowUnfree = lib.mkDefault true;
   den.default.nixos.nixpkgs.overlays = [ inputs.self.overlays.default ];
   den.default.nixos.system.stateVersion = "26.05";
-  # Enable Home Manager by default for all declared users
-  den.schema.user.classes = lib.mkDefault [ "homeManager" ];
+
+  # Enable both the OS `user` class (`users.users.<name>`) and Home Manager for all declared users
+  den.schema.user.classes = lib.mkDefault [
+    "user"
+    "homeManager"
+  ];
 }

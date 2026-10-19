@@ -24,7 +24,11 @@
           pam.services = {
             gdm.enableGnomeKeyring = true;
             gdm-password.enableGnomeKeyring = true;
+            greetd.enableGnomeKeyring = true;
             login.enableGnomeKeyring = true;
+            sddm.enableGnomeKeyring = true;
+            sddm-autologin.enableGnomeKeyring = true;
+            sddm-greeter.enableGnomeKeyring = true;
           };
 
           polkit = {

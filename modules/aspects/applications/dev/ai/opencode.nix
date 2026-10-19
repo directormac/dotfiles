@@ -22,6 +22,8 @@
         );
 
         programs.opencode = lib.mkIf (llmPkgs ? opencode) {
+          enable = true;
+
           settings = {
             autoshare = false;
             autoupdate = false;
@@ -52,7 +54,6 @@
             ];
           };
 
-          enable = true;
           package = llmPkgs.opencode;
           web.enable = true;
         };
@@ -61,6 +62,7 @@
       };
 
     persistHome.directories = [
+      ".opencode"
       ".local/share/opencode"
       ".local/state/opencode"
       ".config/opencode"

@@ -15,7 +15,7 @@ trusted_config_paths = ['~/.dotfiles/config', '~/Code']
 not_found_auto_install = true
 # [idiomatic version files](https://mise.jdx.dev/configuration.html#idiomatic-version-files)
 idiomatic_version_file_enable_tools = []
-npm = {package_manager = "bun"}
+npm = { package_manager = "bun" }
 # minimum_release_age = "0"
 minimum_release_age_excludes = ["bun", "node", "expert", "pnpm"]
 dotfiles.root = "~/.dotfiles"

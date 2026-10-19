@@ -1,3 +1,9 @@
+<!--
+  GENERATED FILE — DO NOT EDIT.
+  Managed by `modules/flake-parts/diagrams.nix`.
+  Edit the source module and run `nix run .#diagrams.write-topology` to regenerate.
+-->
+
 # Fleet Topology
 
 Auto-generated visualizations of the nix-config fleet's
@@ -84,7 +90,7 @@ sequenceDiagram
 
 - **0** environments, **3** hosts, **1** users
 - Scope chain: flake → flake-system → host → user
-- Trace entries: 557
+- Trace entries: 548
 
 ## Environments
 
@@ -109,7 +115,6 @@ sequenceDiagram
 | codium-settings | flake-system: system=x86_64-linux | nixos, super | |
 | devenv | flake-system: system=x86_64-linux | nixos, super | |
 | homeManagerModules | flake-system: system=x86_64-linux | nixos, super | |
-| isWorkstation | flake-system: system=x86_64-linux | nixos, sandbox, super | |
 | nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super | |
 | persist | flake-system: system=x86_64-linux | nixos, sandbox, super | |
 | persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
@@ -129,8 +134,7 @@ sequenceDiagram
 | host-to-hm-users | host |
 | host-to-users | host |
 | os-to-host | host |
-| artifex/to-hosts | user |
 | hm-user-detect | user |
 | host-aspects-project | user |
-| project-user-overlays | user |
+| project-user-quirks | user |
 | user-to-host | user |

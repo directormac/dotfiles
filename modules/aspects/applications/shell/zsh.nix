@@ -11,8 +11,8 @@
         ];
 
         programs.zsh = {
-          autosuggestions.enable = false;
           enable = lib.mkDefault true;
+          autosuggestions.enable = false;
           enableBashCompletion = true;
           enableCompletion = true;
           histSize = 100000;
@@ -26,13 +26,11 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
         aliases = import ./zsh/_aliases.nix;
         completion = import ./zsh/_completion.nix;
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         functions = import ./zsh/_functions.nix { inherit config; };
         histdb = import ./zsh/_histdb.nix { inherit config pkgs; };
         keys = import ./zsh/_keys.nix { inherit pkgs; };
@@ -49,8 +47,8 @@
         programs.zsh = {
           inherit (completion) completionInit;
           inherit (completion) fastSyntaxHighlighting;
-          autosuggestion.enable = true;
           enable = true;
+          autosuggestion.enable = true;
           enableCompletion = true;
 
           history = {
@@ -118,11 +116,9 @@
           syntaxHighlighting.enable = false;
         };
 
-        xdg.configFile."fsh".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/fsh";
+        xdg.configFile."fsh".source = config.lib.dots.link "fsh";
         xdg.configFile."television/cable/zsh-keys.toml".text = keys.televisionCableToml;
-
-        xdg.configFile."zsh/extra.zsh".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/zsh/extra.zsh";
+        xdg.configFile."zsh/extra.zsh".source = config.lib.dots.link "zsh/extra.zsh";
       };
 
     persistHome = {

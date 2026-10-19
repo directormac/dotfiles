@@ -1,24 +1,6 @@
 # Service Smartd Disk Health Monitoring Aspect
 {
   den.aspects.services.smartd = {
-    nixos =
-      {
-        lib,
-        pkgs,
-        ...
-      }:
-      {
-        environment.systemPackages = with pkgs; [
-          smartmontools
-          gnome-disk-utility
-        ];
-
-        services.smartd = {
-          autodetect = true;
-          enable = lib.mkDefault true;
-        };
-      };
-
     homeManager =
       {
         lib,
@@ -42,6 +24,24 @@
           name = "GSmartControl";
           terminal = false;
           type = "Application";
+        };
+      };
+
+    nixos =
+      {
+        lib,
+        pkgs,
+        ...
+      }:
+      {
+        environment.systemPackages = with pkgs; [
+          smartmontools
+          gnome-disk-utility
+        ];
+
+        services.smartd = {
+          enable = lib.mkDefault true;
+          autodetect = true;
         };
       };
   };

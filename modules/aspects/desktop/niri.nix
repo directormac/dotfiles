@@ -12,14 +12,10 @@
     homeManager =
       {
         config,
-        user,
         ...
       }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
       {
-        home.file.".config/niri".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/niri";
+        home.file.".config/niri".source = config.lib.dots.link "niri";
       };
 
     persistHome.directories = [

@@ -15,18 +15,14 @@
       };
 
     homeManager =
-      {
-        lib,
-        pkgs,
-        ...
-      }:
+      { pkgs, ... }:
       let
-        common = import ./_common { inherit pkgs lib; };
+        common = import ./_common { inherit pkgs; };
         customAddons = common.extensions.customAddons;
       in
       {
         programs.firefox = {
-          inherit (common) nativeMessagingHosts;
+          inherit (common) nativeMessagingHosts policies;
           enable = true;
 
           globalExtensions = [
@@ -83,6 +79,7 @@
 
           profiles.default = {
             inherit (common) search;
+            settings = common.sessionSettings;
 
             extensions = {
               settings = {

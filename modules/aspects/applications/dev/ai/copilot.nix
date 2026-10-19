@@ -29,7 +29,7 @@
     persistHome.directories = [
       ".copilot"
       ".config/github-copilot"
-      "~/.local/share/github-copilot/"
+      ".local/share/github-copilot"
     ];
   };
 }

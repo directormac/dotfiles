@@ -40,13 +40,7 @@
   },
   "Module boilerplate": {
     "prefix": "mod",
-    "body": [
-      "local M = {}",
-      "",
-      "$0",
-      "",
-      "return M"
-    ],
+    "body": ["local M = {}", "", "$0", "", "return M"],
     "description": "Standard Lua module boilerplate"
   },
   "Vim inspect print": {

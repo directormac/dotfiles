@@ -37,12 +37,12 @@
       ];
 
       programs.pedantix = {
+        enable = true;
+
         settings = {
           lets.sort = true;
           preset = "nixos-module";
         };
-
-        enable = true;
       };
     };
   };

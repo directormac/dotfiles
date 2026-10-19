@@ -13,16 +13,9 @@
     ];
 
     homeManager =
+      { config, ... }:
       {
-        config,
-        user,
-        ...
-      }:
-      let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
-      in
-      {
-        home.file.".config/helix".source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/helix";
+        home.file.".config/helix".source = config.lib.dots.link "helix";
         programs.helix.enable = true;
       };
   };

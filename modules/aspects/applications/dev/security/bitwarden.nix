@@ -15,17 +15,19 @@
         ];
 
         programs.rbw = {
+          enable = true;
+
           settings = {
             email = user.email or "markasena@gmail.com";
           };
-
-          enable = true;
         };
       };
 
     persistHome.directories = [
       ".config/Bitwarden"
+      ".config/Bitwarden CLI"
       ".config/rbw"
+      ".local/share/rbw"
     ];
   };
 }

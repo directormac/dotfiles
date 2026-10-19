@@ -10,11 +10,9 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
@@ -22,16 +20,16 @@
         home.file = {
           ".omp/agent/config.yml" = {
             force = true;
-            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/omp/agent/config.yml";
+            source = config.lib.dots.link "omp/agent/config.yml";
           };
 
           ".pi/agent/extensions/plan-mode" = {
-            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/extensions/plan-mode";
+            source = config.lib.dots.link "pi/agent/extensions/plan-mode";
           };
 
           ".pi/agent/settings.json" = {
             force = true;
-            source = config.lib.file.mkOutOfStoreSymlink "${dotsPath}/pi/agent/settings.json";
+            source = config.lib.dots.link "pi/agent/settings.json";
           };
         };
 

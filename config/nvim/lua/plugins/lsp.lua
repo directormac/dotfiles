@@ -3,6 +3,7 @@ return {
     'nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     on_require = { 'lspconfig' },
+
     after = function()
       require('lsp_handlers').setup()
 
@@ -49,9 +50,21 @@ return {
         },
       })
 
+      -- tmux configuration files (and the tmux blocks that are embedded in
+      -- Nix files, which otter.nvim exposes as `tmux` buffers).
+      vim.lsp.config('tmux_ls', {
+        cmd = { 'tmux-language-server' },
+        filetypes = { 'tmux' },
+        root_markers = { '.git', '.tmux.conf', 'tmux.conf' },
+      })
+
+      vim.lsp.enable('copilot')
+
       for _, server in ipairs(servers) do
         vim.lsp.enable(server)
       end
+
+      vim.lsp.enable('tmux_ls')
     end,
   },
 }

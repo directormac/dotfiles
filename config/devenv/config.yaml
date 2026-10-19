@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://devenv.sh/devenv.user.schema.json
+version: 1
+tui:
+  emoji: true
+  viewport: inline
+  theme:
+    preset: devenv
+    palette:
+      profile: "#cba6f7"
+      surface: ansi:236
+    styles:
+      statusline:
+        background: surface
+      statusline.profiles:
+        foreground: profile
+        modifiers: [bold]
+  statusline:
+    position: inline
+    layouts:
+      main:
+        left: [profiles, summary]
+        center: [project]
+        right: [elapsed, key_hints]
+    components:
+      profiles:
+        format: "profile {profiles}"
+        compact_format: "{profiles}"
+        priority: 90
+      elapsed:
+        format: "elapsed {elapsed}"
+        compact_format: "{elapsed}"
+        priority: 20
+        overflow: hide
+  keybindings:
+    sequence_timeout_ms: 750
+    logs:
+      top: [home, "g g"]
+      bottom: [end, "shift+g"]
+  behavior:
+    mouse: true
+    follow_logs: true
+    hide_stopped_processes: false
+    log_preview_lines: 12
+    log_history_lines: 10000

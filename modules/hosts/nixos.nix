@@ -42,29 +42,10 @@
           wget
         ];
 
-        networking.hostName = "nixos";
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-        services.openssh.hostKeys = [
-          {
-            path = "/persist/etc/ssh/ssh_host_ed25519_key";
-            type = "ed25519";
-          }
-          {
-            bits = 4096;
-            path = "/persist/etc/ssh/ssh_host_rsa_key";
-            type = "rsa";
-          }
-        ];
       };
 
     description = "NixOS Workstation";
-    isWorkstation = true;
-
-    provides.to-users.homeManager = _: {
-      home.packages = [
-      ];
-    };
   };
 
   den.hosts.x86_64-linux.nixos = {

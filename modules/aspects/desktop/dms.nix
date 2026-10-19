@@ -48,15 +48,10 @@
       };
 
     homeManager =
-      {
-        config,
-        user,
-        ...
-      }:
+      { config, ... }:
       let
         dmsDir = ../../../config/DankMaterialShell;
         dmsFiles = if builtins.pathExists dmsDir then builtins.readDir dmsDir else { };
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         linkDank =
           name: _:
           if
@@ -68,8 +63,7 @@
             { }
           else
             {
-              ".config/DankMaterialShell/${name}".source =
-                config.lib.file.mkOutOfStoreSymlink "${dotsPath}/DankMaterialShell/${name}";
+              ".config/DankMaterialShell/${name}".source = config.lib.dots.link "DankMaterialShell/${name}";
             };
       in
       {
@@ -120,6 +114,8 @@
             pureLyrics.enable = true;
 
             quickCapture = {
+              enable = true;
+
               settings = {
                 "delete_screenshots_on_close" = false;
                 "doneAction" = "clipboard";
@@ -134,8 +130,6 @@
                 "resetLastRegion" = true;
                 "skipConfirm" = true;
               };
-
-              enable = true;
             };
 
             screenkey.enable = true;

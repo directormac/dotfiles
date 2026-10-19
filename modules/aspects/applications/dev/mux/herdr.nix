@@ -9,11 +9,9 @@
       {
         config,
         pkgs,
-        user,
         ...
       }:
       let
-        dotsPath = user.dotsConfigPath or "/home/${user.name}/.dotfiles/config";
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
@@ -111,9 +109,7 @@
         '';
       in
       {
-        home.file.".config/herdr/config.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${dotsPath}/herdr/config.toml";
-
+        home.file.".config/herdr/config.toml".source = config.lib.dots.link "herdr/config.toml";
         home.packages = [ herdrPkg ];
 
         systemd.user.services.herdr-server = {

@@ -5,7 +5,16 @@
       { pkgs, ... }:
       {
         environment.systemPackages = [
-          pkgs.google-chrome
+          (pkgs.google-chrome.override {
+            commandLineArgs = [
+              "--password-store=gnome-libsecret"
+              "--restore-last-session=true"
+              "--enable-features=AcceleratedVideoDecodeLinuxGL"
+              "--enable-zero-copy"
+              "--ignore-gpu-blocklist"
+              "--enable-parallel-downloading"
+            ];
+          })
         ];
 
         programs.chromium = {
@@ -59,6 +68,7 @@
       { pkgs, ... }:
       let
         sharedArgs = [
+          "--password-store=gnome-libsecret"
           "--restore-last-session=true"
           "--enable-features=AcceleratedVideoDecodeLinuxGL"
           "--enable-zero-copy"
@@ -68,8 +78,8 @@
       in
       {
         programs.chromium = {
-          commandLineArgs = sharedArgs;
           enable = true;
+          commandLineArgs = sharedArgs;
 
           extensions = [
             { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
@@ -91,6 +101,7 @@
     persistHome.directories = [
       ".config/chromium"
       ".config/google-chrome"
+      ".pki"
     ];
   };
 

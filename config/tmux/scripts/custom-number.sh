@@ -24,7 +24,7 @@ if [ "$FORMAT" = "hide" ]; then
 fi
 
 if [ "$FORMAT" = "kanji" ]; then
-  if [[ "$ID" =~ ^[0-9]+$ ]] && [ "$ID" -ge 1 ] && [ "$ID" -le 10 ]; then
+  if [[ $ID =~ ^[0-9]+$ ]] && [ "$ID" -ge 1 ] && [ "$ID" -le 10 ]; then
     echo -n "${kanji_map[$ID]}"
   else
     echo -n "$ID"

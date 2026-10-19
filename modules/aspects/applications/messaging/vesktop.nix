@@ -21,6 +21,8 @@
         ];
 
         programs.nixcord = lib.mkIf (inputs ? nixcord) {
+          enable = true;
+
           config.plugins = {
             biggerStreamPreview.enable = true;
             fakeNitro.enable = true;
@@ -31,7 +33,6 @@
 
           config.useQuickCss = true;
           discord.enable = false;
-          enable = true;
           quickCss = "body { --font-primary: monospace; }";
           vesktop.enable = true;
         };

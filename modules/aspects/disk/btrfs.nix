@@ -5,9 +5,19 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    disko.url = "github:nix-community/disko";
+  };
+
   den.aspects.disk.btrfs = {
+    settings.device = lib.mkOption {
+      default = "/dev/disk/by-uuid/dcd3cd20-f5d6-4bf9-8670-cdf6dfb7c923";
+      description = "Target disk device for the Btrfs subvolume layout.";
+      type = lib.types.str;
+    };
+
     nixos =
-      { ... }:
+      { host, ... }:
       {
         disko.devices.disk.main = {
           content = {
@@ -112,7 +122,7 @@
             type = "gpt";
           };
 
-          device = lib.mkDefault "/dev/disk/by-uuid/dcd3cd20-f5d6-4bf9-8670-cdf6dfb7c923";
+          device = lib.mkDefault host.settings.disk.btrfs.device;
           type = "disk";
         };
 

@@ -50,6 +50,7 @@
       url = "github:denful/den-diagram";
     };
 
+    devbox.url = "github:jetify-com/devbox";
     devenv.url = "github:cachix/devenv";
 
     devenv-root = {

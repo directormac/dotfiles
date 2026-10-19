@@ -38,19 +38,19 @@
         };
       };
 
-    homeManager = {
+    homeManager =
+      { config, ... }:
+      {
 
-      programs.devenv = {
-        enable = true;
-        enableBashIntegration = true;
-        enableZshIntegration = true;
+        programs.devenv = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+        };
+
+        xdg.configFile."devenv/config.yaml".source = config.lib.dots.link "devenv/config.yaml";
+
       };
-
-      # programs.secretspec = {
-      #   enable = true;
-      # };
-
-    };
 
     cacheHome.directories = [
       ".local/share/devenv"

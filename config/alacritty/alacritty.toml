@@ -13,7 +13,7 @@ import = [
   # "~/.config/alacritty/tokyo-night-storm.toml",
   "~/.config/alacritty/catppuccin-mocha.toml",
   "~/.config/alacritty/fonts.toml",
-  "~/.config/alacritty/keys.toml"
+  "~/.config/alacritty/keys.toml",
 ]
 
 [mouse]
@@ -33,7 +33,7 @@ dynamic_title = false
 opacity = 0.82
 blur = false
 startup_mode = "Windowed"
-class = {instance = "Alacritty", general = "Alacritty"}
+class = { instance = "Alacritty", general = "Alacritty" }
 decorations_theme_variant = "None"
 
 # # Number of lines/columns (not pixels) in the terminal.

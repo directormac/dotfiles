@@ -30,7 +30,7 @@
         ...
       }:
       let
-        common = import ./_common { inherit pkgs lib; };
+        common = import ./_common { inherit pkgs; };
         pins = {
           bluesky = "519bff13-7f32-4725-92a1-628b1620031e";
           email = "c6d1c67e-f0a7-474d-a558-cccdf7d967fa";
@@ -64,7 +64,7 @@
           profiles.default = {
             inherit (common) search;
 
-            settings = {
+            settings = common.sessionSettings // {
               "browser.tabs.insertAfterCurrent" = false;
               "browser.tabs.insertAfterCurrentExceptPinned" = false;
               "browser.tabs.warnOnClose" = false;
@@ -227,8 +227,8 @@
             ];
 
             presets.catppuccin = {
-              accent = "Mauve";
               enable = true;
+              accent = "Mauve";
               flavor = "Mocha";
             };
 

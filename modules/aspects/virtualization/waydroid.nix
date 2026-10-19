@@ -49,12 +49,8 @@
         };
       };
 
-    persist = [
-      {
-        directories = [
-          "/var/lib/waydroid"
-        ];
-      }
+    persist.directories = [
+      "/var/lib/waydroid"
     ];
 
     persistHome.directories = [

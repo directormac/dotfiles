@@ -32,6 +32,8 @@
       { config, ... }:
       {
         programs.noctalia = lib.mkIf (inputs ? noctalia) {
+          enable = true;
+
           settings = {
             bar = {
               background_opacity = 0;
@@ -104,8 +106,6 @@
               };
             };
           };
-
-          enable = true;
         };
 
         stylix.targets = {

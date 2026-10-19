@@ -1,0 +1,70 @@
+{
+  config,
+  lib,
+  dag,
+  generated-header,
+  ...
+}:
+{
+  options.flake.dot-envrc = lib.mkOption {
+    default = { };
+    description = "DAG of sections to assemble into .envrc";
+    type = lib.types.lazyAttrsOf lib.types.unspecified;
+  };
+
+  config = {
+
+    flake.dot-envrc.root =
+      dag.entryAnywhere
+        # sh
+        ''
+          if [ "$SKIP_DIRENV" = "1" ]; then
+            log_status "Skipping direnv: SKIP_DIRENV=1 is set"
+            return
+          fi
+
+          if ! has nix_direnv_version || ! nix_direnv_version 3.1.0; then
+            source_url "https://raw.githubusercontent.com/nix-community/nix-direnv/3.1.0/direnvrc" "sha256-yMJ2OVMzrFaDPn7q8nCBZFRYpL/f0RcHzhmw/i6btJM="
+          fi
+
+          watch_file flake.nix
+          watch_file flake.lock
+          watch_dir modules
+          watch_dir config/nvim
+          watch_dir pkgs
+
+          # Under flake integration devenv has no CLI to run tasks, so `enterShell` shells out to
+          #  `devenv-tasks run devenv:enterShell`, which prints a "Running tasks / Succeeded …" table on every
+          #  activation. `DEVENV_TASKS_QUIET` forces `VerbosityLevel::Quiet` there; failures still print.
+          export DEVENV_TASKS_QUIET=true
+
+          # Ensure git worktrees have `.treefmt.toml` so `treefmt` and Neovim's
+          # `conform.nvim` work immediately before `nix run .#write-files` is run.
+          if [ ! -e "$PWD/.treefmt.toml" ] && [ -f "$HOME/.dotfiles/.treefmt.toml" ]; then
+            ln -sf "$HOME/.dotfiles/.treefmt.toml" "$PWD/.treefmt.toml"
+          fi
+
+          mkdir -p "$PWD/.devenv"
+          DEVENV_ROOT_FILE="$PWD/.devenv/root"
+          printf %s "$PWD" >"$DEVENV_ROOT_FILE"
+          if ! use flake . --accept-flake-config --impure --override-input devenv-root "file+file://$DEVENV_ROOT_FILE"; then
+            echo "devenv could not be built. The devenv environment was not loaded. Make the necessary changes to devenv.nix and hit enter to try again." >&2
+          fi
+        '';
+
+    perSystem = {
+      # The shebang stays the first line of the file, the "do not edit" header
+      # follows it.
+      files.file.".envrc".text =
+        "#!/usr/bin/env bash\n"
+        + (generated-header {
+          source = "modules/flake-parts/files/envrc.nix";
+          style = "hash";
+        })
+        + dag.render {
+          entries = config.flake.dot-envrc;
+          separator = "\n";
+        };
+    };
+  };
+}

@@ -24,6 +24,8 @@
         );
 
         services.voxtype = lib.mkIf (llmPkgs ? voxtype) {
+          enable = true;
+
           settings = {
             audio = {
               feedback = {
@@ -57,8 +59,6 @@
               model = "base.en";
             };
           };
-
-          enable = true;
 
           environment = {
             PATH = "${lib.makeBinPath [

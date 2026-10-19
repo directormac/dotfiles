@@ -15,13 +15,9 @@
       };
 
     homeManager =
-      {
-        lib,
-        pkgs,
-        ...
-      }:
+      { pkgs, ... }:
       let
-        common = import ./_common { inherit pkgs lib; };
+        common = import ./_common { inherit pkgs; };
         customAddons = common.extensions.customAddons;
       in
       {
@@ -86,7 +82,7 @@
           profiles.default = {
             inherit (common) search;
 
-            settings = {
+            settings = common.sessionSettings // {
               "browser.ml.chat.enabled" = true;
               "browser.ml.chat.sidebar" = true;
 

@@ -7,9 +7,9 @@
         programs.gpg.enable = true;
 
         services.gpg-agent = {
+          enable = true;
           defaultCacheTtl = 10800;
           defaultCacheTtlSsh = 10800;
-          enable = true;
           enableBashIntegration = true;
           enableSshSupport = true;
           enableZshIntegration = true;

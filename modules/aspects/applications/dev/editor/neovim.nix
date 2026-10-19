@@ -384,6 +384,33 @@
             lazy = false;
           }
 
+          # Tree-sitter grammar for tmux configuration files. It is not
+          # shipped by nixpkgs, so it is built here. `lazy = false` puts it
+          # into the `start` directory of the packpath, so that
+          # `vim.treesitter.language.add('tmux')` finds `parser/tmux.so`.
+          # It is used for `*.tmux.conf` files and for the `# tmux` injections
+          # of the tmux aspect (see
+          # `modules/aspects/applications/dev/mux/tmux.nix`).
+          {
+            data = pkgs.neovimUtils.grammarToPlugin (
+              pkgs.tree-sitter.buildGrammar {
+                generate = true;
+                language = "tmux";
+
+                src = pkgs.fetchFromGitHub {
+                  hash = "sha256-OifdD2XEe9GMvvj8eU83SW3prJc7f+lIRcfBPpsGAsI=";
+                  owner = "Freed-Wu";
+                  repo = "tree-sitter-tmux";
+                  rev = "111108ae48a722adc31c96c55e5a5245e0c4b4e6";
+                };
+
+                version = "0.1.5";
+              }
+            );
+
+            lazy = false;
+          }
+
           # Language Helpers
           conform-nvim
           nvim-lspconfig

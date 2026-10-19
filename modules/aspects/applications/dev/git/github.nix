@@ -21,11 +21,11 @@
 
         programs.gh = {
 
+          enable = true;
+
           settings = {
             git_protocol = "ssh";
           };
-
-          enable = true;
 
           extensions = with pkgs; [
             gh-dash
@@ -46,6 +46,8 @@
     persistHome.directories = [
       ".config/gh"
       ".config/gh-dash"
+      ".local/share/gh"
+      ".local/state/gh"
     ];
   };
 }
