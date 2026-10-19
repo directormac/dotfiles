@@ -38,8 +38,12 @@ return {
           size = { height = 20 },
           filter = function(buf) return vim.bo[buf].buftype == 'help' end,
         },
+        {
+          title = function() return 'Grug Far' end,
+          ft = 'grug-far',
+          size = { height = 0.3 },
+        },
         { ft = 'qf', title = function() return 'QuickFix' end },
-        { title = function() return 'Grug Far' end, ft = 'grug-far' },
         {
           ft = 'snacks_terminal',
           size = { height = 0.4 },

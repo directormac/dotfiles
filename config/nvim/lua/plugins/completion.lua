@@ -1,5 +1,5 @@
 -- blink.cmp with colorful-menu renderers, luasnip fast-trigger, and cmp-cmdline.
-local trigger_text = ';'
+local trigger_snippet = ';'
 
 return {
   { 'blink.lib', load_before = { 'blink.cmp' } },
@@ -163,20 +163,20 @@ return {
             score_offset = 85,
             min_keyword_length = 0,
             override = {
-              get_trigger_characters = function() return { trigger_text } end,
+              get_trigger_characters = function() return { trigger_snippet } end,
             },
             should_show_items = function(ctx)
               local col = ctx and ctx.cursor and ctx.cursor[2] or vim.api.nvim_win_get_cursor(0)[2]
               local line = ctx and ctx.line or vim.api.nvim_get_current_line()
               local before_cursor = line:sub(1, col)
-              return before_cursor:match('^%s*' .. trigger_text .. '%w*$') ~= nil
-                or before_cursor:match('[%s%({%[]' .. trigger_text .. '%w*$') ~= nil
+              return before_cursor:match('^%s*' .. trigger_snippet .. '%w*$') ~= nil
+                or before_cursor:match('[%s%({%[]' .. trigger_snippet .. '%w*$') ~= nil
             end,
             transform_items = function(_, items)
               local line = vim.api.nvim_get_current_line()
               local col = vim.api.nvim_win_get_cursor(0)[2]
               local before_cursor = line:sub(1, col)
-              local start_pos, end_pos = before_cursor:find(trigger_text .. '[^' .. trigger_text .. ']*$')
+              local start_pos, end_pos = before_cursor:find(trigger_snippet .. '[^' .. trigger_snippet .. ']*$')
               if start_pos then
                 for _, item in ipairs(items) do
                   if not item.trigger_text_modified then
@@ -206,17 +206,17 @@ return {
           },
           lsp = {
             score_offset = 40,
-            should_show_items = function(ctx)
-              -- Suppress LSP if user is triggering snippets with ';'
-              if ctx.trigger.character == trigger_text then return false end
-              -- Suppress LSP if user is typing ':' at start of line or after space (emoji/nerdfont trigger)
-              if ctx.trigger.character == ':' then
-                local col = ctx.cursor[2]
-                local before_colon = ctx.line:sub(1, col - 1)
-                if before_colon:match('^%s*$') or before_colon:match('%s$') then return false end
-              end
-              return true
-            end,
+            -- should_show_items = function(ctx)
+            --   -- Suppress LSP if user is triggering snippets with ';'
+            --   if ctx.trigger.character == trigger_text then return false end
+            --   -- Suppress LSP if user is typing ':' at start of line or after space (emoji/nerdfont trigger)
+            --   if ctx.trigger.character == ':' then
+            --     local col = ctx.cursor[2]
+            --     local before_colon = ctx.line:sub(1, col - 1)
+            --     if before_colon:match('^%s*$') or before_colon:match('%s$') then return false end
+            --   end
+            --   return true
+            -- end,
           },
           buffer = {
             score_offset = -10,

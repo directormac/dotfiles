@@ -4,7 +4,7 @@ return {
     event = 'DeferredUIEnter',
     ---@class wk.Opts
     opts = {
-      preset = 'helix',
+      preset = 'modern',
       ---@param mapping wk.Mapping
       filter = function(mapping)
         -- Filter Hapoon keys
@@ -27,9 +27,12 @@ return {
       icons = {
         ---@type wk.IconRule[]
         rules = {
-          { pattern = 'harpoon', icon = '󰛢 ', color = 'green' },
-          { pattern = 'oil', icon = '󱧫 ', color = 'blue' },
-          { pattern = 'org', icon = ' ', color = 'green' },
+          { pattern = '^harpoon', icon = '󰛢 ', color = 'green' },
+          { pattern = '^oil', icon = '󱧫 ', color = 'blue' },
+          { pattern = '^org', icon = ' ', color = 'green' },
+          { pattern = 'replace', icon = ' ', color = 'cyan' },
+          { pattern = '^far', icon = ' ', color = 'cyan' },
+          { pattern = '^surround', icon = ' ' },
         },
       },
       --@type wk.Spec
@@ -41,6 +44,8 @@ return {
           { '<leader>d', group = 'Debug' },
           { '<leader>dp', group = 'Profiler' },
           { '<leader>f', group = 'Find' },
+          { '<leader>fa', group = 'Find and Replace(FAR)', icon = ' ' },
+          { 'gs', group = 'Surround', icon = ' ' },
           { '<leader>g', group = 'Git' },
           { '<leader>gh', group = 'Hunks' },
           { '<leader>q', group = 'Quit/session' },
@@ -51,7 +56,6 @@ return {
           { '[', group = 'prev' },
           { ']', group = 'next' },
           { 'g', group = 'goto' },
-          { 'gs', group = 'surround' },
           { 'z', group = 'fold' },
           {
             '<leader>b',

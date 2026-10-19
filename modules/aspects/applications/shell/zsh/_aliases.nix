@@ -12,6 +12,7 @@
   "du" = "dust";
   "find" = "fd";
   "flake" = "nix flake";
+  "generations" = "tv nix-generations";
   "grab" = "ghgrab --cwd";
   "grep" = "rg";
   "hdb" = "histdb";
@@ -27,10 +28,8 @@
   "lzd" = "lazydocker";
   "lzg" = "lazygit";
   "lzm" = "lazymark";
-  "nho" = "nh os";
   "nhg" = "tv nix-generations";
-  "generations" = "tv nix-generations";
-  "rebuild" = "rebuild-switch";
+  "nho" = "nh os";
   "nixdev" = "nix develop";
   "nsh" = "nix-shell -p";
   "oc" = "opencode";
