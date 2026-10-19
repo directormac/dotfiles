@@ -4,7 +4,7 @@ return {
     event = 'DeferredUIEnter',
     ---@class wk.Opts
     opts = {
-      preset = 'modern',
+      preset = 'helix',
       ---@param mapping wk.Mapping
       filter = function(mapping)
         -- Filter Hapoon keys
@@ -87,5 +87,33 @@ return {
         desc = 'Search Keybindings',
       },
     },
+    after = function()
+      -- Show recorded macros on `@`, like `"` shows registers and ` marks.
+      -- Registers with content get a real keymap whose desc is the macro
+      -- body, so which-key lists them with a preview; empty ones are
+      -- removed so native behavior (error beep) is untouched. The `@reg`
+      -- rhs is non-recursive, so execution (and `@@`) works as usual.
+      local function sync_macros()
+        for _, range in ipairs({ { 65, 90 }, { 97, 122 } }) do -- A-Z, a-z
+          for code = range[1], range[2] do
+            local reg = vim.fn.nr2char(code)
+            local macro = vim.fn.getreg(reg)
+            if macro ~= '' then
+              local shown = vim.fn.strcharpart(macro, 0, 80)
+              local truncated = vim.fn.strchars(macro) > 80
+              local desc = shown:gsub('[\r\n]+', '⏎'):gsub('^%s+', ''):gsub('%s+$', '')
+              if truncated then desc = desc .. '…' end
+              vim.keymap.set('n', '@' .. reg, '@' .. reg, { desc = desc, silent = true })
+            else
+              pcall(vim.keymap.del, 'n', '@' .. reg)
+            end
+          end
+        end
+      end
+
+      local group = vim.api.nvim_create_augroup('WhichKeyMacros', { clear = true })
+      vim.api.nvim_create_autocmd('RecordingEnter', { group = group, callback = sync_macros })
+      vim.api.nvim_create_autocmd('RecordingLeave', { group = group, callback = sync_macros })
+    end,
   },
 }

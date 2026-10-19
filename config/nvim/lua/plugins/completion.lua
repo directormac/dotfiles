@@ -1,6 +1,24 @@
 -- blink.cmp with colorful-menu renderers, luasnip fast-trigger, and cmp-cmdline.
 local trigger_snippet = ';'
 
+-- Symbol-only sources (glyphs/emojis). Forced to the bottom of the menu by
+-- the source_priority sorter below, so typing `:` in paths (e.g. Rust `::`)
+-- never buries LSP completions under icon noise.
+local symbol_sources = { emoji = true, nerdfont = true }
+
+--- Source tier used by `fuzzy.sorts`: lower tiers are listed first.
+--- LSP always wins, symbol sources always come last, everything else
+--- (copilot, snippets, path, buffer, ...) keeps score-based ordering.
+local function source_priority(a, b)
+  local function tier(item)
+    if item.source_id == 'lsp' then return 1 end
+    if symbol_sources[item.source_id] then return 3 end
+    return 2
+  end
+  local a_tier, b_tier = tier(a), tier(b)
+  if a_tier ~= b_tier then return a_tier < b_tier end
+end
+
 return {
   { 'blink.lib', load_before = { 'blink.cmp' } },
   { 'blink.compat', load_before = { 'blink.cmp' } },
@@ -96,9 +114,12 @@ return {
         end,
       },
       fuzzy = {
-        -- The order here IS the priority: `exact` wins outright, then the fuzzy
-        -- score (which is where every `score_offset` competes), then `sortText`.
+        -- The order here IS the priority: source tier (LSP first, symbol
+        -- sources last, see source_priority above), then `exact`, then the
+        -- fuzzy score (which is where every `score_offset` competes), then
+        -- `sortText`.
         sorts = {
+          source_priority,
           'exact',
           'score',
           'sort_text',
@@ -288,15 +309,19 @@ return {
           emoji = {
             name = 'Emoji',
             module = 'blink-emoji',
-            score_offset = 95,
-            min_keyword_length = 0,
+            -- Kept low; the source_priority sorter already pins emoji below
+            -- LSP. min_keyword_length 1 avoids flooding on an empty keyword
+            -- right after typing `:`.
+            score_offset = -10,
+            min_keyword_length = 1,
             opts = { insert = true },
           },
           nerdfont = {
             name = 'Nerd Fonts',
             module = 'blink-nerdfont',
-            score_offset = 90,
-            min_keyword_length = 0,
+            -- See emoji above; symbol sources are pinned to the bottom.
+            score_offset = -10,
+            min_keyword_length = 1,
             opts = { insert = true },
           },
           git = {

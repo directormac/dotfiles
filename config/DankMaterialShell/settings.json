@@ -478,6 +478,27 @@
   ],
   "desktopWidgetInstances": [
     {
+      "id": "dw_1788975751246_cdv9mbilh",
+      "widgetType": "pureLyrics",
+      "name": "Pure Lyrics",
+      "enabled": true,
+      "config": {
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "fontSize": 35,
+        "borderOpacity": 0,
+        "showOnOverlay": false,
+        "musixmatchToken": "00000000000000000000000000000000000000000000000000000000",
+        "backgroundOpacity": 0,
+        "lineCount": "7",
+        "syncPositionAcrossScreens": true
+      }
+    },
+    {
       "id": "dw_1789003152114_9nb0kxtk7",
       "widgetType": "dankRssWidget",
       "name": "Dank RSS Widget",
@@ -578,27 +599,6 @@
       "group": null
     },
     {
-      "id": "dw_1788975751246_cdv9mbilh",
-      "widgetType": "pureLyrics",
-      "name": "Pure Lyrics",
-      "enabled": true,
-      "config": {
-        "displayPreferences": [
-          {
-            "name": "DP-3",
-            "model": "AORUS AD27QD"
-          }
-        ],
-        "fontSize": 35,
-        "borderOpacity": 0,
-        "showOnOverlay": false,
-        "musixmatchToken": "00000000000000000000000000000000000000000000000000000000",
-        "backgroundOpacity": 0,
-        "lineCount": "7",
-        "syncPositionAcrossScreens": true
-      }
-    },
-    {
       "id": "dw_1789001683548_93h8i76v5",
       "widgetType": "cavaVisualizer",
       "name": "Cava Visualizer",
@@ -619,6 +619,17 @@
         "vizMode": "bars",
         "colorChoice": "secondary",
         "opacity": 73
+      }
+    },
+    {
+      "id": "dw_1792408795713_7hw4msq0h",
+      "widgetType": "pureLyrics",
+      "name": "Pure Lyrics",
+      "enabled": true,
+      "config": {
+        "displayPreferences": [
+          "all"
+        ]
       }
     }
   ],
