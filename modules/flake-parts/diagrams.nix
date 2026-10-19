@@ -5,6 +5,7 @@
 {
   lib,
   den,
+  generated-header,
   inputs,
   ...
 }:
@@ -266,6 +267,10 @@ in
       # --- TOPOLOGY.md ---
       topologyDrv = pkgs.writeText "TOPOLOGY.md" (
         lib.concatStringsSep "\n" [
+          (lib.removeSuffix "\n" (generated-header {
+            command = "nix run .#diagrams.write-topology";
+            source = "modules/flake-parts/diagrams.nix";
+          }))
           "# Fleet Topology"
           ""
           "Auto-generated visualizations of the nix-config fleet's"

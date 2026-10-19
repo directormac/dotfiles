@@ -1,4 +1,5 @@
 {
+  generated-header,
   inputs,
   withSystem,
   ...
@@ -42,7 +43,16 @@
 
       # Create a treefmt file
       files.file = lib.mkIf (inputs ? files) {
-        ".treefmt.toml".source = config.treefmt.build.configFile;
+        ".treefmt.toml".source = pkgs.runCommand "treefmt.toml" { } ''
+          cat \
+            ${
+              pkgs.writeText "generated-header" (generated-header {
+                source = "modules/flake-parts/formatter.nix";
+                style = "hash";
+              })
+            } \
+            ${config.treefmt.build.configFile} > $out
+        '';
       };
 
       # Provide a formatter package for `nix fmt`. Setting this

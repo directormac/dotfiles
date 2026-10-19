@@ -1,4 +1,6 @@
-# Do not edit edit gitignore.nix
+# GENERATED FILE — DO NOT EDIT.
+# Managed by `modules/flake-parts/files/gitignore.nix`.
+# Edit the source module and run `nix run .#write-files` to regenerate.
 result
 *.qcow2
 tmp

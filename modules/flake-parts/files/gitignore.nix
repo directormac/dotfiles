@@ -2,6 +2,7 @@
   config,
   lib,
   dag,
+  generated-header,
   ...
 }:
 {
@@ -17,7 +18,6 @@
       dag.entryAnywhere
         # gitignore
         ''
-          # Do not edit edit gitignore.nix
           result
           *.qcow2
           tmp
@@ -41,10 +41,15 @@
         '';
 
     perSystem = {
-      files.file.".gitignore".text = dag.render {
-        entries = config.flake.dot-gitignore;
-        separator = "\n";
-      };
+      files.file.".gitignore".text =
+        (generated-header {
+          source = "modules/flake-parts/files/gitignore.nix";
+          style = "hash";
+        })
+        + dag.render {
+          entries = config.flake.dot-gitignore;
+          separator = "\n";
+        };
     };
   };
 }
