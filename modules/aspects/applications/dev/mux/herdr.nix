@@ -43,6 +43,14 @@
               ${herdrPkg}/bin/herdr plugin install -y "$plugin" || echo "  [warn] failed to install $plugin"
             fi
           done
+
+          NFTN_DIR=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 3 -type d -name "checkout" 2>/dev/null | grep "herdr-nerd-font-tab-name" | head -n 1 || true)
+          if [ -n "$NFTN_DIR" ] && [ -d "$NFTN_DIR" ]; then
+            if ! grep -q "NUMBER_MAPS" "$NFTN_DIR/lib/nftn/labels.py" 2>/dev/null; then
+              echo "  [patching] herdr-nerd-font-tab-name with custom numeral styles..."
+              ${pkgs.git}/bin/git -C "$NFTN_DIR" apply "$HOME/.dotfiles/config/herdr/patches/herdr-nerd-font-tab-name-numerals.patch" 2>/dev/null || true
+            fi
+          fi
           echo "==> Herdr plugins sync complete."
         '';
         herdrPkg =
@@ -151,6 +159,8 @@
 
         home.file.".config/herdr/plugins/config/herdr-floax/floax.conf".source =
           config.lib.dots.link "herdr/plugins/config/herdr-floax/floax.conf";
+
+        home.file.".config/herdr/scripts".source = config.lib.dots.link "herdr/scripts";
 
         home.packages = [
           herdrPkg

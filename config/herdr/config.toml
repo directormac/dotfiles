@@ -31,16 +31,14 @@ workspace_picker = "prefix+w"
 goto = "prefix+g"
 new_workspace = "prefix+shift+n"
 new_worktree = "prefix+shift+g"
-# open_worktree = ""    # optional, unset by default
-# remove_worktree = ""  # optional, unset by default; opens confirmation
-# rename_workspace = "prefix+shift+w"
-# close_workspace = "prefix+shift+d"
-# previous_workspace = "" # optional, unset by default
-# next_workspace = ""     # optional, unset by default
-# previous_agent = ""     # optional, unset by default
-# next_agent = ""         # optional, unset by default
-# focus_agent = ""        # optional indexed binding, e.g. "prefix+alt+1..9"
-# remote_image_paste = "ctrl+v" # only active in herdr --remote; empty disables raw-key image paste
+previous_workspace = "prefix+alt+p"
+next_workspace = "prefix+alt+n"
+switch_workspace = "prefix+shift+1..9"
+rename_workspace = "prefix+alt+w"
+close_workspace = "prefix+shift+d"
+previous_agent = "prefix+alt+h"
+next_agent = "prefix+alt+l"
+focus_agent = "prefix+alt+1..9"
 new_tab = "prefix+c"
 rename_tab = "prefix+shift+t"
 previous_tab = ["prefix+p", "ctrl+left"]
@@ -48,11 +46,13 @@ next_tab = ["prefix+n", "ctrl+right"]
 move_tab_previous = "alt+shift+left"      # optional, e.g. "alt+shift+left" moves the tab toward the front
 move_tab_next = "alt+shift+right"         # optional, e.g. "alt+shift+right" moves the tab toward the back
 switch_tab = ["prefix+1..9", "ctrl+1..9"]
-# switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
 close_tab = "prefix+shift+x"
-# rename_pane = "prefix+shift+p"
-# edit_scrollback = "prefix+e"
-# clear_pane = ""                  # unbound; e.g. "prefix+ctrl+k"
+edit_scrollback = "prefix+e"
+clear_pane = "prefix+ctrl+l"
+swap_pane_left = "prefix+shift+h"
+swap_pane_down = "prefix+shift+j"
+swap_pane_up = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
 focus_pane_left = "prefix+h"
 focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
@@ -64,11 +64,10 @@ split_vertical = ["prefix+backslash"]    # "prefix+v"
 split_horizontal = ["prefix+minus"]      # "prefix+minus"
 close_pane = ["prefix+x", "alt+esc"]     # "prefix+x"
 zoom = "prefix+z"                        # legacy alias: fullscreen
-# resize_mode = "prefix+r"
-# resize_pane_left = ""   # optional, e.g. "ctrl+shift+alt+left" resizes without entering resize mode
-# resize_pane_down = ""   # optional, e.g. "ctrl+shift+alt+down"
-# resize_pane_up = ""     # optional, e.g. "ctrl+shift+alt+up"
-# resize_pane_right = ""  # optional, e.g. "ctrl+shift+alt+right"
+resize_pane_left = "prefix+alt+left"
+resize_pane_down = "prefix+alt+down"
+resize_pane_up = "prefix+alt+up"
+resize_pane_right = "prefix+alt+right"
 toggle_sidebar = "prefix+b"
 copy_mode = "prefix+[" # Copy mode
 resize_mode = [
@@ -162,6 +161,30 @@ width = "90%"
 height = "85%"
 description = "Terminal Browser popup"
 
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"
+description = "Lazygit popup"
+
+[[keys.command]]
+key = "prefix+y"
+type = "popup"
+command = "yazi"
+width = "85%"
+height = "85%"
+description = "Yazi file manager popup"
+
+[[keys.command]]
+key = "prefix+alt+m"
+type = "popup"
+command = "btop"
+width = "85%"
+height = "85%"
+description = "Btop system monitor popup"
+
 [remote]
 
 # Size of the virtual terminal used when no client is attached.
@@ -186,10 +209,9 @@ name = "catppuccin"
 auto_switch = false
 
 # Override individual color tokens on top of the base theme.
-# Accepts: hex (#rrggbb), named colors, rgb(r,g,b), or panel_bg = "reset"
 [theme.custom]
-# panel_bg = "#1e1e2e"
-# sidebar_bg = "#181825"
+panel_bg = "reset"
+sidebar_bg = "reset"
 active_row_bg = "#313244"
 selection_bg = "#45475a"
 accent = "#cba6f7"
@@ -198,8 +220,8 @@ red = "#f38ba8"
 green = "#a6e3a1"
 
 [theme.custom.dark]
-# panel_bg = "#1e1e2e"
-# sidebar_bg = "#181825"
+panel_bg = "reset"
+sidebar_bg = "reset"
 active_row_bg = "#313244"
 selection_bg = "#45475a"
 accent = "#cba6f7"
@@ -232,6 +254,13 @@ pane_gaps = true
 hide_tab_bar_when_single_tab = false
 # Desktop tab row placement: "top" or "bottom".
 tab_bar_position = "bottom"
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "command", command = "~/.config/herdr/scripts/agents-status.sh", interval_seconds = 2, timeout_seconds = 2 },
+  { type = "hostname" },
+  { type = "datetime", format = "%H:%M" },
+]
+tab_bar_right_separator = " · "
 # Title Herdr writes to the terminal it runs in, which is what window managers
 # show in title, tab, and group bars. Tokens are {hostname}, {workspace}, {tab},
 # {pane}, and {terminal_title}; {{ and }} are literal braces.

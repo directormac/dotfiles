@@ -1,5 +1,22 @@
 config:
   show-name: "auto"
+  # Numeral style for auto-numbered tabs (inspired by config/tmux/scripts/custom-number.sh).
+  # Options:
+  #   "hide"         - completely hide numbers (icon only: , 󰏿, , ) [default]
+  #   "kanji"        - 〇 一 二 三 四 五 六 七 八 九 十
+  #   "circle"       - 🄋 ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩
+  #   "circle_black" - ⓿ ❶ ❷ ❸ ❹ ❺ ❻ ❼ ❽ ❾ ❿
+  #   "digital"      - 🯰 🯱 🯲 🯳 🯴 🯵 🯶 🯷 🯸 🯹
+  #   "fsquare"      - 󰎡 󰎤 󰎧 󰎪 󰎭 󰎱 󰎳 󰎶 󰎹 󰎼
+  #   "hsquare"      - 󰎣 󰎦 󰎩 󰎬 󰎮 󰎰 󰎵 󰎸 󰎻 󰎾
+  #   "dsquare"      - 󰎢 󰎥 󰎨 󰎫 󰎲 󰎯 󰎴 󰎷 󰎺 󰎽
+  #   "roman"        - 󱂈 󱂉 󱂊 󱂋 󱂌 󱂍 󱂎 󱂏 󱂐
+  #   "roman_text"   - 0 I II III IV V VI VII VIII IX X
+  #   "super"        - ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ¹⁰
+  #   "sub"          - ₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉ ₁₀
+  #   "braille"      - ⠀ ⠁ ⠃ ⠇ ⠏ ⠟ ⠿ ⡿ ⣿ ⣶
+  #   "random"       - random numeral style
+  number-style: "hide"
   icon-position: "left"
   fallback-icon: ""
   multi-pane-icon: ""

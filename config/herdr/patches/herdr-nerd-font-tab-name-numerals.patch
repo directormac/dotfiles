@@ -1,0 +1,163 @@
+diff --git a/lib/nftn/icons.py b/lib/nftn/icons.py
+index b0a2f47..2859c78 100644
+--- a/lib/nftn/icons.py
++++ b/lib/nftn/icons.py
+@@ -32,6 +32,8 @@ class Resolver:
+             value = self.config.option(key)
+             if value:
+                 glyphs.add(value)
++        from .labels import ALL_NUM_GLYPHS
++        glyphs.update(k for k in ALL_NUM_GLYPHS.keys() if not k.isalnum())
+         glyphs.discard("")
+         return glyphs
+ 
+diff --git a/lib/nftn/labels.py b/lib/nftn/labels.py
+index 1468169..d9ae6f7 100644
+--- a/lib/nftn/labels.py
++++ b/lib/nftn/labels.py
+@@ -7,10 +7,74 @@ persistent state that the user also edits, so this module keeps track of the
+ `icon + base`.
+ """
+ 
++import random
++
++NUMBER_MAPS = {
++    "kanji": ["〇", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"],
++    "circle": ["🄋", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"],
++    "circle_black": ["⓿", "❶", "❷", "❸", "❹", "❺", "❻", "❼", "❽", "❾", "❿"],
++    "digital": ["🯰", "🯱", "🯲", "🯳", "🯴", "🯵", "🯶", "🯷", "🯸", "🯹", "🯱🯰"],
++    "fsquare": ["󰎡", "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳", "󰎶", "󰎹", "󰎼", "󰎤󰎡"],
++    "hsquare": ["󰎣", "󰎦", "󰎩", "󰎬", "󰎮", "󰎰", "󰎵", "󰎸", "󰎻", "󰎾", "󰎦󰎣"],
++    "dsquare": ["󰎢", "󰎥", "󰎨", "󰎫", "󰎲", "󰎯", "󰎴", "󰎷", "󰎺", "󰎽", "󰎥󰎢"],
++    "roman": [" ", "󱂈", "󱂉", "󱂊", "󱂋", "󱂌", "󱂍", "󱂎", "󱂏", "󱂐", "󱂐"],
++    "roman_text": ["0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"],
++    "super": ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "¹⁰"],
++    "sub": ["₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉", "₁₀"],
++    "braille": ["⠀", "⠁", "⠃", "⠇", "⠏", "⠟", "⠿", "⡿", "⣿", "⣶", "⠁⠀"],
++}
++
++ALL_NUM_GLYPHS = {
++    glyph: idx
++    for fmt, mapping in NUMBER_MAPS.items()
++    for idx, glyph in enumerate(mapping)
++    if glyph.strip()
++}
++
++
++def extract_digit(label, number):
++    """Extract integer digit if label represents an auto number or formatted numeral."""
++    s = (label or "").strip()
++    if s == str(number) and str(number).isdigit():
++        return int(number)
++    if s.isdigit():
++        return int(s)
++    if s in ALL_NUM_GLYPHS:
++        return ALL_NUM_GLYPHS[s]
++    parts = s.split()
++    if parts and parts[-1].isdigit():
++        return int(parts[-1])
++    if parts and parts[-1] in ALL_NUM_GLYPHS:
++        return ALL_NUM_GLYPHS[parts[-1]]
++    if str(number).isdigit():
++        return int(number)
++    return None
++
++
++def format_digit(digit, style):
++    """Format an integer digit with the selected numeral style."""
++    if not style or style in ("hide", "none"):
++        return ""
++    if style == "ascii":
++        return str(digit)
++    if style == "random":
++        styles = list(NUMBER_MAPS.keys())
++        style = random.choice(styles)
++    mapping = NUMBER_MAPS.get(style)
++    if mapping and 0 <= digit < len(mapping):
++        return mapping[digit]
++    return str(digit)
++
+ 
+ def is_auto_label(label, number):
+-    """True when the label is still herdr's generated tab number."""
+-    return (label or "").strip() == str(number)
++    """True when the label is still herdr's generated tab number or formatted numeral."""
++    s = (label or "").strip()
++    if s == str(number) or s.isdigit() or s in ALL_NUM_GLYPHS:
++        return True
++    parts = s.split()
++    if len(parts) > 1 and parts[0] == "✓" and (parts[-1].isdigit() or parts[-1] in ALL_NUM_GLYPHS):
++        return True
++    return False
+ 
+ 
+ def strip_icons(label, vocabulary):
+@@ -49,12 +113,30 @@ def compose(icon, base, config, is_fallback=False, is_auto=False, pane_count=1):
+         icon = "{} {}".format(multi, icon)
+ 
+     show_name = config.tristate("show-name", "auto")
+-    if show_name == "auto":
+-        show_name = not is_auto
+-    if not show_name and is_fallback and config.bool("always-show-fallback-name", False):
+-        show_name = True
++    number_style = config.option("number-style")
++    if not number_style:
++        if show_name is True:
++            number_style = "ascii"
++        else:
++            number_style = "hide"
++
++    if is_auto:
++        digit = extract_digit(base, "")
++        if digit is not None and number_style not in ("hide", "none"):
++            formatted_num = format_digit(digit, number_style)
++            if formatted_num:
++                if config.option("icon-position", "left") == "right":
++                    return "{} {}".format(formatted_num, icon)
++                return "{} {}".format(icon, formatted_num)
++        return icon
+ 
+-    if not show_name or not base:
++    if show_name is False:
++        if is_fallback and config.bool("always-show-fallback-name", False):
++            pass
++        else:
++            return icon
++
++    if not base:
+         return icon
+     if config.option("icon-position", "left") == "right":
+         return "{} {}".format(base, icon)
+diff --git a/test/test_nftn.py b/test/test_nftn.py
+index 475bf40..f084be2 100644
+--- a/test/test_nftn.py
++++ b/test/test_nftn.py
+@@ -176,6 +176,28 @@ class LabelTest(unittest.TestCase):
+         self.assertEqual(labels.compose("?", "logs", cfg, is_fallback=True), "? logs")
+ 
+ 
++    def test_auto_label_with_digit_and_glyphs(self):
++        self.assertTrue(labels.is_auto_label("1", 7))
++        self.assertTrue(labels.is_auto_label("一", 7))
++        self.assertTrue(labels.is_auto_label("①", 7))
++        self.assertTrue(labels.is_auto_label("✓ 2", 8))
++        self.assertFalse(labels.is_auto_label("editor", 7))
++
++    def test_compose_number_styles(self):
++        # Hide style: no number
++        self.assertEqual(labels.compose("V", "1", config(number_style="hide"), is_auto=True), "V")
++        # Kanji style: kanji numeral
++        self.assertEqual(labels.compose("V", "1", config(number_style="kanji"), is_auto=True), "V 一")
++        self.assertEqual(labels.compose("V", "2", config(number_style="kanji"), is_auto=True), "V 二")
++        # Circle style
++        self.assertEqual(labels.compose("V", "1", config(number_style="circle"), is_auto=True), "V ①")
++        # Fsquare style
++        self.assertEqual(labels.compose("V", "1", config(number_style="fsquare"), is_auto=True), "V 󰎤")
++        # Super style
++        self.assertEqual(labels.compose("V", "3", config(number_style="super"), is_auto=True), "V ³")
++        # User-named tab preserved
++        self.assertEqual(labels.compose("V", "editor", config(number_style="kanji"), is_auto=False), "V editor")
++
+ class FakeConnection:
+     """Stands in for a herdr socket connection."""
+ 
