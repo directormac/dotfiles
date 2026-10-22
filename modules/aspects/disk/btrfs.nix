@@ -11,7 +11,6 @@
 
   den.aspects.disk.btrfs = {
     settings.device = lib.mkOption {
-      default = "/dev/disk/by-uuid/dcd3cd20-f5d6-4bf9-8670-cdf6dfb7c923";
       description = "Target disk device for the Btrfs subvolume layout.";
       type = lib.types.str;
     };

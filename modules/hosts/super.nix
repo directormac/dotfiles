@@ -42,6 +42,8 @@
           wget
         ];
 
+        hardware.cpu.intel.updateMicrocode = lib.mkDefault true;
+        hardware.enableRedistributableFirmware = lib.mkDefault true;
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       };
 
@@ -50,6 +52,7 @@
 
   den.hosts.x86_64-linux.super = {
     settings.desktop.hyprland.cardDevice = "/dev/dri/card2:/dev/dri/card1";
+    settings.disk.btrfs.device = "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5GXNX0W399283A";
     description = "Super Workstation";
     isWorkstation = true;
     users.artifex = { };

@@ -21,7 +21,7 @@ modules/
 │   ├── applications/        # Leaf aspects for CLI, TUI, and GUI apps (browsers, dev, gaming, media, messaging, productivity, shell, terminals, wayland)
 │   ├── core/                # System foundation leaves (boot, documentation, locale, mounts, networking, nh, nix, nixpkgs, security, users)
 │   ├── desktop/             # Compositors (hyprland, niri, mangowm, dms, noctalia) and desktop services (audio, fonts, greeter, gtk, kdeconnect, nautilus, stylix, thunar, udiskie, xdg, xserver)
-│   ├── disk/                # Disko declarative partitioning layouts (btrfs.nix with `settings.device`)
+│   ├── disk/                # Disko declarative partitioning layouts (btrfs.nix; `settings.disk.btrfs.device` is REQUIRED per host, no default)
 │   ├── hardware/            # Hardware profiles and GPU/input/power leaves (bluetooth, graphics/*, input, laptop, power, steam-hardware)
 │   ├── roles/               # Role aggregators (default, workstation, dev, gaming)
 │   ├── secrets/             # Secret management (agenix.nix)
@@ -29,8 +29,8 @@ modules/
 │   └── virtualization/      # Containers & VMs (libvirt, podman, waydroid, vm-variant, looking-glass, windows-vm)
 ├── classes/                 # Custom Den class routes (devenv, files, formatter/treefmt, nix-unit `tests`)
 ├── core/                    # Framework wiring (dotfiles, impermanence, capabilities, policies, quirks, settings, _settings-type)
-├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap,envrc,gitignore}.nix)
-├── hosts/                   # Host declarations (nixos.nix, nixos/hardware.nix, super.nix, sandbox.nix)
+├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap,migration,envrc,gitignore}.nix)
+├── hosts/                   # Host declarations (nixos.nix + nixos/hardware.nix = legacy SATA install; super.nix = NVMe target with disk.btrfs; sandbox.nix = VM testbed)
 └── users/                   # User declarations (artifex.nix)
 pkgs/
 ├── overlays.nix             # Auto-discovers pkgs/by-name/* into `pkgs.local.<name>` and top-level `pkgs.<name>`
@@ -67,6 +67,7 @@ Several root files are generated declaratively. **NEVER** edit generated target 
 | `README.md` | `modules/flake-parts/files/readme.nix` (`flake.readme.*` DAG) | `nix run .#write-files` |
 | `AGENTS.md` | `modules/flake-parts/files/agents.nix` (`flake.agents.*` DAG) | `nix run .#write-files` |
 | `BOOTSTRAP.md` | `modules/flake-parts/files/bootstrap.nix` (`flake.bootstrap.*` DAG) | `nix run .#write-files` |
+| `MIGRATION.md` | `modules/flake-parts/files/migration.nix` (`flake.migration.*` DAG) | `nix run .#write-files` |
 | `.envrc` | `modules/flake-parts/files/envrc.nix` (`flake.dot-envrc.*` DAG) | `nix run .#write-files` |
 | `.gitignore` | `modules/flake-parts/files/gitignore.nix` (`flake.dot-gitignore.*` DAG) | `nix run .#write-files` |
 | `.workmux.yaml` | `modules/aspects/applications/dev/mux/workmux.nix` | `nix run .#write-files` |
@@ -85,7 +86,9 @@ Follow the pattern in `modules/flake-parts/files/readme.nix`:
 
 ## 3. Impermanence & Config Persistence Rules
 
-Root (`/`) is rolled back to an empty Btrfs snapshot (`root-blank`) on every boot (`modules/core/impermanence.nix`). State must be explicitly routed through the four persistence quirks:
+Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapshot (`root-blank`) on every boot via the initrd service `rollback-root` (`modules/core/impermanence.nix`). State must be explicitly routed through the four persistence quirks.
+
+> **Host reality check:** the rollback looks up `/dev/disk/by-label/nixos` and **silently exits 0 if it is missing**. The legacy `nixos` host (`modules/hosts/nixos/hardware.nix`) runs on a plain btrfs top-level (`subvol=/`, label `root`) where `/persist` and `/cache` are ordinary directories, so root is **never wiped there**. Missing `persist*` entries are therefore invisible on `nixos` and only break on a `disk.btrfs` host. When reviewing persistence changes, reason against the `super` layout, not the behavior of the running machine. Moving between the two is documented in `MIGRATION.md`.
 
 ### Choosing Between `persist` / `persistHome` and `cache` / `cacheHome`
 - **`persist` (`/persist`) & `persistHome` (`/persist/home/<user>`)**:
@@ -122,6 +125,13 @@ Root (`/`) is rolled back to an empty Btrfs snapshot (`root-blank`) on every boo
    - `systemd.user.services.tmux-server` (`_systemd.nix`) runs `resurrectRestoreScript` in `ExecStartPost` via `tmux run-shell` (which populates `$TMUX` so `restore.sh` resolves the server socket).
 6. **Neovim `conform.nvim` & `treefmt` Invariant (`modules/flake-parts/formatter.nix`)**:
    - **NEVER** add `**/.conform.*` or `**/_*` to `treefmt`'s `settings.global.excludes`. `conform.nvim` invokes `treefmt` with `stdin = false` on temporary `.conform.<id>.<filename>` files next to the buffer; excluding `**/.conform.*` causes `treefmt` to skip every file saved in Neovim.
+7. **Disk Safety (`modules/aspects/disk/btrfs.nix`)**:
+   - `settings.disk.btrfs.device` intentionally has **no default**; set it per host on `den.hosts.<system>.<host>.settings.disk.btrfs.device` as a `/dev/disk/by-id/...` path. A default pointing at a disk in use makes `disko` wipe it.
+   - **NEVER** run `disko`, `mkfs`, `wipefs`, `sgdisk`, `rsync --delete` into `/persist`, or any other destructive disk command unless the user explicitly asks. Verify with `nix build .#nixosConfigurations.<host>.config.system.build.diskoScript` and `grep -o '/dev/disk/by-id/[^ ;")]*' result | sort -u` instead.
+8. **Host Hardware Parity**:
+   - `hardware.nixos` (legacy host) imports `not-detected.nix`, which enables `hardware.enableRedistributableFirmware` and Intel microcode. A host built from `disk.btrfs` gets filesystems from Disko but **no firmware**; set `hardware.enableRedistributableFirmware` and `hardware.cpu.<vendor>.updateMicrocode` in the host module (as `modules/hosts/super.nix` does) or Wi-Fi/Bluetooth firmware and microcode silently disappear.
+9. **Agenix Host Key & Hostname Fallback (`modules/aspects/secrets/agenix.nix`)**:
+   - Secrets decrypt with `/persist/etc/ssh/ssh_host_ed25519_key`. A host without `.secrets/hosts/<host>.pub` / `.secrets/rekeyed/<host>/` falls back to the `nixos` entries, which only works while that host key is carried over. After a reinstall, copy `/persist` instead of regenerating the key, or rekey with `agenix rekey`.
 
 ## 4. Flake Inputs, Overlays & Local Packages
 
@@ -143,6 +153,8 @@ Before running full builds or `nix flake check`, verify host evaluations quickly
 nix eval .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath
 nix eval .#nixosConfigurations.super.config.system.build.toplevel.drvPath
 nix eval .#nixosConfigurations.sandbox.config.system.build.toplevel.drvPath
+# Evaluate the Disko script for hosts that include disk.btrfs (does not touch any disk)
+nix build --no-link .#nixosConfigurations.super.config.system.build.diskoScript
 ```
 
 ### Synchronize Generated Files & Format
@@ -150,7 +162,7 @@ nix eval .#nixosConfigurations.sandbox.config.system.build.toplevel.drvPath
 # 1. Regenerate flake.nix if flake-file.inputs changed
 nix run .#write-flake
 
-# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, .envrc, .gitignore, .workmux.yaml, .treefmt.toml
+# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, MIGRATION.md, .envrc, .gitignore, .workmux.yaml, .treefmt.toml
 nix run .#write-files
 
 # 3. Regenerate TOPOLOGY.md if hosts, aspects, or quirks changed
@@ -168,3 +180,20 @@ nix flake check --no-build
 - **Test in transient generation**: `nh os test`
 - **Activate & switch with rollback protection**: `rebuild-switch` (labels the generation `<branch>-<scope>-<rev>-<timestamp>` and automatically rolls back and deletes the generation if activation fails).
 - **Agent Safety Rule**: Do **not** run `rebuild-switch` or `nh os switch` unless explicitly asked by the user; use `nix eval` or `nh os build` to verify changes safely.
+- **Agent Safety Rule (disks)**: never format, partition, mount over, or `rsync --delete` real disks; produce commands for the user to run instead.
+
+## 6. Working Conventions & Debugging
+
+### Adding or Changing Things
+- **One aspect per concern.** A new app or service is a leaf aspect under the matching `modules/aspects/<area>/`. It declares its own `flake-file.inputs`, imports any third-party NixOS/Home Manager module in its own class (`nixos.imports = [ inputs.foo.nixosModules.default ]`), emits its persistence through quirks, and is pulled in by a role (`modules/aspects/roles/*.nix`) or host `includes`. Hosts never import third-party modules directly.
+- **Per-host differences are settings, not conditionals.** Add a typed `settings.<opt>` to the aspect and set it on `den.hosts.<system>.<host>.settings.<aspect>.<opt>` (see `desktop.hyprland.cardDevice`, `disk.btrfs.device`). Do not branch on `host.name`.
+- **Do not repeat yourself across aspects.** Shared helpers live in `modules/core/` (`dotfiles.nix`, `impermanence.nix`) or an underscore-prefixed `_common/` directory next to the consumers; extend them instead of copying `let` blocks.
+- **Keep modules small and commented.** Start each module with a one-line `#` comment describing it; match the surrounding aspect's structure and `nixfmt-rs` formatting.
+- **Commit style:** conventional commits as in `git log` (`feat:`, `fix:`, `refactor:`), one concern per commit. Generated files are committed together with their source module.
+
+### Debugging Den Evaluation
+- Read a merged value directly: `nix eval .#nixosConfigurations.<host>.config.<option> --json`; add `--show-trace` for module errors.
+- Interactive: `nix repl` then `:lf .` and inspect `nixosConfigurations.<host>.config...`.
+- Print or break at an include: `({ host, ... }@ctx: builtins.trace ctx { nixos = { }; })` or `builtins.break ctx`; remove before committing.
+- Policy routing: `den.lib.policyInspect.inspect { kind = "host"; context = { host = den.hosts.x86_64-linux.super; }; }` shows which policies apply and where they route. Exposing `flake.den = den;` temporarily makes `den` visible in the REPL; never commit it.
+- Compare hosts before trusting a refactor: evaluate the same option on `nixos`, `super`, and `sandbox` (for example `fileSystems`, `hardware.enableRedistributableFirmware`, `boot.initrd.systemd.enable`). Differences are expected only where the host includes different aspects.

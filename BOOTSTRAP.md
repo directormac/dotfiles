@@ -50,11 +50,9 @@ The aspect [`modules/aspects/disk/btrfs.nix`](modules/aspects/disk/btrfs.nix) (`
   - `/persist` → mounted at `/persist` (`neededForBoot = true`)
   - `/cache` → mounted at `/cache` (`neededForBoot = true`)
 
-To assign your target disk to a host using `disk.btrfs`, override `disko.devices.disk.main.device` in your host module (`modules/hosts/<new-machine>.nix`):
+`settings.disk.btrfs.device` has **no default** (a wrong default could point Disko at a disk in use), so every host that includes `disk.btrfs` must set it on its `den.hosts` entry (`modules/hosts/<new-machine>.nix`), using a stable `/dev/disk/by-id/` path:
 ```nix
-nixos = {
-  disko.devices.disk.main.device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_XXXX";
-};
+den.hosts.x86_64-linux.<new-machine>.settings.disk.btrfs.device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_1TB_XXXX";
 ```
 
 ### Step 3.3: Option B — Custom or Multi-Disk Hardware Layout
@@ -159,9 +157,6 @@ Every host in this repository is defined by a single file in [`modules/hosts/`](
     nixos =
       { lib, pkgs, ... }:
       {
-        # Assign target disk for Disko
-        disko.devices.disk.main.device = "/dev/disk/by-id/nvme-YOUR_DISK_ID";
-
         boot.initrd.availableKernelModules = [
           "xhci_pci"
           "ahci"
@@ -218,6 +213,8 @@ Every host in this repository is defined by a single file in [`modules/hosts/`](
 
     # Optional per-aspect typed settings
     settings = {
+      # Required by disk.btrfs: stable by-id path of the target disk
+      disk.btrfs.device = "/dev/disk/by-id/nvme-YOUR_DISK_ID";
       impermanence = {
         wipeRootOnBoot = true;
         wipeHomeOnBoot = false;
