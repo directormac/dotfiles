@@ -115,12 +115,10 @@
             dankKDEConnect.enable = true;
             dankLauncherKeys.enable = true;
             dankNotepadModule.enable = true;
-            dankPomodoroTimer.enable = true;
             dankRssWidget.enable = true;
             dankStickerSearch.enable = true;
             dankVault.enable = true;
             emojiLauncher.enable = true;
-            pureLyrics.enable = true;
 
             quickCapture = {
               enable = true;
@@ -141,7 +139,6 @@
               };
             };
 
-            screenkey.enable = true;
             voxtypeActivityOverlay.enable = true;
           };
         };

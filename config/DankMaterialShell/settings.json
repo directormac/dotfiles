@@ -375,18 +375,16 @@
           "maxWorkspaceIcons": 3,
           "showOccupiedWorkspacesOnly": false,
           "showSpecialWorkspaces": false
+        },
+        {
+          "id": "focusedWindow",
+          "enabled": true
         }
       ],
       "centerWidgets": [
         {
-          "id": "dankKDEConnect",
+          "id": "privacyIndicator",
           "enabled": true
-        },
-        {
-          "id": "clock",
-          "enabled": true,
-          "clockCompactMode": false,
-          "clockDateOrder": "dateFirst"
         },
         {
           "id": "music",
@@ -395,21 +393,28 @@
         },
         "weather",
         {
-          "id": "dankPomodoroTimer",
+          "id": "dankKDEConnect",
+          "enabled": true
+        },
+        {
+          "id": "clipboard",
+          "enabled": true,
+          "overflowMode": "section"
+        },
+        {
+          "id": "notepadButton",
+          "enabled": true
+        },
+        {
+          "id": "quickCapture",
           "enabled": true
         }
       ],
       "rightWidgets": [
-        "systemTray",
         {
-          "id": "quickCapture",
-          "enabled": true
-        },
-        "clipboard",
-        "notificationButton",
-        {
-          "id": "network_speed_monitor",
-          "enabled": true
+          "id": "systemTray",
+          "enabled": true,
+          "overflowMode": "always"
         },
         {
           "id": "cpuUsage",
@@ -420,13 +425,17 @@
           "enabled": true
         },
         {
-          "id": "idleInhibitor",
-          "enabled": true
-        },
-        {
           "id": "controlCenterButton",
           "enabled": true,
           "showMicPercent": true
+        },
+        {
+          "id": "clock",
+          "enabled": true
+        },
+        {
+          "id": "idleInhibitor",
+          "enabled": true
         }
       ],
       "spacing": 0,
@@ -626,7 +635,7 @@
             "model": "AORUS AD27QD"
           }
         ],
-        "fontSize": 35,
+        "fontSize": 45,
         "borderOpacity": 0,
         "showOnOverlay": false,
         "musixmatchToken": "00000000000000000000000000000000000000000000000000000000",
@@ -736,38 +745,14 @@
       "group": null
     },
     {
-      "id": "dw_1789001683548_93h8i76v5",
+      "id": "dw_1792688636806_sq7ym5azq",
       "widgetType": "cavaVisualizer",
       "name": "Cava Visualizer",
       "enabled": true,
       "config": {
         "displayPreferences": [
-          {
-            "name": "DP-3",
-            "model": "AORUS AD27QD"
-          }
-        ],
-        "showOnOverlay": false,
-        "clickThrough": false,
-        "syncPositionAcrossScreens": true,
-        "barCount": 73,
-        "bgOpacity": 0,
-        "channels": "mono",
-        "vizMode": "bars",
-        "colorChoice": "secondary",
-        "opacity": 73
-      }
-    },
-    {
-      "id": "dw_1792408795713_7hw4msq0h",
-      "widgetType": "pureLyrics",
-      "name": "Pure Lyrics",
-      "enabled": true,
-      "config": {
-        "displayPreferences": [
           "all"
-        ],
-        "musixmatchToken": "00000000000000000000000000000000000000000000000000000000"
+        ]
       }
     }
   ],
@@ -809,7 +794,7 @@
     }
   },
   "notificationFocusedMonitor": true,
-  "desktopContextMenu": "off",
+  "desktopContextMenu": "on",
   "osdVolumeEnabled": false,
   "osdMediaVolumeEnabled": false
 }
