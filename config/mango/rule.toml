@@ -139,6 +139,12 @@ app_id = "^com\\.superfile\\.fm$"
 
 [[rule.window_rule]]
 is_floating = 1
+width = 0.5
+height = 0.5
+app_id = "^(dev\\.duxlabs\\.files|dfiles)$"
+
+[[rule.window_rule]]
+is_floating = 1
 app_id = "^(dev\\.duxlabs\\.shell|com\\.danklinux\\.dms)$"
 
 [[rule.window_rule]]

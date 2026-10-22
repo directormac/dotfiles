@@ -58,7 +58,7 @@
               "application/x-xz" = "org.gnome.FileRoller.desktop";
               "application/zip" = "org.gnome.FileRoller.desktop";
               "image/*" = [ "feh.desktop" ];
-              "inode/directory" = "org.gnome.Nautilus.desktop";
+              "inode/directory" = "dev.duxlabs.files.desktop";
               "text/plain" = "neovim.desktop";
               "video/*" = "mpv.desktop";
               "video/*,.mkv" = "mpv.desktop";

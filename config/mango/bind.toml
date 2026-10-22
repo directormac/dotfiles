@@ -8,7 +8,7 @@
 # Applications
 "SUPER+Return" = "spawn,ghostty +new-window"
 "SUPER+SHIFT+Return" = "spawn,ghostty --class=com.ghostty.float"
-"SUPER+e" = "spawn,nautilus --new-window"
+"SUPER+e" = "spawn,dfiles open"
 "SUPER+o" = "spawn,zen"
 "SUPER+d" = "spawn,which-key"
 "CTRL+ALT+comma" = "spawn,pavucontrol"

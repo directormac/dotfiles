@@ -57,6 +57,8 @@ local floating_apps = {
   'org.localsend.localsend_app',
   'com.ghostty.float',
   'org.gnome.Nautilus',
+  'dev.duxlabs.files',
+  'dfiles',
   'mpv',
   'nm-connection-editor',
   'Waydroid',

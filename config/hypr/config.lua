@@ -35,7 +35,7 @@ _G.modkey = os.getenv('HYPRLAND_MOD') or 'SUPER'
 local applications = {
   terminal = 'ghostty',
   browser = 'zen-beta',
-  fileManager = 'nautilus',
+  fileManager = 'dfiles open',
   menu = 'hyprlauncher',
 }
 

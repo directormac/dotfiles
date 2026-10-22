@@ -417,6 +417,10 @@
           "overflowMode": "always"
         },
         {
+          "id": "network_speed_monitor",
+          "enabled": true
+        },
+        {
           "id": "cpuUsage",
           "enabled": true
         },
@@ -745,7 +749,7 @@
       "group": null
     },
     {
-      "id": "dw_1792688636806_sq7ym5azq",
+      "id": "dw_1792691888457_nip0zttin",
       "widgetType": "cavaVisualizer",
       "name": "Cava Visualizer",
       "enabled": true,

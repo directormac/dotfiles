@@ -63,3 +63,5 @@ marketplace:
   autoUpdate: auto
 providers:
   tinyModelDevice: gpu
+dev:
+  autoqaConsent: denied

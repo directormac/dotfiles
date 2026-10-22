@@ -47,13 +47,19 @@
             xwayland-satellite
             gpu-screen-recorder
             amdgpu_top
-          ]);
+          ])
+          ++ [
+            # dmenu compatibility wrapper backed by DMS
+            (pkgs.writeShellScriptBin "dmenu" ''
+              exec dms dmenu "$@"
+            '')
+          ];
 
         security.pam.services.dankshell = { };
       };
 
     homeManager =
-      { config, ... }:
+      { config, pkgs, ... }:
       let
         dmsDir = ../../../config/DankMaterialShell;
         dmsFiles = if builtins.pathExists dmsDir then builtins.readDir dmsDir else { };
@@ -150,6 +156,10 @@
         programs.dux-files = lib.mkIf (inputs ? dfiles) {
           enable = true;
 
+          settings = {
+            vimKeys = true;
+          };
+
           portal = {
             enable = true;
             preferred = false;
@@ -158,6 +168,110 @@
           systemd = {
             enable = true;
           };
+        };
+
+        xdg.configFile."dfiles/bookmarks.json" = lib.mkIf (inputs ? dfiles) {
+          force = true;
+          source =
+            let
+              jsonFormat = pkgs.formats.json { };
+              userDirs = config.xdg.userDirs;
+              gtkBookmarks = config.gtk.gtk3.bookmarks;
+
+              parseGtkBookmark =
+                line:
+                let
+                  raw = lib.removePrefix "file://" line;
+                  parts = lib.splitString " " raw;
+                  path = builtins.head parts;
+                  labelParts = builtins.tail parts;
+                  label = if labelParts != [ ] then lib.concatStringsSep " " labelParts else builtins.baseNameOf path;
+                in
+                {
+                  inherit path label;
+                };
+
+              stdDirs = [
+                {
+                  path = "recent:///";
+                  label = "recent";
+                }
+                {
+                  path = config.home.homeDirectory;
+                  label = builtins.baseNameOf config.home.homeDirectory;
+                }
+              ]
+              ++ lib.optional (userDirs.desktop != null) {
+                path = userDirs.desktop;
+                label = "Desktop";
+              }
+              ++ lib.optional (userDirs.documents != null) {
+                path = userDirs.documents;
+                label = "Documents";
+              }
+              ++ lib.optional (userDirs.download != null) {
+                path = userDirs.download;
+                label = "Downloads";
+              }
+              ++ lib.optional (userDirs.music != null) {
+                path = userDirs.music;
+                label = "Music";
+              }
+              ++ lib.optional (userDirs.pictures != null) {
+                path = userDirs.pictures;
+                label = "Pictures";
+              }
+              ++ lib.optional (userDirs.videos != null) {
+                path = userDirs.videos;
+                label = "Videos";
+              }
+              ++ lib.optional (userDirs.publicShare != null) {
+                path = userDirs.publicShare;
+                label = "Public";
+              }
+              ++ lib.optional (userDirs.templates != null) {
+                path = userDirs.templates;
+                label = "Templates";
+              }
+              ++ (lib.mapAttrsToList (_: path: {
+                inherit path;
+                label = builtins.baseNameOf path;
+              }) (userDirs.extraConfig or { }));
+
+              customBookmarks = builtins.map parseGtkBookmark gtkBookmarks;
+
+              allCandidates =
+                stdDirs
+                ++ customBookmarks
+                ++ [
+                  {
+                    path = "trash:///";
+                    label = "trash";
+                  }
+                ];
+
+              dedup =
+                items:
+                let
+                  step =
+                    acc: item:
+                    if builtins.elem item.path acc.seen then
+                      acc
+                    else
+                      {
+                        seen = acc.seen ++ [ item.path ];
+                        list = acc.list ++ [ (item // { icon = item.icon or ""; }) ];
+                      };
+                in
+                (builtins.foldl' step {
+                  seen = [ ];
+                  list = [ ];
+                } items).list;
+            in
+            jsonFormat.generate "dfiles-bookmarks.json" {
+              version = 2;
+              bookmarks = dedup allCandidates;
+            };
         };
 
         stylix.targets = {
@@ -170,7 +284,6 @@
       ".config/dfiles"
       ".config/dms"
       ".local/share/dankcal"
-      ".local/state/DankMaterialShell"
       ".local/state/dfiles"
       ".local/state/dms"
       ".local/state/dankcal"

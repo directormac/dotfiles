@@ -6,7 +6,7 @@
       {
         services.avahi = {
           enable = lib.mkDefault true;
-          browseDomains = [ ];
+          settings.server.browse-domains = [ ];
           nssmdns4 = lib.mkDefault true;
         };
       };
