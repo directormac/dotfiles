@@ -67,6 +67,7 @@
             settings = common.sessionSettings // {
               "browser.tabs.insertAfterCurrent" = false;
               "browser.tabs.insertAfterCurrentExceptPinned" = false;
+              "browser.tabs.insertRelatedAfterCurrent" = false;
               "browser.tabs.warnOnClose" = false;
               "extensions.allowPrivateBrowsingByDefault" = true;
               "gfx.webrender.all" = true;
@@ -82,7 +83,7 @@
               "zen.view.compact.enable-at-startup" = true;
               "zen.view.compact.hide-tabbar" = true;
               "zen.view.compact.hide-toolbar" = true;
-              "zen.view.show-newtab-button-top" = true;
+              "zen.view.show-newtab-button-top" = false;
               "zen.view.sidebar-expanded" = false;
               "zen.view.use-single-toolbar" = false;
               "zen.welcome-screen.seen" = true;
@@ -100,18 +101,44 @@
             };
 
             keyboardShortcuts =
+              # Ctrl+1 through Ctrl+9: Switch Zen spaces
               (map (i: {
                 id = "zen-workspace-switch-${toString i}";
                 key = toString i;
 
                 modifiers = {
-                  alt = true;
+                  control = true;
+                  alt = false;
+                  shift = false;
+                  meta = false;
                 };
-              }) (lib.range 1 6))
+              }) (lib.range 1 9))
+              # Alt+1 through Alt+8: Switch to tabs 1-8
               ++ (map (i: {
-                disabled = true;
                 id = "key_selectTab${toString i}";
-              }) (lib.range 1 6))
+                key = toString i;
+
+                modifiers = {
+                  control = false;
+                  alt = true;
+                  shift = false;
+                  meta = false;
+                };
+              }) (lib.range 1 8))
+              # Alt+9: Switch to last tab (tab 9)
+              ++ [
+                {
+                  id = "key_selectLastTab";
+                  key = "9";
+
+                  modifiers = {
+                    control = false;
+                    alt = true;
+                    shift = false;
+                    meta = false;
+                  };
+                }
+              ]
               ++ [
                 {
                   id = "zen-compact-mode-toggle";
@@ -237,10 +264,22 @@
               force = true;
 
               routes = {
+                "codesignal" = {
+                  matchType = "contains";
+                  openIn = spaces.read;
+                  reference = "codesignal.com";
+                };
+
                 "dev.to" = {
-                  matchType = "equal-to";
+                  matchType = "contains";
                   openIn = spaces.read;
                   reference = "dev.to";
+                };
+
+                "github" = {
+                  matchType = "contains";
+                  openIn = spaces.dev;
+                  reference = "github.com";
                 };
 
                 "google-search" = {
@@ -255,8 +294,26 @@
                   reference = "^https?://(?!(www|gemini)\\.)([a-zA-Z0-9_-]+\\.)+google\\.[a-z.]+";
                 };
 
+                "hacks-mozilla" = {
+                  matchType = "contains";
+                  openIn = spaces.read;
+                  reference = "hacks.mozilla.org";
+                };
+
+                "hacker-news" = {
+                  matchType = "contains";
+                  openIn = spaces.read;
+                  reference = "news.ycombinator.com";
+                };
+
+                "hnrss" = {
+                  matchType = "contains";
+                  openIn = spaces.read;
+                  reference = "hnrss.org";
+                };
+
                 "medium" = {
-                  matchType = "equal-to";
+                  matchType = "contains";
                   openIn = spaces.read;
                   reference = "medium.com";
                 };

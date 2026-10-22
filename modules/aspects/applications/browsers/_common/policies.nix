@@ -56,7 +56,7 @@
       private_browsing = true;
     };
 
-    "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+    "vimium-c@gdh1995.cn" = {
       private_browsing = true;
     };
   };
@@ -86,6 +86,12 @@
   # Reference: https://mozilla.github.io/policy-templates/#preferences
   Preferences = {
     "browser.tabs.warnOnClose" = {
+      Value = false;
+    };
+    "browser.tabs.insertAfterCurrent" = {
+      Value = false;
+    };
+    "browser.tabs.insertRelatedAfterCurrent" = {
       Value = false;
     };
   };

@@ -17,6 +17,8 @@
     "browser.sessionstore.privacy_level" = 0;
     "browser.sessionstore.resume_from_crash" = true;
     "browser.startup.page" = 3;
+    "browser.tabs.insertAfterCurrent" = false;
+    "browser.tabs.insertRelatedAfterCurrent" = false;
     "privacy.clearOnShutdown.cookies" = false;
     "privacy.clearOnShutdown.offlineApps" = false;
     "privacy.clearOnShutdown.sessions" = false;

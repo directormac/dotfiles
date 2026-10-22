@@ -79,17 +79,14 @@
 
           profiles.default = {
             inherit (common) search;
-            settings = common.sessionSettings;
+            settings = common.sessionSettings // {
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+              "sidebar.revamp" = false;
+              "sidebar.verticalTabs" = false;
+            };
 
             extensions = {
-              settings = {
-                "vimium-c@gdh1995.cn" = {
-                  settings = common.extensions.vimiumCSettings;
-                  force = true;
-                };
-              }
-              // common.extensions.settings;
-
+              settings = common.extensions.settings;
               force = true;
             };
 
@@ -99,7 +96,11 @@
               # css
               ''
                 #TabsToolbar { display: none !important; }
+                #sidebar-header, #sidebar-panel-header { display: none !important; }
                 * { border-radius: 0px !important; }
+
+                /* Floating Findbar at Top */
+                ${common.floatingFindbarCss}
               '';
           };
         };

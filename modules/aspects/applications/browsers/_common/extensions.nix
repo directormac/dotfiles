@@ -13,13 +13,6 @@ let
       "environment"
     ]
   );
-
-in
-{
-  inherit (rycee-firefox-addons) catppuccin-mocha-mauve;
-  inherit rycee-firefox-addons;
-  inherit vimiumCSettings;
-
   customAddons = {
     volume-control-boost-volume = buildFirefoxXpiAddon {
       addonId = "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}";
@@ -44,6 +37,14 @@ in
     };
   };
 
+in
+{
+  inherit (rycee-firefox-addons) catppuccin-mocha-mauve;
+  inherit rycee-firefox-addons;
+  inherit vimiumCSettings;
+
+  inherit customAddons;
+
   extensionButtons = {
     "nav-bar" = [
       "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}" # Volume Control
@@ -62,16 +63,66 @@ in
     ];
   };
 
-  packages = with rycee-firefox-addons; [
+  packages = [
+    customAddons.volume-control-boost-volume
+  ]
+  ++ (with rycee-firefox-addons; [
     bitwarden
     clearurls
     darkreader
     sponsorblock
     ublock-origin
-    vimium
-  ];
+    vimium-c
+  ]);
 
   settings = {
+    # Vimium C declarative configuration
+    "vimium-c@gdh1995.cn" = {
+      force = true;
+      settings = vimiumCSettings;
+    };
+
+    # Sidebery declarative configuration (Tree-style tabs, tabs at bottom, panel workspaces)
+    "{3c078156-979c-498b-8990-85f7987dd929}" = {
+      force = true;
+
+      settings = {
+        settings = {
+          # Tab Tree & Organization
+          tabsTree = true;
+          tabsTreeLimit = "none";
+          groupOnOpen = true;
+          tabsTreeBookmarks = true;
+
+          # New tabs arrangement (open at bottom/end)
+          newTabBarPosition = "after_tabs";
+          moveNewTab = "end";
+          moveNewTabParent = "last_child";
+          showNewTabBtns = true;
+
+          # Panel navigation (workspaces)
+          navBarLayout = "horizontal";
+          navBarInline = true;
+          hideEmptyPanels = false;
+          switchPanelAfterSwitchingTab = "always";
+          activateLastTabOnPanelSwitching = true;
+          selectActiveTabFirst = true;
+
+          # Theme & appearance
+          theme = "proton";
+          colorScheme = "ff";
+          fontSize = "s";
+          animations = true;
+          animationSpeed = "fast";
+
+          # Tab interactions
+          tabMiddleClick = "close";
+          tabMiddleClickCtrl = "discard";
+          tabMiddleClickShift = "duplicate";
+        };
+      };
+    };
+
     # Dark Reader declarative configuration
     "addon@darkreader.org" = {
       force = true;

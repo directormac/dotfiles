@@ -21,7 +21,7 @@
           enable = true;
 
           extensions = [
-            "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+            "hfjbmagddngcpeloejdejnfgbamkjaeg" # Vimium C
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
             "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
             "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
@@ -30,11 +30,11 @@
 
           extraOpts = {
             ExtensionSettings = {
-              "dbepggeogbaibhgnhhndojpepiihcmeb" = {
+              "hfjbmagddngcpeloejdejnfgbamkjaeg" = {
                 installation_mode = "force_installed";
                 toolbar_pin = "default_unpinned";
                 update_url = "https://clients2.google.com/service/update2/crx";
-              }; # Vimium
+              }; # Vimium C
 
               "ddkjiahejlhfcafbddmgiahcphecmpfh" = {
                 installation_mode = "force_installed";
@@ -82,7 +82,7 @@
           commandLineArgs = sharedArgs;
 
           extensions = [
-            { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
+            { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; } # Vimium C
             { id = "ddkjiahejlhfcafbddmgiahcphecmpfh"; } # uBlock Origin Lite
             { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # Dark Reader
             { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # SponsorBlock

@@ -68,6 +68,13 @@
                 private_browsing = true;
               };
 
+              package = sidebery;
+            }
+            {
+              settings = {
+                private_browsing = true;
+              };
+
               package = vimium-c;
             }
             {
@@ -177,23 +184,16 @@
                 ];
               };
 
-              "sidebar.installed.extensions" = "";
+              "sidebar.installed.extensions" = "{3c078156-979c-498b-8990-85f7987dd929}";
               "sidebar.main.tools" = "history,syncedtabs,bookmarks";
               "sidebar.new-sidebar.has-used" = true;
-              "sidebar.revamp" = true;
-              "sidebar.verticalTabs" = true;
+              "sidebar.revamp" = false;
+              "sidebar.verticalTabs" = false;
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
             };
 
             extensions = {
-              settings = {
-                "vimium-c@gdh1995.cn" = {
-                  settings = common.extensions.vimiumCSettings;
-                  force = true;
-                };
-              }
-              // common.extensions.settings;
-
+              settings = common.extensions.settings;
               force = true;
             };
 
@@ -203,6 +203,7 @@
               # css
               ''
                 #TabsToolbar { display: none !important; }
+                #sidebar-header, #sidebar-panel-header { display: none !important; }
                 * { border-radius: 0px !important; }
 
                 /* Autohide Top Toolbox */
