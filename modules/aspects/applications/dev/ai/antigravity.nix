@@ -29,6 +29,7 @@
 
     persistHome.directories = [
       ".gemini"
+      ".config/antigravity"
     ];
   };
 }

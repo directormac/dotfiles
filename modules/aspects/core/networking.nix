@@ -53,6 +53,11 @@
             "192.168.66.100" = [ "fileserver" ];
           };
 
+          nameservers = [
+            "1.1.1.1"
+            "8.8.8.8"
+          ];
+
           networkmanager.enable = lib.mkDefault true;
         };
 
@@ -62,6 +67,10 @@
             Port 443
             User git
         '';
+
+        services.resolved = {
+          enable = lib.mkDefault true;
+        };
       };
 
     persist.directories = [

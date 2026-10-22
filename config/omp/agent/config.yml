@@ -3,6 +3,7 @@ modelRoles:
   plan: google-antigravity/gemini-4-argon:high
   slow: google-antigravity/claude-sonnet-5-5
   default: google-antigravity/gemini-3.8-flash
+  smol: google-antigravity/gemini-3.8-flash:auto
 theme:
   dark: dark-catppuccin
   light: dark-catppuccin
@@ -28,8 +29,9 @@ astGrep:
 github:
   enabled: true
 worktree:
-  onStart: ask
+  onStart: "off"
   base: ~/Code/.worktrees
+  onExit: ask
 speech:
   enabled: true
   mode: assistant
@@ -59,3 +61,5 @@ stt:
   enabled: true
 marketplace:
   autoUpdate: auto
+providers:
+  tinyModelDevice: gpu
