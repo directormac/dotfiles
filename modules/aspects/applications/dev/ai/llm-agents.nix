@@ -22,6 +22,7 @@
               cli-proxy-api
               terminal-browser
               agent-browser
+              skills
               # opencodex
               # kimi-code
               # codex

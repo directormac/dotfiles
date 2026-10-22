@@ -755,8 +755,12 @@
       "enabled": true,
       "config": {
         "displayPreferences": [
-          "all"
-        ]
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "barCount": 73
       }
     }
   ],
@@ -798,7 +802,7 @@
     }
   },
   "notificationFocusedMonitor": true,
-  "desktopContextMenu": "on",
+  "desktopContextMenu": "off",
   "osdVolumeEnabled": false,
   "osdMediaVolumeEnabled": false,
   "displayProfileAutoSelect": false

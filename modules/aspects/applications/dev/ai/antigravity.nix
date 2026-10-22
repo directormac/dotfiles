@@ -21,10 +21,19 @@
           source = config.lib.dots.link "antigravity-cli/settings.json";
         };
 
+        home.packages = lib.attrValues (
+          lib.filterAttrs (_: v: v != null) {
+            inherit (llmPkgs)
+              antigravity-hub
+              ;
+          }
+        );
+
         programs.antigravity-cli = lib.mkIf (llmPkgs ? antigravity-cli) {
           enable = true;
           package = llmPkgs.antigravity-cli;
         };
+
       };
 
     persistHome.directories = [

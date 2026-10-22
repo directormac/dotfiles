@@ -257,8 +257,6 @@ tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "zoom" },
   { type = "command", command = "~/.config/herdr/scripts/agents-status.sh", interval_seconds = 2, timeout_seconds = 2 },
-  { type = "hostname" },
-  { type = "datetime", format = "%H:%M" },
 ]
 tab_bar_right_separator = " · "
 # Title Herdr writes to the terminal it runs in, which is what window managers
