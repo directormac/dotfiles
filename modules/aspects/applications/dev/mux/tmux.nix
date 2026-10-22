@@ -65,6 +65,7 @@
             resurrectSaveScript
             tmuxPkg
             windowIcon
+            windowNumber
             ;
         };
         kanjiIndex = "#{?#{==:#I,1},一,#{==:#I,2},二,#{==:#I,3},三,#{==:#I,4},四,#{==:#I,5},五,#{==:#I,6},六,#{==:#I,7},七,#{==:#I,8},八,#{==:#I,9},九,#{==:#I,10},十,#I}";
@@ -150,6 +151,7 @@
         '';
         tmuxPkg = pkgs.local.tmux or pkgs.tmux;
         windowIcon = "#{?#{&&:#{!=:#{@workmux_status},},#{||:#{m:*●*,#W},#{m:**,#W},#{m:*󰏿*,#W},#{m:*󱙺*,#W}}},#{@workmux_status},#W#{?@workmux_status, #{@workmux_status},}}";
+        windowNumber = "#{?#{!=:#{@window_number_format},},#{E:@window_number_format},${kanjiIndex}}";
       in
       {
         programs.tmux = import ./tmux/_config.nix ctx // import ./tmux/_plugins.nix ctx;
@@ -174,7 +176,13 @@
         (final: prev: {
           tmuxPlugins = prev.tmuxPlugins // {
             tmux-nerd-font-window-name =
-              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default;
+              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default
+              .overrideAttrs
+                (old: {
+                  patches = (old.patches or [ ]) ++ [
+                    ./tmux/tmux-nerd-font-window-name-sidebar.patch
+                  ];
+                });
           };
         })
       ]

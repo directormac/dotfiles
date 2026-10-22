@@ -17,9 +17,9 @@
 {
   pkgs,
   inputs,
-  kanjiIndex,
   resurrectDir,
   windowIcon,
+  windowNumber,
   ...
 }:
 let
@@ -108,9 +108,9 @@ in
           set -g @catppuccin_window_flags ""
           set -g @catppuccin_window_number ""
 
-          set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${kanjiIndex} ,} ${windowIcon} #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,${kanjiIndex} ,}${windowIcon} }"
+          set -g @catppuccin_window_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold] #{?client_prefix,${windowNumber} ,} ${windowIcon} #[default],#[fg=#{@thm_mauve} bg=default] #{?client_prefix,${windowNumber} ,}${windowIcon} }"
           set -g @catppuccin_window_current_number ""
-          set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold]  ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] ${windowIcon} }"
+          set -g @catppuccin_window_current_text "#{?window_bell_flag,#[fg=#{@thm_crust} bg=#{@thm_maroon} bold]  ${windowIcon} #[default],#[fg=#{@thm_crust} bg=#{@thm_blue} bold] #{?client_prefix,${windowNumber} ,}${windowIcon} }"
         '';
 
       plugin = catppuccin;

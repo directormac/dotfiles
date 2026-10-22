@@ -129,6 +129,10 @@ agents:
   pi: pi
   oc: opencode
   oc2: opencode2
+  claude: claude
+  codex: codex
+  gemini: gemini
+  copilot: copilot
   agyx:
     type: agy
     args:

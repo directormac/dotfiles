@@ -1,0 +1,62 @@
+--- a/bin/tmux-nerd-font-window-name	2026-10-23 03:00:11.094062920 +0800
++++ b/bin/tmux-nerd-font-window-name	2026-10-23 03:00:11.115211075 +0800
+@@ -33,6 +33,18 @@
+     name="$regex_name"
+   fi
+ 
++  if [ -n "$window_id" ]; then
++    local focused_role
++    focused_role="$(tmux display-message -p -t "$window_id" '#{@workmux_role}' 2>/dev/null || true)"
++    if [ "$focused_role" = "sidebar" ]; then
++      local main_cmd
++      main_cmd="$(tmux list-panes -t "$window_id" -F '#{@workmux_role} #{pane_current_command}' 2>/dev/null | awk '$1 != "sidebar" {print $2; exit}')"
++      if [ -n "$main_cmd" ]; then
++        name="$main_cmd"
++      fi
++    fi
++  fi
++
+   local icon
+   if [ -n "$regex_icon" ]; then
+     icon="$regex_icon"
+@@ -52,6 +64,13 @@
+     fi
+   fi
+ 
++  # Discount workmux sidebar panes from the multi-pane count
++  if [ "$panes" -gt 1 ] && [ -n "$window_id" ]; then
++    local sidebar_count
++    sidebar_count="$(tmux list-panes -t "$window_id" -F '#{@workmux_role}' 2>/dev/null | grep -c '^sidebar$' || true)"
++    panes=$((panes - sidebar_count))
++  fi
++
+   # If multiple panes are open, add a multi-pane icon if available
+   if [ "$panes" -gt 1 ]; then
+     local multi_pane_icon="${CFG_MULTI_PANE_ICON:-null}"
+@@ -79,16 +98,17 @@
+   # starts/exits it still shows the previous run's cached output. If the
+   # displayed name is stale, set it directly, then re-enable automatic-rename
+   if [ -n "$window_id" ]; then
+-    local current_name
++    local current_name template new_name placeholder
+     current_name="$(tmux display-message -p -t "$window_id" '#{window_name}')"
+-    if [[ "$current_name" != *"$icon"* ]]; then
+-      local template new_name
+-      template="$(tmux show-option -gqv @tmux-nerd-font-window-name-template)"
+-      if [ -n "$template" ]; then
+-        new_name="$(tmux display-message -p -t "$window_id" "${template//'#{window_icon}'/$icon}")"
+-      else
+-        new_name="$icon"
+-      fi
++    template="$(tmux show-option -gqv @tmux-nerd-font-window-name-template)"
++    placeholder="#{window_icon}"
++    if [ -n "$template" ]; then
++      new_name="${template//$placeholder/$icon}"
++      new_name="$(tmux display-message -p -t "$window_id" "$new_name")"
++    else
++      new_name="$icon"
++    fi
++    if [ "$current_name" != "$new_name" ]; then
+       { tmux rename-window -t "$window_id" "$new_name" &&
+           tmux set-option -w -t "$window_id" automatic-rename on; } >/dev/null 2>&1 &
+     fi

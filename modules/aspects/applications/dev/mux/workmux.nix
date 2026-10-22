@@ -62,6 +62,18 @@
             null;
       in
       {
+        home.file = lib.mkIf (inputs ? workmux) {
+          ".omp/agent/extensions/workmux-status.ts" = {
+            force = true;
+            source = "${inputs.workmux}/resources/omp/extensions/workmux-status.ts";
+          };
+
+          ".pi/agent/extensions/workmux-status.ts" = {
+            force = true;
+            source = "${inputs.workmux}/resources/pi/extensions/workmux-status.ts";
+          };
+        };
+
         home.packages = lib.optional (workmuxPkg != null) workmuxPkg;
 
         xdg.configFile."television/cable/git-worktrees.toml".text =
