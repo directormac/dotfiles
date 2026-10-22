@@ -7,11 +7,16 @@
 {
   den.aspects.applications.dev.ai.opencode = {
     homeManager =
-      { pkgs, ... }:
+      { config, pkgs, ... }:
       let
         llmPkgs = pkgs.llm-agents or (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} or { });
       in
       {
+
+        home.file.".config/opencode/opencode.json" = {
+          force = true;
+          source = config.lib.dots.link "opencode/opencode.json";
+        };
 
         home.packages = lib.attrValues (
           lib.filterAttrs (_: v: v != null) {
@@ -23,37 +28,6 @@
 
         programs.opencode = lib.mkIf (llmPkgs ? opencode) {
           enable = true;
-
-          settings = {
-            autoshare = false;
-            autoupdate = false;
-
-            permission = {
-              edit = {
-                "/nix/store/**" = "deny";
-              };
-
-              external_directory = {
-                "/nix/store/**" = "allow";
-                "/tmp/**" = "allow";
-              };
-
-              read = {
-                "$HOME/.config" = "allow";
-                "$HOME/.dotfiles" = "allow";
-                "*.env" = "deny";
-                "/nix/store/**" = "allow";
-              };
-            };
-
-            # plugins is a top-level property, not inside permission
-            plugins = [
-              # https://github.com/darrenhinde/OpenAgentsControl
-              "opencode-goal-plugin@0.11.0"
-              "opencode-supermemory"
-            ];
-          };
-
           package = llmPkgs.opencode;
           web.enable = true;
         };

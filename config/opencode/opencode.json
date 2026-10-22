@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoshare": false,
+  "autoupdate": false,
+  "permission": {
+    "edit": {
+      "/nix/store/**": "deny"
+    },
+    "external_directory": {
+      "/nix/store/**": "allow",
+      "/tmp/**": "allow"
+    },
+    "read": {
+      "$HOME/.config": "allow",
+      "$HOME/.dotfiles": "allow",
+      "/nix/store/**": "allow",
+      "*.env": "deny"
+    }
+  },
+  "plugins": ["opencode-goal-plugin@0.11.0", "opencode-supermemory"]
+}
