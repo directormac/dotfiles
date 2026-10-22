@@ -8,22 +8,27 @@
   flake-file.inputs = {
     dankcalendar = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/dankcalendar";
+      url = "github:duxlabs-dev/dux-calendar";
     };
 
     danksearch = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/danksearch";
+      url = "github:duxlabs-dev/dux-search";
+    };
+
+    dfiles = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:duxlabs-dev/dux-files";
     };
 
     dgop = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/dgop";
+      url = "github:duxlabs-dev/dux-gop";
     };
 
     dms = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/DankMaterialShell";
+      url = "github:duxlabs-dev/dux-shell";
     };
 
     dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
@@ -63,7 +68,7 @@
             { }
           else
             {
-              ".config/DankMaterialShell/${name}".source = config.lib.dots.link "DankMaterialShell/${name}";
+              ".config/dms/${name}".source = config.lib.dots.link "DankMaterialShell/${name}";
             };
       in
       {
@@ -72,6 +77,9 @@
         imports =
           (lib.optionals (inputs ? dms) [
             inputs.dms.homeModules.dank-material-shell
+          ])
+          ++ (lib.optionals (inputs ? dfiles) [
+            inputs.dfiles.homeModules.dux-files
           ])
           ++ (lib.optionals (inputs ? danksearch) [
             inputs.danksearch.homeModules.default
@@ -91,6 +99,7 @@
           enable = true;
           enableAudioWavelength = true;
           enableCalendarEvents = true;
+          enableClipboardPaste = true;
           enableDynamicTheming = true;
           enableSystemMonitoring = true;
           enableVPN = true;
@@ -141,6 +150,19 @@
           enable = true;
         };
 
+        programs.dux-files = lib.mkIf (inputs ? dfiles) {
+          enable = true;
+
+          portal = {
+            enable = true;
+            preferred = false;
+          };
+
+          systemd = {
+            enable = true;
+          };
+        };
+
         stylix.targets = {
           dank-calendar.enable = lib.mkDefault true;
         };
@@ -148,8 +170,12 @@
 
     persistHome.directories = [
       ".config/danksearch"
+      ".config/dfiles"
+      ".config/dms"
       ".local/share/dankcal"
       ".local/state/DankMaterialShell"
+      ".local/state/dfiles"
+      ".local/state/dms"
       ".local/state/dankcal"
     ];
   };

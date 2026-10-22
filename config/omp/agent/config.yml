@@ -45,3 +45,17 @@ retry:
       - google-antigravity/gemini-3.8-flash
     google-antigravity/claude-sonnet-5-5:
       - google-antigravity/gemini-3.8-flash
+read:
+  renderMarkdown: true
+  summarize:
+    prose: true
+readLineNumbers: true
+lsp:
+  formatOnWrite: true
+edit:
+  autoRepair:
+    enabled: true
+stt:
+  enabled: true
+marketplace:
+  autoUpdate: auto

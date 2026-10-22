@@ -304,6 +304,22 @@
     "dank-qml-common_2": {
       "flake": false,
       "locked": {
+        "lastModified": 1792678336,
+        "narHash": "sha256-C1kQdBjhgiuwk0buMwKgJc5FjZi7t2uP/bONec/Ttdk=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-qml-common",
+        "rev": "b2c9876b952eee2b50fd0148afd4ac73f6222eac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "duxlabs-dev",
+        "repo": "dux-qml-common",
+        "type": "github"
+      }
+    },
+    "dank-qml-common_3": {
+      "flake": false,
+      "locked": {
         "lastModified": 1792597131,
         "narHash": "sha256-2t9btOQ2owoRv/fgeonlr8cHVt2NUvUu9iXdZd9+QFc=",
         "owner": "duxlabs-dev",
@@ -325,16 +341,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792600895,
-        "narHash": "sha256-RIZbpPusOeTULGRD74cE0Oz8xV+ERcvPeeNaLdvyh94=",
-        "owner": "AvengeMedia",
-        "repo": "dankcalendar",
-        "rev": "258a7d690ee65fba8dbf7255bda4905ba6141ef6",
+        "lastModified": 1792683849,
+        "narHash": "sha256-0oDKGY2ds6S8VFX5/WuwviWMNchlr7Txm1pUpnsKCq8=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-calendar",
+        "rev": "b5304e7b39d0325e125ae27315d4f2cc4354e979",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "dankcalendar",
+        "owner": "duxlabs-dev",
+        "repo": "dux-calendar",
         "type": "github"
       }
     },
@@ -345,16 +361,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792524211,
-        "narHash": "sha256-GOnNob/tex//NBchfVXAjzk9Gw4K+GxyVmZBZqx0nLA=",
-        "owner": "AvengeMedia",
-        "repo": "danksearch",
-        "rev": "9f706cad94f23dd2fd8642a2c06796fa0786e60d",
+        "lastModified": 1792684013,
+        "narHash": "sha256-JRiqnNHPyXhZiR/RuFksCrX0768S+PVsSOmux6a2lYU=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-search",
+        "rev": "646b0e046f4c806de9501892b9c38fd11612092e",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "danksearch",
+        "owner": "duxlabs-dev",
+        "repo": "dux-search",
         "type": "github"
       }
     },
@@ -471,6 +487,27 @@
         "type": "github"
       }
     },
+    "dfiles": {
+      "inputs": {
+        "dank-qml-common": "dank-qml-common_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792683855,
+        "narHash": "sha256-oE/jfvLCnYkIjWgbsYiMGXhz/diV+nSYadFuyaTA/Y4=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-files",
+        "rev": "71662f4a3c007f5a62ea7e9d4c15214feaad31f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "duxlabs-dev",
+        "repo": "dux-files",
+        "type": "github"
+      }
+    },
     "dgop": {
       "inputs": {
         "nixpkgs": [
@@ -478,16 +515,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792524211,
-        "narHash": "sha256-GTDomQTBU132DVjqX/o3cZBo9ylUWLvUJ74PSlahgTo=",
-        "owner": "AvengeMedia",
-        "repo": "dgop",
-        "rev": "43a29526bb651c372c3291eb62c3e0cec3bca6e0",
+        "lastModified": 1792684000,
+        "narHash": "sha256-b2Wn6ySG7aqvi/6hF1t+DWpQzg0qA9rixrKIGe9IQ+Q=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-gop",
+        "rev": "c1dbfaf3d2fab4fb602ef564da9462d3a1482712",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "dgop",
+        "owner": "duxlabs-dev",
+        "repo": "dux-gop",
         "type": "github"
       }
     },
@@ -533,23 +570,23 @@
     },
     "dms": {
       "inputs": {
-        "dank-qml-common": "dank-qml-common_2",
+        "dank-qml-common": "dank-qml-common_3",
         "flake-compat": "flake-compat_4",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1792634293,
-        "narHash": "sha256-RDk4oMEIGlRVcc072IQ4/b4DEAHnncHg+4IHsoAxlVI=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "47c9d8d89bfbf70aa667ec90c1c5f30d9a726d6d",
+        "lastModified": 1792683834,
+        "narHash": "sha256-ac8iWYlup2712NpQVUxOOVbSGTjMbkIGp1uWOCJo/5c=",
+        "owner": "duxlabs-dev",
+        "repo": "dux-shell",
+        "rev": "da79eca3c04b7559513d6ddcb359930467ffba04",
         "type": "github"
       },
       "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
+        "owner": "duxlabs-dev",
+        "repo": "dux-shell",
         "type": "github"
       }
     },
@@ -2539,6 +2576,7 @@
         "devbox": "devbox",
         "devenv": "devenv",
         "devenv-root": "devenv-root",
+        "dfiles": "dfiles",
         "dgop": "dgop",
         "direnv-instant": "direnv-instant",
         "disko": "disko",

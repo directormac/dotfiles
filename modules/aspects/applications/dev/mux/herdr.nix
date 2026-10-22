@@ -139,6 +139,7 @@
       in
       {
         home.file.".config/herdr/config.toml".source = config.lib.dots.link "herdr/config.toml";
+
         home.file.".config/herdr/herdr-nerd-font-tab-name.yml".source =
           config.lib.dots.link "herdr/herdr-nerd-font-tab-name.yml";
 

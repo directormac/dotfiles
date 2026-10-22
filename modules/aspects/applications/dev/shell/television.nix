@@ -246,28 +246,32 @@
 
         xdg.configFile =
           builtins.listToAttrs (
-            map (name: {
-              name = "television/cable/${name}";
-              value.source = config.lib.dots.link "television/cable/${name}";
-            }) [
-              "channels.toml"
-              "flake-inputs.toml"
-              "hypr-clients.toml"
-              "hypr-workspaces.toml"
-              "mdless.toml"
-              "mdpick.toml"
-              "media-players.toml"
-              "nix-generations.toml"
-              "nix-options.toml"
-              "nix-pkgs.toml"
-              "nix.toml"
-              "zsh-history.toml"
-            ]
+            map
+              (name: {
+                name = "television/cable/${name}";
+                value.source = config.lib.dots.link "television/cable/${name}";
+              })
+              [
+                "channels.toml"
+                "flake-inputs.toml"
+                "hypr-clients.toml"
+                "hypr-workspaces.toml"
+                "mdless.toml"
+                "mdpick.toml"
+                "media-players.toml"
+                "nix-generations.toml"
+                "nix-options.toml"
+                "nix-pkgs.toml"
+                "nix.toml"
+                "zsh-history.toml"
+              ]
           )
           // {
             "television/config.toml".source = config.lib.dots.link "television/config.toml";
+
             "television/themes/catppuccin-mocha-mauve.toml".source =
               config.lib.dots.link "television/themes/catppuccin-mocha-mauve.toml";
+
             "television/tv-slim.toml".source = config.lib.dots.link "television/tv-slim.toml";
           };
       };

@@ -51,6 +51,7 @@ local floating_apps = {
   'gnome-disks',
   'gsmartcontrol',
   'com.danklinux.dankcalendar',
+  'dev.duxlabs.calendar',
   'galculator',
   'org.pulseaudio.pavucontrol',
   'org.localsend.localsend_app',

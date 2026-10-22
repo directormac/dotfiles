@@ -35,12 +35,12 @@
 
     dankcalendar = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/dankcalendar";
+      url = "github:duxlabs-dev/dux-calendar";
     };
 
     danksearch = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/danksearch";
+      url = "github:duxlabs-dev/dux-search";
     };
 
     den.url = "github:denful/den";
@@ -58,9 +58,14 @@
       url = "file+file:///dev/null";
     };
 
+    dfiles = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:duxlabs-dev/dux-files";
+    };
+
     dgop = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/dgop";
+      url = "github:duxlabs-dev/dux-gop";
     };
 
     direnv-instant.url = "github:Mic92/direnv-instant";
@@ -72,7 +77,7 @@
 
     dms = {
       inputs.nixpkgs.follows = "nixpkgs";
-      url = "github:AvengeMedia/DankMaterialShell";
+      url = "github:duxlabs-dev/dux-shell";
     };
 
     dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";

@@ -63,7 +63,7 @@ app_id = "^gsmartcontrol$"
 is_floating = 1
 width = 0.5
 height = 0.5
-app_id = "^com\\.danklinux\\.dankcalendar$"
+app_id = "^(dev\\.duxlabs\\.calendar|com\\.danklinux\\.dankcalendar)$"
 
 [[rule.window_rule]]
 is_floating = 1
@@ -139,7 +139,7 @@ app_id = "^com\\.superfile\\.fm$"
 
 [[rule.window_rule]]
 is_floating = 1
-app_id = "^com\\.danklinux\\.dms$"
+app_id = "^(dev\\.duxlabs\\.shell|com\\.danklinux\\.dms)$"
 
 [[rule.window_rule]]
 is_floating = 1
