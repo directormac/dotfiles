@@ -1,0 +1,30 @@
+[metadata]
+name = "mdpick"
+description = "Fuzzy search and preview markdown files with mdcat"
+requirements = ["mdcat", "fd"]
+
+[source]
+command = "fd --type f -e md -e markdown -e mdx -e mdown"
+
+[preview]
+command = "mdcat --columns $COLUMNS '{}'"
+
+[keybindings]
+enter = "actions:view"
+ctrl-e = "actions:edit"
+ctrl-y = "actions:copy"
+
+[actions.view]
+description = "View markdown with mdless"
+command = "mdless '{}'"
+mode = "execute"
+
+[actions.edit]
+description = "Edit markdown file in $EDITOR"
+command = "${EDITOR:-nvim} '{}'"
+mode = "execute"
+
+[actions.copy]
+description = "Copy file path to clipboard"
+command = "echo -n '{}' | wl-copy"
+mode = "execute"

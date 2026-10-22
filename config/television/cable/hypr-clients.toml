@@ -1,0 +1,49 @@
+[metadata]
+name = "hypr-clients"
+description = "Fuzzy search and manage Hyprland windows"
+requirements = ["hyprctl", "jq"]
+
+[source]
+command = "hyprctl clients -j 2>/dev/null | jq -r '.[] | [(.workspace.name // (.workspace.id|tostring)), .class, .title, .address] | @tsv'"
+display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:3}"
+
+[preview]
+command = "tv-hypr-client-preview '{split:\t:3}'"
+
+[keybindings]
+enter = "actions:focus"
+ctrl-d = "actions:close_window"
+ctrl-f = "actions:toggle_floating"
+ctrl-m = "actions:fullscreen"
+ctrl-y = "actions:copy_title"
+
+[actions.focus]
+description = "Focus the selected window"
+command = "hyprctl dispatch focuswindow address:{split:\t:3}"
+mode = "execute"
+
+[actions.close_window]
+description = "Close the selected window"
+command = "hyprctl dispatch closewindow address:{split:\t:3}"
+mode = "execute"
+
+[actions.toggle_floating]
+description = "Toggle floating mode for window"
+command = "hyprctl dispatch togglefloating address:{split:\t:3}"
+mode = "execute"
+
+[actions.fullscreen]
+description = "Toggle fullscreen for window"
+command = "hyprctl dispatch fullscreen 1 address:{split:\t:3}"
+mode = "execute"
+
+[actions.copy_title]
+description = "Copy window title to clipboard"
+command = "echo -n '{split:\t:2}' | wl-copy"
+mode = "execute"
+
+[actions.print_json]
+description = "Print selected client JSON to stdout"
+command = "hyprctl clients -j 2>/dev/null | jq --arg addr '{split:\t:3}' '.[] | select(.address == $addr)'"
+mode = "execute"

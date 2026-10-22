@@ -1,0 +1,33 @@
+[metadata]
+name = "nix"
+description = "Fuzzy search Nixpkgs packages, NixOS options, and Home Manager options"
+requirements = ["nix-search-tv"]
+
+[source]
+command = "nix-search-tv print"
+display = "{split:/ :0}  │  {split:/ :1}"
+output = "{split:/ :1}"
+
+[preview]
+command = "nix-search-tv preview '{}'"
+
+[keybindings]
+enter = "actions:copy"
+ctrl-y = "actions:copy"
+ctrl-s = "actions:source"
+ctrl-h = "actions:homepage"
+
+[actions.copy]
+description = "Copy package/option name to clipboard"
+command = "echo -n '{split:/ :1}' | wl-copy"
+mode = "execute"
+
+[actions.source]
+description = "Open source declaration in browser"
+command = "url=$(nix-search-tv source '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+mode = "fork"
+
+[actions.homepage]
+description = "Open homepage in browser"
+command = "url=$(nix-search-tv homepage '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+mode = "fork"

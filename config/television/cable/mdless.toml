@@ -1,0 +1,30 @@
+[metadata]
+name = "mdless"
+description = "Browse and page markdown files using mdless"
+requirements = ["mdcat", "fd"]
+
+[source]
+command = "fd --type f -e md -e markdown -e mdx -e mdown"
+
+[preview]
+command = "mdcat --columns $COLUMNS '{}'"
+
+[keybindings]
+enter = "actions:page"
+ctrl-e = "actions:edit"
+ctrl-y = "actions:copy"
+
+[actions.page]
+description = "Page markdown file with mdless"
+command = "mdless '{}'"
+mode = "execute"
+
+[actions.edit]
+description = "Edit markdown file in $EDITOR"
+command = "${EDITOR:-nvim} '{}'"
+mode = "execute"
+
+[actions.copy]
+description = "Copy file path to clipboard"
+command = "echo -n '{}' | wl-copy"
+mode = "execute"

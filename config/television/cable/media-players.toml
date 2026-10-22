@@ -1,0 +1,38 @@
+[metadata]
+name = "media-players"
+description = "Inspect and control MPRIS media players via playerctl"
+requirements = ["playerctl"]
+
+[source]
+command = "playerctl -a metadata --format '{{playerName}}\t{{status}}\t{{title}}\t{{artist}}' 2>/dev/null"
+display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}  -  {split:\t:3}"
+output = "{split:\t:0}"
+
+[preview]
+command = "tv-media-player-preview '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:play_pause"
+ctrl-q = "actions:next"
+ctrl-b = "actions:previous"
+ctrl-d = "actions:stop"
+
+[actions.play_pause]
+description = "Play / Pause playback"
+command = "playerctl -p '{split:\t:0}' play-pause"
+mode = "execute"
+
+[actions.next]
+description = "Skip to next track"
+command = "playerctl -p '{split:\t:0}' next"
+mode = "execute"
+
+[actions.previous]
+description = "Return to previous track"
+command = "playerctl -p '{split:\t:0}' previous"
+mode = "execute"
+
+[actions.stop]
+description = "Stop playback"
+command = "playerctl -p '{split:\t:0}' stop"
+mode = "execute"

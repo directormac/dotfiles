@@ -1,0 +1,33 @@
+[metadata]
+name = "nix-pkgs"
+description = "Fuzzy search Nixpkgs packages via nix-search-tv"
+requirements = ["nix-search-tv", "grep"]
+
+[source]
+command = "nix-search-tv print | grep '^nixpkgs/'"
+display = "{split:/ :1}"
+output = "{split:/ :1}"
+
+[preview]
+command = "nix-search-tv preview '{}'"
+
+[keybindings]
+enter = "actions:copy"
+ctrl-y = "actions:copy"
+ctrl-s = "actions:source"
+ctrl-h = "actions:homepage"
+
+[actions.copy]
+description = "Copy package name to clipboard"
+command = "echo -n '{split:/ :1}' | wl-copy"
+mode = "execute"
+
+[actions.source]
+description = "Open source declaration in browser"
+command = "url=$(nix-search-tv source '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+mode = "fork"
+
+[actions.homepage]
+description = "Open package homepage in browser"
+command = "url=$(nix-search-tv homepage '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+mode = "fork"

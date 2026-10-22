@@ -1,0 +1,26 @@
+[metadata]
+name = "hypr-workspaces"
+description = "Fuzzy search and switch Hyprland workspaces"
+requirements = ["hyprctl", "jq"]
+
+[source]
+command = "hyprctl workspaces -j 2>/dev/null | jq -r '.[] | [(.id|tostring), .name, .monitor, (.windows|tostring), (.lastwindowtitle // \"None\")] | @tsv'"
+display = "[WS {split:\t:0}: {split:\t:1}]  │  Monitor: {split:\t:2}  │  Windows: {split:\t:3}  │  {split:\t:4}"
+output = "{split:\t:0}"
+
+[preview]
+command = "tv-hypr-workspace-preview '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:switch"
+ctrl-y = "actions:copy_id"
+
+[actions.switch]
+description = "Switch to this workspace"
+command = "hyprctl dispatch workspace {split:\t:0}"
+mode = "execute"
+
+[actions.copy_id]
+description = "Copy workspace ID to clipboard"
+command = "echo -n '{split:\t:0}' | wl-copy"
+mode = "execute"

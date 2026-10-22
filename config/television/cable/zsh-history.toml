@@ -1,0 +1,34 @@
+[metadata]
+name = "zsh-history"
+description = "Fuzzy search, execute, and manage shell command history from zsh-histdb"
+requirements = ["sqlite3", "zsh"]
+
+[source]
+command = "tv-histdb-source"
+display = "[{split:\t:1}]  {split:\t:0}  │  {split:\t:2}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "tv-histdb-preview '{split:\t:0}' '{split:\t:1}' '{split:\t:2}'"
+
+[keybindings]
+enter = "actions:execute"
+ctrl-y = "actions:copy"
+ctrl-d = "actions:delete"
+
+[actions.execute]
+description = "Execute the selected command"
+command = "zsh -c '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy]
+description = "Copy command to clipboard"
+command = "echo -n '{split:\t:0}' | wl-copy"
+mode = "execute"
+
+[actions.delete]
+description = "Delete this command entry from zsh-histdb"
+command = "tv-history-delete '{split:\t:0}'"
+mode = "execute"

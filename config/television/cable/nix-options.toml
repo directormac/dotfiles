@@ -1,0 +1,27 @@
+[metadata]
+name = "nix-options"
+description = "Fuzzy search NixOS and Home Manager options via nix-search-tv"
+requirements = ["nix-search-tv", "grep"]
+
+[source]
+command = "nix-search-tv print | grep -E '^(nixos/|home-manager/)'"
+display = "{split:/ :0}  │  {split:/ :1}"
+output = "{split:/ :1}"
+
+[preview]
+command = "nix-search-tv preview '{}'"
+
+[keybindings]
+enter = "actions:copy"
+ctrl-y = "actions:copy"
+ctrl-s = "actions:source"
+
+[actions.copy]
+description = "Copy option name to clipboard"
+command = "echo -n '{split:/ :1}' | wl-copy"
+mode = "execute"
+
+[actions.source]
+description = "Open option declaration in browser"
+command = "url=$(nix-search-tv source '{}') && [ -n \"$url\" ] && xdg-open \"$url\""
+mode = "fork"

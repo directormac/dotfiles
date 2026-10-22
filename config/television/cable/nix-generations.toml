@@ -1,0 +1,46 @@
+[metadata]
+name = "nix-generations"
+description = "Fuzzy search, preview, switch, and delete NixOS system generations"
+requirements = ["nix-generations"]
+
+[source]
+command = "nix-generations list"
+display = "[{split:\t:0}] {split:\t:1} {split:\t:2}  │  {split:\t:3}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "nix-generations preview '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:switch"
+ctrl-b = "actions:boot"
+ctrl-d = "actions:delete"
+ctrl-o = "actions:delete-older"
+ctrl-y = "actions:copy"
+
+[actions.switch]
+description = "Switch active system to selected generation"
+command = "nix-generations switch '{split:\t:0}'"
+mode = "execute"
+
+[actions.boot]
+description = "Set selected generation as boot default"
+command = "nix-generations boot '{split:\t:0}'"
+mode = "execute"
+
+[actions.delete]
+description = "Delete selected generation"
+command = "nix-generations delete '{split:\t:0}'"
+mode = "execute"
+
+[actions.delete-older]
+description = "Delete older generations (clean with keep count or older than selected)"
+command = "nix-generations delete-older '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy]
+description = "Copy store path to clipboard"
+command = "echo -n '{split:\t:4}' | wl-copy"
+mode = "execute"

@@ -1,0 +1,24 @@
+[metadata]
+name = "flake-inputs"
+description = "Interactively select and update Nix flake inputs"
+requirements = ["nix", "jq"]
+
+[source]
+command = "nix flake metadata --json 2>/dev/null | jq -r '.locks.nodes.root.inputs | keys[]'"
+
+[preview]
+command = "nix flake metadata --json 2>/dev/null | jq --arg k '{}' '.locks.nodes[$k] // .locks.nodes.root.inputs[$k]'"
+
+[keybindings]
+enter = "actions:update"
+ctrl-y = "actions:copy"
+
+[actions.update]
+description = "Update selected flake input"
+command = "nix flake update {}"
+mode = "execute"
+
+[actions.copy]
+description = "Copy input name to clipboard"
+command = "echo -n '{}' | wl-copy"
+mode = "execute"
