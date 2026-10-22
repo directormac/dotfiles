@@ -30,6 +30,22 @@
             src = stax76-src;
             version = "unstable-2024-09-02";
           };
+        mpv-enqueue = pkgs.writeShellScriptBin "mpv-enqueue" ''
+          SOCKET="/tmp/mpvsocket"
+          if [ -S "$SOCKET" ] && echo '{ "command": ["get_property", "idle"] }' | ${pkgs.socat}/bin/socat - "$SOCKET" >/dev/null 2>&1; then
+            for file in "$@"; do
+              if [[ "$file" =~ ^[a-zA-Z0-9_-]+:// ]]; then
+                url="$file"
+              else
+                url="$(readlink -f "$file" 2>/dev/null || realpath "$file" 2>/dev/null || echo "$file")"
+              fi
+              esc_url=$(printf '%s' "$url" | sed 's/\\/\\\\/g; s/"/\\"/g')
+              echo "{\"command\": [\"loadfile\", \"$esc_url\", \"append-play\"]}" | ${pkgs.socat}/bin/socat - "$SOCKET" 2>/dev/null
+            done
+          else
+            exec mpv "$@"
+          fi
+        '';
         stax76-src = pkgs.fetchFromGitHub {
           hash = "sha256-qEw0T/37n8aQ2WU4YsxCjJGdoa2Ft3Vg6y6jGWAnJDM=";
           owner = "stax76";
@@ -160,6 +176,7 @@
       in
       {
         home.packages = [
+          mpv-enqueue
           pkgs.mpvc
           pkgs.socat
           pkgs.trash-cli
@@ -194,6 +211,7 @@
             };
 
             scripts = with pkgs.mpvScripts; [
+              mpris
               autoload
               autosub
               modernx-zydezu
@@ -357,6 +375,48 @@
             command = "echo -n '{split:\t:4}' | wl-copy"
             mode = "execute"
           '';
+
+        xdg.desktopEntries = {
+          mpv-enqueue = {
+            categories = [
+              "AudioVideo"
+              "Player"
+            ];
+
+            exec = "mpv-enqueue %U";
+            genericName = "Media Player (Enqueue)";
+            icon = "mpv";
+
+            mimeType = [
+              "video/*"
+              "audio/*"
+            ];
+
+            name = "Add to mpv Playlist";
+            terminal = false;
+            type = "Application";
+          };
+
+          mpv-new-window = {
+            categories = [
+              "AudioVideo"
+              "Player"
+            ];
+
+            exec = "mpv --input-ipc-server= %U";
+            genericName = "Media Player (New Window)";
+            icon = "mpv";
+
+            mimeType = [
+              "video/*"
+              "audio/*"
+            ];
+
+            name = "Open in New mpv Window";
+            terminal = false;
+            type = "Application";
+          };
+        };
       };
 
     persistHome.directories = [

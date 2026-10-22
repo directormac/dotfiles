@@ -86,6 +86,26 @@
                   if paths:
                       subprocess.Popen(["mpv"] + paths)
 
+              def _enqueue_mpv(self, menu, files):
+                  paths = self._get_paths(files)
+                  if paths:
+                      subprocess.Popen(["mpv-enqueue"] + paths)
+
+              def _open_new_window(self, menu, files):
+                  paths = self._get_paths(files)
+                  if paths:
+                      subprocess.Popen(["mpv", "--input-ipc-server="] + paths)
+
+              def _play_loop(self, menu, files):
+                  paths = self._get_paths(files)
+                  if paths:
+                      subprocess.Popen(["mpv", "--loop-file=inf"] + paths)
+
+              def _play_fullscreen(self, menu, files):
+                  paths = self._get_paths(files)
+                  if paths:
+                      subprocess.Popen(["mpv", "--fs"] + paths)
+
               def get_file_items(self, *args):
                   files = args[-1]
                   media_files = [f for f in files if self._is_media(f)]
@@ -100,7 +120,23 @@
                   )
                   item_play.connect("activate", self._play_with_mpv, media_files)
 
-                  return [item_play]
+                  item_enqueue = Nautilus.MenuItem(
+                      name="MpvExtension::enqueue",
+                      label="Add to mpv Playlist",
+                      tip="Enqueue selected media in the running mpv instance",
+                      icon="media-playlist-symbolic"
+                  )
+                  item_enqueue.connect("activate", self._enqueue_mpv, media_files)
+
+                  item_new = Nautilus.MenuItem(
+                      name="MpvExtension::open_new_window",
+                      label="Open in New mpv Window",
+                      tip="Open selected media in a new independent mpv window",
+                      icon="window-new"
+                  )
+                  item_new.connect("activate", self._open_new_window, media_files)
+
+                  return [item_play, item_enqueue, item_new]
         '';
 
         "nautilus-python/extensions/open_in_superfile.py".text = ''
@@ -215,6 +251,16 @@
           '';
         };
 
+        "nautilus/scripts/Add to mpv Playlist" = {
+          executable = true;
+
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            exec mpv-enqueue "$@"
+          '';
+        };
+
         "nautilus/scripts/Compress with File Roller" = {
           executable = true;
 
@@ -245,6 +291,16 @@
           '';
         };
 
+        "nautilus/scripts/Open in New mpv Window" = {
+          executable = true;
+
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            exec mpv --input-ipc-server= "$@"
+          '';
+        };
+
         "nautilus/scripts/Open in Superfile" = {
           executable = true;
 
@@ -272,6 +328,26 @@
             #!/usr/bin/env bash
             export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
             exec mpv "$@"
+          '';
+        };
+
+        "nautilus/scripts/Play with mpv (Fullscreen)" = {
+          executable = true;
+
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            exec mpv --fs "$@"
+          '';
+        };
+
+        "nautilus/scripts/Play with mpv (Loop)" = {
+          executable = true;
+
+          text = ''
+            #!/usr/bin/env bash
+            export PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:$PATH"
+            exec mpv --loop-file=inf "$@"
           '';
         };
       };

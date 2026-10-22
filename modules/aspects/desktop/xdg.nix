@@ -36,6 +36,8 @@
 
               "video/*" = [
                 "mpv.desktop"
+                "mpv-enqueue.desktop"
+                "mpv-new-window.desktop"
                 "vlc-new-window.desktop"
                 "vlc-enqueue.desktop"
               ];
@@ -43,11 +45,14 @@
 
             defaultApplications = {
               "application/epub+zip" = "com.github.johnfactotum.Foliate.desktop";
+              "application/ogg" = "mpv.desktop";
               "application/pdf" = "org.gnome.Evince.desktop";
               "application/rar" = "org.gnome.FileRoller.desktop";
               "application/x-7z-compressed" = "org.gnome.FileRoller.desktop";
               "application/x-bzip2" = "org.gnome.FileRoller.desktop";
               "application/x-gzip" = "org.gnome.FileRoller.desktop";
+              "application/x-matroska" = "mpv.desktop";
+              "application/x-ogg" = "mpv.desktop";
               "application/x-rar" = "org.gnome.FileRoller.desktop";
               "application/x-tar" = "org.gnome.FileRoller.desktop";
               "application/x-xz" = "org.gnome.FileRoller.desktop";
@@ -55,8 +60,24 @@
               "image/*" = [ "feh.desktop" ];
               "inode/directory" = "org.gnome.Nautilus.desktop";
               "text/plain" = "neovim.desktop";
-              "video/*" = "vlc.desktop";
-              "video/*,.mkv" = "vlc.desktop";
+              "video/*" = "mpv.desktop";
+              "video/*,.mkv" = "mpv.desktop";
+              "video/3gpp" = "mpv.desktop";
+              "video/3gpp2" = "mpv.desktop";
+              "video/avi" = "mpv.desktop";
+              "video/mp4" = "mpv.desktop";
+              "video/mpeg" = "mpv.desktop";
+              "video/ogg" = "mpv.desktop";
+              "video/quicktime" = "mpv.desktop";
+              "video/webm" = "mpv.desktop";
+              "video/x-flv" = "mpv.desktop";
+              "video/x-m4v" = "mpv.desktop";
+              "video/x-matroska" = "mpv.desktop";
+              "video/x-ms-asf" = "mpv.desktop";
+              "video/x-ms-wmv" = "mpv.desktop";
+              "video/x-msvideo" = "mpv.desktop";
+              "video/x-ogm+ogg" = "mpv.desktop";
+              "video/x-theora+ogg" = "mpv.desktop";
               "x-scheme-handler/discord" = "vesktop.desktop";
               "x-scheme-handler/http" = "zen-beta.desktop";
               "x-scheme-handler/https" = "zen-beta.desktop";
