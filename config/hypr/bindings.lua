@@ -281,42 +281,70 @@ hl.bind(modkey .. ' + ALT + V', hl.dsp.exec_cmd('voxtype record cancel'), { desc
 hl.bind(modkey .. ' + Escape', hl.dsp.exec_cmd('dms ipc call hypr toggleOverview'))
 
 -- https://duxlabs.dev/docs/dms/compositors
-hl.bind(modkey .. " + SHIFT + SLASH", hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland"), { desc = "DMS Keybinds Cheatsheet" })
-hl.bind(modkey .. " + SHIFT + Escape", hl.dsp.exec_cmd("dms ipc call powermenu toggle"), { desc = "DMS Powermenu" })
-hl.bind(modkey .. " + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"), { desc = "DMS Powermenu" })
+hl.bind(
+  modkey .. ' + SHIFT + SLASH',
+  hl.dsp.exec_cmd('dms ipc call keybinds toggle hyprland'),
+  { desc = 'DMS Keybinds Cheatsheet' }
+)
+hl.bind(modkey .. ' + SHIFT + Escape', hl.dsp.exec_cmd('dms ipc call powermenu toggle'), { desc = 'DMS Powermenu' })
+hl.bind(modkey .. ' + X', hl.dsp.exec_cmd('dms ipc call powermenu toggle'), { desc = 'DMS Powermenu' })
 
 -- === DMS Quick Capture & Screenshots ===
-hl.bind("Print", hl.dsp.exec_cmd("dms ipc call quickCapture screenshot region copy"), { desc = "Screenshot region to clipboard" })
-hl.bind("CTRL + Print", hl.dsp.exec_cmd("dms ipc call quickCapture screenshot full copy"), { desc = "Screenshot fullscreen to clipboard" })
-hl.bind("ALT + Print", hl.dsp.exec_cmd("dms ipc call quickCapture screenshot window copy"), { desc = "Screenshot window to clipboard" })
-hl.bind("SHIFT + Print", hl.dsp.exec_cmd("dms ipc call quickCapture screenshot region edit"), { desc = "Screenshot region to editor" })
-hl.bind(modkey .. " + Print", hl.dsp.exec_cmd("dms ipc call quickCapture menu"), { desc = "DMS Quick Capture Menu" })
-hl.bind(modkey .. " + SHIFT + C", hl.dsp.exec_cmd("dms ipc call quickCapture menu"), { desc = "DMS Quick Capture Menu" })
+hl.bind(
+  'Print',
+  hl.dsp.exec_cmd('dms ipc call quickCapture screenshot region copy'),
+  { desc = 'Screenshot region to clipboard' }
+)
+hl.bind(
+  'CTRL + Print',
+  hl.dsp.exec_cmd('dms ipc call quickCapture screenshot full copy'),
+  { desc = 'Screenshot fullscreen to clipboard' }
+)
+hl.bind(
+  'ALT + Print',
+  hl.dsp.exec_cmd('dms ipc call quickCapture screenshot window copy'),
+  { desc = 'Screenshot window to clipboard' }
+)
+hl.bind(
+  'SHIFT + Print',
+  hl.dsp.exec_cmd('dms ipc call quickCapture screenshot region edit'),
+  { desc = 'Screenshot region to editor' }
+)
+hl.bind(modkey .. ' + Print', hl.dsp.exec_cmd('dms ipc call quickCapture menu'), { desc = 'DMS Quick Capture Menu' })
+hl.bind(
+  modkey .. ' + SHIFT + C',
+  hl.dsp.exec_cmd('dms ipc call quickCapture menu'),
+  { desc = 'DMS Quick Capture Menu' }
+)
 
 -- === DMS Clipboard & History ===
-hl.bind(modkey .. " + CTRL + V", hl.dsp.exec_cmd("dms ipc call clipboard toggle"), { desc = "DMS Clipboard History" })
-hl.bind(modkey .. " + B", hl.dsp.exec_cmd("dms ipc call clipboard toggle"), { desc = "DMS Clipboard History" })
+hl.bind(modkey .. ' + CTRL + V', hl.dsp.exec_cmd('dms ipc call clipboard toggle'), { desc = 'DMS Clipboard History' })
+hl.bind(modkey .. ' + B', hl.dsp.exec_cmd('dms ipc call clipboard toggle'), { desc = 'DMS Clipboard History' })
 hl.bind(
-  modkey .. " + SHIFT + B",
-  hl.dsp.exec_cmd("sh -c \"cliphist list | dms dmenu -p Clipboard: | cliphist decode | wl-copy\""),
-  { desc = "DMS dmenu Cliphist Picker" }
+  modkey .. ' + SHIFT + B',
+  hl.dsp.exec_cmd('sh -c "cliphist list | dms dmenu -p Clipboard: | cliphist decode | wl-copy"'),
+  { desc = 'DMS dmenu Cliphist Picker' }
 )
 
 -- === DMS Notification Center & Notepad ===
-hl.bind(modkey .. " + N", hl.dsp.exec_cmd("dms ipc call notifications toggle"), { desc = "DMS Notification Center" })
-hl.bind(modkey .. " + SHIFT + N", hl.dsp.exec_cmd("dms ipc call notepad toggle"), { desc = "DMS Notepad" })
+hl.bind(modkey .. ' + N', hl.dsp.exec_cmd('dms ipc call notifications toggle'), { desc = 'DMS Notification Center' })
+hl.bind(modkey .. ' + SHIFT + N', hl.dsp.exec_cmd('dms ipc call notepad toggle'), { desc = 'DMS Notepad' })
 
 -- === DMS Color Picker ===
-hl.bind(modkey .. " + SHIFT + P", hl.dsp.exec_cmd("dms color pick -a"), { desc = "DMS Eyedropper Color Picker" })
-hl.bind(modkey .. " + CTRL + C", hl.dsp.exec_cmd("dms ipc call color-picker toggle"), { desc = "DMS Color Picker Modal" })
+hl.bind(modkey .. ' + SHIFT + P', hl.dsp.exec_cmd('dms color pick -a'), { desc = 'DMS Eyedropper Color Picker' })
+hl.bind(
+  modkey .. ' + CTRL + C',
+  hl.dsp.exec_cmd('dms ipc call color-picker toggle'),
+  { desc = 'DMS Color Picker Modal' }
+)
 
 -- === DMS Dash & Settings ===
-hl.bind(modkey .. " + comma", hl.dsp.exec_cmd("dms ipc call settings focusOrToggle"), { desc = "DMS Settings" })
-hl.bind(modkey .. " + M", hl.dsp.exec_cmd("dms ipc call processlist focusOrToggle"), { desc = "DMS Task Manager" })
-hl.bind("CTRL + ALT + Delete", hl.dsp.exec_cmd("dms ipc call processlist focusOrToggle"), { desc = "DMS Task Manager" })
-hl.bind(modkey .. " + Y", hl.dsp.exec_cmd("dms ipc call dash toggle wallpaper"), { desc = "DMS Wallpaper Browser" })
-hl.bind(modkey .. " + TAB", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"), { desc = "DMS Window Overview" })
-hl.bind(modkey .. " + ALT + space", hl.dsp.exec_cmd("dms dmenu -p \"Run:\""), { desc = "DMS dmenu Command Runner" })
+hl.bind(modkey .. ' + comma', hl.dsp.exec_cmd('dms ipc call settings focusOrToggle'), { desc = 'DMS Settings' })
+hl.bind(modkey .. ' + M', hl.dsp.exec_cmd('dms ipc call processlist focusOrToggle'), { desc = 'DMS Task Manager' })
+hl.bind('CTRL + ALT + Delete', hl.dsp.exec_cmd('dms ipc call processlist focusOrToggle'), { desc = 'DMS Task Manager' })
+hl.bind(modkey .. ' + Y', hl.dsp.exec_cmd('dms ipc call dash toggle wallpaper'), { desc = 'DMS Wallpaper Browser' })
+hl.bind(modkey .. ' + TAB', hl.dsp.exec_cmd('dms ipc call hypr toggleOverview'), { desc = 'DMS Window Overview' })
+hl.bind(modkey .. ' + ALT + space', hl.dsp.exec_cmd('dms dmenu -p "Run:"'), { desc = 'DMS dmenu Command Runner' })
 
 -- === Multimedia Controls ===
 hl.bind(
@@ -356,7 +384,7 @@ hl.bind('SUPER + P', hl.dsp.window.pseudo(), {
 })
 
 -- === Security ===
-hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("dms ipc call lock lock"), { desc = "DMS Lock Screen" })
+hl.bind('SUPER + ALT + L', hl.dsp.exec_cmd('dms ipc call lock lock'), { desc = 'DMS Lock Screen' })
 
 -- o.bind("SUPER + P", "Pseudo window", hl.dsp.window.pseudo())
 -- o.bind("SUPER + T", "Toggle window floating/tiling", hl.dsp.window.float({ action = "toggle" }))

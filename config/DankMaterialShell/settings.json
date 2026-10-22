@@ -800,5 +800,6 @@
   "notificationFocusedMonitor": true,
   "desktopContextMenu": "on",
   "osdVolumeEnabled": false,
-  "osdMediaVolumeEnabled": false
+  "osdMediaVolumeEnabled": false,
+  "displayProfileAutoSelect": false
 }

@@ -2,8 +2,9 @@ setupVersion: 2
 modelRoles:
   plan: google-antigravity/gemini-4-argon:high
   slow: google-antigravity/claude-sonnet-5-5
-  default: google-antigravity/gemini-3.8-flash
   smol: google-antigravity/gemini-3.8-flash:auto
+  default: google-antigravity/gemini-3.8-flash
+  advisor: google-antigravity/gemini-4-argon
 theme:
   dark: dark-catppuccin
   light: dark-catppuccin
@@ -47,6 +48,8 @@ retry:
       - google-antigravity/gemini-3.8-flash
     google-antigravity/claude-sonnet-5-5:
       - google-antigravity/gemini-3.8-flash
+    google-antigravity/gemini-4-argon:
+      - google-antigravity/gemini-3.8-flash
 read:
   renderMarkdown: true
   summarize:
@@ -65,3 +68,4 @@ providers:
   tinyModelDevice: gpu
 dev:
   autoqaConsent: denied
+defaultThinkingLevel: auto

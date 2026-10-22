@@ -17,33 +17,33 @@ local workspaces = {
   { id = '10', default_name = '十' },
 }
 
-if cfg.hostname == 'nixos' then
+if cfg.hostname == 'super' then
   -- "urgent": "",
   -- "focused": "",
   -- "default": ""
 
   hl.config({ misc = { vrr = 3 }, render = { cm_auto_hdr = 0 } })
 
+  local primary = 'DP-2'
+  local secondary = 'DP-3'
+
   hl.monitor({
-    output = 'desc:LG Electronics LG ULTRAGEAR 308NTGY1D007',
-    -- mode = '2560x1440@164.96',
+    output = primary,
+    mode = '2560x1440@164.96',
     position = '0x0',
     scale = 1.0,
   })
 
   hl.monitor({
-    output = 'desc:GIGA-BYTE TECHNOLOGY CO. LTD. AORUS AD27QD 19110B001090',
+    output = secondary,
     mode = '2560x1440@143.97',
-    -- mode = '3840x2160@60.00',
     position = '2560x0',
     scale = 1.0,
   })
 
   for i, ws in ipairs(workspaces) do
     -- Lua 1-indexed math: 1,2,3,4,5 go to DP-2. 6,7,8,9,10 go to DP-3.
-    local monitor_target = (i <= 5) and 'desc:LG Electronics LG ULTRAGEAR 308NTGY1D007'
-      or 'desc:GIGA-BYTE TECHNOLOGY CO. LTD. AORUS AD27QD 19110B001090'
-
+    local monitor_target = (i <= 5) and primary or secondary
     hl.workspace_rule({
       workspace = ws.id,
       default_name = ws.default_name,

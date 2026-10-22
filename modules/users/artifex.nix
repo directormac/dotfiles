@@ -25,15 +25,49 @@
         home.packages = [ pkgs.htop ];
       };
 
+    # Configure root's password on hosts where artifex lives:
+    # uses `root-password.age` if present, else shares `password.age`, else falls back to "12345".
+    provides.to-hosts.nixos =
+      { config, ... }:
+      let
+        hasRootPwdSecret = (config ? age) && (config.age.secrets ? "password-root");
+        hasUserPwdSecret = (config ? age) && (config.age.secrets ? "password-artifex");
+      in
+      {
+        users.users.root =
+          if hasRootPwdSecret then
+            {
+              hashedPasswordFile = config.age.secrets."password-root".path;
+              initialHashedPassword = null;
+            }
+          else if hasUserPwdSecret then
+            {
+              hashedPasswordFile = config.age.secrets."password-artifex".path;
+              initialHashedPassword = null;
+            }
+          else
+            {
+              initialHashedPassword = null;
+              initialPassword = "12345";
+            };
+      };
+
     secrets =
       { user, ... }:
       let
         pwdSecret = user.secretPath + "/password.age";
+        rootPwdSecret = user.secretPath + "/root-password.age";
       in
       lib.optionalAttrs (builtins.pathExists pwdSecret) {
         "password-artifex" = {
           mode = "0400";
           rekeyFile = pwdSecret;
+        };
+      }
+      // lib.optionalAttrs (builtins.pathExists rootPwdSecret) {
+        "password-root" = {
+          mode = "0400";
+          rekeyFile = rootPwdSecret;
         };
       };
 
@@ -42,11 +76,10 @@
     user =
       {
         osConfig,
-        user,
         ...
       }:
       let
-        hasPwdSecret = builtins.pathExists (user.secretPath + "/password.age");
+        hasPwdSecret = (osConfig ? age) && (osConfig.age.secrets ? "password-artifex");
       in
       {
         description = "artifex's account";

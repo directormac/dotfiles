@@ -120,6 +120,7 @@ Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapsh
 4. **Browser Authentication & Keyring Persistence**:
    - Gecko browsers (`zen.nix`, `firefox.nix`, `librewolf.nix`) share `common.sessionSettings` from `modules/aspects/applications/browsers/_common/default.nix` (`browser.startup.page = 3`, `privacy.sanitize.sanitizeOnShutdown = false`, `privacy.clearOnShutdown* = false`, and `services.sync.prefs.sync.privacy.* = false`) so session cookies and site storage survive reboots and LibreWolf's defaults are never synced over Firefox Sync.
    - Chromium and Google Chrome (`chromium.nix`) pass `--password-store=gnome-libsecret` and persist `.pki` alongside `.config/chromium` and `.config/google-chrome`, while `modules/aspects/core/security.nix` enables `enableGnomeKeyring = true` on `sddm`, `greetd`, `gdm`, and `login` PAM services so cookie encryption keys stay unlocked across boots.
+   - **The persisted login keyring is only useful if it unlocks at login.** PAM unlocks `~/.local/share/keyrings/login.keyring` with the login password. If that password differs from the account password, the journal shows `gnome-keyring-daemon: failed to unlock login keyring on startup`, `busctl --user get-property org.freedesktop.secrets /org/freedesktop/secrets/collection/login org.freedesktop.Secret.Collection Locked` prints `b true`, and every libsecret client (Antigravity CLI `agy`, Chromium cookies, Bitwarden) asks to log in again after each reboot even though the files persist. Fix the data, not the Nix: change the keyring password to the login password in Seahorse, or move `login.keyring` aside and log in once through the display manager so PAM creates a new one.
 5. **Tmux Resurrect & Continuum Session Restore (`modules/aspects/applications/dev/mux/tmux/`)**:
    - Save and restore use lock-protected, self-healing wrappers (`resurrectSaveScript` and `resurrectRestoreScript` in `tmux.nix`) that refuse to save 0-pane servers during shutdown teardown, avoid same-second `save.sh` filename collisions that delete `last`, and repair `last` if dangling or empty.
    - `systemd.user.services.tmux-server` (`_systemd.nix`) runs `resurrectRestoreScript` in `ExecStartPost` via `tmux run-shell` (which populates `$TMUX` so `restore.sh` resolves the server socket).
@@ -130,8 +131,9 @@ Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapsh
    - **NEVER** run `disko`, `mkfs`, `wipefs`, `sgdisk`, `rsync --delete` into `/persist`, or any other destructive disk command unless the user explicitly asks. Verify with `nix build .#nixosConfigurations.<host>.config.system.build.diskoScript` and `grep -o '/dev/disk/by-id/[^ ;")]*' result | sort -u` instead.
 8. **Host Hardware Parity**:
    - `hardware.nixos` (legacy host) imports `not-detected.nix`, which enables `hardware.enableRedistributableFirmware` and Intel microcode. A host built from `disk.btrfs` gets filesystems from Disko but **no firmware**; set `hardware.enableRedistributableFirmware` and `hardware.cpu.<vendor>.updateMicrocode` in the host module (as `modules/hosts/super.nix` does) or Wi-Fi/Bluetooth firmware and microcode silently disappear.
-9. **Agenix Host Key & Hostname Fallback (`modules/aspects/secrets/agenix.nix`)**:
-   - Secrets decrypt with `/persist/etc/ssh/ssh_host_ed25519_key`. A host without `.secrets/hosts/<host>.pub` / `.secrets/rekeyed/<host>/` falls back to the `nixos` entries, which only works while that host key is carried over. After a reinstall, copy `/persist` instead of regenerating the key, or rekey with `agenix rekey`.
+9. **Agenix Host Key, Passwords & Hostname Fallback (`modules/aspects/secrets/agenix.nix`, `modules/users/artifex.nix`)**:
+   - Secrets decrypt with `/persist/etc/ssh/ssh_host_ed25519_key`. A host without `.secrets/hosts/<host>.pub` falls back to `.secrets/hosts/super.pub` and `.secrets/rekeyed/super/`.
+   - Because `/` (including `/etc/shadow`) is wiped on every boot by `impermanence.rollback-btrfs`, passwords set with `passwd` do not survive reboots. Run `nix run .#set-password` (or `set-password` in the devshell) to create `.secrets/users/artifex/password.age` (`hashedPasswordFile` for both `artifex` and `root`, or `set-password root` for a separate `root-password.age`), rekey it for all hosts, and synchronize `~/.local/share/keyrings/login.keyring` in place.
 
 ## 4. Flake Inputs, Overlays & Local Packages
 
@@ -141,7 +143,7 @@ Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapsh
 - After adding or changing `flake-file.inputs`, run `nix run .#write-flake` to update `flake.nix`.
 
 ### Local Packages (`pkgs/by-name`)
-- Custom packages and scripts (`rebuild-switch`, `nix-generations`, `nix-flake-build`, `nix-flake-update`, `update-pkgs`, `rmpd`, `zsh-histdb`, etc.) live in `pkgs/by-name/<name>/package.nix`.
+- Custom packages and scripts (`rebuild-switch`, `set-password`, `nix-generations`, `nix-flake-build`, `nix-flake-update`, `update-pkgs`, `rmpd`, `zsh-histdb`, etc.) live in `pkgs/by-name/<name>/package.nix`.
 - `pkgs/overlays.nix` automatically exposes every directory in `pkgs/by-name` as `pkgs.local.<name>` and `pkgs.<name>`, and exports them in `flake.packages.<system>.<name>`.
 
 ## 5. Verification, Formatting & Workflow Commands

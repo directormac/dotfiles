@@ -216,6 +216,11 @@
             exec = "nix run .#vm-sandbox \"$@\"";
           };
 
+          set-password = {
+            description = "Set declarative agenix password for artifex/root and sync GNOME login keyring";
+            exec = "nix run .#set-password -- \"$@\"";
+          };
+
           test = {
             description = "Run nix-unit unit tests defined across aspects";
             exec = "${pkgs.nix-unit}/bin/nix-unit --flake .#tests.systems.\$(${pkgs.nix}/bin/nix eval --raw --impure --expr builtins.currentSystem) \"$@\"";

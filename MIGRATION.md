@@ -123,6 +123,8 @@ sudo journalctl -b | grep -E 'rollback-root|Roll the root'   # wipe actually ran
 ls /etc/ssh/ssh_host_*; ls /run/agenix            # secrets decrypted with the carried host key
 tailscale status; ls ~/.ssh ~/.dotfiles | head
 findmnt /mnt/local/resources                      # NTFS Resources disk
+journalctl -b | grep -i 'failed to unlock login keyring'     # must print nothing
+busctl --user get-property org.freedesktop.secrets /org/freedesktop/secrets/collection/login org.freedesktop.Secret.Collection Locked   # must print: b false
 ```
 
 Prove the rollback and the persistence split with a canary:

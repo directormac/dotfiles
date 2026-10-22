@@ -31,7 +31,7 @@
       url = "github:duxlabs-dev/dux-shell";
     };
 
-    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
+    dms-plugin-registry.url = "github:duxlabs-dev/dux-plugin-registry";
   };
 
   den.aspects.desktop.dms = {
@@ -170,86 +170,25 @@
           };
         };
 
+        stylix.targets = {
+          dank-calendar.enable = lib.mkDefault true;
+        };
+
         xdg.configFile."dfiles/bookmarks.json" = lib.mkIf (inputs ? dfiles) {
           force = true;
+
           source =
             let
-              jsonFormat = pkgs.formats.json { };
-              userDirs = config.xdg.userDirs;
-              gtkBookmarks = config.gtk.gtk3.bookmarks;
-
-              parseGtkBookmark =
-                line:
-                let
-                  raw = lib.removePrefix "file://" line;
-                  parts = lib.splitString " " raw;
-                  path = builtins.head parts;
-                  labelParts = builtins.tail parts;
-                  label = if labelParts != [ ] then lib.concatStringsSep " " labelParts else builtins.baseNameOf path;
-                in
-                {
-                  inherit path label;
-                };
-
-              stdDirs = [
-                {
-                  path = "recent:///";
-                  label = "recent";
-                }
-                {
-                  path = config.home.homeDirectory;
-                  label = builtins.baseNameOf config.home.homeDirectory;
-                }
-              ]
-              ++ lib.optional (userDirs.desktop != null) {
-                path = userDirs.desktop;
-                label = "Desktop";
-              }
-              ++ lib.optional (userDirs.documents != null) {
-                path = userDirs.documents;
-                label = "Documents";
-              }
-              ++ lib.optional (userDirs.download != null) {
-                path = userDirs.download;
-                label = "Downloads";
-              }
-              ++ lib.optional (userDirs.music != null) {
-                path = userDirs.music;
-                label = "Music";
-              }
-              ++ lib.optional (userDirs.pictures != null) {
-                path = userDirs.pictures;
-                label = "Pictures";
-              }
-              ++ lib.optional (userDirs.videos != null) {
-                path = userDirs.videos;
-                label = "Videos";
-              }
-              ++ lib.optional (userDirs.publicShare != null) {
-                path = userDirs.publicShare;
-                label = "Public";
-              }
-              ++ lib.optional (userDirs.templates != null) {
-                path = userDirs.templates;
-                label = "Templates";
-              }
-              ++ (lib.mapAttrsToList (_: path: {
-                inherit path;
-                label = builtins.baseNameOf path;
-              }) (userDirs.extraConfig or { }));
-
-              customBookmarks = builtins.map parseGtkBookmark gtkBookmarks;
-
               allCandidates =
                 stdDirs
                 ++ customBookmarks
                 ++ [
                   {
-                    path = "trash:///";
                     label = "trash";
+                    path = "trash:///";
                   }
                 ];
-
+              customBookmarks = map parseGtkBookmark gtkBookmarks;
               dedup =
                 items:
                 let
@@ -259,23 +198,80 @@
                       acc
                     else
                       {
-                        seen = acc.seen ++ [ item.path ];
                         list = acc.list ++ [ (item // { icon = item.icon or ""; }) ];
+                        seen = acc.seen ++ [ item.path ];
                       };
                 in
                 (builtins.foldl' step {
-                  seen = [ ];
                   list = [ ];
+                  seen = [ ];
                 } items).list;
+              gtkBookmarks = config.gtk.gtk3.bookmarks;
+              jsonFormat = pkgs.formats.json { };
+              parseGtkBookmark =
+                line:
+                let
+                  label = if labelParts != [ ] then lib.concatStringsSep " " labelParts else baseNameOf path;
+                  labelParts = builtins.tail parts;
+                  parts = lib.splitString " " raw;
+                  path = builtins.head parts;
+                  raw = lib.removePrefix "file://" line;
+                in
+                {
+                  inherit path label;
+                };
+              stdDirs = [
+                {
+                  label = "recent";
+                  path = "recent:///";
+                }
+                {
+                  label = builtins.baseNameOf config.home.homeDirectory;
+                  path = config.home.homeDirectory;
+                }
+              ]
+              ++ lib.optional (userDirs.desktop != null) {
+                label = "Desktop";
+                path = userDirs.desktop;
+              }
+              ++ lib.optional (userDirs.documents != null) {
+                label = "Documents";
+                path = userDirs.documents;
+              }
+              ++ lib.optional (userDirs.download != null) {
+                label = "Downloads";
+                path = userDirs.download;
+              }
+              ++ lib.optional (userDirs.music != null) {
+                label = "Music";
+                path = userDirs.music;
+              }
+              ++ lib.optional (userDirs.pictures != null) {
+                label = "Pictures";
+                path = userDirs.pictures;
+              }
+              ++ lib.optional (userDirs.videos != null) {
+                label = "Videos";
+                path = userDirs.videos;
+              }
+              ++ lib.optional (userDirs.publicShare != null) {
+                label = "Public";
+                path = userDirs.publicShare;
+              }
+              ++ lib.optional (userDirs.templates != null) {
+                label = "Templates";
+                path = userDirs.templates;
+              }
+              ++ (lib.mapAttrsToList (_: path: {
+                inherit path;
+                label = builtins.baseNameOf path;
+              }) (userDirs.extraConfig or { }));
+              userDirs = config.xdg.userDirs;
             in
             jsonFormat.generate "dfiles-bookmarks.json" {
-              version = 2;
               bookmarks = dedup allCandidates;
+              version = 2;
             };
-        };
-
-        stylix.targets = {
-          dank-calendar.enable = lib.mkDefault true;
         };
       };
 

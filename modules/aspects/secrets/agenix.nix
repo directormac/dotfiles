@@ -51,15 +51,15 @@ in
             if builtins.pathExists (repoRoot + "/.secrets/hosts/${config.networking.hostName}.pub") then
               (repoRoot + "/.secrets/hosts/${config.networking.hostName}.pub")
             else
-              (repoRoot + "/.secrets/hosts/nixos.pub");
+              (repoRoot + "/.secrets/hosts/super.pub");
 
           localStorageDir =
             repoRoot
             + "/.secrets/rekeyed/${
-              if builtins.pathExists (repoRoot + "/.secrets/rekeyed/${config.networking.hostName}") then
+              if builtins.pathExists (repoRoot + "/.secrets/hosts/${config.networking.hostName}.pub") then
                 config.networking.hostName
               else
-                "nixos"
+                "super"
             }";
 
           storageMode = "local";
@@ -69,7 +69,8 @@ in
 
         environment.systemPackages = [
           (inputs.agenix-rekey.packages.${pkgs.stdenv.hostPlatform.system}.default or pkgs.age)
-        ];
+        ]
+        ++ lib.optionals (pkgs ? set-password) [ pkgs.set-password ];
 
         imports = [
           (inputs.agenix.nixosModules.default or { })

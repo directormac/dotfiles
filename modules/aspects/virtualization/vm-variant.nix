@@ -59,8 +59,17 @@ in
             };
           };
 
-          # Ensure user artifex has initialPassword in VM for SSH testing without conflicting with users.users.artifex.initialPassword
-          users.users.artifex.initialPassword = lib.mkVMOverride "12345";
+          # Ensure artifex and root have initialPassword in VM for SSH testing without conflicting with hashedPasswordFile
+          users.users.artifex = {
+            hashedPasswordFile = lib.mkVMOverride null;
+            initialPassword = lib.mkVMOverride "12345";
+          };
+
+          users.users.root = {
+            hashedPasswordFile = lib.mkVMOverride null;
+            initialHashedPassword = lib.mkVMOverride null;
+            initialPassword = lib.mkVMOverride "12345";
+          };
 
           virtualisation = {
             cores = lib.mkDefault 4;

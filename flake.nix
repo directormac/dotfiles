@@ -80,7 +80,7 @@
       url = "github:duxlabs-dev/dux-shell";
     };
 
-    dms-plugin-registry.url = "github:AvengeMedia/dms-plugin-registry";
+    dms-plugin-registry.url = "github:duxlabs-dev/dux-plugin-registry";
     files.url = "github:sini/files";
     flake-aspects.url = "github:denful/flake-aspects";
 

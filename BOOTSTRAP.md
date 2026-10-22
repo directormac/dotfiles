@@ -279,7 +279,7 @@ den.aspects.my-server = {
 
 ### Using or Adding a User
 - To use the primary account `artifex` ([`modules/users/artifex.nix`](modules/users/artifex.nix)), set `users.artifex = { };` inside `den.hosts.x86_64-linux.<new-machine>`.
-- If `.secrets/users/artifex/password.age` is not present or not yet rekeyed for the new host, the account falls back to `initialPassword = "12345"` so you can log in on first boot.
+- If `.secrets/users/artifex/password.age` is not present or not yet rekeyed for the new host, both `artifex` and `root` fall back to `initialPassword = "12345"` so you can log in on first boot. Once booted, run `nix run .#set-password` (and `nix run .#set-password -- root` if you want a separate root password) to encrypt your password hash with Agenix, rekey it for your hosts, and re-encrypt the GNOME login keyring (`~/.local/share/keyrings/login.keyring`) to match.
 - To create a new user `<username>`, create `modules/users/<username>.nix` modeled after `modules/users/artifex.nix` (`den.batteries.host-aspects`, `den.batteries.primary-user`, `(den.batteries.user-shell "zsh")`) and reference `users.<username> = { };` in your host.
 
 ### Provisioning SSH Host Keys & Agenix Rekeying
