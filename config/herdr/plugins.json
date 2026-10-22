@@ -1,0 +1,815 @@
+[
+  {
+    "plugin_id": "cloudmanic.herdr-plus",
+    "name": "Herdr Plus",
+    "version": "0.1.24",
+    "min_herdr_version": "0.7.0",
+    "description": "An extension for herdr — a collection of tools that make it better. Projects: fuzzy-pick a declarative template to spin up a whole workspace — every tab, pane, and startup command. Quick Actions: a fuzzy launcher for one-off scripts, run in the directory you launched from.",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/build.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "go",
+          "build",
+          "-o",
+          "bin/herdr-plus.exe",
+          "."
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "ping",
+        "title": "Herdr Plus: ping",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "./bin/herdr-plus",
+          "ping"
+        ]
+      },
+      {
+        "id": "ping-windows",
+        "title": "Herdr Plus: ping",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe ping"
+        ]
+      },
+      {
+        "id": "projects",
+        "title": "Herdr Plus: Projects",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "./bin/herdr-plus",
+          "projects"
+        ]
+      },
+      {
+        "id": "projects-windows",
+        "title": "Herdr Plus: Projects",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe projects"
+        ]
+      },
+      {
+        "id": "quick-actions",
+        "title": "Herdr Plus: Quick Actions",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "./bin/herdr-plus",
+          "quick-actions"
+        ]
+      },
+      {
+        "id": "quick-actions-windows",
+        "title": "Herdr Plus: Quick Actions",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe quick-actions"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "worktree.created",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "./bin/herdr-plus",
+          "on-worktree"
+        ]
+      },
+      {
+        "on": "worktree.created",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe on-worktree"
+        ]
+      },
+      {
+        "on": "worktree.opened",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "./bin/herdr-plus",
+          "on-worktree"
+        ]
+      },
+      {
+        "on": "worktree.opened",
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe on-worktree"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Herdr Plus: Projects",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "placement": "zoomed",
+        "command": [
+          "./bin/herdr-plus",
+          "projects-ui"
+        ]
+      },
+      {
+        "id": "picker-windows",
+        "title": "Herdr Plus: Projects",
+        "platforms": [
+          "windows"
+        ],
+        "placement": "zoomed",
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe projects-ui"
+        ]
+      },
+      {
+        "id": "quick-actions-picker",
+        "title": "Quick Actions",
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "placement": "overlay",
+        "command": [
+          "./bin/herdr-plus",
+          "quick-actions-ui"
+        ]
+      },
+      {
+        "id": "quick-actions-picker-windows",
+        "title": "Quick Actions",
+        "platforms": [
+          "windows"
+        ],
+        "placement": "overlay",
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-Command",
+          "& .\\bin\\herdr-plus.exe quick-actions-ui"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "cloudmanic",
+      "repo": "herdr-plus",
+      "resolved_commit": "f38df3570bea8f7ca71dc1ba11bce3b123d14402",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github/cloudmanic.herdr-plus-0cce37b56fb9",
+      "installed_unix_ms": 1791884599814
+    }
+  },
+  {
+    "plugin_id": "herdr-bar",
+    "name": "Bar",
+    "version": "0.11.0",
+    "min_herdr_version": "0.9.0",
+    "description": "Cmd+K command bar with agent icons, fuzzy search, and optional automatic tab titles",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/29041-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/29041-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "sh",
+          "scripts/install.sh"
+        ]
+      },
+      {
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "powershell",
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "scripts/install.ps1"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--open"
+        ]
+      },
+      {
+        "id": "open-windows",
+        "title": "Open bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "contexts": [
+          "global"
+        ],
+        "platforms": [
+          "windows"
+        ],
+        "command": [
+          "bin/herdr-bar.exe",
+          "--open"
+        ]
+      },
+      {
+        "id": "start-titles",
+        "title": "Start tab watcher",
+        "description": "Start task title and tab status updates enabled in the plugin config",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles",
+          "--resume"
+        ]
+      },
+      {
+        "id": "stop-titles",
+        "title": "Stop tab watcher",
+        "description": "Stop this server's title and status watcher, restoring bare tab names",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-bar",
+          "--stop-titles"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "bin/herdr-bar",
+          "--start-titles"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "bar",
+        "title": "Bar",
+        "description": "Fuzzy-jump to any tab, pane, or agent",
+        "placement": "popup",
+        "width": "74%",
+        "height": "62%",
+        "command": [
+          "bin/herdr-bar"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "jeffarese",
+      "repo": "herdr-bar",
+      "resolved_commit": "261de9b0441a6972941414bbf16eb4f5df27ac34",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-bar-96eebe452a9c/29041-0/checkout",
+      "installed_unix_ms": 1792673104273
+    }
+  },
+  {
+    "plugin_id": "herdr-floax",
+    "name": "herdr-floax",
+    "version": "0.3.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Toggle a floating scratch shell (sized popup) for the current workspace, à la tmux-floax.",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-floax-0151ef56c880/172229-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github-installations/herdr-floax-0151ef56c880/172229-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "instances",
+        "title": "Choose floating shell",
+        "description": "List running Floax sessions across this Herdr server and jump or reattach.",
+        "command": [
+          "./target/release/herdr-floax",
+          "--instances-open"
+        ]
+      },
+      {
+        "id": "toggle",
+        "title": "Toggle floating pane",
+        "description": "Open, reveal, or dismiss the floating scratch shell for this workspace.",
+        "command": [
+          "./target/release/herdr-floax",
+          "--toggle"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "floating",
+        "title": "⌂ floax",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-floax"
+        ]
+      },
+      {
+        "id": "instances",
+        "title": "Floax instances",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-floax",
+          "--instances"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Tyru5",
+      "repo": "herdr-floax",
+      "resolved_commit": "23ebf95f4f0b10c269e7cbcfb469ec55461fe834",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-floax-0151ef56c880/172229-0/checkout",
+      "installed_unix_ms": 1792680542786
+    }
+  },
+  {
+    "plugin_id": "herdr-nerd-font-tab-name",
+    "name": "Nerd Font Tab Name",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Replaces herdr tab numbers and names with a Nerd Font icon for whatever is running in the tab",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-nerd-font-tab-name-18a2b3eee9c4/217680-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github-installations/herdr-nerd-font-tab-name-18a2b3eee9c4/217680-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "startup": [
+      {
+        "command": [
+          "bin/startup"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "refresh",
+        "title": "Nerd Font tabs: refresh now",
+        "description": "Apply icons to every tab immediately",
+        "contexts": [
+          "global",
+          "workspace",
+          "tab"
+        ],
+        "command": [
+          "bin/herdr-nerd-font-tab-name",
+          "once"
+        ]
+      },
+      {
+        "id": "restart",
+        "title": "Nerd Font tabs: restart watcher",
+        "description": "Restart the background watcher (use after editing the config)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-nerd-font-tab-name",
+          "restart"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Nerd Font tabs: status",
+        "description": "Show whether the watcher is running",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-nerd-font-tab-name",
+          "status"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Nerd Font tabs: stop and restore labels",
+        "description": "Stop the watcher and put the original tab labels back",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bin/herdr-nerd-font-tab-name",
+          "stop",
+          "--restore"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "tab.created",
+        "command": [
+          "bin/startup"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "rohankewal",
+      "repo": "herdr-nerd-font-tab-name",
+      "resolved_commit": "b5cc7db85fedc085385716e27464ed32a9b2d168",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-nerd-font-tab-name-18a2b3eee9c4/217680-0/checkout",
+      "installed_unix_ms": 1792681902809
+    }
+  },
+  {
+    "plugin_id": "herdr-projects",
+    "name": "Projects",
+    "version": "1.2.17",
+    "min_herdr_version": "0.9.3",
+    "description": "A work board: one list of tasks, each delegated one an ordinary herdr agent in its own space",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/175844-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/175844-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "--fetch"
+        ]
+      }
+    ],
+    "startup": [
+      {
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "approve-current",
+        "title": "Approve the task in the focused pane (the board asks first)",
+        "contexts": [
+          "pane"
+        ],
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "approve-current"
+        ]
+      },
+      {
+        "id": "coordinator",
+        "title": "Go into the Coordinator's chat",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "open-coordinator"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Open the work board",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "open"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "on": "pane.agent_detected",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "pane.agent_status_changed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "pane.closed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      },
+      {
+        "on": "worktree.removed",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "hook"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "board",
+        "title": "Work board",
+        "placement": "tab",
+        "command": [
+          "sh",
+          "bin/run.sh",
+          "board"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "eliasstravik",
+      "repo": "herdr-projects",
+      "resolved_commit": "1e958af29fe660af0d3a3a741c8986d08ace129f",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr-projects-b1278ffb803c/175844-0/checkout",
+      "installed_unix_ms": 1792680556328
+    }
+  },
+  {
+    "plugin_id": "herdr.collie",
+    "name": "Collie",
+    "version": "1.24.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Mobile web UI to monitor and reply to your agent herd, served over Tailscale",
+    "manifest_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr.collie-1edf0e1e987e/175940-0/checkout/herdr-plugin.toml",
+    "plugin_root": "/home/artifex/.config/herdr/plugins/github-installations/herdr.collie-1edf0e1e987e/175940-0/checkout",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "platforms": [
+          "linux",
+          "macos"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "build"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "push-keys",
+        "title": "Generate push keys",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "push-keys"
+        ]
+      },
+      {
+        "id": "push-test",
+        "title": "Send a test notification",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "push-test"
+        ]
+      },
+      {
+        "id": "restart",
+        "title": "Restart Collie",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "restart"
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Start Collie",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "start"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Collie status",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "status"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Stop Collie",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "stop"
+        ]
+      },
+      {
+        "id": "uninstall",
+        "title": "Uninstall Collie (remove service)",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "uninstall"
+        ]
+      },
+      {
+        "id": "update",
+        "title": "Update plugin",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "update"
+        ]
+      },
+      {
+        "id": "update-major",
+        "title": "Update across a major version",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "update",
+          "--major"
+        ]
+      },
+      {
+        "id": "url",
+        "title": "Show Collie URL",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "url"
+        ]
+      },
+      {
+        "id": "version",
+        "title": "Show version",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "scripts/collie-ctl.sh",
+          "version"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "AltanS",
+      "repo": "collie",
+      "resolved_commit": "eb8d25264ea84cedfc3bd38a9b4ad33b1ed45726",
+      "managed_path": "/home/artifex/.config/herdr/plugins/github-installations/herdr.collie-1edf0e1e987e/175940-0/checkout",
+      "installed_unix_ms": 1792680567009
+    }
+  }
+]

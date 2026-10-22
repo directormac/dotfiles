@@ -1,0 +1,58 @@
+config:
+  show-name: "auto"
+  icon-position: "left"
+  fallback-icon: ""
+  multi-pane-icon: ""
+  always-show-fallback-name: false
+  prefer-agent-icons: true
+  agent-fallback-icon: "󰚩"
+  use-argv0: true
+  title-fallback: true
+  poll-interval: 2
+
+icons:
+  tmux: ""
+  tuxedo: ""
+  tv: "󰟴"
+  sesh: "⚡"
+  neovim: ""
+  nvim: ""
+  claude: " "
+  bun: " "
+  workmux: ""
+  omp: "󰏿"
+  pi: "󰏿"
+  nh: " "
+  nix: " "
+  agy: " "
+  opencode: " "
+  opencode2: " "
+  copilot: " "
+  direnv-instant: " "
+  git: ""
+  lazygit: ""
+  yazi: "󰇥"
+  zsh: ""
+  bash: ""
+  fish: "󰈺"
+  btop: "󰄛"
+  htop: "󰄛"
+  top: "󰄛"
+  cargo: "󱘗"
+  rustc: "󱘗"
+  python: ""
+  python3: ""
+  node: "󰎙"
+  go: ""
+  make: "󱁤"
+  just: "󱁤"
+
+agents:
+  claude: " "
+  codex: " "
+  pi: "󰏿"
+  omp: "󰏿"
+  agy: " "
+  opencode: " "
+  copilot: " "
+  gemini: " "

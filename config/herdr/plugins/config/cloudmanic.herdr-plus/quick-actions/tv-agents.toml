@@ -1,0 +1,4 @@
+name = "Television: Herdr Agents"
+description = "Search and interact with coding agents"
+type = "command"
+command = "tv herdr-agents"

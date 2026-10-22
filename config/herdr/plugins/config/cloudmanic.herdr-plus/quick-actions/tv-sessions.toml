@@ -1,0 +1,4 @@
+name = "Television: Herdr Sessions"
+description = "Search and attach to Herdr persistent sessions"
+type = "command"
+command = "tv herdr-sessions"

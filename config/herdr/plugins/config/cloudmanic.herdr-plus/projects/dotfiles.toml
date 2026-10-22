@@ -1,0 +1,14 @@
+name = "Dotfiles"
+description = "NixOS & Home Manager dotfiles development"
+working_dir = "~/.dotfiles"
+
+[[tabs]]
+name = "editor"
+command = "nvim ."
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "shell"

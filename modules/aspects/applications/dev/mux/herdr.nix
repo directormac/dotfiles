@@ -12,10 +12,42 @@
         ...
       }:
       let
+        herdr-plugins-sync = pkgs.writeShellScriptBin "herdr-plugins-sync" ''
+          set -euo pipefail
+          echo "==> Syncing declarative Herdr plugins..."
+          PLUGINS=(
+            "cloudmanic/herdr-plus"
+            "jeffarese/herdr-bar"
+            "Tyru5/herdr-floax"
+            "eliasstravik/herdr-projects"
+            "AltanS/collie"
+            "rohankewal/herdr-nerd-font-tab-name"
+          )
+          INSTALLED=$(${herdrPkg}/bin/herdr plugin list --json 2>/dev/null || echo '{"result":{"plugins":[]}}')
+
+          for plugin in "''${PLUGINS[@]}"; do
+            repo_name="''${plugin#*/}"
+            has_plugin=$(echo "$INSTALLED" | ${pkgs.jq}/bin/jq -r --arg p "$plugin" --arg r "$repo_name" '
+              .result.plugins[]? | select(
+                (.source.github.repo == $r) or
+                (.plugin_id == $r) or
+                (.plugin_id == ("cloudmanic." + $r)) or
+                (.plugin_id == ("herdr." + $r))
+              ) | .plugin_id
+            ')
+
+            if [ -n "$has_plugin" ]; then
+              echo "  [ok] $plugin (id: $has_plugin) is installed"
+            else
+              echo "  [installing] $plugin..."
+              ${herdrPkg}/bin/herdr plugin install -y "$plugin" || echo "  [warn] failed to install $plugin"
+            fi
+          done
+          echo "==> Herdr plugins sync complete."
+        '';
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
-
         tv-herdr-agent-preview = pkgs.writeShellScript "tv-herdr-agent-preview" ''
           agent="$1"
           status="$2"
@@ -32,7 +64,6 @@
           ${herdrPkg}/bin/herdr agent read "$agent" --lines 15 2>/dev/null || \
             ${herdrPkg}/bin/herdr pane read "$pane" --lines 15 2>/dev/null || echo "(no output)"
         '';
-
         tv-herdr-session-preview = pkgs.writeShellScript "tv-herdr-session-preview" ''
           name="$1"
           sess=$(${herdrPkg}/bin/herdr session list --json 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg n "$name" '.sessions[]? | select(.name == $n)')
@@ -64,7 +95,6 @@
             fi
           fi
         '';
-
         tv-herdr-workspace-preview = pkgs.writeShellScript "tv-herdr-workspace-preview" ''
           ws="$1"
           info=$(${herdrPkg}/bin/herdr workspace get "$ws" 2>/dev/null | ${pkgs.jq}/bin/jq -r '.result.workspace')
@@ -91,7 +121,6 @@
             echo "$panes"
           fi
         '';
-
         tv-herdr-worktree-preview = pkgs.writeShellScript "tv-herdr-worktree-preview" ''
           branch="$1"
           status="$2"
@@ -110,7 +139,23 @@
       in
       {
         home.file.".config/herdr/config.toml".source = config.lib.dots.link "herdr/config.toml";
-        home.packages = [ herdrPkg ];
+        home.file.".config/herdr/herdr-nerd-font-tab-name.yml".source =
+          config.lib.dots.link "herdr/herdr-nerd-font-tab-name.yml";
+
+        home.file.".config/herdr/plugins/config/cloudmanic.herdr-plus".source =
+          config.lib.dots.link "herdr/plugins/config/cloudmanic.herdr-plus";
+
+        home.file.".config/herdr/plugins/config/herdr-bar/config.json".source =
+          config.lib.dots.link "herdr/plugins/config/herdr-bar/config.json";
+
+        home.file.".config/herdr/plugins/config/herdr-floax/floax.conf".source =
+          config.lib.dots.link "herdr/plugins/config/herdr-floax/floax.conf";
+
+        home.packages = [
+          herdrPkg
+          herdr-plugins-sync
+          pkgs.dtach
+        ];
 
         systemd.user.services.herdr-server = {
           Install.WantedBy = [ "graphical-session.target" ];

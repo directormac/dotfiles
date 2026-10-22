@@ -1,0 +1,14 @@
+{
+  "auto_titles": true,
+  "tab_status": true,
+  "preview": "auto",
+  "mouse": true,
+  "refresh_ms": 900,
+  "workspaces": "auto",
+  "selection_background": "auto",
+  "colors": {
+    "accent": "#cba6f7",
+    "match": "#cba6f7",
+    "muted": "#6c7086"
+  }
+}

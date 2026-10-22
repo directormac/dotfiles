@@ -1,0 +1,4 @@
+name = "Reveal Working Directory"
+description = "Open directory in yazi terminal file manager"
+type = "command"
+command = "yazi '{{.WorkDir}}'"

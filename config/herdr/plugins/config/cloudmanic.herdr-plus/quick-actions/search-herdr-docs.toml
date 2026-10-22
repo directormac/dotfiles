@@ -1,0 +1,8 @@
+name = "Search Herdr Docs"
+description = "Search Herdr documentation"
+type = "form"
+command = "terminal-browser open 'https://herdr.dev/?q={{.Value | urlquery}}'"
+
+[form]
+prompt = "Search Herdr docs for"
+placeholder = "e.g. keybindings, themes, plugins"

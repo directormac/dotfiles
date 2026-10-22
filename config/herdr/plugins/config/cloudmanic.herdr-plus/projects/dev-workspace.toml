@@ -1,0 +1,14 @@
+name = "Dev Workspace"
+description = "General development workspace with editor and lazygit"
+working_dir = "~"
+
+[[tabs]]
+name = "editor"
+command = "nvim ."
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"
+
+[[tabs]]
+name = "terminal"

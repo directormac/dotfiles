@@ -1,0 +1,8 @@
+name = "Search Google"
+description = "Type a search query and open results in terminal-browser"
+type = "form"
+command = "terminal-browser open 'https://www.google.com/search?q={{.Value | urlquery}}'"
+
+[form]
+prompt = "Search Google for"
+placeholder = "e.g. nixos options, rust docs"

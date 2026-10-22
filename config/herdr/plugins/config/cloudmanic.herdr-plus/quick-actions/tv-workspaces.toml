@@ -1,0 +1,4 @@
+name = "Television: Herdr Workspaces"
+description = "Search and jump to Herdr workspaces"
+type = "command"
+command = "tv herdr-workspaces"

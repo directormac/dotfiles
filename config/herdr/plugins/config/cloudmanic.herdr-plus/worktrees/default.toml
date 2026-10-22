@@ -1,0 +1,7 @@
+# Auto-open tabs when a worktree is created in Herdr
+[[tabs]]
+name = "editor"
+command = "nvim ."
+
+[[tabs]]
+name = "terminal"

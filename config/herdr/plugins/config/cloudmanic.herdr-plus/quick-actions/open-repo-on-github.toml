@@ -1,0 +1,4 @@
+name = "Open Repo on GitHub"
+description = "Open the current git repo on GitHub in browser"
+type = "command"
+command = "terminal-browser open \"$(git -C {{.WorkDir}} remote get-url origin 2>/dev/null | sed -E 's#git@github.com:#https://github.com/#; s#\\.git$##')\" || xdg-open \"$(git -C {{.WorkDir}} remote get-url origin 2>/dev/null | sed -E 's#git@github.com:#https://github.com/#; s#\\.git$##')\""

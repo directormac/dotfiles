@@ -1,0 +1,8 @@
+name = "Terminal Browser: Open URL"
+description = "Enter a URL to open inside terminal-browser"
+type = "form"
+command = "terminal-browser open '{{.Value}}'"
+
+[form]
+prompt = "Enter URL to open"
+placeholder = "https://..."

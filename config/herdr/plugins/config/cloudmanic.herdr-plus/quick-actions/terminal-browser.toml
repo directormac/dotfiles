@@ -1,0 +1,4 @@
+name = "Terminal Browser"
+description = "Open terminal-browser in a terminal pane"
+type = "command"
+command = "terminal-browser"

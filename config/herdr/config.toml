@@ -78,6 +78,90 @@ resize_mode = [
   "prefix+ctrl+right",
 ]
 
+[[keys.command]]
+key = ["prefix+/", "ctrl+alt+k"]
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-floax.toggle"
+description = "Toggle floating scratch shell"
+
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "herdr-floax.instances"
+description = "List floating shell instances"
+
+[[keys.command]]
+key = ["prefix+space", "prefix+a"]
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.quick-actions"
+description = "Herdr Plus: Quick actions launcher"
+
+[[keys.command]]
+key = "prefix+shift+p"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.projects"
+description = "Herdr Plus: Project templates"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "herdr-projects.open"
+description = "Herdr Projects: Mission control work board"
+
+[[keys.command]]
+key = "prefix+shift+s"
+type = "popup"
+command = "tv herdr-sessions"
+width = "80%"
+height = "80%"
+description = "Television: Herdr persistent sessions"
+
+[[keys.command]]
+key = "prefix+shift+w"
+type = "popup"
+command = "tv herdr-workspaces"
+width = "80%"
+height = "80%"
+description = "Television: Herdr workspaces"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "popup"
+command = "tv herdr-agents"
+width = "80%"
+height = "80%"
+description = "Television: Herdr coding agents"
+
+[[keys.command]]
+key = "prefix+alt+t"
+type = "popup"
+command = "tv herdr-worktrees"
+width = "80%"
+height = "80%"
+description = "Television: Herdr worktrees"
+
+[[keys.command]]
+key = "prefix+alt+r"
+type = "popup"
+command = "tv git-repos"
+width = "80%"
+height = "80%"
+description = "Television: Git repositories"
+
+[[keys.command]]
+key = "prefix+shift+b"
+type = "popup"
+command = "terminal-browser"
+width = "90%"
+height = "85%"
+description = "Terminal Browser popup"
+
 [remote]
 
 # Size of the virtual terminal used when no client is attached.
@@ -104,21 +188,24 @@ auto_switch = false
 # Override individual color tokens on top of the base theme.
 # Accepts: hex (#rrggbb), named colors, rgb(r,g,b), or panel_bg = "reset"
 [theme.custom]
+# panel_bg = "#1e1e2e"
 # sidebar_bg = "#181825"
-# active_row_bg = "#1e1e2e"
-# selection_bg = "#313244"
-panel_bg = "black"
-
-# Layer appearance-specific overrides on top when auto_switch is enabled.
-# [theme.custom.light]
-# panel_bg = "#eff1f5"
-# text = "#4c4f69"
-#
-[theme.custom.dark]
-panel_bg = "#1e1e2e"
+active_row_bg = "#313244"
+selection_bg = "#45475a"
+accent = "#cba6f7"
 text = "#cdd6f4"
+red = "#f38ba8"
+green = "#a6e3a1"
 
+[theme.custom.dark]
+# panel_bg = "#1e1e2e"
+# sidebar_bg = "#181825"
+active_row_bg = "#313244"
+selection_bg = "#45475a"
+accent = "#cba6f7"
+text = "#cdd6f4"
 [ui]
+accent = "#cba6f7"
 # Start with the sidebar collapsed. Changes take effect on the next launch.
 sidebar_start_collapsed = true
 # Collapsed sidebar presentation: "compact" keeps the narrow status rail, "hidden" uses zero width.

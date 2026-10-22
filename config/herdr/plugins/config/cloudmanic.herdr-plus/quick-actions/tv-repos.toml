@@ -1,0 +1,4 @@
+name = "Television: Git Repositories"
+description = "Fuzzy search git repositories with television"
+type = "command"
+command = "tv git-repos"
