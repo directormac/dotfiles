@@ -177,6 +177,43 @@
               inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default;
           };
         })
+      ]
+      ++ lib.optionals (inputs ? nur) [
+        (
+          final: prev:
+          let
+            baseNur = prev.nur or (inputs.nur.overlays.default final prev).nur;
+            freedWu = baseNur.repos.Freed-Wu;
+            lsp-tree-sitter = relaxUvBuild freedWu.lsp-tree-sitter;
+            # Freed-Wu's lsp-tree-sitter, tmux-language-server, and
+            # termux-language-server pin `uv_build<0.12` in pyproject.toml,
+            # which fails pypaBuildPhase's build-system check against
+            # nixpkgs' uv-build >= 0.12.
+            relaxUvBuild =
+              pkg:
+              pkg.overridePythonAttrs (old: {
+                pypaBuildFlags = lib.unique ((old.pypaBuildFlags or [ ]) ++ [ "--skip-dependency-check" ]);
+              });
+            withPatchedLspTreeSitter =
+              pkg:
+              (relaxUvBuild pkg).overridePythonAttrs (old: {
+                propagatedBuildInputs = map (
+                  dep: if (dep.pname or "") == "lsp-tree-sitter" then lsp-tree-sitter else dep
+                ) (old.propagatedBuildInputs or [ ]);
+              });
+          in
+          {
+            nur = baseNur // {
+              repos = baseNur.repos // {
+                Freed-Wu = freedWu // {
+                  inherit lsp-tree-sitter;
+                  termux-language-server = withPatchedLspTreeSitter freedWu.termux-language-server;
+                  tmux-language-server = withPatchedLspTreeSitter freedWu.tmux-language-server;
+                };
+              };
+            };
+          }
+        )
       ];
 
     persistHome.directories = [

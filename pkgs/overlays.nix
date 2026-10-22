@@ -4,6 +4,16 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    # khal in nixpkgs declares `sphinxBuilders = [ "html" "man" ];`.
+    # In nixpkgs with structuredAttrs enabled, bash arrays in .attrs.sh
+    # cause sphinx-hook's `eval "__sphinxBuilders=($sphinxBuilders)"` to
+    # expand only the first element `${sphinxBuilders[0]}` ("html"),
+    # skipping the "man" builder entirely so the 'man' output is never produced.
+    # Setting sphinxBuilders to a string ensures both builders are run.
+    khal = prev.khal.overrideAttrs {
+      sphinxBuilders = "html man";
+    };
+
     mermaid-cli =
       if inputs ? mermaid-rs-renderer then
         final.symlinkJoin {

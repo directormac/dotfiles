@@ -1,9 +1,8 @@
 setupVersion: 2
 modelRoles:
-  plan: google-antigravity/gemini-3.8-flash:high
-  default: google-antigravity/gemini-4-argon
+  plan: google-antigravity/gemini-4-argon:high
   slow: google-antigravity/claude-sonnet-5-5
-  web: web/parallel
+  default: google-antigravity/gemini-3.8-flash
 theme:
   dark: dark-catppuccin
   light: dark-catppuccin
@@ -43,4 +42,6 @@ doubleEscapeAction: rewind
 retry:
   fallbackChains:
     default:
+      - google-antigravity/gemini-3.8-flash
+    google-antigravity/claude-sonnet-5-5:
       - google-antigravity/gemini-3.8-flash

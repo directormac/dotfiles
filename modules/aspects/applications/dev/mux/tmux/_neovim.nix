@@ -15,12 +15,30 @@
   ...
 }:
 { pkgs, ... }:
+let
+  freedWu =
+    if pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu then
+      pkgs.nur.repos.Freed-Wu
+    else
+      inputs.nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.Freed-Wu;
+  lsp-tree-sitter = relaxUvBuild freedWu.lsp-tree-sitter;
+  relaxUvBuild =
+    pkg:
+    pkg.overridePythonAttrs (old: {
+      pypaBuildFlags = lib.unique ((old.pypaBuildFlags or [ ]) ++ [ "--skip-dependency-check" ]);
+    });
+  tmux-language-server = (relaxUvBuild freedWu.tmux-language-server).overridePythonAttrs (old: {
+    propagatedBuildInputs = map (
+      dep: if (dep.pname or "") == "lsp-tree-sitter" then lsp-tree-sitter else dep
+    ) (old.propagatedBuildInputs or [ ]);
+  });
+in
 {
   config.specs.tmux = {
     data = null;
 
     runtimePkgs = lib.optionals (inputs ? nur) [
-      inputs.nur.legacyPackages.${pkgs.stdenv.hostPlatform.system}.repos.Freed-Wu.tmux-language-server
+      tmux-language-server
     ];
   };
 }
