@@ -6,6 +6,7 @@
       {
         environment.systemPackages = with pkgs; [
           ffmpeg-full
+          mediainfo
           mpv
           socat
           trash-cli
@@ -15,6 +16,10 @@
     homeManager =
       { lib, pkgs, ... }:
       let
+        extended-menu = pkgs.fetchurl {
+          hash = "sha256-u6Xwiw5jBXHtWQ+ipydsGXAo1bveJnX7GPwjH3aCnzk=";
+          url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/master/script-modules/extended-menu.lua";
+        };
         mkStaxScript =
           name:
           pkgs.stdenv.mkDerivation {
@@ -23,6 +28,14 @@
             installPhase = ''
               mkdir -p $out/share/mpv/scripts
               cp ${name}.lua $out/share/mpv/scripts/
+              ${lib.optionalString (name == "command_palette") ''
+                mkdir -p $out/share/mpv/script-modules
+                cp ${extended-menu} $out/share/mpv/script-modules/extended-menu.lua
+                chmod +w $out/share/mpv/scripts/command_palette.lua
+                substituteInPlace $out/share/mpv/scripts/command_palette.lua \
+                  --replace-fail 'local em = require "extended-menu"' \
+                                 'package.path = "${extended-menu};$out/share/mpv/script-modules/?.lua;" .. package.path; local em = dofile("${extended-menu}")'
+              ''}
             '';
 
             passthru.scriptName = "${name}.lua";
@@ -46,6 +59,25 @@
             exec mpv "$@"
           fi
         '';
+        mpv-keep-session = pkgs.stdenv.mkDerivation {
+          dontBuild = true;
+          dontUnpack = true;
+
+          installPhase = ''
+            mkdir -p $out/share/mpv/scripts
+            cp $src $out/share/mpv/scripts/keep-session.lua
+          '';
+
+          passthru.scriptName = "keep-session.lua";
+          pname = "mpv-keep-session";
+
+          src = pkgs.fetchurl {
+            hash = "sha256-kRM5qhU4rZOEnCSxpiO0vaEVjNb/jOPUiCIH9+8mQLc=";
+            url = "https://raw.githubusercontent.com/CogentRedTester/mpv-scripts/master/keep-session.lua";
+          };
+
+          version = "unstable-2024-05-01";
+        };
         stax76-src = pkgs.fetchFromGitHub {
           hash = "sha256-qEw0T/37n8aQ2WU4YsxCjJGdoa2Ft3Vg6y6jGWAnJDM=";
           owner = "stax76";
@@ -188,10 +220,52 @@
           enable = true;
 
           bindings = {
+            # Command Palette & Which-Key (stax76)
+            "?" = "script-message-to command_palette show-command-palette \"Bindings\"";
+            "Alt+a" = "script-message-to command_palette show-command-palette \"Audio Tracks\"";
+            "Alt+c" = "script-message-to command_palette show-command-palette \"Chapters\"";
+            "Alt+d" = "script-message-to command_palette show-command-palette \"Audio Devices\"";
+            "Alt+p" = "script-message-to command_palette show-command-palette \"Profiles\"";
+            "Alt+s" = "script-message-to command_palette show-command-palette \"Subtitle Tracks\"";
+            # Stax76 misc & file management
             "DEL" = "script-message-to delete_current_file delete-file";
+            "DOWN" = "add volume -5";
+            "End" = "script-message-to misc playlist-last";
+            "F1" = "script-message-to command_palette show-command-palette \"Bindings\"";
+            "F11" = "script-message-to misc playlist-prev";
+            "F12" = "script-message-to misc playlist-next";
+            "F2" = "script-message-to command_palette show-command-palette \"Properties\"";
+            "F3" = "script-message-to command_palette show-command-palette \"Commands\"";
+            "F4" = "script-message-to command_palette show-command-palette \"Options\"";
+            "F8" = "script-message-to command_palette show-command-palette \"Playlist\"";
+            "F9" = "script-message-to command_palette show-command-palette \"Tracks\"";
+            "Home" = "script-message-to misc playlist-first";
+            "J" = "script-message-to misc cycle-known-tracks sub down";
+            "LEFT" = "seek -5";
+            # Seek controls (Left/Right arrow keys)
+            "RIGHT" = "seek 5";
+            "SHARP" = "script-message-to misc cycle-known-tracks audio";
+            "Shift+DOWN" = "add volume -1";
+            "Shift+LEFT" = "seek -30";
+            "Shift+RIGHT" = "seek 30";
+            "Shift+UP" = "add volume 1";
+            # Volume controls (Up/Down arrow keys & Wheel)
+            "UP" = "add volume 5";
+            "WHEEL_DOWN" = "add volume -5";
+            "WHEEL_UP" = "add volume 5";
+            "ctrl+P" = "script-message-to command_palette show-command-palette \"Commands\"";
+            # Session management (keep-session)
+            "ctrl+Shift+R" = "script-message reload-session";
+            "ctrl+Shift+S" = "script-message save-session";
             "ctrl+V" = "script-message-to misc load-from-clipboard append";
+            "ctrl+p" = "script-message-to command_palette show-command-palette \"Command Palette\"";
+            "ctrl+r" = "script-message-to misc playlist-random";
             "ctrl+v" = "script-message-to misc load-from-clipboard replace";
             "i" = "script-message-to misc print-media-info";
+            "j" = "script-message-to misc cycle-known-tracks sub up";
+            # Built-in MPV menu
+            "m" = "script-binding select/menu";
+            "r" = "script-message-to misc restart mpv";
           };
 
           config = {
@@ -200,7 +274,10 @@
             demuxer-max-bytes = "400M";
             input-ipc-server = "/tmp/mpvsocket";
             osc = false;
+            osd-bar = false;
             profile = "high-quality";
+            save-position-on-quit = true;
+            watch-later-directory = "~/.config/mpv/watch_later";
             ytdl-format = "bestvideo+bestaudio";
           };
 
@@ -223,16 +300,38 @@
               webtorrent-mpv-hook
               youtube-upnext
               mpv-webm
+              (mkStaxScript "command_palette")
               (mkStaxScript "history")
               (mkStaxScript "delete_current_file")
               (mkStaxScript "misc")
               (mkStaxScript "auto_mode")
               (mkStaxScript "average_volume")
+              mpv-keep-session
             ];
+          };
+
+          scriptOpts = {
+            command_palette = {
+              font_size = "20";
+              lines_to_show = "14";
+              scale_by_window = "no";
+            };
+
+            keep_session = {
+              auto_load = "yes";
+              auto_save = "yes";
+              load_playlist = "yes";
+              maintain_pos = "yes";
+            };
+
+            modernx = {
+              osc_on_seek = "yes";
+            };
           };
         };
 
         stylix.targets.mpv.enable = lib.mkDefault true;
+        xdg.configFile."mpv/script-modules/extended-menu.lua".source = extended-menu;
 
         xdg.configFile."mpvc/mpvc.conf".text = ''
           MPVC_SOCKET="/tmp/mpvsocket"
@@ -422,6 +521,7 @@
     persistHome.directories = [
       ".config/mpv"
       ".config/mpvc"
+      ".local/state/mpv"
     ];
   };
 }
