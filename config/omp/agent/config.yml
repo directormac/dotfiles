@@ -69,3 +69,8 @@ providers:
 dev:
   autoqaConsent: denied
 defaultThinkingLevel: auto
+collab:
+  autoStart: control
+  displayName: Artifex@Super
+speechgen:
+  enabled: true

@@ -35,10 +35,21 @@
   den.aspects.applications.dev.mux.tmux = {
     nixos =
       { pkgs, ... }:
+      let
+        colliePkg =
+          if pkgs ? llm-agents && pkgs.llm-agents ? collie then
+            pkgs.llm-agents.collie
+          else if
+            inputs ? llm-agents && (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} ? collie)
+          then
+            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.collie
+          else
+            pkgs.collie or (pkgs.local.collie or null);
+      in
       {
         environment.systemPackages = [
           (pkgs.local.tmux or pkgs.tmux)
-          (pkgs.local.collie or pkgs.collie)
+          colliePkg
         ]
         ++ lib.optional (pkgs ? local && pkgs.local ? tmuxx) pkgs.local.tmuxx
         ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [

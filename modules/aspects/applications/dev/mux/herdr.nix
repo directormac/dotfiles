@@ -82,6 +82,15 @@
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
+        colliePkg =
+          if pkgs ? llm-agents && pkgs.llm-agents ? collie then
+            pkgs.llm-agents.collie
+          else if
+            inputs ? llm-agents && (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} ? collie)
+          then
+            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.collie
+          else
+            pkgs.collie or (pkgs.local.collie or null);
         tv-herdr-agent-preview = pkgs.writeShellScript "tv-herdr-agent-preview" ''
           agent="$1"
           status="$2"
@@ -192,7 +201,7 @@
           herdrPkg
           herdr-plugins-sync
           pkgs.dtach
-          (pkgs.local.collie or pkgs.collie)
+          colliePkg
         ];
 
         home.sessionPath = [
@@ -204,6 +213,7 @@
             path=("$HOME/.herdr-projects/data/bin" $path)
           fi
         '';
+
         systemd.user.services.herdr-server = {
           Install.WantedBy = [ "graphical-session.target" ];
 

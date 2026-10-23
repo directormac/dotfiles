@@ -30,12 +30,6 @@
 
           extraOpts = {
             ExtensionSettings = {
-              "hfjbmagddngcpeloejdejnfgbamkjaeg" = {
-                installation_mode = "force_installed";
-                toolbar_pin = "default_unpinned";
-                update_url = "https://clients2.google.com/service/update2/crx";
-              }; # Vimium C
-
               "ddkjiahejlhfcafbddmgiahcphecmpfh" = {
                 installation_mode = "force_installed";
                 toolbar_pin = "default_unpinned";
@@ -47,6 +41,12 @@
                 toolbar_pin = "force_pinned";
                 update_url = "https://clients2.google.com/service/update2/crx";
               }; # Dark Reader
+
+              "hfjbmagddngcpeloejdejnfgbamkjaeg" = {
+                installation_mode = "force_installed";
+                toolbar_pin = "default_unpinned";
+                update_url = "https://clients2.google.com/service/update2/crx";
+              }; # Vimium C
 
               "mnjggcdmjocbbbhaepdhchncahnbgone" = {
                 installation_mode = "force_installed";

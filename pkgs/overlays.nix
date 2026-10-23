@@ -14,6 +14,14 @@
       sphinxBuilders = "html man";
     };
 
+    collie =
+      if
+        inputs ? llm-agents && (inputs.llm-agents.packages.${final.stdenv.hostPlatform.system} ? collie)
+      then
+        inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.collie
+      else
+        final.callPackage ./by-name/collie/package.nix { };
+
     mermaid-cli =
       if inputs ? mermaid-rs-renderer then
         final.symlinkJoin {

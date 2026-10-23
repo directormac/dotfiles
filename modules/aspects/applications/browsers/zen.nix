@@ -107,8 +107,8 @@
                 key = toString i;
 
                 modifiers = {
-                  control = true;
                   alt = false;
+                  control = true;
                   shift = false;
                   meta = false;
                 };
@@ -119,8 +119,8 @@
                 key = toString i;
 
                 modifiers = {
-                  control = false;
                   alt = true;
+                  control = false;
                   shift = false;
                   meta = false;
                 };
@@ -132,8 +132,8 @@
                   key = "9";
 
                   modifiers = {
-                    control = false;
                     alt = true;
+                    control = false;
                     shift = false;
                     meta = false;
                   };
@@ -294,16 +294,16 @@
                   reference = "^https?://(?!(www|gemini)\\.)([a-zA-Z0-9_-]+\\.)+google\\.[a-z.]+";
                 };
 
-                "hacks-mozilla" = {
-                  matchType = "contains";
-                  openIn = spaces.read;
-                  reference = "hacks.mozilla.org";
-                };
-
                 "hacker-news" = {
                   matchType = "contains";
                   openIn = spaces.read;
                   reference = "news.ycombinator.com";
+                };
+
+                "hacks-mozilla" = {
+                  matchType = "contains";
+                  openIn = spaces.read;
+                  reference = "hacks.mozilla.org";
                 };
 
                 "hnrss" = {

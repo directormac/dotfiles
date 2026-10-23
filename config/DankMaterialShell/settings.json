@@ -22,9 +22,7 @@
       "id": "dock",
       "name": "Dock",
       "enabled": false,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "position": 1,
       "mode": "compact",
@@ -91,12 +89,7 @@
   ],
   "currentThemeCategory": "registry",
   "floatingWindowSyncGlobal": false,
-  "dmsWindowsFloatingSeeded": [
-    "hyprland",
-    "hyprland",
-    "niri",
-    "mango"
-  ],
+  "dmsWindowsFloatingSeeded": ["hyprland", "hyprland", "niri", "mango"],
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
@@ -355,9 +348,7 @@
       "name": "Main Bar",
       "enabled": true,
       "position": 0,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -499,9 +490,7 @@
       "name": "Dot",
       "enabled": false,
       "position": 0,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -628,27 +617,6 @@
   ],
   "desktopWidgetInstances": [
     {
-      "id": "dw_1788975751246_cdv9mbilh",
-      "widgetType": "pureLyrics",
-      "name": "Pure Lyrics",
-      "enabled": true,
-      "config": {
-        "displayPreferences": [
-          {
-            "name": "DP-3",
-            "model": "AORUS AD27QD"
-          }
-        ],
-        "fontSize": 45,
-        "borderOpacity": 0,
-        "showOnOverlay": false,
-        "musixmatchToken": "00000000000000000000000000000000000000000000000000000000",
-        "backgroundOpacity": 0,
-        "lineCount": "7",
-        "syncPositionAcrossScreens": true
-      }
-    },
-    {
       "id": "dw_1789003152114_9nb0kxtk7",
       "widgetType": "dankRssWidget",
       "name": "Dank RSS Widget",
@@ -747,21 +715,6 @@
         "maxItems": 50
       },
       "group": null
-    },
-    {
-      "id": "dw_1792691888457_nip0zttin",
-      "widgetType": "cavaVisualizer",
-      "name": "Cava Visualizer",
-      "enabled": true,
-      "config": {
-        "displayPreferences": [
-          {
-            "name": "DP-3",
-            "model": "AORUS AD27QD"
-          }
-        ],
-        "barCount": 73
-      }
     }
   ],
   "builtInPluginSettings": {
@@ -778,13 +731,7 @@
       "trigger": "qrg"
     }
   },
-  "clipboardVisibleEntryActions": [
-    "pin",
-    "edit",
-    "delete",
-    "copy",
-    "paste"
-  ],
+  "clipboardVisibleEntryActions": ["pin", "edit", "delete", "copy", "paste"],
   "launcherPluginVisibility": {
     "dms_settings_search": {
       "allowWithoutTrigger": true
@@ -802,7 +749,7 @@
     }
   },
   "notificationFocusedMonitor": true,
-  "desktopContextMenu": "off",
+  "desktopContextMenu": "on",
   "osdVolumeEnabled": false,
   "osdMediaVolumeEnabled": false,
   "displayProfileAutoSelect": false

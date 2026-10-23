@@ -23,6 +23,7 @@
               terminal-browser
               agent-browser
               skills
+              collie
               # opencodex
               # kimi-code
               # codex

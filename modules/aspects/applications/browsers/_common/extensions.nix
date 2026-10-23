@@ -1,18 +1,6 @@
 { pkgs }:
 let
   inherit (rycee-firefox-addons) buildFirefoxXpiAddon;
-  normalizeVimiumVal = v: if builtins.isList v then builtins.concatStringsSep "\n" v else v;
-  rycee-firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
-  # Helper to parse and normalize Vimium C JSON backup into storage.local schema
-  vimiumCRaw = builtins.fromJSON (builtins.readFile ./vimium-c.json);
-  vimiumCSettings = builtins.mapAttrs (_: normalizeVimiumVal) (
-    removeAttrs vimiumCRaw [
-      "name"
-      "@time"
-      "time"
-      "environment"
-    ]
-  );
   customAddons = {
     volume-control-boost-volume = buildFirefoxXpiAddon {
       addonId = "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}";
@@ -36,13 +24,24 @@ let
       };
     };
   };
+  normalizeVimiumVal = v: if builtins.isList v then builtins.concatStringsSep "\n" v else v;
+  rycee-firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
+  # Helper to parse and normalize Vimium C JSON backup into storage.local schema
+  vimiumCRaw = builtins.fromJSON (builtins.readFile ./vimium-c.json);
+  vimiumCSettings = builtins.mapAttrs (_: normalizeVimiumVal) (
+    removeAttrs vimiumCRaw [
+      "name"
+      "@time"
+      "time"
+      "environment"
+    ]
+  );
 
 in
 {
   inherit (rycee-firefox-addons) catppuccin-mocha-mauve;
   inherit rycee-firefox-addons;
   inherit vimiumCSettings;
-
   inherit customAddons;
 
   extensionButtons = {
@@ -76,53 +75,6 @@ in
   ]);
 
   settings = {
-    # Vimium C declarative configuration
-    "vimium-c@gdh1995.cn" = {
-      force = true;
-      settings = vimiumCSettings;
-    };
-
-    # Sidebery declarative configuration (Tree-style tabs, tabs at bottom, panel workspaces)
-    "{3c078156-979c-498b-8990-85f7987dd929}" = {
-      force = true;
-
-      settings = {
-        settings = {
-          # Tab Tree & Organization
-          tabsTree = true;
-          tabsTreeLimit = "none";
-          groupOnOpen = true;
-          tabsTreeBookmarks = true;
-
-          # New tabs arrangement (open at bottom/end)
-          newTabBarPosition = "after_tabs";
-          moveNewTab = "end";
-          moveNewTabParent = "last_child";
-          showNewTabBtns = true;
-
-          # Panel navigation (workspaces)
-          navBarLayout = "horizontal";
-          navBarInline = true;
-          hideEmptyPanels = false;
-          switchPanelAfterSwitchingTab = "always";
-          activateLastTabOnPanelSwitching = true;
-          selectActiveTabFirst = true;
-
-          # Theme & appearance
-          theme = "proton";
-          colorScheme = "ff";
-          fontSize = "s";
-          animations = true;
-          animationSpeed = "fast";
-
-          # Tab interactions
-          tabMiddleClick = "close";
-          tabMiddleClickCtrl = "discard";
-          tabMiddleClickShift = "duplicate";
-        };
-      };
-    };
-
     # Dark Reader declarative configuration
     "addon@darkreader.org" = {
       force = true;
@@ -135,6 +87,49 @@ in
         schemeVersion = 2;
         siteList = [ "github.com" ];
         syncSettings = false;
+      };
+    };
+
+    # Vimium C declarative configuration
+    "vimium-c@gdh1995.cn" = {
+      force = true;
+      settings = vimiumCSettings;
+    };
+
+    # Sidebery declarative configuration (Tree-style tabs, tabs at bottom, panel workspaces)
+    "{3c078156-979c-498b-8990-85f7987dd929}" = {
+      force = true;
+
+      settings = {
+        settings = {
+          activateLastTabOnPanelSwitching = true;
+          animationSpeed = "fast";
+          animations = true;
+          colorScheme = "ff";
+          fontSize = "s";
+          groupOnOpen = true;
+          hideEmptyPanels = false;
+          moveNewTab = "end";
+          moveNewTabParent = "last_child";
+          navBarInline = true;
+          # Panel navigation (workspaces)
+          navBarLayout = "horizontal";
+          # New tabs arrangement (open at bottom/end)
+          newTabBarPosition = "after_tabs";
+          selectActiveTabFirst = true;
+          showNewTabBtns = true;
+          switchPanelAfterSwitchingTab = "always";
+          # Tab interactions
+          tabMiddleClick = "close";
+          tabMiddleClickCtrl = "discard";
+          tabMiddleClickShift = "duplicate";
+          # Tab Tree & Organization
+          tabsTree = true;
+          tabsTreeBookmarks = true;
+          tabsTreeLimit = "none";
+          # Theme & appearance
+          theme = "proton";
+        };
       };
     };
 

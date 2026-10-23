@@ -79,10 +79,11 @@
 
           profiles.default = {
             inherit (common) search;
+
             settings = common.sessionSettings // {
-              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "sidebar.revamp" = false;
               "sidebar.verticalTabs" = false;
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
             };
 
             extensions = {

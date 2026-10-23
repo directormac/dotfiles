@@ -226,7 +226,7 @@
                   path = "recent:///";
                 }
                 {
-                  label = builtins.baseNameOf config.home.homeDirectory;
+                  label = baseNameOf config.home.homeDirectory;
                   path = config.home.homeDirectory;
                 }
               ]
@@ -264,7 +264,7 @@
               }
               ++ (lib.mapAttrsToList (_: path: {
                 inherit path;
-                label = builtins.baseNameOf path;
+                label = baseNameOf path;
               }) (userDirs.extraConfig or { }));
               userDirs = config.xdg.userDirs;
             in

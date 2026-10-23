@@ -41,6 +41,10 @@
       private_browsing = true;
     };
 
+    "vimium-c@gdh1995.cn" = {
+      private_browsing = true;
+    };
+
     "{3c078156-979c-498b-8990-85f7987dd929}" = {
       default_area = "navbar";
       private_browsing = true;
@@ -53,10 +57,6 @@
 
     "{57e8684d-5ae8-47d6-93c9-f870ef0e40a3}" = {
       default_area = "navbar";
-      private_browsing = true;
-    };
-
-    "vimium-c@gdh1995.cn" = {
       private_browsing = true;
     };
   };
@@ -85,13 +85,15 @@
 
   # Reference: https://mozilla.github.io/policy-templates/#preferences
   Preferences = {
-    "browser.tabs.warnOnClose" = {
-      Value = false;
-    };
     "browser.tabs.insertAfterCurrent" = {
       Value = false;
     };
+
     "browser.tabs.insertRelatedAfterCurrent" = {
+      Value = false;
+    };
+
+    "browser.tabs.warnOnClose" = {
       Value = false;
     };
   };
