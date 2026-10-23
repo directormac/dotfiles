@@ -19,6 +19,7 @@
         # gitignore
         ''
           result
+          result-man
           *.qcow2
           tmp
           .pi/goals

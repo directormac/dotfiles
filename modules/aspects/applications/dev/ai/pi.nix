@@ -39,7 +39,6 @@
         ++ (lib.attrValues (
           lib.filterAttrs (_: v: v != null) {
             inherit (llmPkgs)
-              omo-ai
               omp
               ;
           }
@@ -53,7 +52,6 @@
 
     persistHome.directories = [
       ".pi"
-      ".omo"
       ".omp"
       ".config/pi"
     ];

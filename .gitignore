@@ -2,6 +2,7 @@
 # Managed by `modules/flake-parts/files/gitignore.nix`.
 # Edit the source module and run `nix run .#write-files` to regenerate.
 result
+result-man
 *.qcow2
 tmp
 .pi/goals
