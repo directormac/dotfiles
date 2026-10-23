@@ -1,0 +1,10 @@
+# Default Local Kitty Session
+new_tab main
+layout splits
+cd ~
+launch zsh
+
+new_tab dotfiles
+layout splits
+cd ~/.dotfiles
+launch zsh

@@ -1,0 +1,12 @@
+# Dev Kitty Session
+new_tab code
+layout splits
+cd ~/dev
+launch zsh
+launch --location=hsplit zsh
+focus
+
+new_tab run
+layout splits
+cd ~/dev
+launch zsh
