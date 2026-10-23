@@ -12,15 +12,7 @@
         ...
       }:
       let
-        colliePkg =
-          if pkgs ? llm-agents && pkgs.llm-agents ? collie then
-            pkgs.llm-agents.collie
-          else if
-            inputs ? llm-agents && (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} ? collie)
-          then
-            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.collie
-          else
-            pkgs.collie or (pkgs.local.collie or null);
+        colliePkg = pkgs.collie;
         herdr-plugins-sync = pkgs.writeShellScriptBin "herdr-plugins-sync" ''
           set -euo pipefail
           echo "==> Syncing declarative Herdr plugins..."

@@ -4,13 +4,7 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    collie =
-      if
-        inputs ? llm-agents && (inputs.llm-agents.packages.${final.stdenv.hostPlatform.system} ? collie)
-      then
-        inputs.llm-agents.packages.${final.stdenv.hostPlatform.system}.collie
-      else
-        final.callPackage ./by-name/collie/package.nix { };
+    collie = final.callPackage ./by-name/collie/package.nix { };
 
     # khal in nixpkgs declares `sphinxBuilders = [ "html" "man" ];`.
     # In nixpkgs with structuredAttrs enabled, bash arrays in .attrs.sh

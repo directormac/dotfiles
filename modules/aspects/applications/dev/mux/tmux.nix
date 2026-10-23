@@ -36,15 +36,7 @@
     nixos =
       { pkgs, ... }:
       let
-        colliePkg =
-          if pkgs ? llm-agents && pkgs.llm-agents ? collie then
-            pkgs.llm-agents.collie
-          else if
-            inputs ? llm-agents && (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} ? collie)
-          then
-            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.collie
-          else
-            pkgs.collie or (pkgs.local.collie or null);
+        colliePkg = pkgs.collie;
       in
       {
         environment.systemPackages = [
@@ -237,8 +229,10 @@
 
     persistHome.directories = [
       ".config/collie"
+      ".config/herdr/plugins/config/herdr.collie-tmux"
       ".local/share/tmux"
       ".local/state/collie"
+      ".local/state/collie-tmux"
       ".local/state/tmux"
     ];
   };
