@@ -52,7 +52,6 @@
           alias sandbox="nix run .#vm-sandbox"
           alias vm-sandbox="nix run .#vm-sandbox"
           alias vm="nix run .#vm"
-          alias vm-nixos="nix run .#vm-nixos"
           alias vm-super="nix run .#vm-super"
         '';
 
@@ -234,11 +233,6 @@
           vm = {
             description = "Run default VM";
             exec = "nix run .#vm \"$@\"";
-          };
-
-          vm-nixos = {
-            description = "Run nixos host in a QEMU VM";
-            exec = "nix run .#vm-nixos \"$@\"";
           };
 
           vm-sandbox = {

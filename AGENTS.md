@@ -29,8 +29,8 @@ modules/
 │   └── virtualization/      # Containers & VMs (libvirt, podman, waydroid, vm-variant, looking-glass, windows-vm)
 ├── classes/                 # Custom Den class routes (devenv, files, formatter/treefmt, nix-unit `tests`)
 ├── core/                    # Framework wiring (dotfiles, impermanence, capabilities, policies, quirks, settings, _settings-type)
-├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap,migration,envrc,gitignore}.nix)
-├── hosts/                   # Host declarations (nixos.nix + nixos/hardware.nix = legacy SATA install; super.nix = NVMe target with disk.btrfs; sandbox.nix = VM testbed)
+├── flake-parts/             # Flake-level plumbing and generated file definitions (files/{readme,agents,bootstrap,envrc,gitignore}.nix)
+├── hosts/                   # Host declarations (super.nix = NVMe target with disk.btrfs; sandbox.nix = VM testbed)
 └── users/                   # User declarations (artifex.nix)
 pkgs/
 ├── overlays.nix             # Auto-discovers pkgs/by-name/* into `pkgs.local.<name>` and top-level `pkgs.<name>`
@@ -67,7 +67,6 @@ Several root files are generated declaratively. **NEVER** edit generated target 
 | `README.md` | `modules/flake-parts/files/readme.nix` (`flake.readme.*` DAG) | `nix run .#write-files` |
 | `AGENTS.md` | `modules/flake-parts/files/agents.nix` (`flake.agents.*` DAG) | `nix run .#write-files` |
 | `BOOTSTRAP.md` | `modules/flake-parts/files/bootstrap.nix` (`flake.bootstrap.*` DAG) | `nix run .#write-files` |
-| `MIGRATION.md` | `modules/flake-parts/files/migration.nix` (`flake.migration.*` DAG) | `nix run .#write-files` |
 | `.envrc` | `modules/flake-parts/files/envrc.nix` (`flake.dot-envrc.*` DAG) | `nix run .#write-files` |
 | `.gitignore` | `modules/flake-parts/files/gitignore.nix` (`flake.dot-gitignore.*` DAG) | `nix run .#write-files` |
 | `.workmux.yaml` | `modules/aspects/applications/dev/mux/workmux.nix` | `nix run .#write-files` |
@@ -88,7 +87,7 @@ Follow the pattern in `modules/flake-parts/files/readme.nix`:
 
 Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapshot (`root-blank`) on every boot via the initrd service `rollback-root` (`modules/core/impermanence.nix`). State must be explicitly routed through the four persistence quirks.
 
-> **Host reality check:** the rollback looks up `/dev/disk/by-label/nixos` and **silently exits 0 if it is missing**. The legacy `nixos` host (`modules/hosts/nixos/hardware.nix`) runs on a plain btrfs top-level (`subvol=/`, label `root`) where `/persist` and `/cache` are ordinary directories, so root is **never wiped there**. Missing `persist*` entries are therefore invisible on `nixos` and only break on a `disk.btrfs` host. When reviewing persistence changes, reason against the `super` layout, not the behavior of the running machine. Moving between the two is documented in `MIGRATION.md`.
+> **Host reality check:** the rollback looks up `/dev/disk/by-label/nixos` and **silently exits 0 if it is missing**. On a host with `disk.btrfs`, root is wiped on every boot; missing `persist*` entries will break persistence across reboots. When reviewing persistence changes, reason against the `super` layout.
 
 ### Choosing Between `persist` / `persistHome` and `cache` / `cacheHome`
 - **`persist` (`/persist`) & `persistHome` (`/persist/home/<user>`)**:
@@ -129,8 +128,8 @@ Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapsh
 7. **Disk Safety (`modules/aspects/disk/btrfs.nix`)**:
    - `settings.disk.btrfs.device` intentionally has **no default**; set it per host on `den.hosts.<system>.<host>.settings.disk.btrfs.device` as a `/dev/disk/by-id/...` path. A default pointing at a disk in use makes `disko` wipe it.
    - **NEVER** run `disko`, `mkfs`, `wipefs`, `sgdisk`, `rsync --delete` into `/persist`, or any other destructive disk command unless the user explicitly asks. Verify with `nix build .#nixosConfigurations.<host>.config.system.build.diskoScript` and `grep -o '/dev/disk/by-id/[^ ;")]*' result | sort -u` instead.
-8. **Host Hardware Parity**:
-   - `hardware.nixos` (legacy host) imports `not-detected.nix`, which enables `hardware.enableRedistributableFirmware` and Intel microcode. A host built from `disk.btrfs` gets filesystems from Disko but **no firmware**; set `hardware.enableRedistributableFirmware` and `hardware.cpu.<vendor>.updateMicrocode` in the host module (as `modules/hosts/super.nix` does) or Wi-Fi/Bluetooth firmware and microcode silently disappear.
+8. **Host Firmware & Microcode**:
+   - A host built from `disk.btrfs` gets filesystems from Disko but **no firmware**; set `hardware.enableRedistributableFirmware` and `hardware.cpu.<vendor>.updateMicrocode` in the host module (as `modules/hosts/super.nix` does) or Wi-Fi/Bluetooth firmware and microcode silently disappear.
 9. **Agenix Host Key, Passwords & Hostname Fallback (`modules/aspects/secrets/agenix.nix`, `modules/users/artifex.nix`)**:
    - Secrets decrypt with `/persist/etc/ssh/ssh_host_ed25519_key`. A host without `.secrets/hosts/<host>.pub` falls back to `.secrets/hosts/super.pub` and `.secrets/rekeyed/super/`.
    - Because `/` (including `/etc/shadow`) is wiped on every boot by `impermanence.rollback-btrfs`, passwords set with `passwd` do not survive reboots. Run `nix run .#set-password` (or `set-password` in the devshell) to create `.secrets/users/artifex/password.age` (`hashedPasswordFile` for both `artifex` and `root`, or `set-password root` for a separate `root-password.age`), rekey it for all hosts, and synchronize `~/.local/share/keyrings/login.keyring` in place.
@@ -152,7 +151,6 @@ Hosts that include `disk.btrfs` (`super`) roll `/` back to an empty Btrfs snapsh
 Before running full builds or `nix flake check`, verify host evaluations quickly:
 ```bash
 # Evaluate host toplevel derivations (fast, catches syntax/type/option errors)
-nix eval .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath
 nix eval .#nixosConfigurations.super.config.system.build.toplevel.drvPath
 nix eval .#nixosConfigurations.sandbox.config.system.build.toplevel.drvPath
 # Evaluate the Disko script for hosts that include disk.btrfs (does not touch any disk)
@@ -164,7 +162,7 @@ nix build --no-link .#nixosConfigurations.super.config.system.build.diskoScript
 # 1. Regenerate flake.nix if flake-file.inputs changed
 nix run .#write-flake
 
-# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, MIGRATION.md, .envrc, .gitignore, .workmux.yaml, .treefmt.toml
+# 2. Regenerate README.md, AGENTS.md, BOOTSTRAP.md, .envrc, .gitignore, .workmux.yaml, .treefmt.toml
 nix run .#write-files
 
 # 3. Regenerate TOPOLOGY.md if hosts, aspects, or quirks changed
@@ -198,4 +196,4 @@ nix flake check --no-build
 - Interactive: `nix repl` then `:lf .` and inspect `nixosConfigurations.<host>.config...`.
 - Print or break at an include: `({ host, ... }@ctx: builtins.trace ctx { nixos = { }; })` or `builtins.break ctx`; remove before committing.
 - Policy routing: `den.lib.policyInspect.inspect { kind = "host"; context = { host = den.hosts.x86_64-linux.super; }; }` shows which policies apply and where they route. Exposing `flake.den = den;` temporarily makes `den` visible in the REPL; never commit it.
-- Compare hosts before trusting a refactor: evaluate the same option on `nixos`, `super`, and `sandbox` (for example `fileSystems`, `hardware.enableRedistributableFirmware`, `boot.initrd.systemd.enable`). Differences are expected only where the host includes different aspects.
+- Compare hosts before trusting a refactor: evaluate the same option on `super` and `sandbox` (for example `fileSystems`, `hardware.enableRedistributableFirmware`, `boot.initrd.systemd.enable`). Differences are expected only where the host includes different aspects.

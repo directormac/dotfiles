@@ -56,7 +56,7 @@ den.hosts.x86_64-linux.<new-machine>.settings.disk.btrfs.device = "/dev/disk/by-
 ```
 
 ### Step 3.3: Option B — Custom or Multi-Disk Hardware Layout
-If your machine has a custom partition layout or existing filesystems (like `modules/hosts/nixos/hardware.nix`), generate a hardware scan and place the hardware configuration under `modules/hosts/<new-machine>/hardware.nix`:
+If your machine has a custom partition layout or existing filesystems without Disko, generate a hardware scan and place the hardware configuration under `modules/hosts/<new-machine>/hardware.nix`:
 ```bash
 nixos-generate-config --root /mnt --show-hardware-config
 ```

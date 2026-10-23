@@ -13,23 +13,17 @@ aspect-resolution pipeline, scope tree, and data flow.
 
 ```mermaid
 graph TD
-  host_nixos_system_x86_64_linux["host: nixos"]
-  host_nixos_system_x86_64_linux_user_artifex(["user: artifex"])
   host_sandbox_system_x86_64_linux["host: sandbox"]
   host_sandbox_system_x86_64_linux_user_artifex(["user: artifex"])
   host_super_system_x86_64_linux["host: super"]
   host_super_system_x86_64_linux_user_artifex(["user: artifex"])
   system_x86_64_linux["flake-system: system=x86_64-linux"]
 
-  system_x86_64_linux --> host_nixos_system_x86_64_linux
-  host_nixos_system_x86_64_linux --> host_nixos_system_x86_64_linux_user_artifex
   system_x86_64_linux --> host_sandbox_system_x86_64_linux
   host_sandbox_system_x86_64_linux --> host_sandbox_system_x86_64_linux_user_artifex
   system_x86_64_linux --> host_super_system_x86_64_linux
   host_super_system_x86_64_linux --> host_super_system_x86_64_linux_user_artifex
 
-  style host_nixos_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
-  style host_nixos_system_x86_64_linux_user_artifex fill:#fab387,stroke:#fab387,color:#1e1e2e
   style host_sandbox_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
   style host_sandbox_system_x86_64_linux_user_artifex fill:#fab387,stroke:#fab387,color:#1e1e2e
   style host_super_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
@@ -42,16 +36,12 @@ graph TD
 ```mermaid
 graph TD
   flake(["flake"])
-  host_nixos_system_x86_64_linux["host: nixos"]
-  host_nixos_system_x86_64_linux_user_artifex(["user: artifex"])
   host_sandbox_system_x86_64_linux["host: sandbox"]
   host_sandbox_system_x86_64_linux_user_artifex(["user: artifex"])
   host_super_system_x86_64_linux["host: super"]
   host_super_system_x86_64_linux_user_artifex(["user: artifex"])
   system_x86_64_linux["flake-system: system=x86_64-linux"]
 
-  system_x86_64_linux -->|system-to-os-outputs| host_nixos_system_x86_64_linux
-  host_nixos_system_x86_64_linux -->|host-to-hm-users| host_nixos_system_x86_64_linux_user_artifex
   system_x86_64_linux -->|system-to-os-outputs| host_sandbox_system_x86_64_linux
   host_sandbox_system_x86_64_linux -->|host-to-hm-users| host_sandbox_system_x86_64_linux_user_artifex
   system_x86_64_linux -->|system-to-os-outputs| host_super_system_x86_64_linux
@@ -59,8 +49,6 @@ graph TD
   flake -->|flake-to-systems| system_x86_64_linux
 
   style flake fill:#89b4fa,stroke:#89b4fa,color:#1e1e2e
-  style host_nixos_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
-  style host_nixos_system_x86_64_linux_user_artifex fill:#fab387,stroke:#fab387,color:#1e1e2e
   style host_sandbox_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
   style host_sandbox_system_x86_64_linux_user_artifex fill:#fab387,stroke:#fab387,color:#1e1e2e
   style host_super_system_x86_64_linux fill:#a6e3a1,stroke:#a6e3a1,color:#1e1e2e
@@ -88,9 +76,9 @@ sequenceDiagram
 
 ## Topology
 
-- **0** environments, **3** hosts, **1** users
+- **0** environments, **2** hosts, **1** users
 - Scope chain: flake → flake-system → host → user
-- Trace entries: 548
+- Trace entries: 328
 
 ## Environments
 
@@ -101,7 +89,6 @@ sequenceDiagram
 
 | Host | Aspect Count | Aspects |
 | ------ | -------------- | --------- |
-| nixos | 7 | define-user/artifex@nixos, host/resolve(dev), hostname/os, impermanence, inputs'/os, nixos, self'/os |
 | sandbox | 5 | define-user/artifex@sandbox, hostname/os, inputs'/os, sandbox, self'/os |
 | super | 7 | define-user/artifex@super, host/resolve(dev), hostname/os, impermanence, inputs'/os, self'/os, super |
 
@@ -109,16 +96,17 @@ sequenceDiagram
 
 | Pipe | Scope Boundary | Producers | Collectors |
 | ------ | ---------------- | ----------- | ------------ |
-| cache | flake-system: system=x86_64-linux | nixos, super | |
-| cacheHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| codium-extensions | flake-system: system=x86_64-linux | nixos, super | |
-| codium-settings | flake-system: system=x86_64-linux | nixos, super | |
-| devenv | flake-system: system=x86_64-linux | nixos, super | |
-| homeManagerModules | flake-system: system=x86_64-linux | nixos, super | |
-| nixpkgs-overlays | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| persist | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| persistHome | flake-system: system=x86_64-linux | nixos, sandbox, super | |
-| tests | flake-system: system=x86_64-linux | nixos, super | |
+| cacheHome | flake-system: system=x86_64-linux | sandbox, super |  |
+| nixpkgs-overlays | flake-system: system=x86_64-linux | sandbox, super |  |
+| persist | flake-system: system=x86_64-linux | sandbox, super |  |
+| persistHome | flake-system: system=x86_64-linux | sandbox, super |  |
+| secrets | flake-system: system=x86_64-linux | sandbox, super |  |
+| cache | flake-system: system=x86_64-linux | super |  |
+| codium-extensions | flake-system: system=x86_64-linux | super |  |
+| codium-settings | flake-system: system=x86_64-linux | super |  |
+| devenv | flake-system: system=x86_64-linux | super |  |
+| homeManagerModules | flake-system: system=x86_64-linux | super |  |
+| tests | flake-system: system=x86_64-linux | super |  |
 
 ## Policies
 
@@ -134,6 +122,7 @@ sequenceDiagram
 | host-to-hm-users | host |
 | host-to-users | host |
 | os-to-host | host |
+| artifex/to-hosts | user |
 | hm-user-detect | user |
 | host-aspects-project | user |
 | project-user-quirks | user |
