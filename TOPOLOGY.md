@@ -96,17 +96,17 @@ sequenceDiagram
 
 | Pipe | Scope Boundary | Producers | Collectors |
 | ------ | ---------------- | ----------- | ------------ |
-| cacheHome | flake-system: system=x86_64-linux | sandbox, super |  |
-| nixpkgs-overlays | flake-system: system=x86_64-linux | sandbox, super |  |
-| persist | flake-system: system=x86_64-linux | sandbox, super |  |
-| persistHome | flake-system: system=x86_64-linux | sandbox, super |  |
-| secrets | flake-system: system=x86_64-linux | sandbox, super |  |
-| cache | flake-system: system=x86_64-linux | super |  |
-| codium-extensions | flake-system: system=x86_64-linux | super |  |
-| codium-settings | flake-system: system=x86_64-linux | super |  |
-| devenv | flake-system: system=x86_64-linux | super |  |
-| homeManagerModules | flake-system: system=x86_64-linux | super |  |
-| tests | flake-system: system=x86_64-linux | super |  |
+| cacheHome | flake-system: system=x86_64-linux | sandbox, super | |
+| nixpkgs-overlays | flake-system: system=x86_64-linux | sandbox, super | |
+| persist | flake-system: system=x86_64-linux | sandbox, super | |
+| persistHome | flake-system: system=x86_64-linux | sandbox, super | |
+| secrets | flake-system: system=x86_64-linux | sandbox, super | |
+| cache | flake-system: system=x86_64-linux | super | |
+| codium-extensions | flake-system: system=x86_64-linux | super | |
+| codium-settings | flake-system: system=x86_64-linux | super | |
+| devenv | flake-system: system=x86_64-linux | super | |
+| homeManagerModules | flake-system: system=x86_64-linux | super | |
+| tests | flake-system: system=x86_64-linux | super | |
 
 ## Policies
 

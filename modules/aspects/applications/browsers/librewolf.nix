@@ -15,12 +15,25 @@
       };
 
     homeManager =
-      { pkgs, ... }:
+      {
+        lib,
+        pkgs,
+        ...
+      }:
       let
         common = import ./_common { inherit pkgs; };
         customAddons = common.extensions.customAddons;
       in
       {
+        home.activation.librewolfExtensionShortcuts = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          common.configureExtensionCommands {
+            profileDirs = [
+              ".librewolf/default"
+              ".config/librewolf/default"
+            ];
+          }
+        );
+
         programs.librewolf = {
           inherit (common) nativeMessagingHosts;
           inherit (common) policies;

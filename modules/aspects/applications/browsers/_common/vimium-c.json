@@ -40,7 +40,8 @@
     "map <c-d> scrollPageDown",
     "map <c-u> scrollPageUp",
     "map d scrollPageDown",
-    "map u scrollPageUp"
+    "map u scrollPageUp",
+    "unmap <c-e>"
   ],
   "searchEngines": [
     "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia",

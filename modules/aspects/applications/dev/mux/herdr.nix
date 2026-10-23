@@ -91,6 +91,22 @@
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
+        herdrProjectsPkg = pkgs.writeShellScriptBin "herdr-projects" ''
+          if [ -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
+            exec "$HOME/.herdr-projects/data/bin/herdr-projects" "$@"
+          elif [ -x "$HOME/.local/bin/herdr-projects" ]; then
+            exec "$HOME/.local/bin/herdr-projects" "$@"
+          else
+            HP_DIR=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 3 -type d -name "checkout" 2>/dev/null | grep "herdr-projects" | head -n 1 || true)
+            if [ -n "$HP_DIR" ] && [ -x "$HP_DIR/bin/herdr-projects-linux-x86_64" ]; then
+              export HERDR_PROJECTS_DATA_DIR="$HOME/.herdr-projects/data"
+              export HERDR_PROJECTS_CONFIG_DIR="$HOME/.herdr-projects/settings"
+              exec "$HP_DIR/bin/herdr-projects-linux-x86_64" "$@"
+            fi
+            echo "herdr-projects: launcher not found. Run 'herdr-plugins-sync' to initialize it." >&2
+            exit 1
+          fi
+        '';
         tv-herdr-agent-preview = pkgs.writeShellScript "tv-herdr-agent-preview" ''
           agent="$1"
           status="$2"
@@ -199,6 +215,7 @@
 
         home.packages = [
           herdrPkg
+          herdrProjectsPkg
           herdr-plugins-sync
           pkgs.dtach
           colliePkg
@@ -206,11 +223,15 @@
 
         home.sessionPath = [
           "$HOME/.herdr-projects/data/bin"
+          "$HOME/.local/bin"
         ];
 
         programs.zsh.initContent = ''
-          if [ "''${HERDR_ENV:-0}" = "1" ] && [ -d "$HOME/.herdr-projects/data/bin" ]; then
+          if [ -d "$HOME/.herdr-projects/data/bin" ]; then
             path=("$HOME/.herdr-projects/data/bin" $path)
+          fi
+          if [ -d "$HOME/.local/bin" ]; then
+            path=("$HOME/.local/bin" $path)
           fi
         '';
 

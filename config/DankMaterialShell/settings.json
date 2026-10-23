@@ -22,9 +22,7 @@
       "id": "dock",
       "name": "Dock",
       "enabled": false,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "position": 1,
       "mode": "compact",
@@ -91,12 +89,7 @@
   ],
   "currentThemeCategory": "registry",
   "floatingWindowSyncGlobal": false,
-  "dmsWindowsFloatingSeeded": [
-    "hyprland",
-    "hyprland",
-    "niri",
-    "mango"
-  ],
+  "dmsWindowsFloatingSeeded": ["hyprland", "hyprland", "niri", "mango"],
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
@@ -355,9 +348,7 @@
       "name": "Main Bar",
       "enabled": true,
       "position": 0,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -508,9 +499,7 @@
       "name": "Dot",
       "enabled": false,
       "position": 0,
-      "screenPreferences": [
-        "all"
-      ],
+      "screenPreferences": ["all"],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -821,13 +810,7 @@
       "trigger": "qrg"
     }
   },
-  "clipboardVisibleEntryActions": [
-    "pin",
-    "edit",
-    "delete",
-    "copy",
-    "paste"
-  ],
+  "clipboardVisibleEntryActions": ["pin", "edit", "delete", "copy", "paste"],
   "launcherPluginVisibility": {
     "dms_settings_search": {
       "allowWithoutTrigger": true
