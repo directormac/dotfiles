@@ -34,6 +34,7 @@
       dev.mux.sesh
       dev.mux.workmux
       dev.mux.herdr
+      dev.mux.tuios
 
       # Language Toolchains & Runtimes
       dev.lang.go

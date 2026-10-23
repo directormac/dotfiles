@@ -215,6 +215,7 @@
 
     torlink.url = "github:WarlaxZ/torlink";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    tuios.url = "github:Gaurav-Gosain/tuios";
 
     vim-plugins-kitehost-nvim = {
       flake = false;
