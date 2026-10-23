@@ -1,0 +1,44 @@
+[metadata]
+name = "update-pkgs"
+description = "Interactively select, preview, build, and update custom packages (pkgs/by-name)"
+requirements = ["git"]
+
+[source]
+command = "tv-pkgs-source"
+display = "{split:\t:0}  │  v{split:\t:1}"
+output = "{split:\t:0}"
+
+[preview]
+command = "tv-pkgs-preview '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:update"
+ctrl-u = "actions:update-nobuild"
+ctrl-b = "actions:build"
+ctrl-e = "actions:edit"
+ctrl-y = "actions:copy"
+
+[actions.update]
+description = "Update package and verify build (update-pkgs)"
+command = "update-pkgs '{split:\t:0}'"
+mode = "execute"
+
+[actions.update-nobuild]
+description = "Update package source/hash without post-update build"
+command = "update-pkgs --no-build '{split:\t:0}'"
+mode = "execute"
+
+[actions.build]
+description = "Build package derivation (nix build .#<pkg>)"
+command = "nix build \".#{split:\t:0}\""
+mode = "execute"
+
+[actions.edit]
+description = "Open package.nix in editor"
+command = "bash -c 'repo=$(git rev-parse --show-toplevel 2>/dev/null || echo \"$HOME/.dotfiles\"); \"${EDITOR:-nvim}\" \"$repo/pkgs/by-name/{split:\t:0}/package.nix\"'"
+mode = "execute"
+
+[actions.copy]
+description = "Copy package name to clipboard"
+command = "echo -n '{split:\t:0}' | wl-copy"
+mode = "execute"

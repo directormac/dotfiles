@@ -200,6 +200,16 @@
             exec = "nix run .#os -- test \"$@\"";
           };
 
+          rebuild = {
+            description = "Build and activate NixOS with lazygit-style commit label and rollback protection";
+            exec = "nix run .#rebuild-switch -- \"$@\"";
+          };
+
+          rebuild-switch = {
+            description = "Build and activate NixOS with lazygit-style commit label and rollback protection";
+            exec = "nix run .#rebuild-switch -- \"$@\"";
+          };
+
           rekey = {
             description = "Rekey all secrets with agenix-rekey";
             exec = "agenix rekey -a \"$@\"";
@@ -228,6 +238,16 @@
           treefmt = {
             description = "Format all files";
             exec = "${config.treefmt.build.wrapper}/bin/treefmt \"$@\"";
+          };
+
+          update-flake = {
+            description = "Update flake inputs authenticated via GitHub token (nix-flake-update)";
+            exec = "nix run .#nix-flake-update -- \"$@\"";
+          };
+
+          update-pkgs = {
+            description = "Update custom package versions and hashes in pkgs/by-name via nix-update";
+            exec = "nix run .#update-pkgs -- \"$@\"";
           };
 
           vm = {

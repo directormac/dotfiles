@@ -18,6 +18,8 @@
             [
               rebuild-switch
               nix-generations
+              update-pkgs
+              nix-flake-update
             ]
           ));
       };
@@ -186,6 +188,33 @@
           pos=$(${pkgs.playerctl}/bin/playerctl -p "$p" position 2>/dev/null)
           [ -n "$pos" ] && echo "position: ''${pos}s"
         '';
+        tv-pkgs-preview = pkgs.writeShellScriptBin "tv-pkgs-preview" ''
+          pkg="$1"
+          repo="$(git rev-parse --show-toplevel 2>/dev/null || echo "$HOME/.dotfiles")"
+          file="$repo/pkgs/by-name/$pkg/package.nix"
+          echo -e "\033[1;34m==>\033[0m \033[1mPackage:\033[0m $pkg"
+          echo -e "\033[1;34m==>\033[0m \033[1mPath:\033[0m pkgs/by-name/$pkg/package.nix"
+          echo ""
+          echo -e "\033[1;32mRecent Git Commits:\033[0m"
+          git -C "$repo" log -n 3 --oneline -- "pkgs/by-name/$pkg" 2>/dev/null || echo "  (no commits)"
+          echo ""
+          echo -e "\033[1;33mDefinition Preview:\033[0m"
+          if command -v bat >/dev/null 2>&1; then
+            bat -pn --color=always -r :40 "$file" 2>/dev/null || head -n 40 "$file"
+          else
+            head -n 40 "$file"
+          fi
+        '';
+        tv-pkgs-source = pkgs.writeShellScriptBin "tv-pkgs-source" ''
+          repo="$(git rev-parse --show-toplevel 2>/dev/null || echo "$HOME/.dotfiles")"
+          for d in "$repo"/pkgs/by-name/*; do
+            [ -d "$d" ] || continue
+            pkg="$(basename "$d")"
+            ver="$(grep -m1 'version = ' "$d/package.nix" 2>/dev/null | sed -E 's/.*version = "([^"]+)".*/\1/' || true)"
+            [ -z "$ver" ] && ver="local"
+            printf "%s\t%s\n" "$pkg" "$ver"
+          done
+        '';
       in
       {
         home.packages =
@@ -199,12 +228,16 @@
             tv-hypr-client-preview
             tv-hypr-workspace-preview
             tv-media-player-preview
+            tv-pkgs-source
+            tv-pkgs-preview
           ]
           ++ (lib.optionals (pkgs ? local) (
             with pkgs.local;
             [
               rebuild-switch
               nix-generations
+              update-pkgs
+              nix-flake-update
             ]
           ));
 
@@ -264,6 +297,7 @@
                 "nix-pkgs.toml"
                 "nix.toml"
                 "zsh-history.toml"
+                "update-pkgs.toml"
               ]
           )
           // {

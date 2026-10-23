@@ -39,6 +39,7 @@
   "ocx" = "opencode --auto";
   "pingcf" = "ping 1.1.1.1";
   "pinggg" = "ping google.com";
+  "rebuild" = "rebuild-switch";
   "rmr" = "rm -r";
 
   "t" =
@@ -49,6 +50,8 @@
   "todo" = "tuxedo";
   "top" = "btop";
   "ts" = "sesh last";
+  "tv-inputs" = "tv flake-inputs";
+  "tv-pkgs" = "tv update-pkgs";
   "tvk" = "tv zsh-keys";
   "v" = "nvim";
   "vi" = "vim";
