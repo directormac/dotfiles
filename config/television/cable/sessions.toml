@@ -1,0 +1,32 @@
+[metadata]
+name = "sessions"
+description = "Attach to any tmux, zellij, herdr, or tuios session"
+requirements = [
+  "mux-session-attach",
+  "mux-session-preview",
+  "tv-sessions-source",
+]
+
+[source]
+command = "tv-sessions-source"
+display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}  │  {split:\t:3}"
+output = "{split:\t:1}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "mux-session-preview '{split:\t:0}' '{split:\t:1}'"
+
+[keybindings]
+enter = "actions:attach"
+ctrl-y = "actions:copy_name"
+
+[actions.attach]
+description = "Attach to the selected session"
+command = "mux-session-attach '{split:\t:0}' '{split:\t:1}'"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy the session name to clipboard"
+command = "printf '%s' '{split:\t:1}' | wl-copy"
+mode = "execute"

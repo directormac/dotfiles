@@ -296,6 +296,10 @@
                 "nix-options.toml"
                 "nix-pkgs.toml"
                 "nix.toml"
+                "sessions.toml"
+                "tmux-sessions.toml"
+                "tuios-sessions.toml"
+                "zellij-sessions.toml"
                 "zsh-history.toml"
                 "update-pkgs.toml"
               ]

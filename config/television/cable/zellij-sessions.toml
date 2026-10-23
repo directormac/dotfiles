@@ -1,0 +1,34 @@
+[metadata]
+name = "zellij-sessions"
+description = "Attach to, preview, and delete zellij sessions"
+requirements = ["zellij", "mux-session-attach", "mux-session-preview"]
+
+[source]
+command = "tv-zellij-sessions-source"
+display = "{split:\t:0}  │  {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "mux-session-preview zellij '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:attach"
+ctrl-d = "actions:delete_session"
+ctrl-y = "actions:copy_name"
+
+[actions.attach]
+description = "Attach to this zellij session"
+command = "mux-session-attach zellij '{split:\t:0}'"
+mode = "execute"
+
+[actions.delete_session]
+description = "Delete this zellij session (kills it if running)"
+command = "zellij delete-session --force '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy session name to clipboard"
+command = "printf '%s' '{split:\t:0}' | wl-copy"
+mode = "execute"

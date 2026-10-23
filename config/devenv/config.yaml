@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://devenv.sh/devenv.user.schema.json
 version: 1
 tui:
-  emoji: true
   viewport: inline
   theme:
     preset: devenv
@@ -15,6 +14,7 @@ tui:
         foreground: profile
         modifiers: [bold]
   statusline:
+    enabled: false
     position: inline
     layouts:
       main:

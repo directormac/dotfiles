@@ -263,6 +263,12 @@ end)
 -- Essential application bindings.
 hl.bind(modkey .. ' + RETURN', hl.dsp.exec_cmd('ghostty +new-window'))
 hl.bind(modkey .. ' + SHIFT + RETURN', hl.dsp.exec_cmd('ghostty --class=com.ghostty.float', cfg.floating_centered_wr))
+
+-- Quake-style kitty quick access terminal (see ~/.config/kitty/quick-access-terminal.conf)
+-- hl.bind(modkey .. ' + grave', hl.dsp.exec_cmd('kitty +kitten quick-access-terminal'), {
+--   desc = 'Toggle kitty quick access terminal',
+-- })
+
 hl.bind(modkey .. ' + E', hl.dsp.exec_cmd(fileManager))
 hl.bind(modkey .. ' + O', hl.dsp.exec_cmd(browser))
 hl.bind('CTRL + ALT + comma', hl.dsp.exec_cmd('pavucontrol'))

@@ -1,0 +1,34 @@
+[metadata]
+name = "tuios-sessions"
+description = "Attach to, preview, and kill TUIOS sessions"
+requirements = ["tuios", "mux-session-attach", "mux-session-preview"]
+
+[source]
+command = "tv-tuios-sessions-source"
+display = "{split:\t:0}  │  {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "mux-session-preview tuios '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:attach"
+ctrl-d = "actions:kill_session"
+ctrl-y = "actions:copy_name"
+
+[actions.attach]
+description = "Attach to this TUIOS session"
+command = "mux-session-attach tuios '{split:\t:0}'"
+mode = "execute"
+
+[actions.kill_session]
+description = "Kill this TUIOS session"
+command = "tuios kill-session '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy session name to clipboard"
+command = "printf '%s' '{split:\t:0}' | wl-copy"
+mode = "execute"

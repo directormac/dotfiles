@@ -70,6 +70,9 @@ hl.on('hyprland.start', function()
     float = false,
     tile = true,
   })
+  -- Pre-start the kitty quick access terminal hidden so the first SUPER+grave
+  -- is instant (config: ~/.config/kitty/quick-access-terminal.conf).
+  -- hl.exec_cmd('kitty +kitten quick-access-terminal --detach -o start_as_hidden=yes')
 end)
 
 -------------------------------

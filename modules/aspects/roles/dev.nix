@@ -32,6 +32,7 @@
       dev.mux.tmux
       dev.mux.zellij
       dev.mux.sesh
+      dev.mux.sessions
       dev.mux.workmux
       dev.mux.herdr
       dev.mux.tuios

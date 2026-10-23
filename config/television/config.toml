@@ -159,6 +159,10 @@ fallback_channel = "files"
   "herdr session attach",
   "h session",
 ]
+"sessions" = ["mux-session-attach", "tv sessions"]
+"tmux-sessions" = ["tmux", "tmux ls", "tmux attach", "tls"]
+"zellij-sessions" = ["zellij", "zellij ls", "zellij attach"]
+"tuios-sessions" = ["tuios", "tuios ls", "tuios attach"]
 "herdr-worktrees" = ["herdr worktree", "h worktree"]
 "herdr-workspaces" = ["herdr workspace", "h workspace"]
 "herdr-agents" = ["herdr agent", "h agent"]

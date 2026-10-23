@@ -1,0 +1,34 @@
+[metadata]
+name = "tmux-sessions"
+description = "Attach to, preview, and kill tmux sessions"
+requirements = ["tmux", "mux-session-attach", "mux-session-preview"]
+
+[source]
+command = "tv-tmux-sessions-source"
+display = "{split:\t:0}  │  {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "mux-session-preview tmux '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:attach"
+ctrl-d = "actions:kill_session"
+ctrl-y = "actions:copy_name"
+
+[actions.attach]
+description = "Attach to this tmux session"
+command = "mux-session-attach tmux '{split:\t:0}'"
+mode = "execute"
+
+[actions.kill_session]
+description = "Kill this tmux session"
+command = "tmux kill-session -t '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy session name to clipboard"
+command = "printf '%s' '{split:\t:0}' | wl-copy"
+mode = "execute"

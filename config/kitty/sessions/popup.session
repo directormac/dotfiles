@@ -1,5 +1,0 @@
-# Quick Popup Terminal Session
-new_tab popup
-layout stack
-cd ~
-launch zsh
