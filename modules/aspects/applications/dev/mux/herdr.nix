@@ -51,6 +51,32 @@
               ${pkgs.git}/bin/git -C "$NFTN_DIR" apply "$HOME/.dotfiles/config/herdr/patches/herdr-nerd-font-tab-name-numerals.patch" 2>/dev/null || true
             fi
           fi
+
+          # Ensure herdr-projects launcher and binary are ready
+          HP_DIR=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 3 -type d -name "checkout" 2>/dev/null | grep "herdr-projects" | head -n 1 || true)
+          if [ -n "$HP_DIR" ] && [ -d "$HP_DIR" ]; then
+            if [ ! -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
+              echo "  [installing] setting up herdr-projects launcher..."
+              sh "$HP_DIR/bin/run.sh" install 2>/dev/null || true
+            fi
+            if [ -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
+              mkdir -p "$HOME/.local/bin"
+              ln -sf "$HOME/.herdr-projects/data/bin/herdr-projects" "$HOME/.local/bin/herdr-projects"
+              # Ensure configured agents (omp, opencode, agy)
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set coordinator.agent omp 2>/dev/null || true
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set worker.agent opencode 2>/dev/null || true
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set reviewer.agent agy 2>/dev/null || true
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set watcher.agent agy 2>/dev/null || true
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set worker.fallback "omp, agy" 2>/dev/null || true
+              "$HOME/.herdr-projects/data/bin/herdr-projects" set reviewer.fallback "opencode, omp" 2>/dev/null || true
+            fi
+          fi
+
+          # Ensure agent integrations for herdr
+          for integ in omp opencode antigravity-cli; do
+            ${herdrPkg}/bin/herdr integration install "$integ" 2>/dev/null || true
+          done
+
           echo "==> Herdr plugins sync complete."
         '';
         herdrPkg =
@@ -166,8 +192,18 @@
           herdrPkg
           herdr-plugins-sync
           pkgs.dtach
+          (pkgs.local.collie or pkgs.collie)
         ];
 
+        home.sessionPath = [
+          "$HOME/.herdr-projects/data/bin"
+        ];
+
+        programs.zsh.initContent = ''
+          if [ "''${HERDR_ENV:-0}" = "1" ] && [ -d "$HOME/.herdr-projects/data/bin" ]; then
+            path=("$HOME/.herdr-projects/data/bin" $path)
+          fi
+        '';
         systemd.user.services.herdr-server = {
           Install.WantedBy = [ "graphical-session.target" ];
 
@@ -359,7 +395,10 @@
 
     persistHome.directories = [
       ".config/herdr"
+      ".config/collie"
+      ".herdr-projects"
       ".local/share/herdr"
+      ".local/state/collie"
       ".local/state/herdr"
     ];
   };

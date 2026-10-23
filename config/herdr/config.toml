@@ -23,7 +23,7 @@ pane_history = true
 prefix = "ctrl+a"
 # Prefix-mode actions
 help = "prefix+?"
-settings = "prefix+s"
+settings = "prefix+comma"
 detach = "prefix+d"
 reload_config = "prefix+shift+r"
 open_notification_target = "prefix+o"
@@ -114,7 +114,7 @@ command = "herdr-projects.open"
 description = "Herdr Projects: Mission control work board"
 
 [[keys.command]]
-key = "prefix+shift+s"
+key = "prefix+s"
 type = "popup"
 command = "tv herdr-sessions"
 width = "80%"

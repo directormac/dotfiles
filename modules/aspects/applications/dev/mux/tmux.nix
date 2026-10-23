@@ -38,6 +38,7 @@
       {
         environment.systemPackages = [
           (pkgs.local.tmux or pkgs.tmux)
+          (pkgs.local.collie or pkgs.collie)
         ]
         ++ lib.optional (pkgs ? local && pkgs.local ? tmuxx) pkgs.local.tmuxx
         ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
@@ -176,8 +177,7 @@
         (final: prev: {
           tmuxPlugins = prev.tmuxPlugins // {
             tmux-nerd-font-window-name =
-              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default
-              .overrideAttrs
+              inputs.tmux-nerd-font-window-name.packages.${final.stdenv.hostPlatform.system}.default.overrideAttrs
                 (old: {
                   patches = (old.patches or [ ]) ++ [
                     ./tmux/tmux-nerd-font-window-name-sidebar.patch
@@ -225,7 +225,9 @@
       ];
 
     persistHome.directories = [
+      ".config/collie"
       ".local/share/tmux"
+      ".local/state/collie"
       ".local/state/tmux"
     ];
   };
