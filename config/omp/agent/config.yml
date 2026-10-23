@@ -60,6 +60,7 @@ lsp:
 edit:
   autoRepair:
     enabled: true
+  mode: hashline
 stt:
   enabled: true
 marketplace:
@@ -70,7 +71,9 @@ dev:
   autoqaConsent: denied
 defaultThinkingLevel: auto
 collab:
-  autoStart: control
+  autoStart: "off"
   displayName: Artifex@Super
 speechgen:
   enabled: true
+tui:
+  vimMode: true
