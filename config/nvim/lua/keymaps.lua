@@ -6,10 +6,14 @@
 vim.keymap.set({ 'i', 'n', 's' }, '<esc>', function()
   vim.cmd('noh')
   if vim.snippet then vim.snippet.stop() end
+  local mc_ns = vim.api.nvim_get_namespaces()['nvim.multicursor']
+  if mc_ns and #vim.api.nvim_buf_get_extmarks(0, mc_ns, 0, -1, { limit = 1 }) > 0 then
+    vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+  end
   return '<esc>'
 end, {
   expr = true,
-  desc = 'Escape and Clear hlserach',
+  desc = 'Escape and clear hlsearch/multicursor/snippet',
 })
 
 -- Keymaps for better default experience
@@ -66,9 +70,6 @@ end, { desc = 'Delete buffers to the left' })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>xl', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 vim.keymap.set({ 'v', 'x', 'n' }, '<leader>y', '"+y', { noremap = true, silent = true, desc = 'Yank to clipboard' })
 vim.keymap.set(
@@ -159,12 +160,6 @@ vim.keymap.set('n', '<leader>uI', function()
   vim.treesitter.inspect_tree()
   vim.api.nvim_input('I')
 end, { desc = 'Inspect Tree' })
-
-vim.keymap.set({ 'i', 'n', 's' }, '<esc>', function()
-  vim.cmd('noh')
-  if vim.snippet then vim.snippet.stop() end
-  return '<esc>'
-end, { expr = true, desc = 'Escape and clear hlsearch/snippet' })
 
 -- Yank/Select whole text
 vim.keymap.set('n', '<leader>cy', ':%y+<CR>', { desc = 'Yank Entire Buffer' })

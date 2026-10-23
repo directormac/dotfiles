@@ -53,6 +53,51 @@ vim.keymap.set('n', '<leader>cd', function()
   vim.notify('Diagnostics copied to clipboard!', vim.log.levels.INFO)
 end, { desc = 'Copy All Diagnostics' })
 
+-- Trouble-like Diagnostics & Quickfix window parity using Snacks picker (ivy_bottom)
+local function open_trouble(picker_name, opts)
+  opts = vim.tbl_deep_extend('force', { layout = 'ivy_bottom' }, opts or {})
+  if package.loaded['snacks'] and Snacks.picker and Snacks.picker[picker_name] then
+    Snacks.picker[picker_name](opts)
+  else
+    local ok, snacks = pcall(require, 'snacks')
+    if ok and snacks.picker and snacks.picker[picker_name] then
+      snacks.picker[picker_name](opts)
+    else
+      if picker_name == 'qflist' then
+        vim.cmd('copen')
+      elseif picker_name == 'loclist' then
+        vim.cmd('lopen')
+      else
+        vim.diagnostic.setqflist({ open = true })
+      end
+    end
+  end
+end
+
+vim.keymap.set('n', '<leader>xx', function() open_trouble('diagnostics') end, { desc = 'Diagnostics (Workspace)' })
+vim.keymap.set('n', '<leader>xX', function() open_trouble('diagnostics_buffer') end, { desc = 'Buffer Diagnostics' })
+vim.keymap.set('n', '<leader>xq', function() open_trouble('qflist') end, { desc = 'Quickfix List' })
+vim.keymap.set('n', '<leader>xl', function() open_trouble('loclist') end, { desc = 'Location List' })
+vim.keymap.set(
+  'n',
+  '<leader>xe',
+  function() open_trouble('diagnostics', { severity = vim.diagnostic.severity.ERROR }) end,
+  { desc = 'Workspace Errors' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>xw',
+  function() open_trouble('diagnostics', { severity = { min = vim.diagnostic.severity.WARN } }) end,
+  { desc = 'Workspace Warnings & Errors' }
+)
+vim.keymap.set('n', '<leader>xt', function() open_trouble('todo_comments') end, { desc = 'Todo Comments' })
+vim.keymap.set(
+  'n',
+  '<leader>xT',
+  function() open_trouble('todo_comments', { keywords = { 'TODO', 'FIX', 'FIXME' } }) end,
+  { desc = 'Todo/Fix/Fixme' }
+)
+
 -- Pop out floating diagnostic or LSP hover documentation on CursorHold
 local diag_group = vim.api.nvim_create_augroup('CursorHoldPopout', { clear = true })
 local last_cursor = nil

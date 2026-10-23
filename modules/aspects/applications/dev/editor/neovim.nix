@@ -445,6 +445,7 @@
           config.nvim-lib.neovimPlugins.org-nvim
 
           # Navigation & Editing
+          hardtime-nvim
           flash-nvim
           todo-comments-nvim
           harpoon2

@@ -71,6 +71,51 @@ return {
 
     -- Todo comments picker
     { '<leader>st', function() Snacks.picker.todo_comments() end, desc = 'Search Todos' },
+
+    -- Trouble / Diagnostics parity (Bottom Window like Git)
+    {
+      '<leader>xx',
+      function() Snacks.picker.diagnostics({ layout = 'ivy_bottom' }) end,
+      desc = 'Diagnostics (Workspace)',
+    },
+    {
+      '<leader>xX',
+      function() Snacks.picker.diagnostics_buffer({ layout = 'ivy_bottom' }) end,
+      desc = 'Buffer Diagnostics',
+    },
+    { '<leader>xq', function() Snacks.picker.qflist({ layout = 'ivy_bottom' }) end, desc = 'Quickfix List' },
+    { '<leader>xl', function() Snacks.picker.loclist({ layout = 'ivy_bottom' }) end, desc = 'Location List' },
+    {
+      '<leader>xe',
+      function()
+        Snacks.picker.diagnostics({
+          layout = 'ivy_bottom',
+          severity = vim.diagnostic.severity.ERROR,
+        })
+      end,
+      desc = 'Workspace Errors',
+    },
+    {
+      '<leader>xw',
+      function()
+        Snacks.picker.diagnostics({
+          layout = 'ivy_bottom',
+          severity = { min = vim.diagnostic.severity.WARN },
+        })
+      end,
+      desc = 'Workspace Warnings & Errors',
+    },
+    { '<leader>xt', function() Snacks.picker.todo_comments({ layout = 'ivy_bottom' }) end, desc = 'Todo (Trouble)' },
+    {
+      '<leader>xT',
+      function()
+        Snacks.picker.todo_comments({
+          keywords = { 'TODO', 'FIX', 'FIXME' },
+          layout = 'ivy_bottom',
+        })
+      end,
+      desc = 'Todo/Fix/Fixme (Trouble)',
+    },
   },
   opts = {
     -- Documentation https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
@@ -118,9 +163,42 @@ return {
         },
         man_pager = nil,
       },
+      layouts = {
+        ivy_bottom = {
+          layout = {
+            auto_hide = { 'input' },
+            box = 'vertical',
+            backdrop = false,
+            row = -1,
+            width = 0,
+            height = 0.4,
+            border = 'top',
+            title = ' {title} {live} {flags}',
+            title_pos = 'left',
+            { win = 'input', height = 1, border = 'bottom' },
+            {
+              box = 'horizontal',
+              { win = 'list', border = 'none' },
+              { win = 'preview', title = '{preview}', width = 0.8, border = 'left' },
+            },
+          },
+        },
+      },
 
       --- Layout https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
       sources = {
+        diagnostics = {
+          layout = 'ivy_bottom',
+        },
+        diagnostics_buffer = {
+          layout = 'ivy_bottom',
+        },
+        qflist = {
+          layout = 'ivy_bottom',
+        },
+        loclist = {
+          layout = 'ivy_bottom',
+        },
         files = {
           layout = { hidden = { 'preview' } },
           hidden = true,

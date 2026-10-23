@@ -53,7 +53,7 @@
   "tv-inputs" = "tv flake-inputs";
   "tv-pkgs" = "tv update-pkgs";
   "tvk" = "tv zsh-keys";
-  "v" = "nvim";
+  "v" = "nvim -c \"lua if vim.fn.argc() == 0 then require('persistence').load() end\"";
   "vi" = "vim";
   "wh" = "which";
   "winbox" = "QT_QPA_PLATFORM=xcb WinBox | NUL";
