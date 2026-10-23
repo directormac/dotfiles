@@ -112,7 +112,7 @@
           autostart_sh =
             # sh
             ''
-              dms run &
+              # DMS is managed as a systemd user service (dms.service)
               wl-clip-persist --clipboard both --reconnect-tries 5 &
               wl-paste --watch cliphist store &
               wl-paste --type image --watch cliphist store &

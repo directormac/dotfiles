@@ -1,0 +1,26 @@
+{
+  "id": "desktopLyricsWidget",
+  "name": "Desktop Lyrics Widget",
+  "description": "Minimal floating desktop lyrics widget powered by the Dux Lyrical Engine with active line contrast pill.",
+  "version": "2.1.0",
+  "author": "artifex",
+  "category": "media",
+  "type": "desktop",
+  "capabilities": [
+    "desktop-widget"
+  ],
+  "component": "./DesktopLyricsWidget.qml",
+  "settings": "./DesktopLyricsWidgetSettings.qml",
+  "icon": "lyrics",
+  "requires_dms": ">=2.0.0",
+  "compositors": [
+    "any"
+  ],
+  "distro": [
+    "any"
+  ],
+  "permissions": [
+    "settings_read",
+    "settings_write"
+  ]
+}

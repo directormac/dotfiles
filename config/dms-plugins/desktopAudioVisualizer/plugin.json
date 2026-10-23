@@ -1,0 +1,19 @@
+{
+  "id": "desktopAudioVisualizer",
+  "name": "Desktop Audio Visualizer",
+  "capabilities": [
+    "desktop-widget"
+  ],
+  "description": "Customizable desktop audio visualizer with multi-color palette, gradient, and curve support. Captures all audio outputs via PipeWire.",
+  "version": "2.1.0",
+  "author": "artifex",
+  "type": "desktop",
+  "component": "./DesktopAudioVisualizer.qml",
+  "settings": "./DesktopAudioVisualizerSettings.qml",
+  "icon": "equalizer",
+  "requires_dms": ">=2.0.0",
+  "permissions": [
+    "settings_read",
+    "settings_write"
+  ]
+}

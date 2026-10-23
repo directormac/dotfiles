@@ -105,26 +105,101 @@
           enable = true;
           enableAudioWavelength = true;
           enableCalendarEvents = true;
-          enableClipboardPaste = true;
           enableDynamicTheming = true;
           enableSystemMonitoring = true;
           enableVPN = true;
           managePluginSettings = true;
 
           plugins = {
+            aiOverviewControl = {
+              enable = true;
+
+              settings = {
+                costCurrency = "USD";
+                pillMode = "custom";
+                pillProviders = "pi";
+                pillShowNames = "true";
+                pillTooltip = "true";
+                providerSelection = "antigravity,pi";
+                refreshInterval = "120000";
+              };
+            };
+
             ambientSound.enable = true;
             amdGpuMonitor.enable = true;
-            cavaVisualizer.enable = true;
+            bitwarden.enable = true;
+            calculator.enable = true;
             dankActions.enable = true;
             dankGifSearch.enable = true;
             dankHooks.enable = true;
-            dankKDEConnect.enable = true;
-            dankLauncherKeys.enable = true;
+
+            dankKDEConnect = {
+              enable = true;
+
+              settings = {
+                deviceImageMap = "{}";
+                selectedDeviceId = "047094e50a2c402a9ade83d15ac02e08";
+              };
+            };
+
+            dankLauncherKeys = {
+              enable = true;
+
+              settings = {
+                noTrigger = false;
+                providers = [ ];
+              };
+            };
+
             dankNotepadModule.enable = true;
             dankRssWidget.enable = true;
             dankStickerSearch.enable = true;
-            dankVault.enable = true;
-            emojiLauncher.enable = true;
+
+            desktopAudioVisualizer = {
+              enable = true;
+
+              settings = {
+                audioTarget = "all-outputs";
+                barCount = 73;
+                barRadius = 4;
+                barSpacing = 0;
+                channels = "mono";
+                colorChoice = "catppuccin";
+                opacity = 85;
+                sensitivity = 100;
+                vizMode = "curve-outline";
+              };
+
+              src = ../../../config/dms-plugins/desktopAudioVisualizer;
+            };
+
+            desktopLyricsWidget = {
+              enable = true;
+
+              settings = {
+                activeLineBorderOpacity = 0;
+                activeLinePillOpacity = 75;
+                activeLinePillStyle = "none";
+                backgroundOpacity = 0;
+                borderOpacity = 0;
+                cardRadius = 0;
+                colorMode = "catppuccin";
+                fontSize = 44;
+                lineCount = "5";
+                textAlign = "center";
+                textShadow = true;
+              };
+
+              src = ../../../config/dms-plugins/desktopLyricsWidget;
+            };
+
+            emojiLauncher = {
+              enable = true;
+
+              settings = {
+                recentEmojis = "";
+              };
+            };
 
             quickCapture = {
               enable = true;
@@ -145,7 +220,12 @@
               };
             };
 
-            voxtypeActivityOverlay.enable = true;
+            voxtypeOverlay.enable = true;
+          };
+
+          systemd = {
+            enable = true;
+            restartIfChanged = true;
           };
         };
 

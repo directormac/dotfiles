@@ -22,7 +22,9 @@
       "id": "dock",
       "name": "Dock",
       "enabled": false,
-      "screenPreferences": ["all"],
+      "screenPreferences": [
+        "all"
+      ],
       "showOnLastDisplay": true,
       "position": 1,
       "mode": "compact",
@@ -89,7 +91,12 @@
   ],
   "currentThemeCategory": "registry",
   "floatingWindowSyncGlobal": false,
-  "dmsWindowsFloatingSeeded": ["hyprland", "hyprland", "niri", "mango"],
+  "dmsWindowsFloatingSeeded": [
+    "hyprland",
+    "hyprland",
+    "niri",
+    "mango"
+  ],
   "widgetBackgroundColor": "custom",
   "widgetBackgroundCustomColor": "#00ffffff",
   "widgetBackgroundCustomStrength": 1,
@@ -348,7 +355,9 @@
       "name": "Main Bar",
       "enabled": true,
       "position": 0,
-      "screenPreferences": ["all"],
+      "screenPreferences": [
+        "all"
+      ],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -374,13 +383,18 @@
       ],
       "centerWidgets": [
         {
+          "id": "aiOverviewControl",
+          "enabled": true
+        },
+        {
           "id": "privacyIndicator",
           "enabled": true
         },
         {
           "id": "music",
           "enabled": true,
-          "mediaSize": 2
+          "mediaSize": 3,
+          "mediaStyle": "controls"
         },
         "weather",
         {
@@ -406,6 +420,10 @@
           "id": "systemTray",
           "enabled": true,
           "overflowMode": "always"
+        },
+        {
+          "id": "bitwarden",
+          "enabled": true
         },
         {
           "id": "network_speed_monitor",
@@ -490,7 +508,9 @@
       "name": "Dot",
       "enabled": false,
       "position": 0,
-      "screenPreferences": ["all"],
+      "screenPreferences": [
+        "all"
+      ],
       "showOnLastDisplay": true,
       "leftWidgets": [
         {
@@ -617,6 +637,29 @@
   ],
   "desktopWidgetInstances": [
     {
+      "id": "dw_1792747640647_qb01cfrj5",
+      "widgetType": "desktopClock",
+      "name": "Clock",
+      "enabled": true,
+      "config": {
+        "style": "stacked",
+        "transparency": 0,
+        "colorMode": "primary",
+        "customColor": "#ffffff",
+        "showDate": true,
+        "showAnalogNumbers": false,
+        "showAnalogSeconds": true,
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "showDigitalSeconds": false,
+        "twoTone": true
+      }
+    },
+    {
       "id": "dw_1789003152114_9nb0kxtk7",
       "widgetType": "dankRssWidget",
       "name": "Dank RSS Widget",
@@ -715,6 +758,53 @@
         "maxItems": 50
       },
       "group": null
+    },
+    {
+      "id": "dw_1792747308546_a55ms2vxs",
+      "widgetType": "desktopLyricsWidget",
+      "name": "Desktop Lyrics Widget",
+      "enabled": true,
+      "config": {
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "lineCount": "5",
+        "fontSize": 48,
+        "backgroundOpacity": 0,
+        "borderOpacity": 0,
+        "cardRadius": 16,
+        "colorMode": "mauve",
+        "activeLinePillStyle": "full",
+        "activeLinePillOpacity": 36,
+        "activeLineBorderOpacity": 0,
+        "textShadow": true
+      }
+    },
+    {
+      "id": "dw_1792747756936_wmkyuqu15",
+      "widgetType": "desktopAudioVisualizer",
+      "name": "Desktop Audio Visualizer",
+      "enabled": true,
+      "config": {
+        "displayPreferences": [
+          {
+            "name": "DP-3",
+            "model": "AORUS AD27QD"
+          }
+        ],
+        "barCount": 73,
+        "barSpacing": 0,
+        "barRadius": 4,
+        "channels": "mono",
+        "colorChoice": "catppuccin",
+        "audioTarget": "all-outputs",
+        "opacity": 85,
+        "sensitivity": 100,
+        "vizMode": "curve-outline"
+      }
     }
   ],
   "builtInPluginSettings": {
@@ -731,7 +821,13 @@
       "trigger": "qrg"
     }
   },
-  "clipboardVisibleEntryActions": ["pin", "edit", "delete", "copy", "paste"],
+  "clipboardVisibleEntryActions": [
+    "pin",
+    "edit",
+    "delete",
+    "copy",
+    "paste"
+  ],
   "launcherPluginVisibility": {
     "dms_settings_search": {
       "allowWithoutTrigger": true
@@ -749,7 +845,7 @@
     }
   },
   "notificationFocusedMonitor": true,
-  "desktopContextMenu": "on",
+  "desktopContextMenu": "off",
   "osdVolumeEnabled": false,
   "osdMediaVolumeEnabled": false,
   "displayProfileAutoSelect": false

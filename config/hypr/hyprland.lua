@@ -59,8 +59,7 @@ local is_vm = os.getenv('HYPRLAND_IS_VM') == '1' or os.getenv('IS_VM') == '1'
 
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
-  if not is_vm then hl.exec_cmd('dms run') end
-
+  -- DMS is managed as a systemd user service (dms.service bound to graphical-session.target)
   -- Optional: Clipboard history
   hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')
   hl.exec_cmd('sh -c "wl-paste --watch cliphist store &"')
