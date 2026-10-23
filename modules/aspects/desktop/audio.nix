@@ -50,6 +50,40 @@
               ];
             };
 
+            wireplumber = {
+              enable = true;
+              extraConfig."10-navi-hdmi" = {
+                "monitor.alsa.rules" = [
+                  {
+                    matches = [
+                      {
+                        "device.name" = "alsa_card.pci-0000_03_00.1";
+                      }
+                    ];
+                    actions = {
+                      update-props = {
+                        "api.acp.auto-profile" = false;
+                        "api.acp.auto-port" = false;
+                        "device.profile" = "output:hdmi-stereo-extra1";
+                      };
+                    };
+                  }
+                  {
+                    matches = [
+                      {
+                        "node.name" = "alsa_output.pci-0000_03_00.1.hdmi-stereo-extra1";
+                      }
+                    ];
+                    actions = {
+                      update-props = {
+                        "priority.session" = 1100;
+                      };
+                    };
+                  }
+                ];
+              };
+            };
+
             jack.enable = true;
             pulse.enable = true;
           };

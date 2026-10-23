@@ -88,6 +88,7 @@
 
   den.aspects.applications.dev.editor.neovim = {
     includes = with den.aspects.applications.dev; [
+      editor.lazyvim
       editor.neovim-mdkite
       editor.neovim-org
       lang.nix

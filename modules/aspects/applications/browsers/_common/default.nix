@@ -18,8 +18,23 @@
       sideberyId = "{3c078156-979c-498b-8990-85f7987dd929}";
     in
     ''
+      targetDirs=()
       for profileDir in ${builtins.concatStringsSep " " profileDirs}; do
-        fullDir="$HOME/$profileDir"
+        targetDirs+=("$HOME/$profileDir")
+      done
+      # Also discover any existing profile directories under common roots (handles randomized prefixes like *.default)
+      for base in "$HOME/.mozilla/firefox" "$HOME/.config/mozilla/firefox" "$HOME/.librewolf" "$HOME/.config/librewolf"; do
+        if [ -d "$base" ]; then
+          for d in "$base"/*; do
+            if [ -d "$d" ] && { [ -f "$d/prefs.js" ] || [ -f "$d/extension-settings.json" ] || [ -d "$d/extensions" ]; }; then
+              targetDirs+=("$d")
+            fi
+          done
+        fi
+      done
+
+      for fullDir in "''${targetDirs[@]}"; do
+        [ -n "$fullDir" ] || continue
         mkdir -p "$fullDir"
         settingsFile="$fullDir/extension-settings.json"
         if [ ! -f "$settingsFile" ]; then
