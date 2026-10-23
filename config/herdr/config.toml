@@ -269,6 +269,13 @@ window_title = "{hostname}: {workspace}"
 # Background notification popup delivery
 status_indicators = "symbols"
 
+
+[ui.sidebar.agents]
+rows = [["state_icon", "machine", "workspace", { token = "tab", rules = [{ equals = "Agent", hide = true }, {starts_with = "Reviewer #", hide = true }] }], ["agent"], [{ token = "$summary", dim = true }, "$progress"]]
+
+[ui.sidebar.spaces]
+rows = [["state_icon", "workspace"], ["branch", "git_status"], [{ token = "$summary", dim = true }, "$progress"]]
+
 # Play sounds when agents change state in background workspaces
 [ui.sound]
 
@@ -278,6 +285,9 @@ delivery = "system"
 [ui.toast.clipboard]
 
 [ui.toast.herdr]
+
+
+
 
 [update]
 # Check herdr.dev for new Herdr versions in the background.

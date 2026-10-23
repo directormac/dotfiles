@@ -8,13 +8,14 @@
 -- Example window rules that are useful
 
 local suppressMaximizeRule = hl.window_rule({
-  -- Ignore maximize requests from all apps. You'll probably like this.
+  -- Ignore maximize requests from all apps (negative:steam so Steam maximize works,
+  -- and disabled by default so client maximize buttons are respected)
   name = 'suppress-maximize-events',
-  match = { class = '.*' },
+  match = { class = 'negative:steam' },
 
   suppress_event = 'maximize',
 })
--- suppressMaximizeRule:set_enabled(false)
+suppressMaximizeRule:set_enabled(false)
 
 hl.window_rule({
   -- Fix some dragging issues with XWayland
@@ -45,7 +46,8 @@ hl.window_rule({
   idle_inhibit = 'fullscreen',
 })
 
-local floating_apps = {
+-- Apps launched floating and centered using their natural/intrinsic size
+local floating_centered_apps = {
   'bitwarden',
   'feh',
   'gnome-disks',
@@ -55,27 +57,68 @@ local floating_apps = {
   'galculator',
   'org.pulseaudio.pavucontrol',
   'org.localsend.localsend_app',
-  'com.ghostty.float',
-  'org.gnome.Nautilus',
-  'dev.duxlabs.files',
-  'dfiles',
   'mpv',
   'nm-connection-editor',
   'Waydroid',
   'com.jaoushingan.WaydroidHelper',
-  'com.neovim.editor',
-  'com.superfile.fm',
-  'steam',
 }
 
-for _, app in ipairs(floating_apps) do
+for _, app in ipairs(floating_centered_apps) do
   hl.window_rule({
+    name = 'float-center-' .. app,
+    match = { class = app },
+    float = true,
+    center = true,
+  })
+end
+
+-- Apps launched floating, centered, and sized (50% width and height)
+local floating_sized_apps = {
+  'com.ghostty.float',
+  'org.gnome.Nautilus',
+  'dev.duxlabs.files',
+  'dfiles',
+  'com.neovim.editor',
+  'com.superfile.fm',
+  'virt-manager',
+  'qemu',
+}
+
+for _, app in ipairs(floating_sized_apps) do
+  hl.window_rule({
+    name = 'float-sized-' .. app,
     match = { class = app },
     float = true,
     center = true,
     size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
   })
 end
+
+-------------------
+------ STEAM ------
+-------------------
+
+-- 1. Main Steam application window launches maximized
+hl.window_rule({
+  name = 'steam-main-maximized',
+  match = {
+    class = '^steam$',
+    title = '^Steam$',
+  },
+  maximize = true,
+})
+
+-- 2. Steam secondary windows (Sign in, Friends List, Settings, Chat, etc.)
+-- launch floating with natural size and placement (not 50% width/height, not forced center)
+hl.window_rule({
+  name = 'steam-secondary-floating',
+  match = {
+    class = '^steam$',
+    title = 'negative:^Steam$',
+  },
+  float = true,
+  persistent_size = true,
+})
 
 hl.window_rule({
   match = {
@@ -102,26 +145,6 @@ hl.window_rule({
   match = { class = '(pinentry-)(.*)' },
   stay_focused = true,
   float = true,
-})
-
-hl.window_rule({
-  name = 'float-virt-manager',
-  match = {
-    class = 'virt-manager',
-  },
-  float = true,
-  center = true,
-  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
-})
-
-hl.window_rule({
-  name = 'float-qemu',
-  match = {
-    class = 'qemu',
-  },
-  float = true,
-  center = true,
-  size = { '(monitor_w*0.5)', '(monitor_h*0.5)' },
 })
 
 -- hl.on('window.open', function(w)
@@ -165,6 +188,28 @@ hl.on('window.open', function(w)
       hl.dispatch(hl.dsp.focus({ window = tw }))
     else
       hl.dispatch(hl.dsp.window.float({ action = 'unset', window = tw }))
+    end
+  end)
+end)
+hl.on('window.open', function(w)
+  if w.class ~= 'steam' then return end
+
+  local function maximize_if_main(win)
+    if win.title == 'Steam' or win.initial_title == 'Steam' then
+      hl.dispatch(hl.dsp.window.fullscreen({ mode = 'maximized', window = win }))
+      return true
+    end
+    return false
+  end
+
+  if maximize_if_main(w) then return end
+
+  local sub
+  sub = hl.on('window.title', function(tw)
+    if tw.address ~= w.address then return end
+    if tw.title == 'Steam' then
+      sub:remove()
+      hl.dispatch(hl.dsp.window.fullscreen({ mode = 'maximized', window = tw }))
     end
   end)
 end)
