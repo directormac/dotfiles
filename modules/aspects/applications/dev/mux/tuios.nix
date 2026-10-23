@@ -64,7 +64,6 @@
       };
 
     persistHome.directories = [
-      ".config/tuios"
       ".local/share/tuios"
       ".local/state/tuios"
     ];

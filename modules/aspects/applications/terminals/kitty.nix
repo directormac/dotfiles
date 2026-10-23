@@ -36,8 +36,5 @@
         ];
       };
 
-    persistHome.directories = [
-      ".config/kitty"
-    ];
   };
 }

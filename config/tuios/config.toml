@@ -5,7 +5,7 @@
 # tmux Shim:     https://tuios.dev/docs/tmux-shim
 
 [appearance]
-theme = "catppuccin-mocha"
+theme = "catppuccin_mocha"
 border_style = "rounded"
 gap = 1
 shared_borders = false
