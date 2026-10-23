@@ -34,9 +34,9 @@ stdenv.mkDerivation rec {
       rmpd-bin
     else
       fetchurl {
-        hash = "sha256-ViMxJl3yQXYHz9wvRCvZ42D18MEe86Yz+/vkl61Pl6E=";
+        hash = "sha256-QzP2zSNDp+ciii6wMZROaMGO14cRCByjEQ1hOekvMDk=";
         url = "https://github.com/M0Rf30/rmpd/releases/download/${version}/rmpd-${version}-x86_64-unknown-linux-gnu.tar.gz";
       };
 
-  version = "0.17.2";
+  version = "0.18.0";
 }
