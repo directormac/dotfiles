@@ -63,6 +63,7 @@
       applications.productivity.anydesk
       applications.productivity.scrcpy
       applications.productivity.obsidian
+      applications.productivity.obs-studio
 
       # Virtualization
       virtualization.libvirt
