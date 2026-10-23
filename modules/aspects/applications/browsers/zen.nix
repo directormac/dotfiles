@@ -276,12 +276,6 @@
                   reference = "dev.to";
                 };
 
-                "github" = {
-                  matchType = "contains";
-                  openIn = spaces.dev;
-                  reference = "github.com";
-                };
-
                 "google-search" = {
                   matchType = "regex";
                   openIn = "most-recent-space";
