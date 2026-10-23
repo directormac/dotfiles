@@ -1,19 +1,38 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Resolve the directory where this script (and the shaders) live
+# Resolve the directory where this script lives
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Ghostty config path — override with GHOSTTY_CONFIG env var if needed
-# Config file is config.ghostty in the symlinked directory
+# Resolve Ghostty config path
 GHOSTTY_CONFIG="${GHOSTTY_CONFIG:-$HOME/.dotfiles/config/ghostty/config.ghostty}"
+if [[ ! -f "$GHOSTTY_CONFIG" ]]; then
+  if [[ -f "$HOME/.config/ghostty/config.ghostty" ]]; then
+    GHOSTTY_CONFIG="$HOME/.config/ghostty/config.ghostty"
+  elif [[ -f "$HOME/.config/ghostty/config" ]]; then
+    GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
+  fi
+fi
+if [[ -L "$GHOSTTY_CONFIG" ]]; then
+  GHOSTTY_CONFIG="$(readlink -f "$GHOSTTY_CONFIG")"
+fi
+
+# Resolve Shaders directory
+if [[ -d "$SCRIPT_DIR/shaders" ]]; then
+  SHADERS_DIR="$SCRIPT_DIR/shaders"
+elif [[ -d "$HOME/.dotfiles/config/ghostty/shaders" ]]; then
+  SHADERS_DIR="$HOME/.dotfiles/config/ghostty/shaders"
+elif [[ -d "$HOME/.config/ghostty/shaders" ]]; then
+  SHADERS_DIR="$HOME/.config/ghostty/shaders"
+else
+  SHADERS_DIR="$SCRIPT_DIR"
+fi
 
 # ---------- Shader discovery ----------
 
-SHADERS_DIR="$SCRIPT_DIR/shaders"
-
 discover_shaders() {
   local shaders=()
+  shopt -s nullglob
   # .glsl files in shaders directory
   for f in "$SHADERS_DIR"/*.glsl; do
     [[ -f $f ]] && shaders+=("$(basename "$f")")
@@ -23,13 +42,13 @@ discover_shaders() {
     [[ -f $f ]] || continue
     local name
     name="$(basename "$f")"
-    # Skip .glsl (already found), skip dotfiles, skip known non-shaders
     [[ $name == *.* ]] && continue
     if grep -q 'mainImage' "$f" 2>/dev/null; then
       shaders+=("$name")
     fi
   done
-  printf '%s\n' "${shaders[@]}" | sort
+  shopt -u nullglob
+  printf '%s\n' "${shaders[@]}" | sort -u
 }
 
 # ---------- Config helpers ----------
@@ -50,7 +69,7 @@ get_current_shaders() {
   if [[ ! -f $GHOSTTY_CONFIG ]]; then
     return
   fi
-  grep '^custom-shader[[:space:]]*=' "$GHOSTTY_CONFIG" | sed 's/^custom-shader[[:space:]]*=[[:space:]]*//' || true
+  sed -n 's/^[[:space:]]*custom-shader[[:space:]]*=[[:space:]]*//p' "$GHOSTTY_CONFIG" 2>/dev/null || true
 }
 
 # Return only the last custom-shader path (backward compat wrapper).
@@ -66,12 +85,14 @@ update_config() {
   local tmpfile
   tmpfile="$(dirname "$GHOSTTY_CONFIG")/.config.tmp.$$"
 
-  # Remove existing custom-shader lines
-  grep -v '^custom-shader' "$GHOSTTY_CONFIG" >"$tmpfile" || true
+  # Remove existing custom-shader lines ONLY (preserves custom-shader-animation etc.)
+  grep -v '^[[:space:]]*custom-shader[[:space:]]*=' "$GHOSTTY_CONFIG" >"$tmpfile" || true
 
-  # Remove trailing blank lines from temp file, then ensure single trailing newline
-  sed -i '' -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$tmpfile" 2>/dev/null || true
-  # Ensure file ends with newline
+  # Remove trailing blank lines portably
+  awk '/^[[:space:]]*$/ {blank=blank $0 "\n"; next} {printf "%s", blank; blank=""; print}' "$tmpfile" >"${tmpfile}.clean" 2>/dev/null || cp "$tmpfile" "${tmpfile}.clean"
+  mv "${tmpfile}.clean" "$tmpfile"
+
+  # Ensure single trailing newline before appending
   if [[ -s $tmpfile ]] && [[ "$(tail -c 1 "$tmpfile" | wc -l)" -eq 0 ]]; then
     echo "" >>"$tmpfile"
   fi
@@ -167,7 +188,7 @@ resolve_shader() {
 preview_path() {
   local shader_name="$1"
   local base="${shader_name%.glsl}"
-  for ext in png jpg gif; do
+  for ext in png jpg gif webp; do
     if [[ -f "$SHADERS_DIR/theme/${base}.${ext}" ]]; then
       echo "$SHADERS_DIR/theme/${base}.${ext}"
       return
@@ -178,14 +199,11 @@ preview_path() {
 
 # ---------- Interactive pickers ----------
 
-# fzf-based multi-select shader picker.
-# Active shaders are placed first and pre-selected via start binding.
-# Outputs selected shader names, one per line.
+# fzf-based multi-select shader picker
 fzf_pick_shaders() {
   local shaders
   shaders="$(discover_shaders)"
 
-  # Build active shader lookup
   declare -A active_map
   local active_lines
   active_lines="$(get_current_shaders)"
@@ -197,10 +215,10 @@ fzf_pick_shaders() {
     done <<<"$active_lines"
   fi
 
-  # Build ordered input: active shaders first, then inactive (each group sorted)
   local active_items=()
   local inactive_items=()
   while IFS= read -r shader; do
+    [[ -z $shader ]] && continue
     if [[ -n ${active_map[$shader]+x} ]]; then
       active_items+=("$shader")
     else
@@ -218,8 +236,6 @@ fzf_pick_shaders() {
   done
   fzf_input="${fzf_input%$'\n'}"
 
-  # Build load action: toggle first N items to pre-select active shaders.
-  # Uses 'load' event (fires after input is fully loaded) so toggle has items to act on.
   local load_action="first"
   if [[ $num_active -gt 0 ]]; then
     load_action=""
@@ -234,7 +250,7 @@ fzf_pick_shaders() {
     echo "$fzf_input" | fzf \
       --multi \
       --no-sort \
-      --preview "head -30 '$SHADERS_DIR/{1}' 2>/dev/null || echo 'No preview available'" \
+      --preview "bat --color=always -l glsl --style=plain '$SHADERS_DIR/{1}' 2>/dev/null || head -40 '$SHADERS_DIR/{1}' 2>/dev/null || echo 'No preview available'" \
       --header 'Tab: select/deselect  Ctrl-A: all  Ctrl-D: deselect all  Enter: confirm  Esc: cancel' \
       --layout=reverse \
       --border \
@@ -254,13 +270,11 @@ fzf_pick_shaders() {
   echo "$selections"
 }
 
-# Numbered-list fallback picker when fzf is not available.
-# Outputs selected shader names, one per line.
+# Numbered-list fallback picker when fzf is not available
 fallback_pick_shaders() {
   local shaders
   shaders="$(discover_shaders)"
 
-  # Build active shader lookup
   declare -A active_map
   local active_lines
   active_lines="$(get_current_shaders)"
@@ -272,7 +286,6 @@ fallback_pick_shaders() {
     done <<<"$active_lines"
   fi
 
-  # Store shaders in array for index lookup
   local shader_arr=()
   mapfile -t shader_arr <<<"$shaders"
 
@@ -299,12 +312,10 @@ fallback_pick_shaders() {
     return 1
   fi
 
-  # Parse comma-separated numbers, preserving selection order
   local IFS=','
   read -ra nums <<<"$input"
   local has_output=false
   for num in "${nums[@]}"; do
-    # Trim whitespace
     num="$(echo "$num" | tr -d ' ')"
     if [[ ! $num =~ ^[0-9]+$ ]]; then
       echo "Invalid number: $num" >&2
@@ -328,7 +339,6 @@ fallback_pick_shaders() {
 # ---------- Subcommands ----------
 
 cmd_list() {
-  # Build active shader lookup with position numbers
   declare -A active_positions
   local active_lines
   active_lines="$(get_current_shaders)"
@@ -351,6 +361,7 @@ cmd_list() {
   echo "Available shaders ($count):"
   echo ""
   while IFS= read -r shader; do
+    [[ -z $shader ]] && continue
     local line
     if [[ -n ${active_positions[$shader]+x} ]]; then
       local p="${active_positions[$shader]}"
@@ -361,7 +372,7 @@ cmd_list() {
     local preview
     preview="$(preview_path "$shader")"
     if [[ -n $preview ]]; then
-      line="$line  (preview: theme/$(basename "$preview"))"
+      line="$line  (preview: $(basename "$preview"))"
     fi
     echo "$line"
   done <<<"$shaders"
@@ -373,9 +384,34 @@ cmd_list() {
   fi
 }
 
+cmd_tv_list() {
+  declare -A active_positions
+  local active_lines
+  active_lines="$(get_current_shaders)"
+  local pos=1
+  if [[ -n $active_lines ]]; then
+    while IFS= read -r apath; do
+      local aname
+      aname="$(basename "$apath")"
+      active_positions["$aname"]=$pos
+      ((pos++))
+    done <<<"$active_lines"
+  fi
+
+  local shaders
+  shaders="$(discover_shaders)"
+  while IFS= read -r shader; do
+    [[ -z $shader ]] && continue
+    local status="⚪ Inactive"
+    if [[ -n ${active_positions[$shader]+x} ]]; then
+      status="🟢 Active #${active_positions[$shader]}"
+    fi
+    printf "%s\t%s\t%s/%s\n" "$shader" "$status" "$SHADERS_DIR" "$shader"
+  done <<<"$shaders"
+}
+
 cmd_set() {
   if [[ $# -eq 0 ]]; then
-    # Interactive picker mode
     local selections
     if command -v fzf &>/dev/null; then
       selections="$(fzf_pick_shaders)" || return 1
@@ -383,7 +419,6 @@ cmd_set() {
       selections="$(fallback_pick_shaders)" || return 1
     fi
 
-    # Resolve and collect paths
     local paths=()
     local names=()
     while IFS= read -r name; do
@@ -416,11 +451,10 @@ cmd_set() {
       done
     fi
     echo ""
-    echo 'Press Ctrl+`+r, in Ghostty to reload config.'
+    echo 'Press Ctrl+` then r in Ghostty to reload config.'
     return
   fi
 
-  # Resolve all arguments
   local paths=()
   local names=()
   for arg in "$@"; do
@@ -454,16 +488,109 @@ cmd_set() {
     done
   fi
   echo ""
-  echo 'Press Ctrl+`+r, in Ghostty to reload config.'
+  echo 'Press Ctrl+` then r in Ghostty to reload config.'
+}
+
+cmd_toggle() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: gshader toggle <name>" >&2
+    return 1
+  fi
+
+  local resolved
+  resolved="$(resolve_shader "$1")" || return 1
+
+  declare -A active_map
+  local existing_paths=()
+  local active_lines
+  active_lines="$(get_current_shaders)"
+  local was_active=false
+
+  if [[ -n $active_lines ]]; then
+    while IFS= read -r apath; do
+      local aname
+      aname="$(basename "$apath")"
+      if [[ "$aname" == "$resolved" ]]; then
+        was_active=true
+      else
+        existing_paths+=("$apath")
+      fi
+    done <<<"$active_lines"
+  fi
+
+  if [[ $was_active == true ]]; then
+    update_config "${existing_paths[@]}"
+    echo "Toggled OFF shader: $resolved"
+  else
+    local abs_path="$SHADERS_DIR/$resolved"
+    existing_paths+=("$abs_path")
+    update_config "${existing_paths[@]}"
+    echo "Toggled ON shader: $resolved"
+  fi
+  echo ""
+  echo 'Press Ctrl+` then r in Ghostty to reload config.'
+}
+
+cmd_next() {
+  local shaders=()
+  mapfile -t shaders < <(discover_shaders)
+  if [[ ${#shaders[@]} -eq 0 ]]; then
+    echo "No shaders available." >&2
+    return 1
+  fi
+
+  local current
+  current="$(get_current_shader)"
+  local cur_name=""
+  [[ -n $current ]] && cur_name="$(basename "$current")"
+
+  local next_idx=0
+  if [[ -n $cur_name ]]; then
+    for i in "${!shaders[@]}"; do
+      if [[ "${shaders[$i]}" == "$cur_name" ]]; then
+        next_idx=$(((i + 1) % ${#shaders[@]}))
+        break
+      fi
+    done
+  fi
+
+  local chosen="${shaders[$next_idx]}"
+  cmd_set "$chosen"
+}
+
+cmd_prev() {
+  local shaders=()
+  mapfile -t shaders < <(discover_shaders)
+  if [[ ${#shaders[@]} -eq 0 ]]; then
+    echo "No shaders available." >&2
+    return 1
+  fi
+
+  local current
+  current="$(get_current_shader)"
+  local cur_name=""
+  [[ -n $current ]] && cur_name="$(basename "$current")"
+
+  local prev_idx=0
+  if [[ -n $cur_name ]]; then
+    for i in "${!shaders[@]}"; do
+      if [[ "${shaders[$i]}" == "$cur_name" ]]; then
+        prev_idx=$(((i - 1 + ${#shaders[@]}) % ${#shaders[@]}))
+        break
+      fi
+    done
+  fi
+
+  local chosen="${shaders[$prev_idx]}"
+  cmd_set "$chosen"
 }
 
 cmd_add() {
   if [[ $# -eq 0 ]]; then
-    echo "Usage: shader.sh add <name> [name2 ...]" >&2
+    echo "Usage: gshader add <name> [name2 ...]" >&2
     return 1
   fi
 
-  # Get existing shader paths
   local existing_paths=()
   local existing_names=()
   local active_lines
@@ -475,13 +602,11 @@ cmd_add() {
     done <<<"$active_lines"
   fi
 
-  # Build lookup set for duplicate detection
   declare -A existing_set
   for name in "${existing_names[@]}"; do
     existing_set["$name"]=1
   done
 
-  # Resolve and append new shaders
   local added=()
   for arg in "$@"; do
     local resolved
@@ -523,14 +648,14 @@ cmd_add() {
     ((i++))
   done
   echo ""
-  echo 'Press Ctrl+`+r, in Ghostty to reload config.'
+  echo 'Press Ctrl+` then r in Ghostty to reload config.'
 }
 
 cmd_off() {
   update_config
   echo "Shader disabled (all custom-shader lines removed)."
   echo ""
-  echo 'Press Ctrl+`+r, in Ghostty to reload config.'
+  echo 'Press Ctrl+` then r in Ghostty to reload config.'
 }
 
 cmd_current() {
@@ -570,7 +695,7 @@ cmd_current() {
 
 cmd_help() {
   cat <<'EOF'
-gshader — Ghostty shader switcher (multi-shader support)
+gshader — Ghostty shader switcher (multi-shader & pipeline support)
 
 Usage:
   gshader <command> [args]
@@ -578,35 +703,25 @@ Usage:
 Commands:
   list, ls                 List available shaders (active marked with *N)
   set                      Interactive shader picker (fzf multi-select)
-  set <name> [name2 ...]   Set one or more shaders (replaces all existing)
+  set <name> [name2 ...]   Set one or more shaders (replaces existing)
+  toggle <name>            Toggle shader on or off in pipeline
+  next, prev               Cycle to next or previous shader
   add <name> [name2 ...]   Append shader(s) to existing pipeline
   off, disable, none       Remove all shaders from config
   current, status          Show all active shaders in pipeline order
+  tv-list                  List shaders formatted for Television channel
   help, --help, -h         Show this help
 
 Examples:
   gshader set                      # interactive picker (fzf or fallback)
   gshader set crt                  # single shader (matches crt.glsl)
-  gshader set crt bloom            # multi-shader pipeline
+  gshader toggle matrix            # toggle matrix shader on/off
+  gshader next                     # cycle to next shader
+  gshader set bloom crt            # multi-shader pipeline
   gshader add drunkard             # append to existing pipeline
-  gshader list                     # show all, active marked *1) *2)
-  gshader current                  # show active pipeline
   gshader off                      # remove all shaders
 
-Interactive picker (fzf):
-  Tab          Select/deselect shader
-  Ctrl-A       Select all
-  Ctrl-D       Deselect all
-  Enter        Confirm selection
-  Esc          Cancel
-
-  Note: fzf outputs selections in alphabetical order, not selection order.
-  Use CLI args for precise ordering: gshader set bloom crt drunkard
-
-Environment:
-  GHOSTTY_CONFIG    Override config path (default: ~/.config/ghostty/config.ghostty)
-
-After any change, press Ctrl+`+r, in Ghostty to reload config.
+In Ghostty, press Ctrl+` then r to reload configuration.
 EOF
 }
 
@@ -618,14 +733,18 @@ main() {
 
   case "$cmd" in
   list | ls) cmd_list "$@" ;;
+  tv-list) cmd_tv_list "$@" ;;
   set | use) cmd_set "$@" ;;
+  toggle) cmd_toggle "$@" ;;
+  next) cmd_next "$@" ;;
+  prev) cmd_prev "$@" ;;
   add) cmd_add "$@" ;;
   off | disable | none) cmd_off "$@" ;;
   current | status) cmd_current "$@" ;;
   help | --help | -h) cmd_help ;;
   *)
     echo "Unknown command: $cmd" >&2
-    echo "Run 'shader.sh help' for usage." >&2
+    echo "Run 'gshader help' for usage." >&2
     return 1
     ;;
   esac

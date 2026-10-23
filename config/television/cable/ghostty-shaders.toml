@@ -1,0 +1,44 @@
+[metadata]
+name = "ghostty-shaders"
+description = "Inspect and switch Ghostty GLSL custom shaders"
+requirements = ["gshader", "bat"]
+
+[source]
+command = "gshader tv-list"
+display = "{split:\t:0}  │  {split:\t:1}"
+output = "{split:\t:0}"
+
+[preview]
+command = "bat --color=always -l glsl --style=plain '{split:\t:2}' 2>/dev/null || head -40 '{split:\t:2}'"
+
+[keybindings]
+enter = "actions:set"
+ctrl-t = "actions:toggle"
+ctrl-a = "actions:add"
+ctrl-d = "actions:off"
+ctrl-y = "actions:copy_name"
+
+[actions.set]
+description = "Set as active shader (replaces existing pipeline)"
+command = "gshader set '{split:\t:0}'"
+mode = "execute"
+
+[actions.toggle]
+description = "Toggle shader on/off in pipeline"
+command = "gshader toggle '{split:\t:0}'"
+mode = "execute"
+
+[actions.add]
+description = "Append shader to active pipeline"
+command = "gshader add '{split:\t:0}'"
+mode = "execute"
+
+[actions.off]
+description = "Turn off all custom shaders"
+command = "gshader off"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy shader filename to clipboard"
+command = "echo -n '{split:\t:0}' | wl-copy"
+mode = "execute"
