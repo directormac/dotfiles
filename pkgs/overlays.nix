@@ -6,10 +6,6 @@
   modifications = final: prev: {
     collie = final.callPackage ./by-name/collie/package.nix { };
 
-    llm-agents = (prev.llm-agents or { }) // {
-      collie = final.collie;
-    };
-
     # khal in nixpkgs declares `sphinxBuilders = [ "html" "man" ];`.
     # In nixpkgs with structuredAttrs enabled, bash arrays in .attrs.sh
     # cause sphinx-hook's `eval "__sphinxBuilders=($sphinxBuilders)"` to
@@ -18,6 +14,10 @@
     # Setting sphinxBuilders to a string ensures both builders are run.
     khal = prev.khal.overrideAttrs {
       sphinxBuilders = "html man";
+    };
+
+    llm-agents = (prev.llm-agents or { }) // {
+      inherit (final) collie;
     };
 
     mermaid-cli =

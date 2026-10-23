@@ -31,12 +31,6 @@
         ...
       }:
       let
-        tuiosPkg =
-          if inputs ? tuios then
-            inputs.tuios.packages.${pkgs.stdenv.hostPlatform.system}.tuios
-              or inputs.tuios.packages.${pkgs.stdenv.hostPlatform.system}.default
-          else
-            null;
         tuios-tmux-shim = pkgs.writeShellScriptBin "tuios-tmux-shim" ''
           set -euo pipefail
           if [ -z "''${TUIOS_SESSION:-}" ] && [ -z "''${TMUX:-}" ]; then
@@ -50,6 +44,12 @@
           fi
           exec tuios tmux-shim "$@"
         '';
+        tuiosPkg =
+          if inputs ? tuios then
+            inputs.tuios.packages.${pkgs.stdenv.hostPlatform.system}.tuios
+              or inputs.tuios.packages.${pkgs.stdenv.hostPlatform.system}.default
+          else
+            null;
       in
       {
         home.file.".config/tuios" = {

@@ -25,6 +25,15 @@
         customAddons = common.extensions.customAddons;
       in
       {
+        home.activation.firefoxExtensionShortcuts = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          common.configureExtensionCommands {
+            profileDirs = [
+              ".mozilla/firefox/default"
+              ".config/mozilla/firefox/default"
+            ];
+          }
+        );
+
         home.activation.setupFirefoxProfile = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
           if [ -d "$HOME/.mozilla/firefox/r9v7k3q0.default" ] && [ ! -f "$HOME/.mozilla/firefox/default/places.sqlite" ]; then
             mkdir -p "$HOME/.mozilla/firefox/default"
@@ -35,19 +44,11 @@
           fi
         '';
 
-        home.activation.firefoxExtensionShortcuts = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-          common.configureExtensionCommands {
-            profileDirs = [
-              ".mozilla/firefox/default"
-              ".config/mozilla/firefox/default"
-            ];
-          }
-        );
-
         programs.firefox = {
           inherit (common) nativeMessagingHosts policies;
-          configPath = ".mozilla/firefox";
           enable = true;
+          configPath = ".mozilla/firefox";
+
           globalExtensions = [
             {
               settings = {
@@ -232,6 +233,7 @@
           };
         };
       };
+
     cacheHome.directories = [
       ".cache/mozilla"
     ];

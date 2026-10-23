@@ -6,14 +6,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Resolve Ghostty config path
 GHOSTTY_CONFIG="${GHOSTTY_CONFIG:-$HOME/.dotfiles/config/ghostty/config.ghostty}"
-if [[ ! -f "$GHOSTTY_CONFIG" ]]; then
+if [[ ! -f $GHOSTTY_CONFIG ]]; then
   if [[ -f "$HOME/.config/ghostty/config.ghostty" ]]; then
     GHOSTTY_CONFIG="$HOME/.config/ghostty/config.ghostty"
   elif [[ -f "$HOME/.config/ghostty/config" ]]; then
     GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
   fi
 fi
-if [[ -L "$GHOSTTY_CONFIG" ]]; then
+if [[ -L $GHOSTTY_CONFIG ]]; then
   GHOSTTY_CONFIG="$(readlink -f "$GHOSTTY_CONFIG")"
 fi
 
@@ -510,7 +510,7 @@ cmd_toggle() {
     while IFS= read -r apath; do
       local aname
       aname="$(basename "$apath")"
-      if [[ "$aname" == "$resolved" ]]; then
+      if [[ $aname == "$resolved" ]]; then
         was_active=true
       else
         existing_paths+=("$apath")
@@ -547,7 +547,7 @@ cmd_next() {
   local next_idx=0
   if [[ -n $cur_name ]]; then
     for i in "${!shaders[@]}"; do
-      if [[ "${shaders[$i]}" == "$cur_name" ]]; then
+      if [[ ${shaders[$i]} == "$cur_name" ]]; then
         next_idx=$(((i + 1) % ${#shaders[@]}))
         break
       fi
@@ -574,7 +574,7 @@ cmd_prev() {
   local prev_idx=0
   if [[ -n $cur_name ]]; then
     for i in "${!shaders[@]}"; do
-      if [[ "${shaders[$i]}" == "$cur_name" ]]; then
+      if [[ ${shaders[$i]} == "$cur_name" ]]; then
         prev_idx=$(((i - 1 + ${#shaders[@]}) % ${#shaders[@]}))
         break
       fi

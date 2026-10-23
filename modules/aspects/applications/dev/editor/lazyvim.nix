@@ -11,19 +11,17 @@
   };
 
   den.aspects.applications.dev.editor.lazyvim = {
-    nixos =
-      _:
-      {
-        nixpkgs.overlays = [
-          (_final: prev: {
-            vimPlugins = prev.vimPlugins.extend (
-              _finalVim: prevVim: {
-                codeium-nvim = prevVim.windsurf-nvim or prevVim.codeium-nvim;
-              }
-            );
-          })
-        ];
-      };
+    nixos = _: {
+      nixpkgs.overlays = [
+        (_final: prev: {
+          vimPlugins = prev.vimPlugins.extend (
+            _finalVim: prevVim: {
+              codeium-nvim = prevVim.windsurf-nvim or prevVim.codeium-nvim;
+            }
+          );
+        })
+      ];
+    };
 
     homeManager =
       {
