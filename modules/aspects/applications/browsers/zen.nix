@@ -276,17 +276,17 @@
                   reference = "dev.to";
                 };
 
-                "google-search" = {
-                  matchType = "regex";
-                  openIn = "most-recent-space";
-                  reference = "^https?://(www\\.)?google\\.[a-z.]+(/|$|search|\\?)";
-                };
-
-                "google-services" = {
-                  matchType = "regex";
-                  openIn = spaces.personal;
-                  reference = "^https?://(?!(www|gemini)\\.)([a-zA-Z0-9_-]+\\.)+google\\.[a-z.]+";
-                };
+                # "google-search" = {
+                #   matchType = "regex";
+                #   openIn = "most-recent-space";
+                #   reference = "^https?://(www\\.)?google\\.[a-z.]+(/|$|search|\\?)";
+                # };
+                #
+                # "google-services" = {
+                #   matchType = "regex";
+                #   openIn = spaces.personal;
+                #   reference = "^https?://(?!(www|gemini)\\.)([a-zA-Z0-9_-]+\\.)+google\\.[a-z.]+";
+                # };
 
                 "hacker-news" = {
                   matchType = "contains";
