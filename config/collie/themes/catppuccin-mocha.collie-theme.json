@@ -1,0 +1,72 @@
+{
+  "version": 2,
+  "id": "catppuccin-mocha",
+  "name": "Catppuccin Mocha",
+  "author": "artifex",
+  "dark": {
+    "background": "#1e1e2e",
+    "card": "#181825",
+    "foreground": "#cdd6f4",
+    "muted-foreground": "#a6adc8",
+    "primary": "#cba6f7",
+    "primary-foreground": "#11111b",
+    "secondary": "#313244",
+    "secondary-foreground": "#cdd6f4",
+    "destructive": "#f38ba8",
+    "destructive-foreground": "#11111b",
+    "rule": "#45475a",
+    "status-done": "#a6e3a1",
+    "status-blocked": "#fab387"
+  },
+  "light": {
+    "background": "#eff1f5",
+    "card": "#e6e9ef",
+    "foreground": "#4c4f69",
+    "muted-foreground": "#6c6f85",
+    "primary": "#8839ef",
+    "primary-foreground": "#ffffff",
+    "secondary": "#ccd0da",
+    "secondary-foreground": "#4c4f69",
+    "destructive": "#d20f39",
+    "destructive-foreground": "#ffffff",
+    "rule": "#bcc0cc",
+    "status-done": "#40a02b",
+    "status-blocked": "#df8e1d"
+  },
+  "fonts": {
+    "ui": "geist",
+    "display": "grotesk"
+  },
+  "surface": {
+    "radius": "soft",
+    "shadow": "lifted",
+    "density": "default",
+    "weight": "default",
+    "border": "default",
+    "ground": "flat",
+    "chrome": "page",
+    "rows": "rules",
+    "icons": "default",
+    "labels": "caps"
+  },
+  "ansi": {
+    "0": "#45475a",
+    "1": "#f38ba8",
+    "2": "#a6e3a1",
+    "3": "#f9e2af",
+    "4": "#89b4fa",
+    "5": "#f5c2e7",
+    "6": "#94e2d5",
+    "7": "#bac2de",
+    "8": "#585b70",
+    "9": "#f38ba8",
+    "10": "#a6e3a1",
+    "11": "#f9e2af",
+    "12": "#89b4fa",
+    "13": "#f5c2e7",
+    "14": "#94e2d5",
+    "15": "#a6adc8",
+    "ink": "#cdd6f4",
+    "ground": "#181825"
+  }
+}

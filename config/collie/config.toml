@@ -1,0 +1,52 @@
+# /home/artifex/.collie/config.toml
+# Collie unified machine configuration
+
+[bridge]
+poll_ms = 1500
+poll_idle_ms = 12000
+notify_delay_ms = 30000
+read_lines = 200
+submit_keys = ["Enter"]
+multi_session = true
+surface_shadow = false
+send_protocol = true
+walky = true
+transcript = true
+
+[network]
+# Serve on 0.0.0.0 to enable direct LAN / Wi-Fi mobile browser access
+port = 8787
+host = "0.0.0.0"
+allow_non_loopback_bind = true
+allow_any_host = true
+
+[mux]
+# Unified backend mirroring Herdr multiplexer where all coding agents live
+mux = "herdr"
+
+[access]
+redact = true
+sent = "on"
+
+[push]
+cache_warn_seconds = 300
+vapid_subject = "mailto:artifex@local"
+
+[uploads]
+max_upload_mb = 25
+upload_extra_types = ["nix", "diff", "patch", "kdl", "log"]
+
+[update]
+update_repo = "AltanS/collie"
+keep_versions = 2
+skill_sync = true
+
+[serve]
+skip_serve = false
+serve_mode = "https"
+serve_port = 443
+
+[stt]
+# Voxtype speech-to-text integration via local-cli provider
+stt_provider = "local-cli"
+stt_command = "/home/artifex/.local/bin/collie-voxtype-stt"

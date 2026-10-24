@@ -1,0 +1,57 @@
+# config/collie/commands.toml
+# Slash commands for Collie command palette and action bar
+
+[[commands]]
+scope = "omp"
+command = "/tree"
+description = "Show session history tree"
+bar = true
+bar_label = "Tree"
+
+[[commands]]
+scope = "omp"
+command = "/compact"
+description = "Compact session conversation"
+bar = true
+bar_label = "Compact"
+
+[[commands]]
+scope = "omp"
+command = "/resume"
+description = "Resume previous session"
+bar = true
+bar_label = "Resume"
+
+[[commands]]
+scope = "pi"
+command = "/tree"
+description = "Show session history tree"
+bar = true
+bar_label = "Tree"
+
+[[commands]]
+scope = "pi"
+command = "/compact"
+description = "Compact session conversation"
+bar = true
+bar_label = "Compact"
+
+[[commands]]
+scope = "pi"
+command = "/resume"
+description = "Resume previous session"
+bar = true
+bar_label = "Resume"
+
+[[commands]]
+scope = "agy"
+command = "/status"
+description = "Show Antigravity status"
+bar = true
+bar_label = "Status"
+
+[[commands]]
+command = "/clear"
+description = "Clear terminal screen"
+bar = true
+bar_label = "Clear"

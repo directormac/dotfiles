@@ -22,6 +22,7 @@
       dev.ai.copilot
       dev.ai.mcp
       dev.ai.vox
+      dev.ai.collie
 
       # Version Control
       dev.git.git

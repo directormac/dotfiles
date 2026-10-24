@@ -23,7 +23,7 @@
               terminal-browser
               agent-browser
               skills
-              # collie (managed by dev.mux.herdr / dev.mux.tmux)
+              # collie (managed by dev.ai.collie)
               # opencodex
               # kimi-code
               # codex

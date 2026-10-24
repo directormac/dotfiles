@@ -1,0 +1,26 @@
+# config/collie/launchers.toml
+# Launchers on New page and switcher sheet
+
+[phone]
+adds = true
+free_text = true
+run = true
+
+[[launchers]]
+command = "omp"
+label = "Oh My Pi"
+harness = "omp"
+
+[[launchers]]
+command = "pi"
+label = "Pi Agent"
+harness = "pi"
+
+[[launchers]]
+command = "agy"
+label = "Antigravity"
+harness = "agy"
+
+[[launchers]]
+command = "htop"
+label = "htop"

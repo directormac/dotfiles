@@ -1,0 +1,26 @@
+# config/collie/keys.toml
+# Key presets for the Keys tray
+
+[[keys]]
+scope = "omp"
+label = "Queue"
+keys = ["ctrl+q"]
+
+[[keys]]
+scope = "pi"
+label = "Queue"
+keys = ["ctrl+q"]
+
+[[keys]]
+scope = "agy"
+label = "Cancel"
+keys = ["ctrl+c"]
+danger = true
+
+[[keys]]
+label = "Esc"
+keys = ["Escape"]
+
+[[keys]]
+label = "Enter"
+keys = ["Enter"]

@@ -35,13 +35,9 @@
   den.aspects.applications.dev.mux.tmux = {
     nixos =
       { pkgs, ... }:
-      let
-        colliePkg = pkgs.collie;
-      in
       {
         environment.systemPackages = [
           (pkgs.local.tmux or pkgs.tmux)
-          colliePkg
         ]
         ++ lib.optional (pkgs ? local && pkgs.local ? tmuxx) pkgs.local.tmuxx
         ++ lib.optionals (pkgs ? nur && pkgs.nur ? repos && pkgs.nur.repos ? Freed-Wu) [
@@ -228,11 +224,7 @@
       ];
 
     persistHome.directories = [
-      ".config/collie"
-      ".config/herdr/plugins/config/herdr.collie-tmux"
       ".local/share/tmux"
-      ".local/state/collie"
-      ".local/state/collie-tmux"
       ".local/state/tmux"
     ];
   };

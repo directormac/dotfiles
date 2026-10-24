@@ -12,7 +12,6 @@
         ...
       }:
       let
-        colliePkg = pkgs.collie;
         herdr-plugins-sync = pkgs.writeShellScriptBin "herdr-plugins-sync" ''
           set -euo pipefail
           echo "==> Syncing declarative Herdr plugins..."
@@ -210,7 +209,6 @@
           herdrProjectsPkg
           herdr-plugins-sync
           pkgs.dtach
-          colliePkg
         ];
 
         home.sessionPath = [
@@ -418,10 +416,8 @@
 
     persistHome.directories = [
       ".config/herdr"
-      ".config/collie"
       ".herdr-projects"
       ".local/share/herdr"
-      ".local/state/collie"
       ".local/state/herdr"
     ];
   };

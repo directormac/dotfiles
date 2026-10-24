@@ -8,8 +8,6 @@
   "cdq" = "zoxide query";
   "cdr" = "zoxide remove";
   "ci" = "zi";
-  "collie-herdr" = "collie";
-  "collie-tmux" = "COLLIE_INSTANCE=tmux collie";
   "dotfiles" = "cd ~/.dotfiles";
   "du" = "dust";
   "find" = "fd";

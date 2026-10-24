@@ -1,0 +1,21 @@
+# config/collie/quick-replies.toml
+# Quick dock phrases per agent harness
+
+[[replies]]
+title = "Confirm"
+items = ["yes", "no", "proceed", "cancel"]
+
+[[replies]]
+scope = "omp"
+title = "OMP Actions"
+items = ["continue", "summarize", "revert", "explain"]
+
+[[replies]]
+scope = "pi"
+title = "Pi Actions"
+items = ["continue", "summarize", "revert", "explain"]
+
+[[replies]]
+scope = "agy"
+title = "Antigravity Actions"
+items = ["yes", "continue", "skip", "status"]

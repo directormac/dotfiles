@@ -1,121 +1,228 @@
 # Collie (`collie`)
 
-Self-hosted mobile client PWA for terminal AI coding agents (Herdr, tmux, zellij) served securely over Tailscale.
+Self-hosted mobile client PWA for terminal AI coding agents (Pi, OMP, Antigravity, OpenCode) running inside Herdr, accessible locally over Wi-Fi/LAN and remotely over Tailscale.
 
 ## Overview
 
-Collie provides a web-based Progressive Web App (PWA) to monitor, inspect, and reply to agent loops and terminal multiplexer sessions from mobile devices. It runs as a local bridge daemon and connects to terminal multiplexers via Unix domain sockets or CLI adapters.
+Collie provides a web-based Progressive Web App (PWA) to monitor, inspect, and reply to agent loops and terminal multiplexer sessions directly from mobile devices. It runs as a local bridge daemon and connects natively to the Herdr multiplexer (`COLLIE_MUX=herdr`), which manages agent tabs and panes.
 
-In this configuration, Collie supports **dual isolated instances**:
-1. **Herdr Instance** (default) running on port `8787` for Herdr agent sessions.
-2. **Tmux Instance** running on port `8788` for standard tmux sessions.
+### Key Architecture Features
 
-## Package Architecture & Nix Integration
+1. **Unified Multiplexer Architecture**: Drives Herdr directly as the single source of truth for all terminal agent workspaces and sessions, removing brittle dual-instance splits.
+2. **Multi-Agent Deep Integration**:
+   - **Pi** (`pi`): Full chat view, prompt cache countdown, journal reading (`~/.pi/agent/sessions`), and walky-talky messaging.
+   - **Oh My Pi** (`omp`): Full chat view, session tree inspection (`/tree`), compact/resume commands, journal reading (`~/.omp/agent/sessions`), and queue key handling (`ctrl+q`).
+   - **Antigravity** (`agy` / `antigravity-cli`): Native surface hold profile, status slash commands, and walky-talky skill integration (`~/.gemini/GEMINI.md`).
+   - **OpenCode** (`opencode`): Native state sync, compaction detection, and session log parsing.
+3. **Local Wi-Fi & Tailscale Networking**:
+   - Listens on `0.0.0.0:8787` (`allow_non_loopback_bind = true`, `allow_any_host = true`) for direct phone access over local Wi-Fi / LAN (`http://<lan-ip>:8787`).
+   - Seamlessly published over Tailscale Serve HTTPS (`https://<tailscale-node>:443` -> `http://127.0.0.1:8787`) for encrypted, authenticated remote access.
+4. **Local Voxtype Speech-to-Text (STT)**:
+   - Hooked to Collie's `local-cli` STT provider via `collie-voxtype-stt`.
+   - Converts browser-recorded Opus/WebM and AAC/MP4 audio into 16kHz mono WAV via `ffmpeg`.
+   - Includes silence threshold detection to eliminate Whisper silence hallucinations and provide instant response (<100ms) on silent probe clips.
+   - Transcribes zero-egress speech on-device with `voxtype` whisper inference.
+5. **Walky-Talky Agent Collaboration**:
+   - Inter-agent message bus allowing `pi`, `omp`, and `antigravity` to message each other or receive operator instructions from the phone.
+6. **Catppuccin Mocha UI & Custom Themes**:
+   - Version 2 theme profile (`config/collie/themes/catppuccin-mocha.collie-theme.json`) matching dotfiles aesthetic with full 18-color ANSI terminal palette.
 
-- **Package Definition**: `pkgs/by-name/collie/package.nix`
-- **Aspect Integration**:
-  - `modules/aspects/applications/dev/mux/herdr.nix` (Herdr integration)
-  - `modules/aspects/applications/dev/mux/tmux.nix` (Tmux integration & persistence)
-- **Overlay**: `pkgs/overlays.nix` ensures `final.collie` resolves to the local standalone prebuilt binary (`v1.23.3`), avoiding unpackaged wrapper failures from external flake inputs.
-- **Persistence (`persistHome`)**:
+---
+
+## Nix Integration & File Layout
+
+- **Aspect Definition**: `modules/aspects/applications/dev/ai/collie.nix`
+- **Role Inclusion**: `modules/aspects/roles/dev.nix` (`dev.ai.collie`)
+- **Package**: `pkgs/by-name/collie/package.nix` (`v1.24.0-edge.4+c6a690d`)
+- **STT Helper**: `collie-voxtype-stt` (built via Nix, symlinked to `~/.local/bin/collie-voxtype-stt`)
+- **Dotfiles Out-of-Store Config**:
+  - `config/collie/config.toml` -> Linked to `~/.collie/config.toml` and `~/.config/herdr/plugins/config/herdr.collie/config.toml`
+  - `config/collie/commands.toml` -> Custom slash commands on mobile action bar (`/tree`, `/compact`, `/resume`, `/status`)
+  - `config/collie/keys.toml` -> Key shortcuts (`ctrl+q`, `ctrl+c`, `Escape`, `Enter`)
+  - `config/collie/quick-replies.toml` -> Contextual quick-reply buttons
+  - `config/collie/launchers.toml` -> Agent launcher presets (`omp`, `pi`, `agy`, `htop`)
+  - `config/collie/themes/` -> Custom themes (`catppuccin-mocha.collie-theme.json`)
+- **State & Persistence**:
   - `~/.config/collie`
-  - `~/.local/state/collie` (primary Herdr state)
-  - `~/.config/herdr/plugins/config/herdr.collie-tmux` (tmux instance configuration)
-  - `~/.local/state/collie-tmux` (tmux instance state)
+  - `~/.local/state/collie`
+  - `~/.collie`
 
-## Multi-Instance Configuration
+---
 
-Collie resolves its active instance from the `COLLIE_INSTANCE` environment variable. When `COLLIE_INSTANCE` is set, Collie requires an explicit `COLLIE_PORT` and uses an instance-specific configuration directory and state directory.
+## Configuration Reference
 
-### Instance Comparison
+### Bridge & Network (`config/collie/config.toml`)
 
-| Attribute | Primary Herdr Instance (`collie-herdr`) | Secondary Tmux Instance (`collie-tmux`) |
-| :--- | :--- | :--- |
-| **`COLLIE_INSTANCE`** | _unset_ (default) | `tmux` |
-| **`COLLIE_MUX`** | `herdr` | `tmux` |
-| **`COLLIE_PORT`** | `8787` | `8788` |
-| **Config Directory** | `~/.config/herdr/plugins/config/herdr.collie` | `~/.config/herdr/plugins/config/herdr.collie-tmux` |
-| **State Directory** | `~/.local/state/collie` | `~/.local/state/collie-tmux` |
-| **Systemd Unit** | `collie.service` | `collie-tmux.service` |
-| **Shell Command** | `collie` or `collie-herdr` | `collie-tmux` |
+```toml
+[bridge]
+poll_ms = 1500
+poll_idle_ms = 12000
+notify_delay_ms = 30000
+read_lines = 200
+submit_keys = ["Enter"]
+multi_session = true
+surface_shadow = false
+send_protocol = true
+walky = true
+transcript = true
 
-### Configuration Files (`.env`)
+[network]
+port = 8787
+host = "0.0.0.0"
+allow_non_loopback_bind = true
+allow_any_host = true
 
-#### Herdr Instance (`~/.config/herdr/plugins/config/herdr.collie/.env`)
-```bash
-COLLIE_MUX=herdr
+[mux]
+mux = "herdr"
+
+[access]
+redact = true
+sent = "on"
+
+[push]
+cache_warn_seconds = 300
+vapid_subject = "mailto:artifex@local"
+
+[uploads]
+max_upload_mb = 25
+upload_extra_types = ["nix", "diff", "patch", "kdl", "log"]
+
+[update]
+update_repo = "AltanS/collie"
+keep_versions = 2
+skill_sync = true
+
+[serve]
+skip_serve = false
+serve_mode = "https"
+serve_port = 443
+
+[stt]
+stt_provider = "local-cli"
+stt_command = "/home/artifex/.local/bin/collie-voxtype-stt"
 ```
 
-#### Tmux Instance (`~/.config/herdr/plugins/config/herdr.collie-tmux/.env`)
-```bash
-COLLIE_INSTANCE=tmux
-COLLIE_MUX=tmux
-COLLIE_PORT=8788
-COLLIE_STATE_DIR=/home/artifex/.local/state/collie-tmux
-```
+---
 
-## CLI Usage & Commands
-
-Prepend `collie-tmux` for tmux operations, or use `collie` / `collie-herdr` for Herdr operations.
+## CLI Usage
 
 ### Service Management
 
 ```bash
-# Start bridge daemon and publish front-door
-collie-tmux start
-collie-herdr start
+# Check status and listening URLs
+collie status
 
-# Stop bridge daemon
-collie-tmux stop
-collie-herdr stop
+# Start bridge daemon and publish Tailscale front door
+collie start
 
 # Restart bridge daemon
-collie-tmux restart
-collie-herdr restart
+collie restart
 
-# Check runtime status and listening ports
-collie-tmux status
-collie-herdr status
+# Stop bridge daemon
+collie stop
 
-# Tail service logs (systemd journal)
-collie-tmux logs
-collie-herdr logs
+# Live journal logs
+collie logs
 ```
 
-### Pairing Mobile Devices
-
-Each instance maintains its own paired devices in its respective state directory:
+### Pairing Devices
 
 ```bash
-# Generate one-time pairing code and QR for phone
-collie-tmux pair
-collie-herdr pair
+# Generate one-time pairing QR / code for phone
+collie pair
 
-# List paired devices
-collie-tmux devices
-collie-herdr devices
+# List currently paired devices
+collie devices
 ```
 
-### Tailscale Serve & Networking
+### Voice & Speech-to-Text (Voxtype)
 
-- The primary instance serves at the Tailscale root `https://<tailscale-host>/` proxying to `http://127.0.0.1:8787`.
-- The tmux instance operates at `http://127.0.0.1:8788`. To publish it via Tailscale serve:
-  ```bash
-  COLLIE_BASE_PATH=/tmux collie-tmux serve
-  ```
+```bash
+# Check STT provider status
+collie stt status
+
+# Verify transcription pipeline (sends wav, webm, mp4 probes)
+collie stt test
+```
+
+### Walky-Talky (Agent Messaging)
+
+```bash
+# List reachable agent panes and their states
+collie walky who
+
+# Send message to an agent pane
+collie walky send local/w1:p4#mj39 "Tests are green. Ready for review."
+
+# Read incoming unread messages in the current pane
+collie walky inbox
+
+# Reply to a message
+collie walky reply wt_k3f9x2m8q1a0 "Acknowledged."
+
+# Check status of sent message
+collie walky status wt_k3f9x2m8q1a0
+
+# Sync walky-talky skills into agent instruction files
+collie skill sync
+```
 
 ### Diagnostics
 
 ```bash
-# Validate installation, permissions, multiplexer socket, and front-door
-collie-tmux doctor
-collie-herdr doctor
+# Validate full installation, permissions, multiplexer socket, and integrations
+collie doctor
+
+# Check configuration syntax and show active values
+collie config check
+collie config show
 ```
+
+---
+
+## Mobile Access & Connectivity
+
+1. **Local Wi-Fi / LAN**:
+   - Open browser on mobile phone connected to the same local Wi-Fi.
+   - Navigate to `http://<machine-ip>:8787` (e.g. `http://192.168.123.42:8787`).
+   - If not yet paired, enter the code from `collie pair`.
+2. **Tailscale Remote Access**:
+   - Ensure phone is connected to Tailscale VPN.
+   - Navigate to `https://super.tail01fba8.ts.net/`.
+3. **PWA Installation**:
+   - Tap browser menu -> **Add to Home screen** / **Install App** for full-screen PWA mode.
+
+---
 
 ## Troubleshooting
 
-### Environment Variable Shadowed (`note: COLLIE_MUX=... shadowed by .env`)
-Collie prioritizes values in `<configDir>/.env` over ambient shell variables. Always use `COLLIE_INSTANCE=tmux` (or the `collie-tmux` alias), which targets the isolated `herdr.collie-tmux` config directory where `COLLIE_MUX=tmux` is declared.
+### 1. Banner shows `Collie isn't answering on :8787 yet`
+- Check service status: `systemctl --user status collie`.
+- Check logs: `collie logs` or `journalctl --user -u collie -f`.
+- Verify port 8787 is not bound by an orphaned process: `ss -tulpn | grep 8787`.
 
-### Binary Missing (`error: no collie binary at ...`)
-Ensure `pkgs/overlays.nix` points to `pkgs/by-name/collie/package.nix` (precompiled binary release v1.23.3+) rather than source-only derivations.
+### 2. Page loads but stays blank or 403 `cross-origin rejected`
+- Cause: Host validation rejected request from an unexpected IP or domain.
+- Fix: Ensure `allow_any_host = true` and `allow_non_loopback_bind = true` in `config/collie/config.toml`, then `collie restart`.
+
+### 3. Agent pane shows raw terminal instead of Chat view
+- Chat view requires the agent to report its session through Herdr.
+- Check integration status: `herdr integration status`.
+- If an agent is missing or outdated:
+  - Run `herdr integration install <agent>` (e.g. `herdr integration install omp` or `pi`).
+  - Restart the agent inside that pane so it loads the hook.
+- Run `collie doctor` to verify `agent-sessions` and `journal-roots`.
+
+### 4. Walky-Talky: `run this inside a pane, or send from the phone`
+- Walky-talky `send` commands determine the sender identity from the terminal pane environment.
+- Run `collie walky who` inside the agent pane (marked with `(you)`).
+- Outside terminal panes, send messages using the Collie mobile UI composer (**Send as message**).
+
+### 5. STT: `collie stt test` failures
+- Ensure `collie-voxtype-stt` is executable: `chmod +x ~/.local/bin/collie-voxtype-stt`.
+- Verify `ffmpeg` and `voxtype` are accessible in PATH: `which ffmpeg && which voxtype`.
+- Run a manual probe:
+  ```bash
+  collie stt test
+  ```
+  All three audio containers (wav, webm, mp4) should report `✓` with empty transcript on silence.
