@@ -14,7 +14,7 @@
           bws
           libsecret
           libargon2
-          pinentry-qt
+          pinentry-all
         ];
 
         programs.rbw = {
