@@ -80,16 +80,22 @@ resize_mode = [
 [[keys.command]]
 key = "prefix+t"
 type = "popup"
-command = "tv herdr-sessions"
+command = "tv herdr-sesh"
 width = "80%"
 height = "80%"
-description = "Television: Herdr persistent sessions"
+description = "Television: Herdr Sesh picker"
 
 [[keys.command]]
 key = "prefix+s"
 type = "plugin_action"
 command = "fullerzz.sesh.open-picker"
-description = "Sesh"
+description = "Sesh workspace picker"
+
+[[keys.command]]
+key = ["prefix+m", "prefix+shift+m"]
+type = "plugin_action"
+command = "herdr-lazy.manage"
+description = "Manage plugins (herdr-lazy)"
 
 [[keys.command]]
 key = ["prefix+/", "ctrl+alt+k"]
@@ -121,36 +127,6 @@ type = "plugin_action"
 command = "cloudmanic.herdr-plus.projects"
 description = "Herdr Plus: Project templates"
 
-[[keys.command]]
-key = "prefix+m"
-type = "plugin_action"
-command = "herdr-projects.open"
-description = "Herdr Projects: Mission control work board"
-
-
-[[keys.command]]
-key = "prefix+shift+w"
-type = "popup"
-command = "tv herdr-workspaces"
-width = "80%"
-height = "80%"
-description = "Television: Herdr workspaces"
-
-[[keys.command]]
-key = "prefix+shift+a"
-type = "popup"
-command = "tv herdr-agents"
-width = "80%"
-height = "80%"
-description = "Television: Herdr coding agents"
-
-[[keys.command]]
-key = "prefix+alt+t"
-type = "popup"
-command = "tv herdr-worktrees"
-width = "80%"
-height = "80%"
-description = "Television: Herdr worktrees"
 
 [[keys.command]]
 key = "prefix+alt+r"

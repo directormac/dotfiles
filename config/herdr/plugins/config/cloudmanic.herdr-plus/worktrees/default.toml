@@ -1,7 +1,13 @@
 # Auto-open tabs when a worktree is created in Herdr
+repo = "*"
+
 [[tabs]]
 name = "editor"
 command = "nvim ."
 
 [[tabs]]
 name = "terminal"
+
+[[tabs]]
+name = "lazygit"
+command = "lazygit"

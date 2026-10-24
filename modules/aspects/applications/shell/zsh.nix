@@ -64,6 +64,15 @@
               ${functions}
               ${completion.fzfTabZstyle}
 
+              # Enable Kitty keyboard protocol (disambiguation) so multiplexers like
+              # Herdr forward Ctrl+Tab and other modified keys instead of dropping them to plain Tab
+              _zsh_enable_extended_keys() {
+                [[ -t 1 && "$TERM" != "dumb" ]] && printf '\e[=1u'
+              }
+              autoload -Uz add-zsh-hook
+              add-zsh-hook precmd _zsh_enable_extended_keys
+              _zsh_enable_extended_keys
+
               # Autosuggest Accept Keybindings (standard zle)
               bindkey '^[[27;5;9~' autosuggest-accept
               bindkey '^[[1;5I' autosuggest-accept

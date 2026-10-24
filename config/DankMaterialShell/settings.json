@@ -1033,5 +1033,6 @@
     }
   ],
   "lockScreenShowPowerActions": true,
-  "keybindsFloatingWindow": true
+  "keybindsFloatingWindow": true,
+  "muxType": "tmux"
 }

@@ -692,6 +692,7 @@
                 "channels.toml"
                 "flake-inputs.toml"
                 "hypr-clients.toml"
+                "herdr-sesh.toml"
                 "hypr-workspaces.toml"
                 "mdless.toml"
                 "mdpick.toml"

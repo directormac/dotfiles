@@ -1,4 +1,4 @@
-name = "Television: Herdr Sessions"
-description = "Search and attach to Herdr persistent sessions"
+name = "Television: Herdr Sesh"
+description = "Search and connect to Herdr workspaces, sessions, and zoxide history via Sesh"
 type = "command"
-command = "tv herdr-sessions"
+command = "tv herdr-sesh"

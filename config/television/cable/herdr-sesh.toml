@@ -1,0 +1,40 @@
+[metadata]
+name = "herdr-sesh"
+description = "Herdr workspaces, configured sessions, and zoxide history via Sesh"
+requirements = ["herdr-sesh"]
+
+[source]
+command = "herdr-sesh list 2>/dev/null"
+display = "[{split:\t:0}] {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:1}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "if [ -d '{split:\t:2}' ]; then lsd -la --color=always '{split:\t:2}' 2>/dev/null || ls -la '{split:\t:2}'; else echo '{split:\t:2}'; fi"
+
+[keybindings]
+enter = "actions:connect"
+ctrl-e = "actions:edit"
+ctrl-t = "actions:terminal"
+ctrl-y = "actions:copy_path"
+
+[actions.connect]
+description = "Connect or switch to this workspace in Herdr"
+command = "herdr-sesh connect '{split:\t:1}'"
+mode = "execute"
+
+[actions.edit]
+description = "Open workspace path in editor"
+command = "${EDITOR:-nvim} '{split:\t:2}'"
+mode = "execute"
+
+[actions.terminal]
+description = "Open new Ghostty terminal in workspace directory"
+command = "ghostty --working-directory='{split:\t:2}'"
+mode = "fork"
+
+[actions.copy_path]
+description = "Copy workspace path to clipboard"
+command = "printf '%s' '{split:\t:2}' | wl-copy"
+mode = "execute"
