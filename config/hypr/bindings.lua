@@ -258,6 +258,18 @@ hl.define_submap('cursor', function()
   end, { description = 'Exit the cursor submap' })
 end)
 
+-- Toggle Gamemode / Passthrough manually
+hl.bind(modkey .. ' + F1', hl.dsp.submap('gamemode'), { desc = 'Enter gamemode (disable Hyprland bindings)' })
+
+hl.define_submap('gamemode', function()
+  -- Only the escape key is intercepted by Hyprland; everything else passes to the game
+  hl.bind(modkey .. ' + F1', hl.dsp.submap('reset'), { desc = 'Exit gamemode' })
+
+  -- Optional: keep media volume keys functional during gameplay if desired
+  -- hl.bind('', 'XF86AudioRaiseVolume', hl.dsp.exec_cmd('dms ipc call audio increment'))
+  -- hl.bind('', 'XF86AudioLowerVolume', hl.dsp.exec_cmd('dms ipc call audio decrement'))
+end)
+
 --- Applications
 
 -- Essential application bindings.

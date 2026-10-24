@@ -95,8 +95,69 @@ for _, app in ipairs(floating_sized_apps) do
 end
 
 -------------------
------- STEAM ------
+------ GAMING ------
 -------------------
+
+hl.window_rule({
+  name = 'gamescope-instance',
+  match = { class = '^gamescope$' },
+  fullscreen = true,
+  immediate = true, -- Allow tearing for minimum input latency / direct scanout
+  no_shortcuts_inhibit = false, -- Allow gamescope to capture and handle shortcut inhibition
+  idle_inhibit = 'always', -- Inhibit display sleep while in-game
+})
+
+-- Auto-switch Hyprland to gamemode submap when a game window is focused
+local is_gamemode_active = false
+
+local function is_game_window(win)
+  if not win or not win.class then return false end
+  local c = win.class:lower()
+  local t = (win.title or ''):lower()
+
+  -- Steam Proton games (class is always "steam_app_<appid>")
+  if c:match('^steam_app_') then return true end
+
+  -- Gamescope
+  if c == 'gamescope' then return true end
+
+  -- Windows executables via Wine / Proton / Bottles / Lutris
+  if c:match('%.exe$') or t:match('%.exe$') then return true end
+
+  -- Known standalone native games & emulators
+  local known_games = {
+    ['cs2'] = true,
+    ['dota2'] = true,
+    ['hl2_linux'] = true,
+    ['osu!'] = true,
+    ['ryujinx'] = true,
+    ['yuzu'] = true,
+    ['rpcs3'] = true,
+    ['dolphin-emu'] = true,
+    ['retroarch'] = true,
+    ['sober'] = true,
+    ['wow.exe'] = true,
+    ['wowclassic.exe'] = true,
+  }
+  if known_games[c] then return true end
+
+  return false
+end
+
+hl.on('window.active', function(win)
+  local game = is_game_window(win)
+  if game and not is_gamemode_active then
+    is_gamemode_active = true
+    hl.dispatch(hl.dsp.submap('gamemode'))
+    hl.exec_cmd("hyprctl notify 5 2000 'rgb(a6e3a1)' 'Game active: bindings isolated'")
+    hl.exec_cmd('dms ipc call notifications enableDoNotDisturbIndefinitely')
+  elseif not game and is_gamemode_active then
+    is_gamemode_active = false
+    hl.dispatch(hl.dsp.submap('reset'))
+    hl.exec_cmd("hyprctl notify 1 2000 'rgb(cba6f7)' 'Normal bindings restored'")
+    hl.exec_cmd('dms ipc call notifications disableDoNotDisturb')
+  end
+end)
 
 -- 1. Main Steam application window launches maximized
 hl.window_rule({

@@ -14,10 +14,10 @@
           args = [
             "--rt"
             "--expose-wayland"
+            "--gamemode"
           ];
 
           capSysNice = true;
-          package = pkgs.gamescope;
         };
       };
   };

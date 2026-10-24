@@ -57,17 +57,26 @@
               args = [
                 "--rt"
                 "--expose-wayland"
+                "-f"
+                "--adaptive-sync"
                 "--hdr-enabled"
                 "--hdr-itm-enabled"
-                "--hdr-debug-force-output"
-                "--xwayland-count 2"
-                "-W 3840"
-                "-H 2160"
-                "-r 120"
+                "--xwayland-count"
+                "2"
+                "--gamemode"
+                # Omit hardcoded resolution (-W, -H, -r) and outputs (--prefer-output)
+                # so Gamescope auto-detects native display modes portably across different machines.
               ];
 
               env = {
+                # Ensures the Mesa RADV driver is preferred on RDNA 3
+                AMD_VULKAN_ICD = "RADV";
                 DXVK_HDR = "1";
+                # Injects Gamescope's Vulkan WSI layer for direct presentation, HDR swapchains, and lower latency
+                ENABLE_GAMESCOPE_WSI = "1";
+                # Signals Proton/VKD3D to expose HDR display modes to DX11/DX12 titles
+                PROTON_ENABLE_HDR = "1";
+
               };
             };
 
@@ -76,8 +85,10 @@
             package = pkgs.steam.override {
               extraEnv = {
                 MANGOHUD = true;
+                MANGOHUD_DLSYM = "1";
                 OBS_VKCAPTURE = true;
                 PROTON_ENABLE_HDR = true;
+                #  If you encounter invisible mouse cursors or spinning camera angles in FPS games, disable this flag and let Gamescope handle XWayland with --xwayland-count 2
                 PROTON_ENABLE_WAYLAND = true;
                 PROTON_USE_NTSYNC = true;
                 PROTON_USE_WOW64 = true;
