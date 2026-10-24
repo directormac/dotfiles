@@ -79,9 +79,17 @@ resize_mode = [
 
 [[keys.command]]
 key = "prefix+t"
+type = "popup"
+command = "tv herdr-sessions"
+width = "80%"
+height = "80%"
+description = "Television: Herdr persistent sessions"
+
+[[keys.command]]
+key = "prefix+s"
 type = "plugin_action"
-command = "herdr-navigator.open"
-description = "jump to anything"
+command = "fullerzz.sesh.open-picker"
+description = "Sesh"
 
 [[keys.command]]
 key = ["prefix+/", "ctrl+alt+k"]
@@ -119,13 +127,6 @@ type = "plugin_action"
 command = "herdr-projects.open"
 description = "Herdr Projects: Mission control work board"
 
-[[keys.command]]
-key = "prefix+s"
-type = "popup"
-command = "tv herdr-sessions"
-width = "80%"
-height = "80%"
-description = "Television: Herdr persistent sessions"
 
 [[keys.command]]
 key = "prefix+shift+w"

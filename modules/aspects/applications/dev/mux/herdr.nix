@@ -17,11 +17,10 @@
           echo "==> Syncing declarative Herdr plugins..."
           PLUGINS=(
             "cloudmanic/herdr-plus"
-            "jeffarese/herdr-bar"
             "Tyru5/herdr-floax"
-            "eliasstravik/herdr-projects"
             "AltanS/collie"
-            "thanhdat77/herdr-navigator"
+            "fullerzz/herdr-plugin-sesh"
+            "jeffarese/herdr-bar"
             "rohankewal/herdr-nerd-font-tab-name"
           )
           INSTALLED=$(${herdrPkg}/bin/herdr plugin list --json 2>/dev/null || echo '{"result":{"plugins":[]}}')
@@ -53,26 +52,6 @@
             fi
           fi
 
-          # Ensure herdr-projects launcher and binary are ready
-          HP_DIR=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 3 -type d -name "checkout" 2>/dev/null | grep "herdr-projects" | head -n 1 || true)
-          if [ -n "$HP_DIR" ] && [ -d "$HP_DIR" ]; then
-            if [ ! -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
-              echo "  [installing] setting up herdr-projects launcher..."
-              sh "$HP_DIR/bin/run.sh" install 2>/dev/null || true
-            fi
-            if [ -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
-              mkdir -p "$HOME/.local/bin"
-              ln -sf "$HOME/.herdr-projects/data/bin/herdr-projects" "$HOME/.local/bin/herdr-projects"
-              # Ensure configured agents (omp, opencode, agy)
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set coordinator.agent omp 2>/dev/null || true
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set worker.agent opencode 2>/dev/null || true
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set reviewer.agent agy 2>/dev/null || true
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set watcher.agent agy 2>/dev/null || true
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set worker.fallback "omp, agy" 2>/dev/null || true
-              "$HOME/.herdr-projects/data/bin/herdr-projects" set reviewer.fallback "opencode, omp" 2>/dev/null || true
-            fi
-          fi
-
           # Ensure agent integrations for herdr
           for integ in omp opencode antigravity-cli; do
             ${herdrPkg}/bin/herdr integration install "$integ" 2>/dev/null || true
@@ -83,22 +62,7 @@
         herdrPkg =
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
-        herdrProjectsPkg = pkgs.writeShellScriptBin "herdr-projects" ''
-          if [ -x "$HOME/.herdr-projects/data/bin/herdr-projects" ]; then
-            exec "$HOME/.herdr-projects/data/bin/herdr-projects" "$@"
-          elif [ -x "$HOME/.local/bin/herdr-projects" ]; then
-            exec "$HOME/.local/bin/herdr-projects" "$@"
-          else
-            HP_DIR=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 3 -type d -name "checkout" 2>/dev/null | grep "herdr-projects" | head -n 1 || true)
-            if [ -n "$HP_DIR" ] && [ -x "$HP_DIR/bin/herdr-projects-linux-x86_64" ]; then
-              export HERDR_PROJECTS_DATA_DIR="$HOME/.herdr-projects/data"
-              export HERDR_PROJECTS_CONFIG_DIR="$HOME/.herdr-projects/settings"
-              exec "$HP_DIR/bin/herdr-projects-linux-x86_64" "$@"
-            fi
-            echo "herdr-projects: launcher not found. Run 'herdr-plugins-sync' to initialize it." >&2
-            exit 1
-          fi
-        '';
+
         tv-herdr-agent-preview = pkgs.writeShellScript "tv-herdr-agent-preview" ''
           agent="$1"
           status="$2"
@@ -197,6 +161,9 @@
         home.file.".config/herdr/plugins/config/cloudmanic.herdr-plus".source =
           config.lib.dots.link "herdr/plugins/config/cloudmanic.herdr-plus";
 
+        home.file.".config/herdr/plugins/config/fullerzz.sesh/config.toml".source =
+          config.lib.dots.link "herdr/plugins/config/fullerzz.sesh/config.toml";
+
         home.file.".config/herdr/plugins/config/herdr-bar/config.json".source =
           config.lib.dots.link "herdr/plugins/config/herdr-bar/config.json";
 
@@ -207,7 +174,6 @@
 
         home.packages = [
           herdrPkg
-          herdrProjectsPkg
           herdr-plugins-sync
           pkgs.dtach
         ];

@@ -1,0 +1,46 @@
+version = 1
+
+[naming]
+[picker]
+show_icons = true
+herdr_theme_inherit = true
+replace_worktree_icon = true
+show_last_workspace = true
+show_last_workspace_path = true
+workspace_sort = 'workspace'
+
+[[tab]]
+name = 'editor'
+startup = 'nvim'
+
+[[tab]]
+name = 'terminal'
+startup = 'clear'
+
+[[tab]]
+name = 'lazygit'
+startup = 'lazygit'
+
+[[tab]]
+name = 'agent'
+startup = 'agy'
+
+[[workspace]]
+name = 'Dotfiles'
+path = '~/.dotfiles'
+
+[[workspace]]
+name = 'Config'
+path = '~/.dotfiles/config'
+
+[[workspace]]
+name = 'Default'
+path = '~/'
+
+[[rule]]
+path_glob = '~/Projects/*'
+tabs = ['editor', 'terminal']
+
+[[rule]]
+path_glob = '~/Code/.worktrees/*/*'
+tabs = ['editor', 'terminal', 'lazygit']
