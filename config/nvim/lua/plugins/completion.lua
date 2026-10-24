@@ -133,6 +133,9 @@ return {
       },
 
       completion = {
+        ghost_text = {
+          enabled = true,
+        },
         menu = {
           border = 'single',
           winblend = 0,
@@ -247,6 +250,7 @@ return {
             module = 'blink-copilot',
             score_offset = 100,
             async = true,
+            enabled = function() return _G.CopilotState == nil or _G.CopilotState.has_quota ~= false end,
             ---@module 'blink-copilot'
             ---@type blink-copilot.Config
             opts = {

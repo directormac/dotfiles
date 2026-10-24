@@ -79,6 +79,29 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = 'Yank line to clipboard' }
 )
 
+vim.keymap.set({ 'n', 'v' }, '<C-x>', '"+y<esc>dd', { noremap = true, desc = 'Copy and delete line' })
+vim.keymap.set({ 'n', 'v' }, '<C-y>', '"+yy<esc>', { noremap = true, desc = 'Copy' })
+vim.keymap.set('v', 'x', '"_x', { noremap = true, silent = true, desc = 'Delete character without yanking' })
+
+vim.keymap.set(
+  'n',
+  'x', -- Also let's allow 'x' key to delete blank lines in normal mode.
+  function()
+    if vim.fn.col('.') == 1 then
+      local line = vim.fn.getline('.')
+      if line:match('^%s*$') then
+        vim.api.nvim_feedkeys('dd', 'n', false)
+        vim.api.nvim_feedkeys('$', 'n', false)
+      else
+        vim.api.nvim_feedkeys('"_x', 'n', false)
+      end
+    else
+      vim.api.nvim_feedkeys('"_x', 'n', false)
+    end
+  end,
+  { noremap = true, silent = true, desc = 'Delete blank line without yanking' }
+)
+
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>p', '"+p', { noremap = true, silent = true, desc = 'Paste from clipboard' })
 
 -- vim.keymap.set(

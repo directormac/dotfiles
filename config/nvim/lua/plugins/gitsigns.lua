@@ -1,6 +1,7 @@
 return {
   'gitsigns.nvim',
-  event = 'DeferredUIEnter',
+  event = { 'BufReadPre', 'BufNewFile' },
+  load_before = { 'lualine.nvim' },
   opts = {
     signs = {
       add = { text = '▎' },
@@ -60,5 +61,12 @@ return {
       get = function() return require('gitsigns.config').config.signcolumn end,
       set = function(state) require('gitsigns').toggle_signs(state) end,
     }):map('<leader>tG')
+
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'GitSignsUpdate',
+      callback = function()
+        if package.loaded['lualine'] then require('lualine').refresh({ place = { 'statusline' } }) end
+      end,
+    })
   end,
 }

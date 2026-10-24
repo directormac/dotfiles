@@ -62,4 +62,52 @@ return {
       },
     }
   end,
+  after = function()
+    -- Patch bufferline.groups persist_pinned_buffers against invalid buffer IDs
+    local ok, groups = pcall(require, 'bufferline.groups')
+    if ok and groups.add_element then
+      local fn = groups.add_element
+      local n, v = debug.getupvalue(fn, 2)
+      if n == 'opts' and type(v) == 'table' and v.fn then fn = v.fn end
+      local _, persist_fn = debug.getupvalue(fn, 3)
+      if persist_fn then
+        local _, group_state = debug.getupvalue(persist_fn, 1)
+        local _, pinned_id = debug.getupvalue(persist_fn, 2)
+        local _, pinned_key = debug.getupvalue(persist_fn, 4)
+        if group_state and pinned_id and pinned_key then
+          local patched_persist = function()
+            local pinned = {}
+            for buf, grp in pairs(group_state.manual_groupings) do
+              if grp == pinned_id then
+                if vim.api.nvim_buf_is_valid(buf) then
+                  table.insert(pinned, vim.api.nvim_buf_get_name(buf))
+                else
+                  group_state.manual_groupings[buf] = nil
+                end
+              end
+            end
+            if #pinned == 0 then
+              vim.g[pinned_key] = ''
+            else
+              vim.g[pinned_key] = table.concat(pinned, ',')
+            end
+          end
+          debug.setupvalue(fn, 3, patched_persist)
+
+          local rfn = groups.remove_element
+          local rn, rv = debug.getupvalue(rfn, 2)
+          if rn == 'opts' and type(rv) == 'table' and rv.fn then rfn = rv.fn end
+          debug.setupvalue(rfn, 5, patched_persist)
+        end
+      end
+    end
+
+    vim.api.nvim_create_autocmd({ 'BufWipeout', 'BufDelete' }, {
+      group = vim.api.nvim_create_augroup('bufferline_pinned_cleanup', { clear = true }),
+      callback = function(args)
+        local g_ok, g = pcall(require, 'bufferline.groups')
+        if g_ok and g.remove_id_from_manual_groupings then g.remove_id_from_manual_groupings(args.buf) end
+      end,
+    })
+  end,
 }

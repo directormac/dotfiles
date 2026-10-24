@@ -1,8 +1,8 @@
 return {
-
   {
     'lualine.nvim',
     event = 'DeferredUIEnter',
+    on_require = { 'lualine' },
     opts = function()
       local icons = Utils.icons
       local util = Utils
@@ -17,7 +17,15 @@ return {
           disabled_filetypes = { statusline = { 'snacks_dashboard', 'oil' } },
         },
         sections = {
-          lualine_a = { 'mode' },
+          lualine_a = {
+            {
+              'mode',
+              fmt = function()
+                -- return "  "
+                return '  '
+              end,
+            },
+          },
           lualine_b = { 'branch', 'harpoon2' },
           lualine_c = {
             {
@@ -34,6 +42,29 @@ return {
           },
           lualine_x = {
             Snacks.profiler.status(),
+            -- Copilot indicator
+            {
+              function() return ' ' end,
+              cond = function()
+                local clients = vim.lsp.get_clients({ bufnr = 0, name = 'copilot' })
+                if #clients == 0 then return false end
+                return _G.CopilotState == nil or _G.CopilotState.has_quota ~= false
+              end,
+              color = function() return { fg = Snacks.util.color('Special') } end,
+            },
+            -- Wakatime today summary
+            -- stylua: ignore
+            -- {
+            --   function() return require('wakatime').statusline() end,
+            --   cond = function() 
+            --     return package.loaded['wakatime'] and require('wakatime').statusline() ~= '' 
+            --   end,
+            --   icon = '󱑎',
+            --   color = function() 
+            --     return { fg = Snacks.util.color('Special') } 
+            --   end,
+            --   __wakatime_statusline = true,
+            -- },
             -- stylua: ignore
             {
               function() 
@@ -92,7 +123,7 @@ return {
             },
             { 'progress', separator = ' ', padding = { left = 1, right = 0 } },
             { 'location', padding = { left = 0, right = 1 } },
-            'lsp_status',
+            -- 'lsp_status',
           },
           lualine_z = {},
         },
