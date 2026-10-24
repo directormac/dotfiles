@@ -339,6 +339,8 @@
               "**/.otter.*"
               "config/*/dms/**"
               "config/herdr/**"
+              "config/DankMaterialShell/**"
+              "config/pi/**"
             ]
             # Exclude generated files from the files.files flake-parts module
             ++ (if config ? files && config.files ? paths then config.files.paths else [ ])
