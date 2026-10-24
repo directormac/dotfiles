@@ -38,16 +38,18 @@
           if hasRootPwdSecret then
             {
               hashedPasswordFile = config.age.secrets."password-root".path;
-              initialHashedPassword = null;
+              # Default, so live/installer profiles (which set "") can win:
+              # nullOr rejects a null + non-null merge as a type error.
+              initialHashedPassword = lib.mkDefault null;
             }
           else if hasUserPwdSecret then
             {
               hashedPasswordFile = config.age.secrets."password-artifex".path;
-              initialHashedPassword = null;
+              initialHashedPassword = lib.mkDefault null;
             }
           else
             {
-              initialHashedPassword = null;
+              initialHashedPassword = lib.mkDefault null;
               initialPassword = "12345";
             };
       };
