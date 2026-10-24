@@ -6,6 +6,41 @@
   modifications = final: prev: {
     collie = final.callPackage ./by-name/collie/package.nix { };
 
+    # anydesk upstream binary crashes on launch with glibc 2.44 dl_main (SEGV_ACCERR)
+    # when patchelf sets RPATH: patchelf expands .dynamic into a new LOAD segment
+    # that overlaps with the read-only LOAD segment, leaving .dynamic mapped read-only.
+    # To fix this, only patch the dynamic linker interpreter and provide libraries
+    # via wrapProgram LD_LIBRARY_PATH. Also supply a domainname shim so `domainname -A`
+    # succeeds quietly instead of failing on net-tools's domainname.
+    anydesk = prev.anydesk.overrideAttrs (old: {
+      buildInputs = old.buildInputs ++ [ final.pipewire ];
+      postFixup = ''
+        patchelf \
+          --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) \
+          $out/bin/anydesk
+
+        mkdir -p $out/libexec
+        ln -s ${final.hostname}/bin/hostname $out/libexec/domainname
+
+        wrapProgram $out/bin/anydesk \
+          --prefix PATH : ${
+            final.lib.makeBinPath [
+              final.lsb-release
+              final.pciutils
+            ]
+          } \
+          --prefix PATH : $out/libexec \
+          --prefix LD_LIBRARY_PATH : ${final.lib.makeLibraryPath (old.buildInputs ++ [ final.pipewire ])} \
+          --prefix GDK_BACKEND : x11 \
+          --suffix PATH : ${
+            final.lib.makeBinPath [
+              final.net-tools
+            ]
+          } \
+          --set GTK_THEME Adwaita
+      '';
+    });
+
     # khal in nixpkgs declares `sphinxBuilders = [ "html" "man" ];`.
     # In nixpkgs with structuredAttrs enabled, bash arrays in .attrs.sh
     # cause sphinx-hook's `eval "__sphinxBuilders=($sphinxBuilders)"` to
