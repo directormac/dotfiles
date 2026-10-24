@@ -65,6 +65,5 @@
   "wmq" = "workmux add --mode window --base main -l quickfix";
   "wms" = "workmux sidebar";
   "wmw" = "workmux add --mode window --base main -l agent-only";
-  "y" = "yazi";
   "zen" = "zen-beta";
 }
