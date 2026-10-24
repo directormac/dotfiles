@@ -2,7 +2,29 @@ require('zoxide'):setup({
   update_db = true,
 })
 
--- require("autosession"):setup()
+require('close-and-restore-tab'):setup()
+require('projects'):setup()
+require('starship'):setup()
+require('git'):setup()
+
+require('whoosh'):setup({
+  bookmarks = {
+    { tag = "Home", path = "~", key = "h" },
+    { tag = "Config", path = "~/.config", key = { "f", "c" } },
+    { tag = "Dotfiles", path = "~/.dotfiles", key = "D" },
+    { tag = "Downloads", path = "~/Downloads", key = "d" },
+    { tag = "Resources", path = "~/Resources", key = "r" },
+  },
+  jump_notify = false,
+  special_keys = {
+    create_temp = "<Enter>",
+    fuzzy_search = "<Space>",
+    history = "<Tab>",
+    previous_dir = "<Backspace>",
+    project_root = "-",
+  },
+})
+
 
 function Linemode:size_and_mtime()
   local year = os.date('%Y')

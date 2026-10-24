@@ -2,11 +2,6 @@
 deps = []
 
 [[plugin.deps]]
-use = "WhoSowSee/mdv-previewer"
-rev = "099ebba"
-hash = "ec9577e04708ad33a1d4ed6ffe8983fb"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:mount"
 rev = "c591a36"
 hash = "b95f898e6dc60b52edbc415952e14395"
@@ -15,3 +10,8 @@ hash = "b95f898e6dc60b52edbc415952e14395"
 use = "yazi-rs/plugins:git"
 rev = "c591a36"
 hash = "5bb0bfab901d3601c370eafdd66edd31"
+
+[[plugin.deps]]
+use = "WhoSowSee/whoosh"
+rev = "d6ede98"
+hash = "LwugSeuG3+PmPW9KFvRThqx+g792CmUnw+vY6wSZJoo="

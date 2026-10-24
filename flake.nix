@@ -279,9 +279,9 @@
       url = "github:nix-community/nix-wrapper-modules";
     };
 
-    yazi-plugin-mdv-previewer = {
+    yazi-plugin-whoosh = {
       flake = false;
-      url = "github:WhoSowSee/mdv-previewer.yazi";
+      url = "github:WhoSowSee/whoosh.yazi";
     };
 
     zen-browser = {

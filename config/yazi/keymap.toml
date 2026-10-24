@@ -166,10 +166,6 @@ keymap = [
 ]
 
 [mgr]
-
-[[mgr.prepend_keymap]]
-on = "M"
-run = "plugin mount"
 keymap = [
   # Goto
   { on = [
@@ -412,6 +408,83 @@ keymap = [
     ",",
     "r",
   ], run = "sort random --reverse=no", desc = "Sort randomly" },
+]
+
+prepend_keymap = [
+  # Mount (Disks & Partitions via udisks2)
+  { on = "M", run = "plugin mount", desc = "Mount: disks and partitions" },
+
+  # Bookmarks (whoosh.yazi)
+  { on = [ "b", "b" ], run = "plugin whoosh jump_by_key", desc = "Bookmarks: jump by key" },
+  { on = [ "b", "<Space>" ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
+  { on = [ "b", "f" ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
+  { on = [ "b", "a" ], run = "plugin whoosh save", desc = "Bookmarks: add hovered path" },
+  { on = [ "b", "A" ], run = "plugin whoosh save_cwd", desc = "Bookmarks: add current directory" },
+  { on = [ "b", "t" ], run = "plugin whoosh save_temp", desc = "Bookmarks: add temporary bookmark" },
+  { on = [ "b", "T" ], run = "plugin whoosh save_cwd_temp", desc = "Bookmarks: add temp current directory" },
+  { on = [ "b", "d" ], run = "plugin whoosh delete_by_key", desc = "Bookmarks: delete by key" },
+  { on = [ "b", "D" ], run = "plugin whoosh delete_by_fzf", desc = "Bookmarks: delete by fzf" },
+  { on = [ "b", "r" ], run = "plugin whoosh rename_by_key", desc = "Bookmarks: rename by key" },
+  { on = [ "b", "R" ], run = "plugin whoosh rename_by_fzf", desc = "Bookmarks: rename by fzf" },
+
+  # Sudo Operations (sudo.yazi)
+  { on = [ "R", "p" ], run = "plugin sudo -- paste", desc = "Sudo: paste (copy/move)" },
+  { on = [ "R", "P" ], run = "plugin sudo -- paste --force", desc = "Sudo: paste (overwrite)" },
+  { on = [ "R", "r" ], run = "plugin sudo -- rename", desc = "Sudo: rename / bulk rename" },
+  { on = [ "R", "a" ], run = "plugin sudo -- create", desc = "Sudo: create file or directory" },
+  { on = [ "R", "d" ], run = "plugin sudo -- remove", desc = "Sudo: trash" },
+  { on = [ "R", "D" ], run = "plugin sudo -- remove --permanently", desc = "Sudo: delete permanently" },
+  { on = [ "R", "m" ], run = "plugin sudo -- chmod", desc = "Sudo: chmod" },
+  { on = [ "R", "l" ], run = "plugin sudo -- link", desc = "Sudo: link (absolute)" },
+  { on = [ "R", "L" ], run = "plugin sudo -- hardlink", desc = "Sudo: hard link" },
+
+  # Git & Lazygit (lazygit.yazi)
+  { on = [ "g", "i" ], run = "plugin lazygit", desc = "Git: open lazygit" },
+  { on = "<C-g>", run = "plugin lazygit", desc = "Git: open lazygit" },
+
+  # Trash Manager (omni-trash.yazi)
+  { on = "T", run = "plugin omni-trash", desc = "Trash: open Omni-Trash manager" },
+  { on = [ "g", "t" ], run = "plugin omni-trash", desc = "Goto: Omni-Trash manager" },
+
+  # Projects (projects.yazi)
+  { on = [ "g", "p", "s" ], run = "plugin projects save", desc = "Projects: save current" },
+  { on = [ "g", "p", "S" ], run = "plugin projects save_last", desc = "Projects: save to last" },
+  { on = [ "g", "p", "l" ], run = "plugin projects load", desc = "Projects: load project" },
+  { on = [ "g", "p", "p" ], run = "plugin projects load_last", desc = "Projects: load last project" },
+  { on = [ "g", "p", "d" ], run = "plugin projects delete", desc = "Projects: delete project" },
+  { on = [ "g", "p", "D" ], run = "plugin projects delete_all", desc = "Projects: delete all projects" },
+  { on = [ "g", "p", "m" ], run = "plugin projects 'merge current'", desc = "Projects: merge current tab" },
+  { on = [ "g", "p", "M" ], run = "plugin projects 'merge all'", desc = "Projects: merge all tabs" },
+
+  # Tabs Dual-Pane Split (split-tabs.yazi)
+  { on = "\\", run = "plugin split-tabs spl_toggle", desc = "Split-tabs: toggle dual pane" },
+  { on = "<A-Tab>", run = "plugin split-tabs spl_switch_tab", desc = "Split-tabs: switch pane" },
+  { on = "<F5>", run = [ "escape --visual", "plugin split-tabs spl_copy" ], desc = "Split-tabs: copy to other pane" },
+  { on = "<F6>", run = [ "escape --visual", "plugin split-tabs spl_move" ], desc = "Split-tabs: move to other pane" },
+
+  # Tab Close & Restore (close-and-restore-tab.yazi)
+  { on = "<C-w>", run = "close", desc = "Close current tab" },
+  { on = "<C-t>", run = "plugin close-and-restore-tab restore", desc = "Restore closed tab" },
+
+  # Layout & Pane Toggling (toggle-pane.yazi)
+  { on = "<A-p>", run = "plugin toggle-pane min-preview", desc = "Toggle preview pane" },
+  { on = "<A-P>", run = "plugin toggle-pane max-preview", desc = "Maximize/restore preview pane" },
+  { on = "<A-u>", run = "plugin toggle-pane min-parent", desc = "Toggle parent pane" },
+  { on = "<A-r>", run = "plugin toggle-pane reset", desc = "Reset pane ratio" },
+
+  # Clipboard (wl-clipboard.yazi)
+  { on = "<C-y>", run = "plugin wl-clipboard", desc = "Copy to system clipboard (Wayland)" },
+  { on = [ "c", "y" ], run = "plugin wl-clipboard", desc = "Copy to system clipboard (Wayland)" },
+
+  # Archives (compress.yazi & ouch.yazi)
+  { on = [ "c", "a" ], run = "plugin compress", desc = "Archive: compress selected files" },
+  { on = [ "c", "p" ], run = "plugin compress -p", desc = "Archive: compress with password" },
+  { on = [ "c", "h" ], run = "plugin compress -ph", desc = "Archive: compress with password+header" },
+  { on = [ "c", "l" ], run = "plugin compress -l", desc = "Archive: compress with level selection" },
+  { on = "C", run = "plugin ouch", desc = "Archive: compress with ouch" },
+
+  # KDE Connect (kdeconnect-send.yazi)
+  { on = [ "c", "k" ], run = "plugin kdeconnect-send", desc = "Send: via KDE Connect" },
 ]
 
 [pick]

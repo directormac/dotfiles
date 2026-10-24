@@ -2785,7 +2785,7 @@
         "vim-plugins-wakatime": "vim-plugins-wakatime",
         "workmux": "workmux",
         "wrappers": "wrappers",
-        "yazi-plugin-mdv-previewer": "yazi-plugin-mdv-previewer",
+        "yazi-plugin-whoosh": "yazi-plugin-whoosh",
         "zen-browser": "zen-browser",
         "zennotes": "zennotes",
         "zsh-histdb-src": "zsh-histdb-src"
@@ -3682,19 +3682,19 @@
         "type": "github"
       }
     },
-    "yazi-plugin-mdv-previewer": {
+    "yazi-plugin-whoosh": {
       "flake": false,
       "locked": {
-        "lastModified": 1792098806,
-        "narHash": "sha256-yzzo32b0sh1DIBwfFGnZPJ1QO/xM3oSPNqJO9Ry4Vb0=",
+        "lastModified": 1792051898,
+        "narHash": "sha256-LwugSeuG3+PmPW9KFvRThqx+g792CmUnw+vY6wSZJoo=",
         "owner": "WhoSowSee",
-        "repo": "mdv-previewer.yazi",
-        "rev": "1c71b8eaabf35519b8eaa9297b47942ee7d99807",
+        "repo": "whoosh.yazi",
+        "rev": "d6ede9895a0e14b1bb1d65cd0eb783f92f2fc522",
         "type": "github"
       },
       "original": {
         "owner": "WhoSowSee",
-        "repo": "mdv-previewer.yazi",
+        "repo": "whoosh.yazi",
         "type": "github"
       }
     },

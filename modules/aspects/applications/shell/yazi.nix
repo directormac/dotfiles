@@ -5,9 +5,9 @@
 }:
 {
   flake-file.inputs = {
-    yazi-plugin-mdv-previewer = {
+    yazi-plugin-whoosh = {
       flake = false;
-      url = "github:WhoSowSee/mdv-previewer.yazi";
+      url = "github:WhoSowSee/whoosh.yazi";
     };
   };
 
@@ -32,6 +32,9 @@
           imagemagick
           util-linux
           udisks
+          trash-cli
+          ouch
+          nushell
         ];
 
         programs.yazi = {
@@ -43,20 +46,34 @@
           extraPackages = with pkgs; [
             util-linux
             udisks
+            trash-cli
+            ouch
+            nushell
           ];
 
           plugins = {
+            close-and-restore-tab = pkgs.yaziPlugins.close-and-restore-tab;
+            compress = pkgs.yaziPlugins.compress;
             git = pkgs.yaziPlugins.git;
-
-            mdv-previewer =
-              inputs.yazi-plugin-mdv-previewer or (pkgs.fetchFromGitHub {
-                hash = "sha256-iYPhBzbaCS8IM39/Flai02AA8OJgl2Ue2nB2sKqTbZY=";
-                owner = "WhoSowSee";
-                repo = "mdv-previewer.yazi";
-                rev = "099ebba";
-              });
+            kdeconnect-send = pkgs.yaziPlugins.kdeconnect-send;
+            lazygit = pkgs.yaziPlugins.lazygit;
 
             mount = pkgs.yaziPlugins.mount;
+            omni-trash = pkgs.yaziPlugins.omni-trash;
+            ouch = pkgs.yaziPlugins.ouch;
+            projects = pkgs.yaziPlugins.projects;
+            split-tabs = pkgs.yaziPlugins.split-tabs;
+            starship = pkgs.yaziPlugins.starship;
+            sudo = pkgs.yaziPlugins.sudo;
+            toggle-pane = pkgs.yaziPlugins.toggle-pane;
+            whoosh =
+              inputs.yazi-plugin-whoosh or (pkgs.fetchFromGitHub {
+                hash = "sha256-LwugSeuG3+PmPW9KFvRThqx+g792CmUnw+vY6wSZJoo=";
+                owner = "WhoSowSee";
+                repo = "whoosh.yazi";
+                rev = "d6ede9895a0e14b1bb1d65cd0eb783f92f2fc522";
+              });
+            wl-clipboard = pkgs.yaziPlugins.wl-clipboard;
           };
         };
 
