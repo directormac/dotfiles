@@ -68,8 +68,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- `*.conf` files are not tmux configuration.
 vim.treesitter.language.register('tmux', { 'tmux' })
 
-vim.lsp.enable('copilot')
-
 -- Read more here https://swarsel.github.io/pedantix/configuration.html
 -- or type `:h exrc`
 

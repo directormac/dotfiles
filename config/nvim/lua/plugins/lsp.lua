@@ -58,8 +58,6 @@ return {
         root_markers = { '.git', '.tmux.conf', 'tmux.conf' },
       })
 
-      vim.lsp.enable('copilot')
-
       for _, server in ipairs(servers) do
         vim.lsp.enable(server)
       end

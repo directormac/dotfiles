@@ -3,9 +3,7 @@ return {
     'hardtime.nvim',
     event = 'DeferredUIEnter',
     cmd = { 'Hardtime' },
-    keys = {
-      { '<leader>tH', '<cmd>Hardtime toggle<cr>', desc = 'Toggle Hardtime' },
-    },
+    on_require = { 'hardtime' },
     opts = {
       enabled = true,
       disable_mouse = false,
@@ -68,6 +66,23 @@ return {
           end
         end
       end
+
+      Snacks.toggle({
+        id = 'hardtime',
+        name = 'Hardtime',
+        get = function()
+          local ok_ht, ht = pcall(require, 'hardtime')
+          return ok_ht and ht.is_plugin_enabled == true
+        end,
+        set = function(state)
+          local ht = require('hardtime')
+          if state then
+            ht.enable()
+          else
+            ht.disable()
+          end
+        end,
+      }):map('<leader>tH')
     end,
   },
 }

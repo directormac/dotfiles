@@ -143,6 +143,20 @@ function M.setup()
       for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
         if vim.api.nvim_buf_is_valid(bufnr) then pcall(vim.lsp.inline_completion.enable, false, { bufnr = bufnr }) end
       end
+      -- Automatically disable Copilot LSP server if quota is exhausted
+      if vim.lsp.is_enabled('copilot') then
+        vim.schedule(function()
+          vim.lsp.enable('copilot', false)
+          vim.notify(
+            'GitHub Copilot monthly completions quota exhausted (0% remaining). Copilot LSP disabled.',
+            vim.log.levels.WARN,
+            { title = 'GitHub Copilot' }
+          )
+        end)
+      end
+    else
+      -- Re-enable if quota is restored
+      if not vim.lsp.is_enabled('copilot') then vim.schedule(function() vim.lsp.enable('copilot', true) end) end
     end
 
     if package.loaded['lualine'] then require('lualine').refresh({ place = { 'statusline' } }) end
@@ -158,14 +172,8 @@ function M.setup()
     end
   end
 
-  vim.api.nvim_create_user_command('CopilotStatus', function()
-    local clients = vim.lsp.get_clients({ name = 'copilot' })
-    if #clients == 0 then
-      vim.notify('Copilot LSP is not running.', vim.log.levels.WARN, { title = 'Copilot' })
-      return
-    end
-    local copilot = clients[1]
-    copilot:request('checkStatus', vim.empty_dict(), function(err, res)
+  local function report_copilot_status(client)
+    client:request('checkStatus', vim.empty_dict(), function(err, res)
       if err then
         vim.notify(
           'Error checking Copilot status: ' .. tostring(err.message),
@@ -189,13 +197,68 @@ function M.setup()
           )
         end
       end
-      local msg = string.format('Status: %s\nUser: %s%s', res.status or 'Unknown', res.user or 'None', quota_str)
+      local is_on = vim.lsp.is_enabled('copilot')
+      local lsp_status = is_on and 'Enabled' or 'Disabled'
+      local msg = string.format(
+        'LSP: %s\nStatus: %s\nUser: %s%s',
+        lsp_status,
+        res.status or 'Unknown',
+        res.user or 'None',
+        quota_str
+      )
       local level = (_G.CopilotState and _G.CopilotState.has_quota == false) and vim.log.levels.WARN
         or vim.log.levels.INFO
       vim.notify(msg, level, { title = 'GitHub Copilot' })
     end)
-  end, { desc = 'Check Copilot LSP status' })
+  end
 
+  vim.api.nvim_create_user_command('CopilotStatus', function()
+    local clients = vim.lsp.get_clients({ name = 'copilot' })
+    if #clients == 0 then
+      -- Temporarily start copilot to query live quota
+      vim.notify('Starting Copilot LSP to check live quota...', vim.log.levels.INFO, { title = 'GitHub Copilot' })
+      vim.lsp.enable('copilot', true)
+      vim.defer_fn(function()
+        local active_clients = vim.lsp.get_clients({ name = 'copilot' })
+        if #active_clients > 0 then
+          report_copilot_status(active_clients[1])
+        else
+          vim.notify('Copilot LSP is not running.', vim.log.levels.WARN, { title = 'GitHub Copilot' })
+        end
+      end, 1500)
+      return
+    end
+    report_copilot_status(clients[1])
+  end, { desc = 'Check Copilot LSP status and quota' })
+
+  vim.api.nvim_create_user_command('CopilotToggle', function()
+    local new_state = not vim.lsp.is_enabled('copilot')
+    vim.lsp.enable('copilot', new_state)
+    vim.notify(
+      'Copilot LSP ' .. (new_state and 'enabled' or 'disabled'),
+      vim.log.levels.INFO,
+      { title = 'GitHub Copilot' }
+    )
+  end, { desc = 'Toggle Copilot LSP' })
+
+  vim.api.nvim_create_user_command('CopilotEnable', function()
+    vim.lsp.enable('copilot', true)
+    vim.notify('Copilot LSP enabled', vim.log.levels.INFO, { title = 'GitHub Copilot' })
+  end, { desc = 'Enable Copilot LSP' })
+
+  vim.api.nvim_create_user_command('CopilotDisable', function()
+    vim.lsp.enable('copilot', false)
+    vim.notify('Copilot LSP disabled', vim.log.levels.INFO, { title = 'GitHub Copilot' })
+  end, { desc = 'Disable Copilot LSP' })
+
+  if package.loaded['snacks'] and Snacks.toggle then
+    Snacks.toggle({
+      id = 'copilot',
+      name = 'GitHub Copilot LSP',
+      get = function() return vim.lsp.is_enabled('copilot') end,
+      set = function(state) vim.lsp.enable('copilot', state) end,
+    }):map('<leader>tC')
+  end
   -- -- Reset diagnostics on detach so :lsp restart/:lsp stop don't leave stale state.
   vim.api.nvim_create_autocmd('LspDetach', {
     group = vim.api.nvim_create_augroup('lsp-detach-cleanup', { clear = true }),
