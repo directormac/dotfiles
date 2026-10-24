@@ -74,6 +74,7 @@
             "file://${config.home.homeDirectory}/Projects Projects"
             "file://${config.home.homeDirectory}/Downloads Downloads"
             "file:///mnt/local/resources Resources(SSD)"
+            "file:///mnt/local/games Games(SSD)"
             "file:///mnt/network/fileserver Fileserver"
           ];
         };

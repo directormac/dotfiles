@@ -14,6 +14,7 @@
           nfs-utils
           ntfs3g
           sshfs
+          btrfs-progs
         ];
 
         fileSystems = lib.mkMerge [
@@ -33,6 +34,17 @@
             };
           })
           {
+            "/mnt/local/games" = {
+              options = [
+                "defaults"
+                "nofail"
+                "compress=zstd"
+              ];
+
+              device = "/dev/disk/by-uuid/03a50c42-e9e4-4770-8221-599d166f1ad1";
+              fsType = "btrfs";
+            };
+
             "/mnt/local/resources" = {
               options = [
                 "defaults"
@@ -48,6 +60,15 @@
             };
           }
         ];
+
+        # Automatically create the game folders and assign them to your user
+        systemd.tmpfiles.rules = [
+          "d /mnt/local/games/steam 0755 artifex users -"
+          "d /mnt/local/games/lutris 0755 artifex users -"
+          "d /mnt/local/games/heroic 0755 artifex users -"
+          "d /mnt/local/games/installers 0755 artifex users -"
+        ];
       };
   };
 }
+# 03a50c42-e9e4-4770-8221-599d166f1ad1
