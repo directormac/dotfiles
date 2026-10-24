@@ -419,7 +419,11 @@
         {
           "id": "systemTray",
           "enabled": true,
-          "overflowMode": "always"
+          "overflowMode": "section",
+          "background": false,
+          "trayUseInlineExpansion": false,
+          "trayPopupSingleLine": false,
+          "trayAutoOverflow": false
         },
         {
           "id": "bitwarden",
