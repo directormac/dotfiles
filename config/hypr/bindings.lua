@@ -268,6 +268,18 @@ hl.define_submap('gamemode', function()
   -- Optional: keep media volume keys functional during gameplay if desired
   -- hl.bind('', 'XF86AudioRaiseVolume', hl.dsp.exec_cmd('dms ipc call audio increment'))
   -- hl.bind('', 'XF86AudioLowerVolume', hl.dsp.exec_cmd('dms ipc call audio decrement'))
+
+  -- Switch workspaces with modkey + [0-9]
+  -- Move active window to a workspace with modkey + SHIFT + [0-9]
+  for i = 1, 10 do
+    local key = i % 10 -- 10 maps to key 0
+    hl.bind(modkey .. ' + ' .. key, hl.dsp.focus({ workspace = i }), {
+      desc = 'Move to workspace' .. key,
+    })
+    hl.bind(modkey .. ' + SHIFT + ' .. key, hl.dsp.window.move({ workspace = i }), {
+      desc = 'Move window to ' .. '[' .. key .. ']' .. 'workspace.',
+    })
+  end
 end)
 
 --- Applications
