@@ -7,6 +7,13 @@ PluginSettings {
     id: root
     pluginId: "desktopLyricsWidget"
 
+    ToggleSetting {
+        settingKey: "hideWhenNothingPlaying"
+        label: I18n.tr("Hide When Nothing Playing")
+        description: I18n.tr("Hide the widget completely when no media is playing instead of showing a placeholder")
+        defaultValue: true
+    }
+
     // ── Active Line Contrast & Readability ─────────────────────────
     SelectionSetting {
         id: pillStyleSetting

@@ -23,6 +23,9 @@ DesktopPluginComponent {
     readonly property real   backgroundOpacity:        (pluginData.backgroundOpacity       ?? 0) / 100
     readonly property real   borderOpacity:            (pluginData.borderOpacity           ?? 0) / 100
     readonly property real   cardRadius:               pluginData.cardRadius               ?? 20
+    readonly property bool   hideWhenNothingPlaying:   pluginData.hideWhenNothingPlaying   ?? true
+    readonly property bool   hasMedia:                 activePlayer !== null && (isPlaying || (activePlayer.playbackState === MprisPlaybackState.Paused && currentTrackTitle !== ""))
+    readonly property bool   shouldShow:               hideWhenNothingPlaying ? hasMedia : true
 
     // Catppuccin color palette for word-by-word karaoke highlighting
     readonly property var catppuccinWordColors: [
@@ -67,7 +70,7 @@ DesktopPluginComponent {
     }
 
     LyricsSubscription {
-        active: root.visible
+        active: root.visible && root.shouldShow
     }
 
     readonly property bool hasSyncedLyrics: controller.state === "ready" && controller.synced && (controller.lines?.length ?? 0) > 0
@@ -83,7 +86,7 @@ DesktopPluginComponent {
         id: syncTimer
         interval: 35
         repeat: true
-        running: root.visible && root.isPlaying && root.hasSyncedLyrics
+        running: root.visible && root.shouldShow && root.isPlaying && root.hasSyncedLyrics
         onTriggered: {
             root.nowTime = root.controller.currentTime ? root.controller.currentTime() : (root.controller.sampleTime ?? 0);
         }
@@ -129,7 +132,7 @@ DesktopPluginComponent {
         color: root.backgroundOpacity > 0 ? Theme.withAlpha(Theme.surfaceContainerHighest, root.backgroundOpacity) : "transparent"
         border.color: root.borderOpacity > 0 ? Theme.withAlpha(Theme.outline, root.borderOpacity) : "transparent"
         border.width: root.borderOpacity > 0 ? 1 : 0
-        visible: root.backgroundOpacity > 0 || root.borderOpacity > 0
+        visible: root.shouldShow && (root.backgroundOpacity > 0 || root.borderOpacity > 0)
     }
 
     // ── Song Title & Artist Fallback (When Lyrics are Unavailable) ──
@@ -140,7 +143,7 @@ DesktopPluginComponent {
         readonly property real cardWidth: Math.min(root.width - Theme.spacingXL * 2, Math.max(650, Math.min(root.width * 0.85, 1200)))
         width: cardWidth
         height: fallbackCol.implicitHeight + Theme.spacingXL * 2
-        visible: !root.hasLyrics
+        visible: root.shouldShow && !root.hasLyrics && (!root.hideWhenNothingPlaying || root.currentTrackTitle !== "")
 
         Rectangle {
             anchors.fill: parent
@@ -213,7 +216,7 @@ DesktopPluginComponent {
         id: lyricsList
         anchors.fill: parent
         anchors.margins: Theme.spacingM
-        visible: root.hasLyrics
+        visible: root.shouldShow && root.hasLyrics
         clip: true
         model: root.hasSyncedLyrics ? root.controller.lines : root.controller.plainLines
         currentIndex: root.activeIdx

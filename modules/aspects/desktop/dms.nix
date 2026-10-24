@@ -47,6 +47,8 @@
             xwayland-satellite
             gpu-screen-recorder
             amdgpu_top
+            evtest
+            libinput
           ])
           ++ [
             # dmenu compatibility wrapper backed by DMS
@@ -78,6 +80,13 @@
             };
       in
       {
+        home.sessionVariables = {
+          ANTIGRAVITY_QUOTA_METHOD = "v1internal:fetchAvailableModels";
+        };
+        systemd.user.sessionVariables = {
+          ANTIGRAVITY_QUOTA_METHOD = "v1internal:fetchAvailableModels";
+        };
+
         home.file = lib.concatMapAttrs linkDank dmsFiles;
 
         imports =
@@ -117,11 +126,12 @@
               settings = {
                 costCurrency = "USD";
                 pillMode = "custom";
-                pillProviders = "pi";
+                pillProviders = "antigravity,pi";
                 pillShowNames = "true";
                 pillTooltip = "true";
                 providerSelection = "antigravity,pi";
                 refreshInterval = "120000";
+                showAntigravityModelDetails = "true";
               };
             };
 
@@ -152,6 +162,7 @@
 
               settings = {
                 noTrigger = true;
+
                 providers = [
                   "hyprland"
                   "yazi"
@@ -163,13 +174,17 @@
                   "herdr"
                   "vim"
                 ];
+
                 trigger = "";
               };
             };
 
             dankNotepadModule.enable = true;
             dankRssWidget.enable = true;
-            dankStickerSearch.enable = true;
+            dankStickerSearch = {
+              enable = true;
+              src = lib.mkForce ../../../config/dms-plugins/dankStickerSearch;
+            };
 
             desktopAudioVisualizer = {
               enable = true;
@@ -204,6 +219,7 @@
                 lineCount = "5";
                 textAlign = "center";
                 textShadow = true;
+                hideWhenNothingPlaying = true;
               };
 
               src = ../../../config/dms-plugins/desktopLyricsWidget;
@@ -233,6 +249,48 @@
                 "recordingScreenTarget" = "focused";
                 "resetLastRegion" = true;
                 "skipConfirm" = true;
+              };
+            };
+
+            screenkey = {
+              enable = true;
+              settings = {
+                visualizerEnabled = true;
+                clickThrough = true;
+                fadeTimeout = 1500;
+                fontSize = 24;
+                position = "bottom_center";
+                animationType = "none";
+                keycapStyle = "default";
+                roundedKeycaps = true;
+                overlayOpacity = 90;
+                marginSize = 24;
+                charLimit = 20;
+                historyLimit = 1;
+                showShortcuts = true;
+              };
+            };
+
+            lutrisLauncher = {
+              enable = true;
+              settings = {
+                dateFormat = "relative";
+                showHints = true;
+              };
+            };
+
+            mediaDownloader = {
+              enable = true;
+              settings = {
+                downloadPathAudio = "$HOME/Music";
+                downloadPathVideo = "$HOME/Videos";
+                quickVideoFormat = "mp4";
+                quickVideoRes = "1080p";
+                quickAudioFormat = "mp3";
+                quickAudioQuality = "best";
+                embedThumbnail = true;
+                embedMetadata = true;
+                sponsorBlock = true;
               };
             };
 

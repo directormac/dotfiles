@@ -2,8 +2,6 @@ setupVersion: 2
 modelRoles:
   plan: google-antigravity/gemini-4-argon:high
   slow: google-antigravity/claude-sonnet-5-5
-  smol: google-antigravity/gemini-3.8-flash:auto
-  default: google-antigravity/gemini-3.8-flash
   advisor: google-antigravity/gemini-4-argon
 theme:
   dark: dark-catppuccin

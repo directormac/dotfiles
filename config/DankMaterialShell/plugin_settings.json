@@ -60,5 +60,25 @@
   "emojiLauncher": {
     "enabled": true,
     "recentEmojis": ""
+  },
+  "screenkey": {
+    "enabled": true
+  },
+  "lutrisLauncher": {
+    "enabled": true
+  },
+  "mediaDownloader": {
+    "enabled": true
+  },
+  "aiOverviewControl": {
+    "enabled": true,
+    "providerSelection": "antigravity,pi",
+    "pillProviders": "antigravity,pi",
+    "pillMode": "custom",
+    "pillShowNames": "true",
+    "pillTooltip": "true",
+    "showAntigravityModelDetails": "true",
+    "costCurrency": "USD",
+    "refreshInterval": "120000"
   }
 }

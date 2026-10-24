@@ -431,7 +431,9 @@
         },
         {
           "id": "network_speed_monitor",
-          "enabled": true
+          "enabled": true,
+          "hideWhenIdle": true,
+          "compactMode": true
         },
         {
           "id": "cpuUsage",
@@ -784,7 +786,8 @@
         "activeLinePillStyle": "full",
         "activeLinePillOpacity": 36,
         "activeLineBorderOpacity": 0,
-        "textShadow": true
+        "textShadow": true,
+        "hideWhenNothingPlaying": true
       }
     },
     {

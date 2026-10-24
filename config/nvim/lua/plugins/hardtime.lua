@@ -30,27 +30,45 @@ return {
         ['P'] = { 'n' },
       },
       disabled_filetypes = {
-        'qf',
-        'netrw',
-        'NvimTree',
-        'lazy',
-        'mason',
-        'oil',
-        'prompt',
-        'snacks_dashboard',
-        'snacks_picker_input',
-        'snacks_picker_list',
-        'snacks_picker_preview',
-        'snacks_layout_box',
+        ['qf'] = true,
+        ['netrw'] = true,
+        ['NvimTree'] = true,
+        ['lazy'] = true,
+        ['mason'] = true,
+        ['oil'] = true,
+        ['prompt'] = true,
+        ['snacks_dashboard'] = true,
+        ['snacks_picker_input'] = true,
+        ['snacks_picker_list'] = true,
+        ['snacks_picker_preview'] = true,
+        ['snacks_layout_box'] = true,
         ['snacks_picker.*'] = true,
         ['snacks_.*'] = true,
       },
     },
-    after = function()
+    after = function(plugin)
       local ok, hardtime = pcall(require, 'hardtime')
       if not ok then return end
+      local cfg = require('hardtime.config')
+      if plugin and plugin.opts then
+        local opts = vim.deepcopy(plugin.opts)
+        if opts.disabled_filetypes then
+          local normalized = {}
+          for k, v in pairs(opts.disabled_filetypes) do
+            if type(k) == 'number' and type(v) == 'string' then
+              normalized[v] = true
+            else
+              normalized[k] = v
+            end
+          end
+          opts.disabled_filetypes = normalized
+        end
+        cfg.config = vim.tbl_deep_extend('force', cfg.config, opts)
+      end
+      if not cfg.config.disable_mouse and vim.o.mouse == '' then
+        vim.o.mouse = 'a'
+      end
       hardtime.enable()
-
       local fn = hardtime.enable
       local n, v = debug.getupvalue(fn, 2)
       if n == 'opts' and type(v) == 'table' and v.fn then fn = v.fn end
