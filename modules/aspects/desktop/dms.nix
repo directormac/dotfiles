@@ -151,8 +151,19 @@
               enable = true;
 
               settings = {
-                noTrigger = false;
-                providers = [ ];
+                noTrigger = true;
+                providers = [
+                  "hyprland"
+                  "yazi"
+                  "neovim"
+                  "tmux"
+                  "ghostty"
+                  "kitty"
+                  "zsh"
+                  "herdr"
+                  "vim"
+                ];
+                trigger = "";
               };
             };
 

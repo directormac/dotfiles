@@ -385,6 +385,228 @@
             printf "%s\t%s\n" "$pkg" "$ver"
           done
         '';
+        tv-cheatsheets-list = pkgs.writeShellScriptBin "tv-cheatsheets-list" ''
+          cheatsheets_dir="''${HOME}/.dotfiles/config/DankMaterialShell/cheatsheets"
+          [ ! -d "$cheatsheets_dir" ] && cheatsheets_dir="''${XDG_CONFIG_HOME:-$HOME/.config}/dms/cheatsheets"
+
+          ${pkgs.python3}/bin/python3 - "$cheatsheets_dir" <<'EOF'
+          import json, sys, subprocess
+          from pathlib import Path
+
+          cheatsheets_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / ".config/dms/cheatsheets"
+
+          available = set()
+          try:
+              res = subprocess.run(["dms", "keybinds", "list", "-j"], capture_output=True, text=True, timeout=2)
+              if res.returncode == 0:
+                  available = set(json.loads(res.stdout))
+          except Exception:
+              pass
+
+          order = ["hyprland", "yazi", "neovim", "tmux", "ghostty", "kitty", "zsh", "herdr", "vim"]
+          providers = []
+          for p in order:
+              if p in available or (cheatsheets_dir / f"{p}.json").exists() or p == "hyprland":
+                  providers.append(p)
+
+          for p in sorted(available):
+              if p not in providers and (cheatsheets_dir / f"{p}.json").exists():
+                  providers.append(p)
+
+          for p in providers:
+              title = p.capitalize()
+              count = 0
+              cat_count = 0
+              json_path = cheatsheets_dir / f"{p}.json"
+              if json_path.exists():
+                  try:
+                      with open(json_path, encoding="utf-8") as f:
+                          data = json.load(f)
+                          title = data.get("title", title)
+                          binds = data.get("binds", {})
+                          cat_count = len(binds)
+                          count = sum(len(v) for v in binds.values())
+                  except Exception:
+                      pass
+              elif p == "hyprland":
+                  try:
+                      res = subprocess.run(["dms", "keybinds", "show", "hyprland"], capture_output=True, text=True, timeout=2)
+                      if res.returncode == 0:
+                          data = json.loads(res.stdout)
+                          title = data.get("title", "Hyprland Keybinds")
+                          binds = data.get("binds", {})
+                          cat_count = len(binds)
+                          count = sum(len(v) for v in binds.values())
+                  except Exception:
+                      pass
+              try:
+                  print(f"{p}\t{title}\t{count} shortcuts\t{cat_count} categories")
+              except BrokenPipeError:
+                  break
+          EOF
+        '';
+        tv-cheatsheet-preview = pkgs.writeShellScriptBin "tv-cheatsheet-preview" ''
+          provider="''${1:-hyprland}"
+          cheatsheets_dir="''${HOME}/.dotfiles/config/DankMaterialShell/cheatsheets"
+          [ ! -d "$cheatsheets_dir" ] && cheatsheets_dir="''${XDG_CONFIG_HOME:-$HOME/.config}/dms/cheatsheets"
+
+          ${pkgs.python3}/bin/python3 - "$cheatsheets_dir" "$provider" <<'EOF'
+          import json, sys, subprocess
+          from pathlib import Path
+
+          cheatsheets_dir = Path(sys.argv[1])
+          provider = sys.argv[2] if len(sys.argv) > 2 else "hyprland"
+          json_path = cheatsheets_dir / f"{provider}.json"
+
+          data = None
+          if json_path.exists():
+              try:
+                  with open(json_path, "r", encoding="utf-8") as f:
+                      data = json.load(f)
+              except Exception:
+                  pass
+
+          if not data:
+              try:
+                  res = subprocess.run(["dms", "keybinds", "show", provider], capture_output=True, text=True, timeout=3)
+                  if res.returncode == 0:
+                      data = json.loads(res.stdout)
+              except Exception:
+                  pass
+
+          if not data:
+              print(f"\033[1;31mError:\033[0m Could not load cheatsheet for '\033[1m{provider}\033[0m'")
+              print("Verify provider is registered with `dms keybinds list`.")
+              sys.exit(0)
+
+          title = data.get("title", provider.capitalize() + " Keybinds")
+          binds = data.get("binds", {})
+          total_binds = sum(len(v) for v in binds.values())
+
+          BOLD = "\033[1m"
+          RESET = "\033[0m"
+          CYAN = "\033[36m"
+          GREEN = "\033[32m"
+          YELLOW = "\033[33m"
+          MAGENTA = "\033[35m"
+          GRAY = "\033[90m"
+
+          print(f"{BOLD}{MAGENTA}==> {title} ({provider}){RESET}")
+          print(f"{GRAY}Launch GUI:\033[0m {CYAN}dms ipc call keybinds toggle {provider}{RESET}")
+          print(f"{GRAY}Scope:     \033[0m {GREEN}{total_binds} shortcuts{RESET} across {YELLOW}{len(binds)} categories{RESET}")
+          print(f"{GRAY}Actions:   \033[0m {BOLD}<Enter>{RESET} Launch DMS modal  │  {BOLD}<Ctrl+Y>{RESET} Copy provider  │  {BOLD}<Ctrl+O>{RESET} Pager\n")
+
+          for cat, items in binds.items():
+              print(f"{BOLD}{YELLOW}── {cat} ({len(items)}) ──{RESET}")
+              for item in items:
+                  key = item.get("key", "")
+                  desc = item.get("desc", item.get("action", ""))
+                  sub = item.get("subcat", "")
+                  sub_str = f" {GRAY}[{sub}]{RESET}" if sub else ""
+                  print(f"  {BOLD}{GREEN}{key:<22}{RESET} {desc}{sub_str}")
+              print()
+          EOF
+        '';
+        tv-cheatsheet-launch = pkgs.writeShellScriptBin "tv-cheatsheet-launch" ''
+          provider="''${1:-}"
+          if [ -z "$provider" ]; then
+            echo "Error: provider name required" >&2
+            exit 1
+          fi
+
+          if command -v dms >/dev/null 2>&1; then
+            dms ipc call keybinds toggle "$provider" || {
+              ${pkgs.libnotify}/bin/notify-send -u low "DMS Cheatsheet" "Failed to toggle keybinds for $provider"
+            }
+          else
+            echo "Error: dms command not found" >&2
+            exit 1
+          fi
+        '';
+        tv-cheatsheet-view = pkgs.writeShellScriptBin "tv-cheatsheet-view" ''
+          provider="''${1:-hyprland}"
+          tv-cheatsheet-preview "$provider" | ${pkgs.less}/bin/less -R
+        '';
+        tv-cheatsheet-edit = pkgs.writeShellScriptBin "tv-cheatsheet-edit" ''
+          provider="''${1:-}"
+          file="$HOME/.dotfiles/config/DankMaterialShell/cheatsheets/$provider.json"
+          if [ -f "$file" ]; then
+            exec "''${EDITOR:-nvim}" "$file"
+          else
+            echo "Cheatsheet JSON for $provider not found in dotfiles."
+            read -r -p "Press enter to continue..."
+          fi
+        '';
+        tv-keybinds-list = pkgs.writeShellScriptBin "tv-keybinds-list" ''
+          cheatsheets_dir="''${HOME}/.dotfiles/config/DankMaterialShell/cheatsheets"
+          [ ! -d "$cheatsheets_dir" ] && cheatsheets_dir="''${XDG_CONFIG_HOME:-$HOME/.config}/dms/cheatsheets"
+
+          ${pkgs.python3}/bin/python3 - "$cheatsheets_dir" <<'EOF'
+          import json, sys, subprocess
+          from pathlib import Path
+
+          cheatsheets_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / ".config/dms/cheatsheets"
+          order = ["hyprland", "yazi", "neovim", "tmux", "ghostty", "kitty", "zsh", "herdr", "vim"]
+
+          for p in order:
+              data = None
+              json_path = cheatsheets_dir / f"{p}.json"
+              if json_path.exists():
+                  try:
+                      with open(json_path, encoding="utf-8") as f:
+                          data = json.load(f)
+                  except Exception:
+                      pass
+              elif p == "hyprland":
+                  try:
+                      res = subprocess.run(["dms", "keybinds", "show", "hyprland"], capture_output=True, text=True, timeout=2)
+                      if res.returncode == 0:
+                          data = json.loads(res.stdout)
+                  except Exception:
+                      pass
+              if not data:
+                  continue
+              binds = data.get("binds", {})
+              for cat, items in binds.items():
+                  for item in items:
+                      key = item.get("key", "").strip()
+                      desc = item.get("desc", item.get("action", "")).strip()
+                      sub = item.get("subcat", "").strip()
+                      try:
+                          print(f"{p}\t{cat}\t{key}\t{desc}\t{sub}")
+                      except BrokenPipeError:
+                          sys.exit(0)
+          EOF
+        '';
+        tv-keybind-preview = pkgs.writeShellScriptBin "tv-keybind-preview" ''
+          provider="''${1:-}"
+          cat="''${2:-}"
+          key="''${3:-}"
+          desc="''${4:-}"
+          sub="''${5:-}"
+
+          BOLD="\033[1m"
+          RESET="\033[0m"
+          CYAN="\033[36m"
+          GREEN="\033[32m"
+          YELLOW="\033[33m"
+          MAGENTA="\033[35m"
+          GRAY="\033[90m"
+
+          echo -e "''${BOLD}''${MAGENTA}==> Shortcut Details''${RESET}"
+          echo -e "''${GRAY}Provider:   ''${RESET}''${BOLD}''${CYAN}$provider''${RESET}"
+          echo -e "''${GRAY}Category:   ''${RESET}''${YELLOW}$cat''${RESET}''${sub:+ ''${GRAY}[''${RESET}$sub''${GRAY}]''${RESET}}"
+          echo -e "''${GRAY}Key Combo:  ''${RESET}''${BOLD}''${GREEN}$key''${RESET}"
+          echo -e "''${GRAY}Action/Desc:''${RESET} $desc"
+          echo ""
+          echo -e "''${GRAY}Actions:''${RESET}"
+          echo -e "  ''${BOLD}<Enter>''${RESET} Open $provider cheatsheet in DMS GUI (dms ipc call keybinds toggle $provider)"
+          echo -e "  ''${BOLD}<Ctrl+Y>''${RESET} Copy key combination ($key)"
+          echo -e "  ''${BOLD}<Alt+Y>''${RESET} Copy description"
+        '';
+        which-key = pkgs.writeShellScriptBin "which-key" ''
+          exec ${pkgs.ghostty}/bin/ghostty --class=com.ghostty.float -e ${pkgs.television}/bin/tv cheatsheets
+        '';
       in
       {
         home.packages =
@@ -403,6 +625,14 @@
             tv-apps-source
             tv-apps-preview
             tv-app-launch
+            tv-cheatsheets-list
+            tv-cheatsheet-preview
+            tv-cheatsheet-launch
+            tv-cheatsheet-view
+            tv-cheatsheet-edit
+            tv-keybinds-list
+            tv-keybind-preview
+            which-key
           ]
           ++ (lib.optionals (pkgs ? local) (
             with pkgs.local;
@@ -476,6 +706,8 @@
                 "zellij-sessions.toml"
                 "zsh-history.toml"
                 "update-pkgs.toml"
+                "cheatsheets.toml"
+                "keybinds.toml"
               ]
           )
           // {

@@ -72,6 +72,15 @@ writeShellApplication {
     export NIXOS_LABEL="$LABEL"
     export NIXOS_LABEL_VERSION="$LABEL"
 
+
+    # Clean up legacy impermanence bind mounts that block home-manager symlink activation
+    if mountpoint -q "$HOME/.config/collie" 2>/dev/null; then
+      echo -e "\033[33m>\033[0m \033[1m[rebuild-switch]\033[0m Unmounting legacy impermanence bind mount at $HOME/.config/collie..."
+      sudo umount "$HOME/.config/collie" || true
+      if [ -d "/persist$HOME/.config/collie" ]; then
+        sudo rm -rf "/persist$HOME/.config/collie" || true
+      fi
+    fi
     # Run nh os switch with --impure to ensure NIXOS_LABEL evaluates
     SWITCH_FAILED=0
     nh os switch --impure "$@" || SWITCH_FAILED=$?

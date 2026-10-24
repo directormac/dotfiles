@@ -1,8 +1,19 @@
 {
   "dankLauncherKeys": {
     "enabled": true,
-    "noTrigger": false,
-    "providers": []
+    "noTrigger": true,
+    "providers": [
+      "hyprland",
+      "yazi",
+      "neovim",
+      "tmux",
+      "ghostty",
+      "kitty",
+      "zsh",
+      "herdr",
+      "vim"
+    ],
+    "trigger": ""
   },
   "dankGifSearch": {
     "enabled": true

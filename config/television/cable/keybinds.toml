@@ -1,0 +1,32 @@
+[metadata]
+name = "keybinds"
+description = "Fuzzy search keyboard shortcuts across all applications and compositors"
+requirements = ["dms", "python3"]
+
+[source]
+command = "tv-keybinds-list"
+display = "[{split:\t:0}]  {split:\t:2}  │  {split:\t:3}  ({split:\t:1})"
+output = "{split:\t:2}"
+
+[preview]
+command = "tv-keybind-preview '{split:\t:0}' '{split:\t:1}' '{split:\t:2}' '{split:\t:3}' '{split:\t:4}'"
+
+[keybindings]
+enter = "actions:launch_cheatsheet"
+ctrl-y = "actions:copy_key"
+alt-y = "actions:copy_action"
+
+[actions.launch_cheatsheet]
+description = "Open parent cheatsheet in DMS"
+command = "tv-cheatsheet-launch '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy_key]
+description = "Copy key combo to clipboard"
+command = "echo -n '{split:\t:2}' | wl-copy"
+mode = "execute"
+
+[actions.copy_action]
+description = "Copy action/description to clipboard"
+command = "echo -n '{split:\t:3}' | wl-copy"
+mode = "execute"

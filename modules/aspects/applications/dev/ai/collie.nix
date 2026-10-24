@@ -72,7 +72,6 @@
       };
 
     persistHome.directories = [
-      ".config/collie"
       ".local/state/collie"
       ".collie"
     ];

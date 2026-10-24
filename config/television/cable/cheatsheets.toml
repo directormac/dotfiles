@@ -1,0 +1,38 @@
+[metadata]
+name = "cheatsheets"
+description = "Browse and launch DMS application & compositor cheatsheets"
+requirements = ["dms", "python3"]
+
+[source]
+command = "tv-cheatsheets-list"
+display = "{split:\t:1}  │  {split:\t:2}  │  {split:\t:3}"
+output = "{split:\t:0}"
+
+[preview]
+command = "tv-cheatsheet-preview '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:launch"
+ctrl-y = "actions:copy_provider"
+ctrl-e = "actions:edit_cheatsheet"
+ctrl-o = "actions:view_pager"
+
+[actions.launch]
+description = "Launch / toggle cheatsheet modal in DMS"
+command = "tv-cheatsheet-launch '{split:\t:0}'"
+mode = "execute"
+
+[actions.copy_provider]
+description = "Copy provider ID to clipboard"
+command = "echo -n '{split:\t:0}' | wl-copy"
+mode = "execute"
+
+[actions.edit_cheatsheet]
+description = "Edit cheatsheet JSON in editor"
+command = "tv-cheatsheet-edit '{split:\t:0}'"
+mode = "execute"
+
+[actions.view_pager]
+description = "View formatted cheatsheet in terminal pager"
+command = "tv-cheatsheet-view '{split:\t:0}'"
+mode = "execute"
