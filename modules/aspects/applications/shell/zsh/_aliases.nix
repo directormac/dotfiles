@@ -30,6 +30,7 @@
   "lzd" = "lazydocker";
   "lzg" = "lazygit";
   "lzm" = "lazymark";
+  "lzr" = "lazyrsync";
   "nhg" = "tv nix-generations";
   "nho" = "nh os";
   "nixdev" = "nix develop";

@@ -81,6 +81,8 @@
       dev.shell.mdcat
       dev.shell.mermaid
       dev.shell.lazymark
+      dev.shell.lazyrsync
+      dev.shell.leaf
       dev.shell.lumen
       dev.shell.hunk
       dev.shell.btop
