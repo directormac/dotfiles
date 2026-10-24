@@ -2,43 +2,147 @@
   "title": "Vim Keybinds",
   "provider": "vim",
   "binds": {
-    "Mode": [
+    "Modes": [
       {
-        "key": "i",
-        "desc": "Enter insert mode",
-        "subcat": "Insert"
+        "key": "i / a",
+        "desc": "Insert before cursor / Append after cursor",
+        "subcat": "Mode"
       },
       {
-        "key": "Esc",
-        "desc": "Exit insert mode",
-        "subcat": "Normal"
+        "key": "I / A",
+        "desc": "Insert at beginning of line / Append at end of line",
+        "subcat": "Mode"
+      },
+      {
+        "key": "o / O",
+        "desc": "Open new line below / above",
+        "subcat": "Mode"
+      },
+      {
+        "key": "v / V / Ctrl+V",
+        "desc": "Character / Line / Block visual selection",
+        "subcat": "Mode"
+      },
+      {
+        "key": "Esc / Ctrl+[",
+        "desc": "Return to normal mode",
+        "subcat": "Mode"
       }
     ],
-    "Editing": [
+    "Editing & Operations": [
       {
-        "key": "dd",
-        "desc": "Delete current line",
+        "key": "d{motion} / dd",
+        "desc": "Delete by motion / Delete current line",
         "subcat": "Delete"
       },
       {
-        "key": "yy",
-        "desc": "Copy current line",
+        "key": "c{motion} / cc",
+        "desc": "Change (delete and enter insert mode)",
+        "subcat": "Change"
+      },
+      {
+        "key": "y{motion} / yy",
+        "desc": "Yank by motion / Yank current line",
         "subcat": "Yank"
       },
       {
-        "key": "p",
-        "desc": "Paste after cursor",
+        "key": "p / P",
+        "desc": "Paste after / before cursor",
         "subcat": "Paste"
-      }
-    ],
-    "Navigation": [
-      {
-        "key": "gg",
-        "desc": "Go to first line"
       },
       {
-        "key": "G",
-        "desc": "Go to last line"
+        "key": "u / Ctrl+R",
+        "desc": "Undo / Redo",
+        "subcat": "History"
+      },
+      {
+        "key": "x / s",
+        "desc": "Delete char / Substitute char",
+        "subcat": "Delete"
+      },
+      {
+        "key": "r{char}",
+        "desc": "Replace single character",
+        "subcat": "Change"
+      },
+      {
+        "key": ". (dot)",
+        "desc": "Repeat last change",
+        "subcat": "Repeat"
+      },
+      {
+        "key": "> / < (visual)",
+        "desc": "Indent / Unindent selected lines",
+        "subcat": "Indent"
+      }
+    ],
+    "Navigation & Motions": [
+      {
+        "key": "h / j / k / l",
+        "desc": "Left / Down / Up / Right",
+        "subcat": "Motion"
+      },
+      {
+        "key": "w / b",
+        "desc": "Next word start / Previous word start",
+        "subcat": "Motion"
+      },
+      {
+        "key": "e / ge",
+        "desc": "Word end forward / Word end backward",
+        "subcat": "Motion"
+      },
+      {
+        "key": "0 / ^ / $",
+        "desc": "Start of line / First non-blank / End of line",
+        "subcat": "Motion"
+      },
+      {
+        "key": "gg / G",
+        "desc": "Go to first line / Go to last line",
+        "subcat": "Motion"
+      },
+      {
+        "key": "{line}G / :{line}",
+        "desc": "Go to specific line number",
+        "subcat": "Motion"
+      },
+      {
+        "key": "%",
+        "desc": "Jump to matching bracket/parenthesis",
+        "subcat": "Motion"
+      },
+      {
+        "key": "Ctrl+D / Ctrl+U",
+        "desc": "Scroll down / up half screen",
+        "subcat": "Scroll"
+      }
+    ],
+    "Search & Command": [
+      {
+        "key": "/{pattern} / ?{pattern}",
+        "desc": "Search forward / backward",
+        "subcat": "Search"
+      },
+      {
+        "key": "n / N",
+        "desc": "Next / Previous search match",
+        "subcat": "Search"
+      },
+      {
+        "key": "* / #",
+        "desc": "Search forward / backward for word under cursor",
+        "subcat": "Search"
+      },
+      {
+        "key": ":w / :q / :wq",
+        "desc": "Save / Quit / Save and quit",
+        "subcat": "Command"
+      },
+      {
+        "key": ":%s/old/new/g",
+        "desc": "Find and replace all in file",
+        "subcat": "Command"
       }
     ]
   }

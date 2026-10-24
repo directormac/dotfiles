@@ -1,0 +1,159 @@
+{
+  "title": "Neovim Keybinds",
+  "provider": "neovim",
+  "binds": {
+    "Leader & General": [
+      {
+        "key": "<Space>",
+        "desc": "Leader key",
+        "subcat": "General"
+      },
+      {
+        "key": "Esc",
+        "desc": "Clear search highlights, multicursor & snippet",
+        "subcat": "General"
+      },
+      {
+        "key": "<leader>qq",
+        "desc": "Quit Neovim (qa)",
+        "subcat": "General"
+      },
+      {
+        "key": "<leader>qf",
+        "desc": "Force write everything and quit",
+        "subcat": "General"
+      }
+    ],
+    "Buffers": [
+      {
+        "key": "Shift+H / Shift+L",
+        "desc": "Previous / Next buffer",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "[b / ]b",
+        "desc": "Previous / Next buffer",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "[B / ]B",
+        "desc": "First / Last buffer",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "<leader>bd",
+        "desc": "Delete current buffer",
+        "subcat": "Management"
+      },
+      {
+        "key": "<leader>bo",
+        "desc": "Delete other buffers (close all except current)",
+        "subcat": "Management"
+      },
+      {
+        "key": "<leader>br / <leader>bl",
+        "desc": "Delete buffers to the right / left",
+        "subcat": "Management"
+      }
+    ],
+    "Pickers & Search (Snacks)": [
+      {
+        "key": "<leader>, / <leader>fb",
+        "desc": "Switch active buffer (picker)",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>fr",
+        "desc": "Recent files picker",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>fp",
+        "desc": "Projects picker",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>fz",
+        "desc": "Zoxide directories picker",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>fg",
+        "desc": "Find Git files",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>:",
+        "desc": "Command history picker",
+        "subcat": "Picker"
+      },
+      {
+        "key": "<leader>sB",
+        "desc": "Grep across open buffers",
+        "subcat": "Search"
+      },
+      {
+        "key": "<leader>sP",
+        "desc": "List all available Snacks pickers",
+        "subcat": "Search"
+      },
+      {
+        "key": "<leader>sd / <leader>sD",
+        "desc": "Workspace diagnostics / Buffer diagnostics",
+        "subcat": "Search"
+      },
+      {
+        "key": "<leader>sk",
+        "desc": "Fuzzy search all registered keymaps",
+        "subcat": "Search"
+      },
+      {
+        "key": "<leader>su",
+        "desc": "Interactive visual undo history tree",
+        "subcat": "Search"
+      }
+    ],
+    "Editing & Clipboard": [
+      {
+        "key": "J / K (visual)",
+        "desc": "Move selected lines down / up (auto-indent)",
+        "subcat": "Editing"
+      },
+      {
+        "key": "<leader>y / <leader>Y",
+        "desc": "Yank selection / line to system clipboard (+)",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "<leader>p",
+        "desc": "Paste from system clipboard (+)",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "<leader>P (visual)",
+        "desc": "Paste over selection without overwriting register",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "Ctrl+X",
+        "desc": "Copy line to clipboard and cut line",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "Ctrl+Y",
+        "desc": "Copy line to clipboard",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "x (normal)",
+        "desc": "Delete blank line without polluting yank register",
+        "subcat": "Editing"
+      },
+      {
+        "key": "Ctrl+D / Ctrl+U",
+        "desc": "Scroll down / up half page and center cursor",
+        "subcat": "Navigation"
+      }
+    ]
+  }
+}

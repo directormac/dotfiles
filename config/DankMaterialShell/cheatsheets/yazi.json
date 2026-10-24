@@ -1,0 +1,339 @@
+{
+  "title": "Yazi Keybinds",
+  "provider": "yazi",
+  "binds": {
+    "Navigation": [
+      {
+        "key": "h / l",
+        "desc": "Leave to parent / Enter child directory"
+      },
+      {
+        "key": "j / k",
+        "desc": "Next / Previous file"
+      },
+      {
+        "key": "H / L",
+        "desc": "Back / Forward in directory history"
+      },
+      {
+        "key": "gg / G",
+        "desc": "Go to top / bottom of file list"
+      },
+      {
+        "key": "<Space>",
+        "desc": "Toggle selection state & move down"
+      },
+      {
+        "key": "v / V",
+        "desc": "Enter visual mode / visual unset mode"
+      },
+      {
+        "key": "o / <Enter>",
+        "desc": "Open selected files"
+      },
+      {
+        "key": "O",
+        "desc": "Open selected files interactively (picker)"
+      },
+      {
+        "key": "s / S",
+        "desc": "Search by name (fd) / content (ripgrep)"
+      },
+      {
+        "key": "z / Z",
+        "desc": "Jump via fzf / zoxide"
+      },
+      {
+        "key": "f / /",
+        "desc": "Filter files / Find in current directory"
+      }
+    ],
+    "Bookmarks": [
+      {
+        "key": "b b",
+        "desc": "Bookmarks: jump by key",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b <Space>",
+        "desc": "Bookmarks: fuzzy search",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b f",
+        "desc": "Bookmarks: fuzzy search",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b a",
+        "desc": "Bookmarks: add hovered path",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b A",
+        "desc": "Bookmarks: add current directory",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b t",
+        "desc": "Bookmarks: add temporary bookmark",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b T",
+        "desc": "Bookmarks: add temp current directory",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b d",
+        "desc": "Bookmarks: delete by key",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b D",
+        "desc": "Bookmarks: delete by fzf",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b r",
+        "desc": "Bookmarks: rename by key",
+        "subcat": "Whoosh"
+      },
+      {
+        "key": "b R",
+        "desc": "Bookmarks: rename by fzf",
+        "subcat": "Whoosh"
+      }
+    ],
+    "Sudo Operations": [
+      {
+        "key": "R p",
+        "desc": "Sudo: paste (copy/move)",
+        "subcat": "Root"
+      },
+      {
+        "key": "R P",
+        "desc": "Sudo: paste (overwrite)",
+        "subcat": "Root"
+      },
+      {
+        "key": "R r",
+        "desc": "Sudo: rename / bulk rename",
+        "subcat": "Root"
+      },
+      {
+        "key": "R a",
+        "desc": "Sudo: create file or directory",
+        "subcat": "Root"
+      },
+      {
+        "key": "R d",
+        "desc": "Sudo: trash",
+        "subcat": "Root"
+      },
+      {
+        "key": "R D",
+        "desc": "Sudo: delete permanently",
+        "subcat": "Root"
+      },
+      {
+        "key": "R m",
+        "desc": "Sudo: chmod",
+        "subcat": "Root"
+      },
+      {
+        "key": "R l",
+        "desc": "Sudo: link (absolute)",
+        "subcat": "Root"
+      },
+      {
+        "key": "R L",
+        "desc": "Sudo: hard link",
+        "subcat": "Root"
+      }
+    ],
+    "Clipboard & Archives": [
+      {
+        "key": "<F5>",
+        "desc": "Split-tabs: copy to other pane",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "<C-y>",
+        "desc": "Copy to system clipboard (Wayland)",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "c y",
+        "desc": "Copy to system clipboard (Wayland)",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "c a",
+        "desc": "Archive: compress selected files",
+        "subcat": "Archive"
+      },
+      {
+        "key": "c p",
+        "desc": "Archive: compress with password",
+        "subcat": "Archive"
+      },
+      {
+        "key": "c h",
+        "desc": "Archive: compress with password+header",
+        "subcat": "Archive"
+      },
+      {
+        "key": "c l",
+        "desc": "Archive: compress with level selection",
+        "subcat": "Archive"
+      },
+      {
+        "key": "C",
+        "desc": "Archive: compress with ouch",
+        "subcat": "Archive"
+      },
+      {
+        "key": "c k",
+        "desc": "Send: via KDE Connect",
+        "subcat": "Share"
+      }
+    ],
+    "Git & Projects": [
+      {
+        "key": "M",
+        "desc": "Mount: disks and partitions",
+        "subcat": "Mount"
+      },
+      {
+        "key": "g i",
+        "desc": "Git: open lazygit",
+        "subcat": "Git"
+      },
+      {
+        "key": "<C-g>",
+        "desc": "Git: open lazygit",
+        "subcat": "Git"
+      },
+      {
+        "key": "T",
+        "desc": "Trash: open Omni-Trash manager",
+        "subcat": "Trash"
+      },
+      {
+        "key": "g t",
+        "desc": "Goto: Omni-Trash manager",
+        "subcat": "Trash"
+      },
+      {
+        "key": "g p s",
+        "desc": "Projects: save current",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p S",
+        "desc": "Projects: save to last",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p l",
+        "desc": "Projects: load project",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p p",
+        "desc": "Projects: load last project",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p d",
+        "desc": "Projects: delete project",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p D",
+        "desc": "Projects: delete all projects",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p m",
+        "desc": "Projects: merge current tab",
+        "subcat": "Projects"
+      },
+      {
+        "key": "g p M",
+        "desc": "Projects: merge all tabs",
+        "subcat": "Projects"
+      }
+    ],
+    "Tabs & Dual Pane": [
+      {
+        "key": "\\",
+        "desc": "Split-tabs: toggle dual pane",
+        "subcat": "Split"
+      },
+      {
+        "key": "<A-Tab>",
+        "desc": "Split-tabs: switch pane",
+        "subcat": "Split"
+      },
+      {
+        "key": "<F6>",
+        "desc": "Split-tabs: move to other pane",
+        "subcat": "Split"
+      },
+      {
+        "key": "<C-w>",
+        "desc": "Close current tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "<C-t>",
+        "desc": "Restore closed tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "t",
+        "desc": "Create a new tab with CWD",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "[ / ]",
+        "desc": "Switch to previous / next tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "1..9",
+        "desc": "Switch directly to tab 1 through 9",
+        "subcat": "Tabs"
+      }
+    ],
+    "Panes & Layout": [
+      {
+        "key": "<A-p>",
+        "desc": "Toggle preview pane",
+        "subcat": "Layout"
+      },
+      {
+        "key": "<A-P>",
+        "desc": "Maximize/restore preview pane",
+        "subcat": "Layout"
+      },
+      {
+        "key": "<A-u>",
+        "desc": "Toggle parent pane",
+        "subcat": "Layout"
+      },
+      {
+        "key": "<A-r>",
+        "desc": "Reset pane ratio",
+        "subcat": "Layout"
+      },
+      {
+        "key": "J / K",
+        "desc": "Scroll down / up inside file preview pane",
+        "subcat": "Preview"
+      }
+    ]
+  }
+}

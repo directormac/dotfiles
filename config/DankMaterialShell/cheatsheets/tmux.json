@@ -2,49 +2,108 @@
   "title": "tmux Keybinds",
   "provider": "tmux",
   "binds": {
-    "Sessions": [
+    "Prefix": [
       {
-        "key": "Ctrl+A, $",
-        "desc": "Rename session"
+        "key": "Ctrl+A",
+        "desc": "Primary prefix key (replaces Ctrl+B)"
+      }
+    ],
+    "Panes": [
+      {
+        "key": "Alt+Enter / Ctrl+A, \\",
+        "desc": "Split pane vertically (current path)",
+        "subcat": "Split"
       },
       {
-        "key": "Ctrl+A, d",
-        "desc": "Detach from session"
+        "key": "Alt+Shift+Enter / Ctrl+A, =",
+        "desc": "Split pane horizontally (current path)",
+        "subcat": "Split"
+      },
+      {
+        "key": "Alt+Escape / Ctrl+A, x",
+        "desc": "Kill active pane",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+A, h / j / k / l",
+        "desc": "Focus pane (vim directions left/down/up/right)",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+Alt+Left / Down / Up / Right",
+        "desc": "Focus pane directly without prefix",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+Alt+Shift+Left / Down / Up / Right",
+        "desc": "Resize active pane by 5 cells",
+        "subcat": "Resize"
       }
     ],
     "Windows": [
       {
         "key": "Ctrl+A, c",
-        "desc": "Create new window"
+        "desc": "Create new window at current path",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+W",
+        "desc": "Kill current window directly",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+, / Ctrl+.",
+        "desc": "Previous / next window directly",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+1 .. Ctrl+9",
+        "desc": "Direct jump to window 1 through 9",
+        "subcat": "Navigation"
       },
       {
         "key": "Ctrl+A, ,",
-        "desc": "Rename window"
-      },
-      {
-        "key": "Ctrl+A, n",
-        "desc": "Next window"
-      },
-      {
-        "key": "Ctrl+A, p",
-        "desc": "Previous window"
+        "desc": "Rename active window",
+        "subcat": "Management"
       }
     ],
-    "Panes": [
+    "Sessions": [
       {
-        "key": "Ctrl+A, %",
-        "desc": "Split vertically",
-        "subcat": "Split"
+        "key": "Ctrl+Q / Ctrl+A, X",
+        "desc": "Kill entire tmux session",
+        "subcat": "Session"
       },
       {
-        "key": "Ctrl+A, \"",
-        "desc": "Split horizontally",
-        "subcat": "Split"
+        "key": "Ctrl+A, d",
+        "desc": "Detach from current session",
+        "subcat": "Session"
       },
       {
-        "key": "Ctrl+A, x",
-        "desc": "Close pane",
-        "subcat": "Management"
+        "key": "Ctrl+A, $",
+        "desc": "Rename current session",
+        "subcat": "Session"
+      }
+    ],
+    "Copy Mode (vi)": [
+      {
+        "key": "Ctrl+A, [",
+        "desc": "Enter vi copy mode / scrollback",
+        "subcat": "Copy"
+      },
+      {
+        "key": "v",
+        "desc": "Begin text selection",
+        "subcat": "Copy"
+      },
+      {
+        "key": "Ctrl+V",
+        "desc": "Toggle block / rectangle selection",
+        "subcat": "Copy"
+      },
+      {
+        "key": "y",
+        "desc": "Yank selection to clipboard and exit",
+        "subcat": "Copy"
       }
     ]
   }

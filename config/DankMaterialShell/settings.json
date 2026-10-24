@@ -1032,5 +1032,6 @@
       }
     }
   ],
-  "lockScreenShowPowerActions": true
+  "lockScreenShowPowerActions": true,
+  "keybindsFloatingWindow": true
 }

@@ -1,0 +1,119 @@
+{
+  "title": "Kitty Keybinds",
+  "provider": "kitty",
+  "binds": {
+    "General & Clipboard": [
+      {
+        "key": "Ctrl+Shift+`",
+        "desc": "Launch in-kitty quick access overlay terminal",
+        "subcat": "Overlay"
+      },
+      {
+        "key": "Ctrl+` > r | Ctrl+Shift+F5",
+        "desc": "Reload Kitty configuration file",
+        "subcat": "General"
+      },
+      {
+        "key": "Ctrl+Shift+C",
+        "desc": "Copy selection to system clipboard",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "Ctrl+Shift+V",
+        "desc": "Paste from system clipboard",
+        "subcat": "Clipboard"
+      }
+    ],
+    "Splits & Windows": [
+      {
+        "key": "Ctrl+` > \\ | Ctrl+Shift+\\",
+        "desc": "Split window vertically (vsplit)",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+` > - | Ctrl+Shift+-",
+        "desc": "Split window horizontally (hsplit)",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+` > h / j / k / l",
+        "desc": "Focus neighboring window (vim directions)",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Alt+Left / Down / Up / Right",
+        "desc": "Focus neighboring window directly via arrows",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+Shift+Arrows",
+        "desc": "Resize window narrower / wider / taller / shorter",
+        "subcat": "Resize"
+      },
+      {
+        "key": "Ctrl+` > z | Cmd+` > z",
+        "desc": "Toggle stack layout (fullscreen zoom)",
+        "subcat": "Layout"
+      },
+      {
+        "key": "Ctrl+` > =",
+        "desc": "Balance all window split sizes",
+        "subcat": "Layout"
+      },
+      {
+        "key": "Ctrl+` > x | Ctrl+Shift+W",
+        "desc": "Close active window",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+` > n",
+        "desc": "Create a new OS window",
+        "subcat": "Windows"
+      }
+    ],
+    "Tabs": [
+      {
+        "key": "Ctrl+` > c | Ctrl+Shift+T",
+        "desc": "Create a new tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+Shift+Q",
+        "desc": "Close current tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+` > , / Ctrl+` > .",
+        "desc": "Move current tab backward / forward",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+` > 1 .. 9",
+        "desc": "Direct jump to tab 1 through 9",
+        "subcat": "Tabs"
+      }
+    ],
+    "Font & Scrolling": [
+      {
+        "key": "Ctrl+= / Ctrl+- / Ctrl+0",
+        "desc": "Increase / Decrease / Reset font size",
+        "subcat": "Font"
+      },
+      {
+        "key": "Shift+PageUp / PageDown",
+        "desc": "Scroll page up / down",
+        "subcat": "Scroll"
+      },
+      {
+        "key": "Shift+Home / End",
+        "desc": "Scroll to top / bottom of buffer",
+        "subcat": "Scroll"
+      },
+      {
+        "key": "Ctrl+Shift+K / J",
+        "desc": "Scroll up / down one line",
+        "subcat": "Scroll"
+      }
+    ]
+  }
+}

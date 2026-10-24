@@ -1,0 +1,227 @@
+{
+  "title": "Herdr Keybinds",
+  "provider": "herdr",
+  "binds": {
+    "Prefix": [
+      {
+        "key": "CTRL+A",
+        "desc": "Primary prefix key"
+      }
+    ],
+    "Popups & Overlays": [
+      {
+        "key": "Ctrl+A, / | Ctrl+Alt+k",
+        "desc": "command bar",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, f",
+        "desc": "Toggle floating scratch shell",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, i",
+        "desc": "List floating shell instances",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, space | Ctrl+A, a",
+        "desc": "Herdr Plus: Quick actions launcher",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Shift+p",
+        "desc": "Herdr Plus: Project templates",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, m",
+        "desc": "Herdr Projects: Mission control work board",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, s",
+        "desc": "Television: Herdr persistent sessions",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Shift+w",
+        "desc": "Television: Herdr workspaces",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Shift+a",
+        "desc": "Television: Herdr coding agents",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Alt+t",
+        "desc": "Television: Herdr worktrees",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Alt+r",
+        "desc": "Television: Git repositories",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Shift+b",
+        "desc": "Terminal Browser popup",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Alt+g",
+        "desc": "Lazygit popup",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, y",
+        "desc": "Yazi file manager popup",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Alt+m",
+        "desc": "Btop system monitor popup",
+        "subcat": "Popups"
+      }
+    ],
+    "Panes": [
+      {
+        "key": "Ctrl+A, backslash",
+        "desc": "Split pane vertically",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+A, minus",
+        "desc": "Split pane horizontally",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+A, x | Alt+esc",
+        "desc": "Close active pane",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+A, h",
+        "desc": "Focus pane left",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+A, j",
+        "desc": "Focus pane down",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+A, k",
+        "desc": "Focus pane up",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+A, l",
+        "desc": "Focus pane right",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+A, Shift+h",
+        "desc": "Swap pane left",
+        "subcat": "Management"
+      },
+      {
+        "key": "Ctrl+A, tab",
+        "desc": "Cycle pane focus forward",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+A, z",
+        "desc": "Toggle pane zoom (fullscreen)",
+        "subcat": "Layout"
+      }
+    ],
+    "Tabs": [
+      {
+        "key": "Ctrl+A, c",
+        "desc": "Create a new tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+A, Shift+x",
+        "desc": "Close active tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+A, Shift+t",
+        "desc": "Rename active tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+A, p | Ctrl+left",
+        "desc": "Previous tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+A, n | Ctrl+right",
+        "desc": "Next tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+A, 1..9 | Ctrl+1..9",
+        "desc": "Direct jump to tab 1..9",
+        "subcat": "Tabs"
+      }
+    ],
+    "Workspaces": [
+      {
+        "key": "Ctrl+A, Shift+n",
+        "desc": "Create new workspace",
+        "subcat": "Workspaces"
+      },
+      {
+        "key": "Ctrl+A, Shift+g",
+        "desc": "Create new git worktree workspace",
+        "subcat": "Workspaces"
+      },
+      {
+        "key": "Ctrl+A, Alt+p",
+        "desc": "Previous workspace",
+        "subcat": "Workspaces"
+      },
+      {
+        "key": "Ctrl+A, Alt+n",
+        "desc": "Next workspace",
+        "subcat": "Workspaces"
+      }
+    ],
+    "General": [
+      {
+        "key": "Ctrl+A, b",
+        "desc": "Toggle sidebar visibility",
+        "subcat": "UI"
+      },
+      {
+        "key": "Ctrl+A, [",
+        "desc": "Enter scrollback copy mode",
+        "subcat": "Buffer"
+      },
+      {
+        "key": "Ctrl+A, d",
+        "desc": "Detach from Herdr server",
+        "subcat": "Session"
+      },
+      {
+        "key": "Ctrl+A, Shift+r",
+        "desc": "Hot-reload configuration",
+        "subcat": "Config"
+      },
+      {
+        "key": "Ctrl+A, comma",
+        "desc": "Open interactive settings",
+        "subcat": "Config"
+      },
+      {
+        "key": "Ctrl+A, ?",
+        "desc": "Show keyboard shortcuts help",
+        "subcat": "Help"
+      }
+    ]
+  }
+}

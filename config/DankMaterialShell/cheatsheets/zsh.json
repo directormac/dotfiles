@@ -1,0 +1,102 @@
+{
+  "title": "Zsh Keybinds",
+  "provider": "zsh",
+  "binds": {
+    "Autosuggest & History": [
+      {
+        "key": "Ctrl+Space",
+        "desc": "Accept current syntax autosuggestion",
+        "subcat": "Completion"
+      },
+      {
+        "key": "Ctrl+R",
+        "desc": "Interactive shell history search via Television / fzf",
+        "subcat": "History"
+      },
+      {
+        "key": "Ctrl+X, Ctrl+R",
+        "desc": "Interactive history search and immediate execute",
+        "subcat": "History"
+      },
+      {
+        "key": "Up / Down",
+        "desc": "Previous / Next command in history matching prefix",
+        "subcat": "History"
+      }
+    ],
+    "Navigation & Multiplexer": [
+      {
+        "key": "Alt+S",
+        "desc": "Launch Sesh interactive session picker (sesh-sessions)",
+        "subcat": "Sesh"
+      },
+      {
+        "key": "Ctrl+O",
+        "desc": "Interactive super file / directory search via fzf",
+        "subcat": "Search"
+      },
+      {
+        "key": "Ctrl+H",
+        "desc": "Interactive fuzzy manpage manual viewer",
+        "subcat": "Docs"
+      },
+      {
+        "key": "Tab",
+        "desc": "Interactive tab completion menu (fzf-tab)",
+        "subcat": "Completion"
+      }
+    ],
+    "Line Editing & Vi Mode": [
+      {
+        "key": "Ctrl+X, Ctrl+E",
+        "desc": "Open current command line buffer in $EDITOR (Neovim)",
+        "subcat": "Editor"
+      },
+      {
+        "key": "v (vicmd)",
+        "desc": "Open current command line buffer in $EDITOR from normal mode",
+        "subcat": "Editor"
+      },
+      {
+        "key": "Escape",
+        "desc": "Switch from insert mode to vi command mode (vicmd)",
+        "subcat": "Vi"
+      },
+      {
+        "key": "i / a",
+        "desc": "Enter vi insert mode before / after cursor",
+        "subcat": "Vi"
+      },
+      {
+        "key": "Ctrl+W",
+        "desc": "Delete backward word",
+        "subcat": "Editing"
+      },
+      {
+        "key": "Ctrl+U",
+        "desc": "Kill entire command line before cursor",
+        "subcat": "Editing"
+      },
+      {
+        "key": "Ctrl+K",
+        "desc": "Kill entire command line after cursor",
+        "subcat": "Editing"
+      },
+      {
+        "key": "Ctrl+A / Ctrl+E",
+        "desc": "Jump to beginning / end of line buffer",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Ctrl+_",
+        "desc": "Undo last edit in command buffer",
+        "subcat": "Undo"
+      },
+      {
+        "key": "Ctrl+L",
+        "desc": "Clear terminal screen and redraw prompt",
+        "subcat": "Screen"
+      }
+    ]
+  }
+}

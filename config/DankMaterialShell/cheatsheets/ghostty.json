@@ -1,0 +1,114 @@
+{
+  "title": "Ghostty Keybinds",
+  "provider": "ghostty",
+  "binds": {
+    "General & Quick Terminal": [
+      {
+        "key": "Ctrl+Alt+`",
+        "desc": "Toggle global floating quick access terminal (quake-style)",
+        "subcat": "Global"
+      },
+      {
+        "key": "Ctrl+` > r",
+        "desc": "Reload Ghostty configuration file",
+        "subcat": "General"
+      },
+      {
+        "key": "Ctrl+Shift+C",
+        "desc": "Copy selection to system clipboard",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "Ctrl+Shift+V",
+        "desc": "Paste from system clipboard",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "Ctrl+Shift+A",
+        "desc": "Select all text in buffer",
+        "subcat": "Selection"
+      }
+    ],
+    "Splits": [
+      {
+        "key": "Ctrl+` > \\",
+        "desc": "Split pane vertically (right)",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+` > -",
+        "desc": "Split pane horizontally (down)",
+        "subcat": "Split"
+      },
+      {
+        "key": "Ctrl+` > h / j / k / l",
+        "desc": "Focus split pane (left/down/up/right)",
+        "subcat": "Navigation"
+      },
+      {
+        "key": "Cmd+` > z",
+        "desc": "Toggle split zoom (fullscreen split)",
+        "subcat": "Layout"
+      },
+      {
+        "key": "Cmd+` > =",
+        "desc": "Equalize all split pane sizes",
+        "subcat": "Layout"
+      },
+      {
+        "key": "Ctrl+` > x",
+        "desc": "Close current surface / split pane",
+        "subcat": "Management"
+      }
+    ],
+    "Tabs & Windows": [
+      {
+        "key": "Ctrl+` > c",
+        "desc": "Create a new tab",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+` > ,",
+        "desc": "Move current tab to the left",
+        "subcat": "Tabs"
+      },
+      {
+        "key": "Ctrl+` > n",
+        "desc": "Open a new OS window",
+        "subcat": "Windows"
+      }
+    ],
+    "Font & Scrolling": [
+      {
+        "key": "Ctrl+` > =",
+        "desc": "Increase font size",
+        "subcat": "Font"
+      },
+      {
+        "key": "Ctrl+` > -",
+        "desc": "Decrease font size",
+        "subcat": "Font"
+      },
+      {
+        "key": "Ctrl+` > 0",
+        "desc": "Reset font size to default",
+        "subcat": "Font"
+      },
+      {
+        "key": "Shift+PageUp / PageDown",
+        "desc": "Scroll page up / down",
+        "subcat": "Scroll"
+      },
+      {
+        "key": "Shift+Home / End",
+        "desc": "Scroll to top / bottom of buffer",
+        "subcat": "Scroll"
+      },
+      {
+        "key": "Ctrl+Shift+PageUp / PageDown",
+        "desc": "Jump to previous / next shell prompt",
+        "subcat": "Prompt"
+      }
+    ]
+  }
+}
