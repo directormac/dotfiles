@@ -78,6 +78,12 @@ resize_mode = [
 ]
 
 [[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+
+[[keys.command]]
 key = ["prefix+/", "ctrl+alt+k"]
 type = "plugin_action"
 command = "herdr-bar.open"

@@ -50,13 +50,6 @@
         home.file = {
           ".collie/config.toml".source = config.lib.dots.link "collie/config.toml";
 
-          ".config/herdr/plugins/config/herdr.collie/.env".text = ''
-            COLLIE_MUX=herdr
-            COLLIE_HOST=0.0.0.0
-            COLLIE_ALLOW_NON_LOOPBACK_BIND=true
-            COLLIE_ALLOW_ANY_HOST=true
-          '';
-
           ".config/herdr/plugins/config/herdr.collie/config.toml".source =
             config.lib.dots.link "collie/config.toml";
 

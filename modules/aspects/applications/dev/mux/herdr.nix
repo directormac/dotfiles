@@ -21,6 +21,7 @@
             "Tyru5/herdr-floax"
             "eliasstravik/herdr-projects"
             "AltanS/collie"
+            "thanhdat77/herdr-navigator"
             "rohankewal/herdr-nerd-font-tab-name"
           )
           INSTALLED=$(${herdrPkg}/bin/herdr plugin list --json 2>/dev/null || echo '{"result":{"plugins":[]}}')

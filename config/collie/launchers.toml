@@ -22,5 +22,5 @@ label = "Antigravity"
 harness = "agy"
 
 [[launchers]]
-command = "htop"
-label = "htop"
+command = "btop"
+label = "btop"
