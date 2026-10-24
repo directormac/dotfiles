@@ -2,16 +2,16 @@
 { den, ... }:
 {
   den.aspects.roles.gaming = {
-    includes = with den.aspects; [
-      hardware.steam-hardware
-      applications.gaming.nix-ld
-      applications.gaming.steam
-      applications.gaming.mangohud
-      applications.gaming.gamescope
-      applications.gaming.gamemode
-      applications.gaming.lutris
-      applications.gaming.heroic
-      applications.gaming.bottles
+    includes = with den.aspects.applications.gaming; [
+      extra-peripherals
+      nix-ld
+      steam
+      mangohud
+      gamescope
+      gamemode
+      lutris
+      heroic
+      bottles
     ];
   };
 }
