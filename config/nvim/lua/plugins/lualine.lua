@@ -54,17 +54,17 @@ return {
             },
             -- Wakatime today summary
             -- stylua: ignore
-            -- {
-            --   function() return require('wakatime').statusline() end,
-            --   cond = function() 
-            --     return package.loaded['wakatime'] and require('wakatime').statusline() ~= '' 
-            --   end,
-            --   icon = '󱑎',
-            --   color = function() 
-            --     return { fg = Snacks.util.color('Special') } 
-            --   end,
-            --   __wakatime_statusline = true,
-            -- },
+            {
+              function() return require('wakatime').statusline() end,
+              cond = function() 
+                return package.loaded['wakatime'] and require('wakatime').statusline() ~= '' 
+              end,
+              icon = '󱑎',
+              color = function() 
+                return { fg = Snacks.util.color('Special') } 
+              end,
+              __wakatime_statusline = false,
+            },
             -- stylua: ignore
             {
               function() 

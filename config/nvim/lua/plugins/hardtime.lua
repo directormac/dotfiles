@@ -49,6 +49,8 @@ return {
     after = function()
       local ok, hardtime = pcall(require, 'hardtime')
       if not ok then return end
+      hardtime.enable()
+
       local fn = hardtime.enable
       local n, v = debug.getupvalue(fn, 2)
       if n == 'opts' and type(v) == 'table' and v.fn then fn = v.fn end

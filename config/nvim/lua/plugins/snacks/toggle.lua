@@ -86,6 +86,30 @@ return {
       end,
     }):map('<leader>tO')
 
+    -- Hardtime toggle
+    Snacks.toggle({
+      id = 'hardtime',
+      name = 'Hardtime',
+      get = function()
+        local ok, hardtime = pcall(require, 'hardtime')
+        return ok and hardtime.is_plugin_enabled == true
+      end,
+      set = function(state)
+        local ok, hardtime = pcall(require, 'hardtime')
+        if not ok then
+          pcall(Utils.load_with_after, 'hardtime.nvim')
+          ok, hardtime = pcall(require, 'hardtime')
+        end
+        if ok then
+          if state then
+            hardtime.enable()
+          else
+            hardtime.disable()
+          end
+        end
+      end,
+    }):map('<leader>tH')
+
     Snacks.toggle.profiler():map('<leader>dpp')
     Snacks.toggle.profiler_highlights():map('<leader>dph')
 
