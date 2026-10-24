@@ -1,0 +1,38 @@
+[metadata]
+name = "apps"
+description = "Search and launch applications (with optional administrator elevation)"
+requirements = ["tv", "tv-apps-source", "tv-apps-preview", "tv-app-launch"]
+
+[source]
+command = "tv-apps-source"
+display = "{split:\t:0}  │  {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:4}"
+
+[preview]
+command = "tv-apps-preview '{split:\t:4}'"
+
+[keybindings]
+enter = "actions:launch"
+ctrl-e = "actions:launch_elevated"
+ctrl-y = "actions:copy_exec"
+ctrl-o = "actions:open_desktop"
+
+[actions.launch]
+description = "Launch application normally"
+command = "tv-app-launch run '{split:\t:4}'"
+mode = "execute"
+
+[actions.launch_elevated]
+description = "Launch application with root / administrator privileges"
+command = "tv-app-launch elevate '{split:\t:4}'"
+mode = "execute"
+
+[actions.copy_exec]
+description = "Copy launch command to clipboard"
+command = "echo -n '{split:\t:3}' | wl-copy"
+mode = "execute"
+
+[actions.open_desktop]
+description = "Open desktop entry file in editor"
+command = "tv-app-launch edit '{split:\t:4}'"
+mode = "execute"

@@ -31,6 +31,176 @@
         ...
       }:
       let
+        tv-app-launch = pkgs.writeShellScriptBin "tv-app-launch" ''
+          action="''${1:-run}"
+          file="''${2:-}"
+
+          if [ -z "$file" ] || [ ! -f "$file" ]; then
+            echo "Error: valid desktop entry path required" >&2
+            exit 1
+          fi
+
+          if [ "$action" = "edit" ]; then
+            exec "''${EDITOR:-nvim}" "$file"
+          fi
+
+          exec_cmd=$(grep -m1 '^Exec=' "$file" | cut -d= -f2- || true)
+          terminal=$(grep -m1 '^Terminal=' "$file" | cut -d= -f2- | tr '[:upper:]' '[:lower:]' || true)
+
+          clean_exec=$(echo "$exec_cmd" | sed -E 's/%[a-zA-Z]//g; s/[[:space:]]+$//')
+
+          if [ -z "$clean_exec" ]; then
+            echo "Error: no valid Exec command found in $file" >&2
+            exit 1
+          fi
+
+          case "$action" in
+            elevate)
+              if [ "$terminal" = "true" ]; then
+                setsid -f ghostty -e sudo $clean_exec >/dev/null 2>&1 || true
+              else
+                setsid -f pkexec-gui $clean_exec >/dev/null 2>&1 || true
+              fi
+              ;;
+            run|*)
+              if [ "$terminal" = "true" ]; then
+                setsid -f ghostty -e $clean_exec >/dev/null 2>&1 || true
+              else
+                if [[ "$clean_exec" =~ pkexec ]]; then
+                  target_exec=$(echo "$clean_exec" | sed 's/pkexec //')
+                  setsid -f pkexec-gui $target_exec >/dev/null 2>&1 || true
+                else
+                  setsid -f sh -c "$clean_exec" >/dev/null 2>&1 || true
+                fi
+              fi
+              ;;
+          esac
+        '';
+        tv-apps-preview = pkgs.writeShellScriptBin "tv-apps-preview" ''
+          file="$1"
+          if [ ! -f "$file" ]; then
+            echo "Desktop entry not found: $file"
+            exit 0
+          fi
+
+          name=$(grep -m1 '^Name=' "$file" | cut -d= -f2- || true)
+          exec_cmd=$(grep -m1 '^Exec=' "$file" | cut -d= -f2- || true)
+          comment=$(grep -m1 '^Comment=' "$file" | cut -d= -f2- || true)
+          categories=$(grep -m1 '^Categories=' "$file" | cut -d= -f2- || true)
+          terminal=$(grep -m1 '^Terminal=' "$file" | cut -d= -f2- || true)
+          icon=$(grep -m1 '^Icon=' "$file" | cut -d= -f2- || true)
+
+          clean_exec=$(echo "$exec_cmd" | sed -E 's/%[a-zA-Z]//g; s/[[:space:]]+$//')
+
+          is_admin=0
+          if [[ "$clean_exec" =~ pkexec|sudo ]] || [[ "$categories" =~ System|HardwareSettings|Filesystem ]] || [[ "$file" =~ gsmartcontrol|disk|gparted ]]; then
+            is_admin=1
+          fi
+
+          echo -e "\033[1;35m==>\033[0m \033[1;37m$name\033[0m"
+          if [ "$is_admin" -eq 1 ]; then
+            echo -e "\033[1;31m[ADMIN / ELEVATED]\033[0m \033[90mAdministrator privileges supported/recommended\033[0m"
+          elif [ "$terminal" = "true" ]; then
+            echo -e "\033[1;33m[CLI / TERMINAL]\033[0m \033[90mRuns inside terminal emulator\033[0m"
+          else
+            echo -e "\033[1;32m[GUI APPLICATION]\033[0m \033[90mStandard desktop application\033[0m"
+          fi
+          echo ""
+
+          [ -n "$comment" ] && echo -e "\033[1;34mDescription:\033[0m  $comment"
+          [ -n "$icon" ] && echo -e "\033[1;34mIcon:\033[0m         $icon"
+          [ -n "$categories" ] && echo -e "\033[1;34mCategories:\033[0m   $categories"
+          echo -e "\033[1;34mDesktop File:\033[0m \033[90m$file\033[0m"
+          echo ""
+
+          echo -e "\033[1;32mNormal Command:\033[0m"
+          echo -e "  \033[36m$clean_exec\033[0m"
+          echo ""
+
+          echo -e "\033[1;31mElevated Command (pkexec-gui):\033[0m"
+          echo -e "  \033[33mpkexec-gui $clean_exec\033[0m"
+          echo ""
+
+          echo -e "\033[1;35mActions:\033[0m"
+          echo -e "  \033[1m<Enter>\033[0m   Launch normally"
+          echo -e "  \033[1;31m<Ctrl+E>\033[0m  Launch with Root / Administrator Elevation (pkexec-gui)"
+          echo -e "  \033[1m<Ctrl+Y>\033[0m  Copy launch command to clipboard"
+          echo -e "  \033[1m<Ctrl+O>\033[0m  Open desktop file in editor"
+        '';
+        tv-apps-source = pkgs.writeShellScriptBin "tv-apps-source" ''
+                    ${pkgs.python3}/bin/python3 -c '
+          import os, glob
+
+          dirs = [
+              os.path.expanduser("~/.local/share/applications"),
+              os.path.expanduser("/etc/profiles/per-user/" + os.environ.get("USER", "") + "/share/applications"),
+              "/run/current-system/sw/share/applications",
+          ]
+
+          seen_names = set()
+          for d in dirs:
+              if not os.path.isdir(d):
+                  continue
+              for f in sorted(glob.glob(os.path.join(d, "*.desktop"))):
+                  base = os.path.basename(f)
+                  if base in seen_names:
+                      continue
+                  seen_names.add(base)
+
+                  name = ""
+                  exec_cmd = ""
+                  comment = ""
+                  categories = ""
+                  terminal = False
+                  no_display = False
+                  in_entry = False
+
+                  try:
+                      with open(f, "r", errors="ignore") as fp:
+                          for line in fp:
+                              line = line.strip()
+                              if line == "[Desktop Entry]":
+                                  in_entry = True
+                                  continue
+                              elif line.startswith("[") and in_entry:
+                                  break
+                              if not in_entry:
+                                  continue
+
+                              if line.startswith("Name=") and not name:
+                                  name = line[5:]
+                              elif line.startswith("Exec=") and not exec_cmd:
+                                  exec_cmd = line[5:]
+                              elif line.startswith("Comment=") and not comment:
+                                  comment = line[8:]
+                              elif line.startswith("Categories=") and not categories:
+                                  categories = line[11:]
+                              elif line.startswith("Terminal="):
+                                  terminal = (line[9:].lower() == "true")
+                              elif line.startswith("NoDisplay="):
+                                  no_display = (line[10:].lower() == "true")
+                  except Exception:
+                      continue
+
+                  if no_display or not name or not exec_cmd:
+                      continue
+
+                  clean_exec = " ".join([arg for arg in exec_cmd.split() if not arg.startswith("%")])
+
+                  is_elevated = (
+                      "pkexec" in clean_exec
+                      or "sudo" in clean_exec
+                      or any(k in categories for k in ["System", "HardwareSettings", "Filesystem"])
+                      or any(app in base.lower() for app in ["gsmartcontrol", "disk", "gparted", "wireshark"])
+                  )
+
+                  badge = "[ADMIN]" if is_elevated else ("[CLI]" if terminal else "[GUI]")
+                  try:
+                      print(f"{name}\t{badge}\t{comment}\t{clean_exec}\t{f}")
+                  except BrokenPipeError:
+                      break
+          '
+        '';
         tv-channel-enter = pkgs.writeShellScriptBin "tv-channel-enter" ''
           chan="$1"
           if [ -n "''${TV_CMD:-}" ]; then
@@ -230,6 +400,9 @@
             tv-media-player-preview
             tv-pkgs-source
             tv-pkgs-preview
+            tv-apps-source
+            tv-apps-preview
+            tv-app-launch
           ]
           ++ (lib.optionals (pkgs ? local) (
             with pkgs.local;
@@ -285,6 +458,7 @@
                 value.source = config.lib.dots.link "television/cable/${name}";
               })
               [
+                "apps.toml"
                 "channels.toml"
                 "flake-inputs.toml"
                 "hypr-clients.toml"
@@ -312,6 +486,26 @@
 
             "television/tv-slim.toml".source = config.lib.dots.link "television/tv-slim.toml";
           };
+
+        xdg.desktopEntries.tv-channels = {
+          settings = {
+            StartupNotify = "true";
+          };
+
+          categories = [
+            "Utility"
+            "System"
+            "ConsoleOnly"
+          ];
+
+          comment = "Browse and launch Television channels in a floating terminal";
+          exec = "ghostty --class=com.ghostty.float -e tv";
+          genericName = "Television Fuzzy Finder Channels";
+          icon = "utilities-terminal";
+          name = "TV Channels";
+          terminal = false;
+          type = "Application";
+        };
       };
 
     persistHome.directories = [

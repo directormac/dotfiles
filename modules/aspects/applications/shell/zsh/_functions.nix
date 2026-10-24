@@ -501,4 +501,14 @@
   zle -N fzf-man-widget
 
   zle -N tv-history-slim-widget
+  # Transparently wrap pkexec for graphical applications in desktop sessions
+  pkexec() {
+    if [[ -n "''${DISPLAY:-}" || -n "''${WAYLAND_DISPLAY:-}" ]] && [[ $# -gt 0 && "$1" != -* ]]; then
+      if command -v pkexec-gui >/dev/null 2>&1; then
+        command pkexec-gui "$@"
+        return $?
+      fi
+    fi
+    command pkexec "$@"
+  }
 ''

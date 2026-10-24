@@ -17,7 +17,9 @@
           [
             polkit_gnome
             seahorse
+            xhost
           ]
+          ++ lib.optional (pkgs ? local && pkgs.local ? pkexec-gui) pkgs.local.pkexec-gui
         );
 
         security = {
@@ -43,14 +45,20 @@
 
         services.gnome.gnome-keyring.enable = lib.mkIf isWorkstation (lib.mkDefault true);
 
+        # Ensure root has an isolated, valid runtime directory for elevated GUI processes
+        systemd.tmpfiles.rules = [
+          "d /run/user/0 0700 root root -"
+        ];
+
         systemd.user.services.polkit-gnome-authentication-agent-1 = lib.mkIf isWorkstation {
           after = [ "graphical-session.target" ];
           description = "polkit-gnome-authentication-agent-1";
 
           serviceConfig = {
+            ExecCondition = "${pkgs.bash}/bin/bash -c '! ${pkgs.procps}/bin/pgrep -u $UID -f polkit-gnome-authentication-agent-1 >/dev/null'";
             ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
             Restart = "on-failure";
-            RestartSec = 1;
+            RestartSec = 2;
             TimeoutStopSec = 10;
             Type = "simple";
           };

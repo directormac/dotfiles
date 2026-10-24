@@ -190,6 +190,7 @@ fallback_channel = "files"
   "nh os generations",
   "tv-generations",
 ]
+"apps" = ["apps", "app", "launch", "gui"]
 
 [shell_integration.keybindings]
 # controls which key binding should trigger tv

@@ -59,6 +59,8 @@ local is_vm = os.getenv('HYPRLAND_IS_VM') == '1' or os.getenv('IS_VM') == '1'
 
 hl.on('hyprland.start', function()
   hl.exec_cmd('dbus-update-activation-environment --systemd --all')
+  -- Authorize root connections to Xwayland for elevated graphical utilities
+  hl.exec_cmd('xhost +si:localuser:root')
   -- DMS is managed as a systemd user service (dms.service bound to graphical-session.target)
   -- Optional: Clipboard history
   hl.exec_cmd('sh -c "wl-clip-persist --clipboard regular --reconnect-tries 0 &"')

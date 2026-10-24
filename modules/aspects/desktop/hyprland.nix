@@ -44,6 +44,7 @@
           brightnessctl
           playerctl
           xdg-utils
+          xhost
         ];
 
         programs.hyprland = {

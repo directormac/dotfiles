@@ -64,6 +64,7 @@
       applications.productivity.scrcpy
       applications.productivity.obsidian
       applications.productivity.obs-studio
+      applications.productivity.disks
 
       # Virtualization
       virtualization.libvirt

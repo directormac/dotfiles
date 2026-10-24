@@ -16,7 +16,7 @@
         '';
         icon-theme-name = "Papirus-Dark";
         icon-theme-package = pkgs.papirus-icon-theme;
-        theme-name = "catppuccin-mocha-mauve-standard+default";
+        theme-name = "catppuccin-mocha-mauve-standard";
         theme-package = pkgs.catppuccin-gtk.override {
           accents = [ "mauve" ];
           size = "standard";
