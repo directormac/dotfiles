@@ -6,11 +6,21 @@
 let
   installer = variant: {
     nixos =
-      { modulesPath, ... }:
+      {
+        lib,
+        modulesPath,
+        ...
+      }:
       {
         imports = [
           "${modulesPath}/installer/cd-dvd/installation-cd-${variant}.nix"
         ];
+
+        # The installer CD profile defaults ZFS support on (profiles/base.nix),
+        # but nixpkgs currently marks zfs-kernel broken for kernel 7.3, which
+        # fails evaluation. The test VM never installs to ZFS, so opt out.
+        # Use mkForce because profiles/base.nix sets zfs via mkDefault true.
+        boot.supportedFilesystems.zfs = lib.mkForce false;
       };
   };
 in

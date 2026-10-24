@@ -12,6 +12,17 @@
       (den.batteries.vm-autologin "artifex")
     ];
 
+    nixos =
+      { lib, ... }:
+      {
+        # virtualization.vm-bootable imports the installer CD profile, which sets
+        # root initialHashedPassword = "" (installation-device.nix). That collides
+        # with the artifex aspect's initialPassword fallback and triggers NixOS'
+        # multiple-password-options warning; the testbed has no use for the
+        # installer's empty root hash.
+        users.users.root.initialHashedPassword = lib.mkForce null;
+      };
+
     description = "NixOS Sandbox Testbed";
   };
 
