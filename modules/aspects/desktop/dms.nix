@@ -127,7 +127,12 @@
 
             ambientSound.enable = true;
             amdGpuMonitor.enable = true;
-            bitwarden.enable = true;
+
+            bitwarden = {
+              enable = true;
+              src = lib.mkForce (pkgs.local.dms-plugin-bitwarden or pkgs.dms-plugin-bitwarden);
+            };
+
             calculator.enable = true;
             dankActions.enable = true;
             dankGifSearch.enable = true;

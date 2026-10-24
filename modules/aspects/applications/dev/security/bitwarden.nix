@@ -12,6 +12,9 @@
           bitwarden-desktop
           bitwarden-cli
           bws
+          libsecret
+          libargon2
+          pinentry-qt
         ];
 
         programs.rbw = {
