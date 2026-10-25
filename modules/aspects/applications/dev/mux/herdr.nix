@@ -16,13 +16,7 @@
           set -euo pipefail
           echo "==> Syncing declarative Herdr plugins..."
           PLUGINS=(
-            "cloudmanic/herdr-plus"
-            "Tyru5/herdr-floax"
-            "AltanS/collie"
-            "fullerzz/herdr-plugin-sesh"
-            "jeffarese/herdr-bar"
             "natori-hrj/herdr-lazy"
-            "rohankewal/herdr-nerd-font-tab-name"
           )
           INSTALLED=$(${herdrPkg}/bin/herdr plugin list --json 2>/dev/null || echo '{"result":{"plugins":[]}}')
 
@@ -60,10 +54,6 @@
 
           echo "==> Herdr plugins sync complete."
         '';
-        herdrPkg =
-          inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
-            or (pkgs.writeShellScriptBin "herdr" "echo herdr");
-
         herdr-sesh = pkgs.writeShellScriptBin "herdr-sesh" ''
           SESH_BIN=$(find "$HOME/.config/herdr/plugins/github-installations" -maxdepth 5 -type f -name "herdr-sesh" 2>/dev/null | head -n 1)
           if [ -n "$SESH_BIN" ] && [ -x "$SESH_BIN" ]; then
@@ -72,8 +62,14 @@
             exec ${herdrPkg}/bin/herdr plugin action invoke fullerzz.sesh.open-picker "$@"
           fi
         '';
+        herdrPkg =
+          inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr
+            or (pkgs.writeShellScriptBin "herdr" "echo herdr");
       in
       {
+        home.file.".config/herdr-sesh/config.toml".source =
+          config.lib.dots.link "config/herdr-sesh/config.toml";
+
         home.file.".config/herdr/config.toml".source = config.lib.dots.link "herdr/config.toml";
 
         home.file.".config/herdr/herdr-nerd-font-tab-name.yml".source =
@@ -83,7 +79,7 @@
           config.lib.dots.link "herdr/plugins/config/cloudmanic.herdr-plus";
 
         home.file.".config/herdr/plugins/config/fullerzz.sesh/config.toml".source =
-          config.lib.dots.link "herdr/plugins/config/fullerzz.sesh/config.toml";
+          config.lib.dots.link "config/herdr-sesh/config.toml";
 
         home.file.".config/herdr/plugins/config/herdr-bar/config.json".source =
           config.lib.dots.link "herdr/plugins/config/herdr-bar/config.json";
