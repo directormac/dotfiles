@@ -32,7 +32,7 @@ let
     pname = "qs-bitwarden-vault";
     sourceRoot = "${src.name}/vault";
   };
-  version = "1.11.6-dms.3";
+  version = "dms/1.11.6-dms.4";
 in
 stdenvNoCC.mkDerivation {
   inherit version src;

@@ -23,7 +23,7 @@ let
     };
 
     "linux-x64" = {
-      sha256 = "sha256-yJRuK+lHmGoPNnY79Fs4bWnbEJoVl2OOiLqlYrO9OjA=";
+      sha256 = "sha256-8/mXmsc128YMbWLs3vsEzn0OeMuKvU+WM64iVumqzdY=";
       url = "https://github.com/AltanS/collie/releases/download/v${version}/collie-${version}-linux-x64.tar.gz";
     };
 
@@ -38,7 +38,7 @@ let
     };
   };
   system = stdenv.hostPlatform.system;
-  version = "1.24.0-edge.4";
+  version = "1.24.0-edge.5";
 in
 stdenv.mkDerivation {
   inherit version;
