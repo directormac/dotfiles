@@ -80,14 +80,11 @@
             };
       in
       {
+        home.file = lib.concatMapAttrs linkDank dmsFiles;
+
         home.sessionVariables = {
           ANTIGRAVITY_QUOTA_METHOD = "v1internal:fetchAvailableModels";
         };
-        systemd.user.sessionVariables = {
-          ANTIGRAVITY_QUOTA_METHOD = "v1internal:fetchAvailableModels";
-        };
-
-        home.file = lib.concatMapAttrs linkDank dmsFiles;
 
         imports =
           (lib.optionals (inputs ? dms) [
@@ -181,6 +178,7 @@
 
             dankNotepadModule.enable = true;
             dankRssWidget.enable = true;
+
             dankStickerSearch = {
               enable = true;
               src = lib.mkForce ../../../config/dms-plugins/dankStickerSearch;
@@ -216,10 +214,10 @@
                 cardRadius = 0;
                 colorMode = "catppuccin";
                 fontSize = 44;
+                hideWhenNothingPlaying = true;
                 lineCount = "5";
                 textAlign = "center";
                 textShadow = true;
-                hideWhenNothingPlaying = true;
               };
 
               src = ../../../config/dms-plugins/desktopLyricsWidget;
@@ -230,6 +228,31 @@
 
               settings = {
                 recentEmojis = "";
+              };
+            };
+
+            lutrisLauncher = {
+              enable = true;
+
+              settings = {
+                dateFormat = "relative";
+                showHints = true;
+              };
+            };
+
+            mediaDownloader = {
+              enable = true;
+
+              settings = {
+                downloadPathAudio = "$HOME/Music";
+                downloadPathVideo = "$HOME/Videos";
+                embedMetadata = true;
+                embedThumbnail = true;
+                quickAudioFormat = "mp3";
+                quickAudioQuality = "best";
+                quickVideoFormat = "mp4";
+                quickVideoRes = "1080p";
+                sponsorBlock = true;
               };
             };
 
@@ -254,43 +277,21 @@
 
             screenkey = {
               enable = true;
+
               settings = {
-                visualizerEnabled = true;
+                animationType = "none";
+                charLimit = 20;
                 clickThrough = true;
                 fadeTimeout = 1500;
                 fontSize = 24;
-                position = "bottom_center";
-                animationType = "none";
-                keycapStyle = "default";
-                roundedKeycaps = true;
-                overlayOpacity = 90;
-                marginSize = 24;
-                charLimit = 20;
                 historyLimit = 1;
+                keycapStyle = "default";
+                marginSize = 24;
+                overlayOpacity = 90;
+                position = "bottom_center";
+                roundedKeycaps = true;
                 showShortcuts = true;
-              };
-            };
-
-            lutrisLauncher = {
-              enable = true;
-              settings = {
-                dateFormat = "relative";
-                showHints = true;
-              };
-            };
-
-            mediaDownloader = {
-              enable = true;
-              settings = {
-                downloadPathAudio = "$HOME/Music";
-                downloadPathVideo = "$HOME/Videos";
-                quickVideoFormat = "mp4";
-                quickVideoRes = "1080p";
-                quickAudioFormat = "mp3";
-                quickAudioQuality = "best";
-                embedThumbnail = true;
-                embedMetadata = true;
-                sponsorBlock = true;
+                visualizerEnabled = true;
               };
             };
 
@@ -311,6 +312,8 @@
           enable = true;
 
           settings = {
+            defaultView = "list";
+            radiusStrength = 0;
             vimKeys = true;
           };
 
@@ -321,11 +324,17 @@
 
           systemd = {
             enable = true;
+            restartIfChanged = true;
+            target = "graphical-session.target";
           };
         };
 
         stylix.targets = {
           dank-calendar.enable = lib.mkDefault true;
+        };
+
+        systemd.user.sessionVariables = {
+          ANTIGRAVITY_QUOTA_METHOD = "v1internal:fetchAvailableModels";
         };
 
         xdg.configFile."dfiles/bookmarks.json" = lib.mkIf (inputs ? dfiles) {
@@ -412,10 +421,10 @@
                 label = "Public";
                 path = userDirs.publicShare;
               }
-              ++ lib.optional (userDirs.templates != null) {
-                label = "Templates";
-                path = userDirs.templates;
-              }
+              # ++ lib.optional (userDirs.templates != null) {
+              #   label = "Templates";
+              #   path = userDirs.templates;
+              # }
               ++ (lib.mapAttrsToList (_: path: {
                 inherit path;
                 label = baseNameOf path;

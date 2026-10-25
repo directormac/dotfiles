@@ -91,24 +91,6 @@ Singleton {
         }
         resultsReady();
     }
-        const raw = output.trim();
-        if (!raw || raw[0] !== "{") {
-            results = [];
-            resultsForQuery = lastRequestQuery;
-            resultsReady();
-            return;
-        }
-
-        try {
-            const response = JSON.parse(raw);
-            const data = response.data?.data || response.data || [];
-            results = parseResults(Array.isArray(data) ? data : []);
-        } catch (e) {
-            results = [];
-        }
-        resultsForQuery = lastRequestQuery;
-        resultsReady();
-    }
 
     function handleCategoriesResponse(output, exitCode) {
         loadingCategories = false;
