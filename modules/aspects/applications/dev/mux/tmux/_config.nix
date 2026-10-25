@@ -129,6 +129,8 @@ in
 
       set -g @window_icon "${windowIcon}"
 
+      set-environment -g COLLIE_MUX "tmux"
+
       # The status bar is sourced before continuum runs, so that continuum can
       # prepend its auto-save interpolation to the final `status-right`.
       #
