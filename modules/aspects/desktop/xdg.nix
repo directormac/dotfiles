@@ -86,6 +86,8 @@
             enable = true;
           };
 
+          configFile."mimeapps.list".force = true;
+
           portal = {
             config = {
               common = {
