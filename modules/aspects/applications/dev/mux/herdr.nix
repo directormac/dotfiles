@@ -67,9 +67,7 @@
             or (pkgs.writeShellScriptBin "herdr" "echo herdr");
       in
       {
-        home.file.".config/herdr-sesh/config.toml".source =
-          config.lib.dots.link "config/herdr-sesh/config.toml";
-
+        home.file.".config/herdr-sesh/config.toml".source = config.lib.dots.link "herdr-sesh/config.toml";
         home.file.".config/herdr/config.toml".source = config.lib.dots.link "herdr/config.toml";
 
         home.file.".config/herdr/herdr-nerd-font-tab-name.yml".source =
@@ -79,7 +77,7 @@
           config.lib.dots.link "herdr/plugins/config/cloudmanic.herdr-plus";
 
         home.file.".config/herdr/plugins/config/fullerzz.sesh/config.toml".source =
-          config.lib.dots.link "config/herdr-sesh/config.toml";
+          config.lib.dots.link "herdr-sesh/config.toml";
 
         home.file.".config/herdr/plugins/config/herdr-bar/config.json".source =
           config.lib.dots.link "herdr/plugins/config/herdr-bar/config.json";

@@ -29,10 +29,8 @@
         ...
       }:
       let
-        aliases = import ./zsh/_aliases.nix;
         completion = import ./zsh/_completion.nix;
-        functions = import ./zsh/_functions.nix { inherit config; };
-        histdb = import ./zsh/_histdb.nix { inherit config pkgs; };
+        histdb = import ./zsh/_histdb.nix { inherit pkgs; };
         keys = import ./zsh/_keys.nix { inherit pkgs; };
       in
       {
@@ -60,35 +58,7 @@
           initContent =
             # zsh
             ''
-              ${histdb.initContent}
-              ${functions}
-              ${completion.fzfTabZstyle}
-
-
-              # Autosuggest Accept Keybindings (standard zle)
-              bindkey '^[[27;5;9~' autosuggest-accept
-              bindkey '^[[1;5I' autosuggest-accept
-              bindkey '^[[9;5u' autosuggest-accept
-              bindkey '^o' _fzf_super_search_widget
-              bindkey '^h' fzf-man-widget
-              function zvm_after_init() {
-                ${histdb.zvmKeybindings}
-
-                # Autosuggest Accept Keybindings (Ctrl+Tab in viins & vicmd)
-                zvm_bindkey viins '^[[27;5;9~' autosuggest-accept
-                zvm_bindkey viins '^[[1;5I' autosuggest-accept
-                zvm_bindkey viins '^[[9;5u' autosuggest-accept
-                zvm_bindkey vicmd '^[[27;5;9~' autosuggest-accept
-                zvm_bindkey vicmd '^[[1;5I' autosuggest-accept
-                zvm_bindkey vicmd '^[[9;5u' autosuggest-accept
-
-                # Super search (Ctrl-O) and Man/TLDR (Ctrl-H)
-                zvm_bindkey viins '^o' _fzf_super_search_widget
-                zvm_bindkey vicmd '^o' _fzf_super_search_widget
-                zvm_bindkey viins '^h' fzf-man-widget
-                zvm_bindkey vicmd '^h' fzf-man-widget
-              }
-              source $XDG_CONFIG_HOME/zsh/extra.zsh
+              source "''${XDG_CONFIG_HOME:-$HOME/.config}/zsh/init-content.zsh"
             '';
 
           plugins = [
@@ -113,13 +83,14 @@
             NEWT_COLORS = "root=lavender,crust border=sapphire,base window=overlay0,base title=rosewater,crust button=surface2,lavender button_active=crust,maroon";
           };
 
-          shellAliases = aliases;
           syntaxHighlighting.enable = false;
         };
 
         xdg.configFile."fsh".source = config.lib.dots.link "fsh";
         xdg.configFile."television/cable/zsh-keys.toml".text = keys.televisionCableToml;
-        xdg.configFile."zsh/extra.zsh".source = config.lib.dots.link "zsh/extra.zsh";
+        xdg.configFile."zsh/aliases.zsh".source = config.lib.dots.link "zsh/aliases.zsh";
+        xdg.configFile."zsh/functions.zsh".source = config.lib.dots.link "zsh/functions.zsh";
+        xdg.configFile."zsh/init-content.zsh".source = config.lib.dots.link "zsh/init-content.zsh";
       };
 
     persistHome = {
