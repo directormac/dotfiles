@@ -19,6 +19,7 @@
       in
       {
         environment.systemPackages = with pkgs; [
+          goldberg-emu
           steam-run
           wine
           winetricks

@@ -265,6 +265,12 @@ hl.define_submap('gamemode', function()
   -- Only the escape key is intercepted by Hyprland; everything else passes to the game
   hl.bind(modkey .. ' + F1', hl.dsp.submap('reset'), { desc = 'Exit gamemode' })
 
+  hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }))
+
+  hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }))
+
+  hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close())
+
   -- Optional: keep media volume keys functional during gameplay if desired
   -- hl.bind('', 'XF86AudioRaiseVolume', hl.dsp.exec_cmd('dms ipc call audio increment'))
   -- hl.bind('', 'XF86AudioLowerVolume', hl.dsp.exec_cmd('dms ipc call audio decrement'))
