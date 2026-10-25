@@ -60,7 +60,7 @@ sort_reverse = false
 sort_dir_first = true
 sort_translit = false
 sort_fallback = "alphabetical"
-linemode = "size_and_mtime"
+linemode = "detail"
 show_hidden = true
 show_symlink = true
 scrolloff = 5
@@ -180,6 +180,8 @@ fetchers = [
   # Git
   { url = "*", run = "git", group = "git" },
   { url = "*/", run = "git", group = "git" },
+  # FFmpeg stats
+  { url = "*", run = "ffmpeg-stats", group = "ffmpeg" },
   # MIME-type
   { url = "*/", run = "mime.dir", prio = "high", group = "mime" },
   { url = "local://*", run = "mime.local", prio = "high", group = "mime" },
@@ -207,6 +209,12 @@ spotters = [
   { url = "*", run = "file" },
 ]
 preloaders = [
+  # EPUB preview
+  { mime = "application/epub+zip", run = "epub-preview" },
+  # Centered media previews
+  { mime = "{audio,video,image}/*", run = "center-media" },
+  { mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}", run = "center-media" },
+  { url = "*.{ai,eps,ait}", run = "center-media" },
   # Image
   { mime = "image/{avif,hei?,jxl}", run = "magick" },
   { mime = "image/svg+xml", run = "svg" },
@@ -221,9 +229,14 @@ preloaders = [
 ]
 previewers = [
   { url = "*/", run = "folder" },
+  # EPUB preview
+  { mime = "application/epub+zip", run = "epub-preview" },
+  # Centered media previews
+  { mime = "{audio,video,image}/*", run = "center-media" },
+  { mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}", run = "center-media" },
+  { url = "*.{ai,eps,ait}", run = "center-media" },
   # Archive preview via ouch
   { mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}", run = "ouch" },
-  # Code
   { mime = "text/*", run = "code" },
   { mime = "application/{mbox,javascript,wine-extension-ini}", run = "code" },
   # JSON

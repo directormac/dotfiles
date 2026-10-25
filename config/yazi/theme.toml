@@ -3,7 +3,7 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 
 [app]
-overall = { bg = "#1e1e2e" }
+overall = {}
 
 [cmp]
 border = { fg = "#89b4fa" }
@@ -869,3 +869,12 @@ rest = { fg = "#9399b2" }
 desc = { fg = "#f5c2e7" }
 separator = "  "
 separator_style = { fg = "#585b70" }
+
+[git]
+clean_sign = "  "
+unknown_sign = "  "
+
+[supaline]
+size = "#89b4fa"
+mtime = "#f9e2af"
+size_over_1mb = "#89b4fa"

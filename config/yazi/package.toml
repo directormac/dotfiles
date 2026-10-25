@@ -15,3 +15,13 @@ hash = "5bb0bfab901d3601c370eafdd66edd31"
 use = "WhoSowSee/whoosh"
 rev = "d6ede98"
 hash = "LwugSeuG3+PmPW9KFvRThqx+g792CmUnw+vY6wSZJoo="
+
+[[plugin.deps]]
+use = "yohkuri/supaline"
+rev = "867df69"
+hash = "nrdppocG+4GV8NEf5+aUFRrjbf+vJe9gPZ4yt7loRG4="
+
+[[plugin.deps]]
+use = "ENEmyr/center-media"
+rev = "3fca3a5"
+hash = "HvS2kKhXLrReHz+bVfATS47vmZFcVS8oVD8FOhc2QHk="

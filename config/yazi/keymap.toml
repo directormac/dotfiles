@@ -174,7 +174,7 @@ keymap = [
   ], run = "cd ~", desc = "Go home" },
   { on = [
     "g",
-    "C",
+    "c",
   ], run = "cd ~/.config", desc = "Go to config" },
   { on = [
     "g",
@@ -183,11 +183,15 @@ keymap = [
   { on = [
     "g",
     "d",
-  ], run = "cd ~/Downloads", desc = "Go ~/Downloads" },
+  ], run = "cd ~/Downloads", desc = "Go to Downloads" },
+  { on = [
+    "g",
+    "C",
+  ], run = "cd ~/Code", desc = "Go to Code" },
   { on = [
     "g",
     "r",
-  ], run = "cd ~/Resources", desc = "Go ~/Resources" },
+  ], run = "cd /mnt/local/resources", desc = "Go to Resources" },
   { on = [
     "g",
     "<Space>",
@@ -241,10 +245,10 @@ keymap = [
   ], run = "arrow top", desc = "Go to top" },
   { on = "G", run = "arrow bot", desc = "Go to bottom" },
   # Navigation
-  { on = "h", run = "leave", desc = "Back to the parent directory" },
-  { on = "l", run = "enter", desc = "Enter the child directory" },
-  { on = "<Left>", run = "leave", desc = "Back to the parent directory" },
-  { on = "<Right>", run = "enter", desc = "Enter the child directory" },
+  { on = "h", run = "plugin bypass reverse", desc = "Back to parent (bypass single child)" },
+  { on = "l", run = "plugin bypass", desc = "Enter child (bypass single child)" },
+  { on = "<Left>", run = "plugin bypass reverse", desc = "Back to parent (bypass single child)" },
+  { on = "<Right>", run = "plugin bypass", desc = "Enter child (bypass single child)" },
   { on = "H", run = "back", desc = "Back to previous directory" },
   { on = "L", run = "forward", desc = "Forward to next directory" },
   # Toggle
@@ -265,7 +269,7 @@ keymap = [
   # Operation
   { on = "o", run = "open", desc = "Open selected files" },
   { on = "O", run = "open --interactive", desc = "Open selected files interactively" },
-  { on = "<Enter>", run = "open", desc = "Open selected files" },
+  { on = "<Enter>", run = "plugin smart-enter", desc = "Smart enter: enter dir or open file" },
   { on = "<S-Enter>", run = "open --interactive", desc = "Open selected files interactively" },
   { on = "y", run = "yank", desc = "Yank selected files (copy)" },
   { on = "x", run = "yank --cut", desc = "Yank selected files (cut)" },
@@ -331,7 +335,7 @@ keymap = [
     "n",
   ], run = "copy name_without_ext", desc = "Copy the filename without extension" },
   # Filter
-  { on = "f", run = "filter --smart", desc = "Filter files" },
+  { on = "F", run = "filter --smart", desc = "Filter files" },
   # Find
   { on = "/", run = "find --smart", desc = "Find next file" },
   { on = "?", run = "find --previous --smart", desc = "Find previous file" },
@@ -415,52 +419,156 @@ prepend_keymap = [
   { on = "M", run = "plugin mount", desc = "Mount: disks and partitions" },
 
   # Bookmarks (whoosh.yazi)
-  { on = [ "b", "b" ], run = "plugin whoosh jump_by_key", desc = "Bookmarks: jump by key" },
-  { on = [ "b", "<Space>" ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
-  { on = [ "b", "f" ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
-  { on = [ "b", "a" ], run = "plugin whoosh save", desc = "Bookmarks: add hovered path" },
-  { on = [ "b", "A" ], run = "plugin whoosh save_cwd", desc = "Bookmarks: add current directory" },
-  { on = [ "b", "t" ], run = "plugin whoosh save_temp", desc = "Bookmarks: add temporary bookmark" },
-  { on = [ "b", "T" ], run = "plugin whoosh save_cwd_temp", desc = "Bookmarks: add temp current directory" },
-  { on = [ "b", "d" ], run = "plugin whoosh delete_by_key", desc = "Bookmarks: delete by key" },
-  { on = [ "b", "D" ], run = "plugin whoosh delete_by_fzf", desc = "Bookmarks: delete by fzf" },
-  { on = [ "b", "r" ], run = "plugin whoosh rename_by_key", desc = "Bookmarks: rename by key" },
-  { on = [ "b", "R" ], run = "plugin whoosh rename_by_fzf", desc = "Bookmarks: rename by fzf" },
+  { on = [
+    "b",
+    "b",
+  ], run = "plugin whoosh jump_by_key", desc = "Bookmarks: jump by key" },
+  { on = [
+    "b",
+    "<Space>",
+  ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
+  { on = [
+    "b",
+    "f",
+  ], run = "plugin whoosh jump_by_fzf", desc = "Bookmarks: fuzzy search" },
+  { on = [
+    "b",
+    "a",
+  ], run = "plugin whoosh save", desc = "Bookmarks: add hovered path" },
+  { on = [
+    "b",
+    "A",
+  ], run = "plugin whoosh save_cwd", desc = "Bookmarks: add current directory" },
+  { on = [
+    "b",
+    "t",
+  ], run = "plugin whoosh save_temp", desc = "Bookmarks: add temporary bookmark" },
+  { on = [
+    "b",
+    "T",
+  ], run = "plugin whoosh save_cwd_temp", desc = "Bookmarks: add temp current directory" },
+  { on = [
+    "b",
+    "d",
+  ], run = "plugin whoosh delete_by_key", desc = "Bookmarks: delete by key" },
+  { on = [
+    "b",
+    "D",
+  ], run = "plugin whoosh delete_by_fzf", desc = "Bookmarks: delete by fzf" },
+  { on = [
+    "b",
+    "r",
+  ], run = "plugin whoosh rename_by_key", desc = "Bookmarks: rename by key" },
+  { on = [
+    "b",
+    "R",
+  ], run = "plugin whoosh rename_by_fzf", desc = "Bookmarks: rename by fzf" },
 
   # Sudo Operations (sudo.yazi)
-  { on = [ "R", "p" ], run = "plugin sudo -- paste", desc = "Sudo: paste (copy/move)" },
-  { on = [ "R", "P" ], run = "plugin sudo -- paste --force", desc = "Sudo: paste (overwrite)" },
-  { on = [ "R", "r" ], run = "plugin sudo -- rename", desc = "Sudo: rename / bulk rename" },
-  { on = [ "R", "a" ], run = "plugin sudo -- create", desc = "Sudo: create file or directory" },
-  { on = [ "R", "d" ], run = "plugin sudo -- remove", desc = "Sudo: trash" },
-  { on = [ "R", "D" ], run = "plugin sudo -- remove --permanently", desc = "Sudo: delete permanently" },
-  { on = [ "R", "m" ], run = "plugin sudo -- chmod", desc = "Sudo: chmod" },
-  { on = [ "R", "l" ], run = "plugin sudo -- link", desc = "Sudo: link (absolute)" },
-  { on = [ "R", "L" ], run = "plugin sudo -- hardlink", desc = "Sudo: hard link" },
+  { on = [
+    "R",
+    "p",
+  ], run = "plugin sudo -- paste", desc = "Sudo: paste (copy/move)" },
+  { on = [
+    "R",
+    "P",
+  ], run = "plugin sudo -- paste --force", desc = "Sudo: paste (overwrite)" },
+  { on = [
+    "R",
+    "r",
+  ], run = "plugin sudo -- rename", desc = "Sudo: rename / bulk rename" },
+  { on = [
+    "R",
+    "a",
+  ], run = "plugin sudo -- create", desc = "Sudo: create file or directory" },
+  { on = [
+    "R",
+    "d",
+  ], run = "plugin sudo -- remove", desc = "Sudo: trash" },
+  { on = [
+    "R",
+    "D",
+  ], run = "plugin sudo -- remove --permanently", desc = "Sudo: delete permanently" },
+  { on = [
+    "R",
+    "m",
+  ], run = "plugin sudo -- chmod", desc = "Sudo: chmod" },
+  { on = [
+    "R",
+    "l",
+  ], run = "plugin sudo -- link", desc = "Sudo: link (absolute)" },
+  { on = [
+    "R",
+    "L",
+  ], run = "plugin sudo -- hardlink", desc = "Sudo: hard link" },
 
   # Git & Lazygit (lazygit.yazi)
-  { on = [ "g", "i" ], run = "plugin lazygit", desc = "Git: open lazygit" },
+  { on = [
+    "g",
+    "i",
+  ], run = "plugin lazygit", desc = "Git: open lazygit" },
   { on = "<C-g>", run = "plugin lazygit", desc = "Git: open lazygit" },
 
   # Trash Manager (omni-trash.yazi)
   { on = "T", run = "plugin omni-trash", desc = "Trash: open Omni-Trash manager" },
-  { on = [ "g", "t" ], run = "plugin omni-trash", desc = "Goto: Omni-Trash manager" },
+  { on = [
+    "g",
+    "t",
+  ], run = "plugin omni-trash", desc = "Goto: Omni-Trash manager" },
 
   # Projects (projects.yazi)
-  { on = [ "g", "p", "s" ], run = "plugin projects save", desc = "Projects: save current" },
-  { on = [ "g", "p", "S" ], run = "plugin projects save_last", desc = "Projects: save to last" },
-  { on = [ "g", "p", "l" ], run = "plugin projects load", desc = "Projects: load project" },
-  { on = [ "g", "p", "p" ], run = "plugin projects load_last", desc = "Projects: load last project" },
-  { on = [ "g", "p", "d" ], run = "plugin projects delete", desc = "Projects: delete project" },
-  { on = [ "g", "p", "D" ], run = "plugin projects delete_all", desc = "Projects: delete all projects" },
-  { on = [ "g", "p", "m" ], run = "plugin projects 'merge current'", desc = "Projects: merge current tab" },
-  { on = [ "g", "p", "M" ], run = "plugin projects 'merge all'", desc = "Projects: merge all tabs" },
+  { on = [
+    "g",
+    "p",
+    "s",
+  ], run = "plugin projects save", desc = "Projects: save current" },
+  { on = [
+    "g",
+    "p",
+    "S",
+  ], run = "plugin projects save_last", desc = "Projects: save to last" },
+  { on = [
+    "g",
+    "p",
+    "l",
+  ], run = "plugin projects load", desc = "Projects: load project" },
+  { on = [
+    "g",
+    "p",
+    "p",
+  ], run = "plugin projects load_last", desc = "Projects: load last project" },
+  { on = [
+    "g",
+    "p",
+    "d",
+  ], run = "plugin projects delete", desc = "Projects: delete project" },
+  { on = [
+    "g",
+    "p",
+    "D",
+  ], run = "plugin projects delete_all", desc = "Projects: delete all projects" },
+  { on = [
+    "g",
+    "p",
+    "m",
+  ], run = "plugin projects 'merge current'", desc = "Projects: merge current tab" },
+  { on = [
+    "g",
+    "p",
+    "M",
+  ], run = "plugin projects 'merge all'", desc = "Projects: merge all tabs" },
 
   # Tabs Dual-Pane Split (split-tabs.yazi)
   { on = "\\", run = "plugin split-tabs spl_toggle", desc = "Split-tabs: toggle dual pane" },
   { on = "<A-Tab>", run = "plugin split-tabs spl_switch_tab", desc = "Split-tabs: switch pane" },
-  { on = "<F5>", run = [ "escape --visual", "plugin split-tabs spl_copy" ], desc = "Split-tabs: copy to other pane" },
-  { on = "<F6>", run = [ "escape --visual", "plugin split-tabs spl_move" ], desc = "Split-tabs: move to other pane" },
+  { on = "<F5>", run = [
+    "escape --visual",
+    "plugin split-tabs spl_copy",
+  ], desc = "Split-tabs: copy to other pane" },
+  { on = "<F6>", run = [
+    "escape --visual",
+    "plugin split-tabs spl_move",
+  ], desc = "Split-tabs: move to other pane" },
 
   # Tab Close & Restore (close-and-restore-tab.yazi)
   { on = "<C-w>", run = "close", desc = "Close current tab" },
@@ -474,17 +582,171 @@ prepend_keymap = [
 
   # Clipboard (wl-clipboard.yazi)
   { on = "<C-y>", run = "plugin wl-clipboard", desc = "Copy to system clipboard (Wayland)" },
-  { on = [ "c", "y" ], run = "plugin wl-clipboard", desc = "Copy to system clipboard (Wayland)" },
+  { on = [
+    "c",
+    "y",
+  ], run = "plugin wl-clipboard", desc = "Copy to system clipboard (Wayland)" },
 
   # Archives (compress.yazi & ouch.yazi)
-  { on = [ "c", "a" ], run = "plugin compress", desc = "Archive: compress selected files" },
-  { on = [ "c", "p" ], run = "plugin compress -p", desc = "Archive: compress with password" },
-  { on = [ "c", "h" ], run = "plugin compress -ph", desc = "Archive: compress with password+header" },
-  { on = [ "c", "l" ], run = "plugin compress -l", desc = "Archive: compress with level selection" },
+  { on = [
+    "c",
+    "a",
+  ], run = "plugin compress", desc = "Archive: compress selected files" },
+  { on = [
+    "c",
+    "p",
+  ], run = "plugin compress -p", desc = "Archive: compress with password" },
+  { on = [
+    "c",
+    "h",
+  ], run = "plugin compress -ph", desc = "Archive: compress with password+header" },
+  { on = [
+    "c",
+    "l",
+  ], run = "plugin compress -l", desc = "Archive: compress with level selection" },
   { on = "C", run = "plugin ouch", desc = "Archive: compress with ouch" },
 
   # KDE Connect (kdeconnect-send.yazi)
-  { on = [ "c", "k" ], run = "plugin kdeconnect-send", desc = "Send: via KDE Connect" },
+  { on = [
+    "c",
+    "k",
+  ], run = "plugin kdeconnect-send", desc = "Send: via KDE Connect" },
+
+  # Flash Jump (flash.yazi)
+  { on = "f", run = "plugin flash", desc = "Flash: 2-key jump overlay" },
+  { on = [
+    "g",
+    "f",
+  ], run = "plugin flash --autocd", desc = "Flash: jump (autocd)" },
+
+  # Television & Grep Search (yafg.yazi)
+  { on = [
+    "F",
+    "G",
+  ], run = "plugin yafg", desc = "Search content via Television / ripgrep" },
+  { on = [
+    "F",
+    "F",
+  ], run = "plugin yafg --mode=files", desc = "Search files via Television" },
+
+  # Difftool with hunk (difftool.yazi)
+  { on = [
+    "=",
+    "=",
+  ], run = "plugin difftool", desc = "Diff 2 files/dirs with hunk" },
+  { on = [
+    "=",
+    "t",
+  ], run = "plugin difftool -- --pick", desc = "Diff choosing tool" },
+
+
+  # Archive Management (archives.yazi)
+  { on = [
+    "c",
+    "z",
+  ], run = "plugin archives -- compress", desc = "Archive: compress selection" },
+  { on = [
+    "c",
+    "x",
+  ], run = "plugin archives -- extract", desc = "Archive: extract archive" },
+
+  # Archive Mount (archive-mount.yazi)
+  { on = [
+    "<Space>",
+    "a",
+    "o",
+  ], run = "plugin archive-mount open", desc = "Archive mount: open read-only" },
+  { on = [
+    "<Space>",
+    "a",
+    "e",
+  ], run = "plugin archive-mount 'open --edit'", desc = "Archive mount: open for editing" },
+
+  # SSHFS (sshfs.yazi)
+  { on = [
+    "M",
+    "s",
+  ], run = "plugin sshfs", desc = "SSHFS: interactive menu" },
+  { on = [
+    "M",
+    "m",
+  ], run = "plugin sshfs mount", desc = "SSHFS: mount remote host" },
+  { on = [
+    "M",
+    "u",
+  ], run = "plugin sshfs unmount", desc = "SSHFS: unmount remote host" },
+
+  # Supaline Toggles (supaline.yazi)
+  { on = [
+    "m",
+    "d",
+  ], run = "plugin supaline -- toggle detail", desc = "Supaline: toggle detail columns" },
+  { on = [
+    "m",
+    "g",
+  ], run = "plugin supaline -- toggle git", desc = "Supaline: toggle git signs" },
+
+  # FFmpeg Stats Linemode Toggles (ffmpeg-stats.yazi)
+  { on = [
+    "m",
+    "f",
+    "d",
+  ], run = "plugin ffmpeg-stats -- toggle-duration", desc = "FFmpeg: toggle duration" },
+  { on = [
+    "m",
+    "f",
+    "r",
+  ], run = "plugin ffmpeg-stats -- toggle-resolution", desc = "FFmpeg: toggle resolution" },
+  { on = [
+    "m",
+    "f",
+    "c",
+  ], run = "plugin ffmpeg-stats -- toggle-codec", desc = "FFmpeg: toggle codec" },
+  { on = [
+    "m",
+    "f",
+    "f",
+  ], run = "plugin ffmpeg-stats -- toggle-fps", desc = "FFmpeg: toggle fps" },
+  { on = [
+    "m",
+    "f",
+    "b",
+  ], run = "plugin ffmpeg-stats -- toggle-bitrate", desc = "FFmpeg: toggle bitrate" },
+  { on = [
+    "m",
+    "f",
+    "a",
+  ], run = "plugin ffmpeg-stats -- toggle-audio-codec", desc = "FFmpeg: toggle audio codec" },
+  { on = [
+    "m",
+    "f",
+    "h",
+  ], run = "plugin ffmpeg-stats -- toggle-audio-channels", desc = "FFmpeg: toggle audio channels" },
+  { on = [
+    "m",
+    "f",
+    "o",
+  ], run = "plugin ffmpeg-stats -- toggle-format", desc = "FFmpeg: toggle format" },
+  { on = [
+    "m",
+    "f",
+    "s",
+  ], run = "plugin ffmpeg-stats -- toggle-aspect", desc = "FFmpeg: toggle aspect" },
+  { on = [
+    "m",
+    "f",
+    "A",
+  ], run = "plugin ffmpeg-stats -- toggle-all", desc = "FFmpeg: toggle all stats" },
+  { on = [
+    "m",
+    "f",
+    "D",
+  ], run = "plugin ffmpeg-stats -- disable-all", desc = "FFmpeg: disable all stats" },
+
+  # Media Preview Controls (center-media.yazi)
+  { on = "<F3>", run = "plugin center-media -- toggle-metadata", desc = "Media: toggle metadata" },
+  { on = "<F4>", run = "plugin center-media -- toggle-preview", desc = "Media: toggle preview image" },
+  { on = "<F5>", run = "plugin center-media -- reset", desc = "Media: reset preview" },
 ]
 
 [pick]
