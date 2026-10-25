@@ -31,13 +31,14 @@ workspace_picker = "prefix+w"
 goto = "prefix+g"
 new_workspace = "prefix+shift+n"
 new_worktree = "prefix+shift+g"
-previous_workspace = "prefix+alt+p"
-next_workspace = "prefix+alt+n"
+previous_workspace = ["prefix+alt+p", "ctrl+alt+up"]
+next_workspace = ["prefix+alt+n", "ctrl+alt+down"]
 switch_workspace = "prefix+shift+1..9"
 rename_workspace = "prefix+alt+w"
 close_workspace = "prefix+shift+d"
-previous_agent = "prefix+alt+h"
-next_agent = "prefix+alt+l"
+open_worktree = "prefix+alt+o"
+previous_agent = ["prefix+alt+h", "ctrl+alt+left"]
+next_agent = ["prefix+alt+l", "ctrl+alt+right"]
 focus_agent = "prefix+alt+1..9"
 new_tab = "prefix+c"
 rename_tab = "prefix+shift+t"
@@ -77,6 +78,14 @@ resize_mode = [
   "prefix+ctrl+right",
 ]
 
+# Navigate-mode movement (for menus, pickers, and sidebar overlays)
+navigate_workspace_up = "up"
+navigate_workspace_down = "down"
+navigate_pane_left = "h"
+navigate_pane_down = "j"
+navigate_pane_up = "k"
+navigate_pane_right = "l"
+
 [[keys.command]]
 key = "prefix+t"
 type = "popup"
@@ -84,6 +93,14 @@ command = "tv herdr-sesh"
 width = "80%"
 height = "80%"
 description = "Television: Herdr Sesh picker"
+
+[[keys.command]]
+key = "prefix+shift+s"
+type = "popup"
+command = "tv sessions"
+width = "85%"
+height = "80%"
+description = "Television: Cross-multiplexer sessions picker"
 
 [[keys.command]]
 key = "prefix+s"
@@ -215,6 +232,10 @@ accent = "#cba6f7"
 sidebar_start_collapsed = true
 # Collapsed sidebar presentation: "compact" keeps the narrow status rail, "hidden" uses zero width.
 sidebar_collapsed_mode = "hidden"
+# Sidebar dimensions
+sidebar_width = 28
+sidebar_min_width = 22
+sidebar_max_width = 36
 # Automatically copy text selected with the mouse.
 # Set false to retain drag or double-click word selection until Ctrl+C,
 # or Cmd+C when the host forwards it, copies and clears it.

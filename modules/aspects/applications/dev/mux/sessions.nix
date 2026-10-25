@@ -13,6 +13,7 @@
       let
         awk = "${pkgs.gawk}/bin/awk";
         jq = "${pkgs.jq}/bin/jq";
+        notifySend = "${pkgs.libnotify}/bin/notify-send";
         mux-session-attach = pkgs.writeShellScriptBin "mux-session-attach" ''
           set -u
 
@@ -22,8 +23,37 @@
 
           die() {
             printf 'mux-session-attach: %s\n' "$*" >&2
+            command -v notify-send >/dev/null 2>&1 && notify-send -u critical -a "Multiplexer" "Attach Failed" "$*" 2>/dev/null || true
             exit 1
           }
+
+          # Detect current multiplexer environment
+          inside_tuios=false
+          if [ -n "''${TUIOS_SESSION:-}" ]; then
+            inside_tuios=true
+          fi
+
+          current_mux=""
+          if [ "$inside_tuios" = true ]; then
+            current_mux="tuios"
+          elif [ -n "''${HERDR_ENV:-}" ] || [ -n "''${HERDR_PANE_ID:-}" ]; then
+            current_mux="herdr"
+          elif [ -n "''${TMUX:-}" ]; then
+            current_mux="tmux"
+          elif [ -n "''${ZELLIJ:-}" ] || [ -n "''${ZELLIJ_SESSION_NAME:-}" ]; then
+            current_mux="zellij"
+          fi
+
+          # Disallow cross-nesting between herdr, tmux, and zellij (TUIOS can host any multiplexer)
+          if [ "$inside_tuios" = false ] && [ -n "$current_mux" ] && [ "$current_mux" != "$tool" ]; then
+            printf '\033[1;31m[Error]\033[0m Cannot attach to %s session from inside %s (nested multiplexers disallowed).\n' "$tool" "$current_mux" >&2
+            printf 'Tip: Open in a separate terminal window instead (e.g. ghostty -e mux-session-attach %s %s).\n' "$tool" "$name" >&2
+            command -v notify-send >/dev/null 2>&1 && notify-send -u critical -a "Multiplexer" "Nesting Disallowed" "Cannot attach to $tool while inside $current_mux. Open in a separate window instead." 2>/dev/null || true
+            if [ -t 1 ] || [ -t 2 ]; then
+              sleep 2
+            fi
+            exit 1
+          fi
 
           tmux_attach() {
             target="$1"
@@ -159,15 +189,62 @@
         '';
         tv-sessions-source = pkgs.writeShellScriptBin "tv-sessions-source" ''
           set -u
+          filter="''${1:-''${TV_SESSIONS_FILTER:-all}}"
+
+          inside_tuios=false
+          if [ -n "''${TUIOS_SESSION:-}" ]; then
+            inside_tuios=true
+          fi
+
+          current_mux=""
+          if [ "$inside_tuios" = true ]; then
+            current_mux="tuios"
+          elif [ -n "''${HERDR_ENV:-}" ] || [ -n "''${HERDR_PANE_ID:-}" ]; then
+            current_mux="herdr"
+          elif [ -n "''${TMUX:-}" ]; then
+            current_mux="tmux"
+          elif [ -n "''${ZELLIJ:-}" ] || [ -n "''${ZELLIJ_SESSION_NAME:-}" ]; then
+            current_mux="zellij"
+          fi
+
           prefixed() {
             tool="$1"
             shift
-            "$@" 2>/dev/null | ${awk} -v OFS='\t' -v t="$tool" '{ print t, $0 }'
+            blocked=""
+            if [ "$inside_tuios" = false ] && [ -n "$current_mux" ] && [ "$current_mux" != "$tool" ]; then
+              if [ "$filter" = "allowed" ]; then
+                return 0
+              fi
+              blocked=" (blocked in $current_mux)"
+            fi
+            "$@" 2>/dev/null | ${awk} -F'\t' -v OFS='\t' -v t="$tool" -v b="$blocked" '{
+              if (b != "") {
+                $(NF) = $(NF) b
+              }
+              print t, $0
+            }'
           }
-          command -v tmux >/dev/null 2>&1 && prefixed tmux ${tv-tmux-sessions-source}/bin/tv-tmux-sessions-source
-          command -v zellij >/dev/null 2>&1 && prefixed zellij ${tv-zellij-sessions-source}/bin/tv-zellij-sessions-source
-          command -v herdr >/dev/null 2>&1 && prefixed herdr ${tv-herdr-sessions-source}/bin/tv-herdr-sessions-source
-          command -v tuios >/dev/null 2>&1 && prefixed tuios ${tv-tuios-sessions-source}/bin/tv-tuios-sessions-source
+
+          case "$filter" in
+            tmux)
+              command -v tmux >/dev/null 2>&1 && prefixed tmux ${tv-tmux-sessions-source}/bin/tv-tmux-sessions-source
+              ;;
+            zellij)
+              command -v zellij >/dev/null 2>&1 && prefixed zellij ${tv-zellij-sessions-source}/bin/tv-zellij-sessions-source
+              ;;
+            herdr)
+              command -v herdr >/dev/null 2>&1 && prefixed herdr ${tv-herdr-sessions-source}/bin/tv-herdr-sessions-source
+              ;;
+            tuios)
+              command -v tuios >/dev/null 2>&1 && prefixed tuios ${tv-tuios-sessions-source}/bin/tv-tuios-sessions-source
+              ;;
+            *)
+              command -v tmux >/dev/null 2>&1 && prefixed tmux ${tv-tmux-sessions-source}/bin/tv-tmux-sessions-source
+              command -v zellij >/dev/null 2>&1 && prefixed zellij ${tv-zellij-sessions-source}/bin/tv-zellij-sessions-source
+              command -v herdr >/dev/null 2>&1 && prefixed herdr ${tv-herdr-sessions-source}/bin/tv-herdr-sessions-source
+              command -v tuios >/dev/null 2>&1 && prefixed tuios ${tv-tuios-sessions-source}/bin/tv-tuios-sessions-source
+              ;;
+          esac
           exit 0
         '';
         tv-tmux-sessions-source = pkgs.writeShellScriptBin "tv-tmux-sessions-source" ''

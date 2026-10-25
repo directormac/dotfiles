@@ -693,6 +693,7 @@
                 "flake-inputs.toml"
                 "hypr-clients.toml"
                 "herdr-sesh.toml"
+                "herdr-sessions.toml"
                 "hypr-workspaces.toml"
                 "mdless.toml"
                 "mdpick.toml"

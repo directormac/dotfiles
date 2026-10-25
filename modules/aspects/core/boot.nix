@@ -17,8 +17,6 @@
               "amdgpu"
               "i915"
             ];
-
-            verbose = lib.mkDefault false;
           };
 
           kernel.sysctl."kernel.perf_event_paranoid" = 0;

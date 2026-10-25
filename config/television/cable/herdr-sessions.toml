@@ -1,0 +1,40 @@
+[metadata]
+name = "herdr-sessions"
+description = "Attach to, preview, and manage Herdr persistent sessions"
+requirements = ["herdr", "mux-session-attach", "mux-session-preview"]
+
+[source]
+command = "tv-herdr-sessions-source"
+display = "{split:\t:0}  │  {split:\t:1}  │  {split:\t:2}"
+output = "{split:\t:0}"
+no_sort = true
+frecency = false
+
+[preview]
+command = "mux-session-preview herdr '{split:\t:0}'"
+
+[keybindings]
+enter = "actions:attach"
+alt-t = "actions:terminal"
+ctrl-d = "actions:stop_session"
+ctrl-y = "actions:copy_name"
+
+[actions.attach]
+description = "Attach to this Herdr session"
+command = "mux-session-attach herdr '{split:\t:0}'"
+mode = "execute"
+
+[actions.terminal]
+description = "Open this Herdr session in a new Ghostty terminal"
+command = "ghostty --class=com.ghostty.mux -e mux-session-attach herdr '{split:\t:0}'"
+mode = "fork"
+
+[actions.stop_session]
+description = "Stop this Herdr session server"
+command = "herdr --session '{split:\t:0}' server stop 2>/dev/null || true"
+mode = "execute"
+
+[actions.copy_name]
+description = "Copy session name to clipboard"
+command = "printf '%s' '{split:\t:0}' | wl-copy"
+mode = "execute"

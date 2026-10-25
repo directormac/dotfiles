@@ -67,7 +67,7 @@ in
   ]
   ++ (with rycee-firefox-addons; [
     bitwarden
-    clearurls
+    github-file-icons
     darkreader
     sponsorblock
     ublock-origin

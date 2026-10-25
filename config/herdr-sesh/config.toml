@@ -23,7 +23,11 @@ startup = 'lazygit'
 
 [[tab]]
 name = 'agent'
-startup = 'agy'
+startup = 'agyx'
+
+[[tab]]
+name = 'omp'
+startup = 'omp'
 
 [[workspace]]
 name = 'Dotfiles'
@@ -34,12 +38,16 @@ name = 'Config'
 path = '~/.dotfiles/config'
 
 [[workspace]]
+name = 'mkra.dev'
+path = '~/Code/mkra.dev/mkra.dev'
+
+[[workspace]]
 name = 'Default'
 path = '~/'
 
 [[rule]]
-path_glob = '~/Projects/*'
-tabs = ['editor', 'terminal']
+path_glob = '~/Code/*'
+tabs = ['editor', 'omp', 'lazygit', 'terminal']
 
 [[rule]]
 path_glob = '~/Code/.worktrees/*/*'

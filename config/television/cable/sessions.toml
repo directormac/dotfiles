@@ -19,11 +19,41 @@ command = "mux-session-preview '{split:\t:0}' '{split:\t:1}'"
 
 [keybindings]
 enter = "actions:attach"
+alt-t = "actions:terminal"
+ctrl-1 = "actions:filter_tmux"
+ctrl-2 = "actions:filter_zellij"
+ctrl-3 = "actions:filter_herdr"
+ctrl-4 = "actions:filter_tuios"
 ctrl-y = "actions:copy_name"
 
 [actions.attach]
 description = "Attach to the selected session"
 command = "mux-session-attach '{split:\t:0}' '{split:\t:1}'"
+mode = "execute"
+
+[actions.terminal]
+description = "Open session in a new Ghostty terminal window"
+command = "ghostty --class=com.ghostty.mux -e mux-session-attach '{split:\t:0}' '{split:\t:1}'"
+mode = "fork"
+
+[actions.filter_tmux]
+description = "Filter: Tmux sessions only"
+command = "tv tmux-sessions"
+mode = "execute"
+
+[actions.filter_zellij]
+description = "Filter: Zellij sessions only"
+command = "tv zellij-sessions"
+mode = "execute"
+
+[actions.filter_herdr]
+description = "Filter: Herdr sessions only"
+command = "tv herdr-sessions"
+mode = "execute"
+
+[actions.filter_tuios]
+description = "Filter: TUIOS sessions only"
+command = "tv tuios-sessions"
 mode = "execute"
 
 [actions.copy_name]
