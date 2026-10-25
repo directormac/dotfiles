@@ -228,6 +228,45 @@ writeShellApplication {
         existing["binds"] = binds
         write_json(out_path, existing)
         return True, f"updated {out_path.name} from config.toml"
+    def update_zsh():
+        out_path = cheatsheets_dir / "zsh.json"
+        existing = load_json(out_path) if out_path.exists() else { "title": "Zsh Keybinds", "provider": "zsh" }
+
+        binds = {
+            "Autosuggest & History": [
+                { "key": "Ctrl+Y / Ctrl+Tab", "desc": "Accept autosuggestion", "subcat": "Autosuggest" },
+                { "key": "Ctrl+Space", "desc": "Accept and immediately execute autosuggestion", "subcat": "Autosuggest" },
+                { "key": "Ctrl+R", "desc": "Interactive SQLite history search (histdb-fzf)", "subcat": "History" },
+                { "key": "Ctrl+Alt+R", "desc": "Interactive SQLite history search (histdb-skim)", "subcat": "History" },
+                { "key": "Ctrl+Shift+R", "desc": "Television Slim history search", "subcat": "History" },
+                { "key": "Up / Down", "desc": "Prefix history navigation", "subcat": "History" }
+            ],
+            "Navigation & Fuzzy Search": [
+                { "key": "Tab", "desc": "Fuzzy completion menu (fzf-tab)", "subcat": "Completion" },
+                { "key": "< / >", "desc": "Switch completion group in fzf-tab", "subcat": "Completion" },
+                { "key": "Ctrl+O", "desc": "Super search (files, dirs, git) via fzf", "subcat": "Search" },
+                { "key": "Ctrl+H", "desc": "Interactive fuzzy manpage & cheat.sh viewer", "subcat": "Docs" }
+            ],
+            "Vi Mode & Line Editing": [
+                { "key": "Escape / Ctrl+[", "desc": "Switch to vi command mode (vicmd)", "subcat": "Mode" },
+                { "key": "i / a", "desc": "Enter vi insert mode before / after cursor", "subcat": "Mode" },
+                { "key": "v / vv (vicmd)", "desc": "Edit command line in $EDITOR (Neovim)", "subcat": "Editor" },
+                { "key": "cs / ds / ys", "desc": "Vim surround: change, delete, add surrounding quotes/brackets", "subcat": "Surround" },
+                { "key": "gp / gP", "desc": "Paste from system clipboard (wl-copy) after / before cursor", "subcat": "Clipboard" },
+                { "key": "gx", "desc": "Open URL or path under cursor", "subcat": "Navigation" },
+                { "key": "Ctrl+W", "desc": "Delete backward word", "subcat": "Editing" },
+                { "key": "Ctrl+U", "desc": "Kill entire command line before cursor", "subcat": "Editing" },
+                { "key": "Ctrl+K", "desc": "Kill entire command line after cursor", "subcat": "Editing" },
+                { "key": "Ctrl+A / Ctrl+E", "desc": "Jump to beginning / end of line buffer", "subcat": "Navigation" },
+                { "key": "Ctrl+_", "desc": "Undo last edit", "subcat": "Undo" },
+                { "key": "Ctrl+L", "desc": "Clear terminal screen and redraw prompt", "subcat": "Screen" }
+            ]
+        }
+
+        existing["binds"] = binds
+        write_json(out_path, existing)
+        return True, f"updated {out_path.name}"
+
 
     all_files = sorted(cheatsheets_dir.glob("*.json"))
 
@@ -271,6 +310,10 @@ writeShellApplication {
     if not targets or "herdr" in targets:
         ok, msg = update_herdr()
         print(f"{'✓' if ok else '✗'} herdr: {msg}")
+
+    if not targets or "zsh" in targets:
+        ok, msg = update_zsh()
+        print(f"{'✓' if ok else '✗'} zsh: {msg}")
 
     # Format all remaining files
     for f in all_files:

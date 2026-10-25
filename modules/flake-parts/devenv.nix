@@ -275,6 +275,16 @@
             exec = "nix run .#write-flake \"$@\"";
           };
 
+          update-cheatsheets = {
+            description = "Extract, validate, and update DMS cheatsheets";
+            exec = "nix run .#update-cheatsheets \"$@\"";
+          };
+
+          gen-all = {
+            description = "Run all file generators and cheatsheet updaters";
+            exec = "nix run .#gen-all \"$@\"";
+          };
+
         };
       };
     };

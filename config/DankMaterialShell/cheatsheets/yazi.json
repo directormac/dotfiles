@@ -197,6 +197,11 @@
         "key": "c k",
         "desc": "Send: via KDE Connect",
         "subcat": "Share"
+      },
+      {
+        "key": "c z",
+        "desc": "Archive: compress selection",
+        "subcat": "Archive"
       }
     ],
     "Git & Projects": [
@@ -264,6 +269,31 @@
         "key": "g p M",
         "desc": "Projects: merge all tabs",
         "subcat": "Projects"
+      },
+      {
+        "key": "<Space> a o",
+        "desc": "Archive mount: open read-only",
+        "subcat": "Mount"
+      },
+      {
+        "key": "<Space> a e",
+        "desc": "Archive mount: open for editing",
+        "subcat": "Mount"
+      },
+      {
+        "key": "M m",
+        "desc": "SSHFS: mount remote host",
+        "subcat": "Mount"
+      },
+      {
+        "key": "M u",
+        "desc": "SSHFS: unmount remote host",
+        "subcat": "Mount"
+      },
+      {
+        "key": "m g",
+        "desc": "Supaline: toggle git signs",
+        "subcat": "Git"
       }
     ],
     "Tabs & Dual Pane": [
@@ -328,6 +358,98 @@
         "key": "<A-r>",
         "desc": "Reset pane ratio",
         "subcat": "Layout"
+      },
+      {
+        "key": "f",
+        "desc": "Flash: 2-key jump overlay"
+      },
+      {
+        "key": "g f",
+        "desc": "Flash: jump (autocd)"
+      },
+      {
+        "key": "F G",
+        "desc": "Search content via Television / ripgrep"
+      },
+      {
+        "key": "F F",
+        "desc": "Search files via Television"
+      },
+      {
+        "key": "= =",
+        "desc": "Diff 2 files/dirs with hunk"
+      },
+      {
+        "key": "= t",
+        "desc": "Diff choosing tool"
+      },
+      {
+        "key": "c x",
+        "desc": "Archive: extract archive"
+      },
+      {
+        "key": "M s",
+        "desc": "SSHFS: interactive menu"
+      },
+      {
+        "key": "m d",
+        "desc": "Supaline: toggle detail columns"
+      },
+      {
+        "key": "m f d",
+        "desc": "FFmpeg: toggle duration"
+      },
+      {
+        "key": "m f r",
+        "desc": "FFmpeg: toggle resolution"
+      },
+      {
+        "key": "m f c",
+        "desc": "FFmpeg: toggle codec"
+      },
+      {
+        "key": "m f f",
+        "desc": "FFmpeg: toggle fps"
+      },
+      {
+        "key": "m f b",
+        "desc": "FFmpeg: toggle bitrate"
+      },
+      {
+        "key": "m f a",
+        "desc": "FFmpeg: toggle audio codec"
+      },
+      {
+        "key": "m f h",
+        "desc": "FFmpeg: toggle audio channels"
+      },
+      {
+        "key": "m f o",
+        "desc": "FFmpeg: toggle format"
+      },
+      {
+        "key": "m f s",
+        "desc": "FFmpeg: toggle aspect"
+      },
+      {
+        "key": "m f A",
+        "desc": "FFmpeg: toggle all stats"
+      },
+      {
+        "key": "m f D",
+        "desc": "FFmpeg: disable all stats"
+      },
+      {
+        "key": "<F3>",
+        "desc": "Media: toggle metadata"
+      },
+      {
+        "key": "<F4>",
+        "desc": "Media: toggle preview image"
+      },
+      {
+        "key": "<F5>",
+        "desc": "Media: reset preview"
       },
       {
         "key": "J / K",

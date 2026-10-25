@@ -7,11 +7,11 @@
         programs.carapace = {
           enable = true;
           enableBashIntegration = true;
+          enableFishIntegration = true;
           enableZshIntegration = true;
 
           environment = {
-            CARAPACE_BRIDGES = "zsh,bash";
-            CARAPACE_MATCH = true;
+            CARAPACE_BRIDGES = "zsh,fish,bash";
           };
 
           extraPackages = with pkgs; [

@@ -2785,6 +2785,8 @@
         "vim-plugins-wakatime": "vim-plugins-wakatime",
         "workmux": "workmux",
         "wrappers": "wrappers",
+        "yazi-plugin-center-media": "yazi-plugin-center-media",
+        "yazi-plugin-supaline": "yazi-plugin-supaline",
         "yazi-plugin-whoosh": "yazi-plugin-whoosh",
         "zen-browser": "zen-browser",
         "zennotes": "zennotes",
@@ -3679,6 +3681,38 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-wrapper-modules",
+        "type": "github"
+      }
+    },
+    "yazi-plugin-center-media": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792910697,
+        "narHash": "sha256-4M+W71ttRY0EZjTkPWPK6iBNwKDTXzEwzYPkj8cZTxE=",
+        "owner": "ENEmyr",
+        "repo": "center-media.yazi",
+        "rev": "390ddbd29d755bc9e4ad26e2f1d066def05bf070",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ENEmyr",
+        "repo": "center-media.yazi",
+        "type": "github"
+      }
+    },
+    "yazi-plugin-supaline": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792601974,
+        "narHash": "sha256-nrdppocG+4GV8NEf5+aUFRrjbf+vJe9gPZ4yt7loRG4=",
+        "owner": "yohkuri",
+        "repo": "supaline.yazi",
+        "rev": "867df699f46ce12c66ee53585cda3d97ee8c0aea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yohkuri",
+        "repo": "supaline.yazi",
         "type": "github"
       }
     },

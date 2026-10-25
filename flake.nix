@@ -279,6 +279,16 @@
       url = "github:nix-community/nix-wrapper-modules";
     };
 
+    yazi-plugin-center-media = {
+      flake = false;
+      url = "github:ENEmyr/center-media.yazi";
+    };
+
+    yazi-plugin-supaline = {
+      flake = false;
+      url = "github:yohkuri/supaline.yazi";
+    };
+
     yazi-plugin-whoosh = {
       flake = false;
       url = "github:WhoSowSee/whoosh.yazi";

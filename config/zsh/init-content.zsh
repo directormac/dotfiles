@@ -62,24 +62,26 @@ zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'if [ -d $realpath ]; then lsd -la --color=always $realpath; else bat -pp --color=always $realpath 2>/dev/null || cat $realpath; fi'
 zstyle ':fzf-tab:complete:(cat|bat):*' popup-pad 30 0
 
-# Enable Kitty keyboard protocol (disambiguation) so multiplexers like
-# Herdr forward Ctrl+Tab and other modified keys instead of dropping them to plain Tab
-# _zsh_enable_extended_keys() {
-#   [[ -t 1 && "$TERM" != "dumb" ]] && printf '\e[=1u'
-# }
-#
-# autoload -Uz add-zsh-hook
-# add-zsh-hook precmd _zsh_enable_extended_keys
-# _zsh_enable_extended_keys
+# zsh-vi-mode enhancements
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+ZVM_VI_EDITOR='nvim'
+ZVM_ESCAPE_KEY_DELAY=0.01
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+ZVM_CURSOR_STYLE_ENABLED=true
 
-# Autosuggest Accept Keybindings (standard zle)
+# Autosuggest Accept Keybindings (Ctrl+Y, Ctrl+Tab)
+bindkey '^y' autosuggest-accept
 bindkey '^[[27;5;9~' autosuggest-accept
 bindkey '^[[1;5I' autosuggest-accept
 bindkey '^[[9;5u' autosuggest-accept
+
+# Autosuggest Execute Keybinding (Ctrl+Space)
+bindkey '^ ' autosuggest-execute
+bindkey '^@' autosuggest-execute
 bindkey '^o' _fzf_super_search_widget
 bindkey '^h' fzf-man-widget
-function zvm_after_init() {
 
+function zvm_after_init() {
   # Primary: Interactive SQLite history search via fzf (histdb-fzf)
   zvm_bindkey viins '^R' _fzf_histdb_widget
   zvm_bindkey vicmd '^R' _fzf_histdb_widget
@@ -96,19 +98,23 @@ function zvm_after_init() {
   zvm_bindkey vicmd '^[[114;6u' tv-history-slim-widget
   zvm_bindkey vicmd '^[[82;6u' tv-history-slim-widget
 
-  # Ctrl+Tab: Accept zsh-autosuggestions in Insert Mode
-  # Covers all common Ghostty CSI u variations found in your grep
-  zvm_bindkey viins '^[[1;5I' autosuggest-accept
-  zvm_bindkey viins '^[[27;5;9~' autosuggest-accept
-  zvm_bindkey viins '^[[9;5u' autosuggest-accept
+  # Autosuggest Accept Keybindings (Ctrl+Y, Ctrl+Tab)
+  zvm_bindkey viins '^y' autosuggest-accept
+  zvm_bindkey vicmd '^y' autosuggest-accept
 
-  # Autosuggest Accept Keybindings (Ctrl+Tab in viins & vicmd)
+  # Ghostty / raw CSI u Ctrl+Tab sequences
   zvm_bindkey viins '^[[27;5;9~' autosuggest-accept
   zvm_bindkey viins '^[[1;5I' autosuggest-accept
   zvm_bindkey viins '^[[9;5u' autosuggest-accept
   zvm_bindkey vicmd '^[[27;5;9~' autosuggest-accept
   zvm_bindkey vicmd '^[[1;5I' autosuggest-accept
   zvm_bindkey vicmd '^[[9;5u' autosuggest-accept
+
+  # Autosuggest Execute Keybinding (Ctrl+Space in viins & vicmd)
+  zvm_bindkey viins '^ ' autosuggest-execute
+  zvm_bindkey viins '^@' autosuggest-execute
+  zvm_bindkey vicmd '^ ' autosuggest-execute
+  zvm_bindkey vicmd '^@' autosuggest-execute
 
   # Super search (Ctrl-O) and Man/TLDR (Ctrl-H)
   zvm_bindkey viins '^o' _fzf_super_search_widget

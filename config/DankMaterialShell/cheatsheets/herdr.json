@@ -10,6 +10,26 @@
     ],
     "Popups & Overlays": [
       {
+        "key": "Ctrl+A, t",
+        "desc": "Television: Herdr Sesh picker",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, Shift+s",
+        "desc": "Television: Cross-multiplexer sessions picker",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, s",
+        "desc": "Sesh workspace picker",
+        "subcat": "Popups"
+      },
+      {
+        "key": "Ctrl+A, m | Ctrl+A, Shift+m",
+        "desc": "Manage plugins (herdr-lazy)",
+        "subcat": "Popups"
+      },
+      {
         "key": "Ctrl+A, / | Ctrl+Alt+k",
         "desc": "command bar",
         "subcat": "Popups"
@@ -32,41 +52,6 @@
       {
         "key": "Ctrl+A, Shift+p",
         "desc": "Herdr Plus: Project templates",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, m",
-        "desc": "Herdr Projects: Mission control work board",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, s",
-        "desc": "Herdr Sesh workspace picker",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, Shift+s",
-        "desc": "Television: Cross-multiplexer sessions picker",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, t",
-        "desc": "Television: Herdr Sesh workspace picker",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, Shift+w",
-        "desc": "Television: Herdr workspaces",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, Shift+a",
-        "desc": "Television: Herdr coding agents",
-        "subcat": "Popups"
-      },
-      {
-        "key": "Ctrl+A, Alt+t",
-        "desc": "Television: Herdr worktrees",
         "subcat": "Popups"
       },
       {
@@ -191,33 +176,13 @@
         "subcat": "Workspaces"
       },
       {
-        "key": "Ctrl+A, Alt+p | Ctrl+Alt+Up",
+        "key": "Ctrl+A, Alt+p | Ctrl+Alt+up",
         "desc": "Previous workspace",
         "subcat": "Workspaces"
       },
       {
-        "key": "Ctrl+A, Alt+n | Ctrl+Alt+Down",
+        "key": "Ctrl+A, Alt+n | Ctrl+Alt+down",
         "desc": "Next workspace",
-        "subcat": "Workspaces"
-      },
-      {
-        "key": "Ctrl+A, Shift+1..9",
-        "desc": "Direct jump to workspace 1..9",
-        "subcat": "Workspaces"
-      },
-      {
-        "key": "Ctrl+A, Alt+w",
-        "desc": "Rename workspace",
-        "subcat": "Workspaces"
-      },
-      {
-        "key": "Ctrl+A, Shift+d",
-        "desc": "Close active workspace",
-        "subcat": "Workspaces"
-      },
-      {
-        "key": "Ctrl+A, Alt+o",
-        "desc": "Open worktree workspace",
         "subcat": "Workspaces"
       }
     ],
@@ -225,27 +190,7 @@
       {
         "key": "Ctrl+A, b",
         "desc": "Toggle sidebar visibility",
-        "subcat": "Sidebar"
-      },
-      {
-        "key": "Ctrl+A, Alt+h | Ctrl+Alt+Left",
-        "desc": "Previous agent row in sidebar",
-        "subcat": "Sidebar"
-      },
-      {
-        "key": "Ctrl+A, Alt+l | Ctrl+Alt+Right",
-        "desc": "Next agent row in sidebar",
-        "subcat": "Sidebar"
-      },
-      {
-        "key": "Ctrl+A, Alt+1..9",
-        "desc": "Focus agent 1..9 directly",
-        "subcat": "Sidebar"
-      },
-      {
-        "key": "Up / Down (in navigate / picker)",
-        "desc": "Navigate workspace up / down",
-        "subcat": "Sidebar"
+        "subcat": "UI"
       },
       {
         "key": "Ctrl+A, [",

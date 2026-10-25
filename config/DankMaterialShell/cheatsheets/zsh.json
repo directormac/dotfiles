@@ -4,68 +4,88 @@
   "binds": {
     "Autosuggest & History": [
       {
+        "key": "Ctrl+Y / Ctrl+Tab",
+        "desc": "Accept autosuggestion",
+        "subcat": "Autosuggest"
+      },
+      {
         "key": "Ctrl+Space",
-        "desc": "Accept current syntax autosuggestion",
-        "subcat": "Completion"
+        "desc": "Accept and immediately execute autosuggestion",
+        "subcat": "Autosuggest"
       },
       {
         "key": "Ctrl+R",
-        "desc": "Interactive shell history search via Television / fzf",
+        "desc": "Interactive SQLite history search (histdb-fzf)",
         "subcat": "History"
       },
       {
-        "key": "Ctrl+X, Ctrl+R",
-        "desc": "Interactive history search and immediate execute",
+        "key": "Ctrl+Alt+R",
+        "desc": "Interactive SQLite history search (histdb-skim)",
+        "subcat": "History"
+      },
+      {
+        "key": "Ctrl+Shift+R",
+        "desc": "Television Slim history search",
         "subcat": "History"
       },
       {
         "key": "Up / Down",
-        "desc": "Previous / Next command in history matching prefix",
+        "desc": "Prefix history navigation",
         "subcat": "History"
       }
     ],
-    "Navigation & Multiplexer": [
+    "Navigation & Fuzzy Search": [
       {
-        "key": "Alt+S",
-        "desc": "Launch Sesh interactive session picker (sesh-sessions)",
-        "subcat": "Sesh"
+        "key": "Tab",
+        "desc": "Fuzzy completion menu (fzf-tab)",
+        "subcat": "Completion"
+      },
+      {
+        "key": "< / >",
+        "desc": "Switch completion group in fzf-tab",
+        "subcat": "Completion"
       },
       {
         "key": "Ctrl+O",
-        "desc": "Interactive super file / directory search via fzf",
+        "desc": "Super search (files, dirs, git) via fzf",
         "subcat": "Search"
       },
       {
         "key": "Ctrl+H",
-        "desc": "Interactive fuzzy manpage manual viewer",
+        "desc": "Interactive fuzzy manpage & cheat.sh viewer",
         "subcat": "Docs"
-      },
-      {
-        "key": "Tab",
-        "desc": "Interactive tab completion menu (fzf-tab)",
-        "subcat": "Completion"
       }
     ],
-    "Line Editing & Vi Mode": [
+    "Vi Mode & Line Editing": [
       {
-        "key": "Ctrl+X, Ctrl+E",
-        "desc": "Open current command line buffer in $EDITOR (Neovim)",
-        "subcat": "Editor"
-      },
-      {
-        "key": "v (vicmd)",
-        "desc": "Open current command line buffer in $EDITOR from normal mode",
-        "subcat": "Editor"
-      },
-      {
-        "key": "Escape",
-        "desc": "Switch from insert mode to vi command mode (vicmd)",
-        "subcat": "Vi"
+        "key": "Escape / Ctrl+[",
+        "desc": "Switch to vi command mode (vicmd)",
+        "subcat": "Mode"
       },
       {
         "key": "i / a",
         "desc": "Enter vi insert mode before / after cursor",
-        "subcat": "Vi"
+        "subcat": "Mode"
+      },
+      {
+        "key": "v / vv (vicmd)",
+        "desc": "Edit command line in $EDITOR (Neovim)",
+        "subcat": "Editor"
+      },
+      {
+        "key": "cs / ds / ys",
+        "desc": "Vim surround: change, delete, add surrounding quotes/brackets",
+        "subcat": "Surround"
+      },
+      {
+        "key": "gp / gP",
+        "desc": "Paste from system clipboard (wl-copy) after / before cursor",
+        "subcat": "Clipboard"
+      },
+      {
+        "key": "gx",
+        "desc": "Open URL or path under cursor",
+        "subcat": "Navigation"
       },
       {
         "key": "Ctrl+W",
@@ -89,7 +109,7 @@
       },
       {
         "key": "Ctrl+_",
-        "desc": "Undo last edit in command buffer",
+        "desc": "Undo last edit",
         "subcat": "Undo"
       },
       {
