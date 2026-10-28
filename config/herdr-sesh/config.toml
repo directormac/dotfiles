@@ -52,3 +52,6 @@ tabs = ['editor', 'omp', 'lazygit', 'terminal']
 [[rule]]
 path_glob = '~/Code/.worktrees/*/*'
 tabs = ['editor', 'terminal', 'lazygit']
+
+[list]
+cache = true

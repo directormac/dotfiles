@@ -6,6 +6,7 @@ onboarding = false
 scrollback_limit_bytes = 10000000
 
 [experimental]
+kitty_graphics = true
 # Allow launching herdr from inside a herdr-managed pane.
 # allow_nested = false
 # Save recent pane screen history across full server restarts.

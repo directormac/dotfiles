@@ -3,6 +3,7 @@ modelRoles:
   plan: google-antigravity/gemini-4-argon:high
   slow: google-antigravity/claude-sonnet-5-5
   advisor: google-antigravity/gemini-4-argon
+  default: google-antigravity/gemini-3.8-flash
 theme:
   dark: dark-catppuccin
   light: dark-catppuccin

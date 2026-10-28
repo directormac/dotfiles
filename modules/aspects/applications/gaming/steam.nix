@@ -59,12 +59,12 @@
                 "--rt"
                 "--expose-wayland"
                 "-f"
+                "-g"
                 "--adaptive-sync"
                 "--hdr-enabled"
                 "--hdr-itm-enabled"
                 "--xwayland-count"
                 "2"
-                "--gamemode"
                 # Omit hardcoded resolution (-W, -H, -r) and outputs (--prefer-output)
                 # so Gamescope auto-detects native display modes portably across different machines.
               ];
@@ -89,8 +89,9 @@
                 MANGOHUD_DLSYM = "1";
                 OBS_VKCAPTURE = true;
                 PROTON_ENABLE_HDR = true;
-                #  If you encounter invisible mouse cursors or spinning camera angles in FPS games, disable this flag and let Gamescope handle XWayland with --xwayland-count 2
-                PROTON_ENABLE_WAYLAND = true;
+                # Keep PROTON_ENABLE_WAYLAND disabled by default: winewayland.drv breaks Win32 ClipCursor
+                # pointer confinement across multi-monitor setups and breaks the Steam overlay.
+                # Enable per-game via PROTON_ENABLE_WAYLAND=1 %command% only when specifically desired.
                 PROTON_USE_NTSYNC = true;
                 PROTON_USE_WOW64 = true;
                 PULSE_SINK = "Game";
@@ -193,7 +194,7 @@
               MANGOHUD = true;
               OBS_VKCAPTURE = true;
               PROTON_ENABLE_HDR = true;
-              PROTON_ENABLE_WAYLAND = true;
+              # PROTON_ENABLE_WAYLAND disabled by default to preserve XWayland ClipCursor confinement
               PROTON_USE_NTSYNC = true;
               PROTON_USE_WOW64 = true;
               PULSE_SINK = "Game";

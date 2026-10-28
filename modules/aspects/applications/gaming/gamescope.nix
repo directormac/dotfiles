@@ -14,7 +14,7 @@
           args = [
             "--rt"
             "--expose-wayland"
-            "--gamemode"
+            "-g"
           ];
 
           capSysNice = true;

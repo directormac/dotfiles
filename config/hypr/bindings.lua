@@ -259,21 +259,37 @@ hl.define_submap('cursor', function()
 end)
 
 -- Toggle Gamemode / Passthrough manually
-hl.bind(modkey .. ' + F1', hl.dsp.submap('gamemode'), { desc = 'Enter gamemode (disable Hyprland bindings)' })
+hl.bind(modkey .. ' + F1', function()
+  if cfg.gamemode then
+    cfg.gamemode.set(true, true)
+  else
+    hl.dispatch(hl.dsp.submap('gamemode'))
+  end
+end, { desc = 'Enter gamemode (disable Hyprland bindings)', dont_inhibit = true })
 
 hl.define_submap('gamemode', function()
-  -- Only the escape key is intercepted by Hyprland; everything else passes to the game
-  hl.bind(modkey .. ' + F1', hl.dsp.submap('reset'), { desc = 'Exit gamemode' })
+  -- Escape hatch and essential window/workspace controls; everything else passes to the game
+  hl.bind(modkey .. ' + F1', function()
+    if cfg.gamemode then
+      cfg.gamemode.set(false, true)
+    else
+      hl.dispatch(hl.dsp.submap('reset'))
+    end
+  end, { desc = 'Exit gamemode', dont_inhibit = true })
 
-  hl.bind(modkey .. ' + F', hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }))
+  hl.bind(
+    modkey .. ' + F',
+    hl.dsp.window.fullscreen({ mode = 'maximized', action = 'toggle' }),
+    { dont_inhibit = true }
+  )
 
-  hl.bind(modkey .. ' + SHIFT + F', hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }))
+  hl.bind(
+    modkey .. ' + SHIFT + F',
+    hl.dsp.window.fullscreen({ mode = 'fullscreen', action = 'toggle' }),
+    { dont_inhibit = true }
+  )
 
-  hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close())
-
-  -- Optional: keep media volume keys functional during gameplay if desired
-  -- hl.bind('', 'XF86AudioRaiseVolume', hl.dsp.exec_cmd('dms ipc call audio increment'))
-  -- hl.bind('', 'XF86AudioLowerVolume', hl.dsp.exec_cmd('dms ipc call audio decrement'))
+  hl.bind(modkey .. ' + SHIFT + Q', hl.dsp.window.close(), { dont_inhibit = true })
 
   -- Switch workspaces with modkey + [0-9]
   -- Move active window to a workspace with modkey + SHIFT + [0-9]
@@ -281,9 +297,11 @@ hl.define_submap('gamemode', function()
     local key = i % 10 -- 10 maps to key 0
     hl.bind(modkey .. ' + ' .. key, hl.dsp.focus({ workspace = i }), {
       desc = 'Move to workspace' .. key,
+      dont_inhibit = true,
     })
     hl.bind(modkey .. ' + SHIFT + ' .. key, hl.dsp.window.move({ workspace = i }), {
       desc = 'Move window to ' .. '[' .. key .. ']' .. 'workspace.',
+      dont_inhibit = true,
     })
   end
 end)
@@ -386,28 +404,27 @@ hl.bind(modkey .. ' + ALT + space', hl.dsp.exec_cmd('dms dmenu -p "Run:"'), { de
 hl.bind(
   'XF86AudioRaiseVolume',
   hl.dsp.exec_cmd('wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+'),
-  { locked = true, repeating = true }
+  { locked = true, repeating = true, submap_universal = true }
 )
 hl.bind(
   'XF86AudioLowerVolume',
   hl.dsp.exec_cmd('wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'),
-  { locked = true, repeating = true }
+  { locked = true, repeating = true, submap_universal = true }
 )
 hl.bind(
   'XF86AudioMute',
   hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'),
-  { locked = true, repeating = true }
+  { locked = true, repeating = true, submap_universal = true }
 )
 hl.bind(
   'XF86AudioMicMute',
   hl.dsp.exec_cmd('wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'),
-  { locked = true, repeating = true }
+  { locked = true, repeating = true, submap_universal = true }
 )
 -- Requires playerctl
-hl.bind('XF86AudioPlay', hl.dsp.exec_cmd('playerctl play-pause'), { locked = true })
-hl.bind('XF86AudioPrev', hl.dsp.exec_cmd('playerctl previous'), { locked = true })
-hl.bind('XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { locked = true })
-
+hl.bind('XF86AudioPlay', hl.dsp.exec_cmd('playerctl play-pause'), { locked = true, submap_universal = true })
+hl.bind('XF86AudioPrev', hl.dsp.exec_cmd('playerctl previous'), { locked = true, submap_universal = true })
+hl.bind('XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { locked = true, submap_universal = true })
 -- Skip player on long press and only skip 5s on normal press
 hl.bind(modkey .. ' + XF86AudioNext', hl.dsp.exec_cmd('playerctl next'), { long_press = true })
 hl.bind(modkey .. '+ XF86AudioNext', hl.dsp.exec_cmd('playerctl position +5'))

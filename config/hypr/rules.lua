@@ -107,57 +107,171 @@ hl.window_rule({
   idle_inhibit = 'always', -- Inhibit display sleep while in-game
 })
 
--- Auto-switch Hyprland to gamemode submap when a game window is focused
-local is_gamemode_active = false
+hl.window_rule({
+  name = 'steam-proton-and-native-games',
+  match = { class = '^(steam_app_.*|cs2|dota2|hl2_linux|osu!|ryujinx|yuzu|rpcs3|dolphin-emu|retroarch|sober)$' },
+  immediate = true, -- Allow tearing / direct scanout when fullscreen
+  no_shortcuts_inhibit = false, -- Allow SDL/Proton/XWayland pointer & shortcut grabs
+  idle_inhibit = 'fullscreen', -- Only inhibit idle when actually fullscreen (not on launchers)
+})
 
-local function is_game_window(win)
-  if not win or not win.class then return false end
+-- Float and center Wine/Proton installers, setup wizards, launchers, and utilities
+-- so dwindle tiling doesn't stretch fixed-size dialogs or offset XWayland cursor rects
+hl.window_rule({
+  name = 'wine-installers-and-launchers',
+  match = {
+    class = '(?i)^(.*(setup|install|unins|autorun|launcher|updater|patcher|crash|winecfg|explorer|regedit|taskmgr|protontricks|winetricks).*\\.exe)$',
+  },
+  float = true,
+  center = true,
+})
+
+-- Auto-switch Hyprland to gamemode submap ONLY when an actual fullscreen game window is focused.
+-- Ignores repack installers, game launchers (e.g. Skyrim Launcher), splash windows (e.g. Aion 2 splash),
+-- and non-fullscreen helper dialogs.
+local is_gamemode_active = false
+local is_manual_gamemode = false
+
+local ignored_helper_patterns = {
+  'setup',
+  'install',
+  'unins',
+  'autorun',
+  'redist',
+  'vcredist',
+  'dxsetup',
+  'fitgirl',
+  'dodi',
+  'launcher',
+  'updater',
+  'patcher',
+  'splash',
+  'bootstrapper',
+  'crash',
+  'crs%-handler',
+  'bugreport',
+  'easyanticheat',
+  'battleye',
+  'winecfg',
+  'explorer%.exe',
+  'regedit',
+  'control%.exe',
+  'cmd%.exe',
+  'taskmgr',
+  'winedbg',
+  'winetricks',
+  'protontricks',
+}
+
+local known_games = {
+  ['cs2'] = true,
+  ['dota2'] = true,
+  ['hl2_linux'] = true,
+  ['osu!'] = true,
+  ['ryujinx'] = true,
+  ['yuzu'] = true,
+  ['rpcs3'] = true,
+  ['dolphin-emu'] = true,
+  ['retroarch'] = true,
+  ['sober'] = true,
+  ['wow.exe'] = true,
+  ['wowclassic.exe'] = true,
+}
+
+local function is_ignored_helper(win)
+  local c = (win.class or ''):lower()
+  local ic = (win.initial_class or ''):lower()
+  local t = (win.title or ''):lower()
+  local it = (win.initial_title or ''):lower()
+
+  for _, pat in ipairs(ignored_helper_patterns) do
+    if c:match(pat) or ic:match(pat) or t:match(pat) or it:match(pat) then return true end
+  end
+  return false
+end
+
+local function is_fullscreen_game(win)
+  if not win or not win.class or win.class == '' then return false end
   local c = win.class:lower()
   local t = (win.title or ''):lower()
+
+  -- Gamescope is always a fullscreen game micro-compositor
+  if c == 'gamescope' then return true end
+
+  -- Never isolate bindings for non-fullscreen windows (splash screens, launchers, installers, floating dialogs)
+  if (win.fullscreen or 0) == 0 then return false end
+
+  -- Never isolate bindings for installers, launchers, crash handlers, or Wine utilities even if maximized
+  if is_ignored_helper(win) then return false end
 
   -- Steam Proton games (class is always "steam_app_<appid>")
   if c:match('^steam_app_') then return true end
 
-  -- Gamescope
-  if c == 'gamescope' then return true end
-
-  -- Windows executables via Wine / Proton / Bottles / Lutris
-  if c:match('%.exe$') or t:match('%.exe$') then return true end
-
   -- Known standalone native games & emulators
-  local known_games = {
-    ['cs2'] = true,
-    ['dota2'] = true,
-    ['hl2_linux'] = true,
-    ['osu!'] = true,
-    ['ryujinx'] = true,
-    ['yuzu'] = true,
-    ['rpcs3'] = true,
-    ['dolphin-emu'] = true,
-    ['retroarch'] = true,
-    ['sober'] = true,
-    ['wow.exe'] = true,
-    ['wowclassic.exe'] = true,
-  }
   if known_games[c] then return true end
+
+  -- Fullscreen Windows executables via Wine / Proton / Bottles / Lutris / Heroic
+  if c:match('%.exe$') or t:match('%.exe$') then return true end
 
   return false
 end
 
-hl.on('window.active', function(win)
-  local game = is_game_window(win)
-  if game and not is_gamemode_active then
+local function set_gamemode(enabled, manual_toggle)
+  if manual_toggle then is_manual_gamemode = enabled end
+  if enabled and not is_gamemode_active then
     is_gamemode_active = true
     hl.dispatch(hl.dsp.submap('gamemode'))
-    hl.exec_cmd("hyprctl notify 5 2000 'rgb(a6e3a1)' 'Game active: bindings isolated'")
+    -- Lock mouse/monitor focus so cursor brushing the edge of a second monitor
+    -- or background window activation doesn't steal focus and drop Wine's ClipCursor grab
+    hl.config({
+      input = {
+        follow_mouse = 0,
+      },
+      misc = {
+        mouse_move_focuses_monitor = false,
+        focus_on_activate = false,
+      },
+    })
     hl.exec_cmd('dms ipc call notifications enableDoNotDisturbIndefinitely')
-  elseif not game and is_gamemode_active then
+    if manual_toggle then
+      hl.exec_cmd("hyprctl notify 5 2000 'rgb(a6e3a1)' 'GameMode: bindings & cursor focus isolated'")
+    end
+  elseif not enabled and is_gamemode_active then
     is_gamemode_active = false
+    is_manual_gamemode = false
     hl.dispatch(hl.dsp.submap('reset'))
-    hl.exec_cmd("hyprctl notify 1 2000 'rgb(cba6f7)' 'Normal bindings restored'")
+    hl.config({
+      input = {
+        follow_mouse = 1,
+      },
+      misc = {
+        mouse_move_focuses_monitor = true,
+        focus_on_activate = true,
+      },
+    })
     hl.exec_cmd('dms ipc call notifications disableDoNotDisturb')
+    if manual_toggle then hl.exec_cmd("hyprctl notify 1 2000 'rgb(cba6f7)' 'GameMode: normal bindings restored'") end
   end
-end)
+end
+
+cfg.gamemode = {
+  set = set_gamemode,
+}
+
+local function evaluate_gamemode()
+  local win = hl.get_active_window()
+  if is_fullscreen_game(win) then
+    set_gamemode(true, false)
+  elseif not is_manual_gamemode then
+    set_gamemode(false, false)
+  end
+end
+
+hl.on('window.active', function() evaluate_gamemode() end)
+
+hl.on('window.fullscreen', function() evaluate_gamemode() end)
+
+hl.on('window.close', function() evaluate_gamemode() end)
 
 -- 1. Main Steam application window launches maximized
 hl.window_rule({
